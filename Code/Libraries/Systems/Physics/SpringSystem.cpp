@@ -104,7 +104,7 @@ void SpringSystem::Initialize(CogInitializer& initializer)
 
 void SpringSystem::OnAllObjectsCreated(CogInitializer& initializer)
 {
-  for (uint i = 0; i < mAnchors.Size(); ++i)
+  for (size_t i = 0; i < mAnchors.Size(); ++i)
   {
     AnchorPoint* anchor = mAnchors[i];
     anchor->OnAllObjectsCreated(initializer);

@@ -1044,7 +1044,7 @@ void PhysicsSpace::CastCollider(Vec3Param offset,
   mBroadPhase->QueryBoth(data, possiblePairs);
 
   // Run narrow phase
-  for (uint i = 0; i < possiblePairs.Size(); ++i)
+  for (size_t i = 0; i < possiblePairs.Size(); ++i)
   {
     ClientPair* clientPair = &possiblePairs[i];
     Collider* collider1 = static_cast<Collider*>(clientPair->mClientData[0]);
