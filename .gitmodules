@@ -54,3 +54,7 @@
 	path = Code/External/ZLib/Repo
 	url = https://github.com/ZeroEngineProject/zlib.git
     branch = zeroengine
+[submodule "Code/External/IMGUI/Repo"]
+	path = Code/External/IMGUI/Repo
+	url = https://github.com/ZeroEngineProject/imgui.git
+    branch = master
