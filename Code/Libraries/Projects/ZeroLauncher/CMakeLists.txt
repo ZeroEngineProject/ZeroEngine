@@ -58,6 +58,7 @@ target_link_libraries(ZeroLauncher
     CodeTranslator
     Common
     Content
+    DearImgui
     Editor
     Engine
     FreeType
@@ -65,6 +66,7 @@ target_link_libraries(ZeroLauncher
     Geometry
     Graphics
     Image
+    IMGUI
     Libpng
     Meta
     Networking
