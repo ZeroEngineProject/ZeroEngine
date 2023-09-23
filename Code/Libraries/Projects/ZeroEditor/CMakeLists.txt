@@ -21,6 +21,7 @@ target_link_libraries(ZeroEditor
     CodeTranslator
     Common
     Content
+    DearImgui
     Editor
     Engine
     FreeType
@@ -28,6 +29,7 @@ target_link_libraries(ZeroEditor
     Geometry
     Graphics
     Image
+    IMGUI
     Libpng
     Meta
     Networking
