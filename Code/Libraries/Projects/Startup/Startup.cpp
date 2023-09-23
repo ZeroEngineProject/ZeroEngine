@@ -81,6 +81,7 @@ StartupPhase::Enum ZeroStartup::RunIteration()
   case StartupPhase::UserCreation:
     UserCreation();
     NextPhase();
+    DearImgui::Initialize();
     break;
   case StartupPhase::EngineUpdate:
     // Handles changing to the next phase internally.
@@ -288,8 +289,6 @@ void ZeroStartup::Startup()
 
   // Initialize all systems.
   engine->Initialize(initializer);
-
-  DearImgui::Initialize();
 
   if (mLoadContent)
     LoadContentConfig();
