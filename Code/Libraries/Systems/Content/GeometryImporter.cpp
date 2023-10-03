@@ -146,11 +146,19 @@ GeometryProcessorCodes::Enum GeometryImporter::ProcessModelFiles()
     pivotProcessor.ProccessAndCollapsePivots();
   }
 
+  TextureContent* textureContent = mGeometryContent->has(TextureContent);
+  if (mScene->HasTextures() && textureContent)
+  {
+    TextureProcessor textureProcessor(textureContent, mOutputPath, mInputFile);
+    textureProcessor.ExtractAndImportTextures(mScene, mTextureDataMap);
+  }
+
   // process the data into our format and export the files
   MeshBuilder* meshBuilder = mGeometryContent->has(MeshBuilder);
   if (meshBuilder && mScene->HasMeshes())
   {
-    MeshProcessor meshProcessor(meshBuilder, mMeshDataMap);
+    MeshProcessor meshProcessor(meshBuilder, mMeshDataMap, mMaterialDataMap, mTextureDataMap);
+    meshProcessor.ExtractMaterialData(mScene);
     meshProcessor.ExtractAndProcessMeshData(mScene);
     meshProcessor.ExportMeshData(mOutputPath);
   }
@@ -160,13 +168,6 @@ GeometryProcessorCodes::Enum GeometryImporter::ProcessModelFiles()
   {
     PhysicsMeshProcessor physicsMeshProcessor(physicsMeshBuilder, mMeshDataMap);
     physicsMeshProcessor.BuildPhysicsMesh(mOutputPath);
-  }
-
-  TextureContent* textureContent = mGeometryContent->has(TextureContent);
-  if (mScene->HasTextures() && textureContent)
-  {
-    TextureProcessor textureProcessor(textureContent, mOutputPath, mInputFile);
-    textureProcessor.ExtractAndImportTextures(mScene);
   }
 
   AnimationBuilder* animationBuilder = mGeometryContent->has(AnimationBuilder);
@@ -183,7 +184,7 @@ GeometryProcessorCodes::Enum GeometryImporter::ProcessModelFiles()
   GeneratedArchetype* generatedArchetype = mGeometryContent->has(GeneratedArchetype);
   if (generatedArchetype)
   {
-    ArchetypeProcessor archetypeProcessor(generatedArchetype, mHierarchyDataMap);
+    ArchetypeProcessor archetypeProcessor(generatedArchetype, mHierarchyDataMap, mMaterialDataMap);
     archetypeProcessor.BuildSceneGraph(mRootNodeName);
     archetypeProcessor.ExportSceneGraph(FilePath::GetFileName(mInputFile), mOutputPath);
   }
@@ -285,6 +286,7 @@ String GeometryImporter::ExtractDataFromNodesRescursive(aiNode* node, String par
 void GeometryImporter::SingleMeshHierarchyEntry(HierarchyData& hierarchyData, uint meshIndex)
 {
   hierarchyData.mHasMesh = true;
+  hierarchyData.mMaterialIndex = mScene->mMeshes[meshIndex]->mMaterialIndex;
 
   if (mMeshDataMap.ContainsKey(meshIndex))
   {
@@ -543,7 +545,15 @@ bool GeometryImporter::UpdateBuilderMetaData()
       if (IsSupportedImageLoadExtension(extension))
       {
         GeometryResourceEntry entry;
-        entry.mName = BuildString(FilePath::GetFileNameWithoutExtension(mInputFile), ToString(i), ".", extension);
+        if (texture->mFilename.length == 0)
+        {
+          entry.mName = BuildString(FilePath::GetFileNameWithoutExtension(mInputFile), ToString(i), ".", extension);
+        }
+        else
+        {
+          entry.mName = BuildString(FilePath::GetFileNameWithoutExtension(texture->mFilename.C_Str()), ".", extension);
+        }
+        // entry.mName = BuildString(FilePath::GetFileNameWithoutExtension(mInputFile), ToString(i), ".", extension);
 
         // Get resource id if this name already had one, otherwise make a new one.
         if (GeometryResourceEntry* previousEntry = textureContent->mTextures.FindPointer(entry))
