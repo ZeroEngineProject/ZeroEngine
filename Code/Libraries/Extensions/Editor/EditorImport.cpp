@@ -11,6 +11,367 @@ Material* CreateMaterialFromGraphMaterial(SceneGraphMaterial* sceneMaterial)
 
   Material* material = (Material*)MaterialManager::FindOrNull(graphMaterialName);
 
+  if (material != nullptr)
+  {
+    // Already loaded
+    sceneMaterial->LoadedMaterial = material;
+    return material;
+  }
+
+  material = MaterialManager::GetInstance()->CreateNewResource(graphMaterialName);
+
+  RenderGroup* opaqueRenderGroup = RenderGroupManager::FindOrNull("Opaque");
+  if (opaqueRenderGroup != nullptr)
+  {
+    material->mSerializedList.AddResource(opaqueRenderGroup->ResourceIdName);
+  }
+
+  RenderGroup* shadowCasterRenderGroup = RenderGroupManager::FindOrNull("ShadowCasters");
+  if (shadowCasterRenderGroup != nullptr)
+  {
+    material->mSerializedList.AddResource(shadowCasterRenderGroup->ResourceIdName);
+  }
+
+  // DeclareEnum16(MaterialAttribute,
+  //               Unknown,
+  //               DiffuseColor,
+  //               MetallicValue,
+  //               RoughnessValue,
+  //               EmissiveColor,
+  //               SpecularColor,
+  //               TwosidedValue,
+  //               DiffuseMap,
+  //               DiffuseAlphaMap,
+  //               OcclusionMap,
+  //               RoughnessMap,
+  //               MetallicMap,
+  //               OrmMap,
+  //               DisplacementMap,
+  //               NormalMap,
+  //               EmissiveMap,
+  //               SpecularMap);
+
+  {
+    const String& attributeName = MaterialAttribute::Names[MaterialAttribute::TwosidedValue];
+    if (sceneMaterial->Attributes.ContainsKey(attributeName))
+    {
+      RenderGroup* opaqueDoubleSidedRenderGroup = RenderGroupManager::FindOrNull("OpaqueDoubleSided");
+      if (opaqueDoubleSidedRenderGroup != nullptr)
+      {
+        material->mSerializedList.AddResource(opaqueDoubleSidedRenderGroup->ResourceIdName);
+      }
+
+      // BoundType* materialNodeType = MetaDatabase::FindType("AlbedoValue");
+      // if (materialNodeType != nullptr)
+      //{
+      //   MaterialBlockHandle block = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+      //   if (block->SetProperty("AlbedoValue", sceneMaterial->Attributes[attributeName].Get<int>()))
+      //   {
+      //     material->Add(block, -1);
+      //   }
+      // }
+    }
+  }
+
+  {
+    const String& attributeName = MaterialAttribute::Names[MaterialAttribute::DiffuseColor];
+    if (sceneMaterial->Attributes.ContainsKey(attributeName))
+    {
+      BoundType* materialNodeType = MetaDatabase::FindType("AlbedoValue");
+      if (materialNodeType != nullptr)
+      {
+        MaterialBlockHandle block = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+        if (block->SetProperty("AlbedoValue", sceneMaterial->Attributes[attributeName].Get<Vec4>()))
+        {
+          material->Add(block, -1);
+        }
+      }
+    }
+  }
+
+  {
+    const String& attributeName = MaterialAttribute::Names[MaterialAttribute::MetallicValue];
+    if (sceneMaterial->Attributes.ContainsKey(attributeName))
+    {
+      BoundType* materialNodeType = MetaDatabase::FindType("MetallicValue");
+      if (materialNodeType != nullptr)
+      {
+        MaterialBlockHandle block = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+        if (block->SetProperty("MetallicValue", sceneMaterial->Attributes[attributeName].Get<float>()))
+        {
+          material->Add(block, -1);
+        }
+      }
+    }
+  }
+
+  {
+    const String& attributeName = MaterialAttribute::Names[MaterialAttribute::RoughnessValue];
+    if (sceneMaterial->Attributes.ContainsKey(attributeName))
+    {
+      BoundType* materialNodeType = MetaDatabase::FindType("RoughnessValue");
+      if (materialNodeType != nullptr)
+      {
+        MaterialBlockHandle block = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+        float roughnessValue = 0.5f;
+        if (sceneMaterial->Attributes[attributeName].Is<int>())
+        {
+          roughnessValue = (real)sceneMaterial->Attributes[attributeName].Get<int>();
+        }
+        if (sceneMaterial->Attributes[attributeName].Is<real>())
+        {
+          roughnessValue = sceneMaterial->Attributes[attributeName].Get<real>();
+        }
+        if (block->SetProperty("RoughnessValue", roughnessValue))
+        {
+          material->Add(block, -1);
+        }
+      }
+    }
+  }
+
+  //{
+  //  const String& attributeName = MaterialAttribute::Names[MaterialAttribute::EmissiveColor];
+  //  if (sceneMaterial->Attributes.ContainsKey(attributeName))
+  //  {
+  //    BoundType* materialNodeType = MetaDatabase::FindType("AlbedoValue");
+  //    if (materialNodeType != nullptr)
+  //    {
+  //      MaterialBlockHandle block = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+  //      if (block->SetProperty("AlbedoValue", sceneMaterial->Attributes[attributeName].Get<Vec4>()))
+  //      {
+  //        material->Add(block, -1);
+  //      }
+  //    }
+  //  }
+  //}
+
+  //{
+  //  // we always need to add specular
+  //  BoundType* materialNodeType = MetaDatabase::FindType("SpecularValue");
+  //  if (materialNodeType != nullptr)
+  //  {
+  //    MaterialBlockHandle block = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+
+  //    const String& attributeName = MaterialAttribute::Names[MaterialAttribute::SpecularValue];
+  //    if (sceneMaterial->Attributes.ContainsKey(attributeName))
+  //    {
+  //      block->SetProperty("SpecularValue", sceneMaterial->Attributes[attributeName].Get<float>());
+  //      // if (block->SetProperty("SpecularValue", sceneMaterial->Attributes[attributeName].Get<float>()))
+  //      //{
+  //      //     material->Add(block, -1);
+  //      // }
+  //    }
+  //    material->Add(block, -1);
+  //  }
+  //}
+
+  {
+    const String& attributeName = MaterialAttribute::Names[MaterialAttribute::SpecularValue];
+    if (sceneMaterial->Attributes.ContainsKey(attributeName))
+    {
+      BoundType* materialNodeType = MetaDatabase::FindType("SpecularValue");
+      if (materialNodeType != nullptr)
+      {
+        MaterialBlockHandle block = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+        if (block->SetProperty("SpecularValue", sceneMaterial->Attributes[attributeName].Get<float>()))
+        {
+          material->Add(block, -1);
+        }
+      }
+    }
+  }
+
+  {
+    const String& attributeName = MaterialAttribute::Names[MaterialAttribute::DiffuseMap];
+    if (sceneMaterial->Attributes.ContainsKey(attributeName))
+    {
+      BoundType* materialNodeType = MetaDatabase::FindType("AlbedoMap");
+      if (materialNodeType != nullptr)
+      {
+        MaterialBlockHandle block = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+        String textureName = sceneMaterial->Attributes[attributeName].Get<String>();
+        Texture* texture = TextureManager::FindOrNull(textureName);
+        if (block->SetProperty("AlbedoMap", texture))
+        {
+          material->Add(block, -1);
+        }
+      }
+    }
+  }
+
+  {
+    // this should probably be AlphaDiscard?
+    const String& attributeName = MaterialAttribute::Names[MaterialAttribute::DiffuseAlphaMap];
+    if (sceneMaterial->Attributes.ContainsKey(attributeName))
+    {
+      BoundType* materialNodeType = MetaDatabase::FindType("AlphaDiscard");
+      if (materialNodeType != nullptr)
+      {
+        MaterialBlockHandle albedoMapBlock = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+        String textureName = sceneMaterial->Attributes[attributeName].Get<String>();
+        Texture* texture = TextureManager::FindOrNull(textureName);
+        if (albedoMapBlock->SetProperty("Texture", texture))
+        {
+          material->Add(albedoMapBlock, -1);
+        }
+      }
+    }
+  }
+
+  //{
+  //  const String& attributeName = MaterialAttribute::Names[MaterialAttribute::OcclusionMap];
+  //  if (sceneMaterial->Attributes.ContainsKey(attributeName))
+  //  {
+  //    BoundType* materialNodeType = MetaDatabase::FindType("AlbedoValue");
+  //    if (materialNodeType != nullptr)
+  //    {
+  //      MaterialBlockHandle block = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+  //      if (block->SetProperty("AlbedoValue", sceneMaterial->Attributes[attributeName].Get<String>()))
+  //      {
+  //        material->Add(block, -1);
+  //      }
+  //    }
+  //  }
+  //}
+
+  {
+    const String& attributeName = MaterialAttribute::Names[MaterialAttribute::RoughnessMap];
+    if (sceneMaterial->Attributes.ContainsKey(attributeName))
+    {
+      BoundType* materialNodeType = MetaDatabase::FindType("RoughnessMap");
+      if (materialNodeType != nullptr)
+      {
+        MaterialBlockHandle block = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+        String textureName = sceneMaterial->Attributes[attributeName].Get<String>();
+        Texture* texture = TextureManager::FindOrNull(textureName);
+        if (block->SetProperty("RoughnessMap", texture))
+        {
+          material->Add(block, -1);
+        }
+      }
+    }
+  }
+
+  {
+    const String& attributeName = MaterialAttribute::Names[MaterialAttribute::MetallicMap];
+    if (sceneMaterial->Attributes.ContainsKey(attributeName))
+    {
+      BoundType* materialNodeType = MetaDatabase::FindType("MetallicMap");
+      if (materialNodeType != nullptr)
+      {
+        MaterialBlockHandle block = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+        String textureName = sceneMaterial->Attributes[attributeName].Get<String>();
+        Texture* texture = TextureManager::FindOrNull(textureName);
+        if (block->SetProperty("MetallicMap", texture))
+        {
+          material->Add(block, -1);
+        }
+      }
+    }
+  }
+
+  //{
+  //  const String& attributeName = MaterialAttribute::Names[MaterialAttribute::OrmMap];
+  //  if (sceneMaterial->Attributes.ContainsKey(attributeName))
+  //  {
+  //    BoundType* materialNodeType = MetaDatabase::FindType("AlbedoValue");
+  //    if (materialNodeType != nullptr)
+  //    {
+  //      MaterialBlockHandle block = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+  //      if (block->SetProperty("AlbedoValue", sceneMaterial->Attributes[attributeName].Get<String>()))
+  //      {
+  //        material->Add(block, -1);
+  //      }
+  //    }
+  //  }
+  //}
+
+  //{
+  //  const String& attributeName = MaterialAttribute::Names[MaterialAttribute::DisplacementMap];
+  //  if (sceneMaterial->Attributes.ContainsKey(attributeName))
+  //  {
+  //    BoundType* materialNodeType = MetaDatabase::FindType("AlbedoValue");
+  //    if (materialNodeType != nullptr)
+  //    {
+  //      MaterialBlockHandle block = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+  //      if (block->SetProperty("AlbedoValue", sceneMaterial->Attributes[attributeName].Get<String>()))
+  //      {
+  //        material->Add(block, -1);
+  //      }
+  //    }
+  //  }
+  //}
+
+  {
+    const String& attributeName = MaterialAttribute::Names[MaterialAttribute::NormalMap];
+    if (sceneMaterial->Attributes.ContainsKey(attributeName))
+    {
+      BoundType* materialNodeType = MetaDatabase::FindType("NormalMap");
+      if (materialNodeType != nullptr)
+      {
+        MaterialBlockHandle block = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+        String textureName = sceneMaterial->Attributes[attributeName].Get<String>();
+        Texture* texture = TextureManager::FindOrNull(textureName);
+        if (block->SetProperty("NormalMap", texture))
+        {
+          material->Add(block, -1);
+        }
+      }
+    }
+  }
+
+  //{
+  //  const String& attributeName = MaterialAttribute::Names[MaterialAttribute::EmissiveMap];
+  //  if (sceneMaterial->Attributes.ContainsKey(attributeName))
+  //  {
+  //    BoundType* materialNodeType = MetaDatabase::FindType("AlbedoValue");
+  //    if (materialNodeType != nullptr)
+  //    {
+  //      MaterialBlockHandle block = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+  //      if (block->SetProperty("AlbedoValue", sceneMaterial->Attributes[attributeName].Get<String>()))
+  //      {
+  //        material->Add(block, -1);
+  //      }
+  //    }
+  //  }
+  //}
+
+  {
+    const String& attributeName = MaterialAttribute::Names[MaterialAttribute::SpecularMap];
+    if (sceneMaterial->Attributes.ContainsKey(attributeName))
+    {
+      BoundType* materialNodeType = MetaDatabase::FindType("SpecularMap");
+      if (materialNodeType != nullptr)
+      {
+        MaterialBlockHandle block = MaterialFactory::GetInstance()->MakeObject(materialNodeType);
+        String textureName = sceneMaterial->Attributes[attributeName].Get<String>();
+        Texture* texture = TextureManager::FindOrNull(textureName);
+        if (block->SetProperty("SpecularMap", texture))
+        {
+          material->Add(block, -1);
+        }
+      }
+    }
+  }
+
+  // todo: we always need to add specular value
+
+  material->Initialize();
+
+  ContentLibrary* library = Z::gEditor->mProjectLibrary;
+  ResourceAdd resourceAdd;
+  resourceAdd.Library = library;
+  resourceAdd.Name = graphMaterialName;
+  resourceAdd.SourceResource = material;
+  AddNewResource(MaterialManager::GetInstance(), resourceAdd);
+
+  if (!resourceAdd.WasSuccessful())
+    SafeDelete(material);
+
+  // Z::gEditor->EditResource(resourceAdd.SourceResource);
+  // Z::gEditor->EditResource(material);
+
   // if(material != NULL)
   //{
   //  //Already loaded
@@ -51,6 +412,8 @@ Material* CreateMaterialFromGraphMaterial(SceneGraphMaterial* sceneMaterial)
   //  SafeDelete(material);
 
   // sceneMaterial->LoadedMaterial = material;
+
+  sceneMaterial->LoadedMaterial = material;
 
   return material;
 }
