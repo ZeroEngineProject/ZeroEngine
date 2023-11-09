@@ -226,6 +226,7 @@ void ZeroStartup::Initialize()
   GameplayLibrary::Initialize();
   EditorLibrary::Initialize();
   UiWidgetLibrary::Initialize();
+  TBUILibrary::Initialize();
 
   ZilchScriptLibrary::Initialize();
 
@@ -426,6 +427,7 @@ void ZeroStartup::Shutdown()
     // ClearLibrary
     ZilchScriptLibrary::GetInstance().ClearLibrary();
 
+    TBUILibrary::GetInstance().ClearLibrary();
     UiWidgetLibrary::GetInstance().ClearLibrary();
     EditorLibrary::GetInstance().ClearLibrary();
     GameplayLibrary::GetInstance().ClearLibrary();
