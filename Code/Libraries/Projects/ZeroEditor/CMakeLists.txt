@@ -47,6 +47,7 @@ target_link_libraries(ZeroEditor
     SpirvTools
     Startup
     Support
+    TBUI
     UiWidget
     Widget
     ZLib
