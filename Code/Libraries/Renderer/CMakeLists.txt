@@ -17,3 +17,6 @@ elseif(${ZERO_PLATFORM} STREQUAL "Stub")
 else()
   message(FATAL_ERROR "No renderer available for target '${ZERO_PLATFORM}'on '${ZERO_TARGETOS}'.")
 endif()
+
+add_subdirectory(Gpu)
+add_subdirectory(GpuGL)
