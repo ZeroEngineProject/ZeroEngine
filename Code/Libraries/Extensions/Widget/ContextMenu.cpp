@@ -751,7 +751,7 @@ void ContextMenu::AddDivider()
   mRootEntry->AddEntry(new ContextMenuEntryDivider());
 }
 
-void ContextMenu::AddZeroContextMenu(StringParam menuName)
+void ContextMenu::AddContextMenu(StringParam menuName)
 {
   mRootEntry->AddEntry(new ContextMenuEntryMenu(menuName));
 }
@@ -901,7 +901,7 @@ void MenuBarItem::OpenContextMenu()
 {
   ContextMenu* contextMenu = new ContextMenu(this);
   contextMenu->SetTranslation(this->GetScreenPosition() + Pixels(0, mSize.y, 0));
-  contextMenu->AddZeroContextMenu(mName);
+  contextMenu->AddContextMenu(mName);
   contextMenu->SizeToContents();
   mContextMenu = contextMenu;
   GetMenuBar()->mOpenMenuBarItem = this;

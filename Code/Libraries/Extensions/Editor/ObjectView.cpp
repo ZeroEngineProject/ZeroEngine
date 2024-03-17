@@ -1523,7 +1523,7 @@ void ObjectView::OnRightMouseUp(MouseEvent* event)
     return;
 
   ContextMenu* menu = new ContextMenu(this);
-  menu->AddZeroContextMenu("Create");
+  menu->AddContextMenu("Create");
   menu->ShiftOntoScreen(ToVector3(event->Position));
 }
 

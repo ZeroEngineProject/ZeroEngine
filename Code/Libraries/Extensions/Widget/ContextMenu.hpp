@@ -260,7 +260,7 @@ public:
   ContextMenuEntry* GetRootEntry();
   ContextMenuEntry* AddEntry(StringParam name, bool readOnly = false);
   void AddDivider();
-  void AddZeroContextMenu(StringParam menuName);
+  void AddContextMenu(StringParam menuName);
   void AddCommand(Command* command);
   void AddCommandByName(StringParam commandName);
 

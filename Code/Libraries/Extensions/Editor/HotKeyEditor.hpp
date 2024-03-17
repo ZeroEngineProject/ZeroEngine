@@ -40,7 +40,7 @@ struct CommandEntry
 
   unsigned mIndex;
 
-  Command* mZeroCommand;
+  Command* mCommand;
 
   String mName;
   String mDescription;

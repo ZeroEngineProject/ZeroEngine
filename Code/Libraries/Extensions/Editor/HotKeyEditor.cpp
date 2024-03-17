@@ -20,7 +20,7 @@ static const String cTagsColumn = "Tags";
 static const String cDescriptionColumn = "Description";
 
 // Orange
-static const Vec4 cZeroCommandColor(1, 0.647f, 0, 1);
+static const Vec4 cCommandColor(1, 0.647f, 0, 1);
 
 static const bool cNotUsingHotKeyResource = true;
 static const bool cHotKeysEditable = false;
@@ -474,7 +474,7 @@ public:
     if (!row->mIsACogCommand)
       return false;
 
-    Cog* object = ((CogCommand*)row->mZeroCommand)->mCog;
+    Cog* object = ((CogCommand*)row->mCommand)->mCog;
     return mSelection->Contains(object);
   }
 
@@ -485,9 +485,9 @@ public:
     if (!row->mIsACogCommand)
       return;
 
-    Cog* object = ((CogCommand*)row->mZeroCommand)->mCog;
+    Cog* object = ((CogCommand*)row->mCommand)->mCog;
     if (object)
-      mSelection->SelectOnly(object->GetComponentByName(row->mZeroCommand->Name));
+      mSelection->SelectOnly(object->GetComponentByName(row->mCommand->Name));
   }
 
   void Deselect(DataIndex index) override
@@ -497,7 +497,7 @@ public:
     if (!row->mIsACogCommand)
       return;
 
-    Cog* object = ((CogCommand*)row->mZeroCommand)->mCog;
+    Cog* object = ((CogCommand*)row->mCommand)->mCog;
     mSelection->Remove(object);
   }
 
@@ -621,7 +621,7 @@ static void CopyCommand(CommandEntry& lhs, Command* rhs)
   lhs.mIsACogCommand = (rhs->ZilchGetDerivedType() == ZilchTypeId(CogCommand));
   lhs.mDevOnly = rhs->DevOnly;
 
-  lhs.mZeroCommand = rhs;
+  lhs.mCommand = rhs;
   lhs.mName = rhs->Name;
   lhs.mDescription = rhs->Description;
 
@@ -743,7 +743,7 @@ void HotKeyCommands::GetData(DataEntry* dataEntry, Any& variant, StringParam col
     variant = nullptr;
 
     if (row->mIsACogCommand)
-      variant = (CogCommand*)row->mZeroCommand;
+      variant = (CogCommand*)row->mCommand;
   }
   else if (column == cCommandColumn)
   {
@@ -1276,7 +1276,7 @@ void HotKeyEditor::OnCogCommandSort(MouseEvent* event)
     {
       toolTip->ClearText();
       toolTip->AddText("Click to sort by:", Vec4(1));
-      toolTip->AddText("  Zero Commands", cZeroCommandColor);
+      toolTip->AddText("  Zero Commands", cCommandColor);
     }
   }
   else
@@ -1347,7 +1347,7 @@ void HotKeyEditor::OnMouseEnterIconHeader(MouseEvent* event)
   if (mCogCommandSortToggle)
     CreateCommandHeaderToolTip(source, "User Commands", Vec4(1));
   else
-    CreateCommandHeaderToolTip(source, "Native Commands", cZeroCommandColor);
+    CreateCommandHeaderToolTip(source, "Native Commands", cCommandColor);
 }
 
 void HotKeyEditor::OnMouseEnterCommandHeader(MouseEvent* event)

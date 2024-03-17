@@ -752,7 +752,7 @@ void LibraryView::OnRightMouseUp(MouseEvent* event)
   }
 
   // If a specific resource is not found pop up the generic add resources menu
-  menu->AddZeroContextMenu("Resources");
+  menu->AddContextMenu("Resources");
   menu->ShiftOntoScreen(ToVector3(event->Position));
 }
 
