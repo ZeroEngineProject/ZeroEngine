@@ -865,6 +865,8 @@ Status Editor::SaveAll(bool showNotify)
     return Status(StatusState::Failure, cMessage);
   }
 
+  Z::gEngine->LoadingStart();
+
   // Reset the focus to save any changes in progress (setting text, etc)
   GetRootWidget()->FocusReset();
 
@@ -924,6 +926,8 @@ Status Editor::SaveAll(bool showNotify)
   // On some platforms, to make files persist between runs we need to call this
   // function.
   PersistFiles();
+
+  Z::gEngine->LoadingFinish();
 
   return Status();
 }

@@ -1054,16 +1054,6 @@ void OpenglRenderer::Initialize(OsHandle windowHandle, OsHandle deviceContext, O
   // GLfloat maxAnisotropy;
   // glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
 
-  mLazyShaderCompilation = true;
-
-  mActiveShader = 0;
-  mActiveMaterial = 0;
-  mActiveTexture = 0;
-
-  mCurrentLineWidth = 1.0f;
-  mClipMode = false;
-  mCurrentClip = Vec4(0, 0, 0, 0);
-
   // buffer for fullscreen triangle
   StreamedVertex triangleVertices[] = {
       {Vec3(-1, 3, 0), Vec2(0, -1), Vec4()},

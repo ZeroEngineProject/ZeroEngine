@@ -6,6 +6,7 @@ namespace Zero
 {
 
 OsInt RendererThreadMain(void* rendererThreadJobQueue);
+void ExecuteRendererJob(RendererJob* job);
 
 class RendererJob
 {

@@ -175,6 +175,7 @@ void ZilchManager::OnDebuggerPauseUpdate(Zilch::DebuggerEvent* event)
 
   Z::gEngine->mIsDebugging = true;
   Z::gEngine->Update();
+  YieldToOs();
   Z::gEngine->mIsDebugging = false;
 }
 

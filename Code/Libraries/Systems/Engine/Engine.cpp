@@ -172,7 +172,7 @@ void Engine::Update()
 
     ++mFrameCounter;
   }
-  YieldToOs();
+  //YieldToOs();
 }
 
 void Engine::Terminate()

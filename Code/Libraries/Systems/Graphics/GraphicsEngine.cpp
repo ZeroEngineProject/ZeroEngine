@@ -266,6 +266,12 @@ void GraphicsEngine::Update(bool debugger)
   if (ThreadingEnabled && mShowProgressJob->IsRunning())
     return;
 
+  // Do any deferred tasks
+  if (!ThreadingEnabled)
+  {
+    RendererThreadMain(mRendererJobQueue);
+  }
+
   ZilchManager::GetInstance()->mDebugger.DoNotAllowBreakReason =
       "Cannot currently break within the graphics engine because it must "
       "continue running in editor";
@@ -666,10 +672,15 @@ void GraphicsEngine::CheckTextureYInvert(Texture* texture)
 
 void GraphicsEngine::AddRendererJob(RendererJob* rendererJob)
 {
-  mRendererJobQueue->AddJob(rendererJob);
-
-  if (!ThreadingEnabled)
-    RendererThreadMain(mRendererJobQueue);
+  if (ThreadingEnabled)
+  {
+    mRendererJobQueue->AddJob(rendererJob);
+  }
+  else
+  {
+    // In single threaded mode, instantly execute the job
+    ExecuteRendererJob(rendererJob);
+  }
 }
 
 void GraphicsEngine::CreateRenderer(OsWindow* mainWindow)

@@ -153,44 +153,44 @@ public:
   HashMap<ShaderKey, GlShader*> mGlShaders;
   HashMap<ShaderKey, ShaderEntry> mShaderEntries;
 
-  bool mLazyShaderCompilation;
+  bool mLazyShaderCompilation = true;
 
   GLuint mActiveShaderId = 0;
   GlShader* mActiveShader = nullptr;
-  GLuint mActiveTexture;
-  u64 mActiveMaterial;
-  uint mNextTextureSlot;
-  uint mNextTextureSlotMaterial;
+  GLuint mActiveTexture = 0;
+  u64 mActiveMaterial = 0;
+  uint mNextTextureSlot = 0;
+  uint mNextTextureSlotMaterial = 0;
 
-  float mCurrentLineWidth;
-  bool mClipMode;
-  Vec4 mCurrentClip;
+  float mCurrentLineWidth = 1.0f;
+  bool mClipMode = false;
+  Vec4 mCurrentClip = Vec4::cZero;
   BlendSettings mCurrentBlendSettings;
 
   OsHandle mWindow;
   OsHandle mDeviceContext;
   OsHandle mRenderContext;
 
-  RenderTasks* mRenderTasks;
-  RenderQueues* mRenderQueues;
-  FrameBlock* mFrameBlock;
-  ViewBlock* mViewBlock;
-  uint mShaderInputsId;
+  RenderTasks* mRenderTasks = nullptr;
+  RenderQueues* mRenderQueues = nullptr;
+  FrameBlock* mFrameBlock = nullptr;
+  ViewBlock* mViewBlock = nullptr;
+  uint mShaderInputsId = 0;
   String mRenderPassName;
 
-  IntVec2 mViewportSize;
+  IntVec2 mViewportSize = IntVec2::cZero;
 
-  GLuint mTriangleArray;
-  GLuint mTriangleVertex;
-  GLuint mTriangleIndex;
-  GLuint mLoadingShader;
+  GLuint mTriangleArray = 0;
+  GLuint mTriangleVertex = 0;
+  GLuint mTriangleIndex = 0;
+  GLuint mLoadingShader = 0;
   GLint mLoadingTextureLoc = 0;
   GLint mLoadingTransformLoc = 0;
   GLint mLoadingUvTransformLoc = 0;
   GLint mLoadingAlphaLoc = 0;
 
-  GLuint mSingleTargetFbo;
-  GLuint mMultiTargetFbo;
+  GLuint mSingleTargetFbo = 0;
+  GLuint mMultiTargetFbo = 0;
 
   StreamedVertexBuffer mStreamedVertexBuffer;
 
