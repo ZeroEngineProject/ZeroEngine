@@ -282,7 +282,7 @@ void ZeroStartup::Startup()
   if (mLoadContent)
     LoadContentConfig();
 
-  ZPrint("Creating main window.\n");
+  //ZPrint("Creating main window.\n");
 
   OsShell* osShell = engine->has(OsShell);
 
@@ -473,7 +473,7 @@ void ZeroStartup::NextPhase()
 {
   ZPrint("Completed phase: %s\n", StartupPhase::Names[mPhase]);
   mPhase = (StartupPhase::Enum)(mPhase + 1);
-  ZPrint("Next phase: %s\n", StartupPhase::Names[mPhase]);
+  //ZPrint("Next phase: %s\n", StartupPhase::Names[mPhase]);
 }
 
 } // namespace Zero

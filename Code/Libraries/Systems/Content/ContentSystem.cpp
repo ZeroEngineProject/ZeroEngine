@@ -226,10 +226,10 @@ HandleOf<ResourcePackage> ContentSystem::BuildLibrary(Status& status, ContentLib
       ZPrint("Prebuilt content '%s' does not exist\n", prebuiltContent.c_str());
     }
   }
-  else
-  {
-    ZPrint("Content output for '%s' exists\n", outputPath.c_str());
-  }
+  //else
+  //{
+  //  ZPrint("Content output for '%s' exists\n", outputPath.c_str());
+  //}
 
   Array<ContentItem*> items;
   items.Reserve(library->ContentItems.Size());
