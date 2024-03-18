@@ -132,6 +132,9 @@ void GameOrEditorStartup::UserCreation()
   {
     CreateEditor(mMainWindow, mProjectFile, mNewProject);
   }
+
+  // Update once to force things like shader compositing so we can still show a loading screen
+  Z::gEngine->Update();
 }
 
 } // namespace Zero

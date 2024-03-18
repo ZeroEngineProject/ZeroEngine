@@ -47,7 +47,7 @@ void ZeroStartup::Exit(int returnCode)
   sReturnCode = returnCode;
 }
 
-void ZeroStartup::MainLoop()
+StartupPhase::Enum ZeroStartup::RunIteration()
 {
   switch (mPhase)
   {
@@ -71,6 +71,7 @@ void ZeroStartup::MainLoop()
     break;
   case StartupPhase::ProcessJobs:
     // Handles changing to the next phase internally.
+    // This will keep running until all startup jobs are completed.
     ProcessJobs();
     break;
   case StartupPhase::JobsComplete:
@@ -91,27 +92,39 @@ void ZeroStartup::MainLoop()
     break;
   case StartupPhase::Shutdown:
     Shutdown();
-    // Exit could still be false UserInitialize goes straight to shutdown
-    // consider refactoring
-    mExit = true;
+    NextPhase();
+    break;
+  case StartupPhase::Terminate:
+    // This phase does nothing, its only to signal that the application should terminate
     break;
   }
 
-  if (mExit)
-  {
-    // This exact string is required to be printed because it
-    // is the only we know the application has exited when it
-    // comes to running Emscripten (tests, builds, etc.)
-    ZPrint("Stopping main loop\n");
-    StopMainLoop();
-    delete this;
-  }
+  return mPhase;
+
+  //if (mExit)
+  //{
+  //  // This exact string is required to be printed because it
+  //  // is the only we know the application has exited when it
+  //  // comes to running Emscripten (tests, builds, etc.)
+  //  ZPrint("Stopping main loop\n");
+  //  StopMainLoop();
+  //  delete this;
+  //}
 }
 
 void ZeroStartup::MainLoopFunction(void* userData)
 {
   ZeroStartup* self = (ZeroStartup*)userData;
-  self->MainLoop();
+  while (self->RunIteration() != StartupPhase::Terminate)
+  {
+  
+  }
+
+  // This exact string is required to be printed because it
+  // is the only we know the application has exited when it
+  // comes to running Emscripten (tests, builds, etc.)
+  ZPrint("Stopping main loop\n");
+  StopMainLoop();
 }
 
 void ZeroStartup::Initialize()
@@ -463,7 +476,7 @@ void ZeroStartup::Shutdown()
 
     ZPrint("Terminated\n");
 
-    mExit = true;
+    //mExit = true;
   }
 
   Profile::ProfileSystem::Shutdown();

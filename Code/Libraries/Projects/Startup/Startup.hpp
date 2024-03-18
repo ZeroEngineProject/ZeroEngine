@@ -6,7 +6,7 @@ namespace Zero
 
 // To allow platforms without threads / yields (such as Emscripten) to give time back to the OS/Browser
 // we perform our initialization in phases
-DeclareEnum10(
+DeclareEnum11(
     StartupPhase,
     // All meta libraries are initialized, environment initialized, config loaded, and
     // engine created here. There will be no systems available on the engine.
@@ -30,7 +30,9 @@ DeclareEnum10(
     // User may perform any cleanup logic (do not destroy the engine however).
     UserShutdown,
     // All libraries are shutdown and the engine is destroyed.
-    Shutdown);
+    Shutdown,
+    // We delete this entire startup object
+    Terminate);
 
 // Determine whether to continue to next startup phase or not
 DeclareEnum2(StartupPhaseResult,
@@ -48,6 +50,9 @@ public:
   int Run();
 
 protected:
+  // Run a single iteration and return the new phase that we reached
+  StartupPhase::Enum RunIteration();
+
   // The following options should be set by the user in UserInitialize.
   // The default options are all tailored for the Editor.
   // If changes are ever made to these flags (especially mWindowStyle), ALL platforms and programs
@@ -88,7 +93,6 @@ protected:
   void Exit(int returnCode = 0);
 
 private:
-  void MainLoop();
   static void MainLoopFunction(void* userData);
 
   void Initialize();
