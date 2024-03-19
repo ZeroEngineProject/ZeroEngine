@@ -70,8 +70,10 @@ void DrawRing(Vec3Param center, Vec3Param axis, real radius, size_t subDivisions
 void GetPenumbraDebugDrawValues(real minDistance, real maxDistance, real& minForce, real& maxForce)
 {
   // Get a signed normalized force for both the min and max distances
-  minForce /= Math::Abs(minForce);
-  maxForce /= Math::Abs(maxForce);
+  if (minForce != 0.0f)
+    minForce /= Math::Abs(minForce);
+  if (maxForce != 0.0f)
+    maxForce /= Math::Abs(maxForce);
   real deltaDistance = maxDistance - minDistance;
   // Arbitrary scaling on the vectors. Draw a length of 1 unless that'll cause
   // visual overlaps. In this case choose the length based upon the distance to
