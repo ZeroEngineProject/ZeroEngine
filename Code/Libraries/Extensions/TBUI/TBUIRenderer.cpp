@@ -18,106 +18,139 @@ tb::TBBitmap* TBUIRenderer::CreateBitmap(int width, int height, uint32* data)
 
   return bitmap;
 }
-void TBUIRenderer::RenderBatch(Batch* batch)
+//void TBUIRenderer::RenderBatch(Batch* batch)
+//{
+//  ColorTransform colorTx = {Vec4(1, 1, 1, 1)};
+//  Mat4 localTx;
+//  this->mTranslation = Vec3{0, 0, 0};
+//  this->mAngle = 0;
+//  Build2dTransform(localTx, this->mTranslation, this->mAngle);
+//  mWorldTx = localTx * Mat4::cIdentity;
+//
+//  tb::TBRect rect = GetClipRect();
+//
+//  Vec2 size = Vec2{(real)rect.w, (real)rect.h};
+//  Vec2 pos = Vec2{(real)rect.x, (real)rect.y};
+//
+//  IntRect clipRect = IntRect(rect.x, rect.y, rect.w, rect.h);
+//
+//  Vec4 clearColor = Vec4{0.5f, 0.7f, 0.3f, 0.1f};
+//
+//  GraphicsEngine* graphics = Z::gEngine->has(GraphicsEngine);
+//  RenderTasks& renderTasks = *graphics->mRenderTasksBack;
+//  RenderQueues& renderQueues = *graphics->mRenderQueuesBack;
+//  renderQueues.mRenderTasks = &renderTasks;
+//
+//  FrameBlock& frameBlock = renderQueues.mFrameBlocks.PushBack();
+//  ViewBlock& viewBlock = renderQueues.mViewBlocks.PushBack();
+//  frameBlock.mRenderQueues = &renderQueues;
+//
+//  Mat4 translation;
+//  translation.Translate(size.x * -0.5f, size.y * -0.5f, 0.0f);
+//  Mat4 scale;
+//  scale.Scale(1.0f, -1.0f, 1.0f);
+//  viewBlock.mWorldToView = scale * translation;
+//  BuildOrthographicTransformZero(viewBlock.mViewToPerspective, size.y, size.x / size.y, -1.0f, 1.0f);
+//
+//  Mat4 apiPerspective;
+//  Z::gRenderer->BuildOrthographicTransform(apiPerspective, size.y, size.x / size.y, -1.0f, 1.0f);
+//  viewBlock.mZeroPerspectiveToApiPerspective = apiPerspective * viewBlock.mViewToPerspective.Inverted();
+//
+//  //
+//  RenderBatch(viewBlock, frameBlock, batch, clipRect);
+//  //
+//
+//  IndexRange& indexRange = viewBlock.mRenderGroupRanges.PushBack();
+//  indexRange.start = 0;
+//  indexRange.end = viewBlock.mViewNodes.Size();
+//
+//  RenderTaskRange& renderTaskRange = renderTasks.mRenderTaskRanges.PushBack();
+//  renderTaskRange.mFrameBlockIndex = renderQueues.mFrameBlocks.Size() - 1;
+//  renderTaskRange.mViewBlockIndex = renderQueues.mViewBlocks.Size() - 1;
+//  renderTaskRange.mTaskIndex = renderTasks.mRenderTaskBuffer.mCurrentIndex;
+//  renderTaskRange.mTaskCount = 0;
+//
+//  HandleOf<RenderTarget> renderTarget =
+//      Z::gEngine->has(GraphicsEngine)->GetRenderTarget((uint)size.x, (uint)size.y, TextureFormat::RGBA8);
+//
+//  GraphicsRenderSettings renderSettings;
+//  renderSettings.SetColorTarget(renderTarget);
+//  renderSettings.mBlendSettings[0].SetBlendAlpha();
+//  renderSettings.mScissorMode = ScissorMode::Enabled;
+//
+//  BoundType* defaultRenderPass = MetaDatabase::GetInstance()->FindType("ColorOutput");
+//  ReturnIf(defaultRenderPass == nullptr, , "We expected to have a type defined called ColorOutput");
+//
+//  HandleOf<MaterialBlock> renderPassHandle = ZilchAllocate(MaterialBlock, defaultRenderPass);
+//  MaterialBlock& renderPass = renderPassHandle;
+//
+//  Material* spriteMaterial = MaterialManager::FindOrNull("AlphaSprite");
+//  uint shaderInputsId = 0;
+//
+//  {
+//    Pair<u64, uint> key((u64)spriteMaterial->mResourceId, shaderInputsId);
+//    IndexRange range = spriteMaterial->AddShaderInputs(renderTasks.mShaderInputs, renderTasks.mShaderInputsVersion);
+//    renderTasks.mShaderInputRanges.Insert(key, range);
+//  }
+//  {
+//    Pair<u64, uint> key(cFragmentShaderInputsId, shaderInputsId);
+//    IndexRange range = renderPass.AddShaderInputs(renderTasks.mShaderInputs);
+//    renderTasks.mShaderInputRanges.Insert(key, range);
+//  }
+//
+//  RenderTaskHelper helper(renderTasks.mRenderTaskBuffer);
+//  // helper.AddRenderTaskClearTarget(renderSettings, clearColor, 0, 0, 0xFF);
+//  helper.AddRenderTaskRenderPass(renderSettings, 0, defaultRenderPass->Name, shaderInputsId);
+//
+//  ScreenViewport viewport = {pos.x, pos.y, (int)size.x, (int)size.y};
+//  helper.AddRenderTaskBackBufferBlit(renderTarget, viewport);
+//
+//  renderTaskRange.mTaskCount = 2;
+//
+//  Z::gEngine->has(GraphicsEngine)->ClearRenderTargets();
+//}
+
+void TBUIRenderer::RenderBatch(Batch* tbBatch)
 {
-  ColorTransform colorTx = {Vec4(1, 1, 1, 1)};
-  Mat4 localTx;
-  this->mTranslation = Vec3{0, 0, 0};
-  this->mAngle = 0;
-  Build2dTransform(localTx, this->mTranslation, this->mAngle);
-  mWorldTx = localTx * Mat4::cIdentity;
+  BlendSettings blendSettings;
+  blendSettings.SetBlendAlpha();
 
   tb::TBRect rect = GetClipRect();
 
-  Vec2 size = Vec2{(real)rect.w, (real)rect.h};
-  Vec2 pos = Vec2{(real)rect.x, (real)rect.y};
+  IntRect clipRect = IntRect(rect.x, rect.y, rect.w, rect.h);
 
-  Rectangle clipRect = Rectangle::PointAndSize(Vec2(pos.x, pos.y), Vec2(size.x, size.y));
-
-  Vec4 clearColor = Vec4{0.5f, 0.7f, 0.3f, 0.1f};
-
-  GraphicsEngine* graphics = Z::gEngine->has(GraphicsEngine);
-  RenderTasks& renderTasks = *graphics->mRenderTasksBack;
-  RenderQueues& renderQueues = *graphics->mRenderQueuesBack;
-  renderQueues.mRenderTasks = &renderTasks;
-
-  FrameBlock& frameBlock = renderQueues.mFrameBlocks.PushBack();
-  ViewBlock& viewBlock = renderQueues.mViewBlocks.PushBack();
-  frameBlock.mRenderQueues = &renderQueues;
-
-  Mat4 translation;
-  translation.Translate(size.x * -0.5f, size.y * -0.5f, 0.0f);
-  Mat4 scale;
-  scale.Scale(1.0f, -1.0f, 1.0f);
-  viewBlock.mWorldToView = scale * translation;
-  BuildOrthographicTransformZero(viewBlock.mViewToPerspective, size.y, size.x / size.y, -1.0f, 1.0f);
-
-  Mat4 apiPerspective;
-  Z::gRenderer->BuildOrthographicTransform(apiPerspective, size.y, size.x / size.y, -1.0f, 1.0f);
-  viewBlock.mZeroPerspectiveToApiPerspective = apiPerspective * viewBlock.mViewToPerspective.Inverted();
-
-  //
-  RenderBatch(viewBlock, frameBlock, batch, clipRect);
-  //
-
-  IndexRange& indexRange = viewBlock.mRenderGroupRanges.PushBack();
-  indexRange.start = 0;
-  indexRange.end = viewBlock.mViewNodes.Size();
-
-  RenderTaskRange& renderTaskRange = renderTasks.mRenderTaskRanges.PushBack();
-  renderTaskRange.mFrameBlockIndex = renderQueues.mFrameBlocks.Size() - 1;
-  renderTaskRange.mViewBlockIndex = renderQueues.mViewBlocks.Size() - 1;
-  renderTaskRange.mTaskIndex = renderTasks.mRenderTaskBuffer.mCurrentIndex;
-  renderTaskRange.mTaskCount = 0;
-
-  HandleOf<RenderTarget> renderTarget =
-      Z::gEngine->has(GraphicsEngine)->GetRenderTarget((uint)size.x, (uint)size.y, TextureFormat::RGBA8);
-
-  GraphicsRenderSettings renderSettings;
-  renderSettings.SetColorTarget(renderTarget);
-  renderSettings.mBlendSettings[0].SetBlendAlpha();
-  renderSettings.mScissorMode = ScissorMode::Enabled;
-
-  BoundType* defaultRenderPass = MetaDatabase::GetInstance()->FindType("ColorOutput");
-  ReturnIf(defaultRenderPass == nullptr, , "We expected to have a type defined called ColorOutput");
-
-  HandleOf<MaterialBlock> renderPassHandle = ZilchAllocate(MaterialBlock, defaultRenderPass);
-  MaterialBlock& renderPass = renderPassHandle;
-
-  Material* spriteMaterial = MaterialManager::FindOrNull("AlphaSprite");
-  uint shaderInputsId = 0;
-
+  Texture* texture = nullptr;
+  if (tbBatch->bitmap != nullptr)
   {
-    Pair<u64, uint> key((u64)spriteMaterial->mResourceId, shaderInputsId);
-    IndexRange range = spriteMaterial->AddShaderInputs(renderTasks.mShaderInputs, renderTasks.mShaderInputsVersion);
-    renderTasks.mShaderInputRanges.Insert(key, range);
-  }
-  {
-    Pair<u64, uint> key(cFragmentShaderInputsId, shaderInputsId);
-    IndexRange range = renderPass.AddShaderInputs(renderTasks.mShaderInputs);
-    renderTasks.mShaderInputRanges.Insert(key, range);
+    TBUIBitmap* bitmap = (TBUIBitmap*)tbBatch->bitmap;
+    texture = reinterpret_cast<Texture*>(bitmap->GetTexture());
   }
 
-  RenderTaskHelper helper(renderTasks.mRenderTaskBuffer);
-  //helper.AddRenderTaskClearTarget(renderSettings, clearColor, 0, 0, 0xFF);
-  helper.AddRenderTaskRenderPass(renderSettings, 0, defaultRenderPass->Name, shaderInputsId);
+  TBUIBatch batch(blendSettings, clipRect, texture, mVertices);
 
-  ScreenViewport viewport = {pos.x, pos.y, (int)size.x, (int)size.y};
-  helper.AddRenderTaskBackBufferBlit(renderTarget, viewport);
+  u32 begin = batch.mVertices->Size();
+  batch.mVertices->Resize(begin + tbBatch->vertex_count);
+  batch.mVerticesEnd = batch.mVertices->Size();
 
-  renderTaskRange.mTaskCount = 2;
+  for (int i = 0; i < tbBatch->vertex_count; i++)
+  {
+    tb::TBRendererBatcher::Vertex tbVertex = tbBatch->vertex[i];
+    StreamedVertex vertex =
+        StreamedVertex(Vec3(tbVertex.x, tbVertex.y, 0), Vec2(tbVertex.u, tbVertex.v), ToFloatColor(tbVertex.col));
+    (*batch.mVertices)[begin + i] = vertex;
+  }
 
-  Z::gEngine->has(GraphicsEngine)->ClearRenderTargets();
+  TBUIBatch::AddOrMerge(batch, *mBatches);
 }
 void TBUIRenderer::SetClipRect(const tb::TBRect& rect)
 {
-  mClipRect = rect;
+  mClipRect = IntRect(rect.x, rect.y, rect.w, rect.h);
 }
 
 void TBUIRenderer::RenderBatch(ViewBlock& viewBlock,
-                                  FrameBlock& frameBlock,
-                                  tb::TBRendererBatcher::Batch* data,
-                                  RectangleParam clipRect)
+                               FrameBlock& frameBlock,
+                               tb::TBRendererBatcher::Batch* data,
+                               const IntRect& clipRect)
 {
   Array<StreamedVertex> vertices = {};
 
@@ -135,7 +168,7 @@ void TBUIRenderer::RenderBatch(ViewBlock& viewBlock,
   // draw
   {
 
-    //Rectangle clip = Rectangle::PointAndSize(Vec2(clipMin.x, clipMin.y), Vec2(clipMax.x, clipMax.y));
+    // Rectangle clip = Rectangle::PointAndSize(Vec2(clipMin.x, clipMin.y), Vec2(clipMax.x, clipMax.y));
 
     TBUIBitmap* bitmap = (TBUIBitmap*)batch.bitmap;
     Texture* texture = reinterpret_cast<Texture*>(bitmap->GetTexture());
@@ -145,11 +178,11 @@ void TBUIRenderer::RenderBatch(ViewBlock& viewBlock,
 }
 
 void TBUIRenderer::CreateRenderData(ViewBlock& viewBlock,
-                                 FrameBlock& frameBlock,
-                                 RectangleParam clipRect,
-                                 Array<StreamedVertex>& vertices,
-                                 Texture* texture,
-                                 PrimitiveType::Enum primitiveType)
+                                    FrameBlock& frameBlock,
+                                    const IntRect& clipRect,
+                                    Array<StreamedVertex>& vertices,
+                                    Texture* texture,
+                                    PrimitiveType::Enum primitiveType)
 {
   if (vertices.Empty())
     return;
@@ -173,7 +206,7 @@ void TBUIRenderer::CreateRenderData(ViewBlock& viewBlock,
 }
 
 ViewNode&
-TBUIRenderer::AddRenderNodes(ViewBlock& viewBlock, FrameBlock& frameBlock, RectangleParam clipRect, Texture* texture)
+TBUIRenderer::AddRenderNodes(ViewBlock& viewBlock, FrameBlock& frameBlock, const IntRect& clipRect, Texture* texture)
 {
   FrameNode& frameNode = frameBlock.mFrameNodes.PushBack();
   ViewNode& viewNode = viewBlock.mViewNodes.PushBack();
@@ -190,7 +223,7 @@ TBUIRenderer::AddRenderNodes(ViewBlock& viewBlock, FrameBlock& frameBlock, Recta
   viewNode.mLocalToView = viewBlock.mWorldToView * frameNode.mLocalToWorld;
 
   // frameNode.mClip = Vec4(clipRect.GetLeft(), clipRect.GetTop(), clipRect.GetRight(), clipRect.GetBottom());
-  frameNode.mClip = Vec4(clipRect.GetLeft(), clipRect.GetBottom(), clipRect.GetRight(), clipRect.GetTop());
+  frameNode.mClip = Vec4(clipRect.Left(), clipRect.Top(), clipRect.Right(), clipRect.Bottom());
 
   // maybe cache this lookup on root
   Material* spriteMaterial = nullptr;

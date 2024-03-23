@@ -4,11 +4,14 @@
 // External dependencies
 #include "Engine/EngineStandard.hpp"
 #include "Graphics/GraphicsStandard.hpp"
-//#include "Widget/WidgetStandard.hpp"
+// #include "Widget/WidgetStandard.hpp"
 #include "Gameplay/GameplayStandard.hpp"
 
 namespace Zero
 {
+
+class TBUIManager;
+class TBUIRenderer;
 
 // TBUI library
 class ZeroNoImportExport TBUILibrary : public Zilch::StaticLibrary
@@ -30,7 +33,7 @@ public:
 #include "tb/image/tb_image_widget.h"
 #include "tb/parser/tb_parser.h"
 #include "tb/renderers/tb_renderer_batcher.h"
-//#include "tb/tests/tb_test.h"
+// #include "tb/tests/tb_test.h"
 #include "tb/thirdparty/stb_image.h"
 #include "tb/thirdparty/stb_truetype.h"
 #include "tb/utf8/utf8.h"
@@ -85,6 +88,8 @@ public:
 #include "tb/tb_window.h"
 
 // TBUILibrary Core
+#include "TBUIBatch.hpp"
+#include "TBUIView.hpp"
 #include "TBUIWidget.hpp"
 #include "TBUIRenderer.hpp"
 #include "TBUIBitmap.hpp"

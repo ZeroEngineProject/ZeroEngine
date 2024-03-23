@@ -1,7 +1,7 @@
 add_library(TBUI)
 
-welder_setup_library(TBUI ${CMAKE_CURRENT_LIST_DIR} TRUE)
-welder_use_precompiled_header(TBUI ${CMAKE_CURRENT_LIST_DIR})
+zero_setup_library(TBUI ${CMAKE_CURRENT_LIST_DIR} TRUE)
+zero_use_precompiled_header(TBUI ${CMAKE_CURRENT_LIST_DIR})
 
 set(TBUI_TB_SOURCES_ANIMATION
     ${CMAKE_CURRENT_LIST_DIR}/tb/animation/tb_animation_utils.h
@@ -172,6 +172,8 @@ set(TBUI_TB_SOURCES
 set(TBUI_SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/Precompiled.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Precompiled.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/TBUIBatch.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/TBUIBatch.hpp
     ${CMAKE_CURRENT_LIST_DIR}/TBUIBitmap.cpp
     ${CMAKE_CURRENT_LIST_DIR}/TBUIBitmap.hpp
     ${CMAKE_CURRENT_LIST_DIR}/TBUIClipboard.cpp
@@ -186,6 +188,8 @@ set(TBUI_SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/TBUIStandard.cpp
     ${CMAKE_CURRENT_LIST_DIR}/TBUIStandard.hpp
     ${CMAKE_CURRENT_LIST_DIR}/TBUISystem.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/TBUIView.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/TBUIView.hpp
     ${CMAKE_CURRENT_LIST_DIR}/TBUIWidget.cpp
     ${CMAKE_CURRENT_LIST_DIR}/TBUIWidget.hpp
 )

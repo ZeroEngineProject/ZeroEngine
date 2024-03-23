@@ -44,22 +44,31 @@ void TBUIManager::OnUiUpdate(UpdateEvent* event)
     mRoot->InvokeProcess();
 
     tb::TBMessageHandler::ProcessMessages();
+
+      forRange (TBUIView* view, mViews.All())
+    {
+      view->UpdateBatches();
+    }
   }
 }
 
 void TBUIManager::OnUiRenderUpdate(Event* event)
 {
-  OsShell* shell = Z::gEngine->has(OsShell);
-  OsWindow* osWindow = shell->GetWindow(0);
-  IntVec2 clientSize = osWindow->GetClientSize();
-  //IntVec2 clientPos = osWindow->GetMonitorClientPosition();
-  if (shell != nullptr)
+  //OsShell* shell = Z::gEngine->has(OsShell);
+  //OsWindow* osWindow = shell->GetWindow(0);
+  //IntVec2 clientSize = osWindow->GetClientSize();
+  ////IntVec2 clientPos = osWindow->GetMonitorClientPosition();
+  //if (shell != nullptr)
+  //{
+  //  mRenderer->BeginPaint(clientSize.x, clientSize.y);
+  //  tb::TBWidget::PaintProps props;
+  //  mRoot->InvokePaint(props);
+  //  //mRoot->GetFont()->DrawString(5, 5, tb::TBColor(255, 255, 255), "Hello from TB");
+  //  mRenderer->EndPaint();
+  //}
+  forRange(TBUIView* view, mViews.All())
   {
-    mRenderer->BeginPaint(clientSize.x, clientSize.y);
-    tb::TBWidget::PaintProps props;
-    mRoot->InvokePaint(props);
-    //mRoot->GetFont()->DrawString(5, 5, tb::TBColor(255, 255, 255), "Hello from TB");
-    mRenderer->EndPaint();
+    view->Render();
   }
 }
 
@@ -83,14 +92,20 @@ void TBUIManager::OnOsMouseUp(OsMouseEvent* mouseEvent)
 {
   tb::MODIFIER_KEYS modifierKeys = GetModifierKeys(mouseEvent);
 
-  mRoot->InvokePointerUp(mouseEvent->ClientPosition.x, mouseEvent->ClientPosition.y, modifierKeys, false);
+  if (mRoot->InvokePointerUp(mouseEvent->ClientPosition.x, mouseEvent->ClientPosition.y, modifierKeys, false))
+  {
+    mouseEvent->Terminate();
+  }
 }
 
 void TBUIManager::OnOsMouseDown(OsMouseEvent* mouseEvent)
 {
   tb::MODIFIER_KEYS modifierKeys = GetModifierKeys(mouseEvent);
 
-  mRoot->InvokePointerDown(mouseEvent->ClientPosition.x, mouseEvent->ClientPosition.y, 1, modifierKeys, false);
+  if (mRoot->InvokePointerDown(mouseEvent->ClientPosition.x, mouseEvent->ClientPosition.y, 1, modifierKeys, false))
+  {
+    mouseEvent->Terminate();
+  }
 }
 
 void TBUIManager::OnOsMouseMoved(OsMouseEvent* mouseEvent)
@@ -98,6 +113,44 @@ void TBUIManager::OnOsMouseMoved(OsMouseEvent* mouseEvent)
   tb::MODIFIER_KEYS modifierKeys = GetModifierKeys(mouseEvent);
 
   mRoot->InvokePointerMove(mouseEvent->ClientPosition.x, mouseEvent->ClientPosition.y, modifierKeys, false);
+}
+
+void TBUIManager::AddView(TBUIView* view)
+{
+  mRoot->AddChild(view);
+  mViews.Append(view);
+  if (mFocusedView == nullptr)
+  {
+    mFocusedView = view;
+    SetFocusedView(view);
+  }
+}
+
+void TBUIManager::RemoveView(TBUIView* view)
+{
+  if (mFocusedView == view)
+  {
+    SetFocusedView(nullptr);
+  }
+
+  mRoot->RemoveChild(view);
+  mViews.EraseValue(view);
+}
+
+void TBUIManager::SetFocusedView(TBUIView* view)
+{
+  if (mFocusedView == view)
+    return;
+
+  mFocusedView = view;
+
+  if (mFocusedView != nullptr)
+  {
+  }
+  else
+  {
+  
+  }
 }
 
 void TBUIManager::OnEngineUpdate(UpdateEvent* event)
@@ -154,6 +207,8 @@ void TBUIManager::OnEngineUpdate(UpdateEvent* event)
         font->RenderGlyphs(" !\"#$%&'()*+,-./"
                            "0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~•·åäöÅÄÖ");
 
+      tb::TBWidgetListener::AddGlobalListener(this);
+
       if (mRoot == nullptr)
       {
         OsShell* shell = Z::gEngine->has(OsShell);
@@ -165,9 +220,12 @@ void TBUIManager::OnEngineUpdate(UpdateEvent* event)
         mRoot->SetRect(tb::TBRect(clientPos.x, clientPos.y, clientSize.x, clientSize.y));
         //mRoot->SetOpacity(0.1);
 
+        TBUIView* view = new TBUIView();
+
         tb::TBWindow* mainWindow = new tb::TBWindow();
 
-        mRoot->AddChild(mainWindow);
+        //mRoot->AddChild(mainWindow);
+        view->AddChild(mainWindow);
 
         tb::TBNode node;
         if (node.ReadFile("@TBUI/demo/ui_resources/test_ui.tb.txt"))
