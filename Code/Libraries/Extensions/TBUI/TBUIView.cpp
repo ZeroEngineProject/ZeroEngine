@@ -148,7 +148,8 @@ void TBUIView::GetBatches(Array<TBUIBatch>& batches, Array<StreamedVertex>& vert
   mRenderer->mClipRect = clipRect;
   mRenderer->mBatches = &batches;
   mRenderer->mVertices = &vertices;
-  this->InvokePaint(tb::TBWidget::PaintProps());
+  //this->InvokePaint(tb::TBWidget::PaintProps());
+  mUI->GetRootWidget()->InvokePaint(tb::TBWidget::PaintProps());
 
   tb::g_renderer->EndPaint();
 }
@@ -175,7 +176,7 @@ void TBUIView::CreateRenderData(ViewBlock& viewBlock,
 
   ViewNode& viewNode = AddRenderNodes(viewBlock, frameBlock, clipRect, texture);
 
-  for (uint i = 0; i < vertices.Size(); ++i)
+  for (size_t i = 0; i < vertices.Size(); ++i)
   {
     StreamedVertex vertex = vertices[i];
     vertex.mPosition = Math::TransformPoint(viewNode.mLocalToView, vertex.mPosition);
