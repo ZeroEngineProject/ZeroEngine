@@ -36,6 +36,8 @@ bool TBUIBatch::Merge(const TBUIBatch& batch)
       || mVerticesStart != mVerticesEnd)
     return false;
 
+  return false;
+
   mVerticesEnd = batch.mVerticesEnd;
 
   return true;
