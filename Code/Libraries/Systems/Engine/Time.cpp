@@ -13,6 +13,7 @@ DefineEvent(LogicUpdate);
 DefineEvent(PreviewUpdate);
 DefineEvent(EngineUpdate);
 DefineEvent(EngineDebuggerUpdate);
+DefineEvent(EngineInitialized);
 DefineEvent(EngineShutdown);
 DefineEvent(ActionFrameUpdate);
 DefineEvent(ActionLogicUpdate);

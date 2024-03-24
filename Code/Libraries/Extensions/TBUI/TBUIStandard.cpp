@@ -8,7 +8,7 @@ ZilchDefineStaticLibrary(TBUILibrary)
 {
   builder.CreatableInScriptDefault = false;
 
-  ZilchInitializeType(TBUIWidget);
+  ZilchInitializeType(TBUIContainer);
   ZilchInitializeType(TBUIRenderer);
   ZilchInitializeType(TBUIBitmap);
   ZilchInitializeType(TBUIFile);
@@ -22,12 +22,12 @@ void TBUILibrary::Initialize()
   BuildStaticLibrary();
   MetaDatabase::GetInstance()->AddNativeLibrary(GetLibrary());
 
-  TBUIManager::Initialize();
+  TBUI::Initialize();
 }
 
 void TBUILibrary::Shutdown()
 {
-  TBUIManager::Destroy();
+  TBUI::Destroy();
 
   GetLibrary()->ClearComponents();
 }
