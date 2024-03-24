@@ -8,6 +8,8 @@ void Build2dTransform(Mat4& m, Vec3Param t, float r);
 class TBUIRenderer : public tb::TBRendererBatcher
 {
 public:
+  friend class TBUIView;
+
   /// Meta Initialization.
   ZilchDeclareType(TBUIRenderer, TypeCopyMode::ReferenceType);
 
@@ -16,27 +18,8 @@ public:
   void SetClipRect(const tb::TBRect& rect) override;
 
 private:
-  void RenderBatch(ViewBlock& viewBlock,
-                   FrameBlock& frameBlock,
-                   tb::TBRendererBatcher::Batch* data,
-                   const IntRect& clipRect);
-  void CreateRenderData(ViewBlock& viewBlock,
-                        FrameBlock& frameBlock,
-                        const IntRect& clipRect,
-                        Array<StreamedVertex>& vertices,
-                        Texture* texture,
-                        PrimitiveType::Enum primitiveType);
-  ViewNode& AddRenderNodes(ViewBlock& viewBlock, FrameBlock& frameBlock, const IntRect& clipRect, Texture* texture);
-
-private:
-  Vec3 mTranslation;
-  float mAngle;
-
-  Mat4 mWorldTx = Mat4::cIdentity;
-  Texture* mFontTexture = nullptr;
-  int mCurrentUpdateFrame = -1;
-  int mCurrentRenderFrame = -1;
-
+  Array<TBUIBatch>* mBatches = nullptr;
+  Array<StreamedVertex>* mVertices = nullptr;
   IntRect mClipRect;
 };
 } // namespace Zero
