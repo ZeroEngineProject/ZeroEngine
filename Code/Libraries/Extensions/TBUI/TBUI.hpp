@@ -23,6 +23,14 @@ public:
     return mRoot;
   }
 
+  ZeroForceInline TBUIRenderer* GetRenderer()
+  {
+    return mRenderer;
+  }
+
+  void AddView(TBUIView* view);
+  void RemoveView(TBUIView* view);
+
 private:
   void OnUiUpdate(UpdateEvent* event);
   void OnUiRenderUpdate(Event* event);
@@ -31,9 +39,16 @@ private:
   void OnOsMouseDown(OsMouseEvent* mouseEvent);
   void OnOsMouseMoved(OsMouseEvent* mouseEvent);
 
+  void InitializeDemo();
+
 private:
-  tb::TBWidget* mRoot;
+  UniquePointer<tb::TBWidget> mRoot;
   TBUIRenderer* mRenderer;
+
+  Array<TBUIView*> mViews;
+
+  bool mDemoInitialized = false;
+  UniquePointer<TBUIView> mDemoView;
 };
 
 namespace Z
