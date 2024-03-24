@@ -4,17 +4,18 @@
 namespace Zero
 {
 
-class TBUIWidget;
+class TBUIContainer;
 
-class TBUIManager : public ExplicitSingleton<TBUIManager, EventObject>
+class TBUI : public ExplicitSingleton<TBUI, EventObject>
 {
 public:
-  ZilchDeclareType(TBUIManager, TypeCopyMode::ReferenceType);
+  ZilchDeclareType(TBUI, TypeCopyMode::ReferenceType);
 
-  TBUIManager();
-  ~TBUIManager();
+  TBUI();
+  ~TBUI();
 
   void OnEngineUpdate(UpdateEvent* event);
+  void OnInitialize(Event* event);
   void OnShutdown(Event* event);
 
   ZeroForceInline tb::TBWidget* GetRootWidget()
@@ -37,7 +38,7 @@ private:
 
 namespace Z
 {
-extern TBUIManager* gTBUIManager;
+extern TBUI* gTBUI;
 }
 
 } // namespace Zero

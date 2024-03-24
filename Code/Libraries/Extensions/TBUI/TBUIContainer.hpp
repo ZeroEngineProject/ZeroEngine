@@ -3,11 +3,11 @@
 
 namespace Zero
 {
-class TBUIWidget : public Component
+class TBUIContainer : public Component
 {
 public:
   /// Meta Initialization.
-  ZilchDeclareType(TBUIWidget, TypeCopyMode::ReferenceType);
+  ZilchDeclareType(TBUIContainer, TypeCopyMode::ReferenceType);
   
   /// Component Interface.
   void Serialize(Serializer& stream) override;

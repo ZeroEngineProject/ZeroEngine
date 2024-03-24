@@ -4,22 +4,23 @@
 namespace Zero
 {
 
-ZilchDefineType(TBUIManager, builder, type)
+ZilchDefineType(TBUI, builder, type)
 {
 }
 
-TBUIManager::TBUIManager() : mRoot(nullptr)
+TBUI::TBUI() : mRoot(nullptr)
 {
-  Z::gTBUIManager = this;
+  Z::gTBUI = this;
 
   mRenderer = new TBUIRenderer();
 
   ConnectThisTo(Z::gEngine, Events::EngineUpdate, OnEngineUpdate);
   ConnectThisTo(Z::gEngine, Events::EngineDebuggerUpdate, OnEngineUpdate);
+  ConnectThisTo(Z::gEngine, Events::EngineInitialized, OnInitialize);
   ConnectThisTo(Z::gEngine, Events::EngineShutdown, OnShutdown);
 }
 
-TBUIManager::~TBUIManager()
+TBUI::~TBUI()
 {
   if (mRoot != nullptr)
   {
@@ -29,7 +30,7 @@ TBUIManager::~TBUIManager()
   delete mRenderer;
 }
 
-void TBUIManager::OnUiUpdate(UpdateEvent* event)
+void TBUI::OnUiUpdate(UpdateEvent* event)
 {
   OsShell* shell = Z::gEngine->has(OsShell);
   if (shell != nullptr)
@@ -47,7 +48,7 @@ void TBUIManager::OnUiUpdate(UpdateEvent* event)
   }
 }
 
-void TBUIManager::OnUiRenderUpdate(Event* event)
+void TBUI::OnUiRenderUpdate(Event* event)
 {
   OsShell* shell = Z::gEngine->has(OsShell);
   OsWindow* osWindow = shell->GetWindow(0);
@@ -63,44 +64,11 @@ void TBUIManager::OnUiRenderUpdate(Event* event)
   }
 }
 
-tb::MODIFIER_KEYS GetModifierKeys(OsMouseEvent* mouseEvent)
+void TBUI::OnEngineUpdate(UpdateEvent* event)
 {
-  tb::MODIFIER_KEYS modifierKeys = tb::MODIFIER_KEYS::TB_MODIFIER_NONE;
-
-  if (mouseEvent->AltPressed)
-    modifierKeys |= tb::MODIFIER_KEYS::TB_ALT;
-
-  if (mouseEvent->ShiftPressed)
-    modifierKeys |= tb::MODIFIER_KEYS::TB_SHIFT;
-
-  if (mouseEvent->CtrlPressed)
-    modifierKeys |= tb::MODIFIER_KEYS::TB_CTRL;
-
-  return modifierKeys;
 }
 
-void TBUIManager::OnOsMouseUp(OsMouseEvent* mouseEvent)
-{
-  tb::MODIFIER_KEYS modifierKeys = GetModifierKeys(mouseEvent);
-
-  mRoot->InvokePointerUp(mouseEvent->ClientPosition.x, mouseEvent->ClientPosition.y, modifierKeys, false);
-}
-
-void TBUIManager::OnOsMouseDown(OsMouseEvent* mouseEvent)
-{
-  tb::MODIFIER_KEYS modifierKeys = GetModifierKeys(mouseEvent);
-
-  mRoot->InvokePointerDown(mouseEvent->ClientPosition.x, mouseEvent->ClientPosition.y, 1, modifierKeys, false);
-}
-
-void TBUIManager::OnOsMouseMoved(OsMouseEvent* mouseEvent)
-{
-  tb::MODIFIER_KEYS modifierKeys = GetModifierKeys(mouseEvent);
-
-  mRoot->InvokePointerMove(mouseEvent->ClientPosition.x, mouseEvent->ClientPosition.y, modifierKeys, false);
-}
-
-void TBUIManager::OnEngineUpdate(UpdateEvent* event)
+void TBUI::OnInitialize(Event* event)
 {
   if (!tb::tb_core_is_initialized())
   {
@@ -163,7 +131,7 @@ void TBUIManager::OnEngineUpdate(UpdateEvent* event)
 
         mRoot = new tb::TBWidget();
         mRoot->SetRect(tb::TBRect(clientPos.x, clientPos.y, clientSize.x, clientSize.y));
-        //mRoot->SetOpacity(0.1);
+        // mRoot->SetOpacity(0.1);
 
         tb::TBWindow* mainWindow = new tb::TBWindow();
 
@@ -177,7 +145,8 @@ void TBUIManager::OnEngineUpdate(UpdateEvent* event)
           // Get title from the WindowInfo section (or use "" if not specified)
           mainWindow->SetText(node.GetValueString("WindowInfo>title", ""));
 
-          const tb::TBRect parent_rect(0, 0, mainWindow->GetParent()->GetRect().w, mainWindow->GetParent()->GetRect().h);
+          const tb::TBRect parent_rect(
+              0, 0, mainWindow->GetParent()->GetRect().w, mainWindow->GetParent()->GetRect().h);
           const tb::TBDimensionConverter* dc = tb::g_tb_skin->GetDimensionConverter();
           tb::TBRect window_rect = mainWindow->GetResizeToFitContentRect();
 
@@ -204,30 +173,30 @@ void TBUIManager::OnEngineUpdate(UpdateEvent* event)
 
           mainWindow->SetRect(window_rect);
 
-          //mainWindow->SetOpacity(1);
+          // mainWindow->SetOpacity(1);
         }
 
-        //ConnectThisTo(osWindow, Events::OsResized, OnOsResize);
+        // ConnectThisTo(osWindow, Events::OsResized, OnOsResize);
         ConnectThisTo(osWindow, Events::OsMouseDown, OnOsMouseDown);
         ConnectThisTo(osWindow, Events::OsMouseUp, OnOsMouseUp);
         ConnectThisTo(osWindow, Events::OsMouseMove, OnOsMouseMoved);
 
-        //ConnectThisTo(osWindow, Events::OsWindowBorderHitTest, OnOsWindowBorderHitTest);
+        // ConnectThisTo(osWindow, Events::OsWindowBorderHitTest, OnOsWindowBorderHitTest);
 
-        //ConnectThisTo(osWindow, Events::OsMouseScroll, OnOsMouseScroll);
+        // ConnectThisTo(osWindow, Events::OsMouseScroll, OnOsMouseScroll);
 
-        //ConnectThisTo(osWindow, Events::OsKeyTyped, OnOsKeyTyped);
-        //ConnectThisTo(osWindow, Events::OsKeyRepeated, OnOsKeyDown);
-        //ConnectThisTo(osWindow, Events::OsKeyDown, OnOsKeyDown);
-        //ConnectThisTo(osWindow, Events::OsKeyUp, OnOsKeyUp);
+        // ConnectThisTo(osWindow, Events::OsKeyTyped, OnOsKeyTyped);
+        // ConnectThisTo(osWindow, Events::OsKeyRepeated, OnOsKeyDown);
+        // ConnectThisTo(osWindow, Events::OsKeyDown, OnOsKeyDown);
+        // ConnectThisTo(osWindow, Events::OsKeyUp, OnOsKeyUp);
 
-        //ConnectThisTo(osWindow, Events::OsFocusGained, OnOsFocusGained);
-        //ConnectThisTo(osWindow, Events::OsFocusLost, OnOsFocusLost);
+        // ConnectThisTo(osWindow, Events::OsFocusGained, OnOsFocusGained);
+        // ConnectThisTo(osWindow, Events::OsFocusLost, OnOsFocusLost);
 
-        //ConnectThisTo(osWindow, Events::OsMouseFileDrop, OnOsMouseDrop);
-        //ConnectThisTo(osWindow, Events::OsPaint, OnOsPaint);
+        // ConnectThisTo(osWindow, Events::OsMouseFileDrop, OnOsMouseDrop);
+        // ConnectThisTo(osWindow, Events::OsPaint, OnOsPaint);
 
-        //ConnectThisTo(osWindow, Events::OsClose, OnClose);
+        // ConnectThisTo(osWindow, Events::OsClose, OnClose);
       }
 
       // Give the root widget a background skin
@@ -237,12 +206,11 @@ void TBUIManager::OnEngineUpdate(UpdateEvent* event)
 
       ConnectThisTo(Z::gEngine->has(TimeSystem), "UiUpdate", OnUiUpdate);
       ConnectThisTo(Z::gEngine->has(GraphicsEngine), "UiRenderUpdate", OnUiRenderUpdate);
-
     }
   }
 }
 
-void TBUIManager::OnShutdown(Event* event)
+void TBUI::OnShutdown(Event* event)
 {
   if (tb::tb_core_is_initialized())
   {
@@ -251,9 +219,46 @@ void TBUIManager::OnShutdown(Event* event)
   }
 }
 
+tb::MODIFIER_KEYS GetModifierKeys(OsMouseEvent* mouseEvent)
+{
+  tb::MODIFIER_KEYS modifierKeys = tb::MODIFIER_KEYS::TB_MODIFIER_NONE;
+
+  if (mouseEvent->AltPressed)
+    modifierKeys |= tb::MODIFIER_KEYS::TB_ALT;
+
+  if (mouseEvent->ShiftPressed)
+    modifierKeys |= tb::MODIFIER_KEYS::TB_SHIFT;
+
+  if (mouseEvent->CtrlPressed)
+    modifierKeys |= tb::MODIFIER_KEYS::TB_CTRL;
+
+  return modifierKeys;
+}
+
+void TBUI::OnOsMouseUp(OsMouseEvent* mouseEvent)
+{
+  tb::MODIFIER_KEYS modifierKeys = GetModifierKeys(mouseEvent);
+
+  mRoot->InvokePointerUp(mouseEvent->ClientPosition.x, mouseEvent->ClientPosition.y, modifierKeys, false);
+}
+
+void TBUI::OnOsMouseDown(OsMouseEvent* mouseEvent)
+{
+  tb::MODIFIER_KEYS modifierKeys = GetModifierKeys(mouseEvent);
+
+  mRoot->InvokePointerDown(mouseEvent->ClientPosition.x, mouseEvent->ClientPosition.y, 1, modifierKeys, false);
+}
+
+void TBUI::OnOsMouseMoved(OsMouseEvent* mouseEvent)
+{
+  tb::MODIFIER_KEYS modifierKeys = GetModifierKeys(mouseEvent);
+
+  mRoot->InvokePointerMove(mouseEvent->ClientPosition.x, mouseEvent->ClientPosition.y, modifierKeys, false);
+}
+
 namespace Z
 {
-TBUIManager* gTBUIManager = nullptr;
+TBUI* gTBUI = nullptr;
 }
 
 } // namespace Zero
