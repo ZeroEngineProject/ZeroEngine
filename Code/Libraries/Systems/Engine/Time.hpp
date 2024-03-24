@@ -13,6 +13,7 @@ DeclareEvent(LogicUpdate);
 DeclareEvent(PreviewUpdate);
 DeclareEvent(EngineUpdate);
 DeclareEvent(EngineDebuggerUpdate);
+DeclareEvent(EngineInitialized);
 DeclareEvent(EngineShutdown);
 DeclareEvent(ActionFrameUpdate);
 DeclareEvent(ActionLogicUpdate);

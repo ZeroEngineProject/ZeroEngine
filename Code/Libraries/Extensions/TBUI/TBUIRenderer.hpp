@@ -16,14 +16,17 @@ public:
   void SetClipRect(const tb::TBRect& rect) override;
 
 private:
-  void RenderBatch(ViewBlock& viewBlock, FrameBlock& frameBlock, tb::TBRendererBatcher::Batch* data, RectangleParam clipRect);
+  void RenderBatch(ViewBlock& viewBlock,
+                   FrameBlock& frameBlock,
+                   tb::TBRendererBatcher::Batch* data,
+                   const IntRect& clipRect);
   void CreateRenderData(ViewBlock& viewBlock,
                         FrameBlock& frameBlock,
-                        RectangleParam clipRect,
+                        const IntRect& clipRect,
                         Array<StreamedVertex>& vertices,
                         Texture* texture,
                         PrimitiveType::Enum primitiveType);
-  ViewNode& AddRenderNodes(ViewBlock& viewBlock, FrameBlock& frameBlock, RectangleParam clipRect, Texture* texture);
+  ViewNode& AddRenderNodes(ViewBlock& viewBlock, FrameBlock& frameBlock, const IntRect& clipRect, Texture* texture);
 
 private:
   Vec3 mTranslation;
@@ -34,6 +37,6 @@ private:
   int mCurrentUpdateFrame = -1;
   int mCurrentRenderFrame = -1;
 
-  tb::TBRect mClipRect;
+  IntRect mClipRect;
 };
 } // namespace Zero

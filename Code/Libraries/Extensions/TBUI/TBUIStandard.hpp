@@ -9,6 +9,9 @@
 
 namespace Zero
 {
+class TBUI;
+class TBUIRenderer;
+
 
 // TBUI library
 class ZeroNoImportExport TBUILibrary : public Zilch::StaticLibrary
@@ -85,9 +88,11 @@ public:
 #include "tb/tb_window.h"
 
 // TBUILibrary Core
-#include "TBUIWidget.hpp"
+#include "TBUIBatch.hpp"
+#include "TBUIView.hpp"
+#include "TBUIContainer.hpp"
 #include "TBUIRenderer.hpp"
 #include "TBUIBitmap.hpp"
 #include "TBUIImageLoader.hpp"
 #include "TBUIFile.hpp"
-#include "TBUIManager.hpp"
+#include "TBUI.hpp"
