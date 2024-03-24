@@ -53,7 +53,34 @@ OpenglRendererWindows::OpenglRendererWindows(OsHandle windowHandle, String& erro
   ErrorIf(!success, "Failed to set pixel format.");
 
   HGLRC renderContext = wglCreateContext(deviceContext);
+
   wglMakeCurrent(deviceContext, renderContext);
+
+  if (renderContext)
+  {
+    int attribs[] = {WGL_CONTEXT_MAJOR_VERSION_ARB,
+                     3,
+                     WGL_CONTEXT_MINOR_VERSION_ARB,
+                     3,
+                     WGL_CONTEXT_PROFILE_MASK_ARB,
+                     WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+                     WGL_CONTEXT_FLAGS_ARB,
+                     WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+                     0};
+
+    PFNWGLCREATECONTEXTATTRIBSARBPROC zero_wglCreateContextAttribsARB = nullptr;
+    zero_wglCreateContextAttribsARB =
+        (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
+
+    if (zero_wglCreateContextAttribsARB)
+    {
+      renderContext = zero_wglCreateContextAttribsARB(deviceContext, nullptr, attribs);
+      if (renderContext)
+      {
+        wglMakeCurrent(deviceContext, renderContext);
+      }
+    }
+  }
 
   // Call the base initialize now that we've created the OpenGL context.
   Initialize(windowHandle, deviceContext, renderContext, error);
