@@ -360,6 +360,8 @@ void ZeroStartup::Startup()
   // Note that content and resources are loaded after CreateRenderer so that they may use the Renderer API to upload
   // textures, meshes, etc.
   mMainWindow = mainWindow;
+
+  engine->Initialized();
 }
 
 void ZeroStartup::ProcessJobs()

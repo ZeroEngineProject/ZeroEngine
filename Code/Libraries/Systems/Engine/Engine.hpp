@@ -30,6 +30,9 @@ public:
 
   /// Initializes all systems in the engine.
   void Initialize(SystemInitializer& initializer);
+
+  void Initialized();
+
   /// Update all owned systems.
   void Update();
   /// Terminate the game engine loop.

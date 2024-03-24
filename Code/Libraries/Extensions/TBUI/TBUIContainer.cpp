@@ -3,18 +3,18 @@
 
 namespace Zero
 {
-ZilchDefineType(TBUIWidget, builder, type)
+ZilchDefineType(TBUIContainer, builder, type)
 {
   ZeroBindDocumented();
   ZeroBindComponent();
   ZeroBindSetup(SetupMode::DefaultSerialization);
 }
 
-void TBUIWidget::Serialize(Serializer& stream)
+void TBUIContainer::Serialize(Serializer& stream)
 {
 }
 
-void TBUIWidget::Initialize(CogInitializer& initializer)
+void TBUIContainer::Initialize(CogInitializer& initializer)
 {
 }
 } // namespace Zero

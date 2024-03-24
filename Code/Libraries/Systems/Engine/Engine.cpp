@@ -126,6 +126,12 @@ void Engine::Initialize(SystemInitializer& initializer)
   mTimeSystem = this->has(TimeSystem);
 }
 
+void Engine::Initialized()
+{
+  Event event;
+  DispatchEvent(Events::EngineInitialized, &event);
+}
+
 void Engine::Update()
 {
   if (mIsDebugging)

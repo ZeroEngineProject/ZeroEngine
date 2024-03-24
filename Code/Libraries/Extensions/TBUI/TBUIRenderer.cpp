@@ -32,7 +32,7 @@ void TBUIRenderer::RenderBatch(Batch* batch)
   Vec2 size = Vec2{(real)rect.w, (real)rect.h};
   Vec2 pos = Vec2{(real)rect.x, (real)rect.y};
 
-  Rectangle clipRect = Rectangle::PointAndSize(Vec2(pos.x, pos.y), Vec2(size.x, size.y));
+  IntRect clipRect = IntRect(pos.x, pos.y, size.x, size.y);
 
   Vec4 clearColor = Vec4{0.5f, 0.7f, 0.3f, 0.1f};
 
@@ -99,7 +99,7 @@ void TBUIRenderer::RenderBatch(Batch* batch)
   }
 
   RenderTaskHelper helper(renderTasks.mRenderTaskBuffer);
-  //helper.AddRenderTaskClearTarget(renderSettings, clearColor, 0, 0, 0xFF);
+  // helper.AddRenderTaskClearTarget(renderSettings, clearColor, 0, 0, 0xFF);
   helper.AddRenderTaskRenderPass(renderSettings, 0, defaultRenderPass->Name, shaderInputsId);
 
   ScreenViewport viewport = {pos.x, pos.y, (int)size.x, (int)size.y};
@@ -111,13 +111,16 @@ void TBUIRenderer::RenderBatch(Batch* batch)
 }
 void TBUIRenderer::SetClipRect(const tb::TBRect& rect)
 {
-  mClipRect = rect;
+  Vec2 size = Vec2{(real)rect.w, (real)rect.h};
+  Vec2 pos = Vec2{(real)rect.x, (real)rect.y};
+
+  mClipRect = IntRect(pos.x, pos.y, size.x, size.y);
 }
 
 void TBUIRenderer::RenderBatch(ViewBlock& viewBlock,
-                                  FrameBlock& frameBlock,
-                                  tb::TBRendererBatcher::Batch* data,
-                                  RectangleParam clipRect)
+                               FrameBlock& frameBlock,
+                               tb::TBRendererBatcher::Batch* data,
+                               const IntRect& clipRect)
 {
   Array<StreamedVertex> vertices = {};
 
@@ -135,7 +138,7 @@ void TBUIRenderer::RenderBatch(ViewBlock& viewBlock,
   // draw
   {
 
-    //Rectangle clip = Rectangle::PointAndSize(Vec2(clipMin.x, clipMin.y), Vec2(clipMax.x, clipMax.y));
+    // Rectangle clip = Rectangle::PointAndSize(Vec2(clipMin.x, clipMin.y), Vec2(clipMax.x, clipMax.y));
 
     TBUIBitmap* bitmap = (TBUIBitmap*)batch.bitmap;
     Texture* texture = reinterpret_cast<Texture*>(bitmap->GetTexture());
@@ -145,11 +148,11 @@ void TBUIRenderer::RenderBatch(ViewBlock& viewBlock,
 }
 
 void TBUIRenderer::CreateRenderData(ViewBlock& viewBlock,
-                                 FrameBlock& frameBlock,
-                                 RectangleParam clipRect,
-                                 Array<StreamedVertex>& vertices,
-                                 Texture* texture,
-                                 PrimitiveType::Enum primitiveType)
+                                    FrameBlock& frameBlock,
+                                    const IntRect& clipRect,
+                                    Array<StreamedVertex>& vertices,
+                                    Texture* texture,
+                                    PrimitiveType::Enum primitiveType)
 {
   if (vertices.Empty())
     return;
@@ -173,7 +176,7 @@ void TBUIRenderer::CreateRenderData(ViewBlock& viewBlock,
 }
 
 ViewNode&
-TBUIRenderer::AddRenderNodes(ViewBlock& viewBlock, FrameBlock& frameBlock, RectangleParam clipRect, Texture* texture)
+TBUIRenderer::AddRenderNodes(ViewBlock& viewBlock, FrameBlock& frameBlock, const IntRect& clipRect, Texture* texture)
 {
   FrameNode& frameNode = frameBlock.mFrameNodes.PushBack();
   ViewNode& viewNode = viewBlock.mViewNodes.PushBack();
@@ -189,8 +192,7 @@ TBUIRenderer::AddRenderNodes(ViewBlock& viewBlock, FrameBlock& frameBlock, Recta
   viewNode.mFrameNodeIndex = frameBlock.mFrameNodes.Size() - 1;
   viewNode.mLocalToView = viewBlock.mWorldToView * frameNode.mLocalToWorld;
 
-  // frameNode.mClip = Vec4(clipRect.GetLeft(), clipRect.GetTop(), clipRect.GetRight(), clipRect.GetBottom());
-  frameNode.mClip = Vec4(clipRect.GetLeft(), clipRect.GetBottom(), clipRect.GetRight(), clipRect.GetTop());
+  frameNode.mClip = Vec4(clipRect.Left(), clipRect.Top(), clipRect.Right(), clipRect.Bottom());
 
   // maybe cache this lookup on root
   Material* spriteMaterial = nullptr;
