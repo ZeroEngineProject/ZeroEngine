@@ -35,6 +35,8 @@ private:
   void OnUiUpdate(UpdateEvent* event);
   void OnUiRenderUpdate(Event* event);
 
+  void Render();
+
   void OnOsMouseUp(OsMouseEvent* mouseEvent);
   void OnOsMouseDown(OsMouseEvent* mouseEvent);
   void OnOsMouseMoved(OsMouseEvent* mouseEvent);
