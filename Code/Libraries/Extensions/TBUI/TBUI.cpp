@@ -41,42 +41,32 @@ void TBUI::RemoveView(TBUIView* view)
   mViews.EraseValue(view);
 }
 
+void TBUI::Render()
+{
+  forRange (TBUIView* view, mViews.All())
+  {
+    view->Render();
+  }
+}
+
 void TBUI::OnUiUpdate(UpdateEvent* event)
 {
-  OsShell* shell = Z::gEngine->has(OsShell);
-  if (shell != nullptr)
-  {
-    OsWindow* osWindow = shell->GetWindow(0);
-    IntVec2 clientSize = osWindow->GetClientSize();
-    IntVec2 clientPos = osWindow->GetMonitorClientPosition();
 
-    mRoot->SetRect(tb::TBRect(clientPos.x, clientPos.y, clientSize.x, clientSize.y));
-    tb::TBAnimationManager::Update();
-    mRoot->InvokeProcessStates();
-    mRoot->InvokeProcess();
+  tb::TBAnimationManager::Update();
+  mRoot->InvokeProcessStates();
+  mRoot->InvokeProcess();
 
-    tb::TBMessageHandler::ProcessMessages();
-  }
+  tb::TBMessageHandler::ProcessMessages();
 }
 
 void TBUI::OnUiRenderUpdate(Event* event)
 {
-  OsShell* shell = Z::gEngine->has(OsShell);
-  OsWindow* osWindow = shell->GetWindow(0);
-  IntVec2 clientSize = osWindow->GetClientSize();
-  // IntVec2 clientPos = osWindow->GetMonitorClientPosition();
-  if (shell != nullptr)
+  forRange (TBUIView* view, mViews.All())
   {
-    mRenderer->BeginPaint(clientSize.x, clientSize.y);
-    tb::TBWidget::PaintProps props;
-    mRoot->InvokePaint(props);
-    // mRoot->GetFont()->DrawString(5, 5, tb::TBColor(255, 255, 255), "Hello from TB");
-    mRenderer->EndPaint();
+    view->UpdateBatches();
   }
-  //forRange (TBUIView* view, mViews.All())
-  //{
-  //  view->UpdateBatches();
-  //}
+
+  Render();
 }
 
 void TBUI::OnEngineUpdate(UpdateEvent* event)
