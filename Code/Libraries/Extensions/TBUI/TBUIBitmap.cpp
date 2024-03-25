@@ -21,8 +21,9 @@ bool TBUIBitmap::Init(int width, int height, uint32* data)
   nameBuilder.AppendFormat("tbui_bitmap_%i_%i", width, height);
   mTexture->Name = nameBuilder.ToString();
 
-  mTexture->SetAddressingX(TextureAddressing::Enum::Repeat);
-  mTexture->SetAddressingY(TextureAddressing::Enum::Repeat);
+  mTexture->SetFiltering(TextureFiltering::Enum::Bilinear);
+  mTexture->SetAddressingX(TextureAddressing::Enum::Clamp);
+  mTexture->SetAddressingY(TextureAddressing::Enum::Clamp);
   mTexture->SetMipMapping(TextureMipMapping::Enum::GpuGenerated);
 
   mWidth = width;
