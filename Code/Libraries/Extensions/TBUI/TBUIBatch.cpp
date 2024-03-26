@@ -7,4 +7,7 @@ ZilchDefineType(TBUIBatch, builder, type)
 {
   ZeroBindDocumented();
 }
+TBUIBatch::TBUIBatch(Zero::Texture* texture) : Texture(texture)
+{
+}
 } // namespace Zero
