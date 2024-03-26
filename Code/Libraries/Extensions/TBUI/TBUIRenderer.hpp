@@ -16,27 +16,15 @@ public:
   void SetClipRect(const tb::TBRect& rect) override;
 
 private:
-  void RenderBatch(ViewBlock& viewBlock,
-                   FrameBlock& frameBlock,
-                   tb::TBRendererBatcher::Batch* data,
-                   const IntRect& clipRect);
-  void CreateRenderData(ViewBlock& viewBlock,
-                        FrameBlock& frameBlock,
-                        const IntRect& clipRect,
-                        Array<StreamedVertex>& vertices,
-                        Texture* texture,
-                        PrimitiveType::Enum primitiveType);
-  ViewNode& AddRenderNodes(ViewBlock& viewBlock, FrameBlock& frameBlock, const IntRect& clipRect, Texture* texture);
 
 private:
-  Vec3 mTranslation;
-  float mAngle;
+  friend class TBUIView;
 
-  Mat4 mWorldTx = Mat4::cIdentity;
+  IntRect mClipRect;
+  Array<TBUIBatch>* mBatches = nullptr;
+
   Texture* mFontTexture = nullptr;
   int mCurrentUpdateFrame = -1;
   int mCurrentRenderFrame = -1;
-
-  IntRect mClipRect;
 };
 } // namespace Zero

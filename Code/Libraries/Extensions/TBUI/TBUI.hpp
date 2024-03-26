@@ -23,6 +23,23 @@ public:
     return mRoot;
   }
 
+  ZeroForceInline TBUIRenderer* GetRenderer()
+  {
+    return mRenderer;
+  }
+
+  void AddView(TBUIView* view)
+  {
+    mRoot->AddChild(view);
+    mViews.PushBack(view);
+  }
+
+  void RemoveView(TBUIView* view)
+  {
+    mRoot->RemoveChild(view);
+    mViews.EraseValue(view);
+  }
+
 private:
   void OnUiUpdate(UpdateEvent* event);
   void OnUiRenderUpdate(Event* event);
@@ -31,9 +48,20 @@ private:
   void OnOsMouseDown(OsMouseEvent* mouseEvent);
   void OnOsMouseMoved(OsMouseEvent* mouseEvent);
 
+  void SetupDemo();
+
 private:
+  friend class TBUIView;
+  OsWindow* mOsWindow = nullptr;
+
   tb::TBWidget* mRoot;
+  tb::TBWindow* mMainWindow;
   TBUIRenderer* mRenderer;
+
+  Array<TBUIView*> mViews;
+
+  bool mDemoSetup = false;
+  bool mHookEvents = false;
 };
 
 namespace Z
