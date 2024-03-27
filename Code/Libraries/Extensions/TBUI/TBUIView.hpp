@@ -12,6 +12,14 @@ public:
   TBUIView();
   ~TBUIView();
 
+  void SetRenderToTexture(bool value, u32 width, u32 height);
+  void SetSize(int width, int height);
+
+  ZeroForceInline HandleOf<Texture> GetTexture()
+  {
+    return mRenderTexture;
+  }
+
   void AddDemo();
   void RemoveDemo();
 
@@ -26,8 +34,11 @@ private:
                         const Array<StreamedVertex>& vertices,
                         const Texture* texture,
                         PrimitiveType::Enum primitiveType);
-  ViewNode& AddRenderNodes(
-      ViewBlock& viewBlock, FrameBlock& frameBlock, const Mat4& worldMatrix, const IntRect& clipRect, const Texture* texture);
+  ViewNode& AddRenderNodes(ViewBlock& viewBlock,
+                           FrameBlock& frameBlock,
+                           const Mat4& worldMatrix,
+                           const IntRect& clipRect,
+                           const Texture* texture);
 
 private:
   friend class TBUI;
@@ -40,6 +51,8 @@ private:
   TBUIRenderer* mRenderer = nullptr;
 
   Array<TBUIBatch> mBatches;
+
+  HandleOf<Texture> mRenderTexture;
 
   UniquePointer<TBUIDemo> mDemo = nullptr;
 };

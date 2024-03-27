@@ -57,7 +57,7 @@ TBUIDemo::~TBUIDemo()
   if (mMainWindow)
   {
     //mMainWindow->RemoveFromParent();
-    mMainWindow.Reset();
+    //mMainWindow.Reset();
   }
 }
 } // namespace Zero
