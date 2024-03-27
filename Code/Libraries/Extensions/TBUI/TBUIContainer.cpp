@@ -14,6 +14,12 @@ ZilchDefineType(TBUIContainer, builder, type)
   ZilchBindFieldProperty(mGeometryMode);
   ZilchBindFieldProperty(mFlipX);
   ZilchBindFieldProperty(mFlipY);
+  ZilchBindMethod(AddDemo);
+}
+
+void TBUIContainer::AddDemo()
+{
+  mView->AddDemo();
 }
 
 void TBUIContainer::Serialize(Serializer& stream)
@@ -30,7 +36,7 @@ void TBUIContainer::Initialize(CogInitializer& initializer)
   Graphical::Initialize(initializer);
   mView = MakeUnique<TBUIView>();
   mView->SetRenderToTexture(true, 300, 600);
-  mView->AddDemo();
+  //
 }
 void TBUIContainer::ComponentAdded(BoundType* typeId, Component* component)
 {
