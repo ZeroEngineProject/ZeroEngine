@@ -5,7 +5,14 @@ namespace Zero
 {
 ZilchDefineType(TBUIView, builder, type)
 {
+  type->CreatableInScript = true;
   ZeroBindDocumented();
+
+  ZilchBindConstructor();
+  ZilchBindDestructor();
+
+  ZilchBindMethod(AddDemo);
+  ZilchBindMethod(RemoveDemo);
 }
 TBUIView::TBUIView()
 {
@@ -20,6 +27,27 @@ TBUIView::TBUIView()
   SetSize(rect.w, rect.h);
 
   mUI->AddView(this);
+}
+
+TBUIView::~TBUIView()
+{
+  mUI->RemoveView(this);
+}
+
+void TBUIView::AddDemo()
+{
+  if (mDemo == nullptr)
+  {
+    mDemo = MakeUnique<TBUIDemo>(this);
+  }
+}
+
+void TBUIView::RemoveDemo()
+{
+  if (mDemo != nullptr)
+  {
+    mDemo.Reset();
+  }
 }
 
 void TBUIView::UpdateBatches()
@@ -52,6 +80,8 @@ void TBUIView::RenderBatches()
 
   tb::TBRect rect = GetRect();
 
+  //IntVec2 size = IntVec2{rect.w, rect.h};
+  //IntVec2 pos = IntVec2{rect.x, rect.y};
   Vec2 size = Vec2{(real)rect.w, (real)rect.h};
   Vec2 pos = Vec2{(real)rect.x, (real)rect.y};
 

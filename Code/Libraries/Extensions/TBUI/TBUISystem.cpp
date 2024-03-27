@@ -15,7 +15,8 @@ namespace tb
 /** Get the system time in milliseconds since some undefined epoch. */
 double TBSystem::GetTimeMS()
 {
-  return 0;
+  double timeInSeconds = Zero::Time::GetTime();
+  return timeInSeconds * 1000;
 }
 
 /** Called when the need to call TBMessageHandler::ProcessMessages has changed due to changes in the
