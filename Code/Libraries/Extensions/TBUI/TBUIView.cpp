@@ -34,6 +34,44 @@ TBUIView::~TBUIView()
   mUI->RemoveView(this);
 }
 
+void TBUIView::SetRenderToTexture(bool value, u32 width, u32 height)
+{
+  if (value && mRenderTexture == nullptr)
+  {
+    mRenderTexture = Texture::CreateRuntime();
+
+    StringBuilder nameBuilder;
+    nameBuilder.AppendFormat("tbui_uiview_%i_%i", width, height);
+    mRenderTexture->Name = nameBuilder.ToString();
+
+    // mRenderTexture->SetFormat(TextureFormat::RGBA8);
+    mRenderTexture->SetFiltering(TextureFiltering::Enum::Bilinear);
+    mRenderTexture->SetAddressingX(TextureAddressing::Enum::Clamp);
+    mRenderTexture->SetAddressingY(TextureAddressing::Enum::Clamp);
+    mRenderTexture->SetMipMapping(TextureMipMapping::Enum::GpuGenerated);
+  }
+
+  if (!value && mRenderTexture != nullptr)
+  {
+    mRenderTexture->Delete();
+    mRenderTexture = nullptr;
+  }
+
+  if (mRenderTexture != nullptr)
+  {
+    mRenderTexture->SetSize(IntVec2(width, height));
+  }
+}
+
+void TBUIView::SetSize(int width, int height)
+{
+  if (mRenderTexture != nullptr)
+  {
+    mRenderTexture->SetSize(IntVec2(width, height));
+  }
+  tb::TBWidget::SetSize(width, height);
+}
+
 void TBUIView::AddDemo()
 {
   if (mDemo == nullptr)
@@ -80,10 +118,16 @@ void TBUIView::RenderBatches()
 
   tb::TBRect rect = GetRect();
 
-  //IntVec2 size = IntVec2{rect.w, rect.h};
-  //IntVec2 pos = IntVec2{rect.x, rect.y};
+  // IntVec2 size = IntVec2{rect.w, rect.h};
+  // IntVec2 pos = IntVec2{rect.x, rect.y};
   Vec2 size = Vec2{(real)rect.w, (real)rect.h};
   Vec2 pos = Vec2{(real)rect.x, (real)rect.y};
+
+  if (mRenderTexture != nullptr)
+  {
+    size.x = mRenderTexture->GetSize().x;
+    size.y = mRenderTexture->GetSize().y;
+  }
 
   IntRect clipRect = IntRect(pos.x, pos.y, size.x, size.y);
 
@@ -111,9 +155,9 @@ void TBUIView::RenderBatches()
 
   forRange (const TBUIBatch& batch, mBatches.All())
   {
-    //RenderBatch(batch);
+    // RenderBatch(batch);
 
-  CreateRenderData(
+    CreateRenderData(
         viewBlock, frameBlock, mWorldTx, clipRect, batch.Vertices, batch.Texture, PrimitiveType::Triangles);
   }
 
@@ -127,8 +171,16 @@ void TBUIView::RenderBatches()
   renderTaskRange.mTaskIndex = renderTasks.mRenderTaskBuffer.mCurrentIndex;
   renderTaskRange.mTaskCount = 0;
 
-  HandleOf<RenderTarget> renderTarget =
-      Z::gEngine->has(GraphicsEngine)->GetRenderTarget((uint)size.x, (uint)size.y, TextureFormat::RGBA8);
+  HandleOf<RenderTarget> renderTarget;
+
+  if (mRenderTexture != nullptr)
+  {
+    renderTarget = Z::gEngine->has(GraphicsEngine)->GetRenderTarget(mRenderTexture);
+  }
+  else
+  {
+    renderTarget = Z::gEngine->has(GraphicsEngine)->GetRenderTarget((uint)size.x, (uint)size.y, TextureFormat::RGBA8);
+  }
 
   GraphicsRenderSettings renderSettings;
   renderSettings.SetColorTarget(renderTarget);
@@ -170,16 +222,17 @@ void TBUIView::RenderBatches()
 }
 void TBUIView::RenderBatch(const TBUIBatch& batch)
 {
-  //CreateRenderData(viewBlock, frameBlock, mWorldTx, clipRect, batch.Vertices, batch.Texture, PrimitiveType::Triangles);
+  // CreateRenderData(viewBlock, frameBlock, mWorldTx, clipRect, batch.Vertices, batch.Texture,
+  // PrimitiveType::Triangles);
 }
 
 void TBUIView::CreateRenderData(ViewBlock& viewBlock,
                                 FrameBlock& frameBlock,
                                 const Mat4& worldMatrix,
-                                    const IntRect& clipRect,
-                                    const Array<StreamedVertex>& vertices,
-                                    const Texture* texture,
-                                    PrimitiveType::Enum primitiveType)
+                                const IntRect& clipRect,
+                                const Array<StreamedVertex>& vertices,
+                                const Texture* texture,
+                                PrimitiveType::Enum primitiveType)
 {
   if (vertices.Empty())
     return;
@@ -202,8 +255,11 @@ void TBUIView::CreateRenderData(ViewBlock& viewBlock,
   // viewNode.mStreamedVertexCount = count;
 }
 
-ViewNode& TBUIView::AddRenderNodes(
-    ViewBlock& viewBlock, FrameBlock& frameBlock, const Mat4& worldMatrix, const IntRect& clipRect, const Texture* texture)
+ViewNode& TBUIView::AddRenderNodes(ViewBlock& viewBlock,
+                                   FrameBlock& frameBlock,
+                                   const Mat4& worldMatrix,
+                                   const IntRect& clipRect,
+                                   const Texture* texture)
 {
   FrameNode& frameNode = frameBlock.mFrameNodes.PushBack();
   ViewNode& viewNode = viewBlock.mViewNodes.PushBack();
