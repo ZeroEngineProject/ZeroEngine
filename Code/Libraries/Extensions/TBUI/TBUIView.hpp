@@ -10,6 +10,10 @@ public:
   ZilchDeclareType(TBUIView, TypeCopyMode::ReferenceType);
 
   TBUIView();
+  ~TBUIView();
+
+  void AddDemo();
+  void RemoveDemo();
 
 private:
   void UpdateBatches();
@@ -36,5 +40,7 @@ private:
   TBUIRenderer* mRenderer = nullptr;
 
   Array<TBUIBatch> mBatches;
+
+  UniquePointer<TBUIDemo> mDemo = nullptr;
 };
 } // namespace Zero

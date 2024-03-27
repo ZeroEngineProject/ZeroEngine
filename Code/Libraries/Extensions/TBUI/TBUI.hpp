@@ -60,8 +60,7 @@ private:
 
   Array<TBUIView*> mViews;
 
-  bool mDemoSetup = false;
-  bool mHookEvents = false;
+  bool mHookEvents = true;
 };
 
 namespace Z
