@@ -9,10 +9,10 @@ ZilchDefineStaticLibrary(TBUILibrary)
   builder.CreatableInScriptDefault = false;
 
   ZilchInitializeType(TBUIContainer);
-  ZilchInitializeType(TBUIRenderer);
-  ZilchInitializeType(TBUIBitmap);
-  ZilchInitializeType(TBUIFile);
-  ZilchInitializeType(TBUIImageLoader);
+  //ZilchInitializeType(TBUIRenderer);
+  //ZilchInitializeType(TBUIBitmap);
+  ZilchInitializeType(TBUIView);
+  //ZilchInitializeType(TBUIImageLoader);
 
   EngineLibraryExtensions::AddNativeExtensions(builder);
 }
