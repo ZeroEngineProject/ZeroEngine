@@ -8,6 +8,8 @@ class TBUIContainer : public Graphical
 public:
   /// Meta Initialization.
   ZilchDeclareType(TBUIContainer, TypeCopyMode::ReferenceType);
+
+  void AddDemo();
   
   /// Component Interface.
   void Serialize(Serializer& stream) override;
