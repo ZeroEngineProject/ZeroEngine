@@ -2,8 +2,6 @@
 
 namespace Zero::Gpu
 {
-struct IAllocator;
-struct PageAllocator;
 
 struct Buffer;
 struct Program;
@@ -233,8 +231,7 @@ struct BindGroupEntryDesc
   u32 size;
 };
 
-void preinit(IAllocator& allocator, bool load_renderdoc);
-IAllocator& getAllocator();
+void preinit(bool load_renderdoc);
 bool init(void* window_handle, BitField<InitFlags::Enum> flags);
 void captureRenderDocFrame();
 bool getMemoryStats(MemoryStats& stats);
