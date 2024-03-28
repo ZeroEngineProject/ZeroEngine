@@ -21,6 +21,11 @@ public:
     U32Field = field;
   }
 
+  EnumType operator&(const BitField& rhs)
+  {
+    return (EnumType)(U32Field & rhs.U32Field);
+  }
+
   bool operator==(const BitField& rhs)
   {
     return U32Field == rhs.U32Field;
