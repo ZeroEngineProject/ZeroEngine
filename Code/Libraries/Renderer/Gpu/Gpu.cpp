@@ -2,79 +2,112 @@
 
 namespace Zero::Gpu
 {
-u32 VertexDecl::getStride() const {
-	u32 stride = 0;
-	for (u32 i = 0; i < attributes_count; ++i) {
-		stride += attributes[i].components_count * getSize(attributes[i].type);
-	}
-	return stride;
-}
-
-void VertexDecl::computeHash() {
-	hash = RuntimeHash32(attributes, sizeof(Attribute) * attributes_count).getHashValue() ^ static_cast<u8>(primitive_type);
-}
-
-void VertexDecl::setPrimitiveType(gpu::PrimitiveType type) {
-	primitive_type = type;
-	hash = RuntimeHash32(attributes, sizeof(Attribute) * attributes_count).getHashValue() ^ static_cast<u8>(primitive_type);
-}
-
-VertexDecl::VertexDecl(PrimitiveType pt) {
-	primitive_type = pt;
-	hash = RuntimeHash32(attributes, sizeof(Attribute) * attributes_count).getHashValue() ^ static_cast<u8>(primitive_type);
-}
-
-void VertexDecl::addAttribute(u8 byte_offset, u8 components_num, AttributeType type, u8 flags)
+u32 VertexDecl::getStride() const
 {
-	if(attributes_count >= lengthOf(attributes)) {
-		ASSERT(false);
-		return;
-	}
-
-	Attribute& attr = attributes[attributes_count];
-	attr.components_count = components_num;
-	attr.flags = flags;
-	attr.type = type;
-	attr.byte_offset = byte_offset;
-	++attributes_count;
-	hash = RuntimeHash32(attributes, sizeof(Attribute) * attributes_count).getHashValue() ^ static_cast<u8>(primitive_type);
+  u32 stride = 0;
+  for (u32 i = 0; i < attributes_count; ++i)
+  {
+    stride += attributes[i].components_count * getSize(attributes[i].type);
+  }
+  return stride;
 }
 
-int getSize(AttributeType type)
+void VertexDecl::computeHash()
 {
-	switch(type) {
-		case AttributeType::FLOAT: return 4;
-		case AttributeType::I8: return 1;
-		case AttributeType::U8: return 1;
-		case AttributeType::I16: return 2;
-	}
-	ASSERT(false);
-	return 0;
+  hash = Hash(attributes, attributes_count) ^ static_cast<u8>(primitive_type);
 }
 
-u32 getBytesPerPixel(gpu::TextureFormat format) {
-	switch (format) {
-		case gpu::TextureFormat::R8:
-			return 1;
+void VertexDecl::setPrimitiveType(PrimitiveType::Enum type)
+{
+  primitive_type = type;
+  hash = Hash(attributes, attributes_count) ^ static_cast<u8>(primitive_type);
+}
 
-		case gpu::TextureFormat::R16F:
-		case gpu::TextureFormat::R16:
-			return 2;
-		case gpu::TextureFormat::SRGB:
-			return 3;
-		case gpu::TextureFormat::R11G11B10F:
-		case gpu::TextureFormat::R32F:
-		case gpu::TextureFormat::SRGBA:
-		case gpu::TextureFormat::RGBA8:
-			return 4;
-		case gpu::TextureFormat::RGBA16:
-		case gpu::TextureFormat::RGBA16F:
-			return 8;
-		case gpu::TextureFormat::RGBA32F:
-			return 16;
-		default:
-			ASSERT(false);
-			return 0;
-	}
+VertexDecl::VertexDecl(PrimitiveType::Enum pt)
+{
+  primitive_type = pt;
+  hash = Hash(attributes, attributes_count) ^ static_cast<u8>(primitive_type);
 }
+
+void VertexDecl::addAttribute(u8 byte_offset, u8 components_num, AttributeType::Enum type, u8 flags)
+{
+  if (attributes_count >= lengthOf(attributes))
+  {
+    Error("Invalid attributes_count");
+    return;
+  }
+
+  Attribute& attr = attributes[attributes_count];
+  attr.components_count = components_num;
+  attr.flags = flags;
+  attr.type = type;
+  attr.byte_offset = byte_offset;
+  ++attributes_count;
+  hash = Hash(attributes, attributes_count) ^ static_cast<u8>(primitive_type);
 }
+
+int getSize(AttributeType::Enum type)
+{
+  switch (type)
+  {
+  case AttributeType::FLOAT:
+    return 4;
+  case AttributeType::I8:
+    return 1;
+  case AttributeType::U8:
+    return 1;
+  case AttributeType::I16:
+    return 2;
+  }
+  Error("Invalid AttributeType");
+  return 0;
+}
+
+u32 getBytesPerPixel(TextureFormat::Enum format)
+{
+  switch (format)
+  {
+  case TextureFormat::R8:
+    return 1;
+
+  case TextureFormat::R16F:
+  case TextureFormat::R16:
+    return 2;
+  case TextureFormat::SRGB:
+    return 3;
+  case TextureFormat::R11G11B10F:
+  case TextureFormat::R32F:
+  case TextureFormat::SRGBA:
+  case TextureFormat::RGBA8:
+    return 4;
+  case TextureFormat::RGBA16:
+  case TextureFormat::RGBA16F:
+    return 8;
+  case TextureFormat::RGBA32F:
+    return 16;
+  default:
+    Error("Invalid TextureFormat");
+    return 0;
+  }
+}
+size_t Attribute::Hash() const
+{
+  size_t hash = 0;
+
+  hash ^= (size_t)components_count;
+  hash ^= (size_t)byte_offset;
+  hash ^= (size_t)type;
+  hash ^= (size_t)flags;
+
+  return hash;
+}
+size_t Hash(Attribute attributes[(u32)VertexDecl::MAX_ATTRIBUTES], u32 count)
+{
+  size_t hash = 0;
+  for (u32 i = 0; i < count; i++)
+  {
+    hash ^= attributes[i].Hash();
+  }
+  return hash;
+}
+} // namespace Zero::Gpu
