@@ -102,7 +102,64 @@ struct Span
   T* m_begin;
   T* m_end;
 };
+
+struct NewPlaceholder
+{
+};
+
+template <typename T>
+struct Local
+{
+  ~Local()
+  {
+    if (obj)
+      obj->~T();
+  }
+
+  void operator=(const Local&) = delete;
+
+  template <typename... Args>
+  void create(Args&&... args)
+  {
+    ASSERT(!obj);
+    obj = new (NewPlaceholder(), mem) T(static_cast<Args&&>(args)...);
+  }
+
+  void destroy()
+  {
+    ASSERT(obj);
+    obj->~T();
+    obj = nullptr;
+  }
+
+  T& operator*()
+  {
+    ASSERT(obj);
+    return *obj;
+  }
+  T* operator->() const
+  {
+    ASSERT(obj);
+    return obj;
+  }
+  T* get() const
+  {
+    return obj;
+  }
+
+private:
+  alignas(T) u8 mem[sizeof(T)];
+  T* obj = nullptr;
+};
 }
+
+inline void* operator new(size_t, Zero::NewPlaceholder, void* where)
+{
+  return where;
+}
+inline void operator delete(void*, Zero::NewPlaceholder, void*)
+{
+} 
 
 namespace Zero::Gpu
 {
