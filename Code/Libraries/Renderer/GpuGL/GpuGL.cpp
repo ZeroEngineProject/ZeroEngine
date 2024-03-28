@@ -1034,7 +1034,7 @@ void update(TextureHandle texture,
 	const bool is_2d = u32(texture->flags & TextureFlags::IS_CUBE) == 0 && u32(texture->flags & TextureFlags::IS_3D) == 0 && texture->depth == 1;
 	const bool is_srgb = u32(texture->flags & TextureFlags::SRGB);
 
-	InputMemoryStream blob(buf, buf_size);
+	ByteBufferMemoryStream blob((::byte*)buf, buf_size);
 	const FormatDesc& fd = FormatDesc::get(format);
 	
 	const GLenum internal_format = is_srgb ? fd.internal_srgb : fd.internal;

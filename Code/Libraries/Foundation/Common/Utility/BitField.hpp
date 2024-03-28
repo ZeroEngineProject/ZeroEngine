@@ -26,6 +26,11 @@ public:
     return (EnumType)(U32Field & rhs.U32Field);
   }
 
+  EnumType operator|(const BitField& rhs)
+  {
+    return (EnumType)(U32Field | rhs.U32Field);
+  }
+
   bool operator==(const BitField& rhs)
   {
     return U32Field == rhs.U32Field;
@@ -66,7 +71,8 @@ public:
     U32Field = (u32)(-1);
   }
 
-  union {
+  union
+  {
     u32 U32Field;
     EnumType Field;
   };
