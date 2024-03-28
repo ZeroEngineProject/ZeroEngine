@@ -1,6 +1,7 @@
 add_subdirectory(Engine)
 add_subdirectory(Content)
 add_subdirectory(Graphics)
+add_subdirectory(GraphicsNext)
 add_subdirectory(Networking)
 add_subdirectory(Physics)
 add_subdirectory(Sound)
