@@ -57,6 +57,8 @@ public:
   bool IsEof() override;
   void Flush() override;
 
+  const ::byte* Skip(size_t size);
+
   // We optimize this case by returning non-owned memory instantly (no memcpy).
   void ReadMemoryBlock(Status& status, ByteBufferBlock& block, size_t sizeInBytes) override;
 
