@@ -5,6 +5,54 @@ namespace Zero
 {
 #define ASSERT(Expression, ...) ErrorIf(!(Expression), ##__VA_ARGS__)
 
+ZeroForceInline bool equalStrings(const char* lhs, const char* rhs)
+{
+  return strcmp(lhs, rhs) == 0;
+}
+
+ZeroForceInline int stringLength(const char* str)
+{
+  return (int)strlen(str);
+}
+
+template <typename T>
+ZeroForceInline T minimum(T a)
+{
+  return a;
+}
+
+template <typename T>
+ZeroForceInline T minimum(T a, T b)
+{
+  return a < b ? a : b;
+}
+
+template <typename T1, typename... T2>
+ZeroForceInline T1 minimum(T1 a, T2... b)
+{
+  T1 min_b = minimum(b...);
+  return minimum(a, min_b);
+}
+
+template <typename T>
+ZeroForceInline T maximum(T a)
+{
+  return a;
+}
+
+template <typename T>
+ZeroForceInline T maximum(T a, T b)
+{
+  return a > b ? a : b;
+}
+
+template <typename T1, typename... T2>
+ZeroForceInline T1 maximum(T1 a, T2... b)
+{
+  T1 min_b = maximum(b...);
+  return a > min_b ? a : min_b;
+}
+
 template <typename T>
 struct Span
 {

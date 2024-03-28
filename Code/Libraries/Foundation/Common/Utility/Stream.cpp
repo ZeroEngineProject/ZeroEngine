@@ -178,6 +178,20 @@ void FixedMemoryStream::Flush()
 {
 }
 
+const ::byte* FixedMemoryStream::Skip(size_t size)
+{
+  auto* pos = mData + mCurrent;
+  mCurrent += size;
+  if (mCurrent > mSize)
+  {
+    Assert(false);
+    mCurrent = mSize;
+    //m_has_overflow = true;
+  }
+
+  return (const ::byte*)pos;
+}
+
 void FixedMemoryStream::ReadMemoryBlock(Status& status, ByteBufferBlock& block, size_t sizeInBytes)
 {
   if (!HasData())
