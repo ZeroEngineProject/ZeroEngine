@@ -40,7 +40,7 @@ void LoadContentConfig()
   ZPrint("Content output directory '%s'\n", contentSystem->ContentOutputPath.c_str());
 }
 
-bool LoadContentLibrary(StringParam name)
+bool LoadContentLibrary(StringParam name, bool isCore)
 {
   ProfileScopeFunctionArgs(name);
   ContentLibrary* library = Z::gContentSystem->Libraries.FindValue(name, nullptr);
@@ -50,6 +50,9 @@ bool LoadContentLibrary(StringParam name)
     return false;
   }
 
+  if (isCore)
+    library->SetReadOnly(true);
+
   Status status;
   HandleOf<ResourcePackage> packageHandle = Z::gContentSystem->BuildLibrary(status, library, false);
   ResourcePackage* package = packageHandle;
@@ -57,14 +60,17 @@ bool LoadContentLibrary(StringParam name)
   if (!status)
     return false;
 
-  forRange (ResourceEntry& entry, package->Resources.All())
+  if (isCore)
   {
-    if (entry.mLibrarySource)
+    forRange (ResourceEntry& entry, package->Resources.All())
     {
-      if (ContentEditorOptions* options = entry.mLibrarySource->has(ContentEditorOptions))
-        entry.mLibrarySource->ShowInEditor = options->mShowInEditor;
-      else
-        entry.mLibrarySource->ShowInEditor = false;
+      if (entry.mLibrarySource)
+      {
+        if (ContentEditorOptions* options = entry.mLibrarySource->has(ContentEditorOptions))
+          entry.mLibrarySource->ShowInEditor = options->mShowInEditor;
+        else
+          entry.mLibrarySource->ShowInEditor = false;
+      }
     }
   }
 
@@ -85,12 +91,12 @@ void LoadCoreContent(Array<String>& coreLibs)
 
   ZPrint("Loading Content...\n");
 
-  LoadContentLibrary("FragmentCore");
-  LoadContentLibrary("Loading");
+  LoadContentLibrary("FragmentCore", true);
+  LoadContentLibrary("Loading", true);
 
   forRange (String libraryName, coreLibs.All())
   {
-    LoadContentLibrary(libraryName);
+    LoadContentLibrary(libraryName, true);
   }
 }
 

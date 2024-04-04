@@ -45,9 +45,9 @@ void LoadProject(Editor* editor, Cog* projectCog, StringParam path, StringParam 
     {
       String libraryName = libraryRef.mContentLibraryName;
       String contentFolder = FilePath::Combine(projectFolder, libraryName);
-      Status loadContentLibrary;
+      Status loadStatus;
       ContentLibrary* contentLibrary =
-          Z::gContentSystem->LibraryFromDirectory(loadContentLibrary, libraryName, contentFolder);
+          Z::gContentSystem->LibraryFromDirectory(loadStatus, libraryName, contentFolder);
       if (contentLibrary)
       {
         Status status;
@@ -64,9 +64,9 @@ void LoadProject(Editor* editor, Cog* projectCog, StringParam path, StringParam 
   EditorSettings* engineEditorSettings = HasOrAdd<EditorSettings>(Z::gEditor->mConfig);
 
   // Load content package of project
-  Status loadContentLibrary;
+  Status loadStatus;
   ContentLibrary* projectLibrary =
-      Z::gContentSystem->LibraryFromDirectory(loadContentLibrary, project->ProjectName, project->ContentFolder);
+      Z::gContentSystem->LibraryFromDirectory(loadStatus, project->ProjectName, project->ContentFolder);
 
   /// Store the library on the project
   project->ProjectContentLibrary = projectLibrary;

@@ -54,6 +54,10 @@ public:
   {
     return !mReadOnly;
   }
+  void SetReadOnly(bool value)
+  {
+    mReadOnly = value;
+  }
 
   // Find a content item by file name (Not the full path).
   ContentItem* FindContentItemByFileName(StringParam filename);
