@@ -1,6 +1,12 @@
 // MIT Licensed (see LICENSE.md).
 #include "Precompiled.hpp"
 
+#if defined(ZeroTargetOsWindows)
+#  include <direct.h>
+#else
+#  include <unistd.h>
+#endif
+
 namespace Zero
 {
 
@@ -195,8 +201,7 @@ bool ShellEditFile(StringParam file)
 #if !defined(ZeroPlatformNoShellOpenApplication)
 bool ShellOpenApplication(StringParam file, StringParam parameters, StringParam workingDirectory)
 {
-  // todo: use workingDirectory directory
-  // chdir(workingDirectory.c_str());
+  chdir(workingDirectory.c_str());
   String commandLine = String::Format("\"%s\" %s &", file.c_str(), parameters.c_str());
   int result = system(commandLine.c_str());
   return result == 0;

@@ -3,9 +3,9 @@ add_compile_options(${ZERO_C_CXX_EXTERNAL_FLAGS})
 # OS dependent static/source libraries.
 add_subdirectory(Curl)
 add_subdirectory(GL)
-if(NOT ${ZERO_PLATFORM} STREQUAL "Windows")
+#if(NOT ${ZERO_TARGETOS} STREQUAL "Windows" AND ${ZERO_PLATFORM} STREQUAL "Windows")
   add_subdirectory(SDL)
-endif()
+#endif()
 
 # Cross platform source libraries.
 add_subdirectory(Assimp)
