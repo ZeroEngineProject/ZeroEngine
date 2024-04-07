@@ -57,6 +57,7 @@ target_link_libraries(ZeroEditor
 
 zero_copy_from_linked_libraries(ZeroEditor)
 
+if(${ZERO_PLATFORM} STREQUAL "Windows")
 set_target_properties(ZeroEditor PROPERTIES ENABLE_EXPORTS TRUE)
 set(platform_plugin_lib_dir ${ZERO_ZILCH_CUSTOM_PLUGIN_SHARED_DIR}${ZERO_TARGETOS}-${ZERO_ARCHITECTURE}/)
 add_custom_command(TARGET ZeroEditor POST_BUILD COMMAND
@@ -66,3 +67,4 @@ add_custom_command(TARGET ZeroEditor POST_BUILD COMMAND
     
 add_custom_command(TARGET ZeroEditor POST_BUILD COMMAND
     ${ZERO_ALL_TO_ONE_TOOL} -Zero ${ZERO_CODE_DIR} ${platform_plugin_lib_dir}Zilch.hpp)
+endif()
