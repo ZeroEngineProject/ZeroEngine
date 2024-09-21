@@ -26,9 +26,8 @@ ZilchDefineType(VortexEffect, builder, type)
 VortexEffect::VortexEffect()
 {
   mEffectType = PhysicsEffectType::Vortex;
-  // Min/Max need to be initialized to the same values as serialization to avoid
-  // any clamping logic happening during serialization since properties are
-  // individually set instead of batch set.
+  // Min/Max need to be initialized to the same values as serialization to avoid any
+  // clamping logic happening during serialization since properties are individually set instead of batch set.
   mMinDistance = 1;
   mMaxDistance = 5;
 }
@@ -55,13 +54,12 @@ void VortexEffect::DebugDraw()
 
   // Get an animating time
   real t = GetAnimationTime(GetOwner());
-  // Compute the axis and t-values for the min/max distances. To properly
-  // animate we have to keep the t-values positive and flip the axis if the
-  // strength is negative.
+  // Compute the axis and t-values for the min/max distances. To properly animate we have to keep the
+  // t-values positive and flip the axis if the strength is negative.
   Vec3 axisMin = axis * (real)Math::Sign(mTwistStrengthAtMinDistance);
   Vec3 axisMax = axis * (real)Math::Sign(mTwistStrengthAtMaxDistance);
-  // Scale the inner and outer t-values based upon the speed. Normalize the
-  // speed so it's moving at the given linear speed (not a rotational speed)
+  // Scale the inner and outer t-values based upon the speed. Normalize the speed so
+  // it's moving at the given linear speed (not a rotational speed)
   real tMin = t * Math::Abs(mTwistStrengthAtMinDistance) / mMinDistance;
   real tMax = t * Math::Abs(mTwistStrengthAtMaxDistance) / mMaxDistance;
 
@@ -72,13 +70,11 @@ void VortexEffect::DebugDraw()
 
   // Draw the inward forces
 
-  // Get the scaled min/max force length taking into account distance between
-  // the two values
+  // Get the scaled min/max force length taking into account distance between the two values
   real minForce = -mInwardStrengthAtMinDistance;
   real maxForce = -mInwardStrengthAtMaxDistance;
   GetPenumbraDebugDrawValues(mMinDistance, mMaxDistance, minForce, maxForce);
-  // Animate the inward force vectors (I don't like how this looks so commented
-  // out for now)
+  // Animate the inward force vectors (I don't like how this looks so commented out for now)
   // float inwardT = Math::Fractional(t);
   // minForce *= inwardT;
   // maxForce *= inwardT;
@@ -123,9 +119,8 @@ void VortexEffect::ApplyEffect(RigidBody* obj, real dt)
   Vec3 toBody = objPos - selfPos;
 
   // We calculate how far away we are from the twist disc's center by projecting
-  // the vector from the twist center to rigid body's center onto the vortex's
-  // plane (project out the twist axis). The length of this vector is the
-  // distance from the vortex center.
+  // the vector from the twist center to rigid body's center onto the vortex's plane
+  // (project out the twist axis). The length of this vector is the distance from the vortex center.
   Vec3 projToBody = Math::ProjectOnPlane(toBody, worldTwistAxis);
   real projDistance = projToBody.AttemptNormalize();
   // Compute where in between the two distances we are
@@ -139,12 +134,10 @@ void VortexEffect::ApplyEffect(RigidBody* obj, real dt)
     if (mVortexStates.IsSet(VortexFlags::NoEffect))
       return;
 
-    // If we clamp to the max distance's values then just clamp the t to pretend
-    // we're at the max
+    // If we clamp to the max distance's values then just clamp the t to pretend we're at the max
     else if (mVortexStates.IsSet(VortexFlags::ClampToMax))
       t = 1;
-    // If we're set to continue falloff then don't do anything, it'll happen
-    // naturally
+    // If we're set to continue falloff then don't do anything, it'll happen naturally
   }
   // If we're below the min then just use the min's value.
   else if (t < 0)
@@ -171,8 +164,7 @@ void VortexEffect::ComputeVortexInformation()
   mWorldVortexCenter = Vec3::cZero;
   mWorldVortexAxis = mVortexAxis;
 
-  // If we use a local axis then transform both the center and axis at the same
-  // time (more efficient)
+  // If we use a local axis then transform both the center and axis at the same time (more efficient)
   if (mVortexStates.IsSet(VortexFlags::LocalAxis))
     TransformLocalDirectionAndPointToWorld(mWorldVortexCenter, mWorldVortexAxis);
   // Otherwise only transform the center
@@ -223,8 +215,7 @@ void VortexEffect::SetMinDistance(real distance)
     distance = real(0);
   }
 
-  // Check to make sure that min < max. If so, clamp the distance to the max it
-  // can be.
+  // Check to make sure that min < max. If so, clamp the distance to the max it can be.
   if (distance >= mMaxDistance)
   {
     DoNotifyWarning("Invalid distance",
@@ -244,8 +235,7 @@ real VortexEffect::GetMaxDistance()
 
 void VortexEffect::SetMaxDistance(real distance)
 {
-  // Check to make sure that min < max. If so, clamp the distance to the min it
-  // can be.
+  // Check to make sure that min < max. If so, clamp the distance to the min it can be.
   if (distance <= mMinDistance)
   {
     DoNotifyWarning("Invalid distance",

@@ -87,8 +87,7 @@ void MeshCollider::ComputeLocalInverseInertiaTensor(real mass, Mat3Ref localInvI
 void MeshCollider::Support(Vec3Param direction, Vec3Ptr support) const
 {
   // Bring the support direction into local space (normalize for safety),
-  // call the local-space support function then transform the result back into
-  // world space
+  // call the local-space support function then transform the result back into world space
   Vec3 localSpaceDir = TransformSupportDirectionToLocal(direction);
   localSpaceDir.Normalize();
   mPhysicsMesh->Support(localSpaceDir, support);
@@ -111,8 +110,7 @@ void MeshCollider::SetPhysicsMesh(PhysicsMesh* physicsMesh)
   if (physicsMesh == nullptr)
     return;
 
-  // Disconnect from events on the old mesh and connect on the new mesh (if
-  // they're different)
+  // Disconnect from events on the old mesh and connect on the new mesh (if they're different)
   PhysicsMesh* oldMesh = mPhysicsMesh;
   if (oldMesh != physicsMesh)
   {

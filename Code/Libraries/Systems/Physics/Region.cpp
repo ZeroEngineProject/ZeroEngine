@@ -85,14 +85,12 @@ void Region::Update(real dt)
   {
     ContactGraphEdge holder = bodyRange.Front();
     RigidBody* body = holder.GetOtherBody();
-    // Only apply region effects to non-static bodies (yes this will apply to
-    // kinematic objects. This is a bug feature which allows things like
-    // kinematic swept controllers to still get forces applied, just not
-    // integrated).
+    // Only apply region effects to non-static bodies (yes this will apply to kinematic objects.
+    // This is a bug feature which allows things like kinematic swept controllers to
+    // still get forces applied, just not integrated).
     if (body->GetStatic() == false)
     {
-      // Wake up any bodies that just came into contact with the region
-      // (otherwise the forces won't do anything)
+      // Wake up any bodies that just came into contact with the region (otherwise the forces won't do anything)
       if (holder.GetIsNew())
         body->ForceAwake();
       if (body->IsAsleep() == false && !holder.GetSkipsResolution())

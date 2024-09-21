@@ -67,8 +67,7 @@ void GenerateArrayCastLookup(ArrayType& array)
   GenerateCollisionLookups(CastVsShape, array);
 }
 
-// macro to set up the function pointers for the simple collider types in a
-// table.
+// macro to set up the function pointers for the simple collider types in a table.
 #define GenerateCollisionTables(FunctionName, table)                                                                   \
   for (uint i = 0; i < (uint)Collider::cSize; ++i)                                                                     \
     for (uint j = 0; j < (uint)Collider::cSize; ++j)                                                                   \

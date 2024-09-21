@@ -35,7 +35,8 @@ struct ContactEdge
   ContactEdge();
 
   // clean up to not be a union later
-  union {
+  union
+  {
     Contact* mContact;
     Contact* mJoint;
   };
@@ -106,8 +107,8 @@ struct JointNode
 
 struct JointInfo
 {
-  // This takes in the max number of atoms this constraint has (ignoring motors)
-  // and then a mask of which ones of these are inactive by default.
+  // This takes in the max number of atoms this constraint has (ignoring motors) and
+  // then a mask of which ones of these are inactive by default.
   JointInfo(uint atomCount, uint offAtomMask)
   {
     mAtomCount = atomCount;

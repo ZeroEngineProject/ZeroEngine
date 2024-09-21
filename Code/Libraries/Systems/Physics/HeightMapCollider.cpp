@@ -55,8 +55,7 @@ void HeightMapCollider::DebugDraw()
   // for(; !range.Empty(); range.PopFront())
   //{
   //  Aabb localAabb = range.Front().second;
-  //  Aabb worldAabb =
-  //  localAabb.TransformAabb(GetWorldTransform()->GetWorldMatrix());
+  //  Aabb worldAabb = localAabb.TransformAabb(GetWorldTransform()->GetWorldMatrix());
   //
   //  gDebugDraw->Add(Debug::Obb(worldAabb));
   //}
@@ -138,8 +137,7 @@ HeightMapCollider::HeightMapRangeWrapper::InternalObject& HeightMapCollider::Hei
   AbsoluteIndex absIndex = mRange.mMap->GetAbsoluteIndex(item.mPatchIndex, item.mCellIndex);
   uint triIndex = mRange.mTriangleIndex;
 
-  // Convert the triangle's info into a unique 32-bit key (change the key later
-  // to be bigger?)
+  // Convert the triangle's info into a unique 32-bit key (change the key later to be bigger?)
   uint key;
   HeightMapCollider::TriangleIndexToKey(absIndex, triIndex, key);
   mObj.Index = key;
@@ -178,16 +176,14 @@ Triangle HeightMapCollider::GetTriangle(uint key)
 HeightMapCollider::HeightMapRangeWrapper HeightMapCollider::GetOverlapRange(Aabb& localAabb)
 {
   HeightMapRangeWrapper range(mMap, localAabb, mThickness);
-  // This only needs to be set once and it will persist through all objects in
-  // the range
+  // This only needs to be set once and it will persist through all objects in the range
   range.mObj.Shape.ScaledDir = HeightMap::UpVector * -mThickness;
   return range;
 }
 
 bool HeightMapCollider::Cast(const Ray& localRay, ProxyResult& result, BaseCastFilter& filter)
 {
-  // Cast a local ray (already transformed by the collision manager) against the
-  // internal height map
+  // Cast a local ray (already transformed by the collision manager) against the internal height map
   HeightMapRayRange range = mMap->CastLocalRay(localRay);
   // If the height map didn't get any results then stop
   if (range.Empty())
@@ -209,11 +205,9 @@ bool HeightMapCollider::Cast(const Ray& localRay, ProxyResult& result, BaseCastF
   {
     Vec3 normal = Geometry::NormalFromPointOnTriangle(result.mPoints[0], tri[0], tri[1], tri[2]);
 
-    // Since the normal only comes from the point on the object it will always
-    // be the positive normal of the triangle. We want the normal to be the
-    // "reflection normal" from the ray though. To deal with this simply negate
-    // the normal if it doesn't point towards the ray's start. (could replace
-    // with rayDir?)
+    // Since the normal only comes from the point on the object it will always be the positive normal
+    // of the triangle. We want the normal to be the "reflection normal" from the ray though. To deal
+    // with this simply negate the normal if it doesn't point towards the ray's start. (could replace with rayDir?)
     if (Dot(normal, tri[0] - localRay.Start) > 0)
       normal *= real(-1.0f);
 
@@ -259,11 +253,10 @@ void HeightMapCollider::KeyToTriangleIndex(uint key, AbsoluteIndex& absolueIndex
 
 void HeightMapCollider::LoadPatch(HeightMap* map, HeightPatch* mapPatch)
 {
-  // When loading a patch we don't actually need any triangle info. We do
-  // however need to compute the local space aabb so we can properly broad and
-  // narrow-phase. Instead of finding this from triangles or vertices we can
-  // directly compute a patch's aabb from the patch size and the stored min/max
-  // value for the patch.
+  // When loading a patch we don't actually need any triangle info. We do however
+  // need to compute the local space aabb so we can properly broad and narrow-phase.
+  // Instead of finding this from triangles or vertices we can directly compute a patch's
+  // aabb from the patch size and the stored min/max value for the patch.
   Aabb& patchAabb = mPatchAabbs[mapPatch->Index];
   patchAabb = map->GetPatchLocalAabb(mapPatch);
 

@@ -44,8 +44,7 @@ ZilchDefineType(RevoluteJoint, builder, type)
   ZeroBindDocumented();
 
   BindAnchorAccessors(Vec3(1));
-  // Instead of binding the angles as usual, bind them with basis editors for
-  // cleaner updating with gizmos
+  // Instead of binding the angles as usual, bind them with basis editors for cleaner updating with gizmos
   // BindAngleAccessors();
   ZilchBindGetterSetterProperty(LocalBasisA)
       ->Add(new EditorRotationBasis("RevoluteJointBasisGizmo", "EditorRevoluteGizmoName", 0b01));
@@ -67,8 +66,7 @@ void RevoluteJoint::Serialize(Serializer& stream)
 {
   Joint::Serialize(stream);
 
-  // Turn the frame index into a bool for whether or not object A's frame is
-  // used
+  // Turn the frame index into a bool for whether or not object A's frame is used
   bool UseFrameA = (mPrimaryFrameIndex == 0);
   SerializeNameDefault(UseFrameA, true);
 

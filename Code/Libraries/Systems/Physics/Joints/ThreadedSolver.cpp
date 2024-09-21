@@ -163,13 +163,11 @@ void ThreadedSolver::SolvePositions()
   GroupOperationParamFragment<ContactList>(mContactPhases, mContacts, CollectJoints<ContactList>);
   GroupOperationParamFragment<JointList>(mJointPhases, mJoints, CollectJoints<JointList>);
 
-  // Could in theory split back onto lists to thread, but that's a rather
-  // expensive operation. Maybe just prune each list, but unfortunately then
-  // there'd be unbalanced lists.
+  // Could in theory split back onto lists to thread, but that's a rather expensive operation.
+  // Maybe just prune each list, but unfortunately then there'd be unbalanced lists.
 
   // first do a pre-processing step to figure out which joints/contacts actually
-  // need position correction (so we're not doing the check during the inner
-  // loop)
+  // need position correction (so we're not doing the check during the inner loop)
   JointList jointsToSolve;
   ContactList contactsToSolve;
 

@@ -46,8 +46,7 @@ void BuoyancyEffect::ApplyEffect(RigidBody* obj, real dt)
 
   // Buoyancy applies a force that is dependent on the volume of the object.
   // To do this we need to iterate over all colliders in the body.
-  // Note: This is currently incorrect if multiple colliders of a rigid body
-  // overlap.
+  // Note: This is currently incorrect if multiple colliders of a rigid body overlap.
   RigidBody::CompositeColliderRange colliders = obj->GetColliders();
   for (; !colliders.Empty(); colliders.PopFront())
   {
@@ -72,8 +71,7 @@ void BuoyancyEffect::ApplyEffect(RigidBody* obj, real dt)
     Vec3 centerInside;
     float percentInside = ComputeOverlapPercent(collider, centerInside);
 
-    // If there is an overlap then apply the force at the center of the
-    // overlapped region
+    // If there is an overlap then apply the force at the center of the overlapped region
     if (percentInside != 0)
     {
       // Get the approximate volume of intersecting region
@@ -110,10 +108,9 @@ float BuoyancyEffect::ComputeOverlapPercent(Collider* collider, Vec3& volumeCent
   Vec3 halfExtents = aabb.GetHalfExtents();
   Vec3 min = aabb.GetCenter() - halfExtents;
 
-  // To approximate the volume of overlap we place a grid of points in the test
-  // collider's aabb. We can determine if any point is actually inside the
-  // collider to approximate the volume of the collider. This point can then be
-  // tested against the region to approximate the overlap percentage.
+  // To approximate the volume of overlap we place a grid of points in the test collider's aabb.
+  // We can determine if any point is actually inside the collider to approximate the volume of the collider.
+  // This point can then be tested against the region to approximate the overlap percentage.
 
   // Calculate the step for placing points in a grid
   Vec3 step = halfExtents * real(2);
@@ -122,10 +119,9 @@ float BuoyancyEffect::ComputeOverlapPercent(Collider* collider, Vec3& volumeCent
   // Min step is used to draw the points
   real minStep = Math::Min(step.x, Math::Min(step.y, step.z));
 
-  // We need to compute the percentage of points inside. To do this we have to
-  // keep track of the number of points inside and outside (combined is the
-  // total). We also need to apply the force not at the center of mass, but the
-  // center of mass of the intersecting volume.
+  // We need to compute the percentage of points inside. To do this we have to keep track of
+  // the number of points inside and outside (combined is the total). We also need to apply
+  // the force not at the center of mass, but the center of mass of the intersecting volume.
   Vec3 center = Vec3::cZero;
   size_t inside = 0;
   size_t outside = 0;
@@ -141,13 +137,12 @@ float BuoyancyEffect::ComputeOverlapPercent(Collider* collider, Vec3& volumeCent
         Vec3 pos = min + Vec3(real(x), real(y), real(z)) * step;
 
         // If the point is not in the collider then ignore it
-        // (we're approximating the collider by iterating over the aabb so this
-        // point is in the aabb but outside the collider)
+        // (we're approximating the collider by iterating over the aabb so this point is in the aabb but outside the
+        // collider)
         if (!PointInObject(collider, pos))
           continue;
 
-        // If the point is also inside the region then we have a volume
-        // intersection
+        // If the point is also inside the region then we have a volume intersection
         if (PointInObject(mCollider, pos))
         {
           // Add to the averaged center position
@@ -169,8 +164,7 @@ float BuoyancyEffect::ComputeOverlapPercent(Collider* collider, Vec3& volumeCent
     }
   }
 
-  // If no points were inside then the percentage is always zero and we won't
-  // apply any force so just return now
+  // If no points were inside then the percentage is always zero and we won't apply any force so just return now
   if (inside == 0)
     return 0;
 
@@ -178,8 +172,7 @@ float BuoyancyEffect::ComputeOverlapPercent(Collider* collider, Vec3& volumeCent
   size_t total = inside + outside;
   real percentInside = real(inside) / real(total);
 
-  // Get the approximate center of mass of the part of the object inside the
-  // region
+  // Get the approximate center of mass of the part of the object inside the region
   volumeCenter = center / real(inside);
 
   // Draw the volume center

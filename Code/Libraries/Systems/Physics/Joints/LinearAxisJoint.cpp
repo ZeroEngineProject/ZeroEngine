@@ -9,8 +9,7 @@ namespace Physics
 
 JointInfo LinearAxisJoint::sInfo = JointInfo(1, 0);
 
-/// The linearAxisJoint's policy for Atom updating as well as Molecule
-/// computing.
+/// The linearAxisJoint's policy for Atom updating as well as Molecule computing.
 struct LinearAxisPolicy : public DefaultFragmentPolicy<LinearAxisJoint>
 {
   void AxisValue(MoleculeData& data, int atomIndex, LinearAxisJoint* joint)
@@ -25,8 +24,8 @@ struct LinearAxisPolicy : public DefaultFragmentPolicy<LinearAxisJoint>
     uint flag = 1 << atomIndex;
     ConstraintAtom& atom = joint->mAtoms[atomIndex];
 
-    // Compute the error of this constraint. have to compute the error at this
-    // time so that the limit values are known
+    // Compute the error of this constraint. have to compute the error at this time
+    // so that the limit values are known
     ComputeError(atom, molLimit, joint->mNode->mLimit, 0, flag);
     ModifyErrorWithSlop(joint, atom);
   }

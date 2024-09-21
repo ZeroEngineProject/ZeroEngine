@@ -54,8 +54,7 @@ bool CastFilter::IsValid(void* clientData)
 {
   Collider* collider = static_cast<Collider*>(clientData);
 
-  // If there is a callback object then check to see if we should skip this
-  // object
+  // If there is a callback object then check to see if we should skip this object
   if (mCallbackObject != nullptr)
   {
     CastFilterEvent toSend;
@@ -64,9 +63,8 @@ bool CastFilter::IsValid(void* clientData)
     if (dispatcher != nullptr)
     {
       dispatcher->Dispatch(mCallbackEventName, &toSend);
-      // If the user changed the state from the default behavior then don't
-      // perform any other filter logic, simply return whether or not the user
-      // accepts this object.
+      // If the user changed the state from the default behavior then don't perform
+      // any other filter logic, simply return whether or not the user accepts this object.
       if (toSend.mFilterState != CastFilterState::DefaultBehavior)
         return toSend.mFilterState == CastFilterState::Accept;
     }
@@ -254,19 +252,19 @@ CastResults::CastResults(const CastResults& rhs) : mResults((ProxyCastResultArra
   mResults.CurrSize = rhs.mResults.CurrSize;
 }
 
-CastResult& CastResults::operator[](uint index)
+CastResult& CastResults::operator[](size_t index)
 {
   ErrorIf(index >= mResults.CurrSize, "Index out of range.");
   return mArray[index];
 }
 
-const CastResult& CastResults::operator[](uint index) const
+const CastResult& CastResults::operator[](size_t index) const
 {
   ErrorIf(index >= mResults.CurrSize, "Index out of range.");
   return mArray[index];
 }
 
-uint CastResults::Size() const
+size_t CastResults::Size() const
 {
   return mResults.GetCurrentSize();
 }
@@ -286,14 +284,14 @@ void CastResults::Clear()
   mResults.Clear();
 }
 
-void CastResults::Resize(uint amount)
+void CastResults::Resize(size_t amount)
 {
   mArray.Resize(amount);
 }
 
 uint CastResults::Capacity() const
 {
-  return mArray.Size();
+  return (uint)mArray.Size();
 }
 
 void CastResults::ConvertToColliders()
@@ -303,8 +301,8 @@ void CastResults::ConvertToColliders()
   // it was a proxy pointer to avoid allocations.  Now we're just grabbing the
   // data pointer (the Collider) stored in the proxy and replacing the proxy
   // pointer with the Collider pointer.
-  // NOTE: I'm going through mResults.Results[i], which is a reference to
-  // mArray, to avoid having to cast twice on one line.
+  // NOTE: I'm going through mResults.Results[i], which is a reference to mArray,
+  // to avoid having to cast twice on one line.
   for (uint i = 0; i < mResults.CurrSize; ++i)
   {
     void* clientData = mResults.Results[i].mObjectHit;
@@ -314,18 +312,18 @@ void CastResults::ConvertToColliders()
 
 CastResultsRange::CastResultsRange(const CastResults& castResults)
 {
-  uint count = castResults.Size();
+  size_t count = castResults.Size();
   mArray.Resize(count);
-  for (uint i = 0; i < count; ++i)
+  for (size_t i = 0; i < count; ++i)
     mArray[i] = castResults[i];
   mRange = mArray.All();
 }
 
 CastResultsRange::CastResultsRange(const CastResultsRange& rhs)
 {
-  uint count = rhs.mArray.Size();
+  size_t count = rhs.mArray.Size();
   mArray.Resize(count);
-  for (uint i = 0; i < count; ++i)
+  for (size_t i = 0; i < count; ++i)
     mArray[i] = rhs.mArray[i];
   mRange = mArray.All();
 }
@@ -347,7 +345,7 @@ void CastResultsRange::PopFront()
 
 uint CastResultsRange::Size()
 {
-  return mRange.Size();
+  return (uint)mRange.Size();
 }
 
 } // namespace Zero

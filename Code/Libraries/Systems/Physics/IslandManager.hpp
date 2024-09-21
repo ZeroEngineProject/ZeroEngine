@@ -4,8 +4,7 @@
 namespace Zero
 {
 
-/// What kind of a constraint solver should be used. A few pre-defined types
-/// meant for comparing performance.
+/// What kind of a constraint solver should be used. A few pre-defined types meant for comparing performance.
 DeclareEnum4(PhysicsSolverType, Basic, Normal, GenericBasic, Threaded);
 /// How should islands be built. Internal for testing (mostly legacy).
 DeclareEnum3(PhysicsIslandType, Composites, Kinematics, ForcedOne);

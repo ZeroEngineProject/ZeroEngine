@@ -11,9 +11,9 @@ struct Manifold;
 struct MoleculeWalker;
 
 /// A solver that allows each object to solve itself. This allows joints and
-/// contacts to change each iteration (such as contacts changing friction
-/// bounds). The normal solver stores all in a separate list so it can avoid
-/// calling virtual functions and call each class' implementation directly.
+/// contacts to change each iteration (such as contacts changing friction bounds).
+/// The normal solver stores all in a separate list so it can avoid calling
+/// virtual functions and call each class' implementation directly.
 class NormalSolver : public IConstraintSolver
 {
 public:

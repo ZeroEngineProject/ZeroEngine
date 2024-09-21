@@ -12,8 +12,7 @@
 // Cdot = -dot(u1, v1 + cross(w1, r1)) - ratio * dot(u2, v2 + cross(w2, r2))
 // J = -[u1 cross(r1, u1) ratio * u2  ratio * cross(r2, u2)]
 // K = J * invM * JT
-//   = invMass1 + invI1 * cross(r1, u1)^2 + ratio^2 * (invMass2 + invI2 *
-//   cross(r2, u2)^2)
+//   = invMass1 + invI1 * cross(r1, u1)^2 + ratio^2 * (invMass2 + invI2 * cross(r2, u2)^2)
 
 namespace Zero
 {
@@ -107,8 +106,7 @@ void PulleyJoint::OnAllObjectsCreated(CogInitializer& initializer)
   }
   else
   {
-    // We were dynamically added, find joints on the objects we were connected
-    // to
+    // We were dynamically added, find joints on the objects we were connected to
     for (uint i = 0; i < 2; ++i)
     {
       Collider* collider = GetCollider(i);
@@ -149,9 +147,9 @@ void PulleyJoint::OnAllObjectsCreated(CogInitializer& initializer)
       mJoints[i].mObjId = 1;
   }
 
-  // Don't do any final active or valid checks if we're in the editor because we
-  // don't need to modify further state on ourself and we definitely don't want
-  // to modify the other joints.
+  // Don't do any final active or valid checks if we're in the editor because we don't
+  // need to modify further state on ourself and we definitely don't
+  // want to modify the other joints.
   if (GetSpace()->IsEditorMode())
     return;
 
@@ -355,8 +353,7 @@ void PulleyJoint::RelinkJoint(uint index, Cog* cog)
     return;
   }
 
-  // Make sure that the joint we're linking to is connected to the collider
-  // we're connected to
+  // Make sure that the joint we're linking to is connected to the collider we're connected to
   if (stick->GetCollider(0) == GetCollider(index))
     mJoints[index].mObjId = 0;
   else if (stick->GetCollider(1) == GetCollider(index))
@@ -364,8 +361,7 @@ void PulleyJoint::RelinkJoint(uint index, Cog* cog)
   else
   {
     DoNotifyWarning("Invalid link",
-                    "Can only connect to StickJoints that are attached to the "
-                    "same collider as the PulleyJoint.");
+                    "Can only connect to StickJoints that are attached to the same collider as the PulleyJoint.");
     return;
   }
 

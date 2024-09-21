@@ -2,8 +2,7 @@
 #pragma once
 
 /// Tracks down which object, if any, was not sent to be checked
-/// for collision when it should have (assuming at least one broad phase caught
-/// it).
+/// for collision when it should have (assuming at least one broad phase caught it).
 #define OBJECT_TRACKING 1
 
 namespace Zero

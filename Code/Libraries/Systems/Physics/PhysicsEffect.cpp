@@ -32,8 +32,7 @@ PhysicsEffect::PhysicsEffect()
 
 void PhysicsEffect::Serialize(Serializer& stream)
 {
-  Error("Physics Effect should never have serialize called, meta serialization "
-        "is assumed");
+  Error("Physics Effect should never have serialize called, meta serialization is assumed");
 }
 
 void PhysicsEffect::Initialize(CogInitializer& initializer)
@@ -154,8 +153,7 @@ void PhysicsEffect::ComponentRemoved(BoundType* typeId, Component* component)
 Vec3 PhysicsEffect::TransformLocalDirectionToWorld(Vec3Param localDir) const
 {
   Vec3 worldDir = localDir;
-  // If we have a collider then use the cached body-to-world transform to get
-  // our world space values
+  // If we have a collider then use the cached body-to-world transform to get our world space values
   Collider* collider = GetOwner()->has(Collider);
   if (collider != nullptr)
   {
@@ -178,8 +176,7 @@ Vec3 PhysicsEffect::TransformLocalDirectionToWorld(Vec3Param localDir) const
 Vec3 PhysicsEffect::TransformLocalPointToWorld(Vec3Param localPoint) const
 {
   Vec3 worldPoint = localPoint;
-  // If we have a collider then use the cached body-to-world transform to get
-  // our world space values
+  // If we have a collider then use the cached body-to-world transform to get our world space values
   Collider* collider = GetOwner()->has(Collider);
   if (collider != nullptr)
   {
@@ -200,8 +197,7 @@ Vec3 PhysicsEffect::TransformLocalPointToWorld(Vec3Param localPoint) const
 
 void PhysicsEffect::TransformLocalDirectionAndPointToWorld(Vec3& localPoint, Vec3& localDir) const
 {
-  // If we have a collider then use the cached body-to-world transform to get
-  // our world space values
+  // If we have a collider then use the cached body-to-world transform to get our world space values
   Collider* collider = GetOwner()->has(Collider);
   if (collider != nullptr)
   {
@@ -319,8 +315,7 @@ void PhysicsEffect::HierarchyRemove()
 
 void PhysicsEffect::CheckWakeUp()
 {
-  // If we don't wake up the objects when a property is changed then don't do
-  // anything
+  // If we don't wake up the objects when a property is changed then don't do anything
   if (!mFlags.IsSet(EffectFlags::WakeUpOnChange) || !IsInitialized())
     return;
 

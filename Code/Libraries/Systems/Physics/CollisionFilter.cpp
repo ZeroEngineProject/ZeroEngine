@@ -103,8 +103,7 @@ void CollisionFilter::SetCollisionFlag(CollisionFilterCollisionFlags::Enum state
   else if (state == CollisionFilterCollisionFlags::SkipResolution)
     mFilterFlags.SetFlag(FilterFlags::SkipResolution);
 
-  // We've change the bitfield states, rebuild the cached data used during
-  // runtime
+  // We've change the bitfield states, rebuild the cached data used during runtime
   mTable->ReconfigureGroups();
 }
 
@@ -169,8 +168,8 @@ CollisionFilter* CollisionFilter::Clone() const
   // Copy all blocks
   for (size_t i = 0; i < mBlocks.Size(); ++i)
   {
-    // Create a new copy of the same block type by getting the bound type then
-    // going through the meta composition to allocate the block type
+    // Create a new copy of the same block type by getting the bound type then going
+    // through the meta composition to allocate the block type
     BoundType* boundType = mBlocks[i]->ZilchGetDerivedType();
     CollisionFilterMetaComposition* metaComposition = boundType->HasInherited<CollisionFilterMetaComposition>();
     HandleOf<CollisionFilterBlock> newBlockHandle = metaComposition->AllocateBlock(boundType, false);
@@ -178,14 +177,14 @@ CollisionFilter* CollisionFilter::Clone() const
     // Deep copy the block
     *newBlock = *mBlocks[i];
     // Add the block to the cloned resource
-    clone->Add(newBlockHandle, i);
+    clone->Add(newBlockHandle, (int)i);
   }
   return clone;
 }
 
 uint CollisionFilter::GetSize() const
 {
-  return mBlocks.Size();
+  return (uint)mBlocks.Size();
 }
 
 HandleOf<CollisionFilterBlock> CollisionFilter::GetBlockAt(uint index)
@@ -225,7 +224,7 @@ bool CollisionFilter::Remove(const HandleOf<CollisionFilterBlock>& blockHandle)
 {
   CollisionFilterBlock* block = blockHandle;
   // Try to find the index of this block
-  uint index = mBlocks.FindIndex(block);
+  size_t index = mBlocks.FindIndex(block);
   if (index >= mBlocks.Size())
     return false;
 

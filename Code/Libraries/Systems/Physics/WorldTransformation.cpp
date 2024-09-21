@@ -75,8 +75,7 @@ void WorldTransformation::ComputeTransformation(WorldTransformation* parent, Phy
   // however, we may not have a parent node or we may have cog's between us
   // and our parent node. Therefore we have to build up the transform from
   // us to our nearest parentNode (or until the root if we have no parentNode).
-  // Our parent node will already have it's body to world cached so we can early
-  // out there
+  // Our parent node will already have it's body to world cached so we can early out there
 
   Mat4 toWorldTransform = Math::BuildTransform(mLocalTranslation, mLocalRotation, mLocalScale);
 
@@ -85,8 +84,7 @@ void WorldTransformation::ComputeTransformation(WorldTransformation* parent, Phy
   if (parent)
     parentNodeCog = parent->mTransform->GetOwner();
 
-  // loop over all of the in between nodes (or just up to the root if parent was
-  // null)
+  // loop over all of the in between nodes (or just up to the root if parent was null)
   Cog* parentCog = owner->GetTransform()->mTransform->GetOwner()->GetParent();
   while (parentCog != parentNodeCog)
   {

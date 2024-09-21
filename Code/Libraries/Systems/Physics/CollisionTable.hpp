@@ -6,10 +6,9 @@ namespace Zero
 
 DeclareEnum2(RegisteredGroupInstanceAccessMode, UseDefault, ReturnNull);
 
-/// Defines filter pairs between CollisionGroups. These filters are used to
-/// control if collision detection and resolution happens between Colliders.
-/// Additionally, CollisionFilterBlocks can be defined on filters to send out
-/// extra events.
+/// Defines filter pairs between CollisionGroups. These filters are used to control
+/// if collision detection and resolution happens between Colliders. Additionally,
+/// CollisionFilterBlocks can be defined on filters to send out extra events.
 class CollisionTable : public DataResource
 {
 public:
@@ -34,8 +33,7 @@ public:
 
   void Initialize();
   void SetDefaults();
-  /// Registers all groups in existence. Used to auto-populate newly created
-  /// filters.
+  /// Registers all groups in existence. Used to auto-populate newly created filters.
   void LoadExistingGroups();
 
   void ValidateFilters();
@@ -72,8 +70,7 @@ public:
   typedef HashSet<CollisionFilter*, CollisionFilterHashPolicy> HashedFilters;
   typedef Array<CollisionFilter*> CollisionFilters;
 
-  /// The filters between the registered groups in a linear format for
-  /// serialization.
+  /// The filters between the registered groups in a linear format for serialization.
   CollisionFilters mCollisionFilters;
   /// Quick lookup of filters by group pairs (the filter itself)
   HashedFilters mHashedFilters;
@@ -92,8 +89,7 @@ public:
   void OnTableCreated(ResourceEvent* event);
   /// Manage a new CollisionGroup being created (to add to all existing tables)
   void OnCollisionGroupAdded(ResourceEvent* event);
-  /// Manage a new CollisionGroup being removed (to remove from all existing
-  /// tables)
+  /// Manage a new CollisionGroup being removed (to remove from all existing tables)
   void OnCollisionGroupRemoved(ResourceEvent* event);
 };
 

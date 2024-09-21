@@ -10,8 +10,7 @@ ZilchDefineType(CustomCollisionEventTracker, builder, type)
   ZeroBindSetup(SetupMode::DefaultSerialization);
   ZeroBindDocumented();
 
-  // This works with physics, we must have a collider (otherwise collision
-  // events would need to change)
+  // This works with physics, we must have a collider (otherwise collision events would need to change)
   ZeroBindDependency(Collider);
   ZeroBindDependency(Cog);
 
@@ -36,8 +35,7 @@ void CustomCollisionEventTracker::AddCollision(Collider* otherCollider,
   data.mOtherCog = otherCollider->GetOwner();
   data.mWorldPoint = worldPoint;
   data.mWorldNormalTowardsOther = worldNormalTowardsOther;
-  // We only allow one collision per other cog for now, I'll consider more if
-  // someone wants that
+  // We only allow one collision per other cog for now, I'll consider more if someone wants that
   mCollisions[data.mOtherCog] = data;
 }
 
@@ -45,21 +43,18 @@ void CustomCollisionEventTracker::SendEvents(StringParam eventPrefix)
 {
   Array<CollisionData> collisionsStarted, collisionsEnded, collisionsPersisted;
 
-  // Check our current collision to see whether they're collision started or
-  // persisted events
+  // Check our current collision to see whether they're collision started or persisted events
   CollisionMap::range range = mCollisions.All();
   for (; !range.Empty(); range.PopFront())
   {
     CollisionData& data = range.Front().second;
 
-    // The other cog could have been destroyed between the user adding it and
-    // sending events
+    // The other cog could have been destroyed between the user adding it and sending events
     Cog* otherCog = data.mOtherCog;
     if (otherCog == nullptr || otherCog->has(Collider) == nullptr)
       continue;
 
-    // If we weren't in contact last frame then this is a collision started
-    // event
+    // If we weren't in contact last frame then this is a collision started event
     CollisionData* previousData = mPreviousCollisions.FindPointer(data.mOtherCog);
     if (previousData == nullptr)
       collisionsStarted.PushBack(data);
@@ -95,8 +90,7 @@ void CustomCollisionEventTracker::SendEvents(StringParam eventPrefix)
 
 void CustomCollisionEventTracker::FilloutEvent(CollisionData& data, Physics::Manifold* manifold, CollisionEvent* toSend)
 {
-  // Set the other collider for the manifold (we were set already outside of
-  // this function)
+  // Set the other collider for the manifold (we were set already outside of this function)
   manifold->Objects[1] = data.mOtherCog.has(Collider);
 
   // Hardcoded to 1 point for now

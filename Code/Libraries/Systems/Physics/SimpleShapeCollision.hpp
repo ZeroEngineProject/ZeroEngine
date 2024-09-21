@@ -79,8 +79,7 @@ bool CollideColliders(Collider* collider1, Collider* collider2, PodArray<Physics
 /// things that can't go through the collide overloads because
 /// there is no corresponding shape type yet (meshes).
 /// No longer used since meshes have a shape type, might still be useful to
-/// specialize something to Mpr so it is being left in. (Testing results between
-/// the two)
+/// specialize something to Mpr so it is being left in. (Testing results between the two)
 inline bool CollideMprColliders(Collider* collider1, Collider* collider2, PodArray<Physics::Manifold>* manifolds)
 {
   // Test for collision.
@@ -148,8 +147,7 @@ bool CollideVsShape(Shape1Type& shape, Collider* shapeCollider, Collider* collid
 }
 
 /// Boolean overlap between two colliders. Doesn't require any
-/// extra stuff (manifold, collider) since it doesn't have a manifold to fill
-/// out.
+/// extra stuff (manifold, collider) since it doesn't have a manifold to fill out.
 template <typename Shape1Type, typename Shape2Type>
 bool OverlapColliders(Collider* collider1, Collider* collider2)
 {
@@ -163,8 +161,7 @@ bool OverlapColliders(Collider* collider1, Collider* collider2)
 }
 
 /// Boolean overlap between a shape type and a collider. Doesn't require any
-/// extra stuff (manifold, collider) since it doesn't have a manifold to fill
-/// out.
+/// extra stuff (manifold, collider) since it doesn't have a manifold to fill out.
 template <typename Shape1Type, typename Shape2Type>
 bool OverlapVsShape(const Shape1Type& shape, Collider* collider)
 {

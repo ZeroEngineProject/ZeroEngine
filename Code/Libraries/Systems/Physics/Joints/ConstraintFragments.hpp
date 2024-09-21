@@ -14,16 +14,14 @@ namespace Physics
 struct GearJoint;
 struct PulleyJoint;
 
-/// Computes the constraint value. This is not the error. Error has to be
-/// computed in a separate step because of limits.
+/// Computes the constraint value. This is not the error. Error has to be computed in a separate step because of limits.
 void LinearAxisValue(WorldAnchorAtom& anchor, Vec3Param axis, ConstraintAtom& atom, real constant = real(0.0));
 void AngularAxisValue(WorldAngleAtom& angle, Vec3Param axis, ConstraintAtom& atom, real constant = real(0.0));
 void LimitedAngularAxisValue(MoleculeData& data, uint axis, ConstraintAtom& atom);
 void GearAxisValue(GearJoint* joint, ConstraintAtom& atom, real constant);
 void PulleyAxisValue(PulleyJoint* joint, ConstraintAtom& atom, real constant);
-/// Computes the error of the atom. If the limit is not nullptr then the atom is
-/// checked against the limit for computing error. Returns true if a limit was
-/// reached, false otherwise (so slop can be applied).
+/// Computes the error of the atom. If the limit is not nullptr then the atom is checked against
+/// the limit for computing error. Returns true if a limit was reached, false otherwise (so slop can be applied).
 bool ComputeError(ConstraintAtom& atom, ImpulseLimitAtom& molLimit, JointLimit* limit, real constant, uint flag);
 /// Determines which atoms are active after being effect by the limit.
 void ComputeActiveAtoms(ConstraintAtom* atoms, uint count, JointLimit* limit, uint& bitFlag);

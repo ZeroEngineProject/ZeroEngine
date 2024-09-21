@@ -57,8 +57,7 @@ void PhysicsNode::RemoveParent(PhysicsNode* node)
 void PhysicsNode::SetOwner(Collider* collider)
 {
   ErrorIf(mCollider != nullptr,
-          "Physics Queue already had a collider owner. Did you forget to "
-          "remove the previous owner?");
+          "Physics Queue already had a collider owner. Did you forget to remove the previous owner?");
 
   mCollider = collider;
   mCollider->mPhysicsNode = this;
@@ -67,8 +66,7 @@ void PhysicsNode::SetOwner(Collider* collider)
 void PhysicsNode::SetOwner(RigidBody* body)
 {
   ErrorIf(mBody != nullptr,
-          "Physics Queue already had a rigid body owner. Did you forget to "
-          "remove the previous owner?");
+          "Physics Queue already had a rigid body owner. Did you forget to remove the previous owner?");
 
   mBody = body;
   mBody->mPhysicsNode = this;
@@ -115,11 +113,10 @@ bool PhysicsNode::IsTransformOrMassQueued()
 void PhysicsNode::UpdateTransformAndMass(PhysicsSpace* space)
 {
   // Make sure that there is something to do first.
-  // The update call below walks through the entire tree and is therefore
-  // expensive to be calling constantly if there is no change. Whenever any
-  // action is queued up, it should propagate to all children in the tree,
-  // meaning that if there is a change required higher up the tree that affects
-  // us then our state will have been set.
+  // The update call below walks through the entire tree and is therefore expensive
+  // to be calling constantly if there is no change. Whenever any action is queued up,
+  // it should propagate to all children in the tree, meaning that if there is a change
+  // required higher up the tree that affects us then our state will have been set.
   if (!IsTransformOrMassQueued())
     return;
 
@@ -152,9 +149,7 @@ void PhysicsNode::QueueSelf()
     else if (mBody)
       mBody->mSpace->QueuePhysicsNode(this);
     else
-      ErrorIf(true,
-              "Action was queued on a dead queue. Make sure all changes are "
-              "done before removing the owner.");
+      ErrorIf(true, "Action was queued on a dead queue. Make sure all changes are done before removing the owner.");
 
     mQueue.mBroadPhaseAction.SetState(Physics::BroadPhaseAction::CurrStateQueued);
   }

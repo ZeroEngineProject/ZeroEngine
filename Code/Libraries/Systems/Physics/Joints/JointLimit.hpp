@@ -8,11 +8,11 @@ struct JointNode;
 
 DeclareBitField5(JointLimitState, Active, AtLowerLimit, WasAtLowerLimit, AtUpperLimit, WasAtUpperLimit);
 
-/// Defines limit properties for a joint. Used to add a min/max bounds to a
-/// joint. When the joint is in between the min/max bounds, the "limited"
-/// portion will be ignored (The stick will not solve when it is in between the
-/// bounds, making it a rope). See each joint for a description of how it reacts
-/// to a limit.
+/// Defines limit properties for a joint. Used to add a min/max bounds to a joint. When the
+/// joint is in between the min/max bounds, the "limited" portion will be
+/// ignored (The stick will not solve when it is in between the bounds,
+/// making it a rope).
+/// See each joint for a description of how it reacts to a limit.
 struct JointLimit : public Component
 {
   ZilchDeclareType(JointLimit, TypeCopyMode::ReferenceType);

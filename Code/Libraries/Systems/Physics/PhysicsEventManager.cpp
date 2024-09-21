@@ -76,8 +76,7 @@ void PhysicsEventManager::BatchPreSolveEvent(Manifold* manifold, PhysicsSpace* s
   if (!f->mFilterFlags.IsSet(FilterFlags::PreSolveEvent))
     return;
 
-  // Find the appropriate block (n search of 4 items..., could pre-sort if I
-  // care later)
+  // Find the appropriate block (n search of 4 items..., could pre-sort if I care later)
   CollisionFilterBlock* block = nullptr;
   for (uint i = 0; i < f->mBlocks.Size(); ++i)
   {
@@ -148,8 +147,7 @@ void PhysicsEventManager::DispatchPreSolveEvents(PhysicsSpace* space)
     PreSolveEvent* e = &mPreSolveEvents.Front();
     mPreSolveEvents.PopFront();
 
-    // Cache the cogs we might send events to (cleans up the object index
-    // swapping)
+    // Cache the cogs we might send events to (cleans up the object index swapping)
     Cog* objA = e->GetObject();
     Cog* objB = e->GetOtherObject();
 
@@ -162,8 +160,7 @@ void PhysicsEventManager::DispatchPreSolveEvents(PhysicsSpace* space)
       e->mObjectIndex = !e->mObjectIndex;
       objB->GetDispatcher()->Dispatch(e->EventId, e);
     }
-    // send to the space (it gets B's ordering, but that shouldn't really
-    // matter)
+    // send to the space (it gets B's ordering, but that shouldn't really matter)
     if (e->mBlock->mStates.IsSet(CollisionBlockStates::SendEventsToSpace))
       space->GetOwner()->GetDispatcher()->Dispatch(e->EventId, e);
 
@@ -185,8 +182,7 @@ void PhysicsEventManager::CreateEvent(
     Physics::Manifold* manifold, PhysicsSpace* space, uint collisionType, uint blockType, bool immediateSend)
 {
   // Always send the normal collision event (whether or not this is
-  // correct behavior I'll worry about later, right now it should never be
-  // blocked though)
+  // correct behavior I'll worry about later, right now it should never be blocked though)
   BaseCollisionEvent::CollisionType typedCollision = (BaseCollisionEvent::CollisionType)collisionType;
   this->CreateCollisionEvent(manifold, 0, collisionType, CollisionEvent::GetEventName(typedCollision), immediateSend);
 
@@ -252,8 +248,7 @@ void PhysicsEventManager::CreateCollisionEvent(
   {
     eventObj->mContactIndex = contactId;
 
-    // If we immediate send then dispatch now (object destruction) otherwise
-    // batch it up
+    // If we immediate send then dispatch now (object destruction) otherwise batch it up
     if (immediateSend)
       DispatchEvent(eventObj);
     else
@@ -293,8 +288,7 @@ void PhysicsEventManager::AddEvent(JointEvent* eventObj)
 
 void PhysicsEventManager::DispatchEvent(CollisionEvent* toSend)
 {
-  // Update the cached point that triggered the event (to grab impulse info
-  // mainly)
+  // Update the cached point that triggered the event (to grab impulse info mainly)
   toSend->UpdatePoint();
 
   // Cache the two objects we might send events to
@@ -318,8 +312,7 @@ void PhysicsEventManager::DispatchEvent(CollisionEvent* toSend)
 
 void PhysicsEventManager::DispatchEvent(PhysicsSpace* space, CollisionGroupEvent* toSend)
 {
-  // Cache the cogs we might send events to (cleans up the object index
-  // swapping)
+  // Cache the cogs we might send events to (cleans up the object index swapping)
   Cog* objA = toSend->GetObject();
   Cog* objB = toSend->GetOtherObject();
 

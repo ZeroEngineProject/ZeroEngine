@@ -33,7 +33,7 @@ struct ManipulatorJoint : public Joint
   void ComputePositionMolecules(MoleculeWalker& molecules);
   void DebugDraw();
   uint GetAtomIndexFilter(uint atomIndex, real& desiredConstraintValue) const;
-  void BatchEvents(){};
+  void BatchEvents() {};
 
   /// The point in world space that the object's point is being moved towards.
   Vec3 GetTargetPoint();

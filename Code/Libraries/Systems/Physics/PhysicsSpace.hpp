@@ -30,16 +30,13 @@ struct SweepResult
   Collider* GetOtherCollider();
   /// The other cog being hit.
   Cog* GetOtherObject();
-  /// The amount of overlap with this object. Will typically be zero unless the
-  /// objects start in contact.
+  /// The amount of overlap with this object. Will typically be zero unless the objects start in contact.
   real GetPenetration();
   /// The point of intersection in world-space.
   Vec3 GetWorldPoint();
-  /// The contact normal pointing from the other object towards the sweeping
-  /// object.
+  /// The contact normal pointing from the other object towards the sweeping object.
   Vec3 GetWorldNormalTowardsSelf();
-  /// The contact normal pointing from the sweeping object towards the other
-  /// object.
+  /// The contact normal pointing from the sweeping object towards the other object.
   Vec3 GetWorldNormalTowardsOther();
 
   real mTime;
@@ -93,8 +90,7 @@ public:
   /// How this space should build islands. For internal testing.
   PhysicsIslandType::Enum GetIslandingType() const;
   void SetIslandingType(PhysicsIslandType::Enum islandingType);
-  /// What kinds of pre-processing should be performed on islands. Used to test
-  /// performance.
+  /// What kinds of pre-processing should be performed on islands. Used to test performance.
   PhysicsIslandPreProcessingMode::Enum GetIslandPreProcessType() const;
   void SetIslandPreProcessType(PhysicsIslandPreProcessingMode::Enum preProcessType);
   /// Post-processing islands will merge islands that are too small.
@@ -102,8 +98,7 @@ public:
   void SetPostProcessIslands(bool postProcess);
   /// How many islands currently exist. For debugging.
   uint GetIslandCount() const;
-  /// (Internal) Configures if one Solver is used across all islands. For
-  /// performance testing.
+  /// (Internal) Configures if one Solver is used across all islands. For performance testing.
   bool GetIsSolverShared() const;
   void SetIsSolverShared(bool shared);
   /// Filters two cogs to not resolve collisions with each other.
@@ -114,11 +109,9 @@ public:
   void AddHierarchyPairFilter(Cog* cog1, Cog* cog2);
   void AddHierarchyPairFilterInternal(Cog* hierarchyCog, Cog* normalCog);
   void AddPairFilterInternal(Collider* collider1, Collider* collider2);
-  /// Removes the filter between two cogs allowing collisions to be computed as
-  /// normal.
+  /// Removes the filter between two cogs allowing collisions to be computed as normal.
   void RemovePairFilter(Cog* cog1, Cog* cog2);
-  /// Removes the filters between both hierarchies. See RemovePairFilter for
-  /// more info.
+  /// Removes the filters between both hierarchies. See RemovePairFilter for more info.
   void RemoveHierarchyPairFilter(Cog* cog1, Cog* cog2);
   void RemoveHierarchyPairFilterInternal(Cog* hierarchyCog, Cog* normalCog);
   void RemovePairFilterInternal(Collider* collider1, Collider* collider2);
@@ -126,8 +119,7 @@ public:
   /// The world points of the joint are both set to worldPoint.
   Cog* CreateJoint(Cog* cog0, Cog* cog1, StringParam jointName, Vec3Param worldPoint);
 
-  /// The default 2D mode for this space. If a RigidBody is set to
-  /// InheritFromSpace then it will use this value.
+  /// The default 2D mode for this space. If a RigidBody is set to InheritFromSpace then it will use this value.
   bool GetMode2D() const;
   void SetMode2D(bool state);
   /// Performs extra work to help enforce determinism in the simulation.
@@ -141,30 +133,25 @@ public:
   CollisionTable* GetCollisionTable();
   void SetCollisionTable(CollisionTable* collisionTable);
   void FixCollisionTable(CollisionTable* table);
-  /// The resource that controls how physics solves things. Mostly related to
-  /// how collision is resolved.
+  /// The resource that controls how physics solves things. Mostly related to how collision is resolved.
   PhysicsSolverConfig* GetPhysicsSolverConfig();
   void SetPhysicsSolverConfig(PhysicsSolverConfig* config);
 
-  /// Updates any modified resource (typically from script) that physics cares
-  /// about.
+  /// Updates any modified resource (typically from script) that physics cares about.
   void UpdateModifiedResources();
 
   /// Debug draws and makes sure broadphase is up-to-date.
   void FrameUpdate();
-  /// Updates every object in the space (integration, collision detection /
-  /// resolution, etc...).
+  /// Updates every object in the space (integration, collision detection / resolution, etc...).
   void SystemLogicUpdate(UpdateEvent* updateEvent);
 
-  /// Forces all queued computations in physics to be updated now. Should only
-  /// be used for debugging.
+  /// Forces all queued computations in physics to be updated now. Should only be used for debugging.
   void FlushPhysicsQueue();
-  /// Updates all queues for pending physics calculation. Beforehand, it also
-  /// recomputes the world matrix values so that everything is in the right
-  /// spot.
+  /// Updates all queues for pending physics calculation. Beforehand, it also recomputes
+  /// the world matrix values so that everything is in the right spot.
   void PushBroadPhaseQueue();
-  /// Same as PushBroadPhaseQueue but also profiles the sub-steps. This should
-  /// be unified later when a better profiling system is implemented.
+  /// Same as PushBroadPhaseQueue but also profiles the sub-steps. This should be
+  /// unified later when a better profiling system is implemented.
   void PushBroadPhaseQueueProfiled();
   void UpdateTransformAndMassOfTree(PhysicsNode* node);
   /// Iterates one timestep of physics with the given dt. Does not take care of
@@ -178,16 +165,13 @@ public:
   /// Updates all BroadPhases and then finds all possible collision pairs.
   void BroadPhase();
   /// Takes the possible collisions from the BroadPhase step and checks if they
-  /// actually collide. If they do collide then they are added to the
-  /// IslandManager.
+  /// actually collide. If they do collide then they are added to the IslandManager.
   void NarrowPhase();
-  /// Sends out any pre-solve events so users can modify state before
-  /// resolution.
+  /// Sends out any pre-solve events so users can modify state before resolution.
   void PreSolve(real dt);
   /// Solves the constraints of all islands.
   void ResolutionPhase(real dt);
-  /// If any constraint has position correction, then this solves the position
-  /// constraints directly.
+  /// If any constraint has position correction, then this solves the position constraints directly.
   void SolvePositions(real dt);
   /// Solve any spring systems
   void SolveSprings(real dt);
@@ -197,8 +181,7 @@ public:
   /// of results given is based on the size of the CastResults passed in.
   void CastRay(const Ray& worldRay, CastResults& results);
 
-  /// Finds the first collider that a ray hits. A default CastFilter will be
-  /// used.
+  /// Finds the first collider that a ray hits. A default CastFilter will be used.
   CastResult CastRayFirst(const Ray& worldRay);
   /// Finds the first collider that a ray hits using the given filter.
   CastResult CastRayFirst(const Ray& worldRay, CastFilter& filter);
@@ -241,8 +224,8 @@ public:
   /// Currently a hack function for player controller sweeping
   void CastCollider(Vec3Param offset, Collider* testCollider, Physics::ManifoldArray& results, CastFilter& filter);
   /// Finds all colliders in the space that another collider hits using the
-  /// given filter. The test collider's position can be offset to test at a
-  /// different location. This returns up to maxCount number of objects.
+  /// given filter. The test collider's position can be offset to test at a different location.
+  /// This returns up to maxCount number of objects.
   CastResultsRange CastCollider(Vec3Param offset, Collider* testCollider, CastFilter& filter);
 
   // Sweeping
@@ -251,17 +234,13 @@ public:
   SweepResultRange SweepCollider(Collider* collider, Vec3Param velocity, real dt, CastFilter& filter);
 
   // Shape Events
-  /// Dispatches an event to all objects within the given sphere. Uses the
-  /// default cast filter.
+  /// Dispatches an event to all objects within the given sphere. Uses the default cast filter.
   void DispatchWithinSphere(const Sphere& sphere, StringParam eventName, Event* toSend);
-  /// Dispatches an event to all objects within the given sphere using the
-  /// provided cast filter.
+  /// Dispatches an event to all objects within the given sphere using the provided cast filter.
   void DispatchWithinSphere(const Sphere& sphere, CastFilter& filter, StringParam eventName, Event* toSend);
-  /// Dispatches an event to all objects within the given aabb. Uses the default
-  /// cast filter.
+  /// Dispatches an event to all objects within the given aabb. Uses the default cast filter.
   void DispatchWithinAabb(const Aabb& aabb, StringParam eventName, Event* toSend);
-  /// Dispatches an event to all objects within the given aabb using the
-  /// provided cast filter.
+  /// Dispatches an event to all objects within the given aabb using the provided cast filter.
   void DispatchWithinAabb(const Aabb& aabb, CastFilter& filter, StringParam eventName, Event* toSend);
 
   /// The number of iterations the physics space will take every frame.
@@ -276,8 +255,7 @@ public:
   /// Wakes up all asleep bodies.
   void ForceAwakeRigidBodies();
 
-  /// Returns a debug string stating why physics does or doesn't think these two
-  /// objects should be colliding.
+  /// Returns a debug string stating why physics does or doesn't think these two objects should be colliding.
   String WhyAreTheyNotColliding(Cog* cog1, Cog* cog2);
 
   void AddComponent(RigidBody* body);
@@ -340,8 +318,7 @@ private:
   /// Send out any queued events (Contacts, Joints, etc...)
   void PublishEvents();
 
-  /// Tell all PhysicsEffects to pre-calculate any shared information for this
-  /// frame.
+  /// Tell all PhysicsEffects to pre-calculate any shared information for this frame.
   void PreCalculateEffects(real dt);
   /// Apply all region effects.
   void UpdateRegions(real dt);
@@ -357,8 +334,7 @@ private:
   void ActivateKinematic(RigidBody* body);
   /// Computes a kinematic body's velocities.
   void UpdateKinematicVelocities();
-  /// Updates kinematic objects between the three internal states of moving,
-  /// stopping, and inactive.
+  /// Updates kinematic objects between the three internal states of moving, stopping, and inactive.
   void UpdateKinematicState();
   /// Updates all the physics cars. (needs to happen before resolution)
   void UpdatePhysicsCars(real dt);
@@ -395,8 +371,7 @@ private:
   RigidBodyList mRigidBodies;
   /// Asleep bodies.
   RigidBodyList mInactiveRigidBodies;
-  /// Kinematic bodies that have had a transform update called in the last
-  /// frame.
+  /// Kinematic bodies that have had a transform update called in the last frame.
   RigidBodyList mMovingKinematicBodies;
   /// Kinematic bodies that had a transform update called two frames ago.
   /// This is used as a temporary holding place for a bodies so that
@@ -433,8 +408,7 @@ private:
   HandleOf<PhysicsSolverConfig> mPhysicsSolverConfig;
 
 public:
-  // Physics effects that sit randomly in a hierarchy and need to apply to their
-  // nearest rigid-body parent.
+  // Physics effects that sit randomly in a hierarchy and need to apply to their nearest rigid-body parent.
   PhysicsEffectList mHierarchyEffects;
   // Global effects (regions which do not have Collider's). The effects in these
   // Regions will be applied to all objects in the space.
@@ -456,16 +430,13 @@ public:
   real mIterationDt;
 
   // These variables control the max velocity that a rigid body can be set to.
-  // The bool is used to only display an error message the first time this
-  // happens.
+  // The bool is used to only display an error message the first time this happens.
   bool mInvalidVelocityOccurred;
   real mMaxVelocity;
 
-  /// What kind of broadphase is used for dynamic objects (those with
-  /// RigidBodies).
+  /// What kind of broadphase is used for dynamic objects (those with RigidBodies).
   String mDynamicBroadphaseType;
-  /// What kind of broadphase is used for static objects (those without
-  /// RigidBodies).
+  /// What kind of broadphase is used for static objects (those without RigidBodies).
   String mStaticBroadphaseType;
 
   Memory::Heap* mHeap;

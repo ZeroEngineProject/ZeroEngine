@@ -146,8 +146,7 @@ void GenericBasicSolver::IterateVelocities(uint iteration)
 void GenericBasicSolver::SolvePositions()
 {
   // first do a pre-processing step to figure out which joints/contacts actually
-  // need position correction (so we're not doing the check during the inner
-  // loop)
+  // need position correction (so we're not doing the check during the inner loop)
   JointList jointsToSolve;
   ContactList contactsToSolve;
 
@@ -325,7 +324,7 @@ uint GenericBasicSolver::FindRigidBodyIndex(Collider* collider)
   uint notFoundVal = uint(-1);
   RigidBody* body = collider->GetActiveBody();
   uint index = mLookupMap.FindValue(body, notFoundVal);
-  uint objectCount = mObjects.Size();
+  uint objectCount = (uint)mObjects.Size();
   if (index == notFoundVal)
   {
     ConstraintObjectData objData;

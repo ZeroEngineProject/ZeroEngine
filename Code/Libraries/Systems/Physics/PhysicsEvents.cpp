@@ -93,11 +93,9 @@ Collider* BaseCollisionEvent::GetOtherCollider()
 
 void BaseCollisionEvent::MatchCollisionFilterOrder(CollisionFilter* filter)
 {
-  // To help make SendToA and SendToB make more sense, flip the event's order to
-  // match the same as the filter. This means SendToA will send to the collider
-  // with the same collision group as the first one in the filter. If both
-  // collision groups are the same then no flip happens but there's no logical
-  // order then anyways.
+  // To help make SendToA and SendToB make more sense, flip the event's order to match the same as the filter.
+  // This means SendToA will send to the collider with the same collision group as the first one in the filter.
+  // If both collision groups are the same then no flip happens but there's no logical order then anyways.
   Collider* firstCollider = GetCollider();
   ResourceId firstGroupId = firstCollider->mCollisionGroupInstance->mResource->mResourceId;
   if (firstGroupId != filter->first())

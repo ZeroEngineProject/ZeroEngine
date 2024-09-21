@@ -45,8 +45,7 @@ void BasicDirectionEffect::PreCalculate(real dt)
   if (!GetActive())
     return;
 
-  // The world space force is constant for all objects passed in so cache this
-  // once per iteration
+  // The world space force is constant for all objects passed in so cache this once per iteration
   mWorldForce = GetWorldDirection() * mStrength;
 }
 

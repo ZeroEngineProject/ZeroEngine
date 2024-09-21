@@ -18,7 +18,7 @@ struct PointNode
     uint mJumps;
   };
 
-  void AddNeighbor(uint adjacentPoint);
+  void AddNeighbor(size_t adjacentPoint);
 
   Array<AdjacencyInfo> mAdjacentPoints;
 };
@@ -29,10 +29,10 @@ struct PointNode
 struct PointGraph
 {
   void AddPoint();
-  void SetSize(uint pointCount);
-  void AddEdge(uint p1, uint p2);
-  uint& operator()(uint x, uint y);
-  uint& Get(uint x, uint y);
+  void SetSize(size_t pointCount);
+  void AddEdge(size_t p1, size_t p2);
+  uint& operator()(size_t x, size_t y);
+  uint& Get(size_t x, size_t y);
   void Build();
 
   Array<PointNode> mNodes;
@@ -40,24 +40,22 @@ struct PointGraph
 
 /// When should debug drawing of a spring system happen.
 /// <param name="None">Never debug draw.</param>
-/// <param name="WhenNoMesh">Only debug draw if no graphical mesh is
-/// present.</param> <param name="Always">Always debug draw.</param>
+/// <param name="WhenNoMesh">Only debug draw if no graphical mesh is present.</param>
+/// <param name="Always">Always debug draw.</param>
 DeclareEnum3(SpringDebugDrawMode, None, WhenNoMesh, Always);
 /// How should springs be drawn?
 /// <param name="Normal">Draw all springs equally (same color).</param>
 /// <param name="Sorted">Draw the springs in sorted order. This alters the
 /// color based upon the distance from an anchor point.</param>
 DeclareEnum2(SpringDebugDrawType, Normal, Sorted);
-/// How should springs be sorted for solving. This effects the convergence rate
-/// of a system. <param name="None">No sorting is preserved.</param> <param
-/// name="TopDown">Sort so that springs closer to anchors are solved
-/// first.</param> <param name="BottomUp">Sort so that springs further away from
-/// anchors are solved first.</param>
+/// How should springs be sorted for solving. This effects the convergence rate of a system.
+/// <param name="None">No sorting is preserved.</param>
+/// <param name="TopDown">Sort so that springs closer to anchors are solved first.</param>
+/// <param name="BottomUp">Sort so that springs further away from anchors are solved first.</param>
 DeclareEnum3(SpringSortOrder, None, TopDown, BottomUp);
 
-/// A spring system meant for one-way interaction between a character (or some
-/// sort of driven body). That is, the cloth is affected by collision but does
-/// not affect the things that collide with it.
+/// A spring system meant for one-way interaction between a character (or some sort of driven body).
+/// That is, the cloth is affected by collision but does not affect the things that collide with it.
 class SpringSystem : public Component
 {
 public:
@@ -89,36 +87,29 @@ public:
   /// Iterate through all edges, iteratively solving them,
   /// to try to relax the system to a better global solution.
   void RelaxSprings();
-  /// Solve one edge to be at the exact rest length based upon the mass ratio of
-  /// the points.
+  /// Solve one edge to be at the exact rest length based upon the mass ratio of the points.
   void SolveEdge(PointMass& p0, PointMass& p1, real restLength);
-  /// Approximate the velocity of a point based upon its old position and new
-  /// position.
+  /// Approximate the velocity of a point based upon its old position and new position.
   void UpdateVelocities(real dt);
   void IntegrateVelocity(real dt);
   void IntegratePosition(real dt);
-  /// Commit all results to whatever structure is needed after solving (such as
-  /// a mesh).
-  virtual void Commit(){};
+  /// Commit all results to whatever structure is needed after solving (such as a mesh).
+  virtual void Commit() {};
 
-  /// Helper to add an edges between two point masses. The error correction is
-  /// how much to take off of the rest length to help with small numerical
-  /// errors.
+  /// Helper to add an edges between two point masses. The error correction is how
+  /// much to take off of the rest length to help with small numerical errors.
   Edge& AddEdge(uint index0, uint index1, real errCorrection = real(0.0));
   /// Add a new point mass at the given position
   void AddPointMass(Vec3Param position);
-  /// Set the point mass at the given index to be anchored (based upon its
-  /// relative position) to another cog. If null is passed in then the anchor is
-  /// cleared.
+  /// Set the point mass at the given index to be anchored (based upon its relative position)
+  /// to another cog. If null is passed in then the anchor is cleared.
   void SetPointMassAnchor(uint index, Cog* anchorCog);
-  /// Adds a connection between a point mass on this system and a point mass on
-  /// another spring system.
+  /// Adds a connection between a point mass on this system and a point mass on another spring system.
   void AddConnection(SpringSystem* otherSystem, uint indexA, uint indexB);
   /// Finds if there is a system connection to the passed in other system.
   SystemConnection* FindConnection(SpringSystem* otherSystem);
 
-  /// How should edges be sorted? Sorted so we solve at anchors and moving out
-  /// or the opposite?
+  /// How should edges be sorted? Sorted so we solve at anchors and moving out or the opposite?
   SpringSortOrder::Enum GetSortOrder();
   void SetSortOrder(SpringSortOrder::Enum orderingType);
   /// Sorts all of the edges based upon our current sorting method.
@@ -127,17 +118,14 @@ public:
   /// When do we debug draw? Never? Only when we have no mesh?
   SpringDebugDrawMode::Enum GetDebugDrawMode();
   void SetDebugDrawMode(SpringDebugDrawMode::Enum debugDrawMode);
-  /// What type of debug drawing do we do? Color coding based upon edge
-  /// distance?
+  /// What type of debug drawing do we do? Color coding based upon edge distance?
   SpringDebugDrawType::Enum GetDebugDrawType();
   void SetDebugDrawType(SpringDebugDrawType::Enum debugDrawType);
 
-  /// Do a raycast against all of the faces of this mesh and return what face
-  /// and where it was hit.
+  /// Do a raycast against all of the faces of this mesh and return what face and where it was hit.
   bool Cast(RayParam ray, Face& resultFace, Vec3Ref intersectionPoint);
 
-  /// Represents a anchor point for a PointMass to a given cog (not another
-  /// spring system).
+  /// Represents a anchor point for a PointMass to a given cog (not another spring system).
   struct AnchorPoint
   {
     void Serialize(Serializer& stream);
@@ -164,8 +152,7 @@ public:
 
     void Serialize(Serializer& stream);
 
-    /// Old position is needed to calculate the velocity after positions are
-    /// changed
+    /// Old position is needed to calculate the velocity after positions are changed
     Vec3 mOldPosition;
     Vec3 mPosition;
     /// Maybe remove this and serialize in the local position (as old position)?
@@ -219,8 +206,8 @@ public:
   typedef Array<Edge> Edges;
   Edges mEdges;
 
-  /// A triangle face for the mesh. Used to update for rendering and also to
-  /// apply several physics effects that are based upon the hit surface area.
+  /// A triangle face for the mesh. Used to update for rendering and also to apply
+  /// several physics effects that are based upon the hit surface area.
   struct Face
   {
     void Serialize(Serializer& stream);
@@ -251,8 +238,7 @@ public:
   };
 
   // We need a double edged list so that it can be traversed from each side, but
-  // to make sure they aren't solved twice the edges are separated into owned
-  // and connected edges.
+  // to make sure they aren't solved twice the edges are separated into owned and connected edges.
   typedef InList<SystemConnection, &SystemConnection::mOwnedEdge> OwnedEdgeList;
   OwnedEdgeList mOwnedEdges;
   typedef InList<SystemConnection, &SystemConnection::mConnectedEdge> ConnectedEdgeList;
@@ -358,9 +344,8 @@ public:
 };
 
 /// To correctly solve a collection of connected spring systems, their solve
-/// must be interleaved. This group is a collection of systems (found with a
-/// graph traversal) that are solved together to help guarantee a more correct
-/// global solution.
+/// must be interleaved. This group is a collection of systems (found with a graph traversal)
+/// that are solved together to help guarantee a more correct global solution.
 class SpringGroup
 {
 public:

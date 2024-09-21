@@ -14,8 +14,7 @@
   /* The position of the anchor on object B given a position in world space*/                                          \
   Vec3 GetWorldPointB();                                                                                               \
   void SetWorldPointB(Vec3Param worldPoint);                                                                           \
-  /* Sets the position of the anchor on object A and B given a position in                                             \
-   * world space*/                                                                                                     \
+  /* Sets the position of the anchor on object A and B given a position in world space*/                               \
   void SetWorldPoints(Vec3Param point);                                                                                \
   /* Virtual function for when an object link point changes*/                                                          \
   void ObjectLinkPointUpdated(size_t edgeIndex, Vec3Param localPoint) override;

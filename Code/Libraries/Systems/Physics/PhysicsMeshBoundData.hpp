@@ -24,11 +24,9 @@ class GenericPhysicsMesh;
 template <typename ArrayType>
 class BoundMeshDataRange;
 
-/// Base functionality for binding a mesh array (on a resource) in physics.
-/// Currently designed as a templated base to reduce code duplication,
-/// especially while prototyping. Possibly split to individual classes (due to
-/// differences, code documentation, etc...) or make generic enough to use
-/// elsewhere later.
+/// Base functionality for binding a mesh array (on a resource) in physics. Currently designed as
+/// a templated base to reduce code duplication, especially while prototyping. Possibly split to
+/// individual classes (due to differences, code documentation, etc...) or make generic enough to use elsewhere later.
 template <typename OwningType, typename DataTypeT>
 class BoundMeshData : public SafeId32Object
 {
@@ -115,8 +113,7 @@ public:
     return true;
   }
 
-  /// The array that this class represents. Assumes that this data cannot go
-  /// away without this class also going away.
+  /// The array that this class represents. Assumes that this data cannot go away without this class also going away.
   ArrayType* mBoundArray;
   /// The owner of the bound array. This object is notified when the resource
   /// is modified via the calling of the "ResourceModified" function.
@@ -159,14 +156,13 @@ public:
 
   FrontResult Front()
   {
-    // If the range is empty (or the range has been destroyed) then throw an
-    // exception.
+    // If the range is empty (or the range has been destroyed) then throw an exception.
     if (Empty())
     {
       DoNotifyException("Invalid Range Operation", "Cannot access an item in an empty range.");
       return FrontResult();
     }
-    return mArray->Get(mIndex);
+    return mArray->Get((uint)mIndex);
   }
 
   void PopFront()

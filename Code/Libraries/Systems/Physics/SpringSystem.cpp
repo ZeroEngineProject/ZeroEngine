@@ -4,7 +4,7 @@
 namespace Zero
 {
 
-void PointNode::AddNeighbor(uint adjacentPoint)
+void PointNode::AddNeighbor(size_t adjacentPoint)
 {
   AdjacencyInfo info;
   info.mJumps = 1;
@@ -18,29 +18,29 @@ void PointGraph::AddPoint()
   mNodes.PushBack(PointNode());
 }
 
-void PointGraph::SetSize(uint pointCount)
+void PointGraph::SetSize(size_t pointCount)
 {
   mNodes.Resize(pointCount);
   PointNode::AdjacencyInfo info;
-  info.mJumps = pointCount + 1;
-  for (uint i = 0; i < mNodes.Size(); ++i)
+  info.mJumps = static_cast<uint>(pointCount + 1);
+  for (size_t i = 0; i < mNodes.Size(); ++i)
   {
     mNodes[i].mAdjacentPoints.Resize(pointCount, info);
   }
 }
 
-void PointGraph::AddEdge(uint p1, uint p2)
+void PointGraph::AddEdge(size_t p1, size_t p2)
 {
   mNodes[p1].AddNeighbor(p2);
   mNodes[p2].AddNeighbor(p1);
 }
 
-uint& PointGraph::operator()(uint x, uint y)
+uint& PointGraph::operator()(size_t x, size_t y)
 {
   return mNodes[x].mAdjacentPoints[y].mJumps;
 }
 
-uint& PointGraph::Get(uint x, uint y)
+uint& PointGraph::Get(size_t x, size_t y)
 {
   return (*this)(x, y);
 }
@@ -48,14 +48,14 @@ uint& PointGraph::Get(uint x, uint y)
 void PointGraph::Build()
 {
   // warshall's algorithm
-  for (uint i = 0; i < mNodes.Size(); ++i)
+  for (size_t i = 0; i < mNodes.Size(); ++i)
     Get(i, i) = 0;
 
-  for (uint i = 0; i < mNodes.Size(); ++i)
+  for (size_t i = 0; i < mNodes.Size(); ++i)
   {
-    for (uint j = 0; j < mNodes.Size(); ++j)
+    for (size_t j = 0; j < mNodes.Size(); ++j)
     {
-      for (uint k = 0; k < mNodes.Size(); ++k)
+      for (size_t k = 0; k < mNodes.Size(); ++k)
       {
         uint& a = Get(j, k);
         uint b = Get(i, j);
@@ -84,9 +84,8 @@ void SpringSystem::Serialize(Serializer& stream)
   SerializeNameDefault(mPointMasses, PointMasses());
   SerializeNameDefault(mEdges, Edges());
   SerializeNameDefault(mFaces, Faces());
-  // figure out how I want to serialize this later (so it doesn't screw up the
-  // rope and whatnot) SerializeNameDefault(mSystemConnections,
-  // SystemConnections());
+  // figure out how I want to serialize this later (so it doesn't screw up the rope and whatnot)
+  // SerializeNameDefault(mSystemConnections, SystemConnections());
 
   SerializeNameDefault(mAnchors, AnchorPoints());
 
@@ -126,7 +125,7 @@ void SpringSystem::OnAllObjectsCreated(CogInitializer& initializer)
   }
 
   // remove any invalid anchors
-  for (int i = mAnchors.Size() - 1; i >= 0; --i)
+  for (size_t i = mAnchors.Size() - 1; i >= 0; --i)
   {
     AnchorPoint* anchor = mAnchors[i];
     Cog* anchorCog = anchor->mAnchorObject;
@@ -155,10 +154,9 @@ void SpringSystem::OnDestroy(uint flags)
     delete mAnchors[i];
   }
 
-  // have to clean up both owned and connected edges since we don't know if
-  // we'll be destroyed before or after the other side is destroyed (and we
-  // can't
-  // clean up if the other side was already destroyed)
+  // have to clean up both owned and connected edges since we don't know if we'll
+  // be destroyed before or after the other side is destroyed
+  //(and we can't clean up if the other side was already destroyed)
   while (!mOwnedEdges.Empty())
   {
     SystemConnection& connection = mOwnedEdges.Front();
@@ -187,8 +185,7 @@ void SpringSystem::DebugDraw()
       maxDistance = Math::Max(maxDistance, Math::Min(edge.mIndex0AnchorDistance, edge.mIndex1AnchorDistance));
     }
 
-    // then draw all edges with a weighted coloring based upon the anchor
-    // distance
+    // then draw all edges with a weighted coloring based upon the anchor distance
     Vec4 color = Vec4(1, 1, 1, 1);
     for (uint i = 0; i < mEdges.Size(); ++i)
     {
@@ -217,8 +214,7 @@ void SpringSystem::DebugDraw()
 
   // always just draw the connected edges if we aren't in no drawing mode
 
-  // need to not accidentally use a broken connection, so for simplicity just
-  // prune the list
+  // need to not accidentally use a broken connection, so for simplicity just prune the list
   UpdateConnections();
 
   // only render owned edges (so they don't get drawn twice)
@@ -256,8 +252,7 @@ void SpringSystem::UpdateConnections()
   {
     SystemConnection& connection = range.Front();
 
-    // if one of the systems is invalid or doesn't contain a spring system then
-    // remove the connection
+    // if one of the systems is invalid or doesn't contain a spring system then remove the connection
     Cog* owningCog = connection.mOwningSystemId;
     if (owningCog == nullptr)
     {
@@ -303,8 +298,7 @@ void SpringSystem::UpdateAnchors()
       continue;
     }
 
-    // otherwise the anchor is valid so clear the mass and update the position
-    // of the point
+    // otherwise the anchor is valid so clear the mass and update the position of the point
     point.mInvMass = real(0.0);
 
     Transform* t = anchorObj->has(Transform);
@@ -334,12 +328,11 @@ void SpringSystem::SolveSpringForces()
   //    //simply calculate the spring force
   //    Vec3 springForce = -edge.mK * (currLength - edge.mRestLength) * d;
   //
-  //    //calculate the drag force slightly differently that discussed in class,
-  //    only measure the
-  //    //relative velocity in the direction of the spring (that's what the dot
-  //    product is for) Vec3 v = p1.mVelocity - p0.mVelocity; Vec3 dragForce =
-  //    -edge.mD * Math::Dot(v, d) * d; Vec3 totalForce = springForce +
-  //    dragForce;
+  //     //calculate the drag force slightly differently that discussed in class, only measure the
+  //     //relative velocity in the direction of the spring (that's what the dot product is for)
+  //     Vec3 v = p1.mVelocity - p0.mVelocity;
+  //     Vec3 dragForce = -edge.mD * Math::Dot(v, d) * d;
+  //     Vec3 totalForce = springForce + dragForce;
   //
   //    p0.mForce -= totalForce;
   //    p1.mForce += totalForce;
@@ -443,10 +436,9 @@ SpringSystem::Edge& SpringSystem::AddEdge(uint index0, uint index1, real errCorr
   Vec3 pos1 = mPointMasses[index1].mPosition;
   Edge& edge = mEdges.PushBack();
   edge.Set(index0, index1, pos0, pos1);
-  // To help with certain systems (ropes) it's useful to add a correction term
-  // to improve stiffness. This is because each link will have a small amount of
-  // error so shortening each edge by a small percentage will help to mitigate
-  // that error.
+  // To help with certain systems (ropes) it's useful to add a correction term to improve stiffness.
+  // This is because each link will have a small amount of error so shortening each
+  // edge by a small percentage will help to mitigate that error.
   edge.mRestLength = Math::Max(edge.mRestLength - errCorrection, real(0.0));
   return edge;
 }
@@ -506,8 +498,7 @@ void SpringSystem::SetPointMassAnchor(uint index, Cog* anchorCog)
 void SpringSystem::AddConnection(SpringSystem* otherSystem, uint indexA, uint indexB)
 {
   SystemConnection* connection = FindConnection(otherSystem);
-  // if a connection did not already exist then create one between these two
-  // systems
+  // if a connection did not already exist then create one between these two systems
   if (connection == nullptr)
   {
     connection = new SystemConnection();
@@ -594,8 +585,7 @@ void SpringSystem::SortEdges()
   points.Resize(mPointMasses.Size());
   Array<EdgeInfo> edges;
   edges.Resize(mEdges.Size());
-  // we also need a stack (of what to visit) and a map what we've already
-  // visited
+  // we also need a stack (of what to visit) and a map what we've already visited
   HashSet<PointInfo*> visitedPointSet;
   InList<PointInfo> stack;
 
@@ -645,9 +635,8 @@ void SpringSystem::SortEdges()
       else
         otherPoint = edgeInfo->mPoint0;
 
-      // if we've already visited the other point then we've found the distance
-      // from anchors already so skip it (this distance will be >= the current
-      // one)
+      // if we've already visited the other point then we've found the distance from
+      // anchors already so skip it (this distance will be >= the current one)
       if (visitedPointSet.Contains(otherPoint))
         continue;
 
@@ -745,8 +734,7 @@ void SpringSystem::PointMass::Serialize(Serializer& stream)
   SerializeNameDefault(mInitialOffset, Vec3::cZero);
   SerializeNameDefault(mPosition, Vec3::cZero);
 
-  // if we're loading then we need to start the old position at our current
-  // position
+  // if we're loading then we need to start the old position at our current position
   if (stream.GetMode() == SerializerMode::Loading)
     mOldPosition = mPosition;
 }
@@ -838,8 +826,7 @@ void DecorativeCloth::Initialize(CogInitializer& initializer)
 void DecorativeCloth::OnAllObjectsCreated(CogInitializer& initializer)
 {
   bool dynamicallyCreated = (initializer.Flags & CreationFlags::DynamicallyAdded) != 0;
-  // if we weren't dynamically created then just call the base class (which will
-  // fix our anchors)
+  // if we weren't dynamically created then just call the base class (which will fix our anchors)
   if (dynamicallyCreated == false)
   {
     SpringSystem::OnAllObjectsCreated(initializer);
@@ -1135,10 +1122,9 @@ void DecorativeRope::GetPoints(Array<Vec3>& points)
   if (cogA == nullptr || cogB == nullptr)
     return;
 
-  // if a cog is a spring system then we are missing a point mass in our list
-  // since it belongs to the other object. If that's the case then we have to
-  // manually add it back in either at the beginning or the end so that we have
-  // the full length of the rope.
+  // if a cog is a spring system then we are missing a point mass in our list since
+  // it belongs to the other object. If that's the case then we have to manually add
+  // it back in either at the beginning or the end so that we have the full length of the rope.
   SpringSystem* systemA = nullptr;
   SpringSystem* systemB = nullptr;
   Vec3 worldPointA = GetWorldPoint(cogA, mLocalPointA, mPointMassIndexA, systemA);
@@ -1154,8 +1140,7 @@ void DecorativeRope::GetPoints(Array<Vec3>& points)
 
 Vec3 DecorativeRope::GetWorldPoint(Cog* cog, Vec3Param localPoint, uint pointMassIndex, SpringSystem*& resultingSystem)
 {
-  // if the cog has a spring system then return the point mass at the given
-  // index
+  // if the cog has a spring system then return the point mass at the given index
   resultingSystem = cog->has(SpringSystem);
   if (resultingSystem != nullptr)
     return resultingSystem->mPointMasses[pointMassIndex].mPosition;
@@ -1178,9 +1163,9 @@ void DecorativeRope::CreateLinks()
   mPointMasses.Clear();
   mEdges.Clear();
 
-  // Since we might connect to another object or a spring system, we might not
-  // actually create all of the normal links. If we're connected to a spring
-  // system we'll have one less point mass and spring on each side.
+  // Since we might connect to another object or a spring system, we might not actually
+  // create all of the normal links. If we're connected to a spring system we'll
+  // have one less point mass and spring on each side.
   uint startIndex = 0;
   uint endIndex = mNumberOfLinks;
 
@@ -1196,14 +1181,12 @@ void DecorativeRope::CreateLinks()
   if (systemB != nullptr)
     --endIndex;
 
-  // figure out how many links we'll actually create and get how long each one
-  // is
+  // figure out how many links we'll actually create and get how long each one is
   uint linksToCreate = endIndex - startIndex;
   Vec3 dir = worldPointB - worldPointA;
   // while we may choose to create a smaller number of links and point masses
   //(due to connections to other springs) the length of each edge should always
-  // be based upon the total number of links (since we'll be creating that many
-  // edges no matter what)
+  // be based upon the total number of links (since we'll be creating that many edges no matter what)
   dir /= (real)mNumberOfLinks;
   real linkLength = Math::Length(dir);
 
@@ -1214,8 +1197,7 @@ void DecorativeRope::CreateLinks()
     AddPointMass(position);
   }
 
-  // add an edge between each point mass we actually created (this will exclude
-  // the edges to other spring systems)
+  // add an edge between each point mass we actually created (this will exclude the edges to other spring systems)
   for (uint i = 1; i <= linksToCreate; ++i)
     AddEdge(i - 1, i, mErrorCorrection);
 
@@ -1228,9 +1210,9 @@ void DecorativeRope::CreateLinks()
     SetPointMassAnchor(0, cogA);
 
   if (systemB != nullptr)
-    AddConnection(systemB, mPointMasses.Size() - 1, mPointMassIndexB);
+    AddConnection(systemB, static_cast<uint>(mPointMasses.Size() - 1), mPointMassIndexB);
   else if (mAnchorB)
-    SetPointMassAnchor(mPointMasses.Size() - 1, cogB);
+    SetPointMassAnchor(static_cast<uint>(mPointMasses.Size() - 1), cogB);
 }
 
 uint DecorativeRope::GetNumberOfLinks()
@@ -1240,9 +1222,9 @@ uint DecorativeRope::GetNumberOfLinks()
 
 void DecorativeRope::SetNumberOfLinks(uint linkNumber)
 {
-  // To make life easier, we can have at min 2 links, otherwise we'd be creating
-  // only one link without connecting to any internal point masses. This would
-  // create another branch in setup that we want to avoid.
+  // To make life easier, we can have at min 2 links, otherwise we'd be creating only one
+  // link without connecting to any internal point masses. This would create another branch in setup that we want to
+  // avoid.
   mNumberOfLinks = Math::Clamp(linkNumber, 2u, 100u);
 }
 

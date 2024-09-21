@@ -130,9 +130,8 @@ void PhysicsMaterial::UpdateAndNotifyIfModified()
     return;
 
   mModified = false;
-  // If our values change then we need to let all collider's who are using this
-  // resource know so they can re-compute any necessary values (currently only
-  // the density)
+  // If our values change then we need to let all collider's who are using this resource know
+  // so they can re-compute any necessary values (currently only the density)
   ResourceEvent toSend;
   toSend.EventResource = this;
   DispatchEvent(Events::ResourceModified, &toSend);

@@ -17,9 +17,8 @@ Vec3 Solve33(Mat3Param J, Vec3Param f)
 // I * (w_2 - w_1) + dt * Cross(w_2, I2 * w_2)
 // J = I_body + dt [skew(w_body) * I_body - skew(I_body * w_body)]
 
-// Solve gyroscopic adds in commonly ignored rotational terms using a implicit
-// integration of a portion of angular velocity. See Erin Catto's 2015 GDC
-// presentation for details on the topic.
+// Solve gyroscopic adds in commonly ignored rotational terms using a implicit integration of a
+// portion of angular velocity. See Erin Catto's 2015 GDC presentation for details on the topic.
 Vec3 SolveGyroscopic(RigidBody* body, float dt)
 {
   // Solve for gyroscopic torque if we are not in 2d. Gyroscopic torque is ignored in 2d because
@@ -81,10 +80,9 @@ void Integration::IntegrateVelocity(RigidBody* body, real dt)
   // IntegrateEulerVelocity(body, dt);
   IntegrateRk2Velocity(body, dt);
 
-  // ErrorIf(body->mAngularVelocity.Length() > real(2000.0), "Spinning too
-  // fast"); ErrorIf(!body->mVelocity.Valid(), "Velocity vector is invalid.");
-  // ErrorIf(!body->mAngularVelocity.Valid(), "Angular velocity vector is
-  // invalid.");
+  // ErrorIf(body->mAngularVelocity.Length() > real(2000.0), "Spinning too fast");
+  // ErrorIf(!body->mVelocity.Valid(), "Velocity vector is invalid.");
+  // ErrorIf(!body->mAngularVelocity.Valid(), "Angular velocity vector is invalid.");
 }
 
 void Integration::IntegrateEulerVelocity(RigidBody* body, real dt)
@@ -96,8 +94,7 @@ void Integration::IntegrateEulerVelocity(RigidBody* body, real dt)
   // Integrate velocity and position
   body->mVelocity += body->mInvMass.Apply(body->mForceAccumulator * dt);
 
-  // Use superposition rule to split integration into an explicit and implicit
-  // step
+  // Use superposition rule to split integration into an explicit and implicit step
   Vec3 explicitW = body->mInvInertia.Apply(body->mTorqueAccumulator) * dt;
   Vec3 implicitW = SolveGyroscopic(body, dt);
   body->mAngularVelocity += explicitW + implicitW;
@@ -129,8 +126,9 @@ void Integration::IntegrateEulerPosition(RigidBody* body, real dt)
   Mat3 OrientationMat = body->mOrientationMat;
 
   Mat3 angVelMatrix = SkewSymmetric(AngVel);
-  OrientationMat = OrientationMat + Math::Concat(angVelMatrix, OrientationMat) *
-  dt; OrientationMat.Orthonormalize(); body->mOrientationMat = OrientationMat;
+  OrientationMat = OrientationMat + Math::Concat(angVelMatrix, OrientationMat) * dt;
+  OrientationMat.Orthonormalize();
+  body->mOrientationMat = OrientationMat;
   collider->mOrientationMtx = OrientationMat;*/
 
   Quat Orientation = body->GetWorldRotationQuat();
@@ -161,14 +159,12 @@ void Integration::IntegrateRk2Velocity(RigidBody* body, real dt)
 
   // Integrate velocity and position
   body->mVelocity = Math::MultiplyAdd(body->mVelocity, body->mInvMass.Apply(body->mForceAccumulator), dt);
-  // Use superposition rule to split integration into an explicit and implicit
-  // step
+  // Use superposition rule to split integration into an explicit and implicit step
   Vec3 explicitW = body->mInvInertia.Apply(body->mTorqueAccumulator) * dt;
   Vec3 implicitW = SolveGyroscopic(body, dt);
   body->mAngularVelocity += explicitW + implicitW;
 
-  // clamp to max velocity values to avoid bad floating point values (exceptions
-  // in particular)
+  // clamp to max velocity values to avoid bad floating point values (exceptions in particular)
   real maxVel = body->mSpace->mMaxVelocity;
   body->mVelocity = Math::Clamped(body->mVelocity, -maxVel, maxVel);
   body->mAngularVelocity = Math::Clamped(body->mAngularVelocity, -maxVel, maxVel);

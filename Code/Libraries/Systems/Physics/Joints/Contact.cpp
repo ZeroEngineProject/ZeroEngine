@@ -218,13 +218,11 @@ void ComputeContactFragments(
   mass = fragments[2].mJacobian.ComputeMass(masses);
   fragments[2].mMass = (mass == real(0.0) ? mass : real(1.0) / mass);
 
-  // the normal constraint needs a special fragment that accumulates baumgarte
-  // and restitution separately so that a baumgarte of zero doesn't remove
-  // restitution
+  // the normal constraint needs a special fragment that accumulates baumgarte and restitution
+  // separately so that a baumgarte of zero doesn't remove restitution
   ContactNormalFragment(fragments[0], baumgarte, restitutionBias);
   // there's no baumgarte on the friction constraints
-  //(the error is also zero so nothing would be solved anyways, but this makes
-  // it clearer)
+  //(the error is also zero so nothing would be solved anyways, but this makes it clearer)
   RigidConstraintFragment(fragments[1], real(0.0));
   RigidConstraintFragment(fragments[2], real(0.0));
 
@@ -472,9 +470,8 @@ real Contact::GetLinearBaumgarte() const
 
 real Contact::GetLinearErrorCorrection() const
 {
-  // It's technically not necessary to check if we use post-stabilization here
-  // as contacts never have this function called unless the solver is set to use
-  // post-stabilization
+  // It's technically not necessary to check if we use post-stabilization here as contacts never
+  // have this function called unless the solver is set to use post-stabilization
   PhysicsSolverConfig* config = mSolver->mSolverConfig;
   ConstraintConfigBlock& block = config->GetContactBlock();
   return block.mLinearErrorCorrection;

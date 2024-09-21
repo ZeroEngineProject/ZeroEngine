@@ -4,10 +4,9 @@
 namespace Zero
 {
 
-/// A bi-directional graph edge between a collider and a constraint. This is a
-/// helper class to wrap edges for traversing constraints. Provides helpers for
-/// traversing from the edge to the connected objects. Also exposes helpers to
-/// the underlying constraint.
+/// A bi-directional graph edge between a collider and a constraint. This is a helper class
+/// to wrap edges for traversing constraints. Provides helpers for traversing from the edge
+/// to the connected objects. Also exposes helpers to the underlying constraint.
 template <typename ConstraintType, typename EdgeType>
 struct BaseConstraintGraphEdge
 {
@@ -106,9 +105,8 @@ struct ContactGraphEdge : public BaseConstraintGraphEdge<Physics::Contact, Physi
   uint GetContactPointCount();
   /// Returns a range of all contact points in the collision.
   ContactPointRange GetContactPoints();
-  /// Convenience function to return the first ContactPoint. Some logic only
-  /// cares about one point of information. In a more general case all points
-  /// should be iterated over.
+  /// Convenience function to return the first ContactPoint. Some logic only cares about
+  /// one point of information. In a more general case all points should be iterated over.
   ContactPoint GetFirstPoint();
 
   // Internal helpers for C++
@@ -118,8 +116,7 @@ struct ContactGraphEdge : public BaseConstraintGraphEdge<Physics::Contact, Physi
   Contact& GetContact();
 };
 
-/// Templated base for a graph edge between a joint type. Is specialized for
-/// individual joint types.
+/// Templated base for a graph edge between a joint type. Is specialized for individual joint types.
 template <typename JointType>
 struct BaseJointGraphEdge : public BaseConstraintGraphEdge<JointType, JointEdge>
 {
@@ -136,8 +133,7 @@ struct BaseJointGraphEdge : public BaseConstraintGraphEdge<JointType, JointEdge>
   {
   }
 
-  /// Is this joint valid? Invalid joints are ones missing connecting objects
-  /// (or missing colliders).
+  /// Is this joint valid? Invalid joints are ones missing connecting objects (or missing colliders).
   bool GetValid()
   {
     return mConstraint->GetValid();
@@ -171,8 +167,8 @@ struct JointGraphEdge : public BaseJointGraphEdge<Joint>
   }
 };
 
-/// Policy for ConstraintGraphEdges to help write generic iteration code. This
-/// will iterate over only Joints of the provided template type.
+/// Policy for ConstraintGraphEdges to help write generic iteration code. This will
+/// iterate over only Joints of the provided template type.
 template <typename JointType>
 struct ConstraintGraphEdgePolicy
 {
@@ -292,7 +288,7 @@ struct BodyFilterPolicy<Physics::Contact>
   typedef InList<EdgeType, &EdgeType::ColliderLink> EdgeList;
   typedef EdgeList::range RangeType;
 
-  BodyFilterPolicy(){};
+  BodyFilterPolicy() {};
 
   GraphEdgeType CreateGraphEdge(EdgeType* edge);
   void SkipDead(RangeType& range);
@@ -315,7 +311,7 @@ struct BodyFilterPolicy<Joint>
   typedef InList<EdgeType, &EdgeType::ColliderLink> EdgeList;
   typedef EdgeList::range RangeType;
 
-  BodyFilterPolicy(){};
+  BodyFilterPolicy() {};
 
   GraphEdgeType CreateGraphEdge(EdgeType* edge);
   void SkipDead(RangeType& range);
@@ -406,9 +402,9 @@ typedef BaseConstraintRange<Joint, Joint> JointRange;
 typedef BaseConstraintRange<Physics::Contact, Physics::Contact, BodyFilterPolicy<Physics::Contact>> ContactBodyRange;
 typedef BaseConstraintRange<Joint, Joint, BodyFilterPolicy<Joint>> JointBodyRange;
 
-/// Define a range for iterating over specific range types (filters out the
-/// other types). This macro automatically declares the range for all joint
-/// types. This does however, assume that you include what joints are needed.
+/// Define a range for iterating over specific range types (filters out the other types).
+/// This macro automatically declares the range for all joint types. This does
+/// however, assume that you include what joints are needed.
 #define JointType(type)                                                                                                \
   typedef BaseConstraintRange<Joint, type> type##Range;                                                                \
   typedef BaseConstraintRange<Joint, type, BodyFilterPolicy<type>> type##BodyRange;                                    \

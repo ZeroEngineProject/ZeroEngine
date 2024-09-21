@@ -6,10 +6,9 @@ namespace Zero
 
 ZilchDefineType(ContactPoint, builder, type)
 {
-  // These should be changed later, but this is the closest behavior to how
-  // proxy points worked previously. These are unsafe to store. Also I'm using
-  // HeapManager instead of PointerManager since the control point is returned
-  // by value.
+  // These should be changed later, but this is the closest behavior to how proxy
+  // points worked previously. These are unsafe to store. Also I'm using HeapManager
+  // instead of PointerManager since the control point is returned by value.
   type->HandleManager = ZilchManagerId(HeapManager);
   ZilchBindDefaultCopyDestructor();
 
@@ -75,12 +74,10 @@ real ContactPoint::GetNormalImpulse()
 
 real ContactPoint::GetFrictionImpulse()
 {
-  // See GetComplexImpulse for an explanation of why there are no ifs or minus
-  // signs
+  // See GetComplexImpulse for an explanation of why there are no ifs or minus signs
 
-  // Return the approximate total impulse of friction, this is just the length
-  // of f1 + f2, and since they're perpendicular this is just the sqrt of the
-  // squares
+  // Return the approximate total impulse of friction, this is just the length of f1 + f2,
+  // and since they're perpendicular this is just the sqrt of the squares
   real f1 = mManifoldPoint->AccumulatedImpulse[1];
   real f2 = mManifoldPoint->AccumulatedImpulse[2];
   return Math::Sqrt(f1 * f1 + f2 * f2);
@@ -90,17 +87,15 @@ Vec3 ContactPoint::GetComplexImpulse()
 {
   // The impulse is object 1 applies is j*n, so just return j.
   // Also, we don't have to negate the impulse for object 1 because
-  // this value is to be used with the normal, which will be flipped. Aka the
-  // user should be able to get this and multiply with
-  // GetMyNormalPointingTowardsOther and push the objects faster away with no
-  // extra logic.
+  // this value is to be used with the normal, which will be flipped. Aka the user
+  // should be able to get this and multiply with GetMyNormalPointingTowardsOther
+  // and push the objects faster away with no extra logic.
   return mManifoldPoint->AccumulatedImpulse;
 }
 
 real ContactPoint::GetPenetration()
 {
-  // Penetration is always positive (it's in the direction of the normal, which
-  // we negate)
+  // Penetration is always positive (it's in the direction of the normal, which we negate)
   return mManifoldPoint->Penetration;
 }
 

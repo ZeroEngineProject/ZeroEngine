@@ -6,15 +6,13 @@ namespace Zero
 
 /// What kind of events this collision block should out.
 DeclareBitField3(CollisionBlockStates, SendEventsToA, SendEventsToB, SendEventsToSpace);
-/// What kind of filter block this is. These blocks are used to send
-/// out/override collision group events of certain types (collision started,
-/// etc...)
+/// What kind of filter block this is. These blocks are used to send out/override
+/// collision group events of certain types (collision started, etc...)
 DeclareEnum4(
     CollisionFilterBlockType, CollisionStartedBlock, CollisionPersistedBlock, CollisionEndedBlock, PreSolveBlock);
 
-/// Used to specify which collision group events should be sent out for a
-/// CollisionFilter. Allows customizing who gets events (in the filter pair) and
-/// what event name is sent out.
+/// Used to specify which collision group events should be sent out for a CollisionFilter.
+/// Allows customizing who gets events (in the filter pair) and what event name is sent out.
 struct CollisionFilterBlock : public SafeId32Object
 {
   ZilchDeclareType(CollisionFilterBlock, TypeCopyMode::ReferenceType);
@@ -70,8 +68,7 @@ struct CollisionEndBlock : public CollisionFilterBlock
 };
 
 /// CollisionFilterBlock for sending out an event before collision is solved.
-/// Allows modifying object state before collision responses have been
-/// calculated.
+/// Allows modifying object state before collision responses have been calculated.
 struct PreSolveBlock : public CollisionFilterBlock
 {
   ZilchDeclareType(PreSolveBlock, TypeCopyMode::ReferenceType);

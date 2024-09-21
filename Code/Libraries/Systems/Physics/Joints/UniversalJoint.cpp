@@ -30,8 +30,8 @@ Linear Constraint:
   Ji   : [0, -iA, 0, iB]
 
 
-  normally i = 0 and i = 1 are not solved. The are only solved when limits are
-present (not currently solved because I haven't done limits with this yet)
+  normally i = 0 and i = 1 are not solved. The are only solved when limits are present
+  (not currently solved because I haven't done limits with this yet)
 */
 
 /// The GearJoint's policy for Atom updating as well as Molecule computing.
@@ -44,8 +44,8 @@ struct ConeTwistPolicy : public DefaultFragmentPolicy<UniversalJoint>
     uint filter = joint->GetAtomIndexFilter(atomIndex, desiredConstraintValue);
     ConstraintAtom& atom = joint->mAtoms[atomIndex];
 
-    // Compute the error of this constraint. Have to compute the error at this
-    // time so that the limit values are known
+    // Compute the error of this constraint. Have to compute the error at this time
+    // so that the limit values are known
     if (filter & UniversalJoint::LinearAxis)
       ComputeError(atom, molLimit, joint->mNode->mLimit, desiredConstraintValue, flag);
     else

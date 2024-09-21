@@ -88,8 +88,7 @@ void ConvexMesh::BuildFromPointSet(const Vec3Array& points)
     {
       Vertex* vertex = edges.Front().mTail;
       int vertexId = 0;
-      // If we haven't seen this vertex then add it to the final list of
-      // vertices and give it a new id
+      // If we haven't seen this vertex then add it to the final list of vertices and give it a new id
       if (!vertexIdMap.ContainsKey(vertex))
       {
         vertexIdMap[vertex] = currentVertexId;

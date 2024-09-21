@@ -40,10 +40,9 @@ ZilchDefineType(RigidBody, builder, type)
   ZilchBindMethod(ApplyForceAtOffsetVector);
   ZilchBindMethod(ApplyForceAtPoint);
   // Bind impulse methods
-  // These 4 methods don't need to be bound because applying a non-zero vector
-  // will always wake an object up after resolution unless the impulse is zero.
-  // This prevents a frame delay issue of the object not getting forces. These
-  // functions only exist currently for internal use.
+  // These 4 methods don't need to be bound because applying a non-zero vector will always wake an
+  // object up after resolution unless the impulse is zero. This prevents a frame delay issue of the
+  // object not getting forces. These functions only exist currently for internal use.
   // ZilchBindMethod(ApplyLinearImpulseNoWakeUp);
   // ZilchBindMethod(ApplyAngularImpulseNoWakeUp);
   // ZilchBindMethod(ApplyImpulseAtOffsetVectorNoWakeUp);
@@ -101,17 +100,16 @@ void RigidBody::Initialize(CogInitializer& initializer)
 
   mSpace->AddComponent(this);
 
-  // Just default center of mass to the translation of the object (shouldn't
-  // matter)
+  // Just default center of mass to the translation of the object (shouldn't matter)
   Transform* transform = GetOwner()->has(Transform);
   mCenterOfMass = transform->GetTranslation();
 
   bool dynamicallyCreated = (initializer.Flags & CreationFlags::DynamicallyAdded) != 0;
   BodyInitialize(this, dynamicallyCreated);
 
-  // We've set the 3 states available from serialization (inherit, 2d, 3d) but
-  // we haven't actually been set-up yet. To do this call the internal set2d
-  // function with our actual 2d state (checking the space if necessary)
+  // We've set the 3 states available from serialization (inherit, 2d, 3d) but we haven't
+  // actually been set-up yet. To do this call the internal set2d function with our actual
+  // 2d state (checking the space if necessary)
   bool is2D = mState.IsSet(RigidBodyStates::Mode2D);
   if (mState.IsSet(RigidBodyStates::Inherit2DMode))
     is2D = mSpace->GetMode2D();
@@ -119,8 +117,8 @@ void RigidBody::Initialize(CogInitializer& initializer)
 
   SetRotationLockedInternal(mState.IsSet(RigidBodyStates::RotationLocked));
 
-  // If we're kinematic then override the old transform values so that the
-  // kinematic values do not get overridden to weird values on initialization
+  // If we're kinematic then override the old transform values so that the kinematic
+  // values do not get overridden to weird values on initialization
   if (GetKinematic())
     QueueOverrideOldTransform(this);
 }
@@ -161,8 +159,8 @@ void RigidBody::TransformUpdate(TransformUpdateInfo& info)
     FullTransformAction transformAction(mPhysicsNode);
 
   // No matter what transform action happened, we need to queue up mass updates
-  // (might be able to optimize this in certain cases (root), but this is just
-  // queuing us up, so it is fairly cheap)
+  // (might be able to optimize this in certain cases (root), but this is just queuing
+  // us up, so it is fairly cheap)
   Collider* collider = mPhysicsNode->mCollider;
   if (collider == nullptr || !collider->mState.IsSet(ColliderFlags::MasslessCollider))
     QueueMassUpdate();
@@ -180,17 +178,15 @@ void RigidBody::OnDestroy(uint flags)
   bool dynamicallyRemoved = (flags & DestroyFlags::DynamicallyDestroyed) != 0;
   BodyOnDestroy(this, dynamicallyRemoved);
 
-  // Remove the space's reference to us (important to do after the children are
-  // removed in the above function).
+  // Remove the space's reference to us (important to do after the children are removed in the above function).
   mSpace->RemoveComponent(this);
 }
 
 Vec3 RigidBody::GetVelocity()
 {
-  // If we're kinematic, make sure that we flush the queue if there are any
-  // outstanding changes. If we don't do this and the user manually moves the
-  // object and immediately call GetVelocity then they won't get the correct
-  // kinematic velocity.
+  // If we're kinematic, make sure that we flush the queue if there are any outstanding changes.
+  // If we don't do this and the user manually moves the object and immediately call GetVelocity
+  // then they won't get the correct kinematic velocity.
   UpdateKinematicVelocities();
   return mVelocity;
 }
@@ -400,8 +396,7 @@ void RigidBody::SetDynamicState(RigidBodyDynamicState::Enum state)
   // If we're not initialized then just set the correct flag states and exit
   if (!IsInitialized())
   {
-    // Always start with being dynamic and then set the correct static/kinematic
-    // bit if necessary
+    // Always start with being dynamic and then set the correct static/kinematic bit if necessary
     mState.ClearFlag(RigidBodyStates::Static | RigidBodyStates::Kinematic);
     if (state == RigidBodyDynamicState::Static)
       mState.SetFlag(RigidBodyStates::Static);
@@ -410,20 +405,17 @@ void RigidBody::SetDynamicState(RigidBodyDynamicState::Enum state)
     return;
   }
 
-  // If we're changing to the same state don't do anything. This is not only a
-  // performance win (rebuilding trees, recomputing terms, etc...) but this
-  // prevents accidental behavior such as keeping the rigid body awake by
-  // constantly setting it to dynamic.
+  // If we're changing to the same state don't do anything. This is not only a performance win
+  // (rebuilding trees, recomputing terms, etc...) but this prevents accidental behavior such
+  // as keeping the rigid body awake by constantly setting it to dynamic.
   if (state == GetDynamicState())
     return;
 
   // Otherwise, we need to set the correct flags and update all correct terms.
-  // The mass and velocities could change if we freeze this rigid body, but the
-  // active rigid body in the hierarchy could also change so the tree needs to
-  // be updated.
+  // The mass and velocities could change if we freeze this rigid body, but the active rigid body
+  // in the hierarchy could also change so the tree needs to be updated.
 
-  // It's easiest to start with a dynamic state and then set individual bits
-  // afterwards
+  // It's easiest to start with a dynamic state and then set individual bits afterwards
   mState.ClearFlag(RigidBodyStates::Kinematic | RigidBodyStates::Static);
   if (state == RigidBodyDynamicState::Static)
   {
@@ -526,8 +518,7 @@ void RigidBody::ForceAwake()
 
 void RigidBody::ForceAsleep()
 {
-  // Set the sleep timer to the max value so that we won't be woken up next
-  // frame
+  // Set the sleep timer to the max value so that we won't be woken up next frame
   mSleepTimer = cTimeToSleep;
   PutToSleep();
 }
@@ -548,8 +539,8 @@ void RigidBody::SetRotationLocked(bool state)
 
   SetRotationLockedInternal(state);
   // If we were rotation locked and now we aren't then we need to force
-  // ourself awake (so we could start falling if we need to). @JoshD: should I
-  // do this even if you go to rotation locked? Does the optimization matter?
+  // ourself awake (so we could start falling if we need to). @JoshD: should I do this
+  // even if you go to rotation locked? Does the optimization matter?
   if (!state)
     ForceAwake();
 }
@@ -567,9 +558,8 @@ Mode2DStates::Enum RigidBody::GetMode2D() const
 
 void RigidBody::SetMode2D(Mode2DStates::Enum state)
 {
-  // If we aren't initialized yet then just set the correct flags, we'll take
-  // care of properly updating the flags (such as inherit) and everything else
-  // in initialize.
+  // If we aren't initialized yet then just set the correct flags, we'll take care of properly
+  // updating the flags (such as inherit) and everything else in initialize.
   if (!IsInitialized())
   {
     mState.ClearFlag(RigidBodyStates::Inherit2DMode | RigidBodyStates::Mode2D);
@@ -580,18 +570,15 @@ void RigidBody::SetMode2D(Mode2DStates::Enum state)
     return;
   }
 
-  // We need to set bits from the enum, but we also need to determine who's mode
-  // 2d we're using (ours or the space's)
+  // We need to set bits from the enum, but we also need to determine who's mode 2d we're using (ours or the space's)
   bool mode2D = true;
-  // If we inherit from the space then set that state and get the space's mode2d
-  // state
+  // If we inherit from the space then set that state and get the space's mode2d state
   if (state == Mode2DStates::InheritFromSpace)
   {
     mState.SetFlag(RigidBodyStates::Inherit2DMode);
     mode2D = mSpace->GetMode2D();
   }
-  // Otherwise we need to clear the inherit from space flag and mark whether
-  // we're going to 2d
+  // Otherwise we need to clear the inherit from space flag and mark whether we're going to 2d
   else
   {
     mState.ClearFlag(RigidBodyStates::Inherit2DMode);
@@ -770,19 +757,19 @@ void RigidBody::InternalWakeUp()
   if (!IsAsleep())
     return;
 
-  // We could try to do this only if we're a dynamic object, but kinematic
-  // objects can actually fall asleep. While it seems like this might not make
-  // sense it is a performance gain since kinematics then do not have to check
-  // against static/kinematics for detection. Because of these things, don't do
-  // any extra check other than if it's asleep.
+  // We could try to do this only if we're a dynamic object, but kinematic objects
+  // can actually fall asleep. While it seems like this might not make sense it is
+  // a performance gain since kinematics then do not have to check against
+  // static/kinematics for detection. Because of these things, don't do any extra
+  // check other than if it's asleep.
 
   // Clear the sleep bit.
   mState.ClearFlag(RigidBodyStates::Asleep);
   // Put ourselves in the correct list.
   mSpace->ComponentStateChange(this);
 
-  // If the object was asleep and we told it to wake up we need to reset the
-  // timer. If this is not done then the object will immediately fall asleep
+  // If the object was asleep and we told it to wake up we need to reset the timer.
+  // If this is not done then the object will immediately fall asleep
   // again if its velocity (linear or angular) is not large enough.
   mSleepTimer = real(0);
 
@@ -852,8 +839,7 @@ void RigidBody::Set2DInternal(bool state)
     mVelocity[2] = real(0);
     // Lock linear motion on the z-axis
     mInvMass.SetAxisLock(true, 2);
-    // In mode-2d, inertia is updated every frame (so we lock world axes) so
-    // nothing needs to happen here.
+    // In mode-2d, inertia is updated every frame (so we lock world axes) so nothing needs to happen here.
   }
   else
   {
@@ -899,9 +885,8 @@ void RigidBody::UpdateKinematicVelocities()
   mPhysicsNode->ReadTransform();
   mPhysicsNode->RecomputeWorldTransform();
 
-  // Since this was called from a Get function we want to use the dt in the
-  // user's scope. The only reasonable assumption here is that this is the
-  // time-space's dt (not the physics iteration dt)
+  // Since this was called from a Get function we want to use the dt in the user's scope.
+  // The only reasonable assumption here is that this is the time-space's dt (not the physics iteration dt)
   TimeSpace* timeSpace = mSpace->GetOwner()->has(TimeSpace);
   ReturnIf(timeSpace == nullptr, , "No time space.");
   real dt = timeSpace->GetDtOrZero();
@@ -982,8 +967,7 @@ void RigidBody::UpdateWorldInertiaTensor()
   Mat3 rotation = transform->GetWorldRotation();
   mInvInertia.ComputeWorldTensor(rotation);
   // If we're in 2d mode then lock the world-space 2d axes.
-  // This has to be performed on the world-space inertia tensor since we're
-  // locking world-space axes.
+  // This has to be performed on the world-space inertia tensor since we're locking world-space axes.
   if (mState.IsSet(RigidBodyStates::Mode2D))
     mInvInertia.WorldLock2D();
 }
@@ -1029,8 +1013,7 @@ void RigidBody::UpdateCenterMass(Vec3Param offset)
   // Clamp the center of mass to avoid getting to bad floating point positions
   mCenterOfMass = Transform::ClampTranslation(GetSpace(), GetOwner(), mCenterOfMass);
 
-  // Bring the position offset into world space so we can update the cached
-  // world-space translation
+  // Bring the position offset into world space so we can update the cached world-space translation
   WorldTransformation* transform = mPhysicsNode->GetTransform();
   Vec3 worldPositionOffset = Math::Transform(transform->GetWorldRotation(), mPositionOffset);
   transform->SetTranslation(mCenterOfMass + worldPositionOffset);
@@ -1069,8 +1052,9 @@ void RigidBody::InternalRecomputeOrientation()
   Vec3 worldPositionOffset = Math::Transform(worldRotation, mPositionOffset);
   transform->SetTranslation(worldPositionOffset + mCenterOfMass);
 
-  /*//The way to update with deltas. A bit problematic and possible stability
-  issues though. offsetQuat = mOrientation * offsetQuat; offsetQuat.Normalize();
+  /*//The way to update with deltas. A bit problematic and possible stability issues though.
+  offsetQuat = mOrientation * offsetQuat;
+  offsetQuat.Normalize();
   Vec3 offsetPos = mPosition - mCenterMass;
   mPosition = offsetQuat.RotatedVector(offsetPos);
   mPosition += mCenterMass;*/
@@ -1095,8 +1079,7 @@ void RigidBody::GenerateIntegrationUpdate()
   if (GetKinematic())
     mSpace->ActivateKinematic(this);
 
-  // Lastly, we have to make sure to queue updates for all static and kinematic
-  // children bodies
+  // Lastly, we have to make sure to queue updates for all static and kinematic children bodies
   BodyRange bodies = mChildBodies.All();
   for (; !bodies.Empty(); bodies.PopFront())
   {
@@ -1109,8 +1092,7 @@ void RigidBody::GenerateIntegrationUpdate()
 void RigidBody::PublishTransform()
 {
   Transform* transform = GetOwner()->has(Transform);
-  // Always set world-space values as the rigid body has always marked this
-  // transform as being in world
+  // Always set world-space values as the rigid body has always marked this transform as being in world
   transform->SetWorldTranslationInternal(mPhysicsNode->GetTransform()->GetPublishedTranslation());
   transform->SetWorldRotationInternal(mRotationQuat);
   transform->UpdateAll(TransformUpdateFlags::Physics);

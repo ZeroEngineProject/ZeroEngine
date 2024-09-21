@@ -43,10 +43,9 @@ struct KinematicMovementAction
 {
   KinematicMovementAction(RigidBody* body);
 
-  // Kinematic object being moved, need to recompute the world matrix and
-  // compute what the velocity should have been. The collider should file a
-  // separate action to deal with its update (we may not be in BroadPhase if we
-  // are a point cloud).
+  // Kinematic object being moved, need to recompute the world matrix and compute
+  // what the velocity should have been. The collider should file a separate
+  // action to deal with its update (we may not be in BroadPhase if we are a point cloud).
   TransformAction mTransformAction;
 };
 
@@ -130,8 +129,7 @@ void QueueFullMassRecompuation(PhysicsNode* node);
 void QueueInertiaRecompuation(PhysicsNode* node);
 /// Reads the transform and updates the world transform
 void QueueTransformRead(PhysicsNode* node);
-/// Updates the world transform and the world inertia. Meant for when a body is
-/// integrated.
+/// Updates the world transform and the world inertia. Meant for when a body is integrated.
 void QueueBodyIntegration(PhysicsNode* node);
 /// Removes from the current broadphase and inserts into the desired one
 void ChangeBroadPhase(Collider* collider, bool toDynamicBroadphase);

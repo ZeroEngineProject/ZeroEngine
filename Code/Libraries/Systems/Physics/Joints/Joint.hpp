@@ -28,9 +28,9 @@ DeclareTag(Joint);
 
 DeclareBitField8(JointFlags, OnIsland, Ghost, Valid, Active, SendsEvents, AutoSnaps, CollideConnected, Initialized);
 
-/// Joints connect two objects together with one or more constraints. A
-/// constraint is a mathematical rule that restricts object movement, typically
-/// defined in terms of the position and velocities of the objects involved.
+/// Joints connect two objects together with one or more constraints. A constraint
+/// is a mathematical rule that restricts object movement, typically defined in
+/// terms of the position and velocities of the objects involved.
 struct Joint : public Component
 {
   ZilchDeclareType(Joint, TypeCopyMode::ReferenceType);
@@ -46,8 +46,8 @@ struct Joint : public Component
   void OnDestroy(uint flags) override;
 
   /// Allows the individual joint to configure itself on dynamic addition
-  virtual void ComputeInitialConfiguration(){};
-  virtual void ObjectLinkPointUpdated(size_t edgeIndex, Vec3Param localPoint){};
+  virtual void ComputeInitialConfiguration() {};
+  virtual void ObjectLinkPointUpdated(size_t edgeIndex, Vec3Param localPoint) {};
   /// Used to detect when motors/limits/springs are added dynamically.
   void ComponentAdded(BoundType* typeId, Component* component) override;
   /// Used to detect when motors/limits/springs are removed dynamically.
@@ -57,12 +57,10 @@ struct Joint : public Component
 
   /// Update atoms is the step where a constraint computes the values (position
   /// difference, angle difference, etc...) of all of it's atoms. This info is
-  /// then used to determine which atoms are actually active (dealing with
-  /// limits).
-  virtual void UpdateAtomsVirtual(){};
-  /// Returns the number of fragments for the solver. A solver will often
-  /// accumulate the total count of all atoms to efficiently create its molecule
-  /// "array".
+  /// then used to determine which atoms are actually active (dealing with limits).
+  virtual void UpdateAtomsVirtual() {};
+  /// Returns the number of fragments for the solver. A solver will often accumulate
+  /// the total count of all atoms to efficiently create its molecule "array".
   virtual uint MoleculeCountVirtual() const
   {
     return 0;
@@ -71,30 +69,27 @@ struct Joint : public Component
   /// Compute molecules actually fills out the fragments for the solver. This
   /// step will actually compute the jacobian, mass terms, error values, etc...
   /// to be used during the solving step.
-  virtual void ComputeMoleculesVirtual(Physics::MoleculeWalker& molecules){};
+  virtual void ComputeMoleculesVirtual(Physics::MoleculeWalker& molecules) {};
   /// Allows the joint to run custom warm-string logic.
-  virtual void WarmStartVirtual(Physics::MoleculeWalker& molecules){};
+  virtual void WarmStartVirtual(Physics::MoleculeWalker& molecules) {};
   /// Allows the joint to run custom solving code (such as block solving).
-  virtual void SolveVirtual(Physics::MoleculeWalker& molecules){};
+  virtual void SolveVirtual(Physics::MoleculeWalker& molecules) {};
   /// Returns the number of fragments for position correction. Not all
   /// molecules may have position correction applied to them (e.g. springs).
   virtual uint PositionMoleculeCountVirtual() const
   {
     return 0;
   };
-  /// Fills out the molecules with fragment data for all constraints requiring
-  /// position correction.
-  virtual void ComputePositionMoleculesVirtual(Physics::MoleculeWalker& molecules){};
-  /// Gives each joint a chance to copy and data from the temp molecule buffer
-  /// back into its internal storage (such as the total impulse for each
-  /// constraint atom).
-  virtual void CommitVirtual(Physics::MoleculeWalker& molecules){};
-  virtual void DebugDrawVirtual(){};
-  /// Given an atom's index, get the desired constraint value (solution to the
-  /// position constraint). Also returns the atom type (AtomFilter: Linear or
-  /// Angular).
+  /// Fills out the molecules with fragment data for all constraints requiring position correction.
+  virtual void ComputePositionMoleculesVirtual(Physics::MoleculeWalker& molecules) {};
+  /// Gives each joint a chance to copy and data from the temp molecule buffer back into
+  /// its internal storage (such as the total impulse for each constraint atom).
+  virtual void CommitVirtual(Physics::MoleculeWalker& molecules) {};
+  virtual void DebugDrawVirtual() {};
+  /// Given an atom's index, get the desired constraint value (solution to the position constraint).
+  /// Also returns the atom type (AtomFilter: Linear or Angular).
   virtual uint GetAtomIndexFilterVirtual(uint atomIndex, real& desiredConstraintValue) const;
-  virtual void BatchEventsVirtual(){};
+  virtual void BatchEventsVirtual() {};
   // Type identification
   virtual JointEnums::JointTypes GetJointType() const
   {
@@ -169,9 +164,8 @@ struct Joint : public Component
   void UnLinkPair();
   void Relink(uint index, Cog* cog);
   /// Used for a specific joint type (e.g. PulleyJoint) to reject a relink.
-  /// This is the last step that happens when relinking, after the joint has set
-  /// valid to true/false.
-  virtual void SpecificJointRelink(uint index, Collider* collider){};
+  /// This is the last step that happens when relinking, after the joint has set valid to true/false.
+  virtual void SpecificJointRelink(uint index, Collider* collider) {};
 
   void OnObjectLinkChanged(ObjectLinkEvent* event);
   void OnObjectLinkPointChanged(ObjectLinkPointChangedEvent* e);
@@ -199,8 +193,7 @@ struct Joint : public Component
   void SetWorldPointAHelper(Physics::AnchorAtom& anchor, Vec3Param worldPoint);
   void SetWorldPointBHelper(Physics::AnchorAtom& anchor, Vec3Param worldPoint);
   void SetWorldPointHelper(Physics::AnchorAtom& anchor, Vec3Param worldPoint, uint index);
-  /// Sets the position of the anchor on object A and B given a position in
-  /// world space.
+  /// Sets the position of the anchor on object A and B given a position in world space.
   void SetWorldPointsHelper(Physics::AnchorAtom& anchor, Vec3Param point);
   /// Helper function for when an object link point changes.
   void ObjectLinkPointUpdatedHelper(Physics::AnchorAtom& anchor, size_t edgeIndex, Vec3Param localPoint);
@@ -225,14 +218,12 @@ struct Joint : public Component
   real GetLinearBaumgarte(uint type) const;
   /// Get the angular baumgarte term for a joint type.
   real GetAngularBaumgarte(uint type) const;
-  /// Get the linear error correction term (post stabilization) for a joint
-  /// type.
+  /// Get the linear error correction term (post stabilization) for a joint type.
   real GetLinearErrorCorrection(uint type) const;
   /// This function is so that the base Joint can have this
   /// called on it without knowing what type the joint is.
   real GetLinearErrorCorrection() const;
-  /// Get the angular error correction term (post stabilization) for a joint
-  /// type.
+  /// Get the angular error correction term (post stabilization) for a joint type.
   real GetAngularErrorCorrection(uint type) const;
   real GetAngularErrorCorrection() const;
   real GetSlop() const;
@@ -247,15 +238,13 @@ struct Joint : public Component
   void ComputeCurrentReferenceAngle(Physics::AngleAtom& referenceAngle);
 
   // Member accessors
-  /// Is this joint currently on an island? Primarily used during island
-  /// building.
+  /// Is this joint currently on an island? Primarily used during island building.
   bool GetOnIsland() const;
   void SetOnIsland(bool onIsland);
   /// @JoshD: Unused?
   bool GetGhost() const;
   void SetGhost(bool ghost);
-  // A joint is valid if it has all of the data needed to solve (typically if
-  // it's connected to two colliders)
+  // A joint is valid if it has all of the data needed to solve (typically if it's connected to two colliders)
   bool GetValid() const;
   void SetValid(bool valid);
 
@@ -269,9 +258,8 @@ struct Joint : public Component
   bool GetSendsEvents() const;
   void SetSendsEvents(bool sendsEvents);
 
-  /// Determines if this joint will automatically delete itself if any of its
-  /// constraints reach the max impulse value. This will still send an event if
-  /// it snaps.
+  /// Determines if this joint will automatically delete itself if any of its constraints
+  /// reach the max impulse value. This will still send an event if it snaps.
   bool GetAutoSnaps() const;
   void SetAutoSnaps(bool autoSnaps);
 
@@ -282,8 +270,7 @@ struct Joint : public Component
   bool GetCollideConnected() const;
   void SetCollideConnected(bool collideConnected);
 
-  /// The maximum impulse (instantaneous force) that this joint can apply to
-  /// correct itself.
+  /// The maximum impulse (instantaneous force) that this joint can apply to correct itself.
   real GetMaxImpulse() const;
   void SetMaxImpulse(real maxImpulse);
 
@@ -341,9 +328,9 @@ struct Joint : public Component
 };
 
 // Helper macros to declare template code. This code is here so that the virtual
-// interface can still exist, but there is a non-virtual interface that is
-// expected. This interface is called by certain solvers to avoid as much
-// virtual function overhead as possible.
+// interface can still exist, but there is a non-virtual interface that is expected.
+// This interface is called by certain solvers to avoid as much virtual function
+// overhead as possible.
 #define DeclareJointType(jointType)                                                                                    \
   ZilchDeclareType(jointType, TypeCopyMode::ReferenceType);                                                            \
   static cstr JointName;                                                                                               \

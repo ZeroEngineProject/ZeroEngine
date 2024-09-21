@@ -217,8 +217,7 @@ real RevoluteJoint2d::GetJointAngle() const
   // return mAtoms[5].mError;
   /*Quat referenceRotation = mReferenceAngle.GetReferenceAngle();
   return JointHelpers::GetRelativeAngle(referenceRotation,
-    GetCollider(0)->GetWorldRotation(),
-  GetCollider(1)->GetWorldRotation(),mAxes[0]);*/
+    GetCollider(0)->GetWorldRotation(), GetCollider(1)->GetWorldRotation(),mAxes[0]);*/
 }
 
 Vec3 RevoluteJoint2d::GetWorldAxis() const

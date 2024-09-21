@@ -11,12 +11,12 @@ class PhysicsSpace;
 namespace Physics
 {
 
-/// A prismatic joint sometimes called a slider) is used to create something
-/// similar to a piston. This joint fixes all degrees of rotation and leaves one
-/// linear axis free. Therefore, the bodies will rotate with each other and move
-/// with each other, except for one axis where they can move freely. Add on
-/// definitions: Limit: A limit will provide a min/max translational distance
-/// for the two
+/// A prismatic joint sometimes called a slider) is used to create something similar
+/// to a piston. This joint fixes all degrees of rotation and leaves one linear axis free.
+/// Therefore, the bodies will rotate with each other and move with each other, except for
+/// one axis where they can move freely.
+/// Add on definitions:
+/// Limit: A limit will provide a min/max translational distance for the two
 ///   objects on the slider axis.
 /// Motor: A motor will push/pull the objects on the slider axis.
 /// Spring: A spring will make the slider axis springy at its limits.

@@ -14,11 +14,10 @@ class Cog;
 class Collider;
 class CollisionGroup;
 
-/// Controls custom cast filtering via the CastFilterEvent. Allows custom filter
-/// logic per object. <param name="Accept">Always accept this object for
-/// testing.</param> <param name="Reject">Always reject this object for
-/// testing.</param> <param name="DefaultBehavior">Run the rest of the filtering
-/// logic on the cast filter.</param>
+/// Controls custom cast filtering via the CastFilterEvent. Allows custom filter logic per object.
+/// <param name="Accept">Always accept this object for testing.</param>
+/// <param name="Reject">Always reject this object for testing.</param>
+/// <param name="DefaultBehavior">Run the rest of the filtering logic on the cast filter.</param>
 DeclareEnum3(CastFilterState, Accept, Reject, DefaultBehavior);
 
 /// Allows a user to filter out an object during any cast in physics.
@@ -85,12 +84,10 @@ struct CastResult
   Collider* GetCollider();
   /// The cog hit by the cast.
   Cog* GetObjectHit();
-  /// Returns the local-space position that the object was hit. The point index
-  /// is used to get the first or last point of intersection. Invalid on volume
-  /// casts.
+  /// Returns the local-space position that the object was hit. The point index is used
+  /// to get the first or last point of intersection. Invalid on volume casts.
   Vec3 GetLocalPosition(uint pointIndex);
-  /// Returns the world-space position that the object was hit. Invalid on a
-  /// volume cast.
+  /// Returns the world-space position that the object was hit. Invalid on a volume cast.
   Vec3 GetWorldPosition();
   /// The normal of the object at the intersection point (world space).
   /// Invalid on a volume cast.
@@ -128,11 +125,11 @@ public:
   }
 
   /// Returns a reference to the cast result at the given index.
-  CastResult& operator[](uint index);
-  const CastResult& operator[](uint index) const;
+  CastResult& operator[](size_t index);
+  const CastResult& operator[](size_t index) const;
 
   /// Returns the amount of objects retrieved.
-  uint Size() const;
+  size_t Size() const;
 
   /// Returns whether or not there were any objects found.
   bool Empty();
@@ -144,7 +141,7 @@ public:
   void Clear();
 
   /// Resizes the number of results
-  void Resize(uint amount);
+  void Resize(size_t amount);
 
   /// Returns the capacity (maximum amount of objects returned).
   uint Capacity() const;
@@ -155,8 +152,8 @@ private:
   friend class PhysicsSpace;
 
   /// When we pass mResults to the broad phase, it will fill up mArray with
-  /// Broad Phase Proxies instead of Collider's.  This walks through them and
-  /// replaces the pointer with a pointer to the Collider.
+  /// Broad Phase Proxies instead of Collider's.  This walks through them and replaces
+  /// the pointer with a pointer to the Collider.
   void ConvertToColliders();
 
   /// Holds the results

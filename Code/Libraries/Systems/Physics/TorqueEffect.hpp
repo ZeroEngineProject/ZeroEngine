@@ -33,8 +33,7 @@ public:
   /// The axis that the torque is being applied about.
   Vec3 GetTorqueAxis() const;
   void SetTorqueAxis(Vec3Param axis);
-  /// The axis of the torque in world space (can be used to manually add torque
-  /// to a RigidBody).
+  /// The axis of the torque in world space (can be used to manually add torque to a RigidBody).
   Vec3 GetWorldTorqueAxis() const;
 
 private:

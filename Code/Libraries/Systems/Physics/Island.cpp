@@ -91,8 +91,7 @@ void Island::Add(Contact* contact)
   // if the contact is marked as not active for any reason, don't add it. This
   // is different from valid because the contact needs to keep existing for as
   // long as the objects are in contact, but they should not be resolved.
-  // Currently used to resolve 2d contacts that are almost completely in the z
-  // axis.
+  // Currently used to resolve 2d contacts that are almost completely in the z axis.
   if (!contact->GetActive())
     return;
 
@@ -114,8 +113,8 @@ void Island::Add(Joint* joint)
   ++JointCount;
   joint->SetOnIsland(true);
 
-  // Deal with trying to solve joints that can't be solved (parent connected to
-  // child, object connected to itself, etc...)
+  // Deal with trying to solve joints that can't be solved (parent connected to child, object connected to itself,
+  // etc...)
   Collider* collider0 = joint->GetCollider(0);
   Collider* collider1 = joint->GetCollider(1);
   if (collider0 != nullptr && collider1 != nullptr)
@@ -123,16 +122,15 @@ void Island::Add(Joint* joint)
     RigidBody* body0 = collider0->GetActiveBody();
     RigidBody* body1 = collider1->GetActiveBody();
 
-    // Get whatever the top-level body is (skip kinematics since we want to find
-    // if a kinematic is attached to its parent)
+    // Get whatever the top-level body is (skip kinematics since we want to find if a kinematic is attached to its
+    // parent)
     while (body0 != nullptr && body0->GetKinematic())
       body0 = body0->mParentBody;
     while (body1 != nullptr && body1->GetKinematic())
       body1 = body1->mParentBody;
 
-    // If the two bodies are the same then we effectively have a static
-    // connection which likely can't be solved, "skip" solving the joint (by
-    // just adding it to another list of joints we don't solve)
+    // If the two bodies are the same then we effectively have a static connection which likely can't be
+    // solved, "skip" solving the joint (by just adding it to another list of joints we don't solve)
     if (body0 == body1)
     {
       mUnSolvableJoints.PushBack(joint);

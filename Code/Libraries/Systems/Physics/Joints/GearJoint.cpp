@@ -103,8 +103,7 @@ void GearJoint::OnAllObjectsCreated(CogInitializer& initializer)
   }
   else
   {
-    // We were dynamically added, find joints on the objects we were connected
-    // to
+    // We were dynamically added, find joints on the objects we were connected to
     for (uint i = 0; i < 2; ++i)
     {
       Collider* collider = GetCollider(i);
@@ -337,8 +336,7 @@ void GearJoint::RelinkJoint(uint index, Cog* cog)
     return;
   }
 
-  // Make sure that the joint we're linking to is connected to the collider
-  // we're connected to
+  // Make sure that the joint we're linking to is connected to the collider we're connected to
   if (joint->GetCollider(0) == GetCollider(index))
     mJoints[index].mObjIndex = 0;
   else if (joint->GetCollider(1) == GetCollider(index))
@@ -346,8 +344,7 @@ void GearJoint::RelinkJoint(uint index, Cog* cog)
   else
   {
     DoNotifyWarning("Invalid link",
-                    "Can only connect to Joints that are attached to the same "
-                    "collider as the GearJoint.");
+                    "Can only connect to Joints that are attached to the same collider as the GearJoint.");
     return;
   }
 

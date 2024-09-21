@@ -11,10 +11,9 @@ class PhysicsSpace;
 namespace Physics
 {
 
-/// Legacy. A physics gun joint is an experimental joint for picking up objects.
-/// This acts as a weld between an object and the world. Primarily an experiment
-/// for picking up objects as a player. Should be custom implemented in script
-/// with CustomJoint instead.
+/// Legacy. A physics gun joint is an experimental joint for picking up objects. This acts as a weld
+/// between an object and the world. Primarily an experiment for picking up objects as a player.
+/// Should be custom implemented in script with CustomJoint instead.
 struct PhyGunJoint : public Joint
 {
   DeclareJointType(PhyGunJoint);
@@ -36,7 +35,7 @@ struct PhyGunJoint : public Joint
   void ComputePositionMolecules(MoleculeWalker& molecules);
   void DebugDraw();
   uint GetAtomIndexFilter(uint atomIndex, real& desiredConstraintValue) const;
-  void BatchEvents(){};
+  void BatchEvents() {};
 
   /// The point in world space that the object's point should match.
   Vec3 GetTargetPoint();
@@ -51,8 +50,7 @@ struct PhyGunJoint : public Joint
   /// Used to set the desired rotation of the object in world space.
   Quat GetTargetRotation();
   void SetTargetRotation(QuatParam target);
-  /// Used to set the world rotation basis of the object that should be matched
-  /// to the target rotation.
+  /// Used to set the world rotation basis of the object that should be matched to the target rotation.
   Quat GetWorldRotation();
   void SetWorldRotation(QuatParam worldRotation);
 

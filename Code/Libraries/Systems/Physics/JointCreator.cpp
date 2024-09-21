@@ -207,15 +207,13 @@ Cog* JointCreator::FindCommonParent(Cog* cogA, Cog* cogB)
   if (cogA != nullptr && cogB != nullptr)
   {
     HashSet<Cog*> cogAParents;
-    // Map the entire parent chain of A (including A as it could be the parent
-    // of B)
+    // Map the entire parent chain of A (including A as it could be the parent of B)
     while (cogA != nullptr)
     {
       cogAParents.Insert(cogA);
       cogA = cogA->GetParent();
     }
-    // See if any node in the parent chain of B was a parent of A (including B
-    // itself)
+    // See if any node in the parent chain of B was a parent of A (including B itself)
     while (cogB != nullptr)
     {
       if (cogAParents.Contains(cogB))
@@ -402,8 +400,7 @@ Cog* JointCreator::CreateJoint(StringParam fileName, ConnectionInfo& info, Arche
   }
 
   // Attach the joint to the common parent if it exists.
-  // This needs to happen before linking the objects up so the relative paths
-  // are computed correctly.
+  // This needs to happen before linking the objects up so the relative paths are computed correctly.
   if (mFlags.IsSet(JointCreatorFlags::AttachToCommonParent))
   {
     Cog* cogA = info.a;
@@ -425,10 +422,9 @@ Cog* JointCreator::CreateJoint(StringParam fileName, ConnectionInfo& info, Arche
   objLink->SetLocalPointA(info.mBodyRs[0]);
   objLink->SetLocalPointB(info.mBodyRs[1]);
 
-  // Now that the object is fully created, we can dynamically add the
-  // appropriate joint type (as long as it's not an object link). Using add
-  // component by name so I don't have to figure out how to create the component
-  // from it's name.
+  // Now that the object is fully created, we can dynamically add the appropriate
+  // joint type (as long as it's not an object link). Using add component by name
+  // so I don't have to figure out how to create the component from it's name.
   if (fileName != CoreArchetypes::ObjectLink && !fileName.Empty())
     cog->AddComponentByName(fileName);
   return cog;

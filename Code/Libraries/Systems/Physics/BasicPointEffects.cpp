@@ -20,9 +20,8 @@ ZilchDefineType(BasicPointEffect, builder, type)
 
 BasicPointEffect::BasicPointEffect()
 {
-  // Min/Max need to be initialized to the same values as serialization to avoid
-  // any clamping logic happening during serialization since properties are
-  // individually set instead of batch set.
+  // Min/Max need to be initialized to the same values as serialization to avoid any
+  // clamping logic happening during serialization since properties are individually set instead of batch set.
   mMinDistance = 1;
   mMaxDistance = 5;
   mMinStrength = 0;
@@ -56,8 +55,7 @@ void BasicPointEffect::DebugDraw()
   // Get a signed normalize force for both the min and max distances
   real minForce = GetForceStrenthAtDistance(mMinDistance);
   real maxForce = GetForceStrenthAtDistance(mMaxDistance);
-  // Get the scaled min/max force length taking into account distance between
-  // the two values
+  // Get the scaled min/max force length taking into account distance between the two values
   GetPenumbraDebugDrawValues(minDistance, maxDistance, minForce, maxForce);
 
   // Draw arrows given spherical coordinates
@@ -104,8 +102,8 @@ void BasicPointEffect::ComputeApplicationPoint()
 
 float BasicPointEffect::GetForceStrenthAtDistance(float distance)
 {
-  // If we're beyond the max distance and we're set to have no effect beyond it
-  // then return 0 (maybe rework this so we can return false or something later)
+  // If we're beyond the max distance and we're set to have no effect beyond it then
+  // return 0 (maybe rework this so we can return false or something later)
   if (distance > mMaxDistance && mPointFlags.IsSet(PointFlags::NoEffect))
     return 0;
 
@@ -114,8 +112,7 @@ float BasicPointEffect::GetForceStrenthAtDistance(float distance)
   if (distance < mMinDistance)
     return mMinStrength * mOutwardDirectionScalar;
 
-  // Otherwise, we want to interpolate between the min and the max with whatever
-  // interpolation type.
+  // Otherwise, we want to interpolate between the min and the max with whatever interpolation type.
 
   // Calculate the interpolation time
   real t = (distance - mMinDistance) / (mMaxDistance - mMinDistance);
@@ -130,8 +127,7 @@ float BasicPointEffect::GetForceStrenthAtDistance(float distance)
 
 Vec3 BasicPointEffect::GetForceAppliedAtPoint(Vec3Param point)
 {
-  // Calculate the normalized vector to the center point as well as the distance
-  // from the center point
+  // Calculate the normalized vector to the center point as well as the distance from the center point
   Vec3 toCenter = point - mWorldPoint;
   real distance = toCenter.AttemptNormalize();
 
@@ -171,8 +167,7 @@ void BasicPointEffect::SetMinDistance(real distance)
     distance = real(0);
   }
 
-  // Check to make sure that min < max. If so, clamp the distance to the max it
-  // can be.
+  // Check to make sure that min < max. If so, clamp the distance to the max it can be.
   if (distance >= mMaxDistance)
   {
     DoNotifyWarning("Invalid distance",
@@ -192,8 +187,7 @@ real BasicPointEffect::GetMaxDistance()
 
 void BasicPointEffect::SetMaxDistance(real distance)
 {
-  // Check to make sure that min < max. If so, clamp the distance to the min it
-  // can be.
+  // Check to make sure that min < max. If so, clamp the distance to the min it can be.
   if (distance <= mMinDistance)
   {
     DoNotifyWarning("Invalid distance",

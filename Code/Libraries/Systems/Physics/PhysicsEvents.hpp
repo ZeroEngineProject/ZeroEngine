@@ -49,9 +49,8 @@ public:
   /// A range for iterating through all contact points.
   ContactPointRange GetContactPoints();
 
-  /// Convenience function to return the first ContactPoint. Some logic only
-  /// cares about one point of information. In a more general case all points
-  /// should be iterated over.
+  /// Convenience function to return the first ContactPoint. Some logic only cares about
+  /// one point of information. In a more general case all points should be iterated over.
   ContactPoint GetFirstPoint();
 
   // C++ helpers for those who want to efficiently fetch the collider
@@ -60,8 +59,7 @@ public:
   Collider* GetCollider();
   Collider* GetOtherCollider();
 
-  // Update the collider order (who is "A" and who is "B") to match the filter's
-  // order.
+  // Update the collider order (who is "A" and who is "B") to match the filter's order.
   void MatchCollisionFilterOrder(CollisionFilter* filter);
 
   /// Returns the manifold point at the given index. This is
@@ -79,8 +77,7 @@ public:
   /// The event name that will be sent (CollisionStarted, etc...)
   String mEventType;
   /// Internal index used to "flip the manifold data" when sending to the second
-  /// object. This effectively reverses all the data (aka, the normal is negated
-  /// for object B).
+  /// object. This effectively reverses all the data (aka, the normal is negated for object B).
   uint mObjectIndex;
 
 protected:
@@ -88,8 +85,7 @@ protected:
   Physics::Manifold* mManifold;
 };
 
-/// Information about a collision in physics. Sent when collisions start,
-/// persist, or end.
+/// Information about a collision in physics. Sent when collisions start, persist, or end.
 class CollisionEvent : public BaseCollisionEvent
 {
 public:
@@ -99,9 +95,8 @@ public:
   void Set(Physics::Manifold* manifold, StringParam eventType);
   void Set(Physics::Manifold* manifold, const Physics::ManifoldPoint& point, StringParam eventType);
 
-  /// Convenience function to return the first ContactPoint. Some logic only
-  /// cares about one point of information. In a more general case all points
-  /// should be iterated over.
+  /// Convenience function to return the first ContactPoint. Some logic only cares about
+  /// one point of information. In a more general case all points should be iterated over.
   ContactPoint GetFirstPoint();
 
   // @JoshD: Legacy?
@@ -151,9 +146,8 @@ private:
 /// Event sent out when a CollisionFilter contains a PreSolveBlock. This
 /// event is sent out after collision detection but before collision resolution.
 /// This can be used to alter the state of the two objects in a collision
-/// before they're resolved (e.g. turn one from static to dynamic). Warning: Do
-/// not delete objects or do any other significant changes as this may
-/// destabilize the system.
+/// before they're resolved (e.g. turn one from static to dynamic). Warning: Do not
+/// delete objects or do any other significant changes as this may destabilize the system.
 class PreSolveEvent : public BaseCollisionEvent
 {
 public:
@@ -162,12 +156,10 @@ public:
   PreSolveEvent();
   void Set(Physics::Manifold* manifold, CollisionFilterBlock* preSolveBlock);
 
-  /// The restitution to use for solving this pair. Allows custom overriding for
-  /// this pair.
+  /// The restitution to use for solving this pair. Allows custom overriding for this pair.
   real GetRestitution();
   void SetRestitution(real restitution);
-  /// The friction to use for solving this pair. Allows custom overriding for
-  /// this pair.
+  /// The friction to use for solving this pair. Allows custom overriding for this pair.
   real GetFriction();
   void SetFriction(real friction);
 

@@ -140,8 +140,7 @@ bool BilateralAdvancement(
   SetSupportShapeDeltas(objA, objB, 0);
   intersection = gjk.TestDebug(&objA->shape, &objB->shape, manifold);
 
-  // If objects' initial configuration is intersecting, then maybe return some
-  // other error code
+  // If objects' initial configuration is intersecting, then maybe return some other error code
   // ...
 
   *impact = dt;
@@ -259,9 +258,8 @@ void TimeOfImpactComplexInternal(TimeOfImpactData* data, bool parametersSwapped)
   if (data->LinearSweep)
   {
     // when performing a linear sweep we always sweep the first collider,
-    // however the collider order might've been swapped (to make it easier to
-    // test against complex colliders). In that case swap who is doing the
-    // linear sweep.
+    // however the collider order might've been swapped (to make it easier to test
+    // against complex colliders). In that case swap who is doing the linear sweep.
     if (!parametersSwapped)
       objA.vel = data->Velocity;
     else
@@ -360,8 +358,7 @@ void TimeOfImpactComplexVsComplexInternal(TimeOfImpactData* data)
   //(you basically can't midphase when the complex object is rotating)
   Aabb aabb1InSpace0 = functor0.ToLocalAabb(ToAabb(sweptSphere1));
 
-  // iterate over all sub-shapes in collider0 that could possibly intersect with
-  // collider1
+  // iterate over all sub-shapes in collider0 that could possibly intersect with collider1
   Range0Type r0 = complexCollider0->GetOverlapRange(aabb1InSpace0);
   for (; !r0.Empty(); r0.PopFront())
   {
@@ -398,8 +395,7 @@ void TimeOfImpactComplexVsComplexInternal(TimeOfImpactData* data)
       //(if manifolds is nullptr, we could keep this in local
       // space and just convert the collider shape once...)
       AutoDeclare(worldShape1, functor1.ToWorldShape(item1.Shape));
-      // need to get the type of the world shape for
-      // IntersectionToPhysicsManifold
+      // need to get the type of the world shape for IntersectionToPhysicsManifold
       typedef decltype(worldShape1) WorldShape1Type;
 
       // update the sub-shape for objectB
@@ -439,9 +435,8 @@ void TimeOfImpactComplexVsComplex(TimeOfImpactData* data)
 {
   bool type0Local = ColliderType0::RangeInLocalSpace::value;
   bool type1Local = ColliderType1::RangeInLocalSpace::value;
-  // determine which collider needs a local space functor and which needs a
-  // world space functor (could do some fancy template tricks to remove the if,
-  // but worry about that later)
+  // determine which collider needs a local space functor and which needs a world space functor
+  //(could do some fancy template tricks to remove the if, but worry about that later)
   if (type0Local)
   {
     if (type1Local)

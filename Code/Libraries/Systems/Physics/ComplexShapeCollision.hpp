@@ -138,8 +138,7 @@ bool ComplexCollideCollidersInternal(Collider* complexCollider,
       Physics::Manifold* manifold = &manifolds->PushBack();
       manifold->SetPair(pair);
       IntersectionToPhysicsManifold<WorldShapeType, Shape2Type>(&iManifold, manifold);
-      // set the id of this item on the manifold and mark that we collided with
-      // something
+      // set the id of this item on the manifold and mark that we collided with something
       manifold->ContactId = item.Index;
       FixInternalEdges(castedCollider, manifold, item.Index);
       ++collisionCount;
@@ -158,9 +157,8 @@ bool ComplexCollideCollidersInternal(Collider* complexCollider,
 }
 
 // These two functions use function overloading to determine which functor to
-// pass into the above function. By using the overloaded functions with
-// true/FalseType, I can make sure that only the code that should actually run
-// is generated.
+// pass into the above function. By using the overloaded functions with true/FalseType,
+// I can make sure that only the code that should actually run is generated.
 
 /// Resolves the TrueType of RangeInLocalSpace to the LocalFunctor.
 template <typename ColliderType, typename Shape2Type>
@@ -189,8 +187,7 @@ bool ComplexCollideCollidersResolveLocal(Collider* complexCollider,
 template <typename ColliderType, typename Shape2Type>
 bool ComplexCollideCollidersA(Collider* complexCollider, Collider* collider2, PodArray<Physics::Manifold>* manifolds)
 {
-  // let overloading based upon the RangeInLocalSpace type take care of the
-  // functor
+  // let overloading based upon the RangeInLocalSpace type take care of the functor
   return ComplexCollideCollidersResolveLocal<ColliderType, Shape2Type>(
       complexCollider, collider2, manifolds, typename ColliderType::RangeInLocalSpace());
 }
@@ -199,8 +196,7 @@ bool ComplexCollideCollidersA(Collider* complexCollider, Collider* collider2, Po
 template <typename Shape1Type, typename ColliderType>
 bool ComplexCollideCollidersB(Collider* collider1, Collider* complexCollider, PodArray<Physics::Manifold>* manifolds)
 {
-  // let overloading based upon the RangeInLocalSpace type take care of the
-  // functor
+  // let overloading based upon the RangeInLocalSpace type take care of the functor
   return ComplexCollideCollidersResolveLocal<ColliderType, Shape1Type>(
       complexCollider, collider1, manifolds, typename ColliderType::RangeInLocalSpace());
 }
@@ -221,8 +217,7 @@ bool ComplexVsComplexCollidersInternal(Collider* collider0, Collider* collider1,
   Aabb aabb1InSpace0 = functor0.ToLocalAabb(castedCollider1->mAabb);
 
   uint collisionCount = 0;
-  // iterate over all sub-shapes in collider0 that could possibly intersect with
-  // collider1
+  // iterate over all sub-shapes in collider0 that could possibly intersect with collider1
   Range0Type r0 = castedCollider0->GetOverlapRange(aabb1InSpace0);
   for (; !r0.Empty(); r0.PopFront())
   {
@@ -245,8 +240,7 @@ bool ComplexVsComplexCollidersInternal(Collider* collider0, Collider* collider1,
       //(if manifolds is nullptr, we could keep this in local
       // space and just convert the collider shape once...)
       AutoDeclare(worldShape1, functor1.ToWorldShape(item1.Shape));
-      // need to get the type of the world shape for
-      // IntersectionToPhysicsManifold
+      // need to get the type of the world shape for IntersectionToPhysicsManifold
       typedef decltype(worldShape1) WorldShape1Type;
 
       // deal with a boolean vs needing info test (maybe remove?)
@@ -271,8 +265,7 @@ bool ComplexVsComplexCollidersInternal(Collider* collider0, Collider* collider1,
         manifold->ContactId = item0.Index << 16;
         manifold->ContactId |= item1.Index;
 
-        // fix the internal edges (just try both colliders and one of them might
-        // fix it)
+        // fix the internal edges (just try both colliders and one of them might fix it)
         FixInternalEdges(castedCollider0, manifold, item0.Index);
         FixInternalEdges(castedCollider1, manifold, item1.Index);
 
@@ -298,9 +291,8 @@ bool ComplexVsComplexColliders(Collider* collider0, Collider* collider1, PodArra
 {
   bool type0Local = ColliderType0::RangeInLocalSpace::value;
   bool type1Local = ColliderType1::RangeInLocalSpace::value;
-  // determine which collider needs a local space functor and which needs a
-  // world space functor (could do some fancy template tricks to remove the if,
-  // but worry about that later)
+  // determine which collider needs a local space functor and which needs a world space functor
+  //(could do some fancy template tricks to remove the if, but worry about that later)
   if (type0Local)
   {
     if (type1Local)
@@ -345,8 +337,7 @@ bool ComplexCastInternal(const CastType& castShape,
 
       Intersection::Manifold iManifold;
 
-      // since we are actually storing results, we have to check every item in
-      // the range
+      // since we are actually storing results, we have to check every item in the range
       if (!CastShapes(castShape, item.Shape, &iManifold))
         continue;
 
@@ -385,8 +376,7 @@ bool ComplexCastInternal(const CastType& castShape,
 /// for this function is to allow a user to write only one code path to deal
 /// with any sort of casted shape. The downside is that the collider can only
 /// perform filtering based upon an aabb. If a collider can do a more efficient
-/// cast against certain shapes, then it should use SpecialComplexCastVsShape
-/// declared below.
+/// cast against certain shapes, then it should use SpecialComplexCastVsShape declared below.
 template <typename CastType, typename ColliderType>
 bool ComplexCastVsShape(const CastType& castShape,
                         Collider* complexCollider,
@@ -406,11 +396,10 @@ bool ComplexCastVsShape(const CastType& castShape,
     Mat4 transform = worldTransform->GetWorldMatrix();
     Mat4 invTransform = transform.Inverted();
 
-    // if we perform a transform normally, shapes can change (aka sphere's
-    // become ellipsoids) if there's non-uniform scale. If there's uniform scale
-    // we'll do a special transform that knows the shape stays the same. This
-    // will prevent casting a sphere from becoming an ellipse and going through
-    // gjk or mpr when it doesn't need to.
+    // if we perform a transform normally, shapes can change (aka sphere's become ellipsoids)
+    // if there's non-uniform scale. If there's uniform scale we'll do a special transform
+    // that knows the shape stays the same. This will prevent casting a sphere from
+    // becoming an ellipse and going through gjk or mpr when it doesn't need to.
     if (worldTransform->IsUniformlyScaled())
     {
       AutoDeclare(uniformLocalShape, castShape.UniformTransform(invTransform));
@@ -444,12 +433,10 @@ bool ComplexCastVsShape(const CastType& castShape,
   }
   else
   {
-    // get a range of items to iterate through based upon the aabb of the cast
-    // shape
+    // get a range of items to iterate through based upon the aabb of the cast shape
     Aabb castShapeAabb = GetCastDataAabb(castShape);
     RangeType range = castedCollider->GetOverlapRange(castShapeAabb);
-    // go through the internal code that iterates over the range regardless of
-    // space
+    // go through the internal code that iterates over the range regardless of space
     hitItem = ComplexCastInternal(castShape, complexCollider, range, result);
   }
 
@@ -495,13 +482,12 @@ bool ComplexOverlapVsShape(const ShapeType& shape, Collider* complexCollider)
 }
 
 /// Some objects might be able to do a more efficient cast of certain types if
-/// they store some internal mid-phase (BSP, KD, Aabb trees). To allow the
-/// collider to use that internal structure, they can use this template. All
-/// that they are expected to have is the RangeInLocalSpace typedef and a
-/// function called Cast of the correct cast data type (eg. Ray). Note: if a
-/// collider is local and wants to specialize sphere or aabb, it needs to deal
-/// with the fact that the shape it will actually receive is an ellipsoid or
-/// obb.
+/// they store some internal mid-phase (BSP, KD, Aabb trees). To allow the collider
+/// to use that internal structure, they can use this template. All that they are
+/// expected to have is the RangeInLocalSpace typedef and a function called Cast
+/// of the correct cast data type (eg. Ray).
+/// Note: if a collider is local and wants to specialize sphere or aabb, it needs
+/// to deal with the fact that the shape it will actually receive is an ellipsoid or obb.
 template <typename CastType, typename ColliderType>
 bool SpecialComplexCastVsShape(const CastType& castShape,
                                Collider* complexCollider,

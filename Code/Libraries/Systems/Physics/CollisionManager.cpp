@@ -24,8 +24,7 @@ struct InternalImplementation
     mFrustumCastLookup.OverrideLookup(ComplexCastVsShape<Frustum, ColliderType>, colliderType);
   }
 
-  // testing a sub object of a collider (was used in complex colliders, not used
-  // at the moment)
+  // testing a sub object of a collider (was used in complex colliders, not used at the moment)
   Zero::ShapeArrayLookup<Sphere> mSphereLookups;
   Zero::ShapeArrayLookup<Aabb> mAabbLookups;
   Zero::ShapeArrayLookup<Triangle> mTriangleLookups;
@@ -52,8 +51,7 @@ CollisionManager::CollisionManager()
 
   // frustum vs Cylinder, Ellipsoid, Capsule and ConvexMesh is not implemented.
   // Replace those with an aabb check as frustum casting is important to have.
-  // Also default any other complex shape to frustum aabb so it can be group
-  // selected.
+  // Also default any other complex shape to frustum aabb so it can be group selected.
   for (uint i = Collider::cCylinder; i < (uint)Collider::cSize; ++i)
   {
     mInternals->mFrustumCastLookup.OverrideLookup(CastVsShape<Frustum, Aabb>, i);

@@ -50,8 +50,7 @@ void JointConfigOverride::Initialize(CogInitializer& initializer)
     mNode->mConfigOverride = this;
   }
 
-  // If the joint is dynamically created, grab the default values from the
-  // current config
+  // If the joint is dynamically created, grab the default values from the current config
   bool dynamicallyCreated = (initializer.Flags & CreationFlags::DynamicallyAdded) != 0;
   if (dynamicallyCreated)
   {

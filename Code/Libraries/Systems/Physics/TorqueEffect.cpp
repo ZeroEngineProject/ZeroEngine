@@ -39,14 +39,12 @@ void TorqueEffect::DebugDraw()
   // Get an animating time
   real t = GetAnimationTime(GetOwner());
 
-  // Include the strength? If the strength is include we have to only use
-  // positive strength values to update t. Negative values should flip the axis
-  // (otherwise the arrow-heads will be backwards).
+  // Include the strength? If the strength is include we have to only use positive strength values to update t.
+  // Negative values should flip the axis (otherwise the arrow-heads will be backwards).
   torqueAxis *= (real)Math::Sign(mTorqueStrength);
   t *= Math::Abs(mTorqueStrength);
 
-  // Hard-code the animation radius at 1 (could use the object's cylinder's
-  // radius?)
+  // Hard-code the animation radius at 1 (could use the object's cylinder's radius?)
   real radius = 1;
   // Draw a ring that has 3 sub-divisions
   DrawRing(torqueCenter, torqueAxis, radius, 3, t, Color::White);

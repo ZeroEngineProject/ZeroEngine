@@ -181,8 +181,7 @@ void PhysicsCarWheel::DebugDraw()
   // the center of mass (0 = center of mass, 1 = wheel position)
   Vec3 centerMass = mCarBody->mBody->GetWorldCenterOfMass();
   Vec3 r = mWorldContactPosition - centerMass;
-  // Compute the projected vector of the relative position along the contact
-  // normal
+  // Compute the projected vector of the relative position along the contact normal
   Vec3 rPosUp = Math::Dot(r, mWorldContactNormal) * mWorldContactNormal;
 
   // Compute the r vector for the side friction coef. and apply the impulse
@@ -334,8 +333,7 @@ void PhysicsCarWheel::UpdateTransformRelativeToParent()
 
 real PhysicsCarWheel::CalculateRotationalVelocity(Vec3Param dir, Vec3Param relativeVelocity)
 {
-  // Project the velocity of the wheel onto the direction to determine how fast
-  // the wheel is turning
+  // Project the velocity of the wheel onto the direction to determine how fast the wheel is turning
   real projVelCoef = Math::Dot(dir, relativeVelocity);
   // Now use the speed and the radius to compute the actual rotational speed
   return projVelCoef / mRadius;
@@ -452,8 +450,8 @@ void PhysicsCarWheel::CastWheelPosition()
       // is done so that you can set a arbitrary min but not miss collision
       // if there is an object in between the start and min.
       real minDistance = Math::Max(minCast, t - mRadius);
-      // Now add back in the start t value since the spring length is expected
-      // to start at the wheel start position, not the spring start position
+      // Now add back in the start t value since the spring length is expected to
+      // start at the wheel start position, not the spring start position
       mSpringLength = minDistance + mSpringStartLength;
 
       mContactedObject = results[i].GetCollider();
@@ -482,8 +480,7 @@ void PhysicsCarWheel::CalculateSpringForce()
   if (!GetIsInContact())
     return;
 
-  // Compute the mass that this spring sees (basically the mass of the impulse
-  // for the wheel)
+  // Compute the mass that this spring sees (basically the mass of the impulse for the wheel)
   real effectiveMass = real(1.0) / CalculateObjectMass(mWorldWheelSpringDir, mCarBody->mBody, mWorldContactPosition);
   // Convert the frequency to the spring coefficient k (k = mass*frequency^2)
   real springCoef = effectiveMass * mFrequencyHz * mFrequencyHz;
@@ -516,8 +513,7 @@ void PhysicsCarWheel::CalculateSpringForce()
     dampeningRatio = mDampingCompressionRatio;
   else
     dampeningRatio = mDampingRelaxationRatio;
-  // Convert the dampening ratio to the dampening coefficient c (c =
-  // 2*mass*ratio*frequency)
+  // Convert the dampening ratio to the dampening coefficient c (c = 2*mass*ratio*frequency)
   real dampeningCoef = real(2.0) * effectiveMass * dampeningRatio * mFrequencyHz;
   // Calculate the dampening force (F = -cv)
   mSpringForce -= dampeningCoef * velRelativeToSpring;
@@ -554,8 +550,7 @@ struct ConstraintInfo
   {
     Vec3 centerMass = wheel->mCarBody->mBody->GetWorldCenterOfMass();
     Vec3 r = wheel->mWorldContactPosition - centerMass;
-    // Compute the projected vector of the relative position along the contact
-    // normal
+    // Compute the projected vector of the relative position along the contact normal
     Vec3 rPosUp = Math::Dot(r, wheel->mWorldContactNormal) * wheel->mWorldContactNormal;
     mR1 = wheel->mContactedObject->GetRigidBodyCenterOfMass() - wheel->mWorldContactPosition;
     mR2 = r + (rollCoef - real(1.0)) * rPosUp;
@@ -611,12 +606,12 @@ real PhysicsCarWheel::InternalFrictionCalculation(Vec3Param dir, ConstraintInfo&
 
   // This could be optimized by taking this entire mass calculation and only
   // doing it once per logic update, however due to having to store the memory
-  // somewhere and not wanting to permanently increase the size of this
-  // component it is re-calculated. (Maybe later add some sort of molecule like
-  // joints that the car holds onto in its stack)
+  // somewhere and not wanting to permanently increase the size of this component
+  // it is re-calculated. (Maybe later add some sort of molecule like joints
+  // that the car holds onto in its stack)
   Physics::JointMass masses;
-  // Pass in null instead of the other body because we're treating the other
-  // body as "kinematic" so we don't want its mass since it's infinite
+  // Pass in null instead of the other body because we're treating the other body
+  // as "kinematic" so we don't want its mass since it's infinite
   Physics::JointHelpers::GetMasses(nullptr, body, masses);
   real constraintMass = jacobian.ComputeMass(masses);
   // Prevent zero divisions (most likely from 2d mode)
@@ -730,8 +725,7 @@ void PhysicsCarWheel::SolveFrictionImpulse(real dt)
 
 void PhysicsCarWheel::FinishedIteration(real dt)
 {
-  // If we're not in contact, we don't want to compute the speed of the wheel
-  // the normal way
+  // If we're not in contact, we don't want to compute the speed of the wheel the normal way
   if (!GetIsInContact())
   {
     // Normally, we want to target 0, but if we have gas target the max speed
@@ -748,8 +742,7 @@ void PhysicsCarWheel::FinishedIteration(real dt)
   // If the brakes are on and we don't have anti-lock brakes, just stop rotation
   if (mCarBody->mBrakeInput != real(0.0) && !mCarBody->mAntiLockBrakes)
     mRotationalVelocity = real(0.0);
-  // Otherwise calculate the point velocity of the wheel to get the rotational
-  // velocity
+  // Otherwise calculate the point velocity of the wheel to get the rotational velocity
   else
     mRotationalVelocity = CalculateRotationalVelocity(mWorldForwardTangent, relVel);
 }
@@ -790,9 +783,8 @@ void PhysicsCarWheel::UpdateWheelTransform(real dt)
 
   // Need to update the start pos of the wheel because of integration
   mWorldWheelStartPosition = mCarBody->mWorldTransform.TransformPoint(mWheelLocalStartPosition);
-  // Set the world translation (so children work as well, have to set world
-  // instead of local in children case because we may be n levels deep in the
-  // hierarchy).
+  // Set the world translation (so children work as well, have to set world instead
+  // of local in children case because we may be n levels deep in the hierarchy).
   Vec3 worldPos = mWorldWheelStartPosition + springLength * -mWorldWheelSpringDir;
   transform->SetWorldTranslation(worldPos);
   // Set world rotation for the same reason as listed above
@@ -894,8 +886,7 @@ void PhysicsCarWheel::SetSpringMinLength(real value)
   if (value > mSpringMaxLength)
   {
     DoNotifyException("Invalid spring min length.",
-                      "The spring min length cannot be larger than the spring "
-                      "max length value.");
+                      "The spring min length cannot be larger than the spring max length value.");
     mSpringMinLength = mSpringMaxLength;
   }
   else

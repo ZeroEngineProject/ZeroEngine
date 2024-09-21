@@ -69,8 +69,8 @@ void BasicSolver::Solve(real dt)
   BasicSolver::Commit();
   BasicSolver::BatchEvents();
 
-  // can't solve positions here as this step needs to run after position
-  // integration BasicSolver::SolvePositions();
+  // can't solve positions here as this step needs to run after position integration
+  // BasicSolver::SolvePositions();
 }
 
 void BasicSolver::DebugDraw(uint debugFlags)
@@ -126,8 +126,7 @@ void BasicSolver::IterateVelocities(uint iteration)
 void BasicSolver::SolvePositions()
 {
   // first do a pre-processing step to figure out which joints/contacts actually
-  // need position correction (so we're not doing the check during the inner
-  // loop)
+  // need position correction (so we're not doing the check during the inner loop)
   JointList jointsToSolve;
   ContactList contactsToSolve;
 

@@ -6,10 +6,10 @@ namespace Zero
 
 DeclareBitField2(FlowFlags, LocalForce, AttractToFlowCenter);
 
-/// Applies a force to make an object move at a target speed in a given
-/// direction. This can also be used to pull the object towards the center of
-/// the flow (the axis in the flow direction centered at the effect). Used to
-/// model a river or a tractor beam.
+/// Applies a force to make an object move at a target speed in a given direction.
+/// This can also be used to pull the object towards the center of the flow (the
+/// axis in the flow direction centered at the effect). Used to model a river
+/// or a tractor beam.
 class FlowEffect : public PhysicsEffect
 {
 public:
@@ -50,8 +50,7 @@ public:
   void SetFlowDirection(Vec3Param dir);
   /// The direction that the field is flowing in world space.
   Vec3 GetWorldFlowDirection();
-  /// The target speed for an object to be pulled towards the center of the
-  /// flow.
+  /// The target speed for an object to be pulled towards the center of the flow.
   real GetAttractSpeed();
   void SetAttractSpeed(real speed);
   /// The max force that can be used to reach the target attract speed.

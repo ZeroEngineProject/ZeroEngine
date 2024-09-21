@@ -91,9 +91,8 @@ void ContactManager::Remove(Contact* contact, bool sendImmediately)
 
   mSpace->mEventManager->BatchCollisionEndedEvent(manifold, mSpace, sendImmediately);
 
-  // We want the CollisionEnded event to have access to the manifold, but the
-  // contact owns the manifold and would delete it, so delay destruct the
-  // contacts
+  // We want the CollisionEnded event to have access to the manifold, but the contact
+  // owns the manifold and would delete it, so delay destruct the contacts
   mContactsToDestroy.PushBack(contact);
 }
 

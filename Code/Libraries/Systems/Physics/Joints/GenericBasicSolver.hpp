@@ -7,11 +7,10 @@ namespace Zero
 namespace Physics
 {
 
-/// A solver that copies data into an array for quick solving. This does not
-/// allow joints to change during each iteration. Since it is a basic solver,
-/// there are virtual function calls during the set up phase, but during actual
-/// solving there are none. Also copies RigidBody data to a small array to help
-/// cache.
+/// A solver that copies data into an array for quick solving. This does not allow
+/// joints to change during each iteration. Since it is a basic solver, there
+/// are virtual function calls during the set up phase, but during actual solving
+/// there are none. Also copies RigidBody data to a small array to help cache.
 class GenericBasicSolver : public IConstraintSolver
 {
 public:

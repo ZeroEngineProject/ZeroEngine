@@ -23,10 +23,9 @@ public:
   void ComputeLocalInverseInertiaTensor(real mass, Mat3Ref localInvInertia) override;
   void Support(Vec3Param direction, Vec3Ptr support) const override;
 
-  /// The half size (from the center to the upper-right corner) on each axis of
-  /// the box in local space. Used to make the box's size match a model or some
-  /// other volume without needing to scale the transform (also avoids
-  /// non-uniform scale issues).
+  /// The half size (from the center to the upper-right corner) on each axis of the box in local space.
+  /// Used to make the box's size match a model or some other volume without
+  /// needing to scale the transform (also avoids non-uniform scale issues).
   Vec3 GetHalfSize();
   void SetHalfSize(Vec3Param localHalfSize);
   /// The size (from min to max) on each axis of the box in local space.

@@ -40,13 +40,12 @@ ZilchDefineEnum(SpringDebugDrawMode);
 ZilchDefineEnum(SpringDebugDrawType);
 ZilchDefineEnum(SpringSortOrder);
 
-// Bind the joint types special because they're generated using the #define
-// #include trick
+// Bind the joint types special because they're generated using the #define #include trick
 ZilchDefineExternalBaseType(JointTypes::Enum, TypeCopyMode::ValueType, builder, type)
 {
   ZilchFullBindEnum(builder, type, SpecialType::Enumeration);
   // Add all of the joint types
-  for (size_t i = 0; i < JointTypes::Size; ++i)
+  for (int i = 0; i < JointTypes::Size; ++i)
   {
     ZilchFullBindEnumValue(builder, type, i, JointTypes::Names[i]);
   }
@@ -207,8 +206,7 @@ ZilchDefineStaticLibrary(PhysicsLibrary)
   ZilchInitializeType(JointGraphEdge);
 
   // Not ready for consumption yet, but I want to test it with dev config
-  // METAREFACTOR they should always be initialized, but hidden with an
-  // attribute
+  // METAREFACTOR they should always be initialized, but hidden with an attribute
   // ZilchInitializeType(SpringSystem);
   // ZilchInitializeType(DecorativeCloth);
   // ZilchInitializeType(DecorativeRope);

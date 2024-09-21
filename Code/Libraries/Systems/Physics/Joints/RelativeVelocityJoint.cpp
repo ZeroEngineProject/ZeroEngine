@@ -9,15 +9,13 @@ namespace Physics
 
 JointInfo RelativeVelocityJoint::sInfo = JointInfo(3, 0);
 
-/// The linearAxisJoint's policy for Atom updating as well as Molecule
-/// computing.
+/// The linearAxisJoint's policy for Atom updating as well as Molecule computing.
 struct RelativeVelocityPolicy : public DefaultFragmentPolicy<RelativeVelocityJoint>
 {
   void AxisValue(MoleculeData& data, int atomIndex, RelativeVelocityJoint* joint)
   {
     ErrorIf(atomIndex >= (int)joint->sInfo.mAtomCount,
-            "RelativeVelocityJoint has only %d atom. Cannot compute atom "
-            "number %d.",
+            "RelativeVelocityJoint has only %d atom. Cannot compute atom number %d.",
             joint->sInfo.mAtomCount,
             atomIndex);
 
@@ -27,8 +25,7 @@ struct RelativeVelocityPolicy : public DefaultFragmentPolicy<RelativeVelocityJoi
   void ErrorFragment(int atomIndex, RelativeVelocityJoint* joint, ImpulseLimitAtom& molLimit)
   {
     ErrorIf(atomIndex >= (int)joint->sInfo.mAtomCount,
-            "RelativeVelocityJoint has only %d atom. Cannot compute atom "
-            "number %d.",
+            "RelativeVelocityJoint has only %d atom. Cannot compute atom number %d.",
             joint->sInfo.mAtomCount,
             atomIndex);
 
@@ -36,8 +33,8 @@ struct RelativeVelocityPolicy : public DefaultFragmentPolicy<RelativeVelocityJoi
     uint flag = 1 << atomIndex;
     ConstraintAtom& atom = joint->mAtoms[atomIndex];
 
-    // Compute the error of this constraint. have to compute the error at this
-    // time so that the limit values are known
+    // Compute the error of this constraint. have to compute the error at this time
+    // so that the limit values are known
     ComputeError(atom, molLimit, joint->mNode->mLimit, 0, flag);
     ModifyErrorWithSlop(joint, atom);
   }
@@ -46,16 +43,14 @@ struct RelativeVelocityPolicy : public DefaultFragmentPolicy<RelativeVelocityJoi
   real AxisFragment(MoleculeData& data, int atomIndex, RelativeVelocityJoint* joint, ConstraintMolecule& mol)
   {
     ErrorIf(atomIndex >= (int)joint->sInfo.mAtomCount,
-            "RelativeVelocityJoint has only %d atom. Cannot compute atom "
-            "number %d.",
+            "RelativeVelocityJoint has only %d atom. Cannot compute atom number %d.",
             joint->sInfo.mAtomCount,
             atomIndex);
 
     // Compute the linear axis fragment Jacobian
     Vec3 axis = data.LinearAxes[atomIndex];
-    // There's no easy way to disable 1 atom within a joint, just make it do
-    // nothing by setting the jacobian to the zero axis (thus computing impulses
-    // that are 0)
+    // There's no easy way to disable 1 atom within a joint, just make it do nothing by
+    // setting the jacobian to the zero axis (thus computing impulses that are 0)
     if (joint->GetAxisActive(atomIndex) == false)
       axis = Vec3::cZero;
     mol.mJacobian.Set(-axis, Vec3::cZero, axis, Vec3::cZero);

@@ -49,8 +49,7 @@ void IntersectionToPhysicsManifold(Intersection::Manifold* iManifold, Physics::M
   }
 
 // silly to macro this now, but if we had more this would be a lot cleaner...
-// Specialize the shapes that need to do a full manifold instead of a persistent
-// one
+// Specialize the shapes that need to do a full manifold instead of a persistent one
 DeclareFullManifoldSpecialization(Triangle, Obb);
 DeclareFullManifoldSpecialization(Aabb, Obb);
 DeclareFullManifoldSpecialization(Sphere, Triangle);
@@ -75,9 +74,9 @@ void FixInternalEdges(HeightMapCollider* collider, Physics::Manifold* manifold, 
 void BaseManifoldToProxyResult(Intersection::Manifold* manifold, ProxyResult* result);
 
 // Base behavior for Manifold to proxy which is for ray and segment. Need to
-// actually fix this to deal with the returned types of point/segment.
-// (supposedly that is necessary for dealing with rays starting inside of a
-// shape, the point0 point1 issue was fixed in intersection).
+// actually fix this to deal with the returned types of point/segment. (supposedly
+// that is necessary for dealing with rays starting inside of a shape, the point0
+// point1 issue was fixed in intersection).
 template <typename CastType>
 void ManifoldToProxyResult(const CastType& castShape,
                            Collider* collider,
@@ -102,8 +101,8 @@ void ManifoldToProxyResult(const Sphere& castShape,
                            Intersection::Manifold* manifold,
                            ProxyResult* result);
 
-// Unfortunately, these need a collider because of how the cylinder version
-// works
+
+// Unfortunately, these need a collider because of how the cylinder version works
 
 /// Templated type for shapes we don't know about (convex mesh)
 template <typename ShapeType>
@@ -120,17 +119,15 @@ Vec3 NormalFromPointOnShape(const Ellipsoid& ellipsoid, Collider* shapeCollider,
 Vec3 NormalFromPointOnShape(const Capsule& capsule, Collider* shapeCollider, Vec3Param point, Vec3Param start);
 Vec3 NormalFromPointOnShape(const Triangle& triangle, Collider* shapeCollider, Vec3Param point, Vec3Param start);
 
-// to deal with shape types that we should be getting a normal when casting
-// against (we only get normals against segments and rays, other shapes we
-// ignore
-// this call on)
+
+// to deal with shape types that we should be getting a normal when casting against
+//(we only get normals against segments and rays, other shapes we ignore this call on)
 template <typename CastType, typename ShapeType>
 void GetNormalFromPointOnShape(
     const CastType& castShape, const ShapeType& shape, Collider* shapeCollider, Vec3Param point, Vec3Ref normal)
 {
   // we don't do anything with this case, but set the normal to a valid
-  // value so later calculations don't blow up (a normalize with a garbage
-  // vector)
+  // value so later calculations don't blow up (a normalize with a garbage vector)
   normal = Vec3::cXAxis;
 }
 
@@ -167,8 +164,7 @@ void ColliderToShape(Collider* collider, ConvexMeshShape& convexMesh);
 /// Currently I need to get the aabb of the cast shape to hand off to the
 /// complex collider for filtering, however, taking the aabb of any shape
 /// doesn't exactly make sense. For instance, what should the aabb of a ray be?
-/// So make the generic version and then specialize a ray to have a rather large
-/// aabb.
+/// So make the generic version and then specialize a ray to have a rather large aabb.
 template <typename CastType>
 Aabb GetCastDataAabb(const CastType& castShape)
 {

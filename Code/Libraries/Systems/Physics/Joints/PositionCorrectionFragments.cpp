@@ -18,7 +18,7 @@ bool ShouldSolvePosition(Joint* joint)
   JointConfigOverride* configOverride = joint->mNode->mConfigOverride;
   uint jointType = joint->GetJointType();
 
-  // Normally we check the config values for joints to determine if it
+  // Hack! Normally we check the config values for joints to determine if it
   // should apply post stabilization or baumgarte. Custom joints determine this
   // via each constraint's SolvePosition bool which is set from script so just
   // check how many position constraints there are.
@@ -115,9 +115,8 @@ void ApplyPositionCorrection(RigidBody* body, Vec3Param linearOffset, Vec3Param 
 {
   // We need to use the kinematic body for velocity correction
   //(since we need its velocity), but we don't want to updated it during
-  // position correction (we don't want to update based upon its center of
-  // mass). This is also convenient because there's no reason to position
-  // correct kinematics anyways.
+  // position correction (we don't want to update based upon its center of mass).
+  // This is also convenient because there's no reason to position correct kinematics anyways.
   if (body != nullptr && body->GetKinematic() == false)
   {
     // translation is very simple to update, just offset by the linear offset
@@ -130,17 +129,16 @@ void ApplyPositionCorrection(RigidBody* body, Vec3Param linearOffset, Vec3Param 
     rot = (w * rot) * real(0.5);
     body->UpdateOrientation(rot);
 
-    // Below is no longer needed because the transforms need to be updated
-    // before solving (since they're out of date on the first iteration due to
-    // position correction). No extra work needs to be done afterwards either
-    // because publish will grab the updated values on the body and the
-    // individual children values aren't important.
+    // Below is no longer needed because the transforms need to be updated before solving
+    // (since they're out of date on the first iteration due to position correction).
+    // No extra work needs to be done afterwards either because publish will grab the updated
+    // values on the body and the individual children values aren't important.
 
     // Unfortunately, position correction needs up-to-date positions which
     // is a bit trickier with hierarchies. Each node in the hierarchy stores a
-    // cached body-to-world transform that needs to be updated after each
-    // position correction. For now just directly update the hierarchy and maybe
-    // later worry about a more efficient way (post transforms?)
+    // cached body-to-world transform that needs to be updated after each position correction.
+    // For now just directly update the hierarchy and maybe later worry
+    // about a more efficient way (post transforms?)
     // ProfileScopeTree("Hierarchy", "SolvePositions", Color::PeachPuff);
     // UpdateHierarchyTransform(body);
   }

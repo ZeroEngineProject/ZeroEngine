@@ -10,9 +10,9 @@ namespace Physics
 struct Manifold;
 
 /// A solver that allows each object to solve itself. This allows joints and
-/// contacts to change each iteration (such as contacts changing friction
-/// bounds). The basic solver stores all joints in one list and must therefore
-/// call virtual functions on each joint.
+/// contacts to change each iteration (such as contacts changing friction bounds).
+/// The basic solver stores all joints in one list and must therefore call virtual
+/// functions on each joint.
 class BasicSolver : public IConstraintSolver
 {
 public:

@@ -39,7 +39,7 @@ void CollisionTable::Serialize(Serializer& stream)
     StrArray RegisteredGroups;
     SerializeName(RegisteredGroups);
     // Register the id of each of these types
-    for (uint i = 0; i < RegisteredGroups.Size(); ++i)
+    for (size_t i = 0; i < RegisteredGroups.Size(); ++i)
     {
       CollisionGroup* group = CollisionGroupManager::Find(RegisteredGroups[i]);
       RegisterGroup(group);
@@ -47,8 +47,7 @@ void CollisionTable::Serialize(Serializer& stream)
   }
   else
   {
-    // Convert each registered id to its string and then add it to an array and
-    // serialize it
+    // Convert each registered id to its string and then add it to an array and serialize it
     StrArray RegisteredGroups;
     RegisteredGroups::range range = mRegisteredGroups.All();
     for (; !range.Empty(); range.PopFront())
@@ -194,22 +193,18 @@ void CollisionTable::ValidateFilters()
     }
     /*
     if((filter.TypeA == filter.TypeB) &&
-    filter.mFilterFlags.IsSet(FilterFlags::TypeAMessages) !=
-    filter.mFilterFlags.IsSet(FilterFlags::TypeBMessages))
+    filter.mFilterFlags.IsSet(FilterFlags::TypeAMessages) != filter.mFilterFlags.IsSet(FilterFlags::TypeBMessages))
     {
     String msg;
-    msg = String::Format("Pair [%s,%s] is not consistent on TypeA and TypeB
-    getting messages. " "Please set the flags to be equal. Continuing will
-    automatically set the flag to true.", typeAName, typeBName);
+    msg = String::Format("Pair [%s,%s] is not consistent on TypeA and TypeB getting messages. "
+    "Please set the flags to be equal. Continuing will automatically set the flag to true.",
+    typeAName, typeBName);
     DoNotifyWarning("Invalid Configuration", msg);
-    filter.mFilterFlags.SetFlag(FilterFlags::TypeAMessages |
-    FilterFlags::TypeBMessages);
+    filter.mFilterFlags.SetFlag(FilterFlags::TypeAMessages | FilterFlags::TypeBMessages);
     }
 
-    if(filter.mFilterFlags.IsSet(FilterFlags::TypeAMessages |
-    FilterFlags::TypeBMessages | FilterFlags::SpaceMessages) &&
-    !filter.mFilterFlags.IsSet(FilterFlags::StartMessage |
-    FilterFlags::EndMessage))
+    if(filter.mFilterFlags.IsSet(FilterFlags::TypeAMessages | FilterFlags::TypeBMessages | FilterFlags::SpaceMessages)
+    && !filter.mFilterFlags.IsSet(FilterFlags::StartMessage | FilterFlags::EndMessage))
     {
     String msg = String::Format("Pair [%s,%s] is marked to send messages to "
     "an object or the space, but it does not "
@@ -217,10 +212,8 @@ void CollisionTable::ValidateFilters()
     DoNotifyWarning("Invalid configuration", msg);
     }
 
-    if(!filter.mFilterFlags.IsSet(FilterFlags::TypeAMessages |
-    FilterFlags::TypeBMessages | FilterFlags::SpaceMessages) &&
-    filter.mFilterFlags.IsSet(FilterFlags::StartMessage |
-    FilterFlags::EndMessage))
+    if(!filter.mFilterFlags.IsSet(FilterFlags::TypeAMessages | FilterFlags::TypeBMessages | FilterFlags::SpaceMessages)
+    && filter.mFilterFlags.IsSet(FilterFlags::StartMessage | FilterFlags::EndMessage))
     {
     String msg = String::Format("Pair [%s,%s] sends a start or end message, "
     "but is not marked to send messages to "
@@ -253,7 +246,7 @@ void CollisionTable::Clear()
   for (RegisteredGroups::range r = mRegisteredGroups.All(); !r.Empty(); r.PopFront())
     ids.PushBack(r.Front().first);
 
-  for (uint i = 0; i < ids.Size(); ++i)
+  for (size_t i = 0; i < ids.Size(); ++i)
     RemoveGroupInstancesAndFilters(ids[i]);
 }
 
@@ -330,10 +323,9 @@ void CollisionTable::RemoveGroupInstancesAndFilters(ResourceId groupId)
   mRegisteredGroups.Erase(groupId);
 
   // Make sure to remove any filter that referenced this group.
-  // We have to iterate from the back to the front so as to not invalidate the
-  // index
-  uint size = mCollisionFilters.Size();
-  for (uint i = size - 1; i < size; --i)
+  // We have to iterate from the back to the front so as to not invalidate the index
+  size_t size = mCollisionFilters.Size();
+  for (size_t i = size - 1; i < size; --i)
   {
     CollisionFilter* filter = mCollisionFilters[i];
     if (filter->mPair.first == groupId || filter->mPair.second == groupId)
@@ -505,8 +497,7 @@ void CollisionTableManager::OnCollisionGroupAdded(ResourceEvent* event)
 
 void CollisionTableManager::OnCollisionGroupRemoved(ResourceEvent* event)
 {
-  // If we are unloading, then our destructor will take care of cleaning up our
-  // memory
+  // If we are unloading, then our destructor will take care of cleaning up our memory
   if (event->RemoveMode == RemoveMode::Unloading)
     return;
 
@@ -522,9 +513,8 @@ void CollisionTableManager::OnCollisionGroupRemoved(ResourceEvent* event)
       continue;
 
     table->UnRegisterGroup(group);
-    // Don't re-save the collision table here because we will handle missing
-    // items during load. (when we save here our content item might be
-    // unloading)
+    // Don't re-save the collision table here because we will handle missing items during load.
+    // (when we save here our content item might be unloading)
   }
 }
 

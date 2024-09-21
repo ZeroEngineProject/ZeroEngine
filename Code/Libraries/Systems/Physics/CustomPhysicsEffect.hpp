@@ -29,8 +29,7 @@ public:
   real mDt;
 };
 
-/// A physics effect that sends events out so users can apply custom logic for
-/// forces.
+/// A physics effect that sends events out so users can apply custom logic for forces.
 class CustomPhysicsEffect : public PhysicsEffect
 {
 public:

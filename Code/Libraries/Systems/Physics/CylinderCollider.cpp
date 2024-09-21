@@ -103,8 +103,7 @@ void CylinderCollider::ComputeLocalInverseInertiaTensor(real mass, Mat3Ref local
   real heightInvInertia = real(1) / (real(0.5f) * mass * rSquared);
   real radiusInvInertia = real(1) / (oneTwelthMass * (real(3.0f) * rSquared + hSquared));
 
-  // Get what local axes define the radius and height so we can set the correct
-  // local inertia
+  // Get what local axes define the radius and height so we can set the correct local inertia
   uint rIndex0, rIndex1;
   GetRadiiIndices(rIndex0, rIndex1);
   uint heightIndex = GetHeightIndex();
@@ -196,8 +195,8 @@ real CylinderCollider::GetWorldHeight() const
 void CylinderCollider::ComputeWorldPoints(Vec3Ref pointA, Vec3Ref pointB) const
 {
   // The world-space vector that defines our height axis can be retrieved
-  // from the rotation matrix's basis vectors. This axis can then be scaled by
-  // the half height so we can easily get the cylinder's two points.
+  // from the rotation matrix's basis vectors. This axis can then be scaled by the
+  // half height so we can easily get the cylinder's two points.
   Mat3 rotation = GetWorldRotation();
   Vec3 worldPos = GetWorldTranslation();
   real cylinderHalfHeight = GetWorldHalfHeight();

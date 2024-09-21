@@ -5,8 +5,7 @@ namespace Zero
 {
 
 /// Allows a cog to ignore certain effect types (such as gravity or drag)
-/// that are being applied to the entire space (effects on Space or
-/// LevelSettings).
+/// that are being applied to the entire space (effects on Space or LevelSettings).
 class IgnoreSpaceEffects : public Component
 {
 public:

@@ -30,21 +30,18 @@ public:
   void Support(Vec3Param direction, Vec3Ptr support) const override;
   void GetCenter(Vec3Ref center) const override;
 
-  /// The convex mesh resource that defines the collision volume of this
-  /// collider.
+  /// The convex mesh resource that defines the collision volume of this collider.
   ConvexMesh* GetConvexMesh();
   void SetConvexMesh(ConvexMesh* convexMesh);
   void OnMeshModified(Event* e);
 
-  /// Used to tell the collision system that this collider stores information in
-  /// local space. This means that the passed in aabb for GetOverlapRange should
-  /// be transformed to local space.
+
+  /// Used to tell the collision system that this collider stores information in local space.
+  /// This means that the passed in aabb for GetOverlapRange should be transformed to local space.
   typedef TrueType RangeInLocalSpace;
-  /// Used in the collision system. @JoshD: Maybe replace with AutoDeclare
-  /// later?
+  /// Used in the collision system. @JoshD: Maybe replace with AutoDeclare later?
   typedef Physics::MeshFilterRange RangeType;
-  /// Returns a range of local-space triangles that overlap the passed in
-  /// local-space aabb.
+  /// Returns a range of local-space triangles that overlap the passed in local-space aabb.
   RangeType GetOverlapRange(Aabb& localAabb);
 
   HandleOf<ConvexMesh> mConvexMesh;

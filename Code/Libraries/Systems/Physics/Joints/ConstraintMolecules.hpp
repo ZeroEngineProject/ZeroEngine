@@ -28,10 +28,10 @@ struct ConstraintMolecule
   uint mAtomIndex;
 };
 
-/// Used to give constraints an array of molecules where the underlying
-/// structure may be larger than a fragment. This is so the same code path can
-/// be taken for anything that wants to store an array of ConstraintMolecules
-/// plus something else.
+/// Used to give constraints an array of molecules where the underlying structure
+/// may be larger than a fragment. This is so the same code path can be taken
+/// for anything that wants to store an array of ConstraintMolecules plus something
+/// else.
 struct MoleculeWalker
 {
   MoleculeWalker();
@@ -43,7 +43,8 @@ struct MoleculeWalker
 
   ConstraintMolecule& operator[](uint i);
 
-  union {
+  union
+  {
     ::byte* mRawBuffer;
     ConstraintMolecule* mMolecules;
   };
@@ -54,7 +55,7 @@ struct MoleculeWalker
 /// Stores temporary world data to compute molecules.
 struct MoleculeData
 {
-  MoleculeData(){};
+  MoleculeData() {};
 
   void SetUp(AnchorAtom* anchor, const AngleAtom* angle, const Joint* joint);
   void SetUp(AnchorAtom* anchor, const AngleAtom* angle, AxisAtom* axis, const Joint* joint);

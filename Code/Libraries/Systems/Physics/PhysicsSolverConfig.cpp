@@ -65,8 +65,8 @@ void ConstraintConfigBlock::SetLinearBaumgarte(real linearBaumgarte)
   }
   else if (linearBaumgarte > maxValue)
   {
-    String msg = String::Format("To prevent instabilities, LinearBaumgarte must be "
-                                "below %g. Clamping to the range of [%g, %g]",
+    String msg =
+        String::Format("To prevent instabilities, LinearBaumgarte must be below %g. Clamping to the range of [%g, %g]",
                                 maxValue,
                                 minValue,
                                 maxValue);
@@ -94,8 +94,8 @@ void ConstraintConfigBlock::SetAngularBaumgarte(real angularBaumgarte)
   }
   else if (angularBaumgarte > maxValue)
   {
-    String msg = String::Format("To prevent instabilities, AngularBaumgarte must be "
-                                "below %g. Clamping to the range of [%g, %g]",
+    String msg =
+        String::Format("To prevent instabilities, AngularBaumgarte must be below %g. Clamping to the range of [%g, %g]",
                                 maxValue,
                                 minValue,
                                 maxValue);
@@ -148,8 +148,7 @@ void ConstraintConfigBlock::SetPositionCorrectionType(ConstraintPositionCorrecti
   if (mJointId == JointEnums::RelativeVelocityJointType)
   {
     DoNotifyWarning("Cannot change correction type",
-                    "RelativeVelocityJoint is a velocity constraint hence it "
-                    "must use baumgarte correction");
+                    "RelativeVelocityJoint is a velocity constraint hence it must use baumgarte correction");
     return;
   }
 
@@ -157,8 +156,7 @@ void ConstraintConfigBlock::SetPositionCorrectionType(ConstraintPositionCorrecti
   if (correctionType >= ConstraintPositionCorrection::Size)
   {
     DoNotifyException("Invalid value",
-                      "CorrectionType must be set to a valid value from the "
-                      "ConstraintPositionCorrection enum");
+                      "CorrectionType must be set to a valid value from the ConstraintPositionCorrection enum");
     return;
   }
   mPositionCorrectionType = correctionType;
@@ -334,8 +332,7 @@ void PhysicsSolverConfig::Serialize(Serializer& stream)
   PhysicsSolverConfigMetaComposition* factory = selfBoundType->Has<PhysicsSolverConfigMetaComposition>();
   factory->SerializeArray(stream, mBlocks);
 
-  // Now that we've serialized all blocks we can cache the necessary run-time
-  // values
+  // Now that we've serialized all blocks we can cache the necessary run-time values
   RebuildConstraintBlockValues();
 }
 
@@ -418,8 +415,7 @@ void PhysicsSolverConfig::SetPositionCorrectionType(PhysicsSolverPositionCorrect
   if ((u32)correctionType >= (u32)PhysicsSolverPositionCorrection::Size)
   {
     DoNotifyWarning("Invalid value",
-                    "PositionCorrectionType must be set to a valid value from "
-                    "the PositionCorrection enum");
+                    "PositionCorrectionType must be set to a valid value from the PositionCorrection enum");
     return;
   }
   mPositionCorrectionType = correctionType;
@@ -446,16 +442,15 @@ void PhysicsSolverConfig::RebuildConstraintBlockValues()
   mJointBlocks.Resize(JointEnums::JointCount);
   for (size_t i = 0; i < mJointBlocks.Size(); ++i)
   {
-    mJointBlocks[i].mJointId = i;
+    mJointBlocks[i].mJointId = (uint)i;
     mJointBlocks[i].ResetDefaultValues();
   }
   mContactBlock.mJointId = JointEnums::JointCount;
   mContactBlock.ResetDefaultValues();
 
-  // For each user-defined block that we have, copy the block's values over the
-  // cached block's values. We do this because we need configuration blocks for
-  // all constraint types even if the user doesn't define them (and some have
-  // different default values).
+  // For each user-defined block that we have, copy the block's values over the cached block's values.
+  // We do this because we need configuration blocks for all constraint types even if the user doesn't
+  // define them (and some have different default values).
   for (size_t i = 0; i < mBlocks.Size(); ++i)
   {
     if (mBlocks[i]->mJointId >= JointEnums::JointCount)
@@ -498,7 +493,7 @@ void PhysicsSolverConfig::CopyTo(PhysicsSolverConfig* destination)
 
 uint PhysicsSolverConfig::GetSize() const
 {
-  return mBlocks.Size();
+  return (uint)mBlocks.Size();
 }
 
 HandleOf<ConstraintConfigBlock> PhysicsSolverConfig::GetBlockAt(uint index)

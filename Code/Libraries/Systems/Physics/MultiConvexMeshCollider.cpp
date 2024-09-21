@@ -10,8 +10,7 @@ void MultiConvexMeshRange::ConvexMeshObject::Support(Vec3Param direction, Vec3Pt
   SubConvexMesh* subMesh = mesh->mMeshes[Index];
 
   // Bring the support direction into local space (normalize for safety),
-  // call the local-space support function then transform the result back into
-  // world space
+  // call the local-space support function then transform the result back into world space
   Vec3 localSpaceDir = mCollider->TransformSupportDirectionToLocal(direction);
   localSpaceDir.Normalize();
   subMesh->Support(mesh->mVertices, localSpaceDir, support);
@@ -172,8 +171,7 @@ void MultiConvexMeshCollider::SetMesh(MultiConvexMesh* mesh)
   if (mesh == nullptr)
     return;
 
-  // Disconnect from events on the old mesh and connect on the new mesh (if
-  // they're different)
+  // Disconnect from events on the old mesh and connect on the new mesh (if they're different)
   MultiConvexMesh* oldMesh = mMesh;
   if (oldMesh != mesh)
   {

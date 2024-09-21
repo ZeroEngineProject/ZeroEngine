@@ -59,8 +59,8 @@ void PhysicsNodeManager::UpdateNodeTree(PhysicsNode* treeNode)
   ObjectList tempList;
   ObjectList stackList;
 
-  // to update this entire tree, we need to have our objects in the correct
-  // order, so sort them such that we always get a parent before a child
+  // to update this entire tree, we need to have our objects in the correct order,
+  // so sort them such that we always get a parent before a child
 
   // find the root
   PhysicsNode* parentNode = treeNode;
@@ -120,8 +120,7 @@ void PhysicsNodeManager::UpdateNodeTree(PhysicsNode* treeNode)
     queue->mMassAction.EmptyState();
   }
 
-  // we didn't update broadphase, so make sure to add these back into the list
-  // (add the end)
+  // we didn't update broadphase, so make sure to add these back into the list (add the end)
   mObjects.Splice(mObjects.End(), tempList);
 }
 

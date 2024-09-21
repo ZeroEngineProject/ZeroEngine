@@ -105,8 +105,7 @@ void CustomConstraintInfo::ComputeSpring(float frequencyHz, float dampRatio)
 
   // Update the mass, bias, and gamma
   SoftConstraintFragment(mInvEffectiveMass, mError, mBias, mGamma, frequencyHz, dampRatio, mBaumgarte, dt);
-  // Re-compute the effective mass afterwards (in case someone wants to read and
-  // mutate it)
+  // Re-compute the effective mass afterwards (in case someone wants to read and mutate it)
   if (mInvEffectiveMass < Math::PositiveMin())
     mEffectiveMass = 0;
   else
@@ -194,13 +193,12 @@ CustomJoint::CustomJoint()
 
 void CustomJoint::UpdateAtoms()
 {
-  // Unfortunately, during position correction the constraint info has to be
-  // updated each iteration. Physics doesn't normally update the transform until
-  // the end of the frame (it updates the internal cached transforms). In this
-  // case the old position values will exist and a script won't be able to
-  // correctly compute the constraint info. Because of this we must forcefully
-  // update each object's transform beforehand. Maybe clean up the interface
-  // later to not do this when solving velocity instead of position?
+  // Unfortunately, during position correction the constraint info has to be updated each iteration.
+  // Physics doesn't normally update the transform until the end of the frame
+  // (it updates the internal cached transforms). In this case the old position values will exist
+  // and a script won't be able to correctly compute the constraint info. Because of this we must
+  // forcefully update each object's transform beforehand. Maybe clean up the interface later to
+  // not do this when solving velocity instead of position?
   UpdateTransform(0);
   UpdateTransform(1);
 
@@ -221,7 +219,7 @@ void CustomJoint::UpdateAtoms()
 
 uint CustomJoint::MoleculeCount() const
 {
-  size_t activeCount = 0;
+  uint activeCount = 0;
   if (!GetActive())
     return activeCount;
 
@@ -275,8 +273,7 @@ void CustomJoint::Commit(MoleculeWalker& molecules)
   if (!GetActive())
     return;
 
-  // For warm-starting we need to copy back out the total accumulated impulse
-  // for each constraint
+  // For warm-starting we need to copy back out the total accumulated impulse for each constraint
   for (size_t i = 0; i < mConstraints.Size(); ++i)
   {
     CustomConstraintInfo* constraint = mConstraints[i];
@@ -291,13 +288,13 @@ void CustomJoint::Commit(MoleculeWalker& molecules)
 
 uint CustomJoint::PositionMoleculeCount() const
 {
-  size_t activeCount = 0;
+  uint activeCount = 0;
   // If this joint isn't active then there's nothing to solve
   if (!GetActive())
     return activeCount;
 
   // Find how many constraints are active that also solve position
-  for (size_t i = 0; i < mConstraints.Size(); ++i)
+  for (uint i = 0; i < (uint)mConstraints.Size(); ++i)
   {
     CustomConstraintInfo* constraint = mConstraints[i];
     if (constraint->mActive && constraint->mSolvePosition)
@@ -334,8 +331,7 @@ uint CustomJoint::GetAtomIndexFilter(uint atomIndex, real& desiredConstraintValu
 
 void CustomJoint::BatchEvents()
 {
-  // Implement later! (have to check for impulse limits, snapping, and max
-  // impulse)
+  // Implement later! (have to check for impulse limits, snapping, and max impulse)
 }
 
 CustomConstraintInfo* CustomJoint::CreateConstraint()

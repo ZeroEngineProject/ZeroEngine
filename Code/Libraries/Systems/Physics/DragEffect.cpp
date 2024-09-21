@@ -38,8 +38,7 @@ void DragEffect::ApplyEffect(RigidBody* obj, real dt)
     invDt = 1 / dt;
 
   // Clamp the max linear and angular damping values so that they can't reverse
-  // the object's direction (and explode) but will instead exactly stop the
-  // object.
+  // the object's direction (and explode) but will instead exactly stop the object.
   real linearDamping = Math::Min(mLinearDamping, invDt);
   real angularDamping = Math::Min(mAngularDamping, invDt);
 

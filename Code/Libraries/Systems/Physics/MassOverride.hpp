@@ -38,8 +38,7 @@ public:
   void SetLocalInverseInertiaTensor(Mat3Param invInertia);
   void SetLocalInverseInertiaTensorInternal(Mat3Param invInertia);
   /// The center of mass in local space to override with. When set, the center
-  /// of mass will be locked to this value until AutoComputeCenterOfMass is set
-  /// to true.
+  /// of mass will be locked to this value until AutoComputeCenterOfMass is set to true.
   Vec3 GetLocalCenterOfMass();
   void SetLocalCenterOfMass(Vec3Param localCenterOfMass);
   /// Should the center of mass be auto computed or overwritten (via script).
@@ -52,11 +51,9 @@ public:
   /// Takes a new snapshot of the current mass and inertia.
   void RecomputeMass();
   real ClampMassTerm(real value);
-  /// Given a new inverse mass, this updates the mass and inertia (inertia as a
-  /// ratio of old to new mass)
+  /// Given a new inverse mass, this updates the mass and inertia (inertia as a ratio of old to new mass)
   void UpdateMassAndInertia(real invMass);
-  /// If possible, this queues an update on the rigid body to recompute mass
-  /// properties
+  /// If possible, this queues an update on the rigid body to recompute mass properties
   void QueueUpdate();
 
   Physics::Mass mMassOverride;

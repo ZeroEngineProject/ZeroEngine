@@ -38,8 +38,7 @@ struct MassAction
     Empty = 0,
     RecomputeCenterMass = 1 << 0,
     RecomputeInertiaTensor = 1 << 1,
-    CenterMassUpdate = 1 << 2, // The object has moved, we have to move the
-                               // center of mass with the object
+    CenterMassUpdate = 1 << 2, // The object has moved, we have to move the center of mass with the object
     CenterMassRotation = 1 << 3,
     WorldInertiaTensor = 1 << 4,
   };
@@ -102,8 +101,7 @@ struct BroadPhaseAction
   bool IsActionQueued() const;
   bool IsInBroadPhase() const;
   bool IsInDynamicBroadPhase() const;
-  // returns the enum value of DynamicRemoval, StaticRemoval or 0 (not in a
-  // broadphase)
+  // returns the enum value of DynamicRemoval, StaticRemoval or 0 (not in a broadphase)
   uint BroadPhaseToRemoveFrom() const;
 
   void Validate();

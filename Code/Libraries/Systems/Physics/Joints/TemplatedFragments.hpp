@@ -47,8 +47,8 @@ struct DefaultFragmentPolicy
   void ModifyErrorWithSlop(JointType* joint, ConstraintAtom& atom)
   {
     real slop = joint->GetSlop();
-    // slop reduces the error towards zero, so we have to determine which side
-    // of zero we're on and apply to slop to get us to zero (but not past zero)
+    // slop reduces the error towards zero, so we have to determine which side of
+    // zero we're on and apply to slop to get us to zero (but not past zero)
     if (atom.mError > 0)
       atom.mError = Math::Max(atom.mError - slop, real(0.0));
     else
@@ -62,8 +62,8 @@ struct DefaultFragmentPolicy
     uint filter = joint->GetAtomIndexFilter(atomIndex, desiredConstraintValue);
     ConstraintAtom& atom = joint->mAtoms[atomIndex];
 
-    // compute the error of this constraint. have to compute the error at this
-    // time so that the limit values are known
+    // compute the error of this constraint. have to compute the error at this time
+    // so that the limit values are known
     bool wasLimited = ComputeError(atom, molLimit, joint->mNode->mLimit, desiredConstraintValue, flag);
     // apply slop to the error
     if (wasLimited)
@@ -284,8 +284,7 @@ void ComputeMoleculesFragment(
     uint flag = 1 << i;
     ConstraintMolecule mol;
     mol.mAtomIndex = i;
-    // copy the limit values so we can change them but keep the original max
-    // bounds
+    // copy the limit values so we can change them but keep the original max bounds
     ImpulseLimitAtom molLimit = jointLimit;
 
     // get the error for this atom
@@ -365,8 +364,7 @@ void ComputePositionMoleculesFragment(
     if ((joint->mConstraintFilter & flag) == 0)
       continue;
 
-    // copy the limit values so we can change them but keep the original max
-    // bounds
+    // copy the limit values so we can change them but keep the original max bounds
     ImpulseLimitAtom molLimit = jointLimit;
 
     // get the error for this atom
@@ -449,16 +447,15 @@ void CommitFragment(JointType* joint, MoleculeWalker& mols, uint molCount)
   {
     ConstraintMolecule& mol = mols[i];
     uint atomIndex = mol.mAtomIndex;
-    // right now the last impulse for the motor wins, should I do the correct
-    // thing by having an impulse value for each molecule? (JoshD questions)
+    // right now the last impulse for the motor wins, should I do the correct thing by having
+    // an impulse value for each molecule? (JoshD questions)
     if (atomIndex == cMotorId)
     {
       joint->mNode->mMotor->mImpulse = mol.mImpulse;
       continue;
     }
 
-    // save the error and impulse back out to the correct atom (does error need
-    // to be copied here?)
+    // save the error and impulse back out to the correct atom (does error need to be copied here?)
     joint->mAtoms[atomIndex].mImpulse = mol.mImpulse;
     joint->mAtoms[atomIndex].mError = mol.mError;
   }

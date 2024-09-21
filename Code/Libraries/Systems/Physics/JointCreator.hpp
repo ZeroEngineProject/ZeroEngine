@@ -6,9 +6,8 @@ namespace Zero
 
 DeclareBitField5(JointCreatorFlags, UseCenter, OverrideLength, AutoSnaps, AttachToCommonParent, AttachToWorld);
 
-/// A helper class to create joints of various configurations. Each joint is
-/// configured from two points. Any other specific joint properties are
-/// calculated from these two points.
+/// A helper class to create joints of various configurations. Each joint is configured from
+/// two points. Any other specific joint properties are calculated from these two points.
 struct JointCreator
 {
   ZilchDeclareType(JointCreator, TypeCopyMode::ReferenceType);
@@ -75,13 +74,12 @@ struct JointCreator
   /// Should the joint auto-snap when the force limit is reached?
   bool GetAutoSnaps() const;
   void SetAutoSnaps(bool autoSnaps);
-  /// Used to create a connection to a dummy object. Instead of connecting to
-  /// object B, the connection will be between object A and "the world".
+  /// Used to create a connection to a dummy object. Instead of connecting to object B,
+  /// the connection will be between object A and "the world".
   bool GetAttachToWorld() const;
   void SetAttachToWorld(bool attachToWorld);
-  /// Should the cog of the joint be added as a child of the common parent of
-  /// the two given cogs? Useful for putting the joint in the same hierarchy so
-  /// that archetypes can be created.
+  /// Should the cog of the joint be added as a child of the common parent of the two given cogs?
+  /// Useful for putting the joint in the same hierarchy so that archetypes can be created.
   bool GetAttachToCommonParent() const;
   void SetAttachToCommonParent(bool attachToCommonParent);
 
@@ -101,7 +99,7 @@ private:
 
   void SetPointsAtLength(ConnectionInfo& info);
   void FixPoints(Joint* joint, ConnectionInfo& info);
-  void SpecificSetup(Joint* joint, ConnectionInfo& info){};
+  void SpecificSetup(Joint* joint, ConnectionInfo& info) {};
 
   void FixPoints(StickJoint* joint, ConnectionInfo& info);
 

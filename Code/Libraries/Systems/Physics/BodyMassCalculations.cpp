@@ -4,8 +4,7 @@
 namespace Zero
 {
 
-// Functor for computing the total mass and center of mass on a rigid body
-// hierarchy.
+// Functor for computing the total mass and center of mass on a rigid body hierarchy.
 struct MassComputationFunctor
 {
   // Formula for the new center of mass
@@ -73,17 +72,18 @@ DeclareBitField3(InertiaStates, Valid, TooSmall, TooLarge);
 // Functor for computing the inertia tensor on a rigid body hierarchy.
 struct InertiaComputationFunctor
 {
-  // Formula for computing the inertia tensor (generic form of the parallel axis
-  // theorem) Jij = Iij + m(|r|^2 * (kronecker delta)ij - ri * rj) where i and j
-  // are the indices, r is the vector from center of mass to the new axis, I is
-  // the inertia tensor about the center of mass and J is the new inertia tensor
-  // about the new axis. This formula can also be re-written as: J = I + (Dot(r,
-  // r) * Identity) - outerproduct(r, r)) * mass where outerproduct is define as
-  // Mat3(a.x * b, a.y * b, a.z * b);
+  // Formula for computing the inertia tensor (generic form of the parallel axis theorem)
+  // Jij = Iij + m(|r|^2 * (kronecker delta)ij - ri * rj)
+  // where i and j are the indices,
+  // r is the vector from center of mass to the new axis,
+  // I is the inertia tensor about the center of mass and
+  // J is the new inertia tensor about the new axis.
+  // This formula can also be re-written as:
+  // J = I + (Dot(r, r) * Identity) - outerproduct(r, r)) * mass
+  // where outerproduct is define as Mat3(a.x * b, a.y * b, a.z * b);
 
   // unfortunately, this calculation is done with inertia tensors,
-  // not inverse inertia tensors. Because of this we have to invert lots of
-  // times.
+  // not inverse inertia tensors. Because of this we have to invert lots of times.
 
   InertiaComputationFunctor(Vec3 centerMass)
   {
@@ -256,8 +256,7 @@ void ComputeMass(RigidBody* body)
   // fix the center of mass offset from the transform position
 
   // the center of mass doesn't care about 2d mode
-  //(if mass override changed the center of mass then we overrode the variable
-  // earlier)
+  //(if mass override changed the center of mass then we overrode the variable earlier)
   body->mCenterOfMass = centerOfMass;
 
   WorldTransformation* transform = body->mPhysicsNode->GetTransform();
@@ -266,8 +265,8 @@ void ComputeMass(RigidBody* body)
   body->mPositionOffset = transform->GetWorldTranslation() - centerOfMass;
   body->mPositionOffset = Math::TransposedTransform(transform->GetWorldRotation(), body->mPositionOffset);
 
-  // We need to have infinite mass to be kinematic but we needed to compute
-  // where the center of mass was. This requires computing the inverse mass.
+  // We need to have infinite mass to be kinematic but we needed to compute where
+  // the center of mass was. This requires computing the inverse mass.
   if (body->IsDynamic() == false)
     body->mInvMass.SetInvMass(0);
 }

@@ -10,8 +10,7 @@ namespace Physics
 /// A joint to keep an object upright. Locks two axes of the objects together
 /// but allows free rotation on the plane defined by that axis. This constraint
 /// is useful for keeping any object upright. This could also be used to auto
-/// correct an object slowly by lowering the max impulse value of the
-/// constraint.
+/// correct an object slowly by lowering the max impulse value of the constraint.
 class UprightJoint : public Joint
 {
 public:

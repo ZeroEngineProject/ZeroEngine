@@ -24,18 +24,16 @@ struct UprightPolicy : public DefaultFragmentPolicy<UprightJoint>
 
     // This error calculation has a fail case when the two axes are exactly
     // 180 degrees error. If the two vectors are basically in that case, just
-    // set the error to pi and it'll auto correct out of this state in a random
-    // direction.
+    // set the error to pi and it'll auto correct out of this state in a random direction.
     if (Math::Dot(data.mAxes[0], data.mAxes[1]) < real(-.999))
     {
       atom.mConstraintValue = Math::cPi;
       return;
     }
 
-    // Otherwise, use that fact that cross(u,v) ~= sin(theta) and use a small
-    // angle approximation to say sin(theta) ~= theta. Take that error and
-    // project it onto the correct axis to figure out the error. It's not
-    // exactly right, but it produces reasonable behavior.
+    // Otherwise, use that fact that cross(u,v) ~= sin(theta) and use a small angle
+    // approximation to say sin(theta) ~= theta. Take that error and project it onto
+    // the correct axis to figure out the error. It's not exactly right, but it produces reasonable behavior.
     Vec3 axisError = Math::Cross(data.mAxes[0], data.mAxes[1]);
     atom.mConstraintValue = Math::Dot(axisError, data.AngularAxes[axisIndex]);
   }

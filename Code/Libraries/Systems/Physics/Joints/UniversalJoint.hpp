@@ -8,10 +8,9 @@ namespace Physics
 {
 
 /// A universal joint locks positional movement of two points together as well
-/// as locking rotation about one axis. This means it is a joint that constrains
-/// four axes and leaves two free rotational axes. This joint is most useful to
-/// model something like a arm or leg that has a large range of rotational
-/// movement.
+/// as locking rotation about one axis. This means it is a joint that constrains four
+/// axes and leaves two free rotational axes. This joint is most useful to model
+/// something like a arm or leg that has a large range of rotational movement.
 struct UniversalJoint : public Joint
 {
   DeclareJointType(UniversalJoint);

@@ -70,8 +70,7 @@ Collider::Collider()
 
 void Collider::Serialize(Serializer& stream)
 {
-  /// There's quite a few flags that only store run-time state that we need to
-  /// ignore when serializing.
+  /// There's quite a few flags that only store run-time state that we need to ignore when serializing.
   u32 mask = ColliderFlags::OnIsland | ColliderFlags::Uninitialized | ColliderFlags::HasPairFilter |
              ColliderFlags::MasslessBody | ColliderFlags::MasslessCollider | ColliderFlags::Seamless;
   // The default state is to be not ghost
@@ -83,8 +82,7 @@ void Collider::Serialize(Serializer& stream)
   // Serialize the translation offset (previously named "Offset")
   stream.SerializeFieldDefault("Offset", mTranslationOffset, Vec3::cZero);
 
-  // Now that we have our resource we can update one of our internal flags (the
-  // massless flag)
+  // Now that we have our resource we can update one of our internal flags (the massless flag)
   UpdateMasslessColliderFlag();
 }
 
@@ -95,20 +93,17 @@ void Collider::Initialize(CogInitializer& initializer)
   ErrorIf(!mSpace, "Collider's CogInit did not contain a valid space.");
 
   mSpace->AddComponent(this);
-  // Get the collision group instance from our space for the current serialized
-  // collision group
+  // Get the collision group instance from our space for the current serialized collision group
   mCollisionGroupInstance = mSpace->GetCollisionGroupInstance(mSerializedGroup->mResourceId);
 
   // Listen for when our physics material changes
   UpdatePhysicsMaterialConnections(nullptr, mMaterial);
 
-  // Initialize the collider (mostly just set up physics nodes and some
-  // hierarchy information)
+  // Initialize the collider (mostly just set up physics nodes and some hierarchy information)
   bool dynamicallyCreated = (initializer.Flags & CreationFlags::DynamicallyAdded) != 0;
   ColliderInitialize(this, dynamicallyCreated);
 
-  // Make sure all queue states are properly set up for a collider that was just
-  // initialized
+  // Make sure all queue states are properly set up for a collider that was just initialized
   InternalTransformUpdate(cInitialize);
 
   // @JoshD needed?
@@ -117,8 +112,7 @@ void Collider::Initialize(CogInitializer& initializer)
 
 void Collider::OnAllObjectsCreated(CogInitializer& initializer)
 {
-  // Run the hierarchy OnAllObjectsCreated logic. This will hook up colliders to
-  // rigid bodies and more
+  // Run the hierarchy OnAllObjectsCreated logic. This will hook up colliders to rigid bodies and more
   bool dynamicallyCreated = (initializer.Flags & CreationFlags::DynamicallyAdded) != 0;
   ColliderOnAllObjectsCreated(this, dynamicallyCreated);
 
@@ -161,13 +155,11 @@ void Collider::DebugDraw()
 
 void Collider::OnDestroy(uint flags)
 {
-  // Unlink/destroy joints/contacts (joints have to be unlinked while contacts
-  // actually have to be destroyed)
+  // Unlink/destroy joints/contacts (joints have to be unlinked while contacts actually have to be destroyed)
   UnlinkAllJoints();
   DestroyAllContacts(true);
 
-  // Run hierarchy destruction information (clean up from rigid bodies, fix
-  // queues, remove from broadphase, etc...)
+  // Run hierarchy destruction information (clean up from rigid bodies, fix queues, remove from broadphase, etc...)
   bool dynamicallyRemoved = (flags & DestroyFlags::DynamicallyDestroyed) != 0;
   ColliderOnDestroy(this, dynamicallyRemoved);
 
@@ -175,8 +167,7 @@ void Collider::OnDestroy(uint flags)
   mSpace->RemoveComponent(this);
 
   // There's no need to clean up the BroadPhaseQueue or the PhysicsNode.
-  // This is handled by the space when it detects a queue with no objects
-  // attached.
+  // This is handled by the space when it detects a queue with no objects attached.
 }
 
 void Collider::CacheWorldValues()
@@ -193,10 +184,9 @@ void Collider::ComputeWorldBoundingVolumes()
 
 void Collider::ComputeWorldBoundingSphereInternal()
 {
-  // By default set the bounding sphere to be the bounding sphere of the
-  // world-space aabb. We use the aabb's position and size instead of our
-  // object's translation because the "center" of the object might not be at the
-  // translation (e.g. convex meshes).
+  // By default set the bounding sphere to be the bounding sphere of the world-space aabb.
+  // We use the aabb's position and size instead of our object's translation because the
+  // "center" of the object might not be at the translation (e.g. convex meshes).
   Vec3 center, halfExtents;
   mAabb.GetCenterAndHalfExtents(center, halfExtents);
   mBoundingSphere.mCenter = center;
@@ -218,8 +208,7 @@ void Collider::ComputeLocalInverseInertiaTensor(real mass, Mat3Ref localInvInert
 Vec3 Collider::GetColliderLocalCenterOfMass() const
 {
   // Most collider's are symmetric so the local center of mass is at the origin.
-  // If a collider isn't symmetric then it should override this (mesh collider
-  // for instance).
+  // If a collider isn't symmetric then it should override this (mesh collider for instance).
   return Vec3::cZero;
 }
 
@@ -230,8 +219,7 @@ void Collider::RebuildModifiedResources()
 
 void Collider::Support(Vec3Param direction, Vec3Ptr support) const
 {
-  // If this is ever called on the base class then a derived type did not
-  // override this!
+  // If this is ever called on the base class then a derived type did not override this!
   Error("Support function not implemented.");
 }
 
@@ -276,9 +264,8 @@ void Collider::SetCollisionGroup(CollisionGroup* collisionGroup)
   if (collisionGroup == nullptr)
     return;
 
-  // Save the actual collision group but then look up the instance for the
-  // current table. If we can find a collision group instance that is different
-  // then update the instance
+  // Save the actual collision group but then look up the instance for the current table.
+  // If we can find a collision group instance that is different then update the instance
   mSerializedGroup = collisionGroup;
   CollisionGroupInstance* newInstance = mSpace->GetCollisionGroupInstance(mSerializedGroup->mResourceId);
   if (newInstance != nullptr && newInstance != mCollisionGroupInstance)
@@ -299,11 +286,10 @@ void Collider::SetGhost(bool ghost)
 {
   mState.SetState(ColliderFlags::Ghost, ghost);
 
-  // Wake up all colliders in contact with this one since collisions could
-  // appear/disappear. Normally islanding would take care of this and wake up
-  // all connected objects. If this is a static or kinematic object then this
-  // will not wake the object up as waking asleep objects only visits dynamic
-  // rigid bodies, not static or kinematic.
+  // Wake up all colliders in contact with this one since collisions could appear/disappear.
+  // Normally islanding would take care of this and wake up all connected objects. If this is a
+  // static or kinematic object then this will not wake the object up as waking asleep objects
+  // only visits dynamic rigid bodies, not static or kinematic.
   Physics::JointHelpers::WakeUpConnected(mContactEdges);
 }
 
@@ -391,9 +377,8 @@ Vec3 Collider::GetPointVelocity(Vec3Param worldPoint)
 
 Aabb Collider::GetWorldAabb()
 {
-  // Rebuild any modified resources (technically only meshes are needed but too
-  // much work to isolate) and then make sure we update our own queue (which
-  // will update transform, aabb, etc...)
+  // Rebuild any modified resources (technically only meshes are needed but too much work to isolate)
+  // and then make sure we update our own queue (which will update transform, aabb, etc...)
   RebuildModifiedResources();
   mSpace->UpdateTransformAndMassOfTree(mPhysicsNode);
   return mAabb;
@@ -427,8 +412,7 @@ bool Collider::IsStatic() const
 
 bool Collider::IsKinematic() const
 {
-  // If we have a rigid body return its state, otherwise we're static (not
-  // kinematic)
+  // If we have a rigid body return its state, otherwise we're static (not kinematic)
   RigidBody* body = GetActiveBody();
   if (body != nullptr)
     return body->GetKinematic();
@@ -446,8 +430,7 @@ bool Collider::Is2D() const
 
 bool Collider::IsAsleep() const
 {
-  // If we have a rigid body return its state, otherwise we're not considered
-  // asleep
+  // If we have a rigid body return its state, otherwise we're not considered asleep
   RigidBody* body = GetActiveBody();
   if (body != nullptr)
     return body->IsAsleep();
@@ -507,8 +490,7 @@ void Collider::UpdatePhysicsMaterialConnections(PhysicsMaterial* oldMaterial, Ph
 
 void Collider::OnPhysicsMaterialModified(Event* e)
 {
-  // Fix the massless flag now that we have a new material (deals with density
-  // of 0)
+  // Fix the massless flag now that we have a new material (deals with density of 0)
   UpdateMasslessColliderFlag();
 
   // If we have a rigid body then make sure to tell it to recompute
@@ -519,9 +501,8 @@ void Collider::OnPhysicsMaterialModified(Event* e)
 
 void Collider::SetWorldAabbFromHalfExtents(Vec3Param worldHalfExtents)
 {
-  // Set the aabb's translation and scale and then "rotate" it. The efficient
-  // way to do this is to compute the aabb of the rotated aabb (the aabb of the
-  // obb)
+  // Set the aabb's translation and scale and then "rotate" it. The efficient way to do
+  // this is to compute the aabb of the rotated aabb (the aabb of the obb)
   mAabb.SetCenter(GetWorldTranslation());
   mAabb.SetHalfExtents(worldHalfExtents);
   mAabb.Transform(GetWorldRotation());
@@ -529,13 +510,11 @@ void Collider::SetWorldAabbFromHalfExtents(Vec3Param worldHalfExtents)
 
 Vec3 Collider::TransformSupportDirectionToLocal(Vec3Param worldSupportDirection) const
 {
-  // The support direction behaves like a surface normal in that it needs the
-  // "inverse transposed" applied. Since we're going to local space though this
-  // means that we need to apply the world scale not the inverse world scale
-  // (inverse of inverse). This is easiest to see with a diamond shape with a
-  // search direction of (1, 2) in world space. If the shape has a scale of (1,
-  // 100) then the inverse scale would effectively remove the entire y-component
-  // which would return the wrong point.
+  // The support direction behaves like a surface normal in that it needs the "inverse transposed" applied.
+  // Since we're going to local space though this means that we need to apply the world scale not the inverse
+  // world scale (inverse of inverse). This is easiest to see with a diamond shape with a search direction of (1, 2) in
+  // world space. If the shape has a scale of (1, 100) then the inverse scale would effectively remove the entire
+  // y-component which would return the wrong point.
   WorldTransformation* worldTransform = GetWorldTransform();
   Vec3 localSpaceDir = worldTransform->InverseTransformSurfaceNormal(worldSupportDirection);
   return localSpaceDir;
@@ -550,8 +529,7 @@ Vec3 Collider::TransformSupportPointToWorld(Vec3Param localSupportPoint) const
 
 real Collider::ComputeMass()
 {
-  // Since this function is internal we assume that the cached transform is
-  // up-to-date
+  // Since this function is internal we assume that the cached transform is up-to-date
   real volume = ComputeWorldVolumeInternal();
   real mass = volume * mMaterial->mDensity;
   return mass;
@@ -598,21 +576,18 @@ bool Collider::ShouldCollideInternal(Collider* otherCollider, String* reasonForN
   RigidBody* body1 = GetActiveBody();
   RigidBody* body2 = otherCollider->GetActiveBody();
 
-  // Find each body's active parent. This probably isn't necessary since
-  // ActiveBody should return this, however this is done so we properly deal
-  // with static child bodies.
+  // Find each body's active parent. This probably isn't necessary since ActiveBody should return this,
+  // however this is done so we properly deal with static child bodies.
   while (body1 && !body1->IsDynamic() && body1->mParentBody != nullptr)
     body1 = body1->mParentBody;
   while (body2 && !body2->IsDynamic() && body2->mParentBody != nullptr)
     body2 = body2->mParentBody;
 
-  // If the two colliders share an active body (or they don't have a body) then
-  // they shouldn't collide
+  // If the two colliders share an active body (or they don't have a body) then they shouldn't collide
   if (body1 == body2)
   {
     if (BuildReason)
-      *reasonForNotColliding = "The colliders shared a active rigid body and "
-                               "hence don't check against each other.";
+      *reasonForNotColliding = "The colliders shared a active rigid body and hence don't check against each other.";
     return false;
   }
 
@@ -624,20 +599,18 @@ bool Collider::ShouldCollideInternal(Collider* otherCollider, String* reasonForN
     return false;
   }
 
-  // If either collider has a pair filter then check if this pair has been
-  // register
+  // If either collider has a pair filter then check if this pair has been register
   if (GetHasPairFilter() || otherCollider->GetHasPairFilter())
   {
-    // Get the id of this pair and check if it's been registered with the
-    // current space
+    // Get the id of this pair and check if it's been registered with the current space
     CogId id1 = CogId(GetOwner());
     CogId id2 = CogId(otherCollider->GetOwner());
     u64 packedId = GetLexicographicId(id1.GetId(), id2.GetId());
     if (mSpace->mFilteredPairs.Contains(packedId))
     {
       if (BuildReason)
-        *reasonForNotColliding = "A pair filter has been added to the physics space to ignore "
-                                 "collision between these two objects.";
+        *reasonForNotColliding =
+            "A pair filter has been added to the physics space to ignore collision between these two objects.";
       return false;
     }
   }
@@ -653,8 +626,7 @@ bool Collider::ShouldCollideInternal(Collider* otherCollider, String* reasonForN
   bool obj2Ghost = otherCollider->NotCollideable();
   bool obj2Uninitialized = otherCollider->mState.IsSet(ColliderFlags::Uninitialized);
 
-  // If both objects are asleep or static (and they weren't just created) then
-  // we skip detection
+  // If both objects are asleep or static (and they weren't just created) then we skip detection
   if (((obj1Asleep && !obj1Uninitialized) || obj1Static) && ((obj2Asleep && !obj2Uninitialized) || obj2Static))
   {
     if (BuildReason)
@@ -669,19 +641,17 @@ bool Collider::ShouldCollideInternal(Collider* otherCollider, String* reasonForN
     JointEdge& edge = jointRange.Front();
     Joint* joint = edge.mJoint;
 
-    // The list of joints is sorted such that all joints where CollideConnected
-    // is false are before ones where CollidedConnected are true. Hence if we
-    // reach one where it is true we can not check the rest.
+    // The list of joints is sorted such that all joints where CollideConnected is
+    // false are before ones where CollidedConnected are true. Hence if we reach
+    // one where it is true we can not check the rest.
     if (joint->GetCollideConnected())
       break;
 
-    // If we can find one of these joints that is connected to the other
-    // collider then we can skip detection
+    // If we can find one of these joints that is connected to the other collider then we can skip detection
     if (edge.mOther == otherCollider)
     {
       if (BuildReason)
-        *reasonForNotColliding = "The colliders are connected by a joint that "
-                                 "says to not collide connected.";
+        *reasonForNotColliding = "The colliders are connected by a joint that says to not collide connected.";
       return false;
     }
   }
@@ -701,8 +671,7 @@ void Collider::UpdateMasslessColliderFlag()
 
 bool Collider::InDynamicBroadPhase() const
 {
-  // We belong in dynamic broadphase if we have a rigid body or are a spring
-  // system
+  // We belong in dynamic broadphase if we have a rigid body or are a spring system
   return mDirectRigidBody;
 }
 
@@ -711,25 +680,22 @@ void Collider::InternalSizeChanged()
   // Our transform was effectively updated. We have to change our
   // half-extents, where we are in broadphase, mass terms, etc...
   InternalTransformUpdate(cUpdate);
-  // Since the user changed our size we need to make sure the cached world
-  // values are updated. This might not be needed since the transform update
-  // will cause this to happen later but to avoid any missing dirty bit checks
-  // force this here.
+  // Since the user changed our size we need to make sure the cached world values are updated.
+  // This might not be needed since the transform update will cause this to happen later
+  // but to avoid any missing dirty bit checks force this here.
   CacheWorldValues();
 }
 
 void Collider::InternalTransformUpdate(eUpdateTransformState updateState)
 {
-  // Since our transform has been updated out from under us we need to queue up
-  // a full transform update (reading the Transform component and updating the
-  // cached local-to-world information)
+  // Since our transform has been updated out from under us we need to queue up a
+  // full transform update (reading the Transform component and updating the cached local-to-world information)
   FullTransformAction transformAction(this);
 
-  // If this object is massless, then there is no reason to update the mass
-  // properties since transforming it will not change anything. Children who are
-  // not massless will get their own transform update since it is propagated
-  // through the hierarchy. (this will probably double the queuing, but oh well,
-  // it's not expensive)
+  // If this object is massless, then there is no reason to update the mass properties
+  // since transforming it will not change anything. Children who are not massless will
+  // get their own transform update since it is propagated through the hierarchy.
+  // (this will probably double the queuing, but oh well, it's not expensive)
   RigidBody* body = GetActiveBody();
   if (body != nullptr && !mState.IsSet(ColliderFlags::MasslessCollider))
   {
@@ -754,8 +720,7 @@ void Collider::GenerateIntegrationUpdate()
 
 void Collider::UpdateQueue()
 {
-  // Force flush this object's transform and mass state (ignore spatial
-  // partition for now)
+  // Force flush this object's transform and mass state (ignore spatial partition for now)
   mPhysicsNode->UpdateTransformAndMass(mSpace);
 }
 
@@ -778,8 +743,7 @@ void Collider::ForceRelinkJoints()
     if (joint == nullptr)
       continue;
 
-    // Easiest way to fix joints to know about this collider is to unlink and
-    // then link again
+    // Easiest way to fix joints to know about this collider is to unlink and then link again
     joint->UnLinkPair();
     joint->LinkPair();
   }
@@ -796,11 +760,10 @@ void Collider::UnlinkAllJoints()
     // Wake up the other object in the connection
     Physics::JointHelpers::ForceAwakeJoint(joint);
 
-    // We need to remove ourself from the joint however due to joints being
-    // allowed to live even when they're invalid we can't just tell the joint to
-    // unlink itself. Instead we need to remove ourself from this joint while
-    // keeping the other collider in-tact so it can become valid again.
-    // Afterwards the joint should be marked invalid.
+    // We need to remove ourself from the joint however due to joints being allowed to
+    // live even when they're invalid we can't just tell the joint to unlink itself.
+    // Instead we need to remove ourself from this joint while keeping the other collider
+    // in-tact so it can become valid again. Afterwards the joint should be marked invalid.
     if (joint->GetCollider(0) == this)
       joint->Relink(0, nullptr);
     else if (joint->GetCollider(1) == this)

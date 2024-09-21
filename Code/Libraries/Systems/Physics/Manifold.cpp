@@ -214,9 +214,9 @@ bool Manifold::CorrectFor2D()
   Collider* collider1 = Objects[0];
   Collider* collider2 = Objects[1];
 
-  // If either collider is ghost, we don't have to worry about having bad
-  // normals. In fact, it's more important that we don't remove contact points
-  // and end up with a manifold of 0 points.
+  // If either collider is ghost, we don't have to worry about having bad normals.
+  // In fact, it's more important that we don't remove contact points and
+  // end up with a manifold of 0 points.
   if (collider1->GetGhost() || collider2->GetGhost())
     return true;
 
@@ -236,9 +236,8 @@ bool Manifold::CorrectFor2D()
 
       // if the new vector was almost all in the z, we want to just remove this
       // contact point so that we don't have a close to zero vector during
-      // resolution. When removing it though, we need to make sure to shuffle
-      // down all good contact points so we don't have any gaps of empty
-      // contacts.
+      // resolution. When removing it though, we need to make sure to shuffle down
+      // all good contact points so we don't have any gaps of empty contacts.
       if (length < real(.03))
       {
         for (uint j = i + 1; j < ContactCount; ++j)
@@ -447,8 +446,7 @@ void Manifold::FullAdd(ManifoldPoint* points, uint count)
     // loop over the cached points to see if we have a persistent point
     for (uint cachedId = 0; cachedId < cachedPointCount; ++cachedId)
     {
-      // if this cached value has already been persisted, this can't be the
-      // point we're looking for
+      // if this cached value has already been persisted, this can't be the point we're looking for
       if (persisted[cachedId])
         continue;
 

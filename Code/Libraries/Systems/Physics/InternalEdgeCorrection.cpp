@@ -6,8 +6,7 @@ static const bool sAllowBackfaces = false;
 namespace Zero
 {
 
-// given a x-y basis, test what the angle of an axis is when projected onto this
-// 2d basis
+// given a x-y basis, test what the angle of an axis is when projected onto this 2d basis
 real GetAngle(Vec3Param yBasis, Vec3Param xBasis, Vec3Param testAxis)
 {
   real xProj = Math::Dot(testAxis, xBasis);
@@ -90,10 +89,10 @@ void ComputeEdgeInfoForTriangleA(Triangle& triA, uint indexA, Triangle& triB, Tr
   Vec3 edge = triA[sharedVerticesA[1]] - triA[sharedVerticesA[0]];
 
   // now that we have this info we can get to the heart of this algorithm.
-  // we want to compute the angle between the normals of triA and triB about the
-  // edge axis, this tells us what the valid Voronoi region is for triangle A.
-  // To do this, we have to compute some basis vectors and make sure that they
-  // are facing in correct directions
+  // we want to compute the angle between the normals of triA and triB about the edge axis,
+  // this tells us what the valid Voronoi region is for triangle A.
+  // To do this, we have to compute some basis vectors and make sure
+  // that they are facing in correct directions
 
   // first, we need to construct vectors on the surface of A and B that are
   // perpendicular to the normal and edge and facing outwards
@@ -119,18 +118,15 @@ void ComputeEdgeInfoForTriangleA(Triangle& triA, uint indexA, Triangle& triB, Tr
 
   real voronoiRegionAngle = real(0.0);
   bool isConvex = false;
-  // we only care when they aren't planar (since we already set the angle for
-  // planar to 0)
+  // we only care when they aren't planar (since we already set the angle for planar to 0)
   if (length >= planarEpsilon)
   {
     // now we need to build a basis where we have a normal on A as the yAxis
-    // and the edge cross A as the x Axis, we can measure the angle of edge
-    // cross B on this basis to find the angle between the two triangles, which
-    // is also the angle between the normals which is the angle of the Voronoi
-    // region.
+    // and the edge cross A as the x Axis, we can measure the angle of edge cross B
+    // on this basis to find the angle between the two triangles, which
+    // is also the angle between the normals which is the angle of the Voronoi region.
 
-    // we already have our edges, but we need the correct facing normal, so
-    // compute one
+    // we already have our edges, but we need the correct facing normal, so compute one
     Vec3 computedNormalA = Math::Cross(calculatedEdge, edgeCrossA);
     computedNormalA.Normalize();
 
@@ -143,8 +139,7 @@ void ComputeEdgeInfoForTriangleA(Triangle& triA, uint indexA, Triangle& triB, Tr
     // now that we've computed the angle, we can also determine if the triangle
     // edges are convex or concave, concave is when the point not shared in the
     // edge is in the positive direction of the other triangle's normal
-    // See http://www.bulletphysics.org/Bullet/phpBB3/download/file.php?id=627
-    // for a picture.
+    // See http://www.bulletphysics.org/Bullet/phpBB3/download/file.php?id=627 for a picture.
 
     // we compute convex by seeing if the normal of A and the edge direction
     // go opposite ways, if they do it's convex (draw it and you'll see)
@@ -169,9 +164,8 @@ void ComputeEdgeInfoForTriangleA(Triangle& triA, uint indexA, Triangle& triB, Tr
   // store the voronoi region (we made sure the sign is
   // correct for a counterclockwise edge earlier
   *mEdgeAngles[flagIndex] = voronoiRegionAngle;
-  // mark as being in a convex or not state. Make sure to override this flag
-  // with the state, not just if it's convex because this is run incrementally
-  // on painted meshes
+  // mark as being in a convex or not state. Make sure to override this flag with the
+  // state, not just if it's convex because this is run incrementally on painted meshes
   info->mEdgeFlags.SetState(flags[flagIndex], isConvex);
 }
 
@@ -179,7 +173,7 @@ void GenerateInternalEdgeInfo(GenericPhysicsMesh* mesh, TriangleInfoMap* infoMap
 {
   infoMap->Clear();
 
-  uint triangleCount = mesh->GetTriangleCount();
+  uint triangleCount = (uint)mesh->GetTriangleCount();
 
   // for now, loop n-squared through the triangles and see if any of
   // the share an edge. if so compute their voronoi regions.
@@ -217,14 +211,13 @@ void GenerateInternalEdgeInfo(PhysicsMesh* mesh, TriangleInfoMap* infoMap)
             "tree must not have been constructed yet.");
     return;
   }
-  // i believe the range macro below doesn't like pointers, so convert to a
-  // reference
+  // i believe the range macro below doesn't like pointers, so convert to a reference
   TreeType& tree = *treePointer;
 
-  // loop over all of the triangles in the mesh, for each triangle send it
-  // through the tree to determine which triangles should be checked for the
-  // more expensive internal calculation (should I fatten the aabb?)
-  uint triangleCount = mesh->GetTriangleCount();
+  // loop over all of the triangles in the mesh, for each triangle send it through
+  // the tree to determine which triangles should be checked for the more
+  // expensive internal calculation (should I fatten the aabb?)
+  uint triangleCount = (uint)mesh->GetTriangleCount();
   for (uint indexA = 0; indexA < triangleCount; ++indexA)
   {
     Triangle triA = mesh->GetTriangle(indexA);
@@ -237,8 +230,7 @@ void GenerateInternalEdgeInfo(PhysicsMesh* mesh, TriangleInfoMap* infoMap)
     {
       // Get the triangle index
       uint indexB = range.Front();
-      // if not the same triangle, try to compute the voronoi edge info for the
-      // pair.
+      // if not the same triangle, try to compute the voronoi edge info for the pair.
       if (indexA != indexB)
       {
         Triangle triB = mesh->GetTriangle(indexB);
@@ -278,17 +270,15 @@ void GenerateInternalEdgeInfoDynamic(HeightMapCollider* collider, uint contactId
   heightMap->GetPatchAndCellIndex(absIndex, patchIndex, cellIndex);
 
   // Get the local position of the bottom left of the cell.
-  // @JoshD: Using local position seems problematic with non-uniform scale (the
-  // angles change)
+  // @JoshD: Using local position seems problematic with non-uniform scale (the angles change)
   real cellSize = heightMap->mUnitsPerPatch / HeightPatch::Size;
   Vec2 patchStart =
       heightMap->GetLocalPosition(patchIndex) - Vec2(heightMap->mUnitsPerPatch, heightMap->mUnitsPerPatch) * 0.5f;
   Vec2 cellStart = patchStart + Math::ToVec2(cellIndex) * cellSize;
 
-  // For a given cell, there are potentially 4 extra triangles that need to be
-  // deal with. For easy of naming, the bottom left of the current cell is
-  // called h11 instead of h00 so that cells to the left don't have to deal with
-  // negative numbers.
+  // For a given cell, there are potentially 4 extra triangles that need to be deal with.
+  // For easy of naming, the bottom left of the current cell is called h11 instead of h00
+  // so that cells to the left don't have to deal with negative numbers.
   //      h31
   //         |.
   //         |  .
@@ -421,20 +411,19 @@ void TestEdgeCloseness(
   Vec3 nearestPoint = contactPoint;
   Intersection::ClosestPointOnSegmentToPoint(point1, point2, &nearestPoint);
 
-  // get the distance between the contact point and the closest point on the
-  // line
+  // get the distance between the contact point and the closest point on the line
   Vec3 dir = nearestPoint - contactPoint;
   real length = dir.Length();
 
-  // the normal approach would just be to save this edge as closest if it's
-  // distance is less than the previous edge, however there can be cases when
-  // the point is right on a corner and the distances are incredibly close to
-  // each other where the closest edge is not the desired one. In the case that
-  // we detect very close edge proximity (aka within an epsilon of the last
-  // distance) we want the edge that makes the most sense to rotate the triangle
-  // normal about to get the contact normal. The way to test this is to take the
-  // edge that is most perpendicular to the contact normal, this means it is the
-  // closest to a pure rotation to get the tri normal into the contact normal.
+  // the normal approach would just be to save this edge as closest if it's distance
+  // is less than the previous edge, however there can be cases when the point is
+  // right on a corner and the distances are incredibly close to each other where
+  // the closest edge is not the desired one. In the case that we detect very close
+  // edge proximity (aka within an epsilon of the last distance) we want the edge
+  // that makes the most sense to rotate the triangle normal about to get the contact
+  // normal. The way to test this is to take the edge that is most perpendicular to
+  // the contact normal, this means it is the closest to a pure rotation to get the
+  // tri normal into the contact normal.
   real absDiff = Math::Abs(length - stateInfo.mClosestDistance);
   if (absDiff < real(.0001))
   {
@@ -466,15 +455,13 @@ void TestEdgeCloseness(
   }
 }
 
-// clamps the normal to the voronoi region (on one side) if it is outside the
-// bounds
+// clamps the normal to the voronoi region (on one side) if it is outside the bounds
 bool ClampNormal(
     Vec3Param edge, Vec3Param triNormal, Vec3Param localContactNormal, real voronoiAngle, Vec3Ref clampedLocalNormal)
 {
   // build our remaining vector needed for out basis
   Vec3 edgeCross = Math::Cross(edge, triNormal);
-  // get the angle that the contact normal is from the edge, normal basis (y-x
-  // ordering)
+  // get the angle that the contact normal is from the edge, normal basis (y-x ordering)
   real angle = GetAngle(edgeCross, triNormal, localContactNormal);
 
   // if our current angle from the triangle normal is outside of the Voronoi
@@ -484,8 +471,7 @@ bool ClampNormal(
   // cause collision issues.
   if ((voronoiAngle < 0 && angle < voronoiAngle) || (voronoiAngle >= 0 && angle > voronoiAngle))
   {
-    // compute the matrix that will rotate us right to the edge of the Voronoi
-    // region
+    // compute the matrix that will rotate us right to the edge of the Voronoi region
     real angleDiff = voronoiAngle - angle;
     Mat3 correctionRotation = Math::ToMatrix3(edge, angleDiff);
     // that rotated normal is the new contact normal
@@ -521,8 +507,7 @@ void FixOtherPoint(Physics::ManifoldPoint& point, StateInfo& stateInfo)
   if (indexA == 1)
     normal *= -1;
 
-  // create the new point on the mesh along the normal by the penetration
-  // distance
+  // create the new point on the mesh along the normal by the penetration distance
   Vec3 worldPoint = point.WorldPoints[indexB] + normal * point.Penetration;
   point.WorldPoints[indexA] = worldPoint;
 
@@ -541,8 +526,7 @@ void CorrectConcaveNormal(Physics::ManifoldPoint& point, StateInfo& stateInfo)
   // in a concave case, we just want to use the triangle normal (as the edge of
   // the voronoi region we care about is our normal). However, we have to make
   // sure that the normal faces the correct direction. If the triangle normal is
-  // facing the opposite way of the contact normal then use the negative tri
-  // normal.
+  // facing the opposite way of the contact normal then use the negative tri normal.
   Vec3 triNormal = stateInfo.mTriNormal;
   Vec3 contactNormal = stateInfo.mLocalContactNormal;
   real dirTest = Math::Dot(triNormal, contactNormal);
@@ -611,9 +595,8 @@ void EvaluateBestEdge(Physics::ManifoldPoint& point, StateInfo& stateInfo, bool&
   real voronoiAngle = stateInfo.mVoronoiAngle;
   // If we are concave, we want to change our test to be the back face
   //(or the "convex" side) of the edge. To do this we swap the normals to be on
-  // the negative side. This also has the effect that if we test to see if we
-  // are on the "back face" (the concave side) of the edge then we just use the
-  // normal.
+  // the negative side. This also has the effect that if we test to see if we are
+  // on the "back face" (the concave side) of the edge then we just use the normal.
   real swapFactor = isConvex ? real(1.0) : real(-1.0);
 
   // get the normal of A (this triangle)
@@ -626,14 +609,13 @@ void EvaluateBestEdge(Physics::ManifoldPoint& point, StateInfo& stateInfo, bool&
   // hack debug draw right now
   // DebugDrawVoronoiRegion(point, stateInfo, nA, nB);
 
-  // check the directionality of the contact normal with both of the triangle
-  // normals
+  // check the directionality of the contact normal with both of the triangle normals
   real nDotA = Math::Dot(stateInfo.mLocalContactNormal, nA);
   real nDotB = Math::Dot(stateInfo.mLocalContactNormal, nB);
 
   // test to see if we are back facing on both triangles (if we are on the
-  // negative side of both normals). If so, we don't correct to the Voronoi
-  // region, we instead use the triangle normal, however since we are on the
+  // negative side of both normals). If so, we don't correct to the Voronoi region,
+  // we instead use the triangle normal, however since we are on the
   // back use the negative normal
   bool backFacingNormal = (nDotA < convexEpsilon); // && (nDotB < convexEpsilon);
   if (backFacingNormal)
@@ -645,12 +627,10 @@ void EvaluateBestEdge(Physics::ManifoldPoint& point, StateInfo& stateInfo, bool&
     // not allowing backfaces, so there are only two cases here
     else
     {
-      // if edge is convex, then the closest front face normal is on the other
-      // triangle (B's normal)
+      // if edge is convex, then the closest front face normal is on the other triangle (B's normal)
       if (isConvex)
         point.Normal = Math::Transform(stateInfo.mCollider->GetWorldRotation(), nB);
-      // when concave, the closest normal in the voronoi region is our own (A's
-      // normal)
+      // when concave, the closest normal in the voronoi region is our own (A's normal)
       else
         point.Normal = Math::Transform(stateInfo.mCollider->GetWorldRotation(), nA);
 
@@ -687,9 +667,8 @@ bool CorrectPointInternalEdgeNormal(Physics::ManifoldPoint& point, StateInfo& st
   // we have to bring the normal back into local space on the mesh since all
   // of the Voronoi region info was computed in local space
   Mat3 invRot = stateInfo.mCollider->GetWorldRotation().Transposed();
-  // We always assume the normal is pointing from the correction object to the
-  // corrected object (eg. from mesh to sphere). If the order is the opposite
-  // then flip the normal for correction
+  // We always assume the normal is pointing from the correction object to the corrected
+  // object (eg. from mesh to sphere). If the order is the opposite then flip the normal for correction
   if (stateInfo.mObjectIndex == 1)
     point.Normal *= -1;
   stateInfo.mLocalContactNormal = Math::Transform(invRot, point.Normal);
@@ -880,10 +859,10 @@ void CorrectInternalEdgeNormal(HeightMapCollider* collider,
   // didn't exist then there is nothing for us to do
   TriangleInfoMap* map = collider->GetInfoMap();
 
-  // If the map is too big then we risk crashing since the map is contiguous
-  // memory. For now it's easiest to clear the map when we exceed some threshold
-  // and let it gradually re-populate over time. This should only happen if lots
-  // of triangles have been touched over different areas of the height map.
+  // If the map is too big then we risk crashing since the map is contiguous memory.
+  // For now it's easiest to clear the map when we exceed some threshold and let it
+  // gradually re-populate over time. This should only happen if lots of triangles have
+  // been touched over different areas of the height map.
   if (map->Size() > 100000)
     collider->ClearCachedEdgeAdjacency();
 
@@ -893,10 +872,7 @@ void CorrectInternalEdgeNormal(HeightMapCollider* collider,
   {
     GenerateInternalEdgeInfoDynamic(collider, contactId);
     info = map->FindPointer(contactId);
-    ReturnIf(info == nullptr,
-             ,
-             "Somehow creating an entry for a contact id didn't actually "
-             "create the entry");
+    ReturnIf(info == nullptr, , "Somehow creating an entry for a contact id didn't actually create the entry");
   }
 
   // set up some info on our state struct for ease of passing around
@@ -925,8 +901,7 @@ void CorrectInternalEdgeNormal(HeightMapCollider* collider,
     Vec3 R = P + d * t;
 
     // Changing body point to be on the triangle so that edge correction
-    // can identify which swept edge was hit without modifying how correction
-    // works
+    // can identify which swept edge was hit without modifying how correction works
     Mat4 transform = collider->GetOwner()->has(Transform)->GetWorldMatrix();
     manifold->Contacts[i].BodyPoints[objectIndex] = R;
     manifold->Contacts[i].WorldPoints[objectIndex] = Math::TransformPoint(transform, R);

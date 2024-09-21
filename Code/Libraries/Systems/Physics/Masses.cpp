@@ -90,16 +90,15 @@ Vec3 Inertia::ApplyInverted(Vec3Param vector) const
 {
   Mat3 inertiaTensorW = mInvInertiaTensorW;
 
-  // Try to invert the inverse world inertia tensor to get the world inertia
-  // tensor
+  // Try to invert the inverse world inertia tensor to get the world inertia tensor
   bool inverted = inertiaTensorW.SafeInvert();
   // If we succeed then just transform the input vector
   if (inverted)
     return Math::Transform(inertiaTensorW, vector);
 
   // Otherwise there's a chance we can still compute the result vector.
-  // Instead of computing a pseudo inverse though we can use an LCP solver to
-  // approximate the result of (I^-1 * v) directly.
+  // Instead of computing a pseudo inverse though we can use an LCP solver to approximate the result of (I^-1 * v)
+  // directly.
   inertiaTensorW = mInvInertiaTensorW;
   Vec3 input = vector;
   Vec3 result = Vec3::cZero;

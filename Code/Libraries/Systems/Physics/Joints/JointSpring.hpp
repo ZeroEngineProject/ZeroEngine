@@ -6,11 +6,11 @@ namespace Zero
 
 struct JointNode;
 
-/// Defines spring properties for a joint. Used to make a joint soft and
-/// therefore behave spring-like. A joint spring has a frequency in hertz at
-/// which to oscillate as well as a damping ratio. The ratio should vary from 0
-/// to 1 where 0 is no damping and 1 is critical damping. See each joint for a
-/// description of how it reacts to a spring.
+/// Defines spring properties for a joint. Used to make a joint soft and therefore behave
+/// spring-like. A joint spring has a frequency in hertz at which to oscillate
+/// as well as a damping ratio. The ratio should vary from 0 to 1 where 0 is
+/// no damping and 1 is critical damping.
+/// See each joint for a description of how it reacts to a spring.
 class JointSpring : public Component
 {
 public:

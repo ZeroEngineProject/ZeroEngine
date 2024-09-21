@@ -4,9 +4,8 @@
 namespace Zero
 {
 
-/// Regions are used to make PhysicsEffects affect a region of space. Any
-/// effects attached to a Cog with a Region will apply to all objects in contact
-/// with this region.
+/// Regions are used to make PhysicsEffects affect a region of space. Any effects attached to a
+/// Cog with a Region will apply to all objects in contact with this region.
 class Region : public Component
 {
 public:
@@ -29,8 +28,7 @@ public:
   void Update(real dt);
   /// Helper to apply effects to a body
   void ApplyEffects(RigidBody* body, real dt);
-  /// Wakes up all bodies in contact with this region (so effects will take
-  /// affect)
+  /// Wakes up all bodies in contact with this region (so effects will take affect)
   void WakeUpAll();
 
   /// A range to wrap what this region is in contact with.

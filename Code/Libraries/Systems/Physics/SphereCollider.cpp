@@ -47,9 +47,8 @@ void SphereCollider::CacheWorldValues()
 
 void SphereCollider::ComputeWorldAabbInternal()
 {
-  // We don't want the default world aabb logic. Since we're a sphere, the
-  // world-space aabb doesn't change, it's always the min aabb that encompasses
-  // our radius.
+  // We don't want the default world aabb logic. Since we're a sphere, the world-space
+  // aabb doesn't change, it's always the min aabb that encompasses our radius.
   real radius = GetWorldRadius();
   Vec3 worldCenter = GetWorldTranslation();
   mAabb.SetCenterAndHalfExtents(worldCenter, Vec3(radius));

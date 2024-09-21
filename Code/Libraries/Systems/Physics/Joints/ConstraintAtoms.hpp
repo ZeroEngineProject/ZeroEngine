@@ -15,27 +15,26 @@ struct AnchorAtom
 {
   AnchorAtom();
 
-  Vec3Ref operator[](uint index);
-  Vec3Param operator[](uint index) const;
+  Vec3Ref operator[](size_t index);
+  Vec3Param operator[](size_t index) const;
 
   Vec3 mBodyR[2];
 };
 
-/// Defines the AnchorAtom but after the points have been translated into world
-/// space.
+/// Defines the AnchorAtom but after the points have been translated into world space.
 struct WorldAnchorAtom
 {
-  WorldAnchorAtom(){};
+  WorldAnchorAtom() {};
   WorldAnchorAtom(const AnchorAtom& anchor, Joint* joint);
   WorldAnchorAtom(const AnchorAtom& anchor, Collider* obj1, Collider* obj2);
 
   void SetUp(const AnchorAtom& anchor, Collider* obj1, Collider* obj2);
 
-  inline Vec3& operator[](uint index)
+  inline Vec3& operator[](size_t index)
   {
     return mWorldR[index];
   };
-  inline const Vec3& operator[](uint index) const
+  inline const Vec3& operator[](size_t index) const
   {
     return mWorldR[index];
   };
@@ -54,11 +53,11 @@ struct AxisAtom
   {
     mBodyAxes[0] = mBodyAxes[1] = Vec3::cYAxis;
   };
-  inline Vec3& operator[](uint index)
+  inline Vec3& operator[](size_t index)
   {
     return mBodyAxes[index];
   };
-  inline const Vec3& operator[](uint index) const
+  inline const Vec3& operator[](size_t index) const
   {
     return mBodyAxes[index];
   };
@@ -66,18 +65,17 @@ struct AxisAtom
   Vec3 mBodyAxes[2];
 };
 
-/// Defines the AxisAtom but after the axes have been translated into world
-/// space.
+/// Defines the AxisAtom but after the axes have been translated into world space.
 struct WorldAxisAtom
 {
-  WorldAxisAtom(){};
+  WorldAxisAtom() {};
   WorldAxisAtom(const AxisAtom& axes, Collider* obj1, Collider* obj2);
 
-  inline Vec3& operator[](uint index)
+  inline Vec3& operator[](size_t index)
   {
     return mWorldAxes[index];
   };
-  inline const Vec3& operator[](uint index) const
+  inline const Vec3& operator[](size_t index) const
   {
     return mWorldAxes[index];
   };
@@ -95,11 +93,11 @@ struct AngleAtom
     mLocalAngles[1] = Quat::cIdentity;
   };
 
-  inline Quat& operator[](uint index)
+  inline Quat& operator[](size_t index)
   {
     return mLocalAngles[index];
   };
-  inline const Quat& operator[](uint index) const
+  inline const Quat& operator[](size_t index) const
   {
     return mLocalAngles[index];
   };
@@ -109,18 +107,17 @@ struct AngleAtom
   Quat mLocalAngles[2];
 };
 
-/// Defines the AngleAtom but after the angles have been translated into world
-/// space.
+/// Defines the AngleAtom but after the angles have been translated into world space.
 struct WorldAngleAtom
 {
   WorldAngleAtom();
   WorldAngleAtom(const AngleAtom& refAngle, Collider* obj1, Collider* obj2);
 
-  inline Quat& operator[](uint index)
+  inline Quat& operator[](size_t index)
   {
     return mWorldAngles[index];
   };
-  inline const Quat& operator[](uint index) const
+  inline const Quat& operator[](size_t index) const
   {
     return mWorldAngles[index];
   };
@@ -139,7 +136,8 @@ struct ConstraintAtom
 
   real mImpulse;
 
-  union {
+  union
+  {
     real mError;
     real mConstraintValue;
   };
@@ -148,7 +146,7 @@ struct ConstraintAtom
 /// Defines a min/max limit for a impulse.
 struct ImpulseLimitAtom
 {
-  ImpulseLimitAtom(){};
+  ImpulseLimitAtom() {};
   ImpulseLimitAtom(real maxImpulse);
   ImpulseLimitAtom(real maxImpulse, real minImpulse);
 

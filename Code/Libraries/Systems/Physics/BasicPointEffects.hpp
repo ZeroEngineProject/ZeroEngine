@@ -8,9 +8,9 @@ namespace Zero
 DeclareBitField6(
     PointFlags, UseMaxDistance, LinearInterpolation, QuadraticInterpolation, ClampToMax, ContinueFalloff, NoEffect);
 
-/// Common interface for all point effects. Used to attract or repel objects
-/// towards a central point. The strength of the effect is calculated as an
-/// interpolation between two strength values at two radial distances.
+/// Common interface for all point effects. Used to attract or repel objects towards
+/// a central point. The strength of the effect is calculated as an interpolation between
+/// two strength values at two radial distances.
 class BasicPointEffect : public PhysicsEffect
 {
 public:
@@ -27,16 +27,14 @@ public:
 
   /// Update the cached world space position of the origin of this point effect.
   void ComputeApplicationPoint();
-  /// Returns the force strength that would be applied at a given radial
-  /// distance. A positive value points away from the effect center.
+  /// Returns the force strength that would be applied at a given radial distance.
+  /// A positive value points away from the effect center.
   float GetForceStrenthAtDistance(float distance);
-  /// Helper that returns the force that would be applied at the given world
-  /// position.
+  /// Helper that returns the force that would be applied at the given world position.
   Vec3 GetForceAppliedAtPoint(Vec3Param point);
   /// Calculates the point force for a rigid body. The resultant force direction
-  /// will point towards the effect center assuming the strength values and
-  /// mInwardDirectionScalar are positive. To be used by any inheriting classes
-  /// so all the core logic is in one place.
+  /// will point towards the effect center assuming the strength values and mInwardDirectionScalar
+  /// are positive. To be used by any inheriting classes so all the core logic is in one place.
   Vec3 CalculateInwardForce(RigidBody* obj);
 
   /// Used to get the strength of the force from the t value that
@@ -52,8 +50,7 @@ public:
   void SetMinDistance(real distance);
   /// The max distance that attenuation will happen at. If an object is
   /// between min and max distance, the value will be attenuated. If the
-  /// object is further away, the effect strength will be determined by
-  /// EndCondition.
+  /// object is further away, the effect strength will be determined by EndCondition.
   real GetMaxDistance();
   void SetMaxDistance(real distance);
   /// The strength that this effect applies at the min distance.
@@ -82,8 +79,7 @@ protected:
   real mMinStrength;
   real mMaxStrength;
 
-  // What direction this force points (positive points away from the effect
-  // center)
+  // What direction this force points (positive points away from the effect center)
   real mOutwardDirectionScalar;
   Vec3 mLocalPositionOffset;
   Vec3 mWorldPoint;
@@ -93,8 +89,8 @@ protected:
 /// A force effect with a direction and strength based upon the distance from
 /// a central point. The direction of the force will always point away from the
 /// effect center, but the strength will vary depending on the min/max distance
-/// and strength values. Positive strength values point away from the effect
-/// center. Useful to make planetary force field like effects.
+/// and strength values. Positive strength values point away from the effect center.
+/// Useful to make planetary force field like effects.
 class PointForceEffect : public BasicPointEffect
 {
 public:
@@ -107,10 +103,10 @@ public:
 };
 
 /// A force effect that pulls an object towards a central point. This effect is
-/// nearly identical to PointForceEffect with two exceptions. 1. An acceleration
-/// is applied instead of a force (mass is ignored). 2. A positive strength
-/// value will pull objects toward the center of the effect. This is useful to
-/// make planetary gravity or other similar effects.
+/// nearly identical to PointForceEffect with two exceptions. 1. An acceleration is
+/// applied instead of a force (mass is ignored). 2. A positive strength value will
+/// pull objects toward the center of the effect. This is useful to make planetary
+/// gravity or other similar effects.
 class PointGravityEffect : public BasicPointEffect
 {
 public:

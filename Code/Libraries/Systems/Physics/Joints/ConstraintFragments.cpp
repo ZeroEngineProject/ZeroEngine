@@ -15,8 +15,7 @@ void LinearAxisValue(WorldAnchorAtom& anchor, Vec3Param axis, ConstraintAtom& at
 void AngularAxisValue(WorldAngleAtom& angle, Vec3Param axis, ConstraintAtom& atom, real constant)
 {
   // Old way with quaternions (2-1 mapping issue)
-  // atom.mConstraintValue = real(2.0) *
-  // Math::Dot(angle.mWorldReferenceAngle.V3(),axis) - constant;
+  // atom.mConstraintValue = real(2.0) * Math::Dot(angle.mWorldReferenceAngle.V3(),axis) - constant;
   atom.mConstraintValue = Math::Dot(angle.mEulerAngles, axis);
 }
 
@@ -83,16 +82,16 @@ void PulleyAxisValue(PulleyJoint* joint, ConstraintAtom& atom, real constant)
 
 bool ComputeError(ConstraintAtom& atom, ImpulseLimitAtom& molLimit, JointLimit* limit, real constant, uint flag)
 {
-  // if there is no limit or the limit is not active on this atom, the error is
-  // just the value minus the constant passed in
+  // if there is no limit or the limit is not active on this atom, the error is just
+  // the value minus the constant passed in
   if (limit == nullptr || limit->GetActive() == false || (limit->mAtomIds & flag) == 0)
   {
     atom.mError = atom.mConstraintValue - constant;
     return false;
   }
 
-  // otherwise, check to see if the value is beyond the limit values and change
-  // the error and clamp bounds accordingly
+  // otherwise, check to see if the value is beyond the limit values and change the
+  // error and clamp bounds accordingly
   if (atom.mConstraintValue < limit->mMinErr)
   {
     atom.mError = atom.mConstraintValue - limit->mMinErr;
@@ -164,8 +163,8 @@ void PrismaticAxisFragment2d(WorldAnchorAtom& anchor, Vec3Param axis, Constraint
   // Vec3 d = anchor.mWorldPoints[1] - anchor.mWorldPoints[0];
   // This d makes takes into account the rotational energy of the axis. However,
   // this axis makes the jacobian non-symmetric which also makes the primary
-  // object 1 (so object 1 has more control over the pair, and should be
-  // heavier) mol.mJacobian.Set(-axis, Math::Cross2d(d + anchor[0], axis),
+  // object 1 (so object 1 has more control over the pair, and should be heavier)
+  // mol.mJacobian.Set(-axis, Math::Cross2d(d + anchor[0], axis),
   //                   axis, Math::Cross2d(anchor[1], axis));
 
   // This is the symmetric jacobian for a prismatic that depends upon w1 == w2.
@@ -296,9 +295,8 @@ void SoftConstraintFragment(real& molMass,
                             real dt)
 {
   // if the spring has a frequency of 0, that means it is rigid.
-  // Also, if the mass is too small then we either have a mass of 0 or a bad
-  // jacobian, just run the rigid constraint fragment which will handle this
-  // correctly
+  // Also, if the mass is too small then we either have a mass of 0 or a bad jacobian,
+  // just run the rigid constraint fragment which will handle this correctly
   if (springFrequencyHz == real(0.0) || molMass < Math::PositiveMin())
   {
     RigidConstraintFragment(molError, molBias, molGamma, baumgarte);

@@ -20,8 +20,7 @@ void DebugDrawDisc(Vec3Param center, Vec3Param axis0, Vec3Param axis1, real radi
   real prev = real(0);
   for (; prev <= Math::cTwoPi; prev += delta)
   {
-    // Could cache the last value and not re-compute it, but this is debug
-    // drawing so I don't care right now...
+    // Could cache the last value and not re-compute it, but this is debug drawing so I don't care right now...
     real next = prev + delta;
     Vec3 p0 = center + Math::Cos(prev) * axis0 * radius0 + Math::Sin(prev) * axis1 * radius1;
     Vec3 p1 = center + Math::Cos(next) * axis0 * radius0 + Math::Sin(next) * axis1 * radius1;
@@ -75,9 +74,8 @@ void GetPenumbraDebugDrawValues(real minDistance, real maxDistance, real& minFor
   if (maxForce != 0.0f)
     maxForce /= Math::Abs(maxForce);
   real deltaDistance = maxDistance - minDistance;
-  // Arbitrary scaling on the vectors. Draw a length of 1 unless that'll cause
-  // visual overlaps. In this case choose the length based upon the distance to
-  // the next "ring" minus some buffer.
+  // Arbitrary scaling on the vectors. Draw a length of 1 unless that'll cause visual overlaps.
+  // In this case choose the length based upon the distance to the next "ring" minus some buffer.
   if (minForce < 0)
     minForce *= Math::Min(1.0f, minDistance * 0.75f);
   else
@@ -97,18 +95,15 @@ Cylinder GetSupportShapeCylinder(const Intersection::SupportShape& supportShape,
   Vec3 center;
   supportShape.GetCenter(&center);
 
-  // We can then find the points furthest in each basis direction so we can
-  // figure out the height and radius of the cylinder (assume symmetric shapes
-  // for now).
+  // We can then find the points furthest in each basis direction so we can figure out the height and
+  // radius of the cylinder (assume symmetric shapes for now).
   Vec3 supportPointPrimary, supportPoint0, supportPoint1;
   supportShape.Support(primaryAxis, &supportPointPrimary);
   supportShape.Support(axis0, &supportPoint0);
   supportShape.Support(axis1, &supportPoint1);
-  // The cylinder's half-height vector can now be found by projecting its
-  // support point onto the flow direction.
+  // The cylinder's half-height vector can now be found by projecting its support point onto the flow direction.
   Vec3 cylinderHalfHeightAxis = Math::ProjectOnVector(supportPointPrimary - center, primaryAxis);
-  // The radius can be found by projecting the other two points and then taking
-  // the max length between them
+  // The radius can be found by projecting the other two points and then taking the max length between them
   real radius0 = Math::Length(Math::ProjectOnPlane(supportPoint0 - center, primaryAxis));
   real radius1 = Math::Length(Math::ProjectOnPlane(supportPoint1 - center, primaryAxis));
 
@@ -125,8 +120,7 @@ Cylinder GetCogCylinder(Cog* cog, Vec3Param primaryAxis)
   if (Collider* collider = cog->has(Collider))
     return GetSupportShapeCylinder(collider->GetSupportShape(), primaryAxis);
 
-  // Otherwise, start with a default sized aabb. Use the transform to position
-  // the aabb if possible.
+  // Otherwise, start with a default sized aabb. Use the transform to position the aabb if possible.
   Aabb aabb(Vec3::cZero, Vec3(0.5f));
   if (Transform* transform = cog->has(Transform))
     aabb.SetCenterAndHalfExtents(transform->GetWorldTranslation(), transform->GetWorldScale());

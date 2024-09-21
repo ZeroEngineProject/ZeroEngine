@@ -164,18 +164,15 @@ void SplitConstraints(ListType& joints, ConstraintGroup<typename ListType::value
       uint idA = joint->GetCollider(0)->mId;
       uint idB = joint->GetCollider(1)->mId;
 
-      // if either of the bodies have been used in this phase, then skip this
-      // joint
+      // if either of the bodies have been used in this phase, then skip this joint
       if (!bodySet.Find(idA).Empty() || !bodySet.Find(idB).Empty())
         continue;
 
-      // if adding this joint would make the batch too large, make a new batch
-      // and add the old to the phase
+      // if adding this joint would make the batch too large, make a new batch and add the old to the phase
       uint ConstraintCount = joint->MoleculeCount();
       if (ConstraintCount + batch->ConstraintCount > batchSize)
       {
-        // if this will be too many batches for this phase, then make a new
-        // phase
+        // if this will be too many batches for this phase, then make a new phase
         if (phase->BatchCount >= batchesPerPhase)
         {
           phase = new PhaseType();

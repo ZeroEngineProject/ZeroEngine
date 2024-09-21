@@ -31,7 +31,7 @@ public:
   {
     mHeap = nullptr;
   };
-  virtual ~IConstraintSolver(){};
+  virtual ~IConstraintSolver() {};
 
   void SetConfiguration(PhysicsSolverConfig* config)
   {
@@ -62,16 +62,15 @@ public:
   virtual void Clear() = 0;
 
   /// Intermediate solving functions
-  virtual void UpdateData(){};
-  virtual void WarmStart(){};
-  virtual void SolveVelocities(){};
-  virtual void IterateVelocities(uint iteration){};
-  virtual void SolvePositions(){};
-  virtual void Commit(){};
-  virtual void BatchEvents(){};
+  virtual void UpdateData() {};
+  virtual void WarmStart() {};
+  virtual void SolveVelocities() {};
+  virtual void IterateVelocities(uint iteration) {};
+  virtual void SolvePositions() {};
+  virtual void Commit() {};
+  virtual void BatchEvents() {};
 
-  /// Returns the number of iterations this solver should use (determined by the
-  /// config).
+  /// Returns the number of iterations this solver should use (determined by the config).
   uint GetSolverIterationCount() const;
   uint GetSolverPositionIterationCount() const;
 

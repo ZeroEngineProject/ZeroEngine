@@ -20,8 +20,8 @@ public:
   ContactManager();
   ~ContactManager();
 
-  /// Gets the existing contact for this manifold or creates a new one if none
-  /// exists. Used when a collision has been detected.
+  /// Gets the existing contact for this manifold or creates a new one if none exists.
+  /// Used when a collision has been detected.
   Contact* AddManifold(Manifold& manifold);
   /// Used when a collision no longer should exist.
   void RemoveManifold(Manifold* manifold);

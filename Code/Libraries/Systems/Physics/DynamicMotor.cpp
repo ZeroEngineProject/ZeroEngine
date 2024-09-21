@@ -94,8 +94,8 @@ RelativeVelocityJoint* DynamicMotor::GetJoint()
   if (joint == nullptr)
   {
     // Destroy the old cog and create a new joint cog (there's some issues with
-    // recently dynamically deleted components still getting events that means
-    // we can't just re-add the component, but rather we need a new composition)
+    // recently dynamically deleted components still getting events that means we
+    // can't just re-add the component, but rather we need a new composition)
     mVelJointCog.SafeDestroy();
     joint = CreateJoint();
   }

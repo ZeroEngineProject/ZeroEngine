@@ -18,11 +18,9 @@ ZilchDefineType(GjkDebug, builder, type)
   ZilchBindFieldProperty(mMaxExpands);
   ZilchBindFieldProperty(mDt);
   // ZilchBindFieldProperty(mShowCSO);
-  // ZilchBindFieldProperty(mSubdivisions)->Add(new EditorSlider(12.0f,
-  // 48.0f, 1.0f)); ZilchBindFieldProperty(mOpacityCSO)->Add(new
-  // EditorSlider(0.0f, 255.0f, 1.0f));
-  // ZilchBindFieldProperty(mOpacitySimplex)->Add(new EditorSlider(0.0f,
-  // 255.0f, 1.0f));
+  // ZilchBindFieldProperty(mSubdivisions)->Add(new EditorSlider(12.0f, 48.0f, 1.0f));
+  // ZilchBindFieldProperty(mOpacityCSO)->Add(new EditorSlider(0.0f, 255.0f, 1.0f));
+  // ZilchBindFieldProperty(mOpacitySimplex)->Add(new EditorSlider(0.0f, 255.0f, 1.0f));
 
   // ZilchBindMethod(InitEpa)->SetHidden(false);
   // ZilchBindMethod(AddPoint)->SetHidden(false);
@@ -43,8 +41,7 @@ GjkDebug::GjkDebug(void) :
 
 void GjkDebug::InitEpa(void)
 {
-  // mEpa.Init(Vec3(0.3f, 0, 0), Vec3(-0.3f, 0, 0.3), Vec3(-0.3f, 0, -0.3f),
-  // Vec3(0, 0.3f, 0));
+  // mEpa.Init(Vec3(0.3f, 0, 0), Vec3(-0.3f, 0, 0.3), Vec3(-0.3f, 0, -0.3f), Vec3(0, 0.3f, 0));
 }
 
 void GjkDebug::AddPoint(void)
@@ -97,8 +94,7 @@ void GjkDebug::DebugDraw(void)
 
   // // CSO points
   // // for (unsigned i = 0; i < mSupports.Size(); ++i)
-  // //   gDebugDraw->Add(Debug::Sphere(mSupports[i],
-  // 0.01f).Color(Color::Green));
+  // //   gDebugDraw->Add(Debug::Sphere(mSupports[i], 0.01f).Color(Color::Green));
 
   // // CSO faces
   // for (unsigned i = 0; i < mCSO.Size(); ++i)
@@ -107,8 +103,7 @@ void GjkDebug::DebugDraw(void)
   //   Vec3 p0 = face.vertices[0];
   //   Vec3 p1 = face.vertices[1];
   //   Vec3 p2 = face.vertices[2];
-  //   gDebugDraw->Add(Debug::Triangle(p0, p1,
-  //   p2).Color(Color::Orange).Border(true).Alpha((unsigned)mOpacityCSO));
+  //   gDebugDraw->Add(Debug::Triangle(p0, p1, p2).Color(Color::Orange).Border(true).Alpha((unsigned)mOpacityCSO));
   // }
 
   // Intersection test
@@ -233,8 +228,8 @@ void GjkDebug::ComputeCSO(void)
   mCSO.Clear();
   // if (!mOtherObject.IsValid() || !mOtherObject.has(Collider))
   // {
-  //   DoNotify("No Collider", "OtherObject is not set or OtherObject does not
-  //   own a Collider.", "Warning"); return;
+  //   DoNotify("No Collider", "OtherObject is not set or OtherObject does not own a Collider.", "Warning");
+  //   return;
   // }
 
   unsigned subdivisions = (unsigned)mSubdivisions;
@@ -281,15 +276,15 @@ void GjkDebug::ComputeCSO(void)
   Vec3 top = ComputeSupport(Vec3(0, 1, 0));
   Vec3 bottom = ComputeSupport(Vec3(0, -1, 0));
 
-  unsigned collumns = subdivisions * 2;
-  for (unsigned i = 0; i < collumns; ++i)
+  size_t collumns = subdivisions * 2;
+  for (size_t i = 0; i < collumns; ++i)
   {
-    unsigned i2 = (i + 1) % (collumns);
+    size_t i2 = (i + 1) % (collumns);
     Vec3 p0 = mSupports[i];
     Vec3 p1 = mSupports[i2];
 
-    unsigned j = mSupports.Size() - (collumns - i);
-    unsigned j2 = mSupports.Size() - (collumns - i2);
+    size_t j = mSupports.Size() - (collumns - i);
+    size_t j2 = mSupports.Size() - (collumns - i2);
     Vec3 p2 = mSupports[j];
     Vec3 p3 = mSupports[j2];
 

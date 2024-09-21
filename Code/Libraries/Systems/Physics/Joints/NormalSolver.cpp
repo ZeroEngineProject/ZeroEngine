@@ -147,8 +147,7 @@ void NormalSolver::SolvePositions()
 
 #include "JointList.hpp"
 #undef JointType
-  // get a list of all contacts that need position correction (currently all or
-  // nothing)
+  // get a list of all contacts that need position correction (currently all or nothing)
   ContactList contactsToSolve;
   CollectContactsToSolve(mContacts, contactsToSolve, mSolverConfig);
 

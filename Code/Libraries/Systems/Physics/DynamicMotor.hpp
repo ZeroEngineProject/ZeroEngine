@@ -19,9 +19,8 @@ struct LinearAxisJoint;
 typedef Physics::LinearAxisJoint LinearAxisJoint;
 
 /// Controls an object's movement using joints. This allows creating a physics
-/// based character controller that reacts to physics (joints, forces,
-/// collisions, etc...). The motor controls relative velocity with respect to a
-/// target object frame.
+/// based character controller that reacts to physics (joints, forces, collisions, etc...).
+/// The motor controls relative velocity with respect to a target object frame.
 class DynamicMotor : public Component
 {
 public:
@@ -38,11 +37,9 @@ public:
   RelativeVelocityJoint* CreateJoint();
   RelativeVelocityJoint* GetJoint();
 
-  /// Compute relative velocity with respect to the world. Used to signify that
-  /// an absolute world speed is desired.
+  /// Compute relative velocity with respect to the world. Used to signify that an absolute world speed is desired.
   void SetReferenceFrameToWorld();
-  /// Compute the relative velocity with respect to a target object. Used to
-  /// control movement on moving platforms.
+  /// Compute the relative velocity with respect to a target object. Used to control movement on moving platforms.
   void SetReferenceFrameToObject(Cog* object);
 
   /// Attempts to move the body in the given direction.

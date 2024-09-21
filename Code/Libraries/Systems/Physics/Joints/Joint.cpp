@@ -82,17 +82,14 @@ void Joint::OnAllObjectsCreated(CogInitializer& initializer)
   ConnectThisTo(GetOwner(), Events::ObjectLinkChanged, OnObjectLinkChanged);
   ConnectThisTo(GetOwner(), Events::ObjectLinkPointChanged, OnObjectLinkPointChanged);
 
-  // Always add to the space. This makes it easier to deal with partially
-  // invalid joints being destroyed (and the space list is only there for easy
-  // iteration of joints)
+  // Always add to the space. This makes it easier to deal with partially invalid
+  // joints being destroyed (and the space list is only there for easy iteration of joints)
   mSpace->AddComponent(this);
 
   // Link up the collider edges to the object link's data.
   LinkPair();
-  // Also wake up the objects we're connected to so that newly created joints
-  // will work properly.
-  // @JoshD: Should this only happen when during not object startup so that
-  // saved asleep objects stay asleep?
+  // Also wake up the objects we're connected to so that newly created joints will work properly.
+  // @JoshD: Should this only happen when during not object startup so that saved asleep objects stay asleep?
   Physics::JointHelpers::ForceAwakeJoint(this);
 
   // We were dynamically created so try to compute some logical initial values
@@ -103,24 +100,21 @@ void Joint::OnAllObjectsCreated(CogInitializer& initializer)
 
 void Joint::OnDestroy(uint flags)
 {
-  // Always remove from the space, even if we weren't valid (because we're
-  // always added)
+  // Always remove from the space, even if we weren't valid (because we're always added)
   mSpace->RemoveComponent(this);
 
-  // If we were in a partially or completely invalid state then one of our
-  // colliders doesn't exist. If one of them was valid we could wake it up, but
-  // there's not really a point as this joint wasn't doing anything. Since it
-  // wasn't doing anything removing the joint shouldn't cause any change to the
-  // dynamics of a body and therefore waking it up isn't necessary. Same if we
-  // weren't active.
+  // If we were in a partially or completely invalid state then one of our colliders
+  // doesn't exist. If one of them was valid we could wake it up, but there's not
+  // really a point as this joint wasn't doing anything. Since it wasn't doing anything
+  // removing the joint shouldn't cause any change to the dynamics of a body and therefore
+  // waking it up isn't necessary. Same if we weren't active.
   if (GetValid() && GetActive())
   {
     mEdges[0].mCollider->ForceAwake();
     mEdges[1].mCollider->ForceAwake();
   }
   // Unlink from the colliders we were connected to. This also marks the joint
-  // as not valid just in case any other calls happen that would rely on being
-  // connected.
+  // as not valid just in case any other calls happen that would rely on being connected.
   UnLinkPair();
 }
 
@@ -210,13 +204,11 @@ void Joint::LinkPair()
   if (objectB != nullptr)
     collider1 = objectB->has(Collider);
 
-  // If we failed to get either collider then set this joint as not currently
-  // being valid (we can't solve)
+  // If we failed to get either collider then set this joint as not currently being valid (we can't solve)
   if (collider0 == nullptr || collider1 == nullptr)
     SetValid(false);
 
-  // We do have to set the pair properly so that edges and whatnot can be
-  // properly traversed and unlinked
+  // We do have to set the pair properly so that edges and whatnot can be properly traversed and unlinked
   ColliderPair pair;
   pair.mObjects[0] = collider0;
   pair.mObjects[1] = collider1;
@@ -279,8 +271,7 @@ void Joint::Relink(uint index, Cog* cog)
     collider->mJointEdges.PushBack(&mainEdge);
 
   // If we were in a completely invalid state before being setup and now we're
-  // in a valid state we need to update valid (but not active, that should only
-  // ever be changed by the user)
+  // in a valid state we need to update valid (but not active, that should only ever be changed by the user)
   bool isValid = (mainEdge.mCollider != nullptr && otherEdge.mCollider != nullptr);
   SetValid(isValid);
 
@@ -500,8 +491,7 @@ bool Joint::GetShouldBaumgarteBeUsed(uint type) const
       return true;
   }
 
-  // Check the block type for the given joint. If it specifies one correction
-  // type then use that.
+  // Check the block type for the given joint. If it specifies one correction type then use that.
   if (block.GetPositionCorrectionType() == ConstraintPositionCorrection::PostStabilization)
     return false;
   if (block.GetPositionCorrectionType() == ConstraintPositionCorrection::Baumgarte)
@@ -517,9 +507,9 @@ bool Joint::GetShouldBaumgarteBeUsed(uint type) const
 real Joint::GetLinearBaumgarte(uint type) const
 {
   // The baumgarte term is always returned even if we aren't using baumgarte.
-  // This is because a joint could have a spring on it, in which case we ignore
-  // the position correction mode and always use baumgarte. Therefore, the code
-  // that calls this should determine whether or not to apply the baumgarte
+  // This is because a joint could have a spring on it, in which case we ignore the
+  // position correction mode and always use baumgarte. Therefore, the code that calls
+  // this should determine whether or not to apply the baumgarte
   // using GetShouldBaumgarteBeUsed (Same for angular baumgarte)
   PhysicsSolverConfig* config = mSolver->mSolverConfig;
   ConstraintConfigBlock& block = config->mJointBlocks[type];
@@ -533,8 +523,7 @@ real Joint::GetLinearBaumgarte(uint type) const
 
 real Joint::GetAngularBaumgarte(uint type) const
 {
-  // See the comment at the top of GetLinearBaumgarte for why we always return
-  // the baumgarte value.
+  // See the comment at the top of GetLinearBaumgarte for why we always return the baumgarte value.
   PhysicsSolverConfig* config = mSolver->mSolverConfig;
   ConstraintConfigBlock& block = config->mJointBlocks[type];
   JointConfigOverride* configOverride = mNode->mConfigOverride;

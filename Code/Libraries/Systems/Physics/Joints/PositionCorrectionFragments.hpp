@@ -33,13 +33,11 @@ bool ShouldSolvePosition(Contact* contact);
 bool ShouldSolvePosition(Joint* joint);
 
 // Collect the joints/contacts that do need to be solved into a separate list so
-// we don't have to check in the inner loop if it needs to be position
-// corrected.
+// we don't have to check in the inner loop if it needs to be position corrected.
 template <typename JointList>
 inline void CollectJointsToSolve(JointList& inputList, JointList& jointsToSolve)
 {
-  // go through all of the joints and figure out which ones are position
-  // corrected
+  // go through all of the joints and figure out which ones are position corrected
   typename JointList::range joints = inputList.All();
   while (!joints.Empty())
   {
@@ -65,14 +63,12 @@ inline void EmptyUpdate(JointType* joint, Collider* c0, Collider* c1)
 {
 }
 
-// Before solving a contact, the world points (and penetration) need to be
-// updated from the body points. The normal should actually be updated, but this
-// requires re-running parts of collision detection and for now it is assumed
-// that this answer is good enough.
+// Before solving a contact, the world points (and penetration) need to be updated from
+// the body points. The normal should actually be updated, but this requires re-running
+// parts of collision detection and for now it is assumed that this answer is good enough.
 void ContactUpdate(Contact* contact, Collider* c0, Collider* c1);
 
-// Forcibly update the world transformation in the entire hierarchy contained by
-// this rigid body.
+// Forcibly update the world transformation in the entire hierarchy contained by this rigid body.
 void UpdateHierarchyTransform(RigidBody* body);
 
 // Helper to apply the position correction to a body
@@ -97,10 +93,10 @@ void JointBlockSolvePositions(JointType& joint, PositionSolverData& data, Update
 
   // Make sure that the cached transforms are up to date for these objects.
   // This needs to happen at the beginning of solving because this happens after
-  // position integration (hence they start out invalid). This function updates
-  // the entire hierarchy, however this should probably be optimized by only
-  // updating the chain of this collider (since this doesn't happen at the end
-  // anymore we only need to update ourself, not the entire hierarchy).
+  // position integration (hence they start out invalid). This function updates the
+  // entire hierarchy, however this should probably be optimized by only updating the
+  // chain of this collider (since this doesn't happen at the end anymore we
+  // only need to update ourself, not the entire hierarchy).
   if (b0 != nullptr)
     UpdateHierarchyTransform(b0);
   if (b1 != nullptr)
@@ -293,8 +289,7 @@ inline void SolveConstraintPosition(ListType& jointList, UpdateFunctor functor)
     if (b1 != nullptr)
       UpdateHierarchyTransform(b1);
 
-    // have to update atoms once so we have the correct number of molecules
-    // (soooo bad!)
+    // have to update atoms once so we have the correct number of molecules (soooo bad!)
     functor(&joint, c0, c1);
     joint.UpdateAtoms();
     uint activeJoints = joint.PositionMoleculeCount();

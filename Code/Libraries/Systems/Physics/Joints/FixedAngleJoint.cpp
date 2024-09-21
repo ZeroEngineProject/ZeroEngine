@@ -49,8 +49,7 @@ void FixedAngleJoint::Initialize(CogInitializer& initializer)
 
 void FixedAngleJoint::ComputeInitialConfiguration()
 {
-  // Compute the reference angle that'll preserve the current rotation between
-  // the objects
+  // Compute the reference angle that'll preserve the current rotation between the objects
   ComputeCurrentReferenceAngle(mReferenceAngle);
 }
 

@@ -178,14 +178,12 @@ void MassOverride::RecomputeMass()
   }
 
   RigidBody* body = GetOwner()->has(RigidBody);
-  // Avoid recomputing the mass computing a zero mass because the object is
-  // static or kinematic
+  // Avoid recomputing the mass computing a zero mass because the object is static or kinematic
   if (body->GetStatic() || body->GetKinematic())
   {
     DoNotifyWarning("Can't update mass",
                     "The rigid body is either kinematic or static. "
-                    "Please make the body dynamic in order recompute the "
-                    "current overridden mass.");
+                    "Please make the body dynamic in order recompute the current overridden mass.");
     return;
   }
 

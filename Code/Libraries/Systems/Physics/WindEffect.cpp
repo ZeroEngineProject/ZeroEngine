@@ -81,8 +81,7 @@ void WindEffect::ApplyEffect(SpringSystem* obj, real dt)
     Vec3 p1 = obj->mPointMasses[face.mIndex1].mPosition;
     Vec3 p2 = obj->mPointMasses[face.mIndex2].mPosition;
 
-    // The cross product gives a vector who's length is twice the area of the
-    // triangle
+    // The cross product gives a vector who's length is twice the area of the triangle
     Vec3 normal = Math::Cross(p0 - p1, p2 - p1);
     real area = normal.AttemptNormalize() * real(0.5f);
 

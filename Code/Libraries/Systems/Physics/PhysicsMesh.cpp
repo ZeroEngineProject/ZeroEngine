@@ -65,8 +65,7 @@ bool PhysicsMesh::CastRay(const Ray& localRay, ProxyResult& result, BaseCastFilt
   bool triangleHit = false;
   result.mTime = Math::PositiveMax();
 
-  // Query the aabb tree for possible triangles. Test all triangles whose aabbs
-  // we hit.
+  // Query the aabb tree for possible triangles. Test all triangles whose aabbs we hit.
   forRangeBroadphaseTree(StaticAabbTree<uint>, mTree, Ray, localRay)
   {
     uint triIndex = range.Front();
@@ -117,7 +116,7 @@ void PhysicsMesh::GenerateTree()
 
     // Create the broad phase data.
     BaseBroadPhaseData<uint> data;
-    data.mClientData = triIndex;
+    data.mClientData = (uint)triIndex;
     data.mAabb = ToAabb(tri);
 
     // Insert it into the tree

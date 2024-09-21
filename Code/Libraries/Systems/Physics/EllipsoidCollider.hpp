@@ -4,8 +4,7 @@
 namespace Zero
 {
 
-/// Defines the collision volume for an ellipsoid (3 dimensional ellipse)
-/// defined by three radius values.
+/// Defines the collision volume for an ellipsoid (3 dimensional ellipse) defined by three radius values.
 class EllipsoidCollider : public Collider
 {
 public:
@@ -29,8 +28,7 @@ public:
   Vec3 GetRadii() const;
   void SetRadii(Vec3Param radii);
 
-  /// The radii of the ellipsoid after transform is applied (scale and
-  /// rotation).
+  /// The radii of the ellipsoid after transform is applied (scale and rotation).
   Vec3 GetWorldRadii() const;
 
 private:

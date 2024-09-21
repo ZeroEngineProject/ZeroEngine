@@ -12,8 +12,8 @@ class PhysicsSpace;
 namespace Physics
 {
 
-/// A structure to handle the creation, storing and sending of all physics
-/// events. Mainly used to centralize all logic to this file.
+/// A structure to handle the creation, storing and sending of all physics events.
+/// Mainly used to centralize all logic to this file.
 struct PhysicsEventManager
 {
   PhysicsEventManager();

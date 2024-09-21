@@ -93,8 +93,8 @@ void ConvexMeshCollider::RebuildModifiedResources()
 
 Vec3 ConvexMeshCollider::GetColliderLocalCenterOfMass(void) const
 {
-  // We currently need true world-space as the caller of this will transform to
-  // world space. To do this we must return the local space center of mass.
+  // We currently need true world-space as the caller of this will transform to world space.
+  // To do this we must return the local space center of mass.
   // @JoshD: Refactor later to remove this?
   return mConvexMesh->mLocalCenterOfMass;
 }
@@ -102,8 +102,7 @@ Vec3 ConvexMeshCollider::GetColliderLocalCenterOfMass(void) const
 void ConvexMeshCollider::Support(Vec3Param direction, Vec3Ptr support) const
 {
   // Bring the support direction into local space (normalize for safety),
-  // call the local-space support function then transform the result back into
-  // world space
+  // call the local-space support function then transform the result back into world space
   Vec3 localSpaceDir = TransformSupportDirectionToLocal(direction);
   localSpaceDir.Normalize();
   mConvexMesh->Support(localSpaceDir, support);
@@ -126,8 +125,7 @@ void ConvexMeshCollider::SetConvexMesh(ConvexMesh* convexMesh)
   if (convexMesh == nullptr)
     return;
 
-  // Disconnect from events on the old mesh and connect on the new mesh (if
-  // they're different)
+  // Disconnect from events on the old mesh and connect on the new mesh (if they're different)
   ConvexMesh* oldMesh = mConvexMesh;
   if (oldMesh != convexMesh)
   {

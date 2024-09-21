@@ -128,8 +128,7 @@ void RelinkNodes(Cog* owner, Cog* parentOwner, PhysicsNode* node, PhysicsNode* p
 
     Cog* childCog = childNode->GetCogOwner();
     Cog* parentCog = childCog->GetParent();
-    // loop up the hierarchy until we either come across the old parent or the
-    // new node
+    // loop up the hierarchy until we either come across the old parent or the new node
     while (parentCog != parentOwner)
     {
       // if we come across the new node, we need to relink to that node
@@ -144,10 +143,10 @@ void RelinkNodes(Cog* owner, Cog* parentOwner, PhysicsNode* node, PhysicsNode* p
   }
 }
 
-// when a new node comes into existence, if it has no parent node then we are
-// stuck with an unfortunate situation. We might have nodes under us that we
-// need to be linked. The only way to find them is do a full traversal of all
-// hierarchies until we find a cog with physics where we can extract the node.
+// when a new node comes into existence, if it has no parent node then we are stuck
+// with an unfortunate situation. We might have nodes under us that we need to be
+// linked. The only way to find them is do a full traversal of all hierarchies
+// until we find a cog with physics where we can extract the node.
 void LinkNewParentNode(PhysicsNode* node, Cog* owner)
 {
   Array<Cog*> stack;
@@ -218,9 +217,9 @@ void LinkTreeNode(PhysicsNode* node)
   RigidBody* body = node->mBody;
   Collider* collider = node->mCollider;
 
-  // don't update the in-world state here because we need to update that
-  // bottom-up not top-down. This is safe to delay till later because everything
-  // here that matters is queuing up an action to do later.
+  // don't update the in-world state here because we need to update that bottom-up
+  // not top-down. This is safe to delay till later because everything here that
+  // matters is queuing up an action to do later.
 
   RigidBody* directBody = nullptr;
   RigidBody* activeBody = nullptr;
@@ -251,18 +250,15 @@ void LinkTreeNode(PhysicsNode* node)
     else if (directBody)
       AddDirectChildCollider(directBody, collider);
 
-    // if this body is dynamic or kinematic, then it is the active body for this
-    // collider
+    // if this body is dynamic or kinematic, then it is the active body for this collider
     if (body && (body->IsDynamic() || body->GetKinematic()))
       collider->mActiveRigidBody = body;
     // no direct body means there is no body above us
     else if (directBody)
     {
-      // if we do not have active body set, either we went into the body case
-      // above (no collider parent) or the active body of our parent is null,
-      // either way, recurse the direct body to find the active body (could
-      // speed
-      // up i guess by keeping another flag for if we took the collider branch
+      // if we do not have active body set, either we went into the body case above (no collider parent)
+      // or the active body of our parent is null, either way, recurse the direct body to find the active body
+      //(could speed up i guess by keeping another flag for if we took the collider branch
       // above since we'd know that active body is null)
       if (!activeBody)
       {
@@ -284,8 +280,8 @@ struct BuildFunctor
 };
 
 // Re-link the collider/rigidbody of a node. Also queue up transform, mass and
-// broadphase changes to account for everything. As a small final thing, make
-// sure that each collider and rigidbody are in their correct list on the space.
+// broadphase changes to account for everything. As a small final thing, make sure
+// that each collider and rigidbody are in their correct list on the space.
 struct CompleteBuildFunctor
 {
   void Action(PhysicsNode* node)
@@ -379,8 +375,7 @@ void CompleteTreeRebuild(PhysicsNode* root)
 
   // we have to change the in world flag bottom-up instead of top down to help
   // make sure the transforms are as exact as possible (otherwise the decomposed
-  // error will propagate moving down the tree and cause more errors that can be
-  // very visible)
+  // error will propagate moving down the tree and cause more errors that can be very visible)
   ChangeInWorld(root);
 }
 
@@ -491,8 +486,7 @@ void GenericOnDestroy(ObjectType* obj, PhysicsNode* node, bool dynamicallyDestro
   node->RemoveOwner(obj);
 
   bool nodeIsDying = node->IsDying();
-  // if our node is going away, we need to relink our children, parent and
-  // ourself
+  // if our node is going away, we need to relink our children, parent and ourself
   if (nodeIsDying)
   {
     UnlinkNode(node);
@@ -511,8 +505,7 @@ void GenericOnDestroy(ObjectType* obj, PhysicsNode* node, bool dynamicallyDestro
   {
     // if the node is not dying, we need to rebuild the tree
     // however, if the node is dying, we only need to rebuild the tree
-    // if we are not the root (otherwise the children have been rebuilt in
-    // unlink node)
+    // if we are not the root (otherwise the children have been rebuilt in unlink node)
     if (!nodeIsDying || root != node)
       CompleteTreeRebuild(root);
   }
@@ -554,9 +547,8 @@ void BodyStateChanged(RigidBody* body)
 void BodyOnDestroy(RigidBody* body, bool dynamicallyDestroyed)
 {
   // fixing the tree will unlink and relink all of the colliders, but this
-  // body won't be in the tree to do that, so unlink all of it's colliders real
-  // quick but make sure that the collider's do not still point to the rigid
-  // body
+  // body won't be in the tree to do that, so unlink all of it's colliders real quick
+  // but make sure that the collider's do not still point to the rigid body
   //(allowing this caused a crash at some point during a wake up, not sure
   // how it could ever happen, but putting this loop in to prevent that).
   RigidBody::CompositeColliderRange range = body->mColliders.All();
@@ -583,8 +575,7 @@ void ColliderOnDestroy(Collider* collider, bool dynamicallyDestroyed)
 {
   bool worldCollider = collider == collider->mSpace->mWorldCollider;
   PhysicsNode* node = collider->mPhysicsNode;
-  // remove from broadphase (special case the world collider which is never in
-  // broadphase)
+  // remove from broadphase (special case the world collider which is never in broadphase)
   if (!worldCollider)
     RemoveFromBroadPhase(collider);
 
@@ -592,8 +583,7 @@ void ColliderOnDestroy(Collider* collider, bool dynamicallyDestroyed)
 
   collider->mActiveRigidBody = collider->mDirectRigidBody = nullptr;
 
-  // also, the world collider's node is not managed by the space, so we have to
-  // manually destroy it
+  // also, the world collider's node is not managed by the space, so we have to manually destroy it
   if (worldCollider)
     delete node;
 }
@@ -610,8 +600,7 @@ void PhysicsAttachTo(PhysicsNode* node, AttachmentInfo& info)
 
   // if we have no parent with physics, the tree structure hasn't changed, but
   // our transform positions have.
-  // Lazy...could prob just queue up the transform updates instead of building
-  // the tree.
+  // Lazy...could prob just queue up the transform updates instead of building the tree.
   if (parentNode == nullptr)
   {
     CompleteTreeRebuild(node);
@@ -627,9 +616,8 @@ void PhysicsDetach(PhysicsNode* node, AttachmentInfo& info)
 {
   PhysicsNode* parentNode = node->mParent;
 
-  // in the event our parent is already clear, this means we've already called
-  // this (might happen with how both collider's and bodies are notified but the
-  // logic takes place the same either way)
+  // in the event our parent is already clear, this means we've already called this
+  //(might happen with how both collider's and bodies are notified but the logic takes place the same either way)
   if (parentNode == nullptr)
     return;
 
@@ -639,8 +627,7 @@ void PhysicsDetach(PhysicsNode* node, AttachmentInfo& info)
   if (attachParentNode)
     attachParentCog = attachParentNode->GetCogOwner();
 
-  // if we are not the direct child of the parent node, then our parent handles
-  // this
+  // if we are not the direct child of the parent node, then our parent handles this
   if (attachParentCog != parentNode->GetCogOwner())
     return;
 

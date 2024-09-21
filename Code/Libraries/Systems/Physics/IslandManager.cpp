@@ -62,8 +62,7 @@ void DestroyJoint(Joint* joint)
 {
 }
 
-// Contacts should be destroyed when they are invalid (so that we get collision
-// end)
+// Contacts should be destroyed when they are invalid (so that we get collision end)
 void DestroyJoint(Contact* contact)
 {
   contact->Destroy();
@@ -82,8 +81,8 @@ void AddCompositeEdges(EdgeListType& edgeList, Island* island, ColliderStack& st
     if (edge.mJoint->GetOnIsland())
       continue;
 
-    // If the joint isn't valid for some reason (one of the colliders/cogs is
-    // null) then don't solve or traverse this edge
+    // If the joint isn't valid for some reason (one of the colliders/cogs is null)
+    // then don't solve or traverse this edge
     if (!edge.mJoint->GetValid())
     {
       DestroyJoint(edge.mJoint);
@@ -97,8 +96,7 @@ void AddCompositeEdges(EdgeListType& edgeList, Island* island, ColliderStack& st
     if (otherCollider->mState.IsSet(ColliderFlags::OnIsland))
       continue;
 
-    // don't add static objects to the island since islands don't extend over
-    // static objects
+    // don't add static objects to the island since islands don't extend over static objects
     if (otherCollider->GetActiveBody() != nullptr)
     {
       AddTreeToStack(otherCollider, stack);
@@ -123,8 +121,8 @@ void AddCompositeColliders(Collider* collider, ColliderStack& stack)
   }
 }
 
-/// Extends islands across kinematic objects so that a kinematic object can be
-/// on an island. Used when objects want to get everything in their island.
+/// Extends islands across kinematic objects so that a kinematic object can be on an island.
+/// Used when objects want to get everything in their island.
 struct KinematicTraversal
 {
   bool ValidCollider(Collider* collider)
@@ -150,8 +148,8 @@ struct KinematicTraversal
   {
     RigidBody* body = collider->GetActiveBody();
     // Remove for now (clean-up later).
-    // If this is in here then objects will not properly be woken up (timer)
-    // later. if(body)
+    // If this is in here then objects will not properly be woken up (timer) later.
+    // if(body)
     //  body->mState.ClearFlag(RigidBodyStates::Asleep);
 
     // don't extend the island over static or asleep objects
@@ -416,10 +414,9 @@ void IslandManager::RemoveCollider(Collider* collider)
   // have the collider unlink itself if it is on an island
   if (collider->mState.IsSet(ColliderFlags::OnIsland))
   {
-    // remove the constraints from the solver but don't unlink them from the
-    // colliders the colliders remove them in the destructor. Otherwise objects
-    // being moved by their transform being set will have their constraints
-    // undone
+    // remove the constraints from the solver but don't unlink them from the colliders
+    // the colliders remove them in the destructor. Otherwise objects being moved by their
+    // transform being set will have their constraints undone
     Physics::JointHelpers::UnlinkJointsFromSolver(collider);
     Physics::Island::Colliders::Unlink(collider);
     collider->mState.ClearFlag(ColliderFlags::OnIsland);

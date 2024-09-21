@@ -54,8 +54,7 @@ void TimeOfImpactDebug::DebugDraw()
   // if (GetOwner()->has(Collider)->mType == Collider::cBox)
   //  DrawBoxAtTime(GetOwner(), impact);
   //
-  // if (mOtherObject.has(Collider)->mType == Collider::cBox &&
-  // mOtherObject.has(RigidBody))
+  // if (mOtherObject.has(Collider)->mType == Collider::cBox && mOtherObject.has(RigidBody))
   //  DrawBoxAtTime(mOtherObject, impact);
 }
 

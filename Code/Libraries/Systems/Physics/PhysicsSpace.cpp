@@ -89,7 +89,7 @@ void SweepResultRange::PopFront()
 
 uint SweepResultRange::Size()
 {
-  return mRange.Size();
+  return (uint)mRange.Size();
 }
 
 bool ClientPairSorter(ClientPair& a, ClientPair& b)
@@ -346,9 +346,7 @@ void PhysicsSpace::AddHierarchyPairFilter(Cog* cog1, Cog* cog2)
 {
   if (cog1 == nullptr || cog2 == nullptr)
   {
-    DoNotifyException("Invalid parameters",
-                      "Invalid cogs passed in to AddHierarchyPairFilter. One "
-                      "of them is null");
+    DoNotifyException("Invalid parameters", "Invalid cogs passed in to AddHierarchyPairFilter. One of them is null");
     return;
   }
 
@@ -413,8 +411,7 @@ void PhysicsSpace::RemoveHierarchyPairFilter(Cog* cog1, Cog* cog2)
   if (cog1 == nullptr || cog2 == nullptr)
   {
     DoNotifyException("Invalid parameters",
-                      "Invalid cogs passed in to RemoveHierarchyPairFilter. "
-                      "One of them are null");
+                      "Invalid cogs passed in to RemoveHierarchyPairFilter. One of them are null");
     return;
   }
 
@@ -588,12 +585,11 @@ void PhysicsSpace::SystemLogicUpdate(UpdateEvent* updateEvent)
   {
     FpuExceptionsEnabler();
 
-    // If any resources are modified then make sure to update them now (probably
-    // modified in script)
+    // If any resources are modified then make sure to update them now (probably modified in script)
     UpdateModifiedResources();
 
-    // This push is necessary to put physics into a valid state after the rest
-    // of the engine may have done things to physics
+    // This push is necessary to put physics into a valid state after the rest of the
+    // engine may have done things to physics
     PushBroadPhaseQueueProfiled();
 
     ReturnIf(mSubStepCount == 0, , "Physics is set to have no iteration steps.");
@@ -609,8 +605,7 @@ void PhysicsSpace::SystemLogicUpdate(UpdateEvent* updateEvent)
     }
   }
 
-  // Now that we've updated our objects, tell the rest of the world what we've
-  // done.
+  // Now that we've updated our objects, tell the rest of the world what we've done.
   Publish();
 
   SolveSprings(0.016f);
@@ -654,9 +649,9 @@ void PhysicsSpace::IterateTimestep(real dt)
     IntegrateBodiesVelocity(dt);
   }
 
-  // Update the queues so that broadphase and transform are correct. It is also
-  // the appropriate time to update the kinematic states so that we can avoid
-  // calculating velocity (sometimes incorrectly) more than once a frame.
+  // Update the queues so that broadphase and transform are correct. It is also the
+  // appropriate time to update the kinematic states so that we can avoid calculating
+  // velocity (sometimes incorrectly) more than once a frame.
   PushBroadPhaseQueue();
   UpdateKinematicVelocities();
 
@@ -684,8 +679,7 @@ void PhysicsSpace::IterateTimestep(real dt)
 
   // This needs to be done after position integration, otherwise the wheels
   // will not be at the correct spot after they change their translation
-  // from raycasting since they are positioned based upon their parent's
-  // position.
+  // from raycasting since they are positioned based upon their parent's position.
   UpdatePhysicsCarsTransforms(dt);
 
   PushBroadPhaseQueue();
@@ -757,8 +751,7 @@ void PhysicsSpace::BroadPhase()
   {
     Collider& collider = range.Front();
 
-    // If the object is asleep or flagged as static, there's no reason to test
-    // it for collision.
+    // If the object is asleep or flagged as static, there's no reason to test it for collision.
     if ((collider.IsAsleep() && !collider.mState.IsSet(ColliderFlags::Uninitialized)) || collider.IsStatic())
     {
       range.PopFront();
@@ -792,8 +785,8 @@ void PhysicsSpace::NarrowPhase()
   Array<NodePointerPair> Collisions;
   Collisions.SetAllocator(allocator);
 
-  uint size = mPossiblePairs.Size();
-  for (unsigned pairIndex = 0; pairIndex < size; ++pairIndex)
+  size_t size = mPossiblePairs.Size();
+  for (size_t pairIndex = 0; pairIndex < size; ++pairIndex)
   {
     ClientPair* clientPair = &mPossiblePairs[pairIndex];
     Collider* collider1 = static_cast<Collider*>(clientPair->mClientData[0]);
@@ -816,7 +809,7 @@ void PhysicsSpace::NarrowPhase()
     }
 
     // Add all manifolds to the contact manager
-    for (uint i = 0; i < tempManifolds.Size(); ++i)
+    for (size_t i = 0; i < tempManifolds.Size(); ++i)
     {
       Physics::Manifold& manifold = tempManifolds[i];
       mContactManager->AddManifold(tempManifolds[i]);
@@ -1057,8 +1050,7 @@ void PhysicsSpace::CastCollider(Vec3Param offset,
     Collider* collider1 = static_cast<Collider*>(clientPair->mClientData[0]);
     Collider* collider2 = static_cast<Collider*>(clientPair->mClientData[1]);
 
-    // Isn't really necessary, but figure out which collider is the cast
-    // collider
+    // Isn't really necessary, but figure out which collider is the cast collider
     Collider* otherCollider = collider1;
     if (collider1 == testCollider)
       otherCollider = collider2;
@@ -1094,9 +1086,9 @@ CastResultsRange PhysicsSpace::CastCollider(Vec3Param offset, Collider* testColl
   // Call the internal cast function
   Physics::ManifoldArray manifoldResults;
   CastCollider(offset, testCollider, manifoldResults, filter);
-  CastResults results(Math::Max(manifoldResults.Size() * cMaxContacts, (size_t)1), filter);
+  CastResults results(Math::Max((uint)manifoldResults.Size() * cMaxContacts, 1u), filter);
 
-  size_t count = 0;
+  uint count = 0;
   for (size_t i = 0; i < manifoldResults.Size(); ++i)
   {
     CastResult& castResult = results.mArray[count];
@@ -1145,9 +1137,8 @@ SweepResultRange PhysicsSpace::SweepCollider(Collider* collider, Vec3Param veloc
   if (!collider)
     return SweepResultRange(SweepResultArray());
 
-  // Flush the physics queue here. This is necessary if any operations have
-  // happened that have removed an object (e.g. destroying an object in a
-  // collision event).
+  // Flush the physics queue here. This is necessary if any operations have happened
+  // that have removed an object (e.g. destroying an object in a collision event).
   FlushPhysicsQueue();
 
   // Update position changes due to game logic
@@ -1161,8 +1152,7 @@ SweepResultRange PhysicsSpace::SweepCollider(Collider* collider, Vec3Param veloc
   Capsule sweptBoundingSphere(pos, pos + vel * dt, collider->mBoundingSphere.mRadius);
   Aabb sweptVolume = ToAabb(sweptBoundingSphere);
 
-  // Cleared for the broadphase query, otherwise it will ignore some results
-  // that are needed
+  // Cleared for the broadphase query, otherwise it will ignore some results that are needed
   filter.ClearFlag(BaseCastFilterFlags::IgnoreInternalCasts);
 
   CastResults castResults(128, filter);
@@ -1263,8 +1253,7 @@ void PhysicsSpace::SetSubStepCount(uint substeps)
   {
     substeps = Math::Clamp(substeps, 1u, 50u);
     DoNotifyWarning("Invalid SubSteps",
-                    "The sub-step count of physics must be between 1 and 50. "
-                    "The value has been clamped.");
+                    "The sub-step count of physics must be between 1 and 50. The value has been clamped.");
   }
   mSubStepCount = substeps;
 }
@@ -1316,17 +1305,16 @@ void PhysicsSpace::PublishEvents()
 {
   mEventManager->DispatchEvents(this);
   // Now that we have sent all events, we can delete the contacts that we
-  // queued up for delayed destruction. The contacts are delay destructed to
-  // avoid deleting their manifold before the events are sent.
+  // queued up for delayed destruction. The contacts are delay destructed to avoid
+  // deleting their manifold before the events are sent.
   mContactManager->DestroyContacts();
 }
 
 void PhysicsSpace::PreCalculateEffects(real dt)
 {
-  // Tell all effects to cache any information that doesn't change between
-  // bodies (world vectors, etc...). Unfortunately this is called on effects
-  // that will never apply to anything (regions with no collisions) but the cost
-  // should be minimal.
+  // Tell all effects to cache any information that doesn't change between bodies
+  // (world vectors, etc...). Unfortunately this is called on effects that will
+  // never apply to anything (regions with no collisions) but the cost should be minimal.
   SpaceEffectList::range effects = mEffects.All();
   for (; !effects.Empty(); effects.PopFront())
   {
@@ -1462,16 +1450,13 @@ String PhysicsSpace::WhyAreTheyNotColliding(Cog* cogA, Cog* cogB)
     return "Colliders are in different spaces";
 
   if (colliderA->IsStatic() && colliderB->IsStatic())
-    return "Both colliders are static. Static colliders don't check against "
-           "each other.";
+    return "Both colliders are static. Static colliders don't check against each other.";
 
   if (!colliderA->mPhysicsNode->IsInBroadPhase())
-    return String::Format("Collider A (%s) is not in broadphase yet. Was it "
-                          "just created this frame?",
+    return String::Format("Collider A (%s) is not in broadphase yet. Was it just created this frame?",
                           colliderADescription.c_str());
   if (!colliderB->mPhysicsNode->IsInBroadPhase())
-    return String::Format("Collider B (%s) is not in broadphase yet. Was it "
-                          "just created this frame?",
+    return String::Format("Collider B (%s) is not in broadphase yet. Was it just created this frame?",
                           colliderBDescription.c_str());
 
   // Check to see if colliderA hits colliderB
@@ -1494,8 +1479,7 @@ String PhysicsSpace::WhyAreTheyNotColliding(Cog* cogA, Cog* cogB)
   }
 
   if (passed == false)
-    return "Colliders did not pass broadphase, they are probably too far "
-           "apart. (Maybe separating on the z axis?).";
+    return "Colliders did not pass broadphase, they are probably too far apart. (Maybe separating on the z axis?).";
 
   if (colliderA->IsAsleep() && colliderB->IsAsleep())
     return "Both objects are asleep.";
@@ -1510,12 +1494,10 @@ String PhysicsSpace::WhyAreTheyNotColliding(Cog* cogA, Cog* cogB)
   Physics::ManifoldArray tempManifolds;
   ColliderPair pair(colliderA, colliderB);
   if (mCollisionManager->TestCollision(pair, tempManifolds) == false)
-    return "They didn't pass collision detection, they aren't actually "
-           "colliding.";
+    return "They didn't pass collision detection, they aren't actually colliding.";
 
-  // At this point we know they passed narrowphase, but they might have not
-  // collided for some other reason. Also, whether or not they collide is now
-  // completely independent from whether or not they send events
+  // At this point we know they passed narrowphase, but they might have not collided for some other reason.
+  // Also, whether or not they collide is now completely independent from whether or not they send events
 
   // First determine a string for what's happening with events
   String eventsString = "Both colliders send events";
@@ -1762,9 +1744,8 @@ void PhysicsSpace::UpdateKinematicVelocities()
     Mat3 oldRotation = transform->GetOldRotation();
     transform->ComputeOldValues();
     body.ComputeVelocities(oldTranslation, oldRotation, mIterationDt);
-    // Also make sure to update the stored center of mass. This might not always
-    // be needed if there is a collider on the body but there are some cases
-    // (child kinematics) that require this.
+    // Also make sure to update the stored center of mass. This might not always be needed if
+    // there is a collider on the body but there are some cases (child kinematics) that require this.
     body.UpdateCenterMassFromWorldPosition();
   }
 }
