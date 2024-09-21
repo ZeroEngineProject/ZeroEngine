@@ -20,10 +20,9 @@ public:
   Composition();
   ~Composition();
 
-  // When adding, this will overwrite any component that already exists by the
-  // same type The last added component will overwrite any components in its
-  // place (as well as base types of the component) Returns the composition so
-  // you can chain operations
+  // When adding, this will overwrite any component that already exists by the same type
+  // The last added component will overwrite any components in its place (as well as base types of the component)
+  // Returns the composition so you can chain operations
   template <typename T>
   Composition* Add(const T* component)
   {
@@ -31,17 +30,15 @@ public:
 
     do
     {
-      // Map the component's most derived type all the way up to its root base
-      // type
+      // Map the component's most derived type all the way up to its root base type
       this->Components[type] = component;
       type = TypeHelperGetBaseType(type);
     } while (type != nullptr);
     return this;
   }
 
-  // Attempts to get a component by type, or creates it if it does not exist
-  // (expects a default constructor) Warning, this may invalidate other
-  // references to components
+  // Attempts to get a component by type, or creates it if it does not exist (expects a default constructor)
+  // Warning, this may invalidate other references to components
   template <typename T>
   T* HasOrAdd()
   {
@@ -55,9 +52,8 @@ public:
     return component;
   }
 
-  // Attempts to get a component by type, or creates it if it does not exist
-  // (expects a default constructor) Warning, this may invalidate other
-  // references to components (one parameter)
+  // Attempts to get a component by type, or creates it if it does not exist (expects a default constructor)
+  // Warning, this may invalidate other references to components (one parameter)
   template <typename T, typename A0>
   T* HasOrAdd(A0 a0)
   {
@@ -84,9 +80,9 @@ public:
     return (T*)handle->Dereference();
   }
 
-  // Attempts to get a component by type from anywhere up the base class
-  // hierarchy, or creates it if it does not exist (expects a default
-  // constructor) Warning, this may invalidate other references to components
+  // Attempts to get a component by type from anywhere up the base class hierarchy,
+  // or creates it if it does not exist (expects a default constructor)
+  // Warning, this may invalidate other references to components
   template <typename T>
   T* HasInheritedOrAdd()
   {
@@ -107,8 +103,7 @@ public:
   T* HasInherited()
   {
     T* component = this->Has<T>();
-    // If we didn't find a component, walk up the base class composition
-    // recursively (if we have one)
+    // If we didn't find a component, walk up the base class composition recursively (if we have one)
     if (component == nullptr)
     {
       if (Composition* baseComposition = this->GetBaseComposition())
@@ -124,8 +119,7 @@ public:
   Composition* Remove()
   {
     // Walk up the base types and remove all the handles from the component map
-    // Note: This may release the memory of the component if it is reference
-    // counted
+    // Note: This may release the memory of the component if it is reference counted
     Type* type = ZilchTypeId(T);
     do
     {
@@ -155,8 +149,7 @@ private:
   HashMap<Type*, Handle> Components;
 };
 
-// Used to walk all components of a single type on an inheritance chain of
-// compositions
+// Used to walk all components of a single type on an inheritance chain of compositions
 template <typename T>
 class ComponentRange
 {

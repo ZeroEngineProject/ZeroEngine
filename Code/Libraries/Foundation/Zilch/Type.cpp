@@ -383,13 +383,11 @@ Type* Type::GetBaseType(Type* type)
   // Attempt to get the given type as a bound type
   BoundType* boundType = Type::GetBoundType(type);
 
-  // If the type was a bound type then return its base (could be null if it has
-  // no base class)
+  // If the type was a bound type then return its base (could be null if it has no base class)
   if (boundType != nullptr)
     return boundType->BaseType;
 
-  // If we got here then either the given type doesn't support base types
-  // (delegates, etc)
+  // If we got here then either the given type doesn't support base types (delegates, etc)
   return nullptr;
 }
 
@@ -400,9 +398,8 @@ BoundType* Type::GetBoundType(Type* handleType)
   if (boundType != nullptr)
     return boundType;
 
-  // An indirection type is generally a struct with the 'ref' keyword before it
-  // (making it a handle type) We can access members on indirection types by
-  // going through the referenced bound type
+  // An indirection type is generally a struct with the 'ref' keyword before it (making it a handle type)
+  // We can access members on indirection types by going through the referenced bound type
   IndirectionType* indirectionType = Type::DynamicCast<IndirectionType*>(handleType);
   if (indirectionType != nullptr)
     return indirectionType->ReferencedType;
@@ -440,8 +437,7 @@ bool Type::IsSame(Type* a, Type* b)
     return true;
   }
 
-  // Compare the hashes (we do this anyways in the linking phase, might as well
-  // do it here too)
+  // Compare the hashes (we do this anyways in the linking phase, might as well do it here too)
   GuidType hashA = a->Hash();
   GuidType hashB = b->Hash();
   bool result = (hashA == hashB);
@@ -466,8 +462,7 @@ bool Type::IsRawSame(Type* a, Type* b)
   Type* aType = ZilchVirtualTypeId(a);
   Type* bType = ZilchVirtualTypeId(b);
 
-  // Obviously if one is a BoundType and the other is a DelegateType, they
-  // should not be the same
+  // Obviously if one is a BoundType and the other is a DelegateType, they should not be the same
   if (aType != bType)
   {
     return false;
@@ -476,8 +471,7 @@ bool Type::IsRawSame(Type* a, Type* b)
   DelegateType* aDelegateType = Type::DirectDynamicCast<DelegateType*>(a);
   DelegateType* bDelegateType = Type::DirectDynamicCast<DelegateType*>(b);
 
-  // If both are delegate types, then we must do a special parameter and return
-  // type comparison
+  // If both are delegate types, then we must do a special parameter and return type comparison
   if (aDelegateType && bDelegateType)
   {
     return IsRawSame(aDelegateType, bDelegateType);
@@ -519,8 +513,7 @@ bool Type::BoundIsA(BoundType* type, BoundType* base)
   while (type != nullptr)
   {
     // If the base type is the same as the current type...
-    ZeroTodo("Using the names of the BoundType to compare isn't technically "
-             "correct");
+    ZeroTodo("Using the names of the BoundType to compare isn't technically correct");
     if (base == type || base->Name == type->Name)
       return true;
 
@@ -674,8 +667,7 @@ void IndirectionType::GenericDefaultConstruct(::byte* toConstruct) const
 
 void IndirectionType::GenericCopyConstruct(::byte* to, const ::byte* from) const
 {
-  // Indirect types are always represented as handles (just perform a handle
-  // copy)
+  // Indirect types are always represented as handles (just perform a handle copy)
   new (to) Handle(*(Handle*)from);
 }
 
@@ -698,16 +690,14 @@ String IndirectionType::GenericToString(const ::byte* value) const
   // By default, we know at least a base class type of what we're referencing
   const BoundType* type = this->ReferencedType;
 
-  // The handle may store a more derived type inside it, if so, we should use
-  // that to print instead (virtual)
+  // The handle may store a more derived type inside it, if so, we should use that to print instead (virtual)
   if (handle->StoredType != nullptr)
     type = handle->StoredType;
 
   // Get a pointer to the data of the object
   ::byte* data = handle->Dereference();
 
-  // If converting a null handle to a string... let the user know it's null, and
-  // what type it is
+  // If converting a null handle to a string... let the user know it's null, and what type it is
   if (data == nullptr)
     return BuildString("(null) ", type->ToString());
 
@@ -744,11 +734,10 @@ Type* IndirectionType::GenericGetVirtualType(const ::byte* value) const
 
 Type* IndirectionType::GenericGetSameVirtualTypeExceptAny(const ::byte* value) const
 {
-  // We override this functionality because our GenericGetVirtualType may return
-  // a BoundType/ Since this is supposed to be the 'SameType' we want to
-  // preserve the IndirectionType. We know that any virtual type will be a
-  // ValueType/struct so we know that it will have a corresponding IndirectType
-  // field on the BoundType
+  // We override this functionality because our GenericGetVirtualType may return a BoundType/
+  // Since this is supposed to be the 'SameType' we want to preserve the IndirectionType.
+  // We know that any virtual type will be a ValueType/struct so we know that it will have a
+  // corresponding IndirectType field on the BoundType
 
   // Grab the handle
   Handle* handle = ((Handle*)value);
@@ -874,12 +863,10 @@ EventHandler* BoundType::GetEventHandler(const ::byte* data)
   BoundType* type = this;
   while (type != nullptr)
   {
-    // If the type has a defined function for getting an event handler then
-    // attempt to call it
+    // If the type has a defined function for getting an event handler then attempt to call it
     if (type->GetEventHandlerFunction != nullptr)
     {
-      // This may still result in null if for some reason the user determined
-      // there was no event handler
+      // This may still result in null if for some reason the user determined there was no event handler
       EventHandler* handler = type->GetEventHandlerFunction(this, data);
       if (handler != nullptr)
         return handler;
@@ -895,8 +882,7 @@ EventHandler* BoundType::GetEventHandler(const ::byte* data)
 
 bool BoundType::IsTypeOrBaseNative()
 {
-  // Start at this class and walk up all base classes and check for the Native
-  // flag
+  // Start at this class and walk up all base classes and check for the Native flag
   BoundType* baseIterator = this;
   while (baseIterator != nullptr)
   {
@@ -936,9 +922,8 @@ BoundType::BoundType(BoundTypeAssertFn nativeBindingAssert) :
     DefaultEnumValue(0),
     DefaultEnumProperty(nullptr)
 {
-  // When a BoundType is created via native binding in C++, e.g. ZilchTypeId(X),
-  // we want the user to be able to debug whether the type is properly
-  // initialized
+  // When a BoundType is created via native binding in C++, e.g. ZilchTypeId(X), we want the user
+  // to be able to debug whether the type is properly initialized
   if (nativeBindingAssert)
   {
     NativeBindingList& list = NativeBindingList::GetInstance();
@@ -950,8 +935,7 @@ BoundType::BoundType(BoundTypeAssertFn nativeBindingAssert) :
 
 BoundType::~BoundType()
 {
-  // This will only be set if this represents a native type bound with
-  // ZilchDefineType, etc
+  // This will only be set if this represents a native type bound with ZilchDefineType, etc
   if (this->AssertOnInvalidBinding)
   {
     NativeBindingList& list = NativeBindingList::GetInstance();
@@ -1021,8 +1005,7 @@ void BoundType::GenericDefaultConstruct(::byte* toConstruct) const
   }
   else
   {
-    // Otherwise, clear the memory out to zeros (a valid configuration for all
-    // structs)
+    // Otherwise, clear the memory out to zeros (a valid configuration for all structs)
     memset(toConstruct, 0, this->GetCopyableSize());
   }
 }
@@ -1073,8 +1056,7 @@ String BoundType::GenericToString(const ::byte* value) const
   // For value types, this is always the case
   const BoundType* type = this;
 
-  // For value types, we assume that the type is just the data we get (not for
-  // reference types!)
+  // For value types, we assume that the type is just the data we get (not for reference types!)
   ::byte* data = (::byte*)value;
 
   // If this is a reference type (it may be virtual)
@@ -1083,16 +1065,14 @@ String BoundType::GenericToString(const ::byte* value) const
     // Grab the handle primitive
     Handle* handle = (Handle*)value;
 
-    // The handle may store a more derived type inside it, if so, we should use
-    // that to print instead (virtual)
+    // The handle may store a more derived type inside it, if so, we should use that to print instead (virtual)
     if (handle->StoredType != nullptr)
       type = handle->StoredType;
 
     // Get a pointer to the data of the object
     data = handle->Dereference();
 
-    // If converting a null handle to a string... let the user know it's null,
-    // and what type it is
+    // If converting a null handle to a string... let the user know it's null, and what type it is
     if (data == nullptr)
       return BuildString("(null) ", type->ToString());
   }
@@ -1208,8 +1188,7 @@ bool BoundType::IsDefaultConstructable()
       return true;
     }
   }
-  // Otherwise, we have no constructors (this is ok so long as we aren't
-  // native!)
+  // Otherwise, we have no constructors (this is ok so long as we aren't native!)
   else if (this->Native == false)
   {
     return true;
@@ -1453,8 +1432,8 @@ Function* BoundType::GetCopyConstructor(const FunctionArray* constructors)
     ParameterArray& parameters = constructor->FunctionType->Parameters;
     if (parameters.Size() == 1)
     {
-      // If the argument is of the same type as our this type, then this is the
-      // copy constructor Note that this means all value types are 'ref'
+      // If the argument is of the same type as our this type, then this is the copy constructor
+      // Note that this means all value types are 'ref'
       if (parameters.Front().ParameterType == constructor->This->ResultType)
         return constructor;
     }
@@ -1536,8 +1515,7 @@ Property* BoundType::FindProperty(StringParam name, FindMemberOptions::Flags opt
   if (foundProperty == nullptr)
     foundProperty = fields->FindValue(name, nullptr);
 
-  // Check if we found any properties by that name at this level then
-  // immediately return it
+  // Check if we found any properties by that name at this level then immediately return it
   if (foundProperty != nullptr)
   {
     return foundProperty;
@@ -1591,8 +1569,7 @@ Function* BoundType::FindFunction(StringParam name,
       // Get the type parameters of this function
       ParameterArray& params = function->FunctionType->Parameters;
 
-      // If the function we're looking at has a different number of parameters,
-      // skip it
+      // If the function we're looking at has a different number of parameters, skip it
       if (parameters.Size() != params.Size())
         continue;
 
@@ -1600,8 +1577,7 @@ Function* BoundType::FindFunction(StringParam name,
       bool sameParameters = true;
       for (size_t i = 0; i < params.Size(); ++i)
       {
-        // If any of them don't match, break out early and set that not all were
-        // the same
+        // If any of them don't match, break out early and set that not all were the same
         DelegateParameter& current = params[i];
         if (Type::IsSame(current.ParameterType, parameters[i]) == false)
         {
@@ -1729,11 +1705,10 @@ GetterSetter* BoundType::GetStaticGetterSetter(StringParam name) const
 
 const FunctionArray* BoundType::GetOverloadedInheritedConstructors() const
 {
-  // Walk up the base class chain until we find any constructors (we inherit
-  // constructors) We start with the current class we're trying to create Note:
-  // We can safely look up to our base classes because if we don't have a
-  // constructor then we at least have been pre-constructed, and the user opted
-  // to not initialize anything with a constructor
+  // Walk up the base class chain until we find any constructors (we inherit constructors)
+  // We start with the current class we're trying to create
+  // Note: We can safely look up to our base classes because if we don't have a constructor
+  // then we at least have been pre-constructed, and the user opted to not initialize anything with a constructor
   const BoundType* constructedType = this;
 
   ZilchLoop
@@ -1742,13 +1717,11 @@ const FunctionArray* BoundType::GetOverloadedInheritedConstructors() const
     if (constructedType->Constructors.Empty() == false)
       break;
 
-    // If the type we're constructing is native, then we don't look for
-    // inherited constructors
+    // If the type we're constructing is native, then we don't look for inherited constructors
     if (constructedType->Native)
       break;
 
-    // We didn't find anything, so walk up to the base type and see if it has
-    // any (constructor inheritance)
+    // We didn't find anything, so walk up to the base type and see if it has any (constructor inheritance)
     constructedType = constructedType->BaseType;
 
     // If we had no base, early out
@@ -1925,10 +1898,7 @@ String DelegateParameter::GetNameOrGenerate()
 }
 
 DelegateType::DelegateType() :
-    Return(nullptr),
-    ReturnStackOffset(0),
-    ThisHandleStackOffset(0),
-    TotalStackSizeExcludingThisHandle(0)
+    Return(nullptr), ReturnStackOffset(0), ThisHandleStackOffset(0), TotalStackSizeExcludingThisHandle(0)
 {
 }
 
@@ -1943,17 +1913,15 @@ GuidType DelegateType::Hash() const
     // Get a reference to the current parameter
     const DelegateParameter& parameter = this->Parameters[i];
 
-    // Add the parameter type to the hash (we can just use the pointer value
-    // since it should be unique)
+    // Add the parameter type to the hash (we can just use the pointer value since it should be unique)
     result ^= parameter.ParameterType->Hash() * 983ULL * (i + 331ULL);
 
     // We want to use i in some way so that the hash becomes order dependent
     result ^= 12764787846358441471ULL * i + 5463458053ULL + i;
   }
 
-  // Add the return type to the hash (we can just use the pointer value since it
-  // should be unique) Note that void is a type, and therefore has its own hash
-  // value (no special case)
+  // Add the return type to the hash (we can just use the pointer value since it should be unique)
+  // Note that void is a type, and therefore has its own hash value (no special case)
   result ^= this->Return->Hash();
 
   // Use a random prime to make returns more unique

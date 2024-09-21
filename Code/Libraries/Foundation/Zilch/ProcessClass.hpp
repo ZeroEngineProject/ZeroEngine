@@ -7,8 +7,7 @@
 
 namespace Zilch
 {
-/// Class to interface with another process. Allows re-directing standard input,
-/// output, and error.
+/// Class to interface with another process. Allows re-directing standard input, output, and error.
 class ZeroShared ProcessClass : public Zero::Process
 {
 public:

@@ -6,16 +6,14 @@
 
 namespace Zilch
 {
-// This is just a special identifier that means we jumped, there's really no
-// reason to the number... ;)
+// This is just a special identifier that means we jumped, there's really no reason to the number... ;)
 static const int ExceptionJumpResult = 1729;
 
 // This class is responsible for executing a stream of opcodes
 class ZeroShared VirtualMachine
 {
 public:
-  // Fills out a table of function pointers with all the instruction functions
-  // we use
+  // Fills out a table of function pointers with all the instruction functions we use
   static void InitializeJumpTable();
 
   // Execute a function, starting from a given stack frame
@@ -27,30 +25,26 @@ public:
   // Return an events name string (the user data Contains the value)
   static void EventsProperty(Call& call, ExceptionReport& report);
 
-  // The native constructor invokes SetNativeTypeFullyConstructed on the Handle
-  // manager before calling the actual constructor code
+  // The native constructor invokes SetNativeTypeFullyConstructed on the Handle manager before calling the actual
+  // constructor code
   static void NativeConstructor(Call& call, ExceptionReport& report);
 
   // A special function that always returns a default value (zero, null, etc)
-  // When we patch a library with a newer version, but the old version had
-  // functions that the newer one does not they will be patched with this bound
-  // function (so that they do absolutely nothing)
+  // When we patch a library with a newer version, but the old version had functions that the newer one does not
+  // they will be patched with this bound function (so that they do absolutely nothing)
   static void PatchDummy(Call& call, ExceptionReport& report);
 
   // Executes a destructor not actually from opcode, but
   // rather from a separate handle list on the ClassType
   static void PostDestructor(BoundType* boundType, ::byte* objectData);
 
-  // When an enum or flags fail and we just print the value, then we also end up
-  // printing the type too
+  // When an enum or flags fail and we just print the value, then we also end up printing the type too
   static String UnknownEnumerationToString(const BoundType* type, const ::byte* data);
 
-  // Conversion from an enumeration into a string (prints out the value of the
-  // enum, or an integer if it fails)
+  // Conversion from an enumeration into a string (prints out the value of the enum, or an integer if it fails)
   static String EnumerationToString(const BoundType* type, const ::byte* data);
 
-  // Conversion from a flags into a string (prints out all enabled flags, or an
-  // integer if it fails)
+  // Conversion from a flags into a string (prints out all enabled flags, or an integer if it fails)
   static String FlagsToString(const BoundType* type, const ::byte* data);
 
   // Generic integral power (expands to other integral sizes)
@@ -146,8 +140,8 @@ public:
 #  undef ZilchEnumValue
 };
 
-// Note: These HAVE to be declared in namespace scope according to the C++ spec
-// (cannot be put inside the class) Specializations for Pow
+// Note: These HAVE to be declared in namespace scope according to the C++ spec (cannot be put inside the class)
+// Specializations for Pow
 template <>
 ZeroShared inline void VirtualMachine::GenericPow<Byte>(Byte& out, const Byte& base, const Byte& exponent);
 template <>
@@ -255,9 +249,8 @@ ZeroShared inline bool VirtualMachine::GenericIsZero<Real4>(const Real4& value);
 } // namespace Zilch
 
 // Crash report capture variables
-// This is an attempt to force crash reports to store a variable / indirectly
-// referenced memory (not thread safe either) Do NOT ever attempt to access this
-// variable or do anything with it in code
+// This is an attempt to force crash reports to store a variable / indirectly referenced memory (not thread safe either)
+// Do NOT ever attempt to access this variable or do anything with it in code
 ZeroShared extern ::byte* ZilchLastRunningOpcode;
 ZeroShared extern Zilch::Function* ZilchLastRunningFunction;
 ZeroShared extern size_t ZilchLastRunningOpcodeLength;

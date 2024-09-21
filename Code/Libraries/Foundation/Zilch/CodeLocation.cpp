@@ -22,8 +22,7 @@ CodeLocation::CodeLocation() :
 
 CodeLocation CodeLocation::GetStartOnlyLocation()
 {
-  // First copy the current code location, then just change the end and primary
-  // to point at the start
+  // First copy the current code location, then just change the end and primary to point at the start
   CodeLocation result;
   result = *this;
   result.EndCharacter = result.StartCharacter;
@@ -35,8 +34,7 @@ CodeLocation CodeLocation::GetStartOnlyLocation()
 
 CodeLocation CodeLocation::GetEndOnlyLocation()
 {
-  // First copy the current code location, then just change the start and
-  // primary to point at the end
+  // First copy the current code location, then just change the start and primary to point at the end
   CodeLocation result;
   result = *this;
   result.StartCharacter = result.EndCharacter;
@@ -165,13 +163,12 @@ String CodeLocation::GetFormattedStringWithMessage(MessageFormat::Enum format, S
   StringBuilder builder;
   for (Zero::StringSplitRange range = message.Split("\n"); range.Empty() == false;)
   {
-    // Grab the current line and immediately pop (this lets us know if we're at
-    // the end so we don't Append an extra "\n")
+    // Grab the current line and immediately pop (this lets us know if we're at the end so we don't Append an extra
+    // "\n")
     StringRange line = range.Front();
     range.PopFront();
 
-    // If this isn't the first line, or we specify that we want to tab the first
-    // line...
+    // If this isn't the first line, or we specify that we want to tab the first line...
     if (builder.GetSize() > 0 || tabFirstLine)
       builder.Repeat(tabbing, " ");
 

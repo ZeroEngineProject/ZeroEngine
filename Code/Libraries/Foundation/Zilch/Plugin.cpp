@@ -2,8 +2,7 @@
 
 #include "Precompiled.hpp"
 
-// Set this to true this to get asserts for plugin types and functions not
-// linking
+// Set this to true this to get asserts for plugin types and functions not linking
 static const bool ZilchDebugPluginLinking = false;
 
 namespace Zilch
@@ -39,13 +38,7 @@ LibraryRef BuildEvent::FindLibrary(StringParam name)
 ZeroShared EventHandler PluginEvent::GlobalEvents;
 
 PluginEvent::PluginEvent() :
-    mCString(nullptr),
-    mInteger(0),
-    mFloat(0),
-    mDouble(0),
-    mBool(false),
-    mPointer(nullptr),
-    mHandled(false)
+    mCString(nullptr), mInteger(0), mFloat(0), mDouble(0), mBool(false), mPointer(nullptr), mHandled(false)
 {
 }
 
@@ -71,16 +64,14 @@ void Plugin::Uninitialize()
 
 LibraryRef Plugin::LoadFromFile(Status& status, Module& dependencies, StringParam filePath, void* userData)
 {
-  // In order to not lock the library and support dynamic reloading, we make a
-  // copy of any plugin files Ideally we want to load the same libraries and not
-  // duplicate code loading, therefore we use the hash of the library to
-  // uniquely identify it
+  // In order to not lock the library and support dynamic reloading, we make a copy of any plugin files
+  // Ideally we want to load the same libraries and not duplicate code loading,
+  // therefore we use the hash of the library to uniquely identify it
   File file;
   file.Open(filePath, Zero::FileMode::Read, Zero::FileAccessPattern::Sequential, Zero::FileShare::Read, &status);
   if (status.Failed())
   {
-    status.SetFailed("We failed to open the plugin file for Read only access "
-                     "(does it exist or is there permission?)");
+    status.SetFailed("We failed to open the plugin file for Read only access (does it exist or is there permission?)");
     return nullptr;
   }
 
@@ -118,8 +109,7 @@ LibraryRef Plugin::LoadFromFile(Status& status, Module& dependencies, StringPara
   // If we failed to load the library, then early out
   if (lib->IsValid() == false)
   {
-    status.SetFailed("The plugin dynamic/shared library was not a valid "
-                     "library and could not be loaded");
+    status.SetFailed("The plugin dynamic/shared library was not a valid library and could not be loaded");
     status.Context = StatusContextNotValid;
     return nullptr;
   }
@@ -128,19 +118,18 @@ LibraryRef Plugin::LoadFromFile(Status& status, Module& dependencies, StringPara
   CreateZilchPluginFn createPlugin = (CreateZilchPluginFn)lib->GetFunctionByName("CreateZilchPlugin");
   if (createPlugin == nullptr)
   {
-    status.SetFailed("The 'CreateZilchPlugin' function was not exported within "
-                     "the dll (did you use the ZeroExport macro?)");
+    status.SetFailed(
+        "The 'CreateZilchPlugin' function was not exported within the dll (did you use the ZeroExport macro?)");
     status.Context = StatusContextNoCreateZilchPlugin;
     return nullptr;
   }
 
-  // Finally, attempt to create a plugin (the user should return us a plugin at
-  // this point)
+  // Finally, attempt to create a plugin (the user should return us a plugin at this point)
   Plugin* plugin = createPlugin();
   if (plugin == nullptr)
   {
-    status.SetFailed("We found the 'CreateZilchPlugin' function and called it, "
-                     "but it returned null so no plugin was created");
+    status.SetFailed(
+        "We found the 'CreateZilchPlugin' function and called it, but it returned null so no plugin was created");
     status.Context = StatusContextNullCreateZilchPlugin;
     return nullptr;
   }
@@ -161,8 +150,7 @@ LibraryRef Plugin::LoadFromFile(Status& status, Module& dependencies, StringPara
 void Plugin::LoadFromDirectory(
     Status& status, Module& dependencies, Array<LibraryRef>& pluginsOut, StringParam directory, void* userData)
 {
-  // Walk through all the files in the directory looking for anything ending
-  // with .zilchPlugin
+  // Walk through all the files in the directory looking for anything ending with .zilchPlugin
   static const String PluginExtension("zilchPlugin");
 
   Zero::FileRange range(directory);
@@ -237,16 +225,14 @@ bool PluginStubLibrary::CanBuildTypes()
 void NameMangler::MangleLibrary(LibraryRef library)
 {
   // In order to do lookup functions from the side of the plugin
-  // We need to mangle the function names so they can be looked up, akin to a
-  // linker However, rather than using strings, we use 64bit ids to keep the
-  // size of the library small
+  // We need to mangle the function names so they can be looked up, akin to a linker
+  // However, rather than using strings, we use 64bit ids to keep the size of the library small
   for (size_t j = 0; j < library->OwnedFunctions.Size(); ++j)
   {
     Function* currentFunction = library->OwnedFunctions[j];
     Function*& function = this->HashToFunction[currentFunction->Hash];
     ErrorIf(function != nullptr,
-            "Two functions hashed to the same value (for mangling and linking, "
-            "hashes need to be unique)");
+            "Two functions hashed to the same value (for mangling and linking, hashes need to be unique)");
     function = currentFunction;
   }
 }
@@ -287,17 +273,14 @@ NativeName::NativeName()
 }
 
 NativeName::NativeName(StringParam className, StringParam parameterName, StringParam returnName) :
-    Class(className),
-    Parameter(parameterName),
-    Return(returnName)
+    Class(className), Parameter(parameterName), Return(returnName)
 {
 }
 
 NativeStubCode::NativeStubCode() : Libraries(nullptr)
 {
-  // Because some of the types that we have bound already exist within the Zero
-  // or Zilch namespace then when we generate code for them, we want to redirect
-  // them to use the special type names specified here
+  // Because some of the types that we have bound already exist within the Zero or Zilch namespace
+  // then when we generate code for them, we want to redirect them to use the special type names specified here
   this->TypeToCppName.Insert(ZilchTypeId(Any), NativeName("Any", "const Zilch::Any&", "Zilch::Any"));
   this->TypeToCppName.Insert(ZilchTypeId(Handle), NativeName("Handle", "const Zilch::Handle&", "Zilch::Handle"));
   this->TypeToCppName.Insert(ZilchTypeId(Delegate),
@@ -411,24 +394,20 @@ NativeStubCode::NativeStubCode() : Libraries(nullptr)
 
 NativeName NativeStubCode::GetCppTypeName(Type* type)
 {
-  // All delegates that we take in just become a Zilch Delegate (not type
-  // checked unfortunately)
+  // All delegates that we take in just become a Zilch Delegate (not type checked unfortunately)
   if (Type::IsDelegateType(type))
     type = ZilchTypeId(Delegate);
 
-  // If we've already generated a native name, avoid a bunch of extra string
-  // allocations This also allows us to handle the built in types to Zero/Zilch,
-  // such as 'Any' (see above)
+  // If we've already generated a native name, avoid a bunch of extra string allocations
+  // This also allows us to handle the built in types to Zero/Zilch, such as 'Any' (see above)
   NativeName* nativeName = this->TypeToCppName.FindPointer(type);
   if (nativeName != nullptr)
     return *nativeName;
 
-  // Remove any invalid characters from the type name (that's what \0 means
-  // here)
+  // Remove any invalid characters from the type name (that's what \0 means here)
   String name = LibraryBuilder::FixIdentifier(type->ToString(), TokenCheck::None, '\0');
 
-  // If the generated type is not from our currently library, then qualify it
-  // with a
+  // If the generated type is not from our currently library, then qualify it with a
   if (this->LibrarySet.Contains(type->SourceLibrary) == false)
     name = BuildString(type->SourceLibrary->GetPluginNamespace(), "::", name);
 
@@ -441,10 +420,10 @@ NativeName NativeStubCode::GetCppTypeName(Type* type)
     // we want to accept it as a pointer when taken as a parameter
     nativeNameResult.Parameter = BuildString(name, "*");
 
-    // In order to ensure that reference counting works properly, we also need
-    // ALL returns to be of Handle type. Imagine allocating a Handle, then
-    // returning a pointer... the handle would be the last reference count, and
-    // would get destroyed, so the pointer would go invalid immediately
+    // In order to ensure that reference counting works properly, we also need ALL
+    // returns to be of Handle type. Imagine allocating a Handle, then returning a pointer...
+    // the handle would be the last reference count, and would get destroyed,
+    // so the pointer would go invalid immediately
     nativeNameResult.Return = BuildString("Zilch::HandleOf<", name, ">");
   }
   else
@@ -463,8 +442,7 @@ NativeName NativeStubCode::GetCppTypeName(Type* type)
   else
     nativeNameResult.Base = ReferenceBase;
 
-  // We also want to know if this type has a base type (easily access and
-  // generate its name too)
+  // We also want to know if this type has a base type (easily access and generate its name too)
   if (BoundType* boundType = Type::DynamicCast<BoundType*>(type))
   {
     BoundType* base = boundType->BaseType;
@@ -506,8 +484,7 @@ void NativeStubCode::WriteDescription(ZilchCodeBuilder& builder, ReflectionObjec
 
 String GetCoreNamespace()
 {
-  // Define types if this is not the Core library (which has already defined its
-  // types)
+  // Define types if this is not the Core library (which has already defined its types)
   static const String CoreNamespace = Core::GetInstance().GetLibrary()->GetPluginNamespace();
   return CoreNamespace;
 }
@@ -783,9 +760,7 @@ String NativeStubCode::GenerateCpp()
 
         delegates.Insert(delegateType);
 
-        builder.WriteLineIndented("//"
-                                  "********************************************"
-                                  "*******************************");
+        builder.WriteLineIndented("//***************************************************************************");
 
         Type* returnType = delegateType->Return;
         NativeName returnTypeName = this->GetCppTypeName(returnType);
@@ -821,12 +796,10 @@ String NativeStubCode::GenerateCpp()
         builder.Write(defaultReturn);
         builder.WriteLineIndented(", \"The function does not exist (it may have been removed)\");");
 
-        builder.WriteLineIndented("Zilch::ExecutableState* __state = "
-                                  "Zilch::ExecutableState::GetCallingState();");
+        builder.WriteLineIndented("Zilch::ExecutableState* __state = Zilch::ExecutableState::GetCallingState();");
         builder.Write("ReturnIf(__state == nullptr,");
         builder.Write(defaultReturn);
-        builder.WriteLineIndented(", \"You can only invoke this function when "
-                                  "your code is called from Zilch\");");
+        builder.WriteLineIndented(", \"You can only invoke this function when your code is called from Zilch\");");
         builder.WriteLineIndented();
 
         builder.WriteLineIndented("Zilch::Call __call(function, __state);");
@@ -882,9 +855,7 @@ String NativeStubCode::GenerateCpp()
       String typeName = name.Class;
       String baseName = name.Base;
 
-      builder.WriteLineIndented("//"
-                                "**********************************************"
-                                "*****************************");
+      builder.WriteLineIndented("//***************************************************************************");
       builder.Write("static Zilch::BoundType* ");
       String cachedTypeName = String::Format("%s_Type", typeName.c_str());
       builder.Write(cachedTypeName);
@@ -916,9 +887,7 @@ String NativeStubCode::GenerateCpp()
         for (size_t j = 0; j < type->Constructors.Size(); ++j)
         {
           Function* constructor = type->Constructors[j];
-          builder.WriteLineIndented("//"
-                                    "******************************************"
-                                    "*********************************");
+          builder.WriteLineIndented("//***************************************************************************");
           builder.Write("static Zilch::Function* _");
           builder.Write(constructor->Hash);
           builder.WriteLineIndented(" = nullptr;");
@@ -979,9 +948,7 @@ String NativeStubCode::GenerateCpp()
         }
         DelegateType* delegateType = function->FunctionType;
 
-        builder.WriteLineIndented("//"
-                                  "********************************************"
-                                  "*******************************");
+        builder.WriteLineIndented("//***************************************************************************");
         builder.Write("static Zilch::Function* _");
         builder.Write(function->Hash);
         builder.WriteLineIndented(" = nullptr;");
@@ -1069,8 +1036,8 @@ String NativeStubCode::GenerateCpp()
     builder.WriteLineIndented("Zilch::BoundType* type = nullptr;");
 
     builder.WriteLineIndented("Zilch::LibraryRef library = event->FindLibrary(libraryName);");
-    builder.WriteLineIndented("ReturnIf(library == nullptr, false, \"Unable to find the library %s "
-                              "in the list of dependencies\", libraryName);");
+    builder.WriteLineIndented("ReturnIf(library == nullptr, false, \"Unable to find the library %s in the list of "
+                              "dependencies\", libraryName);");
 
     builder.WriteLineIndented("mangler.MangleLibrary(library);");
 
@@ -1084,8 +1051,7 @@ String NativeStubCode::GenerateCpp()
 
       if (this->Namespace == GetCoreNamespace())
       {
-        // Ignore non-native bound types in the Core library (these types don't
-        // have a corresponding C++ type)
+        // Ignore non-native bound types in the Core library (these types don't have a corresponding C++ type)
         if (boundType->Native == false)
           continue;
       }

@@ -13,8 +13,7 @@ public:
   // Default constructor
   UserToken();
 
-  // Construct a token for a keyword or symbol (NOT for variable length things
-  // such as identifiers)
+  // Construct a token for a keyword or symbol (NOT for variable length things such as identifiers)
   UserToken(Grammar::Enum tokenId, CodeLocation* location = nullptr);
 
   // Constructor for a special type of token
@@ -49,8 +48,7 @@ enum Enum
 namespace Zero
 {
 // UserToken should be directly memory movable (so should CodeLocation)
-// String would technically just increment a reference and then decrement, so
-// skip it!
+// String would technically just increment a reference and then decrement, so skip it!
 template <>
 struct ZeroShared MoveWithoutDestructionOperator<Zilch::UserToken>
 {

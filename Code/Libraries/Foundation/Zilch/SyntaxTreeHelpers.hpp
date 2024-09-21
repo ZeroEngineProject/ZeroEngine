@@ -141,8 +141,7 @@ public:
     RegisterInternal((MemberFn)visitor, ZilchTypeId(DerivedChildType), false);
   }
 
-  // Register a visitor that will visit any node of this base type, even if it
-  // derives from it
+  // Register a visitor that will visit any node of this base type, even if it derives from it
   template <typename ChildType>
   void RegisterNonLeafBase(void (TreeOwnerType::*visitor)(ChildType*& node, ContextType* context))
   {
@@ -156,8 +155,7 @@ public:
     NodeChildren children;
     node->PopulateChildren(children);
 
-    // Loop through all of the children that matched that type (including
-    // derived types)
+    // Loop through all of the children that matched that type (including derived types)
     for (size_t i = 0; i < children.Size(); ++i)
     {
       // Get the current child
@@ -219,8 +217,7 @@ public:
       // Get the current visitor
       VisitorInfo& visitor = this->Visitors[i];
 
-      // As long as the node we're visiting is somehow derived from the node
-      // visitor type
+      // As long as the node we're visiting is somehow derived from the node visitor type
       if (nodeType == visitor.NodeType || (visitor.IsNonLeafBase && Type::BoundIsA(nodeType, visitor.NodeType)))
       {
         // Clear any flags before visiting this node
@@ -247,8 +244,7 @@ public:
           childrenWereHandled = true;
 
         // If we don't want anyone else to visit this node after us...
-        // Note: We do not 'return' because we may still want to generically
-        // walk it's children
+        // Note: We do not 'return' because we may still want to generically walk it's children
         if (flags & WalkerFlags::PreventOtherWalkers)
           break;
 
@@ -265,8 +261,7 @@ public:
     // Check if the children were not visited...
     if (childrenWereHandled == false)
     {
-      // Generically walk all the children since nobody visited this poor old
-      // node
+      // Generically walk all the children since nobody visited this poor old node
       this->GenericWalkChildren(owner, node, context);
     }
   }

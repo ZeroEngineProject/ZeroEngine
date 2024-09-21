@@ -39,8 +39,7 @@ void TemplateBinding::ParseParameterArrays(ParameterArray& parameters, StringRan
   {
     // If the parameter index goes outside the bounds...
     ErrorIf(parameterIndex >= parameters.Size(),
-            "Too many parameter names for the number of parameter arguments "
-            "provided");
+            "Too many parameter names for the number of parameter arguments provided");
 
     // If the current token is a name...
     UserToken& token = tokens[i];
@@ -53,25 +52,22 @@ void TemplateBinding::ParseParameterArrays(ParameterArray& parameters, StringRan
     else if (token.TokenId != Grammar::ArgumentSeparator)
     {
       // Show an error to the user
-      Error("Unexpected token type when reading parameter names (must be "
-            "lowercase identifiers): %s of token type %s",
+      Error("Unexpected token type when reading parameter names (must be lowercase identifiers): %s of token type %s",
             token.Token.c_str(),
             Grammar::GetName(token.TokenId).c_str());
     }
   }
 
-  // If we didn't parse as many tokens as the parameters, then we also throw an
-  // error
+  // If we didn't parse as many tokens as the parameters, then we also throw an error
   ErrorIf(parameterIndex != parameters.Size(),
-          "A different number of parameter names were given for the number of "
-          "parameters");
+          "A different number of parameter names were given for the number of parameters");
 }
 
 BoundType* TemplateBinding::ValidateConstructorBinding(BoundType* type)
 {
   ErrorIf(type->Destructor != nullptr,
-          "You must bind a destructor first before binding a constructor (use "
-          "ZilchBindConstructor or ZilchFullBindConstructor)");
+          "You must bind a destructor first before binding a constructor (use ZilchBindConstructor or "
+          "ZilchFullBindConstructor)");
   return type;
 }
 } // namespace Zilch

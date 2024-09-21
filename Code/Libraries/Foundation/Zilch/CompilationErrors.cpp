@@ -22,10 +22,7 @@ void OutputErrorStringCallback(ErrorEvent* e, void* stringPointer)
 }
 
 CompilationErrors::CompilationErrors() :
-    UserData(nullptr),
-    WasError(false),
-    IgnoreMultipleErrors(true),
-    TolerantMode(false)
+    UserData(nullptr), WasError(false), IgnoreMultipleErrors(true), TolerantMode(false)
 {
 }
 
@@ -51,8 +48,7 @@ void CompilationErrors::RaiseArgs(const CodeLocation& location,
                                   int errorCode,
                                   va_list args)
 {
-  // If there already was an error and we're set to ignore multiple errors, exit
-  // out early
+  // If there already was an error and we're set to ignore multiple errors, exit out early
   if (this->WasError && this->IgnoreMultipleErrors)
     return;
 
@@ -66,8 +62,7 @@ void CompilationErrors::RaiseArgs(const CodeLocation& location,
   // Get the error information from the database
   const ErrorInfo& errorInfo = ErrorDatabase::GetInstance().GetErrorInfo((ErrorCode::Enum)errorCode);
 
-  // Create an error details object that encompasses the error (including the
-  // context of the error)
+  // Create an error details object that encompasses the error (including the context of the error)
   ErrorEvent errorDetails(errorInfo, location, (ErrorCode::Enum)errorCode, args);
 
   // Copy over any associated locations
@@ -76,8 +71,7 @@ void CompilationErrors::RaiseArgs(const CodeLocation& location,
     errorDetails.AssociatedOtherLocations.PushBack(*location);
 
   // Append any extra context to the error
-  // Eg. when the parser expects something, it will say what it got and what it
-  // expected
+  // Eg. when the parser expects something, it will say what it got and what it expected
   errorDetails.ExactError = BuildString(errorDetails.ExactError, extra);
 
   // Send the event and let everyone receive it

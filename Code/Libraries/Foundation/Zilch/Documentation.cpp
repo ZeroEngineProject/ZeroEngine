@@ -61,8 +61,7 @@ void RstBuilder::WriteLine(RstTable& table)
   const size_t Padding = 2;
 
   // Walk through all the rows and print out their values
-  // Note: We pretend we have one more row than we do, but we only do that to
-  // write out the last line bar
+  // Note: We pretend we have one more row than we do, but we only do that to write out the last line bar
   for (size_t r = 0; r <= table.Rows; ++r)
   {
     // Output the top bar for the current row

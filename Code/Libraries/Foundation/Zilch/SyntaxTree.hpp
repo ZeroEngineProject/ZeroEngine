@@ -43,8 +43,7 @@ public:
   void ShowGraphVizRepresentation();
 
 private:
-  // Recursively walks child nodes looking for any node whose range encompasses
-  // the cursor
+  // Recursively walks child nodes looking for any node whose range encompasses the cursor
   void GetNodesAtCursorRecursive(SyntaxNode* node,
                                  size_t cursorPosition,
                                  StringParam cursorOrigin,
@@ -54,15 +53,13 @@ public:
   // The root of the tree
   RootNode* Root;
 
-  // A singlular expression to be evaluated (or null if we're compiling an
-  // entire tree) Its not actually safe to store the expression here, so we
-  // store its parent and index This is also technically not safe, but for now
-  // we know we don't do any operations that mess with scopes
+  // A singlular expression to be evaluated (or null if we're compiling an entire tree)
+  // Its not actually safe to store the expression here, so we store its parent and index
+  // This is also technically not safe, but for now we know we don't do any operations that mess with scopes
   ScopeNode* SingleExpressionScope;
   size_t SingleExpressionIndex;
 
-  // These tokens are generated in response to an 'expect' call that failes in
-  // tolerant mode.
+  // These tokens are generated in response to an 'expect' call that failes in tolerant mode.
   Array<const UserToken*> InvalidTokens;
 
   // Not copyable
@@ -102,7 +99,7 @@ public:
   SyntaxNode();
 
   // Destructor
-  virtual ~SyntaxNode(){};
+  virtual ~SyntaxNode() {};
 
   // Copy constructor
   SyntaxNode(const SyntaxNode& toCopy);
@@ -119,8 +116,7 @@ public:
   // Populates an array with the non-traversed children of this node
   virtual void PopulateNonTraversedChildren(NodeChildren& childrenOut);
 
-  // Populates an array with SyntaxTypes (we walk all children and single out
-  // those that inherit from SyntaxType)
+  // Populates an array with SyntaxTypes (we walk all children and single out those that inherit from SyntaxType)
   virtual void PopulateSyntaxTypes(SyntaxTypes& typesOut);
 
   // Fix all the parent pointers so they point up to their parents
@@ -167,13 +163,11 @@ public:
   // The location that the syntax node originated from
   CodeLocation Location;
 
-  // Any comments collected for this syntax node (used for documentation /
-  // translation)
+  // Any comments collected for this syntax node (used for documentation / translation)
   StringArray Comments;
 
-  // In cases where we generate a temporary (such as creation call nodes for
-  // initializer lists, indexers, etc) we will create a local variable node as
-  // an expression that need not be walked by formatters and translators
+  // In cases where we generate a temporary (such as creation call nodes for initializer lists, indexers, etc)
+  // we will create a local variable node as an expression that need not be walked by formatters and translators
   bool IsGenerated;
 };
 
@@ -186,8 +180,7 @@ public:
   // Constructor
   SyntaxType();
 
-  // Tells us if a particular declarations of a syntax type is a template
-  // instantiation
+  // Tells us if a particular declarations of a syntax type is a template instantiation
   virtual bool IsTemplateInstantiation() const;
 
   // Whatever type this syntax type resovled to
@@ -231,8 +224,7 @@ public:
   String TypeName;
 
   // Template arguments (if we have any)
-  // These can be constant ExpressionNodes (not guaranteed to be constant yet)
-  // or SyntaxTypes
+  // These can be constant ExpressionNodes (not guaranteed to be constant yet) or SyntaxTypes
   NodeList<SyntaxNode> TemplateArguments;
 
   // SyntaxType interface
@@ -310,8 +302,7 @@ public:
   NodeList<SyntaxNode> NonTraversedNonOwnedNodesInOrder;
 };
 
-// An attribute that can be attached to classes, functions, member variables,
-// etc
+// An attribute that can be attached to classes, functions, member variables, etc
 class ZeroShared AttributeNode : public SyntaxNode
 {
 public:
@@ -346,8 +337,7 @@ public:
   virtual StatementNode* Clone() const = 0;
 };
 
-// An evaluatable node represents anything that can be evaluated into a value
-// (expressions, function calls, values, etc)
+// An evaluatable node represents anything that can be evaluated into a value (expressions, function calls, values, etc)
 class ZeroShared ExpressionNode : public StatementNode
 {
 public:
@@ -362,9 +352,8 @@ public:
   // Store the type along with the expression (this will be filled in later)
   Type* ResultType;
 
-  // This type is filled out when we want to know an expression's result type
-  // BEFORE we run all the expression type checking, otherwise it will be null.
-  // This is used when inferring a type of a member variable
+  // This type is filled out when we want to know an expression's result type BEFORE we run all the expression type
+  // checking, otherwise it will be null. This is used when inferring a type of a member variable
   Type* PrecomputedResultType;
 
   // Stores how we access this particular expression (stack, member, etc)
@@ -374,9 +363,8 @@ public:
   IoMode::Enum Io;
 
   // How it is trying to be used by it's parent node
-  // If this value conflicts with the node's IO mode, then it will result in an
-  // error This value is also used to determine whether we call the get/set or
-  // both for properties
+  // If this value conflicts with the node's IO mode, then it will result in an error
+  // This value is also used to determine whether we call the get/set or both for properties
   IoMode::Enum IoUsage;
 
   // This determines whether or not this node is being used as a statement
@@ -447,8 +435,7 @@ public:
   Property* AccessedProperty;
 };
 
-// A type-cast node represents a type cast from an expression to a specified
-// type
+// A type-cast node represents a type cast from an expression to a specified type
 class ZeroShared TypeCastNode : public ExpressionNode
 {
 public:
@@ -472,8 +459,7 @@ public:
   SyntaxType* Type;
 };
 
-// A post expression node represents right hand operators (call, indexer,
-// access, etc)
+// A post expression node represents right hand operators (call, indexer, access, etc)
 class ZeroShared PostExpressionNode : public ExpressionNode
 {
 public:
@@ -489,8 +475,7 @@ public:
   ExpressionNode* LeftOperand;
 };
 
-// An indexer call node represents a list of passed in arguments used in an
-// indexer call
+// An indexer call node represents a list of passed in arguments used in an indexer call
 class ZeroShared IndexerCallNode : public PostExpressionNode
 {
 public:
@@ -507,20 +492,17 @@ public:
   // The list of arguments, provided in order, to the indexer
   NodeList<ExpressionNode> Arguments;
 
-  // The indexer can end up invoking just the Get, or Get and then Set, or just
-  // Set The parser generates all three possibilities, and the Syntaxer chooses
-  // the correct one based on the usage (compound operators such as += will
-  // chosee the GetSet version, but = will just choose Set) The above arguments
-  // actually get cloned into each of these possibilities In the future, we may
-  // try and reduce this so not all of these have to be generated (its a lot of
-  // extra data)
+  // The indexer can end up invoking just the Get, or Get and then Set, or just Set
+  // The parser generates all three possibilities, and the Syntaxer chooses the correct
+  // one based on the usage (compound operators such as += will chosee the GetSet version, but = will just choose Set)
+  // The above arguments actually get cloned into each of these possibilities
+  // In the future, we may try and reduce this so not all of these have to be generated (its a lot of extra data)
   MultiExpressionNode* Get;
   MultiExpressionNode* GetSet;
   MultiExpressionNode* Set;
 };
 
-// A function call node represents a list of passed in arguments used in a
-// function call
+// A function call node represents a list of passed in arguments used in a function call
 class ZeroShared FunctionCallNode : public PostExpressionNode
 {
 public:
@@ -534,8 +516,7 @@ public:
   String ToString() const override;
   void PopulateChildren(NodeChildren& childrenOut) override;
 
-  // If the left operand is a local variable whose initializer is a creation
-  // call node, this will return that node
+  // If the left operand is a local variable whose initializer is a creation call node, this will return that node
   StaticTypeNode* FindCreationCall();
 
   // An array of all the names given to the arguments
@@ -545,8 +526,7 @@ public:
   // Store the actual expressions passed in for each argument
   NodeList<ExpressionNode> Arguments;
 
-  // Maps the arguments in their passed in order to the actual argument order of
-  // the function
+  // Maps the arguments in their passed in order to the actual argument order of the function
   Array<size_t> ArgumentMap;
 
   // If the call is done in named style, then we have no argument names
@@ -596,8 +576,7 @@ public:
   // If the member is a property (getter setter or field) this will be set
   Property* AccessedProperty;
 
-  // If this node is a getter setter access node, then this refers to which
-  // property
+  // If this node is a getter setter access node, then this refers to which property
   GetterSetter* AccessedGetterSetter;
 
   // If this node is a field access node, then this refers to which field
@@ -635,8 +614,7 @@ public:
   Type* CompileTimeType;
 };
 
-// Lets us get the runtime property object that describes a field or
-// getter/setter
+// Lets us get the runtime property object that describes a field or getter/setter
 class ZeroShared MemberIdNode : public ExpressionNode
 {
 public:
@@ -663,8 +641,7 @@ enum Enum
 };
 }
 
-// Used when we access static members as well as invoking constructors (could be
-// after new/local, or just by itself)
+// Used when we access static members as well as invoking constructors (could be after new/local, or just by itself)
 class ZeroShared StaticTypeNode : public ExpressionNode
 {
 public:
@@ -683,17 +660,16 @@ public:
   // The type we resolve to what we're accessing
   BoundType* ReferencedType;
 
-  // The below members are ONLY used if this node is being used in a constructor
-  // call: The token we used to create this (new, local, etc)
+  // The below members are ONLY used if this node is being used in a constructor call:
+  // The token we used to create this (new, local, etc)
   CreationMode::Enum Mode;
 
   // The constructor we're running, or null for pre-constructor only
   const FunctionArray* OverloadedConstructors;
   Function* ConstructorFunction;
 
-  // We always create a handle to the type; for example, new always returns a
-  // handle, and we always need a handle for preconstructor and constructor
-  // calls, even on local objects
+  // We always create a handle to the type; for example, new always returns a handle, and we
+  // always need a handle for preconstructor and constructor calls, even on local objects
   OperandIndex ThisHandleLocal;
 };
 
@@ -717,8 +693,7 @@ public:
   ExpressionNode* Value;
 };
 
-// When we want to initialize a type we can also add values to it (generally for
-// containers)
+// When we want to initialize a type we can also add values to it (generally for containers)
 class ZeroShared ExpressionInitializerAddNode : public SyntaxNode
 {
 public:
@@ -728,13 +703,11 @@ public:
   // SyntaxNode interface
   void PopulateChildren(NodeChildren& childrenOut) override;
 
-  // These arguments get directly passed in to a call to add on the given
-  // container
+  // These arguments get directly passed in to a call to add on the given container
   NodeList<ExpressionNode> Arguments;
 };
 
-// When we want to initialize a type (either a container, with .Add calls, or
-// members of a class / properties)
+// When we want to initialize a type (either a container, with .Add calls, or members of a class / properties)
 class ZeroShared ExpressionInitializerNode : public PostExpressionNode
 {
 public:
@@ -747,24 +720,21 @@ public:
   // SyntaxNode interface
   void PopulateChildren(NodeChildren& childrenOut) override;
 
-  // All the elements we want to add to the container (by literally invoking
-  // .Add)
+  // All the elements we want to add to the container (by literally invoking .Add)
   NodeList<ExpressionInitializerAddNode> AddValues;
 
   // All the members we want to initialize
   NodeList<ExpressionInitializerMemberNode> InitailizeMembers;
 
   // The above element expressions get translated directly into statements
-  // This is primarily used for code generation (the above is just syntactic
-  // sugar) For example, for the 'add values' to a container, it gets translated
-  // into object.Add(value, value...) Member initializers get translated into
-  // object.MemberName = value; Warning: many of these nodes point unsafely at
-  // another node above in the tree (eg at the creation call itself)
+  // This is primarily used for code generation (the above is just syntactic sugar)
+  // For example, for the 'add values' to a container, it gets translated into object.Add(value, value...)
+  // Member initializers get translated into object.MemberName = value;
+  // Warning: many of these nodes point unsafely at another node above in the tree (eg at the creation call itself)
   NodeList<ExpressionNode> InitializerStatements;
 };
 
-// A multi-expression Contains multiple expressions but only yields the results
-// of one of them (done by index)
+// A multi-expression Contains multiple expressions but only yields the results of one of them (done by index)
 class ZeroShared MultiExpressionNode : public ExpressionNode
 {
 public:
@@ -780,13 +750,12 @@ public:
   // All the expressions that the multi-expression will execute
   NodeList<ExpressionNode> Expressions;
 
-  // An index into the array of expressions that controls what this expression
-  // results in Basically we just forward our ResultType and Access to that node
+  // An index into the array of expressions that controls what this expression results in
+  // Basically we just forward our ResultType and Access to that node
   // It is an error to leave this index unset
   size_t YieldChildExpressionIndex;
 
-  // Initialize the yield index to this (we will internal error in the Syntaxer
-  // if this is still set)
+  // Initialize the yield index to this (we will internal error in the Syntaxer if this is still set)
   static const size_t InvalidIndex = (size_t)-1;
 };
 
@@ -819,8 +788,7 @@ public:
   SyntaxType* ResultSyntaxType;
 };
 
-// A local variable node represents a local variable declaration (such as one
-// inside a function)
+// A local variable node represents a local variable declaration (such as one inside a function)
 class ZeroShared LocalVariableNode : public VariableNode
 {
 public:
@@ -831,17 +799,15 @@ public:
   LocalVariableNode();
 
   // Constructor to generate a unique local variable node
-  // This case is generally for when we want to wrap a local stack value with a
-  // name we can lookup later We're typically using the local variable as an
-  // expression that wraps the initial value
+  // This case is generally for when we want to wrap a local stack value with a name we can lookup later
+  // We're typically using the local variable as an expression that wraps the initial value
   LocalVariableNode(StringParam baseName, Project* parentProject, ExpressionNode* optionalInitialValue);
 
   // Store a pointer that gives information about the local variable
   Variable* CreatedVariable;
 
-  // If this is set, it means this local variable will not generate temporary
-  // space, but instead will directly forward access to its initial value
-  // expression (requires the initial value to exist!)
+  // If this is set, it means this local variable will not generate temporary space, but instead
+  // will directly forward access to its initial value expression (requires the initial value to exist!)
   bool ForwardLocalAccessIfPossible;
 
   // A pointer to the attributes this function has
@@ -862,8 +828,7 @@ public:
   size_t ParameterIndex;
 };
 
-// A member variable node represents a member variable declaration (such as one
-// inside a class)
+// A member variable node represents a member variable declaration (such as one inside a class)
 class ZeroShared MemberVariableNode : public VariableNode
 {
 public:
@@ -888,8 +853,7 @@ public:
   Type* ResultType;
 
   // The get and set functions for this variable
-  // Only valid for properties, we always know that either the get or set will
-  // exist (or both)
+  // Only valid for properties, we always know that either the get or set will exist (or both)
   FunctionNode* Get;
   FunctionNode* Set;
 
@@ -917,8 +881,7 @@ public:
   // Constructor
   ValueNode();
 
-  // Returns the type of the value node based entirely on the token (or null if
-  // it's invalid)
+  // Returns the type of the value node based entirely on the token (or null if it's invalid)
   Type* PrecomputeType() const;
 
   // SyntaxNode interface
@@ -928,8 +891,7 @@ public:
   UserToken Value;
 };
 
-// String interpolants are basically advanced efficient string concatenations
-// with values
+// String interpolants are basically advanced efficient string concatenations with values
 class ZeroShared StringInterpolantNode : public ExpressionNode
 {
 public:
@@ -1011,8 +973,7 @@ public:
   VariableMap ScopedVariables;
 };
 
-// Allows code to run for a period of time before it throws an exception and
-// 'times out'
+// Allows code to run for a period of time before it throws an exception and 'times out'
 class ZeroShared TimeoutNode : public ScopeNode
 {
 public:
@@ -1039,13 +1000,11 @@ public:
   // SyntaxNode interface
   void PopulateChildren(NodeChildren& childrenOut) override;
 
-  // Marks whether this is the first part of the if statement (not an else if or
-  // else)
+  // Marks whether this is the first part of the if statement (not an else if or else)
   bool IsFirstPart;
 
   // The conditional expression used in this if statement
-  // Non null for all if elses, and only the last CAN be null, but may not be
-  // null!
+  // Non null for all if elses, and only the last CAN be null, but may not be null!
   ExpressionNode* Condition;
 };
 
@@ -1231,8 +1190,7 @@ public:
   // Only used in the case of 'foreach' to store a temporary range variable
   LocalVariableNode* RangeVariable;
 
-  // Alternative, instead of a variable we could have an initialization
-  // expression
+  // Alternative, instead of a variable we could have an initialization expression
   ExpressionNode* Initialization;
 
   // The iterator expression of the for loop (the last part)
@@ -1253,13 +1211,11 @@ public:
   void PopulateNonTraversedChildren(NodeChildren& childrenOut) override;
 
   // The original variable that was declared
-  // This is not used by the Syntaxer or CodeGenerator (only there for
-  // translation and other purposes)
+  // This is not used by the Syntaxer or CodeGenerator (only there for translation and other purposes)
   LocalVariableNode* NonTraversedVariable;
 
   // The original range we used (eg, array.All)
-  // This is not used by the Syntaxer or CodeGenerator (only there for
-  // translation and other purposes)
+  // This is not used by the Syntaxer or CodeGenerator (only there for translation and other purposes)
   ExpressionNode* NonTraversedRange;
 };
 
@@ -1271,8 +1227,7 @@ public:
   ZilchClonableNode(LoopNode);
 };
 
-// A generic function only takes parameters, has no returns and is not marked as
-// static
+// A generic function only takes parameters, has no returns and is not marked as static
 class ZeroShared GenericFunctionNode : public ScopeNode
 {
 public:
@@ -1284,8 +1239,7 @@ public:
   // SyntaxNode interface
   void PopulateChildren(NodeChildren& childrenOut) override;
 
-  // The name of the function (including 'constructor', 'destructor', 'get', and
-  // 'set')
+  // The name of the function (including 'constructor', 'destructor', 'get', and 'set')
   UserToken Name;
 
   // A genetated type for this function (the type is the signature type)
@@ -1300,11 +1254,10 @@ public:
   // A pointer to the attributes this function has
   NodeList<AttributeNode> Attributes;
 
-  // For auto-complete, one of the methods we use is to build a psuedo class and
-  // function that we evaluate expressions within. This works for most
-  // expressions, except when the expression relies upon the 'this' variable, in
-  // which the type would result in the pseudo class Therefore, we actually
-  // replace the type with the old previously compiled version if it exists
+  // For auto-complete, one of the methods we use is to build a psuedo class and function
+  // that we evaluate expressions within. This works for most expressions, except when the
+  // expression relies upon the 'this' variable, in which the type would result in the pseudo class
+  // Therefore, we actually replace the type with the old previously compiled version if it exists
   // BoundType* SubstituteTypeOfThisVariable;
 };
 
@@ -1352,8 +1305,7 @@ public:
   Function* InitializerFunction;
 };
 
-// A constructor is a specialized function for creating and initializing an
-// object
+// A constructor is a specialized function for creating and initializing an object
 class ZeroShared ConstructorNode : public GenericFunctionNode
 {
 public:
@@ -1363,11 +1315,10 @@ public:
   // Constructor
   ConstructorNode();
 
-  // These are not owned initializers (technically the first statements in the
-  // constructor own them) Hence we do not override 'PopulateChildren' and
-  // output these If the initializers exist as the first statements, these MUST
-  // be set to be a valid tree The presence of the base initializer tells us if
-  // we initialized our base or not
+  // These are not owned initializers (technically the first statements in the constructor own them)
+  // Hence we do not override 'PopulateChildren' and output these
+  // If the initializers exist as the first statements, these MUST be set to be a valid tree
+  // The presence of the base initializer tells us if we initialized our base or not
   InitializerNode* BaseInitializer;
   InitializerNode* ThisInitializer;
 };
@@ -1381,8 +1332,7 @@ public:
 };
 
 // A class node represents the definition of a class
-// The class is a scope node itself because of the pre-constructor and member
-// variable initialization
+// The class is a scope node itself because of the pre-constructor and member variable initialization
 class ZeroShared ClassNode : public ScopeNode
 {
 public:
@@ -1426,12 +1376,11 @@ public:
   // A singular destructor
   DestructorNode* Destructor;
 
-  // Contains all types of members that a class can have in the order they are
-  // declared (generally used for formatting)
+  // Contains all types of members that a class can have in the order they are declared (generally used for formatting)
   NodeList<SyntaxNode> NonTraversedNonOwnedNodesInOrder;
 
-  // This function basically acts as a constructor that initializes all the
-  // members before we run the invoked constructor
+  // This function basically acts as a constructor that initializes all the members before we run the invoked
+  // constructor
   Function* PreConstructor;
 
   // A pointer to the attributes this class has
@@ -1473,8 +1422,7 @@ public:
   Property* IntegralProperty;
 };
 
-// An enum node represents constant integral values that count up (or bitwise
-// flags)
+// An enum node represents constant integral values that count up (or bitwise flags)
 class ZeroShared EnumNode : public SyntaxNode
 {
 public:

@@ -37,10 +37,7 @@ Handle::Handle(NullPointerType)
 }
 
 Handle::Handle(const Handle& rhs) :
-    StoredType(rhs.StoredType),
-    Manager(rhs.Manager),
-    Offset(rhs.Offset),
-    Flags(rhs.Flags)
+    StoredType(rhs.StoredType), Manager(rhs.Manager), Offset(rhs.Offset), Flags(rhs.Flags)
 {
   // The data of a handle type is always memory-copyable
   memcpy(this->Data, rhs.Data, sizeof(this->Data));
@@ -88,8 +85,7 @@ Handle::Handle(const Any& other)
   }
   else
   {
-    Error("Cannot create a handle from this Any because the value it stores "
-          "cannot be converted to a handle");
+    Error("Cannot create a handle from this Any because the value it stores cannot be converted to a handle");
     this->InternalClear();
   }
 }
@@ -117,8 +113,7 @@ void Handle::Initialize(const ::byte* data, BoundType* type, HandleManager* mana
     manager = HandleManagers::GetInstance().GetManager(type->HandleManager, state);
   this->Manager = manager;
 
-  // Zero out the data (this is a guarantee we make before we ask the manager to
-  // initialize the data)
+  // Zero out the data (this is a guarantee we make before we ask the manager to initialize the data)
   memset(this->Data, 0, sizeof(this->Data));
 
   // Construct this handle from the manager
@@ -322,8 +317,7 @@ bool Handle::operator==(const Handle& rhs) const
   bool nullLhs = (objectLhs == nullptr);
   bool nullRhs = (objectRhs == nullptr);
 
-  ZeroTodo("There are two dereferences for comparing user handles, we should "
-           "refactor this code path to make it one");
+  ZeroTodo("There are two dereferences for comparing user handles, we should refactor this code path to make it one");
 
   // If both are non null, then we need to do more checking
   if (!nullLhs && !nullRhs)
@@ -331,8 +325,7 @@ bool Handle::operator==(const Handle& rhs) const
     // First, check that both of them use the same handle manager
     if (this->Manager != rhs.Manager)
     {
-      // If they don't use the same handle manager, then at least dereference
-      // and check if the memory is the same
+      // If they don't use the same handle manager, then at least dereference and check if the memory is the same
       return objectLhs == objectRhs;
     }
 
@@ -340,9 +333,8 @@ bool Handle::operator==(const Handle& rhs) const
     // if (this->Type != rhs.Type)
     //  return false;
 
-    // We shouldn't need to check if the managers are null since both objects
-    // are non-null Now ask the handle manager if these two handles / objects
-    // are equal
+    // We shouldn't need to check if the managers are null since both objects are non-null
+    // Now ask the handle manager if these two handles / objects are equal
     return this->Manager->IsEqual(*this, rhs, objectLhs, objectRhs);
   }
   // Otherwise, if either of them is null, or both...
@@ -372,8 +364,7 @@ bool Handle::operator!=(Zero::NullPointerType) const
 
 size_t Handle::Hash() const
 {
-  // If this handle is the null manager... (this is the trivial case of a
-  // cleared handle)
+  // If this handle is the null manager... (this is the trivial case of a cleared handle)
   if (this->Manager == nullptr)
   {
     // We must always return a 0 hash for null handles
@@ -402,10 +393,9 @@ String Handle::ToString() const
   if (this->StoredType == nullptr)
     return NullString;
 
-  // Generically convert to string using either an indirect type or the bound
-  // type Note we CANNOT just use StoredType because it is always a BoundType,
-  // even when a handle is pointing at a value type, which can only occur if it
-  // is an IndirectType
+  // Generically convert to string using either an indirect type or the bound type
+  // Note we CANNOT just use StoredType because it is always a BoundType, even when
+  // a handle is pointing at a value type, which can only occur if it is an IndirectType
   Type* type = this->GetBoundOrIndirectType();
   return type->GenericToString((const ::byte*)this);
 }
@@ -429,24 +419,21 @@ void Handle::InternalClear()
 
 ::byte* Handle::Dereference() const
 {
-  // If this handle is the null manager... (this is the trivial case of a
-  // cleared handle)
+  // If this handle is the null manager... (this is the trivial case of a cleared handle)
   if (this->Manager == nullptr || this->StoredType == nullptr)
     return nullptr;
 
-  ZeroTodo("If a handle returns null but is not the 'null handle manager' then "
-           "it should be an optimization to Clear it");
+  ZeroTodo(
+      "If a handle returns null but is not the 'null handle manager' then it should be an optimization to Clear it");
 
-  // Dereference the handle and get a pointer to the object (or nullptr if it's
-  // a null handle)
+  // Dereference the handle and get a pointer to the object (or nullptr if it's a null handle)
   return this->Manager->HandleToObject(*this) + this->Offset;
 }
 
 void Handle::AddReference()
 {
   // Increment the reference count since we're now referencing the same thing
-  // We need to check for null because we do not want to randomly increment
-  // reference counts of invalid handles
+  // We need to check for null because we do not want to randomly increment reference counts of invalid handles
   if (this->Manager && this->IsReferenceCounted() && this->IsNull() == false)
   {
     // Add a reference via the manager
@@ -460,11 +447,10 @@ void Handle::ReleaseReference()
   if (this->Manager && this->IsReferenceCounted())
   {
     // We could put this responsibility upon the managers themselves, however,
-    // we should never call release on a handle to an object that may have been
-    // deleted For example, new an object in Zilch, then create a temporary
-    // handle, and delete the original The temporary handle will get ref counted
-    // up, and after the scope ends down again The ref count down should NOT be
-    // applied to then manager since the object was deleted
+    // we should never call release on a handle to an object that may have been deleted
+    // For example, new an object in Zilch, then create a temporary handle, and delete the original
+    // The temporary handle will get ref counted up, and after the scope ends down again
+    // The ref count down should NOT be applied to then manager since the object was deleted
     if (this->IsNull() == false)
     {
       // Ask the manager to release the reference
@@ -483,8 +469,7 @@ void Handle::ReleaseReference()
 void Handle::DestructAndDelete()
 {
   // Mark the stack copy of the handle as not being reference counted
-  // That way, when it runs the destructor it won't attempt to increment the
-  // reference count again
+  // That way, when it runs the destructor it won't attempt to increment the reference count again
   this->Flags |= HandleFlags::NoReferenceCounting;
 
   // Make sure this only gets called from places where we know we have a manager
@@ -515,12 +500,11 @@ void Handle::DestructAndDelete()
     // Invoke the destructor
     if (type->Destructor != nullptr)
     {
-      // Only invoke the destructor if its is not native, or it is native and
-      // fully constructed
+      // Only invoke the destructor if its is not native, or it is native and fully constructed
       if (type->Native == false || manager->GetNativeTypeFullyConstructed(*this))
       {
-        // We currently execute the destructor and basically ignore any
-        // exceptions They still get reported, but will be caught here
+        // We currently execute the destructor and basically ignore any exceptions
+        // They still get reported, but will be caught here
         ExceptionReport report;
         Call call(type->Destructor, state);
         call.SetHandle(Call::This, *this);
@@ -541,26 +525,22 @@ void Handle::DestructAndDelete()
     }
 
     // If the type is native, don't bother traversing up any further
-    // This is because a native destructor also handles calling all of its base
-    // class destructors
+    // This is because a native destructor also handles calling all of its base class destructors
     if (type->Native)
     {
-      // A special case is if we're dealing with a native type generated from a
-      // plugin library Because plugins can potentially inherit from stub
-      // generated types which don't invoke actual destructors
+      // A special case is if we're dealing with a native type generated from a plugin library
+      // Because plugins can potentially inherit from stub generated types which don't invoke actual destructors
       Library* typeLibrary = type->SourceLibrary;
       if (typeLibrary->Plugin != nullptr)
       {
         bool foundNonStubDestructor = false;
 
-        // Walk up until we hit a different library that is NOT generated by a
-        // plugin
+        // Walk up until we hit a different library that is NOT generated by a plugin
         ZilchLoop
         {
           type = type->BaseType;
 
-          // We walked all the way up the base hierarchy and did not find a
-          // non-plugin base
+          // We walked all the way up the base hierarchy and did not find a non-plugin base
           if (type == nullptr)
             break;
 
@@ -589,8 +569,8 @@ void Handle::DestructAndDelete()
     }
   }
 
-  // We may allow allocation again (depends on if this is the last destructor on
-  // the stack) Allocation is allowed again when this is 0
+  // We may allow allocation again (depends on if this is the last destructor on the stack)
+  // Allocation is allowed again when this is 0
   --state->DoNotAllowAllocation;
 
   // Delete this handle
@@ -614,16 +594,13 @@ bool Handle::Delete()
     return false;
   }
 
-  // We make a stack copy just in case this handle resides in memory that we are
-  // about to delete Note: Leave this up here just in case CanDelete would
-  // return false if we made the copy Note: Even though we mark THIS handle as
-  // being no longer reference counted, since this is an explicit delete then
-  // OTHER handles could still be live that cause reference counts We could
-  // technically turn off reference counting on the object with the manager,
-  // however, we don't need to because this stack copy will increment the
-  // reference by 1, and the call to 'this->Clear()' does NOT release the
-  // reference Therefore we add a dangling reference, but we're about to delete
-  // this object so its all ok!
+  // We make a stack copy just in case this handle resides in memory that we are about to delete
+  // Note: Leave this up here just in case CanDelete would return false if we made the copy
+  // Note: Even though we mark THIS handle as being no longer reference counted, since this is an explicit delete
+  // then OTHER handles could still be live that cause reference counts
+  // We could technically turn off reference counting on the object with the manager, however, we don't need to because
+  // this stack copy will increment the reference by 1, and the call to 'this->Clear()' does NOT release the reference
+  // Therefore we add a dangling reference, but we're about to delete this object so its all ok!
   Handle stackCopy(*this);
 
   // If we cannot delete the handle, then early out!
@@ -634,8 +611,7 @@ bool Handle::Delete()
 
   // Clear this handle to a null handle (for safety)
   // This is safe to do because we're only deleting our stack copy
-  // Note: See stack copy notes above for why this does NOT decrement a
-  // reference
+  // Note: See stack copy notes above for why this does NOT decrement a reference
   this->InternalClear();
 
   // Invoke the destructor on the stack copy

@@ -38,8 +38,8 @@ public:
   // Get a handle manager by id
   // This will first attempt to look up a shared manager
   // If the shared manager cannot be found, it will use the executable state
-  // Note that if the executable state is not passed in, an assert will fire and
-  // the default PointerManager will be returned
+  // Note that if the executable state is not passed in, an assert will fire and the default PointerManager will be
+  // returned
   HandleManager* GetManager(HandleManagerId id, ExecutableState* state = nullptr);
 
   // Get a unique creator function
@@ -55,8 +55,7 @@ private:
   // All the shared handle managers, by index
   HashMap<size_t, HandleManager*> Shared;
 
-  // For unique handle managers, this maps the index to a function that will
-  // create them
+  // For unique handle managers, this maps the index to a function that will create them
   HashMap<size_t, CreateHandleManagerFn> Unique;
 
   // Counter for assigning handle manager indices
@@ -109,9 +108,8 @@ enum Enum
 
 // An interface that users must implement for their own handle types
 // Common handle types are slot map handles (index into a table with unique id)
-// Other types include reference counted objects, or even garbage collected
-// objects Note that objects allocated within the language are managed by the
-// language
+// Other types include reference counted objects, or even garbage collected objects
+// Note that objects allocated within the language are managed by the language
 class ZeroShared HandleManager
 {
 public:
@@ -122,11 +120,10 @@ public:
   // Virtualize the destructor
   virtual ~HandleManager();
 
-  // Initializes a handle given a pointer to an object (generally used for Write
-  // / WriteRef in C++) The 'object' is the same pointer that we would get back
-  // from Dereferencing the handle Note that the only portion of the handle the
-  // needs to be initialized is the Data field, and that the handle will have
-  // been memory cleared to all 0 (the Type and Manager will be set externally)
+  // Initializes a handle given a pointer to an object (generally used for Write / WriteRef in C++)
+  // The 'object' is the same pointer that we would get back from Dereferencing the handle
+  // Note that the only portion of the handle the needs to be initialized is the Data field,
+  // and that the handle will have been memory cleared to all 0 (the Type and Manager will be set externally)
   virtual void ObjectToHandle(const ::byte* object, BoundType* type, Handle& handleToInitialize) = 0;
 
   // Dereference the user-data stored on the handle and
@@ -138,60 +135,52 @@ public:
   virtual String GetName();
 
   // Allocate the type and initialize a handle to that allocated object
-  // The custom flags can be used to pass in any information to the allocation
-  // scheme For example, the HeapHandleManager uses the flags to specify whether
-  // the type should be reference counted or not Note that the only portion of
-  // the handle the needs to be initialized is the Data field, and that the
-  // handle will have been memory cleared to all 0 (the Type and Manager will be
-  // set externally)
+  // The custom flags can be used to pass in any information to the allocation scheme
+  // For example, the HeapHandleManager uses the flags to specify whether the type should be reference counted or not
+  // Note that the only portion of the handle the needs to be initialized is the Data field,
+  // and that the handle will have been memory cleared to all 0 (the Type and Manager will be set externally)
   virtual void Allocate(BoundType* type, Handle& handleToInitialize, size_t customFlags);
 
   // Delete all references to stored objects (if we have any allocated)
-  // This is called while the ExecutableState is being torn down, before we
-  // destruct all static memory Shortly after this is called on all
-  // HandleManagers owned by that ExecutableState, the manager will be
-  // destructed In general if Allocate is implemented to do anything, then this
-  // should be overridden Leaks should be reported to the executable state via
-  // the MemoryLeak event
+  // This is called while the ExecutableState is being torn down, before we destruct all static memory
+  // Shortly after this is called on all HandleManagers owned by that ExecutableState, the manager will be destructed
+  // In general if Allocate is implemented to do anything, then this should be overridden
+  // Leaks should be reported to the executable state via the MemoryLeak event
   virtual void DeleteAll(ExecutableState* state);
 
-  // Retrieve the hash value of a given handle (generally just the pointer value
-  // or some unique value) This is generally used to compare handles when added
-  // to hashable containers All null handles should return 0
+  // Retrieve the hash value of a given handle (generally just the pointer value or some unique value)
+  // This is generally used to compare handles when added to hashable containers
+  // All null handles should return 0
   virtual size_t Hash(const Handle& handle);
 
   // Add a reference to the object
-  // The default behavior is to do nothing (assumes the object is a global and
-  // never dies)
+  // The default behavior is to do nothing (assumes the object is a global and never dies)
   virtual void AddReference(const Handle& handle);
 
-  // Releases the reference to the object and returns whether the object should
-  // be deleted by Zilch This function may destroy the object, but should NOT do
-  // so via Zilch calls such as Delete on the Handle
+  // Releases the reference to the object and returns whether the object should be deleted by Zilch
+  // This function may destroy the object, but should NOT do so via Zilch calls such as Delete on the Handle
   virtual ReleaseResult::Enum ReleaseReference(const Handle& handle);
 
   // Destroys the object and frees its memory
-  // Deleting the object should always try and ensure that all references to it
-  // become null This will only ever be called if CanDelete return true Prior to
-  // deleting we always check for null, so you do not need to test for null here
+  // Deleting the object should always try and ensure that all references to it become null
+  // This will only ever be called if CanDelete return true
+  // Prior to deleting we always check for null, so you do not need to test for null here
   virtual void Delete(const Handle& handle);
 
   // Returns true if the object is deletable, false otherwise
-  // Note that returning false will cause a 'non-deletable object' exception in
-  // the language The default behavior is to return false (assumes the object
-  // can never be explicitly deleted)
+  // Note that returning false will cause a 'non-deletable object' exception in the language
+  // The default behavior is to return false (assumes the object can never be explicitly deleted)
   virtual bool CanDelete(const Handle& handle);
 
-  // Set/Get that this type has been fully constructed (including any native
-  // base classes) This happens only when types are either native or derive from
-  // a native type
+  // Set/Get that this type has been fully constructed (including any native base classes)
+  // This happens only when types are either native or derive from a native type
   virtual void SetNativeTypeFullyConstructed(const Handle& handle, bool value);
   virtual bool GetNativeTypeFullyConstructed(const Handle& handle);
 
-  // Compare two handles with each other; return true if they are equal, false
-  // otherwise The default behavior is to compare the dereferenced pointers
-  // Since this check is only done after the handles have already been
-  // dereferenced, we also pass in the dereferenced byte pointers we received
+  // Compare two handles with each other; return true if they are equal, false otherwise
+  // The default behavior is to compare the dereferenced pointers
+  // Since this check is only done after the handles have already been dereferenced,
+  // we also pass in the dereferenced byte pointers we received
   virtual bool IsEqual(const Handle& handleLhs, const Handle& handleRhs, const ::byte* objectLhs, const ::byte* objectRhs);
 
 public:
@@ -210,14 +199,12 @@ enum Enum
   // Allocates a regular reference counted object (default)
   ReferenceCounted = 0,
 
-  // Allocates a non-reference counted object, however supports safe handle
-  // behavior
+  // Allocates a non-reference counted object, however supports safe handle behavior
   NonReferenceCounted
 };
 }
 
-// This MUST align exactly with the HeapFlags (it gets initialized to whatever
-// the user passes in)
+// This MUST align exactly with the HeapFlags (it gets initialized to whatever the user passes in)
 namespace HeapObjectFlags
 {
 enum Enum
@@ -229,16 +216,13 @@ enum Enum
   NonReferenceCounted = 1,
 
   // Whether or not we completed the entire base class constructor chain
-  // For example, if we throw an exception before fully initializing our base
-  // class, and our base class is native C++ and has a virtual table, then it
-  // would be VERY bad to invoke the C++ destructor if we're not fully
-  // constructed
+  // For example, if we throw an exception before fully initializing our base class, and our base class is native C++
+  // and has a virtual table, then it would be VERY bad to invoke the C++ destructor if we're not fully constructed
   NativeFullyConstructed = 2
 };
 }
 
-// The header exists at the beginning of the allocated object (the Data pointer
-// on ObjectSlot)
+// The header exists at the beginning of the allocated object (the Data pointer on ObjectSlot)
 class ZeroShared ObjectHeader
 {
 public:
@@ -258,25 +242,20 @@ public:
   Uid UniqueId;
 };
 static_assert(sizeof(HeapHandleData) <= HandleUserDataSize,
-              "The HeapHandleData class must fit within Handle::Data (make "
-              "handle Data bigger)");
+              "The HeapHandleData class must fit within Handle::Data (make handle Data bigger)");
 
 // This setting is potentially dangerous!!!
-// Currently we add an extra amount to the end of every allocation to support
-// patching and adding fields If the value were entirely allocated by us (and
-// not pointed to by C++) then it would always be safe to entirely reallocate
-// the memory and continue. However, often times Zilch objects inherit from C++
-// objects and user C++ code does not expect the memory to change pointers,
-// therefore it is unsafe to do Instead, we use this extra buffer space to put
-// parameters (much like edit and continue on the stack) Honestly, we would love
-// to use 'realloc' to attempt to at least resize the memory block, except
-// realloc is allowed to allocate and move memory, which we do NOT want (there
-// is no "fail if it can't resize" C function) We could implement this on a
-// platform basis (such as HeapReAlloc on Windows with the flag of no moving)
+// Currently we add an extra amount to the end of every allocation to support patching and adding fields
+// If the value were entirely allocated by us (and not pointed to by C++) then it would always be safe to
+// entirely reallocate the memory and continue. However, often times Zilch objects inherit from C++ objects
+// and user C++ code does not expect the memory to change pointers, therefore it is unsafe to do
+// Instead, we use this extra buffer space to put parameters (much like edit and continue on the stack)
+// Honestly, we would love to use 'realloc' to attempt to at least resize the memory block, except realloc
+// is allowed to allocate and move memory, which we do NOT want (there is no "fail if it can't resize" C function)
+// We could implement this on a platform basis (such as HeapReAlloc on Windows with the flag of no moving)
 const size_t HeapManagerExtraPatchSize = 256;
 
-// This manages heap objects allocated in the language (including references to
-// heap members via offset)
+// This manages heap objects allocated in the language (including references to heap members via offset)
 class ZeroShared HeapManager : public HandleManager
 {
 public:
@@ -297,13 +276,11 @@ public:
   // A unique ID counter (so we can Assign objects unique IDs...)
   Uid UidCount;
 
-  // When we validate a handle, we first check if the object is live (this is
-  // NOT a pointer to the header) Because a completely different object could
-  // have been allocated in the exact same place (pointer) then we also have to
-  // check the version stored in the handle against the version in the object's
-  // header If the pointer given to 'ObjectToHandle' does not exist here, we
-  // implicitly allocate a new object and invoke the copy constructor on the
-  // object
+  // When we validate a handle, we first check if the object is live (this is NOT a pointer to the header)
+  // Because a completely different object could have been allocated in the exact same place (pointer)
+  // then we also have to check the version stored in the handle against the version in the object's header
+  // If the pointer given to 'ObjectToHandle' does not exist here, we implicitly allocate a new object and
+  // invoke the copy constructor on the object
   HashSet<const ::byte*> LiveObjects;
 };
 
@@ -316,11 +293,9 @@ public:
   ::byte* StackLocation;
 };
 static_assert(sizeof(StackHandleData) <= HandleUserDataSize,
-              "The StackHandleData class must fit within Handle::Data (make "
-              "handle Data bigger)");
+              "The StackHandleData class must fit within Handle::Data (make handle Data bigger)");
 
-// This manages stack objects initialized in the language (including references
-// to stack members via offset)
+// This manages stack objects initialized in the language (including references to stack members via offset)
 class ZeroShared StackManager : public HandleManager
 {
 public:
@@ -332,8 +307,7 @@ public:
   void ObjectToHandle(const ::byte* object, BoundType* type, Handle& handleToInitialize) override;
 };
 
-// This manages insertion of pointers into the language, which are assumed to be
-// global
+// This manages insertion of pointers into the language, which are assumed to be global
 class ZeroShared PointerManager : public HandleManager
 {
 public:
@@ -347,8 +321,7 @@ public:
   void ObjectToHandle(const ::byte* object, BoundType* type, Handle& handleToInitialize) override;
 };
 
-// This manages string nodes for the string class, which is always a reference
-// type
+// This manages string nodes for the string class, which is always a reference type
 class ZeroShared StringManager : public HandleManager
 {
 public:

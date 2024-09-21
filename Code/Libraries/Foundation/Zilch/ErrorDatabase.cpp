@@ -4,7 +4,8 @@
 
 namespace Zilch
 {
-ErrorDatabase::ErrorDatabase(){
+ErrorDatabase::ErrorDatabase()
+{
 // Setup all the errors using generated code
 #include "ErrorDatabaseSetup.inl"
 }
@@ -47,10 +48,9 @@ String ErrorEvent::GetFormattedMessage(MessageFormat::Enum format) const
   StringBuilder builder;
   builder.Append(message);
 
-  // Walk through all locations associated with this error (many errors have no
-  // associated locations, just the first 'Location') Associated locations are
-  // things like duplicate class definitions, where it shows the other location
-  // the class was defined
+  // Walk through all locations associated with this error (many errors have no associated locations, just the first
+  // 'Location') Associated locations are things like duplicate class definitions, where it shows the other location the
+  // class was defined
   for (size_t i = 0; i < this->AssociatedOtherLocations.Size(); ++i)
   {
     // Grab the current location and Append it to the error message
@@ -60,8 +60,7 @@ String ErrorEvent::GetFormattedMessage(MessageFormat::Enum format) const
     builder.Append(seeLocation);
   }
 
-  // Compact the builder into one final string containing everything about the
-  // error
+  // Compact the builder into one final string containing everything about the error
   return builder.ToString();
 }
 } // namespace Zilch

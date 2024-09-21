@@ -8,21 +8,18 @@ namespace Zilch
 {
 namespace Events
 {
-// Sent before we even begin parsing (the library builder should be generally
-// empty) This is an ideal place to add new types to this builder that our
-// parsed Zilch code may depend upon
+// Sent before we even begin parsing (the library builder should be generally empty)
+// This is an ideal place to add new types to this builder that our parsed Zilch code may depend upon
 ZilchDeclareEvent(PreParser, ParseEvent);
 
 // Sent when the parsing engine parses a type
-// This event occurs before any members or functions are parsed, which makes it
-// an ideal place to dynamically add members (such as component properties like
-// .RigidBody or .Transform to a composition)
+// This event occurs before any members or functions are parsed, which makes it an ideal place
+// to dynamically add members (such as component properties like .RigidBody or .Transform to a composition)
 ZilchDeclareEvent(TypeParsed, ParseEvent);
 
-// Sent when the engine finishes syntax checking on the abstract syntax tree
-// (but before code generation) Note: Any types added in this phase will NOT be
-// able to be used by the Zilch scripts Note: None of the code from the library
-// should be executed at this time
+// Sent when the engine finishes syntax checking on the abstract syntax tree (but before code generation)
+// Note: Any types added in this phase will NOT be able to be used by the Zilch scripts
+// Note: None of the code from the library should be executed at this time
 ZilchDeclareEvent(PostSyntaxer, ParseEvent);
 } // namespace Events
 
@@ -45,29 +42,27 @@ class ZeroShared CompletionEntry
 public:
   CompletionEntry();
 
-  // The comparison operator allows us to easily sort entries by name, type,
-  // longest description length, and finally description
+  // The comparison operator allows us to easily sort entries by name, type, longest description length, and finally
+  // description
   bool operator<(const CompletionEntry& rhs) const;
 
   // The name to show in the auto-complete list
   String Name;
 
-  // A description provided by user comments or loaded documentation (for
-  // overloads, this is the first description)
+  // A description provided by user comments or loaded documentation (for overloads, this is the first description)
   String Description;
 
   // The whole type name or delegate signature
   String Type;
 
-  // The shorter version of the type name (limited to
-  // AutoCompleteInfo::ShortTypeNameMaxLength, usually around 20)
+  // The shorter version of the type name (limited to AutoCompleteInfo::ShortTypeNameMaxLength, usually around 20)
   String ShortType;
 
   bool Hidden;
 
-  // When this completion represents a property or function, we pull this
-  // CodeUserData Note that if we remove duplicates upon request, then this may
-  // only be the first one sorted by the 'operator<' above
+  // When this completion represents a property or function, we pull this CodeUserData
+  // Note that if we remove duplicates upon request, then this
+  // may only be the first one sorted by the 'operator<' above
   const void* CodeUserData;
   u64 CodeUserDataU64;
 };
@@ -82,26 +77,23 @@ public:
   // The name of the parameter
   String Name;
 
-  // The parameter's description (or empty if it doesn't have one, which is very
-  // common)
+  // The parameter's description (or empty if it doesn't have one, which is very common)
   String Description;
 
   // The type of the parameter stringified
   String Type;
 
-  // The shorter version of the parameter's type name (limited to
-  // AutoCompleteInfo::ShortTypeNameMaxLength, usually around 20)
+  // The shorter version of the parameter's type name (limited to AutoCompleteInfo::ShortTypeNameMaxLength, usually
+  // around 20)
   String ShortType;
 };
 
-// When showing all the overloads for a function call, this is basically the
-// signature and description Note that we don't sort overloads because their
-// order is actually important to Zilch
+// When showing all the overloads for a function call, this is basically the signature and description
+// Note that we don't sort overloads because their order is actually important to Zilch
 class ZeroShared CompletionOverload
 {
 public:
-  // All the parameters in the overload (with types and optional
-  // names/descriptions)
+  // All the parameters in the overload (with types and optional names/descriptions)
   Array<CompletionParameter> Parameters;
 
   // The description for this overload
@@ -110,12 +102,11 @@ public:
   // The return type of the overload (or empty for Void)
   String ReturnType;
 
-  // A shortened version of the return type (or empty for Void, limited to
-  // AutoCompleteInfo::ShortTypeNameMaxLength, usually around 20)
+  // A shortened version of the return type (or empty for Void, limited to AutoCompleteInfo::ShortTypeNameMaxLength,
+  // usually around 20)
   String ReturnShortType;
 
-  // The entire stringified signature of the overload in standard delegate
-  // format (with parameter names if applicable)
+  // The entire stringified signature of the overload in standard delegate format (with parameter names if applicable)
   String Signature;
 };
 
@@ -129,70 +120,59 @@ public:
   // Constructor
   AutoCompleteInfo();
 
-  // Generates a short type name from a full type name by taking the first word
-  // out of the type If the name is still too long, then it truncates it with a
-  // trailing elipsis '...'
+  // Generates a short type name from a full type name by taking the first word out of the type
+  // If the name is still too long, then it truncates it with a trailing elipsis '...'
   static String GetShortTypeName(StringParam fullTypeName);
 
-  // By default, we remove all duplicate completion entries (we sort by
-  // name/type and we keep ones with the longest description)
+  // By default, we remove all duplicate completion entries (we sort by name/type and we keep ones with the longest
+  // description)
   bool RemoveDuplicateNameEntries;
 
   // Whether the completion query was successful at finding anything
   bool Success;
 
-  // The nearest type we found to the left of the cursor (can be null if we were
-  // unable to find it)
+  // The nearest type we found to the left of the cursor (can be null if we were unable to find it)
   Type* NearestType;
 
-  // If the value we're accessing is a literal value (such as "hello", 5, 3.3,
-  // true, false, etc) If the NearestType is Integer and its a literal and the
-  // user is pressing '.', most IDEs will ignore this and not show auto-complete
-  // The reason is that the user may be typing a Real value in after the '.'
-  // (eg 5.678)
+  // If the value we're accessing is a literal value (such as "hello", 5, 3.3, true, false, etc)
+  // If the NearestType is Integer and its a literal and the user is pressing '.', most IDEs will ignore this and not
+  // show auto-complete The reason is that the user may be typing a Real value in after the '.' (eg 5.678)
   bool IsLiteral;
 
   // Whether or not we were accessing statics or instance members of the type
   bool IsStatic;
 
-  // If we're pressing . in the middle of an already existing expression
-  // 'this.Lives' then we'll get the right hand side of what is already filled
-  // out, specifically 'Lives'.
+  // If we're pressing . in the middle of an already existing expression 'this.Lives' then
+  // we'll get the right hand side of what is already filled out, specifically 'Lives'.
   String PartialMemberName;
 
-  // A convenient array of completion names and descriptions to show in any text
-  // editor (sorted by name)
+  // A convenient array of completion names and descriptions to show in any text editor (sorted by name)
   Array<CompletionEntry> CompletionEntries;
 
   // The name of the function when overloads are involved
   // If the overloads are generated from a delegate, the name will be "delegate"
   String FunctionName;
 
-  // If this is a function call, then this will contain which argument index
-  // we're on, or -1 if it's not valid
+  // If this is a function call, then this will contain which argument index we're on, or -1 if it's not valid
   int CallArgumentIndex;
 
-  // When performing a function call these are all the possible overloads that
-  // we should show (also works on single delegates) This includes descriptions,
-  // parameter names, and the types
+  // When performing a function call these are all the possible overloads that we should show (also works on single
+  // delegates) This includes descriptions, parameter names, and the types
   Array<CompletionOverload> CompletionOverloads;
 
-  // If any text editor is incapable of showing an overload resolution list
-  // (with classic up down arrows to change between overloads) then the editor
-  // is recommended to show this the overload at this index This will attempt to
-  // choose the first overload with a description, or it will choose the first
-  // overload (will be -1 if there are no overloads)
+  // If any text editor is incapable of showing an overload resolution list (with classic up down arrows to change
+  // between overloads) then the editor is recommended to show this the overload at this index This will attempt to
+  // choose the first overload with a description, or it will choose the first overload (will be -1 if there are no
+  // overloads)
   int BestCompletionOverload;
 
-  // In the case that we were accessing overloaded functions, these are our
-  // options
+  // In the case that we were accessing overloaded functions, these are our options
   FunctionArray FunctionOverloads;
 
   // We build an incomplete library to keep references to types alive
   LibraryRef IncompleteLibrary;
 
-  // Turns the auto complete information to a Json format (typically used for
-  // reading by other external applications)
+  // Turns the auto complete information to a Json format (typically used for reading by other external applications)
   String GetJson();
 };
 
@@ -218,12 +198,10 @@ public:
   ReflectionObject* DefinedObject;
 
   // The name is only ever set for members or variables
-  // This is effectively used in cases where we would have a ':' to specify a
-  // type
+  // This is effectively used in cases where we would have a ':' to specify a type
   String Name;
 
-  // The type of a member, variable, class/struct definition, or of any
-  // expression
+  // The type of a member, variable, class/struct definition, or of any expression
   Type* ResolvedType;
 
   // An automatically generated tooltip to show to users
@@ -252,8 +230,7 @@ public:
   // Returns true if it succeeded, false otherwise
   bool AddCodeFromFile(StringParam fileName, void* codeUserData = nullptr);
 
-  // Clears out the project (removes all code strings/files, plugin directories,
-  // plugin files, etc)
+  // Clears out the project (removes all code strings/files, plugin directories, plugin files, etc)
   void Clear();
 
   // Reads a text file into a string, returns true on success, false on failure
@@ -287,23 +264,19 @@ public:
   // Compiles the project into a single library
   LibraryRef Compile(StringParam libraryName, Module& dependencies, EvaluationMode::Enum evaluation);
 
-  // Attempt to compile the code in tolerant mode, and return the type nearest
-  // to the left hand side of a given cursor This function is generally used for
-  // auto-completion lists and will attempt to return the type left of the
-  // cursor The minimum code you can provide to the project is a single class
-  // (the one that the cursor is inside of, typically the whole file being
-  // edited) The old library can be a nullptr, however it is generally
-  // recommended to provide it if it has previously been compiled since it will
-  // allow the auto-completer to resolve local types too
+  // Attempt to compile the code in tolerant mode, and return the type nearest to the left hand side of a given cursor
+  // This function is generally used for auto-completion lists and will attempt to return the type left of the cursor
+  // The minimum code you can provide to the project is a single class (the one that the cursor is inside of, typically
+  // the whole file being edited) The old library can be a nullptr, however it is generally recommended to provide it if
+  // it has previously been compiled since it will allow the auto-completer to resolve local types too
   void GetAutoCompleteInfo(Module& dependencies,
                            size_t cursorPosition,
                            StringParam cursorOrigin,
                            AutoCompleteInfo& resultOut);
 
-  // For every usage of an identifier there is a location where we defined that
-  // identifier (variable definiton, member, type, etc) This gets the definition
-  // location (and the actual resulting definition object) of whatever is under
-  // the cursor
+  // For every usage of an identifier there is a location where we defined that identifier (variable definiton, member,
+  // type, etc) This gets the definition location (and the actual resulting definition object) of whatever is under the
+  // cursor
   void
   GetDefinitionInfo(Module& dependencies, size_t cursorPosition, StringParam cursorOrigin, CodeDefinition& resultOut);
 
@@ -316,17 +289,15 @@ public:
   // when this object is destroyed (must be read in the order it's written)
   mutable DestructibleBuffer ComplexUserData;
 
-  // If a variable needs to generate a unique name that will be guaranteed to
-  // never conflict with any other local variables within the function, then we
-  // use this counter as a unique id
+  // If a variable needs to generate a unique name that will be guaranteed to never conflict with
+  // any other local variables within the function, then we use this counter as a unique id
   size_t VariableUniqueIdCounter;
 
   // Setup the location and the name for a found definition
   void InitializeDefinitionInfo(CodeDefinition& resultOut, ReflectionObject* object);
 
 private:
-  // Returns the name of the type, but prepends 'class' or 'struct' for
-  // BoundTypes
+  // Returns the name of the type, but prepends 'class' or 'struct' for BoundTypes
   static String GetFriendlyTypeName(Type* type);
 
   // Internal function called by the above 'GetDefinitionInfo'
@@ -341,8 +312,7 @@ private:
                                    StringParam cursorOrigin,
                                    AutoCompleteInfo& resultOut);
 
-  // Creates a completion for an overload using only the delegate type
-  // (generally used when performing a call)
+  // Creates a completion for an overload using only the delegate type (generally used when performing a call)
   CompletionOverload& AddAutoCompleteOverload(AutoCompleteInfo& info, DelegateType* delegateType);
 
 private:
@@ -352,8 +322,7 @@ private:
   // A special constant that means we don't have a cursor
   static const size_t NoCursor = (size_t)-1;
 
-  // When attempting to generate code-completion, this is the cursor position
-  // for the user
+  // When attempting to generate code-completion, this is the cursor position for the user
   String CursorOrigin;
   size_t CursorPosition;
 

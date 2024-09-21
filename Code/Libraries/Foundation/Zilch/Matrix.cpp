@@ -4,8 +4,7 @@
 
 namespace Zilch
 {
-// Helper functions to Index into a matrix while allowing them to be row or
-// column basis
+// Helper functions to Index into a matrix while allowing them to be row or column basis
 ::byte* IndexIntoMatrix(::byte* memory, size_t indexX, size_t indexY, size_t sizeX, size_t sizeY, size_t elementSize)
 {
 #if ColumnBasis == 1
@@ -30,18 +29,16 @@ bool ValidateMatrixIndices(size_t x, size_t y, size_t sizeX, size_t sizeY, Call&
   // Make sure the indices are within range
   if (y >= sizeY)
   {
-    call.GetState()->ThrowException(report,
-                                    String::Format("The y index used to access a component of a matrix was "
-                                                   "out of range [0-%d]",
-                                                   sizeY - 1));
+    call.GetState()->ThrowException(
+        report,
+        String::Format("The y index used to access a component of a matrix was out of range [0-%d]", sizeY - 1));
     return false;
   }
   if (x >= sizeX)
   {
-    call.GetState()->ThrowException(report,
-                                    String::Format("The x index used to access a component of a matrix was "
-                                                   "out of range [0-%d]",
-                                                   sizeX - 1));
+    call.GetState()->ThrowException(
+        report,
+        String::Format("The x index used to access a component of a matrix was out of range [0-%d]", sizeX - 1));
     return false;
   }
 
@@ -217,10 +214,9 @@ void MatrixGetByIndex(Call& call, ExceptionReport& report)
   size_t totalCount = userData.SizeX * userData.SizeY;
   if (index >= (Integer)totalCount)
   {
-    call.GetState()->ThrowException(report,
-                                    String::Format("The index used to access a component of a matrix was "
-                                                   "out of the range [0-%d]",
-                                                   totalCount - 1));
+    call.GetState()->ThrowException(
+        report,
+        String::Format("The index used to access a component of a matrix was out of the range [0-%d]", totalCount - 1));
     return;
   }
 
@@ -246,10 +242,9 @@ void MatrixSetByIndex(Call& call, ExceptionReport& report)
   size_t totalCount = userData.SizeX * userData.SizeY;
   if (index >= (Integer)totalCount)
   {
-    call.GetState()->ThrowException(report,
-                                    String::Format("The index used to access a component of a matrix was "
-                                                   "out of the range [0-%d]",
-                                                   totalCount - 1));
+    call.GetState()->ThrowException(
+        report,
+        String::Format("The index used to access a component of a matrix was out of the range [0-%d]", totalCount - 1));
     return;
   }
 
@@ -275,9 +270,9 @@ void MatrixGetVector(Call& call, ExceptionReport& report)
 
   if (indexY < 0 || indexY >= (Integer)userData.SizeY)
   {
-    call.GetState()->ThrowException(report,
-                                    String::Format("The y index used to access a component of a matrix was "
-                                                   "out of range [0-%d]",
+    call.GetState()->ThrowException(
+        report,
+        String::Format("The y index used to access a component of a matrix was out of range [0-%d]",
                                                    userData.SizeY - 1));
     return;
   }
@@ -309,9 +304,9 @@ void MatrixSetVector(Call& call, ExceptionReport& report)
 
   if (indexY < 0 || indexY >= (Integer)userData.SizeY)
   {
-    call.GetState()->ThrowException(report,
-                                    String::Format("The y index used to access a component of a matrix was "
-                                                   "out of range [0-%d]",
+    call.GetState()->ThrowException(
+        report,
+        String::Format("The y index used to access a component of a matrix was out of range [0-%d]",
                                                    userData.SizeY - 1));
     return;
   }
@@ -405,8 +400,8 @@ void RealMatrixInverse(Call& call, ExceptionReport& report)
 
 void MatrixEqual(Call& call, ExceptionReport& report)
 {
-  // This should eventually be the innards of operator== and return a bool
-  // matrix, but for usage in unit tests this is implemented to verify results
+  // This should eventually be the innards of operator== and return a bool matrix,
+  // but for usage in unit tests this is implemented to verify results
   MatrixUserData& userData = call.GetFunction()->ComplexUserData.ReadObject<MatrixUserData>(0);
   Core& core = Core::GetInstance();
   BoundType* elementType = core.MatrixElementTypes[userData.ElementTypeIndex];
@@ -461,8 +456,8 @@ void MatrixMultiply(Call& call, ExceptionReport& report)
   Core& core = Core::GetInstance();
   BoundType* elementType = core.MatrixElementTypes[userData.ElementTypeIndex];
 
-  // We flip the matrix order in the function so it reads nicer (Transform(the,
-  // by)) but to do the math we need to flip them back to the right order
+  // We flip the matrix order in the function so it reads nicer (Transform(the, by))
+  // but to do the math we need to flip them back to the right order
   ::byte* matrix0 = call.GetParameterUnchecked(0);
   ::byte* matrix1 = call.GetParameterUnchecked(1);
   ::byte* returnMatrix = call.GetReturnUnchecked();
@@ -473,8 +468,7 @@ void MatrixMultiply(Call& call, ExceptionReport& report)
     {
       ::byte* returnElement = IndexIntoMatrix(
           returnMatrix, matrix1X, matrix0Y, userData.Matrix1SizeX, userData.Matrix1SizeY, elementType->Size);
-      // To properly accumulate the multiplications the initial value first
-      // needs to be zeroed out
+      // To properly accumulate the multiplications the initial value first needs to be zeroed out
       memset(returnElement, 0, elementType->Size);
 
       for (size_t matrix1Y = 0; matrix1Y < userData.Matrix1SizeY; ++matrix1Y)
@@ -489,8 +483,8 @@ void MatrixMultiply(Call& call, ExceptionReport& report)
             matrix1, matrix1X, matrix1Y, userData.Matrix1SizeX, userData.Matrix1SizeY, elementType->Size);
 
         // We need to accumulate the multiplications of matrix0 and matrix1 but
-        // we don't know what the inner type is or how to perform add or
-        // multiply, so call a function that knows how to add our current type
+        // we don't know what the inner type is or how to perform add or multiply,
+        // so call a function that knows how to add our current type
         core.TypeMultiplyAddFunctions[userData.ElementTypeIndex](returnElement, matrix0Element, matrix1Element);
       }
     }
@@ -505,8 +499,8 @@ void MatrixMultiplyPoint(Call& call, ExceptionReport& report)
   Core& core = Core::GetInstance();
   BoundType* elementType = core.MatrixElementTypes[userData.ElementTypeIndex];
 
-  // We flip the matrix order in the function so it reads nicer (Transform(the,
-  // by)) but to do the math we need to flip them back to the right order
+  // We flip the matrix order in the function so it reads nicer (Transform(the, by))
+  // but to do the math we need to flip them back to the right order
   Real* matrix0 = (Real*)call.GetParameterUnchecked(0);
   Real* vector0 = (Real*)call.GetParameterUnchecked(1);
   Real* returnVector = (Real*)call.GetReturnUnchecked();
@@ -518,8 +512,7 @@ void MatrixMultiplyPoint(Call& call, ExceptionReport& report)
   {
     Real* returnElement = (Real*)IndexIntoMatrix(
         (::byte*)tempReturnVector, 0, matrix0Y, userData.Matrix1SizeX, userData.Matrix1SizeY, elementType->Size);
-    // To properly accumulate the multiplications the initial value first needs
-    // to be zeroed out
+    // To properly accumulate the multiplications the initial value first needs to be zeroed out
     memset(returnElement, 0, elementType->Size);
 
     for (size_t vector0Y = 0; vector0Y < userData.Matrix1SizeY; ++vector0Y)
@@ -557,8 +550,8 @@ void MatrixMultiplyPointNoDivide(Call& call, ExceptionReport& report)
   Core& core = Core::GetInstance();
   BoundType* elementType = core.MatrixElementTypes[userData.ElementTypeIndex];
 
-  // We flip the matrix order in the function so it reads nicer (Transform(the,
-  // by)) but to do the math we need to flip them back to the right order
+  // We flip the matrix order in the function so it reads nicer (Transform(the, by))
+  // but to do the math we need to flip them back to the right order
   Real* matrix0 = (Real*)call.GetParameterUnchecked(0);
   Real* vector0 = (Real*)call.GetParameterUnchecked(1);
 
@@ -568,8 +561,7 @@ void MatrixMultiplyPointNoDivide(Call& call, ExceptionReport& report)
   {
     Real* returnElement = (Real*)IndexIntoMatrix(
         (::byte*)tempReturnVector, 0, matrix0Y, userData.Matrix1SizeX, userData.Matrix1SizeY, elementType->Size);
-    // To properly accumulate the multiplications the initial value first needs
-    // to be zeroed out
+    // To properly accumulate the multiplications the initial value first needs to be zeroed out
     memset(returnElement, 0, elementType->Size);
 
     for (size_t vector0Y = 0; vector0Y < userData.Matrix1SizeY; ++vector0Y)
@@ -610,8 +602,7 @@ void GenerateMatrixMembers(LibraryBuilder& builder, BoundType* type, MatrixUserD
       nameBuilder.Append(componentNames[sizeY]);
       nameBuilder.Append(componentNames[sizeX]);
 
-      // Get the offset into the matrix structure for the current member (by
-      // offsetting from 0)
+      // Get the offset into the matrix structure for the current member (by offsetting from 0)
       size_t offset = (size_t)IndexIntoMatrix(
           (::byte*)nullptr, sizeX, sizeY, matrixUserData.SizeX, matrixUserData.SizeY, elementType->Size);
       builder.AddBoundField(type, nameBuilder.ToString(), elementType, offset, MemberOptions::None);
@@ -657,8 +648,7 @@ void CreateMatrixTypes(LibraryBuilder& builder)
         String fullyQualifiedName = typeNameBuilder.ToString();
         size_t matrixSize = elementType->Size * sizeX * sizeY;
 
-        // BoundType created elsewhere for Real2x2/Real3x3/Real4x4 for ZeroZilch
-        // binding
+        // BoundType created elsewhere for Real2x2/Real3x3/Real4x4 for ZeroZilch binding
         BoundType* matrixType = nullptr;
         if (sizeX == 2 && sizeY == 2 && elementType == ZilchTypeId(Real))
           matrixType = ZilchTypeId(Real2x2);
@@ -678,8 +668,7 @@ void CreateMatrixTypes(LibraryBuilder& builder)
 
         matrixType->ToStringFunction = MatrixToString;
 
-        // Bind all of the functions that are only for the matrix with its own
-        // type
+        // Bind all of the functions that are only for the matrix with its own type
         Function* f = builder.AddBoundDefaultConstructor(matrixType, MatrixDefaultConstructor);
         f->ComplexUserData.WriteObject(matrixUserData);
         ParameterArray constructorParameters;
@@ -695,8 +684,7 @@ void CreateMatrixTypes(LibraryBuilder& builder)
         f = builder.AddBoundConstructor(matrixType, MatrixConstructor, constructorParameters);
         f->ComplexUserData.WriteObject(matrixUserData);
 
-        // Add a splat constructor (given 1 parameter set it across all
-        // elements)
+        // Add a splat constructor (given 1 parameter set it across all elements)
         f = builder.AddBoundConstructor(matrixType, MatrixSplatConstructor, OneParameter(elementType));
         f->ComplexUserData.WriteObject(matrixUserData);
 
@@ -744,11 +732,9 @@ void CreateMatrixTypes(LibraryBuilder& builder)
                                      core.VoidType,
                                      FunctionOptions::None);
         f->ComplexUserData.WriteObject(matrixUserData);
-        // Don't actually want to have this equal function bound, but for unit
-        // testing it can be nice
-        // f = builder.AddBoundFunction(matrixType, "Equal", MatrixEqual,
-        // OneParameter(matrixType), core.BooleanType, FunctionOptions::None);
-        // f->ComplexUserData.WriteObject(matrixUserData);
+        // Don't actually want to have this equal function bound, but for unit testing it can be nice
+        // f = builder.AddBoundFunction(matrixType, "Equal", MatrixEqual, OneParameter(matrixType), core.BooleanType,
+        // FunctionOptions::None); f->ComplexUserData.WriteObject(matrixUserData);
 
         // Bind properties
         Property* p = builder.AddBoundGetterSetter(
@@ -817,8 +803,8 @@ void CreateMatrixTypes(LibraryBuilder& builder)
   fn->Description = determinantDescription;
 
   // Add the inverse functions for only square real matrices
-  String invertDescription = ZilchDocumentString("Computes the inverse of the given matrix if it "
-                                                 "exists. Undefined if the matrix is uninvertible");
+  String invertDescription = ZilchDocumentString(
+      "Computes the inverse of the given matrix if it exists. Undefined if the matrix is uninvertible");
   fn = builder.AddBoundFunction(core.MathType,
                                 "Invert",
                                 RealMatrixInverse<Math::Matrix2>,
@@ -843,17 +829,15 @@ void CreateMatrixTypes(LibraryBuilder& builder)
 
   // Operations on one matrix that need to reference different matrix
   // types (only need a loop over x and y dimensions plus types)
-  String transposeDescription =
-      ZilchDocumentString("Returns the transposed matrix. A transposed matrix is one where all "
-                          "rows are turned into columns, i.e. A^T[j][i] = A[i][j]");
+  String transposeDescription = ZilchDocumentString("Returns the transposed matrix. A transposed matrix is one where "
+                                                    "all rows are turned into columns, i.e. A^T[j][i] = A[i][j]");
   for (size_t typeIndex = 0; typeIndex < Core::MaxMatrixElementTypes; ++typeIndex)
   {
     for (size_t sizeY = Core::MinMatrixComponents; sizeY <= Core::MaxMatrixComponents; ++sizeY)
     {
       for (size_t sizeX = Core::MinMatrixComponents; sizeX <= Core::MaxMatrixComponents; ++sizeX)
       {
-        // Get the two matrix types (as a transpose can have different
-        // dimensions)
+        // Get the two matrix types (as a transpose can have different dimensions)
         BoundType* matrixType = matrixTypes[typeIndex][sizeY - 1][sizeX - 1];
         BoundType* resultType = matrixTypes[typeIndex][sizeX - 1][sizeY - 1];
 
@@ -868,10 +852,9 @@ void CreateMatrixTypes(LibraryBuilder& builder)
 
   // Iterate over matrices that share one common dimension for multiplication
   // (but skip bools because boolean matrix multiplication is weird...)
-  String matrixMultiplyDescription = ZilchDocumentString("Multiplies the two matrices together. Matrix "
-                                                         "multiplication is in right-to-left order, "
-                                                         "that is if the matrices represent transformations, "
-                                                         "then 'the' is applied first followed by 'by'.");
+  String matrixMultiplyDescription = ZilchDocumentString(
+      "Multiplies the two matrices together. Matrix multiplication is in right-to-left order, "
+      "that is if the matrices represent transformations, then 'the' is applied first followed by 'by'.");
   for (size_t typeIndex = 0; typeIndex < Core::MaxMatrixElementTypes - 1; ++typeIndex)
   {
     for (size_t matrixASizeY = Core::MinMatrixComponents; matrixASizeY <= Core::MaxMatrixComponents; ++matrixASizeY)
@@ -918,8 +901,7 @@ void CreateMatrixTypes(LibraryBuilder& builder)
   {
     BoundType* matrixType = matrixTypes[VectorScalarTypes::Real][matrixSize - 1][matrixSize - 1];
 
-    // Generate the MultiplyPoint (with the vector Real(N-1) version that
-    // assumes 1 as the last element)
+    // Generate the MultiplyPoint (with the vector Real(N-1) version that assumes 1 as the last element)
     MatrixTransformUserData transformUserData =
         MatrixTransformUserData(matrixSize, matrixSize, 1, matrixSize - 1, VectorScalarTypes::Real);
     BoundType* inVectorType = core.RealTypes[matrixSize - 2];
@@ -931,11 +913,10 @@ void CreateMatrixTypes(LibraryBuilder& builder)
                                            resultVectorType,
                                            FunctionOptions::Static);
     f->ComplexUserData.WriteObject(transformUserData);
-    f->Description = ZilchDocumentString("Multiplies the given vector as a point while "
-                                         "performing the homogeneous division");
+    f->Description =
+        ZilchDocumentString("Multiplies the given vector as a point while performing the homogeneous division");
 
-    // Generate the MultiplyPointWithNoDivide (with the vector Real(N-1) version
-    // that assumes 1 as the last element)
+    // Generate the MultiplyPointWithNoDivide (with the vector Real(N-1) version that assumes 1 as the last element)
     transformUserData = MatrixTransformUserData(matrixSize, matrixSize, 1, matrixSize - 1, VectorScalarTypes::Real);
     inVectorType = core.RealTypes[matrixSize - 2];
     resultVectorType = core.RealTypes[matrixSize - 2];
@@ -946,11 +927,10 @@ void CreateMatrixTypes(LibraryBuilder& builder)
                                  resultVectorType,
                                  FunctionOptions::Static);
     f->ComplexUserData.WriteObject(transformUserData);
-    f->Description = ZilchDocumentString("Multiplies the given vector as a point without "
-                                         "performing the homogeneous division");
+    f->Description =
+        ZilchDocumentString("Multiplies the given vector as a point without performing the homogeneous division");
 
-    // Also generate the MultiplyNormal (with the vector Real(N-1) version that
-    // assumes 0 as the last element)
+    // Also generate the MultiplyNormal (with the vector Real(N-1) version that assumes 0 as the last element)
     transformUserData = MatrixTransformUserData(matrixSize, matrixSize, 1, matrixSize - 1, VectorScalarTypes::Real);
     inVectorType = core.RealTypes[matrixSize - 2];
     resultVectorType = core.RealTypes[matrixSize - 2];

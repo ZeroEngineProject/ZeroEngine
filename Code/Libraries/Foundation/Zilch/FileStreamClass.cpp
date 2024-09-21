@@ -18,8 +18,7 @@ ZilchDefineExternalBaseType(FileMode::Enum, TypeCopyMode::ValueType, builder, ty
 
 ZilchDefineType(FileStreamClass, builder, type)
 {
-  // Even though this is an interface, because it is native, it must have a
-  // constructor that can be implemented
+  // Even though this is an interface, because it is native, it must have a constructor that can be implemented
   ZilchFullBindDestructor(builder, type, FileStreamClass);
   ZilchFullBindConstructor(builder, type, FileStreamClass, "filePath, mode", StringParam, FileMode::Enum);
   ZilchFullBindConstructor(builder, type, FileStreamClass, nullptr);
@@ -74,9 +73,8 @@ FileStreamClass::FileStreamClass(StringParam filePath, FileMode::Enum mode)
   if (write)
     this->Capabilities = (StreamCapabilities::Enum)(this->Capabilities | StreamCapabilities::Write);
 
-  // Create the path if it doesn't exist and we're in a writing file mode (all
-  // of these should create the file according to the windows standard but
-  // currently ReadWrite might not actually do this)
+  // Create the path if it doesn't exist and we're in a writing file mode (all of these should create the
+  // file according to the windows standard but currently ReadWrite might not actually do this)
   if (zeroMode == Zero::FileMode::Write || zeroMode == Zero::FileMode::ReadWrite || zeroMode == Zero::FileMode::Append)
   {
     String directoryPath = Zero::FilePath::GetDirectoryPath(filePath);

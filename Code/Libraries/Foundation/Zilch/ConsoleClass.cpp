@@ -419,9 +419,8 @@ void Console::DumpValue(
         if (property->IsStatic || property->IsHidden)
           continue;
 
-        // TEMPORARY - Because we do not have the ExecutableState in bound C++
-        // functions, we can only print out fields (because we know their type
-        // and know where they exist in memory
+        // TEMPORARY - Because we do not have the ExecutableState in bound C++ functions, we can only
+        // print out fields (because we know their type and know where they exist in memory
         if (Field* field = Type::DynamicCast<Field*>(property))
         {
           // Write tabs up to the current depth

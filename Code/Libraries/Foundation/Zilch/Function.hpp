@@ -20,10 +20,9 @@ public:
   // Validates that the given data is valid (returns false if it's invalid)
   bool Validate();
 
-  // Is this method defined natively as a virtual function? (was it bound as a
-  // virtual function?) If so, then this represents the index into the virtual
-  // table for the C++ type If this function is not natively virtual, it will be
-  // set to 'NonVirtual'
+  // Is this method defined natively as a virtual function? (was it bound as a virtual function?)
+  // If so, then this represents the index into the virtual table for the C++ type
+  // If this function is not natively virtual, it will be set to 'NonVirtual'
   size_t Index;
 
   // In the case that this function is considered to be virtual
@@ -31,9 +30,8 @@ public:
   // from a native virtual call (or null if it's non-virtual)
   TypeBinding::VirtualTableFn Thunk;
 
-  // In order to map a native function thunk back to it's Zilch function, we
-  // need every bound virtual function to have it's own guid that we use in a
-  // map
+  // In order to map a native function thunk back to it's Zilch function, we need
+  // every bound virtual function to have it's own guid that we use in a map
   GuidType Guid;
 };
 
@@ -76,8 +74,7 @@ public:
   String ToString() const;
 
   // Gets the code location from a given program counter location
-  // If the program counter is for a native function (or non active), this will
-  // return null
+  // If the program counter is for a native function (or non active), this will return null
   CodeLocation* GetCodeLocationFromProgramCounter(size_t programCounter);
 
   // Allocate an argumentless opcode
@@ -100,11 +97,10 @@ public:
 
     // Make sure this opcode location is valid...
     ErrorIf(debugLocation.Origin == UnknownOrigin,
-            "A code location given for an opcode was from an unknown location "
-            "(opcode always gets generated from real code!)");
+            "A code location given for an opcode was from an unknown location (opcode always gets generated from real "
+            "code!)");
 
-    // For debugging, we need to know from an opcode index where it originated
-    // from
+    // For debugging, we need to know from an opcode index where it originated from
     this->OpcodeLocationToCodeLocation.Insert(compactedIndex, debugLocation);
 
     // We use the compacted indices for debugging
@@ -151,8 +147,7 @@ public:
   // Create a delegate that is castable / callable
   Any CreateDelegate(const Any& instance);
 
-  // Attempts to invoke a function with the specified arguments, or throws an
-  // exception
+  // Attempts to invoke a function with the specified arguments, or throws an exception
   Any Invoke(const Any& instance, ArrayClass<Any>* arguments = nullptr);
 
   // Computes the hash and stores it
@@ -162,19 +157,16 @@ public:
   // A pre-computed hash for the function
   GuidType Hash;
 
-  // Documentation for each of the parameters (should match the number of
-  // parameters in the DelegateType)
+  // Documentation for each of the parameters (should match the number of parameters in the DelegateType)
   Array<String> ParameterDescriptions;
 
-  // The bound function is the function that gets called when this function is
-  // invoked
+  // The bound function is the function that gets called when this function is invoked
   BoundFn BoundFunction;
 
-  // When we're binding a native constructor, we need our actual 'BoundFunction'
-  // to run special code that lets us know the object reached native
-  // construction We store the actual constructor here (in that case, the above
-  // BoundFunction just invokes the NativeConstructor) This will be initialized
-  // in AddBoundConstructor on the LibraryBuilder
+  // When we're binding a native constructor, we need our actual 'BoundFunction' to run
+  // special code that lets us know the object reached native construction
+  // We store the actual constructor here (in that case, the above BoundFunction just invokes the NativeConstructor)
+  // This will be initialized in AddBoundConstructor on the LibraryBuilder
   BoundFn NativeConstructor;
 
   // The variables associated with this function
@@ -184,17 +176,16 @@ public:
   DelegateType* FunctionType;
 
   // In order to invoke this function, a given amount of stack space is required
-  // For example, all the parameters need space on the stack, and the return
-  // also needs space Moreover, any local variables in a compiled function also
-  // need space on the stack For a user bound function, the required space only
-  // includes the parameters and returns, because any locals they will store
-  // will be on the actual C++ stack, not on ours
+  // For example, all the parameters need space on the stack, and the return also needs space
+  // Moreover, any local variables in a compiled function also need space on the stack
+  // For a user bound function, the required space only includes the parameters and returns,
+  // because any locals they will store will be on the actual C++ stack, not on ours
   size_t RequiredStackSpace;
 
   // A pointer the 'this' variable (or null if it is static)
   // Note that the current calling convention is that the this pointer is the
-  // last parameter passed on the stack, which means this should point to the
-  // end of the required stack space
+  // last parameter passed on the stack, which means this should point to the end of
+  // the required stack space
   Variable* This;
 
   // Store the parent library from which the function originated
@@ -205,8 +196,7 @@ public:
   // Any information related to this function being native and virtual
   NativeVirtualInfo NativeVirtual;
 
-  // If this function is a property getter or setter, then this will point back
-  // to the property that owns us
+  // If this function is a property getter or setter, then this will point back to the property that owns us
   Property* OwningProperty;
 
   // If this function is virtual or not (whether it can be overridden)
@@ -225,8 +215,7 @@ public:
   // Store a list of pointers to opcodes for debugging purposes
   Array<size_t> OpcodeCompactedIndices;
 
-  // Maps from an opcode offset to a code location (so we can determine where we
-  // are in debugging)
+  // Maps from an opcode offset to a code location (so we can determine where we are in debugging)
   HashMap<size_t, CodeLocation> OpcodeLocationToCodeLocation;
 
 #  ifdef ZeroDebug

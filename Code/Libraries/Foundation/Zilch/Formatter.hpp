@@ -6,9 +6,8 @@
 
 namespace Zilch
 {
-// Lets us define what lines tokens will go on, or if it relies upon a default
-// setting Used mostly for specifying styles of curley braces (eg. K&R style,
-// Allman style, etc)
+// Lets us define what lines tokens will go on, or if it relies upon a default setting
+// Used mostly for specifying styles of curley braces (eg. K&R style, Allman style, etc)
 namespace LineStyle
 {
 enum Enum
@@ -20,8 +19,7 @@ enum Enum
 };
 }
 
-// Lets us define whether we indent in certain places, or if it relies upon a
-// default setting
+// Lets us define whether we indent in certain places, or if it relies upon a default setting
 namespace IndentStyle
 {
 enum Enum
@@ -32,8 +30,8 @@ enum Enum
 };
 }
 
-// Lets us define if we want spaces before, after, or around both sides of a
-// token, or if it relies upon a default setting
+// Lets us define if we want spaces before, after, or around both sides of a token,
+// or if it relies upon a default setting
 namespace SpaceStyle
 {
 enum Enum
@@ -60,39 +58,31 @@ public:
   // How many tabs or spaces we use when indenting (default: 2)
   size_t Identation;
 
-  // Will remove whitespace from empty lines or fill whitespace if set to false
-  // (default: false)
+  // Will remove whitespace from empty lines or fill whitespace if set to false (default: false)
   bool StripWhiteSpaceFromEmptyLines;
 
-  // Whether we automatically indent after scopes, unless we override specific
-  // cases (default: Indented)
+  // Whether we automatically indent after scopes, unless we override specific cases (default: Indented)
   IndentStyle::Enum IndentGlobalDefault;
 
-  // Whether functions, properties, and fields get indented inside a class
-  // (default: UseGlobalDefault)
+  // Whether functions, properties, and fields get indented inside a class (default: UseGlobalDefault)
   IndentStyle::Enum IndentClassContents;
 
   // Whether values inside an enum are indented (default: UseGlobalDefault)
   IndentStyle::Enum IndentEnumContents;
 
-  // Whether statements inside a function's scope get indented (default:
-  // UseGlobalDefault)
+  // Whether statements inside a function's scope get indented (default: UseGlobalDefault)
   IndentStyle::Enum IndentFunctionContents;
 
-  // Whether statements inside a property's scope get indented (default:
-  // UseGlobalDefault)
+  // Whether statements inside a property's scope get indented (default: UseGlobalDefault)
   IndentStyle::Enum IndentPropertyContents;
 
-  // Whether statements inside a property's get/set scope get indented (default:
-  // UseGlobalDefault)
+  // Whether statements inside a property's get/set scope get indented (default: UseGlobalDefault)
   IndentStyle::Enum IndentGetSetContents;
 
-  // Whether statements inside any other scope (such as an if statement) get
-  // indented (default: UseGlobalDefault)
+  // Whether statements inside any other scope (such as an if statement) get indented (default: UseGlobalDefault)
   IndentStyle::Enum IndentScopeContents;
 
-  // Where the braces go for any scope, unless we override specific cases
-  // (default: NextLine)
+  // Where the braces go for any scope, unless we override specific cases (default: NextLine)
   LineStyle::Enum LineStyleGlobalDefaultScope;
 
   // Where the braces go for a class scope (default: UseGlobalDefault)
@@ -107,75 +97,60 @@ public:
   // Where the braces go for a property scope (default: UseGlobalDefault)
   LineStyle::Enum LineStylePropertyScope;
 
-  // Where the braces go for a get/set scope inside a property scope (default:
-  // UseGlobalDefault)
+  // Where the braces go for a get/set scope inside a property scope (default: UseGlobalDefault)
   LineStyle::Enum LineStyleGetSetScope;
 
-  // Where the braces go for any other type of scope (for example, if
-  // statements) (default: UseGlobalDefault)
+  // Where the braces go for any other type of scope (for example, if statements) (default: UseGlobalDefault)
   LineStyle::Enum LineStyleBlockScope;
 
   // Where the initializer list colon is placed (default: SameLine)
   LineStyle::Enum LineStyleInitializerList;
 
-  // Whether we put spaces around colons, unless we override specific cases
-  // (default: BeforeAndAfter)
+  // Whether we put spaces around colons, unless we override specific cases (default: BeforeAndAfter)
   SpaceStyle::Enum SpaceStyleGlobalDefaultColon;
 
-  // Whether we put spaces around the colon in an inheritance list (after the
-  // class keyword) (default: UseGlobalDefault)
+  // Whether we put spaces around the colon in an inheritance list (after the class keyword) (default: UseGlobalDefault)
   SpaceStyle::Enum SpaceStyleInheritanceColon;
 
-  // Whether we put spaces around the colon in an initializer list (default:
-  // UseGlobalDefault)
+  // Whether we put spaces around the colon in an initializer list (default: UseGlobalDefault)
   SpaceStyle::Enum SpaceStyleInitializerListColon;
 
-  // Whether we put spaces around the colon that specifices a type (default:
-  // UseGlobalDefault)
+  // Whether we put spaces around the colon that specifices a type (default: UseGlobalDefault)
   SpaceStyle::Enum SpaceStyleTypeColon;
 
-  // Whether we put spaces around the colon that specifices a type (default:
-  // UseGlobalDefault)
+  // Whether we put spaces around the colon that specifices a type (default: UseGlobalDefault)
   SpaceStyle::Enum SpaceStyleNamedArgumentColon;
 
-  // Whether we put spaces around commas, unless we override specific cases
-  // (default: After)
+  // Whether we put spaces around commas, unless we override specific cases (default: After)
   SpaceStyle::Enum SpaceStyleGlobalDefaultComma;
 
-  // Whether we put spaces around the commas in an inheritance list (after the
-  // class keyword) (default: UseGlobalDefault)
+  // Whether we put spaces around the commas in an inheritance list (after the class keyword) (default:
+  // UseGlobalDefault)
   SpaceStyle::Enum SpaceStyleInheritanceComma;
 
-  // Whether we put spaces around the commas in an initializer list (default:
-  // UseGlobalDefault)
+  // Whether we put spaces around the commas in an initializer list (default: UseGlobalDefault)
   SpaceStyle::Enum SpaceStyleInitializerListComma;
 
-  // Whether we put spaces around the commas in a parameter list for a function
-  // definition (default: UseGlobalDefault)
+  // Whether we put spaces around the commas in a parameter list for a function definition (default: UseGlobalDefault)
   SpaceStyle::Enum SpaceStyleFunctionDefinitionParameterComma;
 
-  // Whether we put spaces around the commas in a parameter list for a function
-  // invokation (default: UseGlobalDefault)
+  // Whether we put spaces around the commas in a parameter list for a function invokation (default: UseGlobalDefault)
   SpaceStyle::Enum SpaceStyleFunctionCallParameterComma;
 
-  // Whether we put spaces around the commas in a parameter list for a template
-  // definition (default: UseGlobalDefault)
+  // Whether we put spaces around the commas in a parameter list for a template definition (default: UseGlobalDefault)
   SpaceStyle::Enum SpaceStyleTemplateDefinitionParameterComma;
 
-  // Whether we put spaces around the commas in a parameter list for a template
-  // instantiation (default: UseGlobalDefault)
+  // Whether we put spaces around the commas in a parameter list for a template instantiation (default:
+  // UseGlobalDefault)
   SpaceStyle::Enum SpaceStyleTemplateInstantiationParameterComma;
 
-  // Whether we put spaces around parenthesis, unless we override specific cases
-  // (default: None)
+  // Whether we put spaces around parenthesis, unless we override specific cases (default: None)
   SpaceStyle::Enum SpaceStyleGlobalDefaultParenthesis;
 
-  // Whether we put spaces around the beginning parenthesis in a function
-  // definition (default: None)
+  // Whether we put spaces around the beginning parenthesis in a function definition (default: None)
   SpaceStyle::Enum SpaceStyleFunctionDefinitionBeginParenthesis;
 
-  // Whether we put spaces around the ending parenthesis in a function
-  // definition (default: None)
+  // Whether we put spaces around the ending parenthesis in a function definition (default: None)
   SpaceStyle::Enum SpaceStyleFunctionDefinitionEndParenthesis;
 
   // In certain scenarios this is used to wrap comments (not necessarily used in
@@ -201,8 +176,7 @@ enum Enum
 }
 
 // This class can be used to directly emit Zilch code as text
-// It's mostly a convenience (handles scoping, formatting, spaces, keywords,
-// etc)
+// It's mostly a convenience (handles scoping, formatting, spaces, keywords, etc)
 class ZeroShared ZilchCodeBuilder : public StringBuilderExtended
 {
 public:
@@ -215,8 +189,7 @@ public:
   // Writes out a keyword with spacing rules
   void WriteKeywordOrSymbolSpaceStyle(Grammar::Enum token, SpaceStyle::Enum specific, SpaceStyle::Enum globalDefault);
 
-  // Add a scope to the builder, which typically will indent the contents and
-  // emit a 'begin scope' token
+  // Add a scope to the builder, which typically will indent the contents and emit a 'begin scope' token
   void BeginScope(ScopeType::Enum scope);
 
   // Ends a scope, which typically will unindent and emit an 'end scope' token
@@ -227,13 +200,11 @@ public:
   void Write(const UserToken& token);
 
   // Creates a new line, and indents it to the current indentation level
-  // Note that if this line is empty, it will be indented all the way, which
-  // means we need to do a post-pass over the string in case
-  // 'StripWhiteSpaceFromEmptyLines' is set
+  // Note that if this line is empty, it will be indented all the way, which means
+  // we need to do a post-pass over the string in case 'StripWhiteSpaceFromEmptyLines' is set
   void WriteLineIndented();
 
-  // A templated version that forwards writes to the Write function and then
-  // writes an indented line (see above)
+  // A templated version that forwards writes to the Write function and then writes an indented line (see above)
   template <typename T>
   void WriteLineIndented(const T& value)
   {
@@ -284,8 +255,7 @@ public:
   // The format we emit the code in
   CodeFormat Format;
 
-  // The current indentation level we're at. Indentation usually increases as we
-  // increase scope
+  // The current indentation level we're at. Indentation usually increases as we increase scope
   size_t Indentation;
 
 private:
@@ -300,8 +270,7 @@ private:
     bool InnardsIndented;
   };
 
-  // This is the level of scope we're at (an empty array means root / flat
-  // level)
+  // This is the level of scope we're at (an empty array means root / flat level)
   Array<ScopeStyle> Scopes;
 
   // The current line that we're on
@@ -347,8 +316,7 @@ public:
 };
 
 // Responsible for converting a syntax tree back into code
-// This is incredibly useful for auto-formatting Zilch code, or translating into
-// other languages
+// This is incredibly useful for auto-formatting Zilch code, or translating into other languages
 class ZeroShared CodeFormatter
 {
 public:
@@ -356,8 +324,7 @@ public:
   CodeFormatter();
 
   // Formats a syntax tree back into code
-  // The syntax tree can be 'unchecked', but must not be invalid (missing syntax
-  // types, etc)
+  // The syntax tree can be 'unchecked', but must not be invalid (missing syntax types, etc)
   String FormatTree(SyntaxTree& syntaxTree, const CodeFormat& format);
 
 private:

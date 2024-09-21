@@ -18,9 +18,8 @@ public:
   /// Construct a random generator with a specific seed
   Random(uint seed);
 
-  /// The seed controls what random numbers are generated in a sequence
-  /// (determanistically) The same seed will always generate the same string of
-  /// random numbers
+  /// The seed controls what random numbers are generated in a sequence (determanistically)
+  /// The same seed will always generate the same string of random numbers
   void SetSeed(uint seed);
   uint GetSeed();
 
@@ -95,17 +94,15 @@ public:
   /// This uses a standard deviation of 1.
   float BellCurve(float center, float range);
 
-  /// Samples a bell curve in the range [center - range, center + range] with
-  /// the given standard deviation. Around 68% will lie within the 1st standard
-  /// deviation
+  /// Samples a bell curve in the range [center - range, center + range] with the
+  /// given standard deviation. Around 68% will lie within the 1st standard deviation
   float BellCurve(float center, float range, float standardDeviation);
 
 private:
   /// The internal random number generator we use
   Math::Random Generator;
 
-  /// We store the seed separately so that users can query what the original
-  /// seed was
+  /// We store the seed separately so that users can query what the original seed was
   uint OriginalSeed;
 };
 } // namespace Zilch

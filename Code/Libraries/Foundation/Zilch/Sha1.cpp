@@ -1,7 +1,6 @@
 // MIT Licensed (see LICENSE.md).
 
-// Note: This code is based on Steve Reid's 100% Public Domain Sha1
-// implementation (thank you Steve!)
+// Note: This code is based on Steve Reid's 100% Public Domain Sha1 implementation (thank you Steve!)
 
 #include "Precompiled.hpp"
 
@@ -24,11 +23,9 @@ void Sha1Builder::RunUnitTests()
   const char* inputs[] = {"abc",
                           "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq",
                           "A million repetitions of 'a'",
-                          "The quick brown fox jumps over the lazy "
-                          "dog.!@#$%^&**()_+-=[]{}:;',./<>?1234567890 The quick brown fox jumps "
-                          "over the lazy dog.!@#$%^&**()_+-=[]{}:;',./<>?1234567890 The quick "
-                          "brown fox jumps over the lazy "
-                          "dog.!@#$%^&**()_+-=[]{}:;',./<>?1234567890"};
+                          "The quick brown fox jumps over the lazy dog.!@#$%^&**()_+-=[]{}:;',./<>?1234567890 The "
+                          "quick brown fox jumps over the lazy dog.!@#$%^&**()_+-=[]{}:;',./<>?1234567890 The quick "
+                          "brown fox jumps over the lazy dog.!@#$%^&**()_+-=[]{}:;',./<>?1234567890"};
 
   const char* outputs[] = {"A9993E364706816ABA3E25717850C26C9CD0D89D",
                            "84983E441C3BD26EBAAE4AA1F95129E5E54670F1",
@@ -95,7 +92,8 @@ void Sha1Builder::RunUnitTests()
 void Sha1BuilderTransform(u32 state[5], const ::byte buffer[64])
 {
   u32 a, b, c, d, e;
-  typedef union {
+  typedef union
+  {
     ::byte c[64];
     u32 l[16];
   } CHAR64LONG16;
@@ -244,8 +242,7 @@ bool Sha1Builder::Append(File& file)
   if (file.IsOpen() == false)
     return false;
 
-  // Read all the contents of the file chunk by chunk, running Sha1 on each
-  // chunk
+  // Read all the contents of the file chunk by chunk, running Sha1 on each chunk
   ::byte buffer[4096] = {0};
   Status status;
   ZilchLoop

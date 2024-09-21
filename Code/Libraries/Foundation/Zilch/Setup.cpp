@@ -11,17 +11,15 @@ ZilchSetup::ZilchSetup(SetupFlags::Type flags)
   Instance = this;
 
   // Initialize static native binding list before creating any bound types
-  // This ensures the native binding list will be destroyed after static library
-  // bound types are destroyed
+  // This ensures the native binding list will be destroyed after static library bound types are destroyed
   NativeBindingList::GetInstance();
 
   // Make sure the jump table is initialized
   VirtualMachine::InitializeJumpTable();
 
-  // The user can disable runtime documentation processing by passing in a flag
-  // to ZilchStartup However, if the user defines 'ZilchDisableDocumentation',
-  // this will completely disable both compile-time and runtime documentation
-  // processing
+  // The user can disable runtime documentation processing by passing in a flag to ZilchStartup
+  // However, if the user defines 'ZilchDisableDocumentation', this will completely disable
+  // both compile-time and runtime documentation processing
 #if defined(ZilchDisableDocumentation)
   flags |= SetupFlags::NoDocumentationStrings;
 #endif
@@ -76,8 +74,7 @@ ZilchSetup::ZilchSetup(SetupFlags::Type flags)
 template <typename T>
 void ReconstructSingleton()
 {
-  // Explicitly destructs a singleton then uses placement new to create it again
-  // (should be reset)
+  // Explicitly destructs a singleton then uses placement new to create it again (should be reset)
   ZeroTodo("Make singletons into pointers so we don't have to do this silly stuff");
   T* singleton = &T::GetInstance();
   singleton->~T();
@@ -87,17 +84,15 @@ void ReconstructSingleton()
 ZilchSetup::~ZilchSetup()
 {
   // Do an extra validation pass over the natively bound types
-  // even though we're shutting down, we can fully find out what the user forgot
-  // to initialize
+  // even though we're shutting down, we can fully find out what the user forgot to initialize
   NativeBindingList::ValidateTypes();
 
   // If the user specified to not run shutdown code, then early out here
   if (this->Flags & SetupFlags::DoNotShutdown)
     return;
 
-  // Manually invoke destructors on static objects and in place construct them
-  // again (so they can be used again) Static shutdown will properly take care
-  // of removing them (these should probably be changed to allocated pointers)
+  // Manually invoke destructors on static objects and in place construct them again (so they can be used again)
+  // Static shutdown will properly take care of removing them (these should probably be changed to allocated pointers)
   ReconstructSingleton<HandleManagers>();
   ReconstructSingleton<Shared>();
 
@@ -168,8 +163,7 @@ void ZilchParseMainArguments(int argc, char* argv[], MainArguments& argumentsOut
     // If we found a new command...
     if (argument.StartsWith(CommandDash))
     {
-      // If we already had a previous command, then the previous one did not
-      // have a value
+      // If we already had a previous command, then the previous one did not have a value
       if (lastCommand.Empty() == false)
       {
         // Give the last command an empty value
@@ -218,8 +212,8 @@ int ZilchMain(int argc, char* argv[])
   if (arguments.HasCommand("-WaitForDebugger"))
     ZilchWaitForDebugger(true);
 
-  // Hook up the standard write and read callbacks to the console (which allows
-  // us to read from stdin and write to stdout)
+  // Hook up the standard write and read callbacks to the console (which allows us to read from stdin and write to
+  // stdout)
   EventConnect(&Console::Events, Events::ConsoleWrite, DefaultWriteText);
   EventConnect(&Console::Events, Events::ConsoleRead, DefaultReadText);
 
@@ -272,8 +266,7 @@ int ZilchMain(int argc, char* argv[])
   if (String* codeString = arguments.GetCommandValuePointer("-CodeString"))
     project.AddCodeFromString(*codeString, CodeString);
 
-  // If we want to compile the code we added above and report error information
-  // (or run the code)
+  // If we want to compile the code we added above and report error information (or run the code)
   bool compileAndReport = arguments.HasCommand("-CompileAndReport");
   bool compileOnly = arguments.HasCommand("-CompileOnly");
   bool run = arguments.HasCommand("-Run");
@@ -371,8 +364,7 @@ int ZilchMain(int argc, char* argv[])
           }
           else
           {
-            printf("* Unable to find instance entry-point 'function Main() : "
-                   "Integer' on type 'Program'\n");
+            printf("* Unable to find instance entry-point 'function Main() : Integer' on type 'Program'\n");
             result = -1;
           }
         }
@@ -406,14 +398,12 @@ int ZilchMain(int argc, char* argv[])
     }
     else if (autoCompleteCursor == nullptr && autoCompleteOrigin != nullptr)
     {
-      printf("* When specifying 'AutoCompleteOrigin' you must also specify "
-             "'AutoCompleteCursor'\n");
+      printf("* When specifying 'AutoCompleteOrigin' you must also specify 'AutoCompleteCursor'\n");
       result = -1;
     }
     else if (autoCompleteCursor != nullptr && autoCompleteOrigin == nullptr)
     {
-      printf("* When specifying 'AutoCompleteCursor' you must also specify "
-             "'AutoCompleteOrigin'\n");
+      printf("* When specifying 'AutoCompleteCursor' you must also specify 'AutoCompleteOrigin'\n");
       result = -1;
     }
   }

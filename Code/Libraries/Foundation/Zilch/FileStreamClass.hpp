@@ -6,9 +6,8 @@
 
 namespace Zilch
 {
-// The options should specify whether we want to read or write from a file, as
-// well as if we want to allow others to read and write to the same file (via
-// the share flags)
+// The options should specify whether we want to read or write from a file, as well as if we want to allow
+// others to read and write to the same file (via the share flags)
 namespace FileMode
 {
 enum Enum
@@ -35,18 +34,15 @@ enum Enum
   // Allows others to delete the file even if we are using it
   ShareDelete = (1 << 5),
 
-  // Optimizes for sequential reading (in order). Random access is implied if
-  // this flag is not set
+  // Optimizes for sequential reading (in order). Random access is implied if this flag is not set
   Sequential = (1 << 6),
 
-  // All enums bound to Zilch must be of Integer size, so force it on all
-  // platforms
+  // All enums bound to Zilch must be of Integer size, so force it on all platforms
   ForceIntegerSize = 0x7FFFFFFF
 };
 }
 
-// A generic interface for reading and writing data to a stream (file, network,
-// etc)
+// A generic interface for reading and writing data to a stream (file, network, etc)
 class ZeroShared FileStreamClass : public IStreamClass
 {
 public:

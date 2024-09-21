@@ -265,8 +265,8 @@ bool VirtualMachine::GenericIsZero<Real4>(const Real4& value)
   return value.x == 0.0f || value.y == 0.0f || value.z == 0.0f || value.w == 0.0f;
 }
 
-// Get a reference to a member variable (field), given the place in the
-// registers that the handle exists, and the member index...
+// Get a reference to a member variable (field), given the place in the registers that the handle exists, and the member
+// index...
 template <typename T>
 ZeroForceInline T&
 GetField(PerFrameData* stackFrame, PerFrameData* reportFrame, OperandIndex handleOperand, size_t memberOperand)
@@ -295,11 +295,9 @@ GetField(PerFrameData* stackFrame, PerFrameData* reportFrame, OperandIndex handl
 template <typename T>
 ZeroForceInline T& GetConstant(Function* function, OperandIndex constantOperand)
 {
-  // Make sure the value we're grabbing is inside the constant buffer (error
-  // checking)
+  // Make sure the value we're grabbing is inside the constant buffer (error checking)
   ErrorIf(constantOperand < 0 || constantOperand + sizeof(T) > function->Constants.GetSize(),
-          "The constant's position was outside the memory of the function's "
-          "constants");
+          "The constant's position was outside the memory of the function's constants");
 
   // Grab the constant from the constants array
   return *(T*)(function->Constants.GetElement(constantOperand));
@@ -317,8 +315,7 @@ template <typename T>
 ZeroForceInline T& GetStatic(PerFrameData* stackFrame, PerFrameData* reportFrame, const Operand& operand)
 {
   // Look for the static memory in a map of the fields on our state
-  // Static fields are done per executable state, so they get wiped each time we
-  // quit
+  // Static fields are done per executable state, so they get wiped each time we quit
   ExecutableState* state = stackFrame->State;
   return *(T*)(state->GetStaticField(operand.StaticField, *reportFrame->Report) + operand.FieldOffset);
 }
@@ -347,8 +344,7 @@ ZeroForceInline T& GetOperand(PerFrameData* stackFrame, PerFrameData* reportFram
 
   // This means that something REALLY bad happened...
   // Throw an exception (we'll need to unwind our stack)
-  const char* message = "We reached a garbage operand, or the operand was "
-                        "NotSet (something wrong in CodeGeneration?)";
+  const char* message = "We reached a garbage operand, or the operand was NotSet (something wrong in CodeGeneration?)";
   Error(message);
   stackFrame->State->ThrowException(*reportFrame->Report, message);
 
@@ -360,8 +356,8 @@ ZeroForceInline T& GetOperand(PerFrameData* stackFrame, PerFrameData* reportFram
 template <Boolean IfTrue>
 ZeroForceInline void IfHandler(PerFrameData* stackFrame, const Opcode& opcode)
 {
-  // Validate the timeout (this will throw an exception if we go beyond the time
-  // we need to) This only really needs to be ran in jumps
+  // Validate the timeout (this will throw an exception if we go beyond the time we need to)
+  // This only really needs to be ran in jumps
   if (stackFrame->State->ThrowExceptionOnTimeout(*stackFrame->Report))
   {
     // Unwind our stack
@@ -389,13 +385,13 @@ ZeroForceInline void IfHandler(PerFrameData* stackFrame, const Opcode& opcode)
 }
 
 ZeroForceInline void CopyHandlerEx(
-    PerFrameData* ourFrame, PerFrameData* topFrame, const ::byte*& sourceOut, ::byte*& destinationOut, const CopyOpcode& op)
+	PerFrameData* ourFrame, PerFrameData* topFrame, const ::byte*& sourceOut, ::byte*& destinationOut, const CopyOpcode& op)
 {
   // When we copy to parameters, it's always a destination
   // (we are placing parameters in the place they must go before we call)
-  // When we copy a return, it is always the source, as we are getting the
-  // result from a called function and storing it in the caller's stack Note:
-  // Returns may be removed in the future as we can just directly refer to them
+  // When we copy a return, it is always the source, as we are getting the result
+  // from a called function and storing it in the caller's stack
+  // Note: Returns may be removed in the future as we can just directly refer to them
 
   // Offsets that may change depending on the copy mode
   size_t returnOffset = 0;
@@ -438,8 +434,7 @@ ZeroForceInline void CopyHandler(PerFrameData* ourFrame,
 
   CopyHandlerEx(ourFrame, topFrame, source, destination, op);
 
-  // Now copy from the source to the destination and return a pointer to the new
-  // copy
+  // Now copy from the source to the destination and return a pointer to the new copy
   sourceTyped = (CopyType*)source;
 
   // If this is an assignment...
@@ -602,8 +597,7 @@ VirtualInstructionFn InstructionTable[Instruction::Count] = {0};
       /* For any standard copy, if it's to the stack then */                                                           \
       /* we just let our own stack frame clean it up */                                                                \
       /* Note: Copies to properties are considered on the stack */                                                     \
-      /* We don't queue cleans for field initializers because the destructors                                          \
-       * will clean those up */                                                                                        \
+      /* We don't queue cleans for field initializers because the destructors will clean those up */                   \
       OperandType::Enum destType = op.Destination.Type;                                                                \
       if (destType != OperandType::Field && destType != OperandType::StaticField)                                      \
       {                                                                                                                \
@@ -635,13 +629,13 @@ VirtualInstructionFn InstructionTable[Instruction::Count] = {0};
       ourFrame->Queue##T##Cleanup(destination);                                                                        \
       break;                                                                                                           \
     }                                                                                                                  \
+                                                                                                                       \
     default:                                                                                                           \
       break;                                                                                                           \
     }                                                                                                                  \
   }
 
-// Note: These macros mirror those inside of InstructionEnum and Shared (for
-// generation of instructions)
+// Note: These macros mirror those inside of InstructionEnum and Shared (for generation of instructions)
 
 // Copy
 #define ZilchCopyCases(WithType) ZilchCaseSimpleCopy(WithType)
@@ -702,8 +696,7 @@ VirtualInstructionFn InstructionTable[Instruction::Count] = {0};
       GenericScalarMod(output, output, right));                                                                        \
   ZilchCaseBinaryLValue2(VectorType, ScalarType, AssignmentScalarPow, GenericScalarPow(output, output, right));
 
-// Special integral operators, generic numeric operators, copy, equality, and
-// comparison
+// Special integral operators, generic numeric operators, copy, equality, and comparison
 #define ZilchIntegralCases(WithType)                                                                                   \
   ZilchCaseUnaryRValue(WithType, WithType, BitwiseNot, output = ~operand);                                             \
   ZilchCaseBinaryRValue(WithType, WithType, BitshiftLeft, output = left << right);                                     \
@@ -745,8 +738,8 @@ ZilchVirtualInstruction(BeginTimeout)
 
 ZilchVirtualInstruction(EndTimeout)
 {
-  // Validate the timeout (this will throw an exception if we go beyond the time
-  // we need to) This only really needs to be ran in jumps
+  // Validate the timeout (this will throw an exception if we go beyond the time we need to)
+  // This only really needs to be ran in jumps
   if (state->PopTimeout(ourFrame))
   {
     // Jump out so we don't run any more code
@@ -822,14 +815,11 @@ ZilchVirtualInstruction(ToHandle)
   }
   else
   {
-    // We assume this means we're taking a handle to a field, which should have
-    // been copied to the stack
+    // We assume this means we're taking a handle to a field, which should have been copied to the stack
     ErrorIf(op.ToHandle.Type != OperandType::Field,
-            "We can only take handles to locals and fields (not constants, for "
-            "example)");
+            "We can only take handles to locals and fields (not constants, for example)");
 
-    // Get the handle that holds the base of the member we're going to make a
-    // handle to
+    // Get the handle that holds the base of the member we're going to make a handle to
     const Handle& baseHandle = *(Handle*)(ourFrame->Frame + op.ToHandle.HandleConstantLocal);
 
     // Make a copy from the base handle into our handle
@@ -865,8 +855,8 @@ ZilchVirtualInstruction(CreateStaticDelegate)
   delegate.BoundFunction = op.BoundFunction;
 
   // Even though the 'this' handle is null, we still need to clean it up
-  // just to be proper, but also because someone could theoretically Assign to
-  // it if we expose it in the future
+  // just to be proper, but also because someone could theoretically Assign to it
+  // if we expose it in the future
   ourFrame->QueueDelegateCleanup(&delegate);
 
   // Move the instruction counter past this opcode
@@ -885,13 +875,11 @@ ZilchVirtualInstruction(CreateInstanceDelegate)
   // Set the delegate's function index to the opcode's index
   delegate.BoundFunction = op.BoundFunction;
 
-  // Set the handle that will basically act as the 'this' pointer for the
-  // delegate
+  // Set the handle that will basically act as the 'this' pointer for the delegate
   Handle& thisHandle = GetOperand<Handle>(ourFrame, ourFrame, op.ThisHandle);
   delegate.ThisHandle = thisHandle;
 
-  // If the function we're binding is virtual and we're not calling this
-  // function 'non-virtually'
+  // If the function we're binding is virtual and we're not calling this function 'non-virtually'
   if (op.BoundFunction->IsVirtual && op.CanBeVirtual && thisHandle.StoredType != nullptr)
   {
     // Find the function on our derived type that matches the signature / name
@@ -900,8 +888,7 @@ ZilchVirtualInstruction(CreateInstanceDelegate)
     if (function != nullptr)
       delegate.BoundFunction = function;
     else
-      Error("Unable to find the most derived virtual function, we can continue "
-            "but this should not happen");
+      Error("Unable to find the most derived virtual function, we can continue but this should not happen");
   }
 
   // We need to make sure we cleanup this handle
@@ -926,8 +913,8 @@ ZilchVirtualInstruction(IfTrueRelativeGoTo)
 
 ZilchVirtualInstruction(RelativeGoTo)
 {
-  // Validate the timeout (this will throw an exception if we go beyond the time
-  // we need to) This only really needs to be ran in jumps
+  // Validate the timeout (this will throw an exception if we go beyond the time we need to)
+  // This only really needs to be ran in jumps
   if (state->ThrowExceptionOnTimeout(report))
   {
     // Jump out so we don't run any more code
@@ -948,8 +935,8 @@ ZilchVirtualInstruction(Return)
 
 ZilchVirtualInstruction(PrepForFunctionCall)
 {
-  // Validate the timeout (this will throw an exception if we go beyond the time
-  // we need to) This only really needs to be ran in jumps
+  // Validate the timeout (this will throw an exception if we go beyond the time we need to)
+  // This only really needs to be ran in jumps
   if (state->ThrowExceptionOnTimeout(report))
   {
     // Jump out so we don't run any more code
@@ -979,16 +966,14 @@ ZilchVirtualInstruction(PrepForFunctionCall)
   // Create a new stack frame for our function
   PerFrameData* newFrame = state->PushFrame(topFrame->NextFrame, functionToInvoke);
 
-  // If the stack frame was created in an error state, then attempt to throw
-  // exceptions If this returns true (meaning exceptions were thrown) then we'll
-  // jump out
+  // If the stack frame was created in an error state, then attempt to throw exceptions
+  // If this returns true (meaning exceptions were thrown) then we'll jump out
   if (newFrame->AttemptThrowStackExceptions(report))
   {
     longjmp(ourFrame->ExceptionJump, ExceptionJumpResult);
   }
 
-  // Check if the "to be invoked" function is a static function (should we skip
-  // the next copy opcode?)
+  // Check if the "to be invoked" function is a static function (should we skip the next copy opcode?)
   if (functionToInvoke->IsStatic)
   {
     // Skip copying the 'this' handle (and move past this opcode)
@@ -1007,8 +992,8 @@ ZilchVirtualInstruction(FunctionCall)
   // Grab the per frame data from the executable state
   PerFrameData* topFrame = state->StackFrames.Back();
 
-  // Create a call (this is not a user call, so it should not push a stack
-  // frame) Moreover, none of the debug features should be enabled
+  // Create a call (this is not a user call, so it should not push a stack frame)
+  // Moreover, none of the debug features should be enabled
   Call subCall(topFrame);
 
   // Invoke the call (calls the bound function with all the parameters)
@@ -1105,8 +1090,7 @@ ZilchVirtualInstruction(PropertyDelegate)
   // We need to make sure we cleanup this handle
   ourFrame->QueueHandleCleanup(handleOnStack);
 
-  // As long as nothing failed, the object we allocated should be a
-  // 'PropertyDelegate' object
+  // As long as nothing failed, the object we allocated should be a 'PropertyDelegate' object
   PropertyDelegateTemplate* propertyDelegate = (PropertyDelegateTemplate*)handleOnStack->Dereference();
 
   // Set the delegate's function index to the opcode's index
@@ -1240,21 +1224,17 @@ ZilchVirtualInstruction(TypeId)
 {
   const TypeIdOpcode& op = (const TypeIdOpcode&)opcode;
 
-  // This function will access the primitive and attempt to get the most derived
-  // type from it For the 'any' type, this will get the type stored inside Note:
-  // We MUST be sure that the Syntaxer set the actual expression result type to
-  // the correct type eg: any -> Type (because it could be anything!), bound
-  // types -> BoundType, delegates -> DelegateType, indirect -> IndirectionType
-  // We call 'GenericGetSameVirtualTypeExceptAny' because normally
-  // GenericGetVirtualType on an IndirectionType may return a BoundType instead
-  // of an IndirectionType. GenericGetSameVirtualTypeExceptAny ensures it always
-  // returns IndirectionType. This behavior matches that of the Syntaxer for
-  // TypeIdNode.
+  // This function will access the primitive and attempt to get the most derived type from it
+  // For the 'any' type, this will get the type stored inside
+  // Note: We MUST be sure that the Syntaxer set the actual expression result type to the correct type
+  // eg: any -> Type (because it could be anything!), bound types -> BoundType, delegates -> DelegateType, indirect ->
+  // IndirectionType We call 'GenericGetSameVirtualTypeExceptAny' because normally GenericGetVirtualType on an
+  // IndirectionType may return a BoundType instead of an IndirectionType. GenericGetSameVirtualTypeExceptAny ensures it
+  // always returns IndirectionType. This behavior matches that of the Syntaxer for TypeIdNode.
   ::byte* expressionResult = &GetOperand<::byte>(ourFrame, ourFrame, op.Expression);
   const Type* virtualType = op.CompileTimeType->GenericGetSameVirtualTypeExceptAny(expressionResult);
 
-  // This may not be necessary, but just in case we don't get a valid type
-  // returned, assume its the compile time type
+  // This may not be necessary, but just in case we don't get a valid type returned, assume its the compile time type
   if (virtualType == nullptr)
     virtualType = op.CompileTimeType;
 
@@ -1275,8 +1255,7 @@ ZilchVirtualInstruction(ConvertToAny)
   // Grab the bytes that will hold the 'Any' value
   ::byte* anyData = &GetLocal<::byte>(ourFrame->Frame, op.Output);
 
-  // Construct the any at the given position (this will do a proper copy of data
-  // into the any)
+  // Construct the any at the given position (this will do a proper copy of data into the any)
   Any* any = new (anyData) Any(value, op.RelatedType);
 
   // We need to make sure we cleanup this 'any'
@@ -1307,8 +1286,8 @@ ZilchVirtualInstruction(ConvertFromAny)
   if (cast.IsValid == false || cast.RequiresCodeGeneration)
   {
     // Generate an error string that gives a lot of context clues
-    String error = String::Format("The 'any' value '%s' of type '%s' cannot be converted to a '%s'. The "
-                                  "type must match exactly or be directly convertable",
+    String error = String::Format("The 'any' value '%s' of type '%s' cannot be converted to a '%s'. The type must "
+                                  "match exactly or be directly convertable",
                                   any.StoredType->GenericToString(any.Data).c_str(),
                                   any.StoredType->ToString().c_str(),
                                   op.RelatedType->ToString().c_str());
@@ -1329,8 +1308,7 @@ ZilchVirtualInstruction(ConvertFromAny)
     ourFrame->QueueHandleCleanup((Handle*)outputData);
   else if (any.StoredType->IsDelegate())
     ourFrame->QueueDelegateCleanup((Delegate*)outputData);
-  // This last case should never happen currently (because we can't put an Any
-  // within an Any)
+  // This last case should never happen currently (because we can't put an Any within an Any)
   else if (any.StoredType->IsAny())
     ourFrame->QueueAnyCleanup((Any*)outputData);
 
@@ -1344,8 +1322,7 @@ ZilchVirtualInstruction(ConvertDowncast)
   const DowncastConversionOpcode& op = (const DowncastConversionOpcode&)opcode;
   const Handle& toConvert = GetOperand<Handle>(ourFrame, ourFrame, op.ToConvert);
 
-  // Grab the output that we want to initialize either to a casted handle, or to
-  // null
+  // Grab the output that we want to initialize either to a casted handle, or to null
   ::byte* outputHandle = &GetLocal<::byte>(ourFrame->Frame, op.Output);
 
   // The value we were passed in was null, so just output null
@@ -1471,8 +1448,7 @@ ZilchIntegralCases(Byte) ZilchScalarCases(Byte) ZilchIntegralCases(Integer) Zilc
                             ZilchEqualityCases(Delegate, Boolean) ZilchEqualityCases(Any, Boolean)
 
                                 ZilchCopyCases(Boolean)
-    // Handle, Delegate, and Value copy (assignment) operators are handled
-    // specially above
+    // Handle, Delegate, and Value copy (assignment) operators are handled specially above
 
     ZilchCaseUnaryRValue(Boolean, Boolean, LogicalNot, output = !operand);
 
@@ -1543,8 +1519,7 @@ void VirtualMachine::InitializeJumpTable()
 
 void VirtualMachine::ExecuteNext(Call& call, ExceptionReport& report)
 {
-  // Since we do a raw copy, we always tell the caller to ignore debug checking
-  // of the return
+  // Since we do a raw copy, we always tell the caller to ignore debug checking of the return
   call.DisableReturnChecks();
 
   // Grab the executable state
@@ -1554,8 +1529,8 @@ void VirtualMachine::ExecuteNext(Call& call, ExceptionReport& report)
   // Grab the per frame data from the executable state
   PerFrameData* ourFrame = state->StackFrames.Back();
 
-  // The program counter increments with each instruction (instructions can also
-  // be variable width, and this number is measured in bytes)
+  // The program counter increments with each instruction (instructions can also be variable width, and this number is
+  // measured in bytes)
   ourFrame->ProgramCounter = 0;
   size_t& programCounter = ourFrame->ProgramCounter;
 
@@ -1566,17 +1541,15 @@ void VirtualMachine::ExecuteNext(Call& call, ExceptionReport& report)
   if (jumpResult == ExceptionJumpResult)
     return;
 
-  // Store the compacted opcode as an attempt to bring the opcode into crash
-  // reports / mini-dumps Also save it into a non-thread safe global pointer
-  // (hopefully it will be pulled in)
+  // Store the compacted opcode as an attempt to bring the opcode into crash reports / mini-dumps
+  // Also save it into a non-thread safe global pointer (hopefully it will be pulled in)
   ::byte* compactedOpcode = ourFrame->CurrentFunction->CompactedOpcode.Data();
   ZilchLastRunningOpcode = compactedOpcode;
   ZilchLastRunningFunction = ourFrame->CurrentFunction;
   ZilchLastRunningOpcodeLength = ourFrame->CurrentFunction->CompactedOpcode.Size();
 
   // Loop through all the opcodes in the function
-  // We don't need to check for the end since the return opcode will exit this
-  // function
+  // We don't need to check for the end since the return opcode will exit this function
   ZilchLoop
   {
     // Grab the current opcode that we're executing
@@ -1647,8 +1620,7 @@ String VirtualMachine::EnumerationToString(const BoundType* type, const ::byte* 
     }
   }
 
-  // Otherwise, this enum is not a known value... (just return the integer for
-  // readability)
+  // Otherwise, this enum is not a known value... (just return the integer for readability)
   return UnknownEnumerationToString(type, data);
 }
 
@@ -1658,15 +1630,13 @@ String VirtualMachine::FlagsToString(const BoundType* type, const ::byte* data)
   Integer inputValue = *(const Integer*)data;
 
   // With every bit we loop through, we mask the bit off
-  // At the end, this value should be 0 unless there were invalid bits that we
-  // didn't know what they were
+  // At the end, this value should be 0 unless there were invalid bits that we didn't know what they were
   Integer runningValue = inputValue;
 
   // Create a string builder so we can concatenate all the flags together
   StringBuilder builder;
 
-  // If we wrote anything to the string buffer, then the next time we need to
-  // add the '|'
+  // If we wrote anything to the string buffer, then the next time we need to add the '|'
   bool wroteSomething = false;
 
   // Loop through all the properties this type defines...
@@ -1677,9 +1647,7 @@ String VirtualMachine::FlagsToString(const BoundType* type, const ::byte* data)
     Property* property = properties[i];
 
     // Error checking
-    ErrorIf(property->Get == nullptr,
-            "The flags should have no properties that do not have a 'get' "
-            "function");
+    ErrorIf(property->Get == nullptr, "The flags should have no properties that do not have a 'get' function");
     ErrorIf(property->IsStatic == false, "All properties on the flags should be static");
 
     // Grab the value of this flag (may be multiple bits!)
@@ -1696,8 +1664,7 @@ String VirtualMachine::FlagsToString(const BoundType* type, const ::byte* data)
     // If the input value Contains all these flags...
     if ((inputValue & flagValue) == flagValue)
     {
-      // If we've already written anything, we need to add the delimiter (the
-      // bitwise OR operator)
+      // If we've already written anything, we need to add the delimiter (the bitwise OR operator)
       if (wroteSomething)
       {
         builder.Append(" ");
@@ -1715,8 +1682,7 @@ String VirtualMachine::FlagsToString(const BoundType* type, const ::byte* data)
   // If nothing was written...
   if (wroteSomething == false)
   {
-    // Otherwise, this flags is not a known value... (just return the integer
-    // for readability)
+    // Otherwise, this flags is not a known value... (just return the integer for readability)
     return UnknownEnumerationToString(type, data);
   }
   else

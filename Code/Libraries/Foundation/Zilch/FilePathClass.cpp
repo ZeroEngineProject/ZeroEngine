@@ -69,12 +69,10 @@ ZilchDefineType(FilePathClass, builder, type)
   // arrayElement.PushBack(ZilchTypeId(String));
   // LibraryArray coreArray;
   // coreArray.PushBack(Core::GetInstance().GetBuilder()->BuiltLibrary);
-  // BoundType* arrayOfStrings = builder.InstantiateTemplate("Array",
-  // arrayElement, coreArray).Type; Function* combineFunction =
-  // builder.AddBoundFunction(type, "Combine", &FilePathClass::Combine,
-  // OneParameter(arrayOfStrings, "parts"), ZilchTypeId(String),
-  // FunctionOptions::Static); combineFunction->Description =
-  // CombineDocumentation();
+  // BoundType* arrayOfStrings = builder.InstantiateTemplate("Array", arrayElement, coreArray).Type;
+  // Function* combineFunction = builder.AddBoundFunction(type, "Combine", &FilePathClass::Combine,
+  // OneParameter(arrayOfStrings, "parts"), ZilchTypeId(String), FunctionOptions::Static); combineFunction->Description
+  // = CombineDocumentation();
 
   ZilchFullBindGetterSetter(builder,
                             type,
@@ -252,20 +250,16 @@ String FilePathClass::ChangeExtension(StringParam path, StringParam extension)
   StringRange pathLastDot = path.FindLastOf('.');
   StringRange pathRangeWithoutExtension = path.All();
 
-  // If the last dot exists, then adjust the string range to not include it at
-  // all
+  // If the last dot exists, then adjust the string range to not include it at all
   /*if (0 != StringRange::InvalidIndex) {}*/
-  // pathRangeWithoutExtension.end = pathRangeWithoutExtension.begin +
-  // pathLastDot;
+  // pathRangeWithoutExtension.end = pathRangeWithoutExtension.begin + pathLastDot;
 
-  // Check if the first character is a .'. so we know whether the user passed in
-  // '.jpeg' vs just 'jpeg'
+  // Check if the first character is a .'. so we know whether the user passed in '.jpeg' vs just 'jpeg'
   StringRange extensionRangeWithoutLeadingDot = extension.All();
   if (extension.Empty() == false && extension.Front() == '.')
     extensionRangeWithoutLeadingDot.IncrementByRune();
 
-  // Concatenate the path and extension together (both should not have the dot,
-  // so add it in ourselves)
+  // Concatenate the path and extension together (both should not have the dot, so add it in ourselves)
   return BuildString(pathRangeWithoutExtension, ".", extensionRangeWithoutLeadingDot);
 }
 
@@ -299,8 +293,7 @@ String FilePathClass::GetFileNameWithoutExtension(StringParam path)
 
 String FilePathClass::AddTrailingDirectorySeparator(StringParam path)
 {
-  // First check if the path already ends in a directory separator, if not add
-  // it in
+  // First check if the path already ends in a directory separator, if not add it in
   StringRange directorySeparator(Zero::cDirectorySeparatorCstr);
   if (path.EndsWith(directorySeparator))
     return path;
@@ -310,8 +303,7 @@ String FilePathClass::AddTrailingDirectorySeparator(StringParam path)
 
 String FilePathClass::RemoveTrailingDirectorySeparator(StringParam path)
 {
-  // First check if the path already ends in a directory separator, if it does
-  // then remove it
+  // First check if the path already ends in a directory separator, if it does then remove it
   StringRange directorySeparator(Zero::cDirectorySeparatorCstr);
   if (path.EndsWith(directorySeparator))
   {
@@ -330,8 +322,7 @@ String FilePathClass::GetDirectoryPath(StringParam path)
   // This function does not include the trailing directory separator
   StringRange directoryPath = Zero::FilePath::GetDirectoryPath(path);
 
-  // Increment the end to include the path separator (if its within the range of
-  // the original path we passed in)
+  // Increment the end to include the path separator (if its within the range of the original path we passed in)
   if (directoryPath.Begin() >= path.Begin() && directoryPath.End() < path.End())
     ++directoryPath.End();
 
@@ -345,14 +336,13 @@ String FilePathClass::GetDirectoryName(StringParam path)
 
 String FilePathClass::GetCanonicalizedPathFromAbsolutePath(StringParam absolutePath)
 {
-  // We want to check if it has an ending separator because our
-  // FilePathClass::Normalize removes it (but we want it to be added back in)
+  // We want to check if it has an ending separator because our FilePathClass::Normalize removes it (but we want it to
+  // be added back in)
   bool hasEndingSeparator = false;
   if (absolutePath.SizeInBytes() > 0 && (absolutePath.Back() == '\\' || absolutePath.Back() == '/'))
     hasEndingSeparator = true;
 
-  // Our path normalizationg changes all slashes to be the OS slashes, and
-  // removes redudant slashes
+  // Our path normalizationg changes all slashes to be the OS slashes, and removes redudant slashes
   String normalized = Zero::FilePath::Normalize(absolutePath);
   if (hasEndingSeparator)
     normalized = BuildString(normalized, Zero::cDirectorySeparatorCstr);
@@ -367,9 +357,8 @@ String FilePathClass::GetComparablePathFromAbsolutePath(StringParam path)
   // First do path normaliziation and canonicalization
   String comparablePath = GetCanonicalizedPathFromAbsolutePath(path);
 
-  // If the current file system is case insensative, then technically
-  // "Player.png" should compare the same as "player.PNG" To make strings
-  // properly comparable, we make them all lowercase
+  // If the current file system is case insensative, then technically "Player.png" should compare the same as
+  // "player.PNG" To make strings properly comparable, we make them all lowercase
   if (!Zero::cFileSystemCaseSensitive)
     comparablePath = comparablePath.ToLower();
   return comparablePath;
@@ -377,8 +366,7 @@ String FilePathClass::GetComparablePathFromAbsolutePath(StringParam path)
 
 bool FilePathClass::IsRelative(StringParam path)
 {
-  // Return that empty paths are relative (it doesn't really matter what we do
-  // here)
+  // Return that empty paths are relative (it doesn't really matter what we do here)
   if (path.Empty())
     return true;
 
@@ -390,9 +378,8 @@ bool FilePathClass::IsRelative(StringParam path)
   if (path.StartsWith("\\\\"))
     return false;
 
-  // If we find a ':' character then we assume its rooted because that is
-  // otherwise an invalid character This may fail on older operating systems
-  // (we'll have to let this run wild and see what people say)
+  // If we find a ':' character then we assume its rooted because that is otherwise an invalid character
+  // This may fail on older operating systems (we'll have to let this run wild and see what people say)
   if (!path.FindFirstOf(':').Empty())
     return false;
 

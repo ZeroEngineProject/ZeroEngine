@@ -1,7 +1,6 @@
 // MIT Licensed (see LICENSE.md).
 
-// Note: These macros mirror those inside of Shared and VirtualMachine (for
-// generation of instructions)
+// Note: These macros mirror those inside of Shared and VirtualMachine (for generation of instructions)
 
 // Copy
 #define ZilchCopyInstructions(Type) ZilchEnumValue(Copy##Type)
@@ -34,8 +33,7 @@
           ZilchEnumValue(AssignmentScalarMultiply##Type) ZilchEnumValue(AssignmentScalarDivide##Type)                  \
               ZilchEnumValue(AssignmentScalarModulo##Type) ZilchEnumValue(AssignmentScalarPow##Type)
 
-// Special integral operators, generic numeric operators, copy, equality, and
-// comparison
+// Special integral operators, generic numeric operators, copy, equality, and comparison
 #define ZilchIntegralInstructions(Type)                                                                                \
   ZilchEnumValue(BitwiseNot##Type) ZilchEnumValue(BitshiftLeft##Type) ZilchEnumValue(BitshiftRight##Type)              \
       ZilchEnumValue(BitwiseOr##Type) ZilchEnumValue(BitwiseXor##Type) ZilchEnumValue(BitwiseAnd##Type)                \

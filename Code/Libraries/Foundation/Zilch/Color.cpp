@@ -20,85 +20,85 @@ ZilchDefineType(ColorClass, builder, type)
                       ZilchStaticOverload(Real4, Integer, Integer, Integer, Integer),
                       "FromBytes",
                       "r, g, b, a")
-      ->Description = ZilchDocumentString("Converts RGBA Bytes [0-255] into an RGBA Real4. "
-                                          "Integer is used in place of Byte for convenience.");
+      ->Description = ZilchDocumentString(
+      "Converts RGBA Bytes [0-255] into an RGBA Real4. Integer is used in place of Byte for convenience.");
   ZilchFullBindMethod(
       builder, type, &ColorClass::FromBytes, ZilchStaticOverload(Real4, Integer4Param), "FromBytes", "rgba")
-      ->Description = ZilchDocumentString("Converts RGBA Bytes [0-255] into an RGBA Real4. "
-                                          "Integer is used in place of Byte for convenience.");
+      ->Description = ZilchDocumentString(
+      "Converts RGBA Bytes [0-255] into an RGBA Real4. Integer is used in place of Byte for convenience.");
 
   ZilchFullBindMethod(
       builder, type, &ColorClass::FromInteger, ZilchStaticOverload(Real4, Integer), "FromInteger", "rgba")
-      ->Description = ZilchDocumentString("Converts an RGBA packed Integer into an RGBA Real4. Endianness is "
-                                          "handled so that 0x00FF00FF always means full green and full alpha.");
+      ->Description = ZilchDocumentString("Converts an RGBA packed Integer into an RGBA Real4. Endianness is handled "
+                                          "so that 0x00FF00FF always means full green and full alpha.");
   ZilchFullBindMethod(
       builder, type, &ColorClass::FromInteger, ZilchStaticOverload(Real4, Integer, Integer), "FromInteger", "rgb, a")
-      ->Description = ZilchDocumentString("Converts an RGB packed Integer and an alpha Byte [0-255] into an RGBA "
-                                          "Real4. Endianness is handled so that 0x00FF00FF always means full green "
-                                          "and full alpha.");
+      ->Description =
+      ZilchDocumentString("Converts an RGB packed Integer and an alpha Byte [0-255] into an RGBA Real4. Endianness is "
+                          "handled so that 0x00FF00FF always means full green and full alpha.");
   ZilchFullBindMethod(
       builder, type, &ColorClass::FromInteger, ZilchStaticOverload(Real4, Integer, Real), "FromInteger", "rgb, a")
-      ->Description = ZilchDocumentString("Converts an RGB packed Integer and an alpha Real "
-                                          "into an RGBA Real4. Endianness is handled so that "
-                                          "0x00FF00FF always means full green and full alpha.");
+      ->Description =
+      ZilchDocumentString("Converts an RGB packed Integer and an alpha Real into an RGBA Real4. Endianness is handled "
+                          "so that 0x00FF00FF always means full green and full alpha.");
 
   ZilchFullBindMethod(
       builder, type, &ColorClass::FromHsva, ZilchStaticOverload(Real4, Real, Real, Real), "FromHsva", "h, s, v")
-      ->Description = ZilchDocumentString("Converts HSV Reals into an RGBA Real4 (alpha defaults to 1.0). The hue "
-                                          "parameter will wrap if is beyond [0-1]. The saturation and value "
-                                          "parameters may go beyond [0-1] to represent HDR values.");
+      ->Description = ZilchDocumentString(
+      "Converts HSV Reals into an RGBA Real4 (alpha defaults to 1.0). The hue parameter will wrap if is beyond [0-1]. "
+      "The saturation and value parameters may go beyond [0-1] to represent HDR values.");
   ZilchFullBindMethod(builder,
                       type,
                       &ColorClass::FromHsva,
                       ZilchStaticOverload(Real4, Real, Real, Real, Real),
                       "FromHsva",
                       "h, s, v, a")
-      ->Description = ZilchDocumentString("Converts HSVA Reals into an RGBA Real4. The hue parameter will wrap if "
-                                          "is beyond [0-1]. The saturation and value parameters may go beyond "
-                                          "[0-1] to represent HDR values.");
+      ->Description =
+      ZilchDocumentString("Converts HSVA Reals into an RGBA Real4. The hue parameter will wrap if is beyond [0-1]. The "
+                          "saturation and value parameters may go beyond [0-1] to represent HDR values.");
   ZilchFullBindMethod(builder, type, &ColorClass::FromHsva, ZilchStaticOverload(Real4, Real4Param), "FromHsva", "hsva")
-      ->Description = ZilchDocumentString("Converts an HSVA Real4 into an RGBA Real4. The hue parameter will wrap "
-                                          "if is beyond [0-1]. The saturation and value parameters may go beyond "
-                                          "[0-1] to represent HDR values.");
+      ->Description =
+      ZilchDocumentString("Converts an HSVA Real4 into an RGBA Real4. The hue parameter will wrap if is beyond [0-1]. "
+                          "The saturation and value parameters may go beyond [0-1] to represent HDR values.");
 
   ZilchFullBindMethod(builder, type, &ColorClass::FromHexString, ZilchNoOverload, "FromHexString", "value")
-      ->Description = ZilchDocumentString("Converts a hex String into an RGBA Real4. Must be a 3, 4, 6, or 8 digit "
-                                          "RGB[A] representation with an optional preceding '#' or '0x' (case "
-                                          "insensitive). E.g. #f00, #F00F, ff0000, 0x00FF00FF.");
+      ->Description = ZilchDocumentString(
+      "Converts a hex String into an RGBA Real4. Must be a 3, 4, 6, or 8 digit RGB[A] representation with an optional "
+      "preceding '#' or '0x' (case insensitive). E.g. #f00, #F00F, ff0000, 0x00FF00FF.");
 
   ZilchFullBindMethod(builder, type, &ColorClass::ToBytes, ZilchStaticOverload(Integer4, Real4Param), "ToBytes", "rgba")
-      ->Description = ZilchDocumentString("Converts an RGBA Real4 into an RGBA Integer4 [0-255]. Integer is used "
-                                          "in place of Byte for convenience.");
+      ->Description = ZilchDocumentString(
+      "Converts an RGBA Real4 into an RGBA Integer4 [0-255]. Integer is used in place of Byte for convenience.");
   ZilchFullBindMethod(
       builder, type, &ColorClass::ToBytes, ZilchStaticOverload(Integer4, Real, Real, Real), "ToBytes", "r, g, b")
-      ->Description = ZilchDocumentString("Converts RGB Reals into an RGBA Integer4 [0-255] (alpha defaults to "
-                                          "255). Integer is used in place of Byte for convenience.");
+      ->Description = ZilchDocumentString("Converts RGB Reals into an RGBA Integer4 [0-255] (alpha defaults to 255). "
+                                          "Integer is used in place of Byte for convenience.");
   ZilchFullBindMethod(builder,
                       type,
                       &ColorClass::ToBytes,
                       ZilchStaticOverload(Integer4, Real, Real, Real, Real),
                       "ToBytes",
                       "r, g, b, a")
-      ->Description = ZilchDocumentString("Converts RGBA Reals into an RGBA Integer4 [0-255]. "
-                                          "Integer is used in place of Byte for convenience.");
+      ->Description = ZilchDocumentString(
+      "Converts RGBA Reals into an RGBA Integer4 [0-255]. Integer is used in place of Byte for convenience.");
 
   ZilchFullBindMethod(
       builder, type, &ColorClass::ToInteger, ZilchStaticOverload(Integer, Real4Param), "ToInteger", "rgba")
-      ->Description = ZilchDocumentString("Converts an RGBA Real4 into an RGBA packed Integer. Endianness is "
-                                          "handled so that 0x00FF00FF always means full green and full alpha.");
+      ->Description = ZilchDocumentString("Converts an RGBA Real4 into an RGBA packed Integer. Endianness is handled "
+                                          "so that 0x00FF00FF always means full green and full alpha.");
   ZilchFullBindMethod(
       builder, type, &ColorClass::ToInteger, ZilchStaticOverload(Integer, Real, Real, Real), "ToInteger", "r, g, b")
-      ->Description = ZilchDocumentString("Converts RGB Reals into an RGBA packed Integer (alpha defaults to 255). "
-                                          "Endianness is handled so that 0x00FF00FF always means full green and "
-                                          "full alpha.");
+      ->Description =
+      ZilchDocumentString("Converts RGB Reals into an RGBA packed Integer (alpha defaults to 255). Endianness is "
+                          "handled so that 0x00FF00FF always means full green and full alpha.");
   ZilchFullBindMethod(builder,
                       type,
                       &ColorClass::ToInteger,
                       ZilchStaticOverload(Integer, Real, Real, Real, Real),
                       "ToInteger",
                       "r, g, b, a")
-      ->Description = ZilchDocumentString("Converts RGBA Reals into an RGBA packed Integer. Endianness is handled "
-                                          "so that 0x00FF00FF always means full green and full alpha.");
+      ->Description = ZilchDocumentString("Converts RGBA Reals into an RGBA packed Integer. Endianness is handled so "
+                                          "that 0x00FF00FF always means full green and full alpha.");
 
   ZilchFullBindMethod(builder, type, &ColorClass::ToHsva, ZilchStaticOverload(Real4, Real4Param), "ToHsva", "rgba")
       ->Description = ZilchDocumentString("Converts an RGBA Real4 into an HSVA Real4.");
@@ -114,8 +114,8 @@ ZilchDefineType(ColorClass, builder, type)
       ->Description = ZilchDocumentString("Converts an RGBA Real4 into the 8 digit hex format RRGGBBAA.");
   ZilchFullBindMethod(
       builder, type, &ColorClass::ToHexString, ZilchStaticOverload(String, Real, Real, Real), "ToHexString", "r, g, b")
-      ->Description = ZilchDocumentString("Converts RGB Reals into the 8 digit hex format RRGGBBAA (alpha defaults "
-                                          "to 1.0 so the end will always be FF).");
+      ->Description = ZilchDocumentString(
+      "Converts RGB Reals into the 8 digit hex format RRGGBBAA (alpha defaults to 1.0 so the end will always be FF).");
   ZilchFullBindMethod(builder,
                       type,
                       &ColorClass::ToHexString,
@@ -125,8 +125,7 @@ ZilchDefineType(ColorClass, builder, type)
       ->Description = ZilchDocumentString("Converts RGBA Reals into the 8 digit hex format RRGGBBAA.");
 }
 
-// We need to ensure that we actually use an RGBA format where R is the highest
-// byte
+// We need to ensure that we actually use an RGBA format where R is the highest byte
 namespace CC
 {
 const uint MaxByte = 0xff;
@@ -148,8 +147,8 @@ const float InvFactor = 1.0f / 255.0f;
 
 #undef ByteColorRGBA
 #define ByteColorRGBA(r, g, b, a)                                                                                      \
-  ((ByteColor)((((a)&CC::MaxByte) << CC::AlphaOffset) | (((r)&CC::MaxByte) << CC::RedOffset) |                         \
-               (((g)&CC::MaxByte) << CC::GreenOffset) | ((b)&CC::MaxByte) << CC::BlueOffset))
+  ((ByteColor)((((a) & CC::MaxByte) << CC::AlphaOffset) | (((r) & CC::MaxByte) << CC::RedOffset) |                     \
+               (((g) & CC::MaxByte) << CC::GreenOffset) | ((b) & CC::MaxByte) << CC::BlueOffset))
 
 #undef FloatColorRGBA
 #define FloatColorRGBA(r, g, b, a)                                                                                     \
@@ -181,7 +180,7 @@ inline ByteColor ColorWithAlpha(ByteColor color, float alpha)
 inline ByteColor ColorWithAlphaByte(ByteColor color, int alpha)
 {
   ByteColor alphaRemoved = (CC::RedMask | CC::GreenMask | CC::BlueMask) & color;
-  return alphaRemoved | (((alpha)&0xff) << CC::AlphaOffset);
+  return alphaRemoved | (((alpha) & 0xff) << CC::AlphaOffset);
 }
 
 Real4 ColorClass::FromBytes(Integer r, Integer g, Integer b)
@@ -255,9 +254,8 @@ Real4 ColorClass::FromHexString(StringParam value)
   cstr begin = value.Data();
   cstr end = value.Data() + value.SizeInBytes();
 
-  const char* sizeError = "The hex string must be a 3, 4, 6, or 8 digit RGB[A] representation with "
-                          "an optional preceding '#' or '0x' (case insensitive). E.g. #f00, #F00F, "
-                          "ff0000, 0x00FF00FF.";
+  const char* sizeError = "The hex string must be a 3, 4, 6, or 8 digit RGB[A] representation with an optional "
+                          "preceding '#' or '0x' (case insensitive). E.g. #f00, #F00F, ff0000, 0x00FF00FF.";
   if (value.SizeInBytes() < 2)
   {
     ExecutableState::CallingState->ThrowException(sizeError);
@@ -281,8 +279,8 @@ Real4 ColorClass::FromHexString(StringParam value)
 
   if (is0xRepresentation && length != 8)
   {
-    ExecutableState::CallingState->ThrowException("A string that starts with '0x' must be the 8 digit RGBA "
-                                                  "representation. E.g. 0xFF000000.");
+    ExecutableState::CallingState->ThrowException(
+        "A string that starts with '0x' must be the 8 digit RGBA representation. E.g. 0xFF000000.");
     return Real4::cZero;
   }
 

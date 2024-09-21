@@ -8,14 +8,12 @@ namespace Zilch
 {
 namespace Events
 {
-// Sent repeatedly when the program is frozen by the debugger (a breakpoint is
-// hit, or it is paused) In general no logic that can affect the state of
-// debugging should ever be run within this event handler However, it can be
-// used to draw screen overlays and other indicators to the user
+// Sent repeatedly when the program is frozen by the debugger (a breakpoint is hit, or it is paused)
+// In general no logic that can affect the state of debugging should ever be run within this event handler
+// However, it can be used to draw screen overlays and other indicators to the user
 ZilchDeclareEvent(DebuggerPauseUpdate, DebuggerEvent);
 
-// Sent when we first pause execution (such as entering a breakpoint or clicking
-// pause)
+// Sent when we first pause execution (such as entering a breakpoint or clicking pause)
 ZilchDeclareEvent(DebuggerPause, DebuggerEvent);
 
 // Sent when we resume execution after being paused
@@ -230,12 +228,10 @@ private:
   // The last call stack position (how deep we were)
   size_t LastCallStackDepth;
 
-  // When we're doing stepping, we need to save the last location here (but not
-  // update it with each opcode step)
+  // When we're doing stepping, we need to save the last location here (but not update it with each opcode step)
   CodeLocation StepLocation;
 
-  // The call stack depth where we're stepping out of (state context relative
-  // operations)
+  // The call stack depth where we're stepping out of (state context relative operations)
   size_t StepOutOverCallStackDepth;
 
   // The libraries whose code we are currently viewing

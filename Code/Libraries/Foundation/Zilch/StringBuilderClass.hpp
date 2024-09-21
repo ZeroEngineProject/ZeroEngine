@@ -125,8 +125,7 @@ public:
   StringRange mRange;
 };
 
-// A string range bound to Zilch. This range will also keep the string that it's
-// referencing alive
+// A string range bound to Zilch. This range will also keep the string that it's referencing alive
 class ZeroShared StringRangeExtended
 {
   ZilchDeclareType(StringRangeExtended, TypeCopyMode::ReferenceType);

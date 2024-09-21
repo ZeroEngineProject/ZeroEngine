@@ -11,59 +11,49 @@ ZilchDefineExternalBaseType(Zero::ProcessStartInfo, TypeCopyMode::ValueType, bui
   ZilchFullBindDestructor(builder, type, Zero::ProcessStartInfo);
 
   ZilchBindField(mApplicationName)->Description =
-      ZilchDocumentString("Name of the application to execute. No quoting of "
-                          "this string is necessary.");
+      ZilchDocumentString("Name of the application to execute. No quoting of this string is necessary.");
   ZilchBindField(mArguments)->Description = ZilchDocumentString("Arguments to pass to the application.");
-  ZilchBindField(mWorkingDirectory)->Description = ZilchDocumentString("The working directory for the process to start "
-                                                                       "with. No quoting of this string is necessary.");
+  ZilchBindField(mWorkingDirectory)->Description = ZilchDocumentString(
+      "The working directory for the process to start with. No quoting of this string is necessary.");
   ZilchBindField(mShowWindow)->Description =
       ZilchDocumentString("Whether or not the window of the launched application should be shown.");
   ZilchBindField(mSearchPath)->Description =
       ZilchDocumentString("Whether or not we should search the path for the application.");
   ZilchBindField(mRedirectStandardOutput)->Description =
-      ZilchDocumentString("Whether or not we should redirect the Standard "
-                          "Output of the process for capturing.");
+      ZilchDocumentString("Whether or not we should redirect the Standard Output of the process for capturing.");
   ZilchBindField(mRedirectStandardError)->Description =
-      ZilchDocumentString("Whether or not we should redirect the Standard "
-                          "Error of the process for capturing.");
+      ZilchDocumentString("Whether or not we should redirect the Standard Error of the process for capturing.");
   ZilchBindField(mRedirectStandardInput)->Description =
-      ZilchDocumentString("Whether or not we should redirect the Standard "
-                          "Input of the process for writing.");
+      ZilchDocumentString("Whether or not we should redirect the Standard Input of the process for writing.");
 }
 
 ZilchDefineType(ProcessClass, builder, type)
 {
   ZilchFullBindConstructor(builder, type, ProcessClass, nullptr)->Description =
-      ZilchDocumentString("Process class used for managing external processes and redirecting "
-                          "their stdio. "
+      ZilchDocumentString("Process class used for managing external processes and redirecting their stdio. "
                           "Used to launch and monitor various external programs.");
   ZilchFullBindDestructor(builder, type, ProcessClass);
 
   ZilchFullBindMethod(
-      builder, type, &ProcessClass::Start, (void (ProcessClass::*)(Zero::ProcessStartInfo&)), "Start", "startInfo")
+      builder, type, &ProcessClass::Start, (void(ProcessClass::*)(Zero::ProcessStartInfo&)), "Start", "startInfo")
       ->Description = ZilchDocumentString("Begins the execution of another process using the given parameters. ");
 
-  ZilchFullBindMethod(builder, type, &ProcessClass::WaitForClose, (int (Process::*)()), "WaitForClose", ZilchNoNames)
-      ->Description = ZilchDocumentString("Waits for a process to close, this will block until "
-                                          "the process closes.");
+  ZilchFullBindMethod(builder, type, &ProcessClass::WaitForClose, (int(Process::*)()), "WaitForClose", ZilchNoNames)
+      ->Description = ZilchDocumentString("Waits for a process to close, this will block until the process closes.");
   ZilchFullBindMethod(builder, type, &ProcessClass::IsRunning, ZilchNoOverload, "IsRunning", ZilchNoNames)
       ->Description = ZilchDocumentString("Returns true if the process is still running, false otherwise.");
   ZilchFullBindMethod(builder, type, &ProcessClass::Close, ZilchNoOverload, "Close", ZilchNoNames)->Description =
-      ZilchDocumentString("Closes the wrapper around the process, does not "
-                          "close the process launched.");
+      ZilchDocumentString("Closes the wrapper around the process, does not close the process launched.");
   ZilchFullBindMethod(builder, type, &ProcessClass::Terminate, ZilchNoOverload, "Terminate", ZilchNoNames)
-      ->Description = ZilchDocumentString("Attempts to manually shut down the process. This is not safe for the "
-                                          "other process or what it's handling.");
+      ->Description = ZilchDocumentString(
+      "Attempts to manually shut down the process. This is not safe for the other process or what it's handling.");
 
   ZilchBindGetter(StandardError)->Description =
-      ZilchDocumentString("The stream where standard error is re-directed to. "
-                          "Null if not re-directed");
+      ZilchDocumentString("The stream where standard error is re-directed to. Null if not re-directed");
   ZilchBindGetter(StandardInput)->Description =
-      ZilchDocumentString("The stream where standard input is re-directed to. "
-                          "Null if not re-directed");
+      ZilchDocumentString("The stream where standard input is re-directed to. Null if not re-directed");
   ZilchBindGetter(StandardOutput)->Description =
-      ZilchDocumentString("The stream where standard output is re-directed to. "
-                          "Null if not re-directed");
+      ZilchDocumentString("The stream where standard output is re-directed to. Null if not re-directed");
 }
 
 ProcessClass::ProcessClass()

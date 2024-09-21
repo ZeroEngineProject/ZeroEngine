@@ -5,8 +5,7 @@
 namespace Zilch
 {
 StaticLibrary::StaticLibrary(StringParam name, StringParam namespaceForPlugins) :
-    Name(name),
-    Build(BuildState::NotBuilt)
+    Name(name), Build(BuildState::NotBuilt)
 {
   // Create a library builder
   this->Builder = new LibraryBuilder(name, namespaceForPlugins);
@@ -36,8 +35,7 @@ LibraryRef StaticLibrary::GetLibrary()
 
   // If the library has not been built yet...
   ErrorIf(this->Library == nullptr,
-          "The static library '%s' is currently in the process of being built "
-          "and cannot be grabbed!",
+          "The static library '%s' is currently in the process of being built and cannot be grabbed!",
           this->Name.c_str());
 
   return this->Library;
@@ -51,8 +49,7 @@ LibraryBuilder* StaticLibrary::GetBuilder()
   if (this->Builder == nullptr)
   {
     // Throw an error
-    Error("The static library '%s' was already built, and therefore its "
-          "builder cannot be accessed.",
+    Error("The static library '%s' was already built, and therefore its builder cannot be accessed.",
           this->Library->Name.c_str());
     return nullptr;
   }
@@ -62,8 +59,7 @@ LibraryBuilder* StaticLibrary::GetBuilder()
 
 void StaticLibrary::SetupBinding(LibraryBuilder& builder)
 {
-  // The base class does nothing, this is just to allow users to do their own
-  // setup
+  // The base class does nothing, this is just to allow users to do their own setup
 }
 
 void StaticLibrary::BuildLibrary()
@@ -89,8 +85,7 @@ void StaticLibrary::BuildLibrary()
   // Before we run initializers, let the user setup anything they want
   this->SetupBinding(*this->Builder);
 
-  // Make sure the user properly initialized all types that we did ZilchTypeId
-  // for
+  // Make sure the user properly initialized all types that we did ZilchTypeId for
   NativeBindingList::ValidateTypes();
 
   // Create the library and store it for everyone to be able to access

@@ -8,14 +8,11 @@ void TypingContext::Clear(bool tolerantMode)
 {
   // If we're not in tolerant mode, we better not have anything in our context
   ErrorIf(tolerantMode == false && this->ClassTypeStack.Empty() == false,
-          "Classes still leftover in the typing context after it was done "
-          "being used");
+          "Classes still leftover in the typing context after it was done being used");
   ErrorIf(tolerantMode == false && this->FunctionStack.Empty() == false,
-          "Functions still leftover in the typing context after it was done "
-          "being used");
+          "Functions still leftover in the typing context after it was done being used");
 
-  // Always clear everything from the context, regardless of the mode (just for
-  // safety)
+  // Always clear everything from the context, regardless of the mode (just for safety)
   this->ClassTypeStack.Clear();
   this->FunctionStack.Clear();
 }
@@ -41,14 +38,13 @@ Syntaxer::Syntaxer(CompilationErrors& errors) :
   this->ClassWalker.Register(&Syntaxer::CollectClass);
   this->ClassWalker.Register(&Syntaxer::CollectEnum);
 
-  // We need to walk every expression, every node, every place where we could
-  // find types We basically need to collect all uses of templates
+  // We need to walk every expression, every node, every place where we could find types
+  // We basically need to collect all uses of templates
   this->TemplateWalker.RegisterNonLeafBase(&Syntaxer::CollectTemplateInstantiations);
 
-  // The next pass we do, we dive into each class definition and pull out member
-  // variables and property declarations. This is so that if we reference
-  // anything using the member access operator '.' in the next pass, then we
-  // know if it's an error or not
+  // The next pass we do, we dive into each class definition and pull out member variables
+  // and property declarations. This is so that if we reference anything using the member
+  // access operator '.' in the next pass, then we know if it's an error or not
   this->MemberWalker.Register(&Syntaxer::CollectClassInheritance);
   this->MemberWalker.Register(&Syntaxer::CollectSendsEvents);
   this->MemberWalker.Register(&Syntaxer::CollectEnumInheritance);
@@ -60,8 +56,7 @@ Syntaxer::Syntaxer(CompilationErrors& errors) :
 
   // We have to do functions as a separate pass since we must know
   // the sizes of all objects before doing function signatures
-  // We also do parameters here because function delegate types must be done by
-  // this point
+  // We also do parameters here because function delegate types must be done by this point
   this->FunctionWalker.Register(&Syntaxer::PushClass);
   this->FunctionWalker.Register(&Syntaxer::CollectConstructor);
   this->FunctionWalker.Register(&Syntaxer::CollectDestructor);
@@ -69,8 +64,7 @@ Syntaxer::Syntaxer(CompilationErrors& errors) :
   this->FunctionWalker.Register(&Syntaxer::CollectPropertyGetSet);
   this->FunctionWalker.RegisterDerived<ParameterNode>(&Syntaxer::CheckLocalVariable);
 
-  // Walk through the tree and attempt to Assign locations to every node (class,
-  // function, etc)
+  // Walk through the tree and attempt to Assign locations to every node (class, function, etc)
   this->LocationWalker.RegisterNonLeafBase(&Syntaxer::DecorateCodeLocations);
 
   this->PrecomputeTypingWalker.Register(&Syntaxer::PrecomputeValueNode);
@@ -80,8 +74,7 @@ Syntaxer::Syntaxer(CompilationErrors& errors) :
   this->PrecomputeTypingWalker.Register(&Syntaxer::PrecomputeExpressionInitializerNode);
   this->PrecomputeTypingWalker.Register(&Syntaxer::PrecomputeTypeCastNode);
 
-  // Walk all any type of expression (often, expressions are nested within each
-  // other)
+  // Walk all any type of expression (often, expressions are nested within each other)
   this->TypingWalker.Register(&Syntaxer::PushClass);
   this->TypingWalker.RegisterDerived<ConstructorNode>(&Syntaxer::PushFunction);
   this->TypingWalker.RegisterDerived<DestructorNode>(&Syntaxer::PushFunction);
@@ -118,8 +111,7 @@ Syntaxer::Syntaxer(CompilationErrors& errors) :
   this->TypingWalker.Register(&Syntaxer::ResolveLocalVariableReference);
   this->TypingWalker.Register(&Syntaxer::ResolveMember);
 
-  // The last thing we do is walk all expressions and verify that r-values and
-  // l-values get treated properly
+  // The last thing we do is walk all expressions and verify that r-values and l-values get treated properly
   this->ExpressionWalker.RegisterNonLeafBase(&Syntaxer::CheckExpressionIoModes);
 }
 
@@ -218,10 +210,9 @@ void Syntaxer::FindDependencyCycles(BoundType* type,
   {
   case DependencyState::BeingDetermined:
   {
-    // This is an error, since we should never try to determine the size of an
-    // object again whilst its already being determined from a parent call (it
-    // indicates a cycle of aggregation) This should actually be a compiler
-    // error
+    // This is an error, since we should never try to determine the size of an object again
+    // whilst its already being determined from a parent call (it indicates a cycle of aggregation)
+    // This should actually be a compiler error
     this->Errors.Raise(location, ErrorCode::CompositionCycleDetected);
     return;
   }
@@ -229,8 +220,8 @@ void Syntaxer::FindDependencyCycles(BoundType* type,
   case DependencyState::Undetermined:
   {
     // We're in the middle of determining this type's dependencies now
-    // If we ever attempt to walk this class again, (see the above case) then we
-    // know that there was a cycle of dependencies!
+    // If we ever attempt to walk this class again, (see the above case) then we know
+    // that there was a cycle of dependencies!
     dependencies[type] = DependencyState::BeingDetermined;
 
     // If we have a base class type and its in the same library...
@@ -261,8 +252,8 @@ void Syntaxer::FindDependencyCycles(BoundType* type,
 
     // We finished walking all the dependencies for this type
     dependencies[type] = DependencyState::Completed;
-  }
     return;
+  }
   case DependencyState::Completed:
     return;
   }
@@ -290,10 +281,9 @@ void Syntaxer::ApplyToTree(SyntaxTree& syntaxTree,
   // Copy over all the dependencies into our library array
   this->AllLibraries.Insert(this->AllLibraries.End(), this->Dependencies->All());
 
-  // Note: Technically with single expression mode, we should only have to
-  // evaluate the types of just the expression (no class/member gathering, etc)
-  // However, the expression COULD be referring to a template, which may need to
-  // be instantiated
+  // Note: Technically with single expression mode, we should only have to evaluate
+  // the types of just the expression (no class/member gathering, etc)
+  // However, the expression COULD be referring to a template, which may need to be instantiated
 
   // Collect all the class types first
   ClassContext classContext;
@@ -337,9 +327,8 @@ void Syntaxer::ApplyToTree(SyntaxTree& syntaxTree,
     if (node == nullptr)
       continue;
 
-    // Send out an event letting the user know that we just parsed this type
-    // (but its members have yet to be parsed) NOTE: The user may add things to
-    // the library such as extension properties, or more...
+    // Send out an event letting the user know that we just parsed this type (but its members have yet to be parsed)
+    // NOTE: The user may add things to the library such as extension properties, or more...
     ParseEvent toSend;
     toSend.Builder = this->Builder;
     toSend.Type = node->Type;
@@ -356,9 +345,8 @@ void Syntaxer::ApplyToTree(SyntaxTree& syntaxTree,
     if (node == nullptr)
       continue;
 
-    // Send out an event letting the user know that we just parsed this type
-    // (but its members have yet to be parsed) NOTE: The user may add things to
-    // the library such as extension properties, or more...
+    // Send out an event letting the user know that we just parsed this type (but its members have yet to be parsed)
+    // NOTE: The user may add things to the library such as extension properties, or more...
     ParseEvent toSend;
     toSend.Builder = this->Builder;
     toSend.Type = node->Type;
@@ -378,8 +366,7 @@ void Syntaxer::ApplyToTree(SyntaxTree& syntaxTree,
     this->FindDependencyCycles(type, dependencyStates, type->Location);
   }
 
-  // Clear the typing context after every use (not necessary, except in tolerant
-  // mode)
+  // Clear the typing context after every use (not necessary, except in tolerant mode)
   typingContext.Clear(this->Errors.TolerantMode);
 
   // Walk the tree and re-arrange the indexer node
@@ -391,8 +378,7 @@ void Syntaxer::ApplyToTree(SyntaxTree& syntaxTree,
 
   SyntaxNode::FixParentPointers(syntaxTree.Root, nullptr);
 
-  // Clear the typing context after every use (not necessary, except in tolerant
-  // mode)
+  // Clear the typing context after every use (not necessary, except in tolerant mode)
   typingContext.Clear(this->Errors.TolerantMode);
 
   // Walk the tree and give functions types
@@ -402,8 +388,7 @@ void Syntaxer::ApplyToTree(SyntaxTree& syntaxTree,
   if (this->Errors.WasError)
     return;
 
-  // Clear the typing context after every use (not necessary, except in tolerant
-  // mode)
+  // Clear the typing context after every use (not necessary, except in tolerant mode)
   typingContext.Clear(this->Errors.TolerantMode);
 
   // Now actually walk the code and do all the checking
@@ -416,8 +401,7 @@ void Syntaxer::ApplyToTree(SyntaxTree& syntaxTree,
   // Generate field properties here (after the sizing has been computed)
   builder.GenerateGetSetFields();
 
-  // Clear the typing context after every use (not necessary, except in tolerant
-  // mode)
+  // Clear the typing context after every use (not necessary, except in tolerant mode)
   typingContext.Clear(this->Errors.TolerantMode);
 
   // Now actually walk the code and do all the checking
@@ -427,20 +411,17 @@ void Syntaxer::ApplyToTree(SyntaxTree& syntaxTree,
   if (this->Errors.WasError)
     return;
 
-  // Clear the typing context after every use (not necessary, except in tolerant
-  // mode)
+  // Clear the typing context after every use (not necessary, except in tolerant mode)
   typingContext.Clear(this->Errors.TolerantMode);
 
-  // Lastly, we walk expressions to verify that all reads/writes were properly
-  // handled
+  // Lastly, we walk expressions to verify that all reads/writes were properly handled
   this->ExpressionWalker.Walk(this, syntaxTree.Root, &typingContext);
 
   // If an error occurred, exit out
   if (this->Errors.WasError)
     return;
 
-  // Clear the typing context after every use (not necessary, except in tolerant
-  // mode)
+  // Clear the typing context after every use (not necessary, except in tolerant mode)
   typingContext.Clear(this->Errors.TolerantMode);
 }
 
@@ -464,16 +445,13 @@ void Syntaxer::ReplaceTypes(SyntaxTypes& typesToReplace,
         // Get the current template argument name
         const String& name = names[j]->Token;
 
-        // Compare the data type name with each of the template argument type
-        // names
+        // Compare the data type name with each of the template argument type names
         if (dataTypeToReplace->TypeName == name)
         {
-          // If the name matches, simply replace the name with what was passed
-          // in
+          // If the name matches, simply replace the name with what was passed in
           SyntaxNode* replaceWithType = instanceType->TemplateArguments[j];
 
-          // If the type we're currently replacing is a template, we have
-          // special logic...
+          // If the type we're currently replacing is a template, we have special logic...
           if (dataTypeToReplace->IsTemplateInstantiation())
           {
             // If the type we're replacing with is a data type
@@ -486,15 +464,13 @@ void Syntaxer::ReplaceTypes(SyntaxTypes& typesToReplace,
               }
               else
               {
-                // We cannot perform the replacement of a templated argument
-                // list with a non templatable type
+                // We cannot perform the replacement of a templated argument list with a non templatable type
                 return this->Errors.Raise(location, ErrorCode::CannotReplaceTemplateInstanceWithTemplateArguments);
               }
             }
             else
             {
-              // We cannot perform the replacement of a templated argument list
-              // with a non templatable type
+              // We cannot perform the replacement of a templated argument list with a non templatable type
               return this->Errors.Raise(location, ErrorCode::CannotReplaceTemplateInstanceWithTemplateArguments);
             }
           }
@@ -504,8 +480,7 @@ void Syntaxer::ReplaceTypes(SyntaxTypes& typesToReplace,
             SyntaxType* replaceWithTypeNode = Type::DynamicCast<SyntaxType*>(replaceWithType);
             if (replaceWithTypeNode != nullptr)
             {
-              // We MUST do a clone here or else we'll get a double delete
-              // situation
+              // We MUST do a clone here or else we'll get a double delete situation
               delete typeToReplace;
               typeToReplace = (SyntaxType*)replaceWithType->Clone();
               dataTypeToReplace = nullptr;
@@ -578,23 +553,20 @@ BoundType* Syntaxer::RetrieveBoundType(BoundSyntaxType* type,
   // Get the instance of the type database
   Core& core = Core::GetInstance();
 
-  // In tolerant mode, it is possible to get here and not have the template
-  // instantiation replaced because templates are currently not exported in the
-  // library (which is reused by code completion) and only the current class
-  // we're writing is actually parsed/seen by code completion
+  // In tolerant mode, it is possible to get here and not have the template instantiation replaced
+  // because templates are currently not exported in the library (which is reused by code completion)
+  // and only the current class we're writing is actually parsed/seen by code completion
   if (this->Errors.TolerantMode == false)
   {
     // Error checking
     ErrorIf(type->IsTemplateInstantiation(),
-            "All template instantiations should have been resolved by the "
-            "TemplateWalker");
+            "All template instantiations should have been resolved by the TemplateWalker");
 
     // We ignore the builder not being set in tolerant mode
     ErrorIf(this->Builder == nullptr, "Attempted to retrieve a type without a builder being set");
   }
 
-  // Make sure we have a valid builder, since this function can get called
-  // without one
+  // Make sure we have a valid builder, since this function can get called without one
   if (this->Builder != nullptr)
   {
     // Check to see if we found the type
@@ -618,10 +590,9 @@ BoundType* Syntaxer::RetrieveBoundType(BoundSyntaxType* type,
   String typeName = type->ToString();
   cstr typeNameCstr = typeName.c_str();
 
-  // If we have an extra context of what class we're inside of, then its very
-  // possible that the user was trying to implicitly access a member without
-  // 'this.', which is not legal in Zilch (but exists in C++) Try to provide
-  // better error information for these cases
+  // If we have an extra context of what class we're inside of, then its very possible
+  // that the user was trying to implicitly access a member without 'this.', which is not legal in Zilch (but exists in
+  // C++) Try to provide better error information for these cases
   bool hasInstanceMember =
       classWeAreInsideOf && classWeAreInsideOf->GetMember(typeName, Members::InheritedInstanceExtension) != nullptr;
 
@@ -678,8 +649,7 @@ Type* Syntaxer::RetrieveType(SyntaxType* syntaxType, const CodeLocation& locatio
       return core.ErrorType;
     }
 
-    // Return the result of attempting to find or create the type from a true
-    // type and its qualifiers
+    // Return the result of attempting to find or create the type from a true type and its qualifiers
     IndirectionType* indirectType = this->Builder->ReferenceOf(type);
     syntaxType->ResolvedType = indirectType;
     return indirectType;
@@ -734,8 +704,7 @@ Type* Syntaxer::RetrieveType(SyntaxType* syntaxType, const CodeLocation& locatio
   // If we stopped here, it means the user referenced a type that wasn't defined
   this->Errors.Raise(location, ErrorCode::ReferenceToUndefinedType, syntaxType->ToString().c_str());
 
-  // We return a special error type because it makes it so we crash less on null
-  // pointers
+  // We return a special error type because it makes it so we crash less on null pointers
   return core.ErrorType;
 }
 
@@ -812,13 +781,11 @@ void Syntaxer::ReadAttributes(SyntaxNode* parentNode, NodeList<AttributeNode>& n
         if (literalArgument == nullptr && typeId == nullptr)
           return this->ErrorAt(argument, ErrorCode::AttributeArgumentMustBeLiteral);
 
-        // We also only accept type ids that directly take a type (not an
-        // expression)
+        // We also only accept type ids that directly take a type (not an expression)
         if (typeId != nullptr && typeId->CompileTimeSyntaxType == nullptr)
           return this->ErrorAt(argument, ErrorCode::AttributeArgumentMustBeLiteral);
 
-        // Just so we don't get any errors complaining later, give this things
-        // an io mode
+        // Just so we don't get any errors complaining later, give this things an io mode
         argument->Io = IoMode::ReadRValue;
         argument->IoUsage = IoMode::Ignore;
 
@@ -842,8 +809,7 @@ void Syntaxer::ReadAttributes(SyntaxNode* parentNode, NodeList<AttributeNode>& n
         else
         {
           ErrorIf(typeId == nullptr,
-                  "The attribute argument wasn't a literal value or a typeid, "
-                  "but we should have validated that above");
+                  "The attribute argument wasn't a literal value or a typeid, but we should have validated that above");
 
           // Store the original token text, just in case the user wants it
           parameter.Type = ConstantType::Type;
@@ -860,8 +826,7 @@ void Syntaxer::SetupFunctionLocation(Function* function, const CodeLocation& loc
   function->Location = location;
   function->NameLocation = nameLocation;
 
-  // We also want to set the location of 'this' to just point at the function
-  // name
+  // We also want to set the location of 'this' to just point at the function name
   Variable* thisVariable = function->This;
   if (thisVariable != nullptr)
   {
@@ -897,8 +862,7 @@ void Syntaxer::SetupClassInstance(StringParam baseName, ClassNode* node, ClassCo
   // Go through all attributes and attach them to the class type
   this->ReadAttributes(node, node->Attributes, type->Attributes);
 
-  // Set whether we're hidden or not (hides us from documentation,
-  // auto-complete, etc)
+  // Set whether we're hidden or not (hides us from documentation, auto-complete, etc)
   type->IsHidden = type->HasAttribute(HiddenAttribute);
 
   // Create a new function for the pre-constructor
@@ -944,9 +908,8 @@ void Syntaxer::InstantiateTemplatesFromSyntaxTypes(SyntaxTypes& types,
 
     // CHECK THIS LOGIC
     // The first thing we need to do is traverse any sub-types
-    // I believe this MUST happen before we try to instantiate templates (makes
-    // sense...) otherwise we would try and instantiate a template with
-    // incorrect types
+    // I believe this MUST happen before we try to instantiate templates (makes sense...)
+    // otherwise we would try and instantiate a template with incorrect types
 
     // Get all child types of this type
     SyntaxTypes childTypes;
@@ -954,9 +917,8 @@ void Syntaxer::InstantiateTemplatesFromSyntaxTypes(SyntaxTypes& types,
 
     // Traverse those child types and instantiate any templates
     // NOTE: It is very important this happens first
-    // If a template type uses templates in it's instantiation (eg
-    // Array<Dictionary<Foo, Bar>>) Then we must have instantiated the
-    // Dictionary before the Array can complete
+    // If a template type uses templates in it's instantiation (eg Array<Dictionary<Foo, Bar>>)
+    // Then we must have instantiated the Dictionary before the Array can complete
     this->InstantiateTemplatesFromSyntaxTypes(childTypes, context, location);
 
     // If the type is a template instance
@@ -979,8 +941,7 @@ void Syntaxer::InstantiateTemplatesFromSyntaxTypes(SyntaxTypes& types,
           Array<Constant> templateInstanceArguments;
           templateInstanceArguments.Resize(dataType->TemplateArguments.Size());
 
-          // Loop through all the given template instance arguments (the actual
-          // types)
+          // Loop through all the given template instance arguments (the actual types)
           for (size_t i = 0; i < dataType->TemplateArguments.Size(); ++i)
           {
             // Get the template argument
@@ -990,8 +951,7 @@ void Syntaxer::InstantiateTemplatesFromSyntaxTypes(SyntaxTypes& types,
             SyntaxType* templateTypeArgument = Type::DynamicCast<SyntaxType*>(templateArgument);
             ValueNode* constantArgument = Type::DynamicCast<ValueNode*>(templateArgument);
 
-            // Attempt to retrieve it as a valid type (this could be a constant
-            // instead...)
+            // Attempt to retrieve it as a valid type (this could be a constant instead...)
             if (templateTypeArgument != nullptr)
             {
               // If we got no type back, we failed to instantiate this template
@@ -1002,12 +962,10 @@ void Syntaxer::InstantiateTemplatesFromSyntaxTypes(SyntaxTypes& types,
               // Store the type in our array of resolved types...
               templateInstanceArguments[i] = resolvedType;
             }
-            // If this is a constant (we still have to be sure the user didn't
-            // pass a name reference in)
+            // If this is a constant (we still have to be sure the user didn't pass a name reference in)
             else if (constantArgument != nullptr)
             {
-              // Arguments cannot be identifiers (we should probably make a
-              // separate LiteralNode)
+              // Arguments cannot be identifiers (we should probably make a separate LiteralNode)
               if (constantArgument->Value.TokenId == Grammar::LowerIdentifier)
                 return this->ErrorAt(templateArgument, ErrorCode::TemplateArgumentsMustBeConstantsOrTypes);
 
@@ -1015,8 +973,7 @@ void Syntaxer::InstantiateTemplatesFromSyntaxTypes(SyntaxTypes& types,
               Constant constant = this->ValueNodeToConstant(constantArgument);
               templateInstanceArguments[i] = constant;
             }
-            // Otherwise, we have no idea what this is (maybe the user is trying
-            // to use folding?)
+            // Otherwise, we have no idea what this is (maybe the user is trying to use folding?)
             else
             {
               return this->ErrorAt(templateArgument, ErrorCode::TemplateArgumentsMustBeConstantsOrTypes);
@@ -1042,20 +999,18 @@ void Syntaxer::InstantiateTemplatesFromSyntaxTypes(SyntaxTypes& types,
             // Perform the advanced type replacement for the template
             this->PerformTemplateReplacement(cloneTree, classNode->TemplateArguments, dataType);
 
-            // Tell the class node what type it is an instantiation of (normally
-            // null)
+            // Tell the class node what type it is an instantiation of (normally null)
             cloneTree->TemplateInstantiation = dataType;
 
             // Change the name of the class to reflect its template type
-            // The data type that we're instantiating it with should be able to
-            // represent the new name
+            // The data type that we're instantiating it with should be able to represent the new name
             cloneTree->Name.Token = fullyQualifiedTemplateName;
 
             // Setup the class as an instantiation
             this->SetupClassInstance(baseName, cloneTree, context);
 
-            // If aynyone queries the type we want to let them check what
-            // template arguments were used to create this type
+            // If aynyone queries the type we want to let them check what template arguments were used to create this
+            // type
             cloneTree->Type->TemplateArguments = templateInstanceArguments;
 
             // Add ourselves to the roots. Note this will not be traversed
@@ -1078,13 +1033,12 @@ void Syntaxer::InstantiateTemplatesFromSyntaxTypes(SyntaxTypes& types,
             // If we failed to instantiate the
             if (instantiatedTemplate.Result == TemplateResult::FailedNameNotFound)
             {
-              // If we got here, it means the user referenced a type that wasn't
-              // defined Note that this is the same as in RetrieveNamedType
+              // If we got here, it means the user referenced a type that wasn't defined
+              // Note that this is the same as in RetrieveNamedType
               return this->Errors.Raise(
                   location, ErrorCode::ReferenceToUndefinedType, fullyQualifiedTemplateName.c_str());
             }
-            // If we failed to instantiate the template due to an improper
-            // number of arguments...
+            // If we failed to instantiate the template due to an improper number of arguments...
             else if (instantiatedTemplate.Result == TemplateResult::FailedInvalidArgumentCount)
             {
               // The number of arguments -must- be the same
@@ -1094,8 +1048,7 @@ void Syntaxer::InstantiateTemplatesFromSyntaxTypes(SyntaxTypes& types,
                                         instantiatedTemplate.ExpectedArguments,
                                         dataType->TemplateArguments.Size());
             }
-            // If we failed to instantiate the template due to an argument
-            // mismatch
+            // If we failed to instantiate the template due to an argument mismatch
             else if (instantiatedTemplate.Result == TemplateResult::FailedArgumentTypeMismatch)
             {
               ZeroTodo("This error message can be made a lot better with context");
@@ -1109,8 +1062,7 @@ void Syntaxer::InstantiateTemplatesFromSyntaxTypes(SyntaxTypes& types,
 
             // Make sure that we got a template type back
             ErrorIf(instantiatedTemplate.Type == nullptr,
-                    "The template instantiator did not return a failure, but "
-                    "the type was not created");
+                    "The template instantiator did not return a failure, but the type was not created");
           }
         }
 
@@ -1130,8 +1082,7 @@ void Syntaxer::InstantiateTemplatesFromSyntaxTypes(SyntaxTypes& types,
       else
       {
         // Error handling
-        Error("Unhandled case: A template instance was made for a type we "
-              "didn't handle");
+        Error("Unhandled case: A template instance was made for a type we didn't handle");
       }
     }
   }
@@ -1195,8 +1146,8 @@ void Syntaxer::PreventDuplicateMemberNames(
     FunctionArray* foundFunctions = functionMap.FindPointer(memberName);
     if (foundFunctions != nullptr && foundFunctions->Empty() == false)
     {
-      // We only really want to show the location of the first function we find
-      // (it's really not necessary to show all of them...)
+      // We only really want to show the location of the first function we find (it's really not necessary to show all
+      // of them...)
       return this->Errors.Raise(location, ErrorCode::DuplicateMemberName, memberName.c_str());
     }
   }
@@ -1243,8 +1194,7 @@ void Syntaxer::PreventNameHiddenBaseMembers(Member* member)
                                   memberName.c_str());
     }
 
-    // We only care about functions hiding another member, but not functions
-    // hiding a function
+    // We only care about functions hiding another member, but not functions hiding a function
     if (isFunction == false)
     {
       // Make sure we don't have a function of the same name as this member
@@ -1252,8 +1202,8 @@ void Syntaxer::PreventNameHiddenBaseMembers(Member* member)
       FunctionArray* foundFunctions = functionMap.FindPointer(memberName);
       if (foundFunctions != nullptr && foundFunctions->Empty() == false)
       {
-        // We only really want to show the location of the first function we
-        // find (it's really not necessary to show all of them...)
+        // We only really want to show the location of the first function we find (it's really not necessary to show all
+        // of them...)
         Function* foundFunction = (*foundFunctions)[0];
         return this->Errors.Raise(location,
                                   String(),
@@ -1302,9 +1252,8 @@ void Syntaxer::CollectEnum(EnumNode*& node, ClassContext* context)
   if (this->Errors.WasError)
     return;
 
-  // Note: Most everything we do in major phases due to type references, member
-  // references, or template resolving Enums are simple, and therefore can
-  // mostly be handled here (apart from inheritance and code generation)
+  // Note: Most everything we do in major phases due to type references, member references, or template resolving
+  // Enums are simple, and therefore can mostly be handled here (apart from inheritance and code generation)
   BoundType* type = this->Builder->AddBoundType(node->Name.Token, TypeCopyMode::ValueType, sizeof(Integer), 0);
   node->Type = type;
 
@@ -1325,8 +1274,7 @@ void Syntaxer::CollectEnum(EnumNode*& node, ClassContext* context)
   // Go through all attributes and attach them to the enum type
   this->ReadAttributes(node, node->Attributes, type->Attributes);
 
-  // Assume this type is just a regular enum (if it's a 'flags', we will set
-  // that below)
+  // Assume this type is just a regular enum (if it's a 'flags', we will set that below)
   type->SpecialType = SpecialType::Enumeration;
   type->ToStringFunction = VirtualMachine::EnumerationToString;
   type->BaseType = ZilchTypeId(Enum);
@@ -1399,8 +1347,7 @@ void Syntaxer::CollectEnum(EnumNode*& node, ClassContext* context)
     Property* property = this->Builder->AddEnumValue(type, enumValueNode->Name.Token, enumValueNode->IntegralValue);
     enumValueNode->IntegralProperty = property;
 
-    // Set the documentation on the property to be any comments on the value, as
-    // well as the locations
+    // Set the documentation on the property to be any comments on the value, as well as the locations
     property->Description = enumValueNode->GetMergedComments();
     property->Location = enumValueNode->Location;
     property->NameLocation = enumValueNode->Name.Location;
@@ -1417,8 +1364,7 @@ void Syntaxer::CollectSendsEvents(SendsEventNode*& node, TypingContext* context)
   BoundType* sentType = this->RetrieveBoundType(node->EventType, node->Location);
   SendsEvent& sendsEvent = *this->Builder->AddSendsEvent(classType, node->Name->Token, sentType, comments);
 
-  // Set the documentation on the property to be any comments on the value, as
-  // well as the locations
+  // Set the documentation on the property to be any comments on the value, as well as the locations
   sendsEvent.Description = node->GetMergedComments();
   sendsEvent.Location = node->Location;
   sendsEvent.NameLocation = node->Name->Location;
@@ -1482,20 +1428,17 @@ void Syntaxer::CollectClassInheritance(ClassNode*& classNode, TypingContext* con
     }
     else
     {
-      // We only support inheriting from classes (bound types) and interfaces
-      // (which we don't have yet!)
+      // We only support inheriting from classes (bound types) and interfaces (which we don't have yet!)
       return this->ErrorAt(classNode,
                            ErrorCode::GenericError,
-                           "We don't yet support inheriting from types other "
-                           "than class/struct/bound types.");
+                           "We don't yet support inheriting from types other than class/struct/bound types.");
     }
   }
 }
 
 void Syntaxer::CollectEnumInheritance(EnumNode*& node, TypingContext* context)
 {
-  // Note: We don't really care about walking children here (our only children
-  // are enum values)
+  // Note: We don't really care about walking children here (our only children are enum values)
 
   // If we have inheritance...
   if (node->Inheritance)
@@ -1504,8 +1447,7 @@ void Syntaxer::CollectEnumInheritance(EnumNode*& node, TypingContext* context)
     return this->ErrorAt(node, ErrorCode::GenericError, "Enum inheritance is not yet supported.");
 
     //// Get the actual inherited type
-    // Type* inheritedType = this->RetrieveType(node->Inheritance,
-    // node->Location);
+    // Type* inheritedType = this->RetrieveType(node->Inheritance, node->Location);
 
     //// If we had an error, return out early
     // if (this->Errors.WasError)
@@ -1523,9 +1465,8 @@ void Syntaxer::SetupGenericFunction(GenericFunctionNode* node,
                                     Type* returnType,
                                     BoundType* owner)
 {
-  // If an owner was not passed in, then get a pointer to the current class type
-  // that this function is being implemented in Owner can be passed in when
-  // we're binding an extension function
+  // If an owner was not passed in, then get a pointer to the current class type that this function is being implemented
+  // in Owner can be passed in when we're binding an extension function
   if (owner == nullptr)
     owner = context->ClassTypeStack.Back();
 
@@ -1543,8 +1484,7 @@ void Syntaxer::SetupGenericFunction(GenericFunctionNode* node,
     // Get the current parameter
     ParameterNode* parameter = parameters.Front();
 
-    // Add the parameter type to the signature (get the type from the parameter
-    // node)
+    // Add the parameter type to the signature (get the type from the parameter node)
     DelegateParameter& delegateParameter = delegateParameters.PushBack();
     delegateParameter.Name = parameter->Name.Token;
 
@@ -1562,8 +1502,7 @@ void Syntaxer::SetupGenericFunction(GenericFunctionNode* node,
   // (the top of the stack will be the most relevant function to them)
   context->FunctionStack.PushBack(function);
 
-  // Walk all the parameters (which should give them types and generate
-  // variables)
+  // Walk all the parameters (which should give them types and generate variables)
   context->Walker->Walk(this, node->Parameters, context);
 
   // Mark the node as virtual if it is
@@ -1576,25 +1515,21 @@ void Syntaxer::SetupGenericFunction(GenericFunctionNode* node,
   // Go through all attributes and attach them to the function
   this->ReadAttributes(node, node->Attributes, function->Attributes);
 
-  // Set whether we're hidden or not (hides us from documentation,
-  // auto-complete, etc)
+  // Set whether we're hidden or not (hides us from documentation, auto-complete, etc)
   function->IsHidden = function->HasAttribute(HiddenAttribute);
 
   // If the function is a member function (not a static function)...
   if (options != FunctionOptions::Static)
   {
     // Get the scoped variable from the map
-    // Note that it should probably be null (we're just getting a reference to
-    // the pointer)
+    // Note that it should probably be null (we're just getting a reference to the pointer)
     Variable*& thisVariable = node->ScopedVariables[ThisKeyword];
 
-    // If the variable is not null, that means we somehow ended up with a 'this'
-    // variable already defined
+    // If the variable is not null, that means we somehow ended up with a 'this' variable already defined
     if (thisVariable != nullptr)
       return ErrorAt(node, ErrorCode::InternalError, "The variable 'this' was already defined.");
 
-    // Adding the function should have created a this variable (since we're not
-    // static)
+    // Adding the function should have created a this variable (since we're not static)
     thisVariable = function->This;
   }
 
@@ -1610,8 +1545,7 @@ void Syntaxer::CollectConstructor(ConstructorNode*& node, TypingContext* context
   // Get the instance of the type database
   Core& core = Core::GetInstance();
 
-  // Setup the function generically (this actually creates the compiled function
-  // object)
+  // Setup the function generically (this actually creates the compiled function object)
   this->SetupGenericFunction(node, context, node->Name, FunctionOptions::None, core.VoidType);
 
   // Grab the class type
@@ -1620,8 +1554,7 @@ void Syntaxer::CollectConstructor(ConstructorNode*& node, TypingContext* context
   Function* constructor = node->DefinedFunction;
   AddMemberResult::Enum addResult = classType->AddRawConstructor(constructor);
 
-  // If an overload of the function already existed with the exact same
-  // signature (and name)
+  // If an overload of the function already existed with the exact same signature (and name)
   if (addResult == AddMemberResult::AlreadyExists)
     return ErrorAt(node, ErrorCode::OverloadsCannotBeTheSame, constructor->Name.c_str());
 
@@ -1639,8 +1572,7 @@ void Syntaxer::CollectDestructor(DestructorNode*& node, TypingContext* context)
   // Get the instance of the type database
   Core& core = Core::GetInstance();
 
-  // Setup the function generically (this actually creates the compiled function
-  // object)
+  // Setup the function generically (this actually creates the compiled function object)
   this->SetupGenericFunction(node, context, node->Name, FunctionOptions::None, core.VoidType);
 
   // Add the destructor function to the class
@@ -1656,8 +1588,7 @@ void Syntaxer::CollectFunction(FunctionNode*& node, TypingContext* context)
   if (node->ReturnType != nullptr)
   {
     // Add the return type to the signature
-    // HACK (needs to be actually at the return node, maybe syntax types should
-    // get locations?)
+    // HACK (needs to be actually at the return node, maybe syntax types should get locations?)
     delegateReturn = this->RetrieveType(node->ReturnType, node->Location);
 
     // If we had an error, return out early
@@ -1700,8 +1631,7 @@ void Syntaxer::CollectFunction(FunctionNode*& node, TypingContext* context)
   if (this->Errors.WasError)
     return;
 
-  // Setup the function generically (this actually creates the compiled function
-  // object)
+  // Setup the function generically (this actually creates the compiled function object)
   this->SetupGenericFunction(node, context, node->Name, options, delegateReturn, owner);
 
   // If we had an error, return out early
@@ -1714,12 +1644,10 @@ void Syntaxer::CollectFunction(FunctionNode*& node, TypingContext* context)
   // If this is a normal function (not an extension function...)
   if (node->ExtensionOwner == nullptr)
   {
-    // Add the function to the type's list of functions (checks for static or
-    // instance methods)
+    // Add the function to the type's list of functions (checks for static or instance methods)
     AddMemberResult::Enum addResult = owner->AddRawFunction(function);
 
-    // If an overload of the function already existed with the exact same
-    // signature (and name)
+    // If an overload of the function already existed with the exact same signature (and name)
     if (addResult == AddMemberResult::AlreadyExists)
       return ErrorAt(node, ErrorCode::OverloadsCannotBeTheSame, function->Name.c_str());
   }
@@ -1736,8 +1664,8 @@ void Syntaxer::CollectMemberVariableAndProperty(MemberVariableNode*& node, Typin
   // If the type was explicitly stated (not inferred)
   if (node->ResultSyntaxType != nullptr)
   {
-    // Store the type on the node (this helps us with byte-code generation
-    // later) Essentially, we are decorating the tree :)
+    // Store the type on the node (this helps us with byte-code generation later)
+    // Essentially, we are decorating the tree :)
     node->ResultType = this->RetrieveType(node->ResultSyntaxType, node->Location);
   }
   else
@@ -1745,9 +1673,8 @@ void Syntaxer::CollectMemberVariableAndProperty(MemberVariableNode*& node, Typin
     if (node->InitialValue != nullptr)
     {
       // We can attempt to infer the type from our initial value
-      // We haven't run type checking on expressions yet (because members don't
-      // all have their types!) However, a few nodes can compute their type
-      // without running type checking such as a constructor call or literal
+      // We haven't run type checking on expressions yet (because members don't all have their types!)
+      // However, a few nodes can compute their type without running type checking such as a constructor call or literal
       // value Attempt this way first...
       this->PrecomputeTypingWalker.Walk(this, node->InitialValue, context);
       node->ResultType = node->InitialValue->PrecomputedResultType;
@@ -1791,30 +1718,26 @@ void Syntaxer::CollectMemberVariableAndProperty(MemberVariableNode*& node, Typin
   {
     GetterSetter* getset = nullptr;
 
-    // The function we use to tell the library builder to ignore it (we will
-    // build it later)
+    // The function we use to tell the library builder to ignore it (we will build it later)
     BoundFn doNotGenerate = LibraryBuilder::DoNotGenerate;
 
     // If this is a normal class property...
     if (node->ExtensionOwner == nullptr)
     {
-      // Create the property using the builder (this adds it directly to the
-      // class)
+      // Create the property using the builder (this adds it directly to the class)
       getset = this->Builder->AddBoundGetterSetter(
           classType, node->Name.Token, node->ResultType, doNotGenerate, doNotGenerate, options);
     }
     else
     {
-      // We have to lookup the extension type that the user specified (this
-      // could fail)
+      // We have to lookup the extension type that the user specified (this could fail)
       BoundType* extensionOwner = this->RetrieveBoundType(node->ExtensionOwner, node->Location);
 
       // If we had a problem resolving the type, then early out
       if (this->Errors.WasError)
         return;
 
-      // Create the property using the builder (this adds it to the library but
-      // maps it to the owner)
+      // Create the property using the builder (this adds it to the library but maps it to the owner)
       getset = this->Builder->AddExtensionGetterSetter(
           extensionOwner, node->Name.Token, node->ResultType, doNotGenerate, doNotGenerate, options);
     }
@@ -1837,8 +1760,7 @@ void Syntaxer::CollectMemberVariableAndProperty(MemberVariableNode*& node, Typin
     }
 
     // Create the member using the builder
-    // The given offset is zero for now (we'll initialize it later when
-    // collecting sizes of objects)
+    // The given offset is zero for now (we'll initialize it later when collecting sizes of objects)
     Field* field = this->Builder->AddBoundField(classType, node->Name.Token, node->ResultType, 0, options);
     property = field;
 
@@ -1855,8 +1777,7 @@ void Syntaxer::CollectMemberVariableAndProperty(MemberVariableNode*& node, Typin
   // Go through all attributes and attach them to the property
   this->ReadAttributes(node, node->Attributes, property->Attributes);
 
-  // Set whether we're hidden or not (hides us from documentation,
-  // auto-complete, etc)
+  // Set whether we're hidden or not (hides us from documentation, auto-complete, etc)
   property->IsHidden = property->HasAttribute(HiddenAttribute);
 
   // Set the location of the property
@@ -1866,8 +1787,7 @@ void Syntaxer::CollectMemberVariableAndProperty(MemberVariableNode*& node, Typin
 
 void Syntaxer::CollectPropertyGetSet(MemberVariableNode*& node, TypingContext* context)
 {
-  // Note: The first thing we must do is walk the Get/Set functions since
-  // whatever member
+  // Note: The first thing we must do is walk the Get/Set functions since whatever member
   //       we create, we want to give it the proper get and set functions
 
   // If the member has a get
@@ -2008,8 +1928,7 @@ void Syntaxer::CheckAndPushFunction(FunctionNode*& node, TypingContext* context)
 {
   this->PreventNameHiddenBaseMembers(node->DefinedFunction);
 
-  // Walk up the base class hierarchy to find a method of the same name and
-  // signature that we may be overriding
+  // Walk up the base class hierarchy to find a method of the same name and signature that we may be overriding
   if (node->Virtualized == VirtualMode::Overriding)
   {
     Function* function = node->DefinedFunction;
@@ -2043,8 +1962,7 @@ void Syntaxer::PushConstructor(ConstructorNode*& node, TypingContext* context)
 
 void Syntaxer::CheckInitializerList(ConstructorNode* node)
 {
-  ZeroTodo("Finish up initializer lists (at least checking if they pass type "
-           "validation)");
+  ZeroTodo("Finish up initializer lists (at least checking if they pass type validation)");
   // DecorateCheckFunctionCall(node, node->BaseInitializer,
   // node->BaseInitializer
 }
@@ -2090,12 +2008,10 @@ void Syntaxer::DecorateValue(ValueNode*& node, TypingContext* /*context*/)
   if (node->ResultType == nullptr)
   {
     // We don't know what type it is?
-    // This especially should not be an identifier, since identifiers are caught
-    // as VariableReferences
+    // This especially should not be an identifier, since identifiers are caught as VariableReferences
     this->ErrorAt(node,
                   ErrorCode::InternalError,
-                  "We reached what should be a literal value and we have no "
-                  "idea what type it is.");
+                  "We reached what should be a literal value and we have no idea what type it is.");
   }
 }
 
@@ -2105,8 +2021,7 @@ void SetAllIoToReadAndIgnore(SyntaxNode* node)
   ExpressionNode* expression = Type::DynamicCast<ExpressionNode*>(node);
   if (expression != nullptr)
   {
-    // Set the io and usage (technically usage should only be set by the parent,
-    // but this is a special case)
+    // Set the io and usage (technically usage should only be set by the parent, but this is a special case)
     expression->Io = IoMode::ReadRValue;
     expression->IoUsage = IoMode::Ignore;
   }
@@ -2115,22 +2030,19 @@ void SetAllIoToReadAndIgnore(SyntaxNode* node)
   NodeChildren children;
   node->PopulateChildren(children);
 
-  // Loop through all the children and recursively set all their nodes to read
-  // only
+  // Loop through all the children and recursively set all their nodes to read only
   for (size_t i = 0; i < children.Size(); ++i)
     SetAllIoToReadAndIgnore(*children[i]);
 }
 
 void Syntaxer::DecorateExpressionInitializer(ExpressionInitializerNode*& node, TypingContext* context)
 {
-  // Mark the node as being read only (we don't ever write directly to this
-  // value on the stack) Note that doesn't mean we can't access a value on the
-  // type and write to it
+  // Mark the node as being read only (we don't ever write directly to this value on the stack)
+  // Note that doesn't mean we can't access a value on the type and write to it
   node->Io = IoMode::ReadRValue;
 
-  // Mark all child nodes as using ignoring io access (we know this is generated
-  // by us, so it's ok/valid) This should really come before we do anything
-  // else, just because member initialization does actually need to write
+  // Mark all child nodes as using ignoring io access (we know this is generated by us, so it's ok/valid)
+  // This should really come before we do anything else, just because member initialization does actually need to write
   SetAllIoToReadAndIgnore(node);
 
   // Walk the creation initializer (create the node, invoke the constructor...)
@@ -2159,8 +2071,7 @@ void Syntaxer::DecorateStaticTypeOrCreationCall(StaticTypeNode*& node, TypingCon
   // We only grab this so we can provide the user with better error feedback
   BoundType* classWereInsideOf = context->ClassTypeStack.Back();
 
-  // Get the type that is referenced by the syntax type (the type we're possibly
-  // creating, or accessing statics upon)
+  // Get the type that is referenced by the syntax type (the type we're possibly creating, or accessing statics upon)
   node->ReferencedType = this->RetrieveBoundType(node->ReferencedSyntaxType, node->Location, classWereInsideOf);
 
   if (this->Errors.WasError)
@@ -2168,22 +2079,20 @@ void Syntaxer::DecorateStaticTypeOrCreationCall(StaticTypeNode*& node, TypingCon
 
   // For the member access case and inferred creation call, this is
   // always correct (the result of the expression is the same as the named type
-  // However: In the case where we are using 'new' on a value type, the result
-  // is a reference type Warning: If this is a static member access, the type is
-  // NOT an instance, but is static (we don't actually return a value)
+  // However: In the case where we are using 'new' on a value type, the result is a reference type
+  // Warning: If this is a static member access, the type is NOT an instance, but is static (we don't actually return a
+  // value)
   node->ResultType = node->ReferencedType;
 
-  // Get the copy mode of the type we're possibly creating (reference or value
-  // type)
+  // Get the copy mode of the type we're possibly creating (reference or value type)
   TypeCopyMode::Enum copyMode = node->ReferencedType->CopyMode;
 
   // This could be a creation call or a member access
   FunctionCallNode* constructorCall = Type::DynamicCast<FunctionCallNode*>(node->Parent);
   MemberAccessNode* memberAccess = Type::DynamicCast<MemberAccessNode*>(node->Parent);
 
-  // Determine right here if this is a creation call... (we MUST be the left
-  // operand of our parent in this case) For example, we could be passed as a
-  // parameter in code that should NOT compile, eg SomeCall(String)
+  // Determine right here if this is a creation call... (we MUST be the left operand of our parent in this case)
+  // For example, we could be passed as a parameter in code that should NOT compile, eg SomeCall(String)
   if (constructorCall != nullptr && node == constructorCall->LeftOperand)
   {
     // Check if this is an inferred node
@@ -2200,13 +2109,11 @@ void Syntaxer::DecorateStaticTypeOrCreationCall(StaticTypeNode*& node, TypingCon
   // Otherwise, this should be a member access...
   else if (memberAccess != nullptr)
   {
-    // If we're trying to do a member access on a new/local node, this would
-    // never make sense
+    // If we're trying to do a member access on a new/local node, this would never make sense
     if (node->Mode != CreationMode::Invalid)
       return this->ErrorAt(node, ErrorCode::ConstructorCannotAccessStaticMembers);
   }
-  // Otherwise the user is trying to do something with the node that we don't
-  // understand
+  // Otherwise the user is trying to do something with the node that we don't understand
   else if (this->Errors.TolerantMode == false)
   {
     if (node->Mode != CreationMode::Invalid)
@@ -2215,27 +2122,23 @@ void Syntaxer::DecorateStaticTypeOrCreationCall(StaticTypeNode*& node, TypingCon
       return this->ErrorAt(node, ErrorCode::StaticTypeConstructorOrAccessNotFound);
   }
 
-  // Note: We do this regardless of this being a construction node because
-  // auto-complete uses it Walk up the base class chain until we find any
-  // constructors (we inherit constructors) We start with the current class
-  // we're trying to create Note: We can safely look up to our base classes
-  // because if we don't have a constructor then we at least have been
-  // pre-constructed, and the user opted to not initialize anything with a
-  // constructor
+  // Note: We do this regardless of this being a construction node because auto-complete uses it
+  // Walk up the base class chain until we find any constructors (we inherit constructors)
+  // We start with the current class we're trying to create
+  // Note: We can safely look up to our base classes because if we don't have a constructor
+  // then we at least have been pre-constructed, and the user opted to not initialize anything with a constructor
   node->OverloadedConstructors = node->ReferencedType->GetOverloadedInheritedConstructors();
 
-  // If this is being used as a creation node (may have been determined above,
-  // or by an explicit new/local)
+  // If this is being used as a creation node (may have been determined above, or by an explicit new/local)
   if (node->Mode != CreationMode::Invalid)
   {
     // If the type has a flag that stops itself from being created in script...
-    // Let the user know that this type can't be created (even if it has a
-    // constructor!)
+    // Let the user know that this type can't be created (even if it has a constructor!)
     if (node->ReferencedType->CreatableInScript == false)
       return this->ErrorAt(node, ErrorCode::CannotCreateType, node->ReferencedType->ToString().c_str());
 
-    // If we're doing a call to 'new', meaning we're making a heap object and
-    // its a value type then we know it must be a ref...
+    // If we're doing a call to 'new', meaning we're making a heap object and its a value type then we know it must be a
+    // ref...
     if (node->Mode == CreationMode::New && copyMode == TypeCopyMode::ValueType)
     {
       // The result is a reference (indirection) to the created value type
@@ -2260,10 +2163,8 @@ void Syntaxer::DecorateMultiExpression(MultiExpressionNode*& node, TypingContext
   // (also handles invalid, because invalid is greater than size!)
   if (node->YieldChildExpressionIndex > node->Expressions.Size())
   {
-    return this->ErrorAt(node,
-                         ErrorCode::InternalError,
-                         "YieldChildExpressionIndex was not properly set on "
-                         "MultiExpressionNode.");
+    return this->ErrorAt(
+        node, ErrorCode::InternalError, "YieldChildExpressionIndex was not properly set on MultiExpressionNode.");
   }
 
   // Loop through all the child expressions
@@ -2273,16 +2174,14 @@ void Syntaxer::DecorateMultiExpression(MultiExpressionNode*& node, TypingContext
     ExpressionNode* expression = node->Expressions[i];
     context->Walker->Walk(this, expression, context);
 
-    // Unfortunately, we need to actually forward the IoUsage of whoever was
-    // using our node however we don't know, because typically it has yet to be
-    // set Right now, we set that we require only read access to the node
-    // (because we only use this internally) This means if we try to yield
-    // something that is write only, then we will get an error
+    // Unfortunately, we need to actually forward the IoUsage of whoever was using our node
+    // however we don't know, because typically it has yet to be set
+    // Right now, we set that we require only read access to the node (because we only use this internally)
+    // This means if we try to yield something that is write only, then we will get an error
     expression->IoUsage = (IoMode::Enum)(IoMode::ReadRValue);
   }
 
-  // Forward all parameters that the syntaxer typically handles to the yielded
-  // expression
+  // Forward all parameters that the syntaxer typically handles to the yielded expression
   ExpressionNode* yieldedExpression = node->Expressions[node->YieldChildExpressionIndex];
   node->ResultType = yieldedExpression->ResultType;
   node->Io = yieldedExpression->Io;
@@ -2322,8 +2221,7 @@ void Syntaxer::DecorateTypeId(TypeIdNode*& node, TypingContext* context)
   }
 
   // By default the typeid will always something that derives from 'Type'
-  // If this is an any type, then we could technically return anything (unless
-  // this is a static typeid(any))
+  // If this is an any type, then we could technically return anything (unless this is a static typeid(any))
   if (Type::IsAnyType(node->CompileTimeType) && node->Value != nullptr)
     node->ResultType = ZilchTypeId(Type);
   else
@@ -2333,8 +2231,7 @@ void Syntaxer::DecorateTypeId(TypeIdNode*& node, TypingContext* context)
 void Syntaxer::DecorateMemberId(MemberIdNode*& node, TypingContext* context)
 {
   // Mark the node as being read only
-  // Note that does NOT mean we can't access a value on the property and write
-  // to it
+  // Note that does NOT mean we can't access a value on the property and write to it
   node->Io = IoMode::ReadRValue;
 
   // Process the member expression
@@ -2343,9 +2240,8 @@ void Syntaxer::DecorateMemberId(MemberIdNode*& node, TypingContext* context)
     MemberAccessNode* memberNode = node->Member;
     context->Walker->Walk(this, memberNode, context);
 
-    // We actually don't even care about reading the value because we will not
-    // be generating code for it But we set this regardless to avoid asserts
-    // later
+    // We actually don't even care about reading the value because we will not be generating code for it
+    // But we set this regardless to avoid asserts later
     node->Member->IoUsage = IoMode::ReadRValue;
 
     // Get the type of member this represents
@@ -2391,12 +2287,10 @@ void Syntaxer::CheckMemberVariable(MemberVariableNode*& node, TypingContext* con
     // The initial value only needs to be readable
     initialValue->IoUsage = IoMode::ReadRValue;
 
-    // Check if the types match, or if we can implicitly convert one to our
-    // resulting type
+    // Check if the types match, or if we can implicitly convert one to our resulting type
     if (this->ImplicitConvertAfterWalkAndIo(node->InitialValue, node->ResultType) == false)
     {
-      // The expression assigned to the variable was not of the same type as the
-      // variable
+      // The expression assigned to the variable was not of the same type as the variable
       return ErrorAt(node,
                      ErrorCode::VariableTypeMismatch,
                      node->Name.c_str(),
@@ -2453,8 +2347,7 @@ void Syntaxer::CheckLocalVariable(LocalVariableNode*& node, TypingContext* conte
     // If the parent was a scope...
     if (currentScope != nullptr)
     {
-      // If we have no immediate scope yet, then set it (this will always be set
-      // to the first one we hit)
+      // If we have no immediate scope yet, then set it (this will always be set to the first one we hit)
       if (immediateScope == nullptr)
         immediateScope = currentScope;
 
@@ -2485,8 +2378,7 @@ void Syntaxer::CheckLocalVariable(LocalVariableNode*& node, TypingContext* conte
   this->ReadAttributes(node, node->Attributes, variable->Attributes);
 
   // Try to Insert the variable into the scope, but if we fail...
-  // There should NEVER be an error here since we checked above (or something
-  // really bad happened)
+  // There should NEVER be an error here since we checked above (or something really bad happened)
   immediateScope->ScopedVariables.InsertOrError(variable->Name, variable);
 
   // Store the variable information
@@ -2523,8 +2415,7 @@ void Syntaxer::CheckLocalVariable(LocalVariableNode*& node, TypingContext* conte
         // If the variable was not able to resolve its type...
         if (variable->ResultType == nullptr)
         {
-          // Lets just try and assume the type will be our initial value type,
-          // if it works?
+          // Lets just try and assume the type will be our initial value type, if it works?
           if (initialValue->ResultType != nullptr)
           {
             // This is actually similar to how we infer local variable types
@@ -2546,12 +2437,10 @@ void Syntaxer::CheckLocalVariable(LocalVariableNode*& node, TypingContext* conte
         }
       }
 
-      // Check if the types match, or if we can implicitly convert one to our
-      // resulting type
+      // Check if the types match, or if we can implicitly convert one to our resulting type
       if (this->ImplicitConvertAfterWalkAndIo(node->InitialValue, variable->ResultType) == false)
       {
-        // The expression assigned to the variable was not of the same type as
-        // the variable
+        // The expression assigned to the variable was not of the same type as the variable
         return ErrorAt(node,
                        ErrorCode::VariableTypeMismatch,
                        variable->Name.c_str(),
@@ -2561,8 +2450,7 @@ void Syntaxer::CheckLocalVariable(LocalVariableNode*& node, TypingContext* conte
     }
   }
 
-  // We treat local variables as expressions, so they must output their
-  // resulting type (just the type of the variable)
+  // We treat local variables as expressions, so they must output their resulting type (just the type of the variable)
   node->ResultType = variable->ResultType;
 }
 
@@ -2575,8 +2463,8 @@ void Syntaxer::CheckDelete(DeleteNode*& node, TypingContext* context)
   if (this->Errors.WasError)
     return;
 
-  // The handle we're deleting needs to be readable (so we can read the handle's
-  // value) For example, it cannot be a 'set' only property that we are deleting
+  // The handle we're deleting needs to be readable (so we can read the handle's value)
+  // For example, it cannot be a 'set' only property that we are deleting
   node->DeletedObject->IoUsage = IoMode::ReadRValue;
 
   // The type of the deleted object has to at least be a reference
@@ -2586,8 +2474,7 @@ void Syntaxer::CheckDelete(DeleteNode*& node, TypingContext* context)
   }
 
   // If the type has a flag that stops itself from being deleted in script...
-  // Let the user know that this type can't be created (even if it has a
-  // constructor!)
+  // Let the user know that this type can't be created (even if it has a constructor!)
   BoundType* type = Type::GetBoundType(node->DeletedObject->ResultType);
   if (type != nullptr && type->CreatableInScript == false)
     return this->ErrorAt(node, ErrorCode::CannotDeleteType, type->Name.c_str());
@@ -2611,30 +2498,26 @@ void Syntaxer::CheckThrow(ThrowNode*& node, TypingContext* context)
   // Get the exception type as a bound type (it must be!)
   BoundType* exceptionType = Type::DynamicCast<BoundType*>(node->Exception->ResultType);
 
-  // First, we need to check if the type is even a bound type (if not, it can't
-  // be thrown!)
+  // First, we need to check if the type is even a bound type (if not, it can't be thrown!)
   if (exceptionType == nullptr)
   {
     return this->ErrorAt(node->Exception, ErrorCode::ThrowTypeMustDeriveFromException);
   }
 
-  // The type of the exception expression must derive from the core 'Exception'
-  // type
+  // The type of the exception expression must derive from the core 'Exception' type
   if (Type::BoundIsA(exceptionType, core.ExceptionType) == false)
   {
     return this->ErrorAt(node->Exception, ErrorCode::ThrowTypeMustDeriveFromException);
   }
 
-  // Mark the parent scope as being a full return (nothing executes after a
-  // throw, much like a return)
+  // Mark the parent scope as being a full return (nothing executes after a throw, much like a return)
   this->MarkParentScopeAsAllPathsReturn(node->Parent, false);
 }
 
 void Syntaxer::ProcessScopeStatements(ScopeNode* node, TypingContext* context)
 {
   // Loop through all the statements
-  // Note: If any of the statements are a return value, it will set
-  // 'AllPathsReturn' for this node
+  // Note: If any of the statements are a return value, it will set 'AllPathsReturn' for this node
   for (size_t i = 0; i < node->Statements.Size(); ++i)
   {
     // If we hit a point where all code paths return,
@@ -2693,8 +2576,7 @@ void Syntaxer::CheckConditionalLoop(ConditionalLoopNode* node, TypingContext* co
   Core& core = Core::GetInstance();
 
   // Now that we've walked the condition, check to make sure it's a bool type
-  // Check if the types match, or if we can implicitly convert one to our
-  // resulting type
+  // Check if the types match, or if we can implicitly convert one to our resulting type
   if (this->ImplicitConvertAfterWalkAndIo(node->Condition, core.BooleanType) == false)
   {
     // The condition was not a bool
@@ -2741,9 +2623,8 @@ void Syntaxer::CheckFor(ForNode*& node, TypingContext* context)
     // Process the initialization expression
     context->Walker->Walk(this, node->Initialization, context);
 
-    // When using an initialization expression, we never need to either read or
-    // write from in In that regard, we completely ignore however the user
-    // decides to use it
+    // When using an initialization expression, we never need to either read or write from in
+    // In that regard, we completely ignore however the user decides to use it
     node->Initialization->IoUsage = IoMode::Ignore;
   }
 
@@ -2792,33 +2673,28 @@ void Syntaxer::CheckIfRoot(IfRootNode*& node, TypingContext* context)
   if (this->Errors.WasError)
     return;
 
-  // We got a completely empty if statement (probably an if with no body), just
-  // early out
+  // We got a completely empty if statement (probably an if with no body), just early out
   if (this->Errors.TolerantMode && node->IfParts.Empty())
     return;
 
-  // Check if we have a standalone else statement (only logical when we have at
-  // least 2 parts of the if)
+  // Check if we have a standalone else statement (only logical when we have at least 2 parts of the if)
   bool hasNonConditionalElse = (node->IfParts.Back()->Condition == nullptr);
 
-  // If we have a non-conditional else, then it's possible that all paths of the
-  // if statement return from the function (or throw, etc)
+  // If we have a non-conditional else, then it's possible that all paths of the if statement return from the function
+  // (or throw, etc)
   if (hasNonConditionalElse)
   {
-    // We want to know if all the if parts of our if statement return, and if
-    // any of them are a debug return
+    // We want to know if all the if parts of our if statement return, and if any of them are a debug return
     bool allIfPartsReturn = true;
     bool anyDebugReturns = false;
 
-    // If any of the children are 'debug returns' then we mark all returns as
-    // being debug returns
+    // If any of the children are 'debug returns' then we mark all returns as being debug returns
     for (size_t i = 0; i < node->IfParts.Size(); ++i)
     {
       // Grab the current part of the if statement
       IfNode* part = node->IfParts[i];
 
-      // If we encounter any part of the if statement that doesn't return, then
-      // not all paths return!
+      // If we encounter any part of the if statement that doesn't return, then not all paths return!
       if (part->AllPathsReturn == false)
       {
         // Early out, no need to check anything else
@@ -2858,8 +2734,7 @@ void Syntaxer::CheckIf(IfNode*& node, TypingContext* context)
     Core& core = Core::GetInstance();
 
     // Now that we've walked the condition, check to make sure it's a bool type
-    // Check if the types match, or if we can implicitly convert one to our
-    // resulting type
+    // Check if the types match, or if we can implicitly convert one to our resulting type
     if (this->ImplicitConvertAfterWalkAndIo(node->Condition, core.BooleanType) == false)
     {
       // The condition was not a bool
@@ -2904,8 +2779,7 @@ LoopScopeNode* Syntaxer::FindLoopScope(size_t scopeCount, SyntaxNode* parent)
   }
 
   // We did not find the node
-  Error("We actually shouldn't be able to get here, since we should at least "
-        "hit a class node");
+  Error("We actually shouldn't be able to get here, since we should at least hit a class node");
   return nullptr;
 }
 
@@ -2974,8 +2848,7 @@ void Syntaxer::ResolveLocalVariableReference(LocalVariableReferenceNode*& node, 
           // Get a pointer to the variable info
           Variable* variable = range.Front().second;
 
-          // Copy over the value, the node the identifier is referencing, and
-          // the type
+          // Copy over the value, the node the identifier is referencing, and the type
           node->Access.Type = OperandType::Local;
           node->AccessedVariable = variable;
           node->ResultType = variable->ResultType;
@@ -2988,8 +2861,7 @@ void Syntaxer::ResolveLocalVariableReference(LocalVariableReferenceNode*& node, 
     parent = parent->Parent;
   }
 
-  // An identifier was used, but we couldn't find the variable it was
-  // referencing!
+  // An identifier was used, but we couldn't find the variable it was referencing!
   return ErrorAt(node, ErrorCode::LocalVariableReferenceNotFound, node->Value.Token.c_str());
 }
 
@@ -3030,19 +2902,16 @@ bool Syntaxer::ImplicitConvertAfterWalkAndIo(ExpressionNode*& nodeToReparent, Ty
   Shared& shared = Shared::GetInstance();
   CastOperator cast = shared.GetCastOperator(fromType, toType);
 
-  // If there is no cast operator or it's not implicit, return that we can't do
-  // it!
+  // If there is no cast operator or it's not implicit, return that we can't do it!
   if (cast.IsValid == false || cast.CanBeImplicit == false)
     return false;
 
   // If the cast is a 'raw' cast, then there's nothing to do!
-  // This means it is valid cast, but we don't actually need to generate a type
-  // cast node since no code-gen is required
+  // This means it is valid cast, but we don't actually need to generate a type cast node since no code-gen is required
   if (cast.RequiresCodeGeneration == false)
     return true;
 
-  // Create the type cast node (our main operand is the given node, we are
-  // re-parenting the cast)
+  // Create the type cast node (our main operand is the given node, we are re-parenting the cast)
   TypeCastNode* typeCast = new TypeCastNode();
   typeCast->Operand = nodeToReparent;
   typeCast->OperatorInfo = cast;
@@ -3054,8 +2923,7 @@ bool Syntaxer::ImplicitConvertAfterWalkAndIo(ExpressionNode*& nodeToReparent, Ty
   // A type cast only requires read ability from the operand
   typeCast->Io = IoMode::ReadRValue;
 
-  // We inherit whatever type of Io we applied to the node itself (typically
-  // just Read)
+  // We inherit whatever type of Io we applied to the node itself (typically just Read)
   typeCast->IoUsage = nodeToReparent->IoUsage;
   typeCast->IsUsedAsStatement = false;
 
@@ -3093,8 +2961,7 @@ void Syntaxer::CheckReturn(ReturnNode*& node, TypingContext* context)
       // We need to be able to read the value we're returning
       node->ReturnValue->IoUsage = IoMode::ReadRValue;
 
-      // Check if the types match, or if we can implicitly convert one to our
-      // resulting type
+      // Check if the types match, or if we can implicitly convert one to our resulting type
       if (this->ImplicitConvertAfterWalkAndIo(node->ReturnValue, returnType) == false)
       {
         // The return values given did not match the function signature
@@ -3157,8 +3024,7 @@ void Syntaxer::DecorateCheckTypeCast(TypeCastNode*& node, TypingContext* context
   // If the cast was not valid any way we tried it...
   if (node->OperatorInfo.IsValid == false)
   {
-    // Inform the user that the types they were attempting to cast between are
-    // not valid
+    // Inform the user that the types they were attempting to cast between are not valid
     return ErrorAt(node, ErrorCode::InvalidTypeCast, fromType->ToString().c_str(), toType->ToString().c_str());
   }
 }
@@ -3200,14 +3066,12 @@ void Syntaxer::DecorateCheckFunctionCall(FunctionCallNode*& node, TypingContext*
       return;
   }
 
-  // Tells us if we already resolved the function and therefore checked
-  // parameter types
+  // Tells us if we already resolved the function and therefore checked parameter types
   bool resolvedAndChecked = false;
 
-  // If this function call node is being used to invoke a constructor, we'll
-  // know because our left operand will actually be a local variable whose
-  // initial value is a CreationCallNode This is a bit complicated and maybe
-  // should be refactored, but this works for now
+  // If this function call node is being used to invoke a constructor, we'll know because our left operand will actually
+  // be a local variable whose initial value is a CreationCallNode
+  // This is a bit complicated and maybe should be refactored, but this works for now
   StaticTypeNode* creationNode = node->FindCreationCall();
   if (creationNode != nullptr)
   {
@@ -3217,8 +3081,7 @@ void Syntaxer::DecorateCheckFunctionCall(FunctionCallNode*& node, TypingContext*
     // Attempt to find the overloaded functions with the matching name...
     BoundType* createdType = creationNode->ReferencedType;
 
-    // Look at the creation node's overloaded/inherited constructors (see
-    // DecorateCreationCall)
+    // Look at the creation node's overloaded/inherited constructors (see DecorateCreationCall)
     const FunctionArray* constructors = creationNode->OverloadedConstructors;
 
     // If we have one or more constructor, then resolve which one it is
@@ -3234,12 +3097,10 @@ void Syntaxer::DecorateCheckFunctionCall(FunctionCallNode*& node, TypingContext*
         return Overload::ReportError(this->Errors, node->Location, constructors, *node);
       }
 
-      // If we got here, it means we successfully resolved the overload and
-      // checked it
+      // If we got here, it means we successfully resolved the overload and checked it
       resolvedAndChecked = true;
     }
-    // If the type we're creating is a native reference type and it has no
-    // constructors...
+    // If the type we're creating is a native reference type and it has no constructors...
     else if (createdType->Native && createdType->CopyMode == TypeCopyMode::ReferenceType)
     {
       // It is always an error if we have no constructors
@@ -3264,8 +3125,7 @@ void Syntaxer::DecorateCheckFunctionCall(FunctionCallNode*& node, TypingContext*
       // We have no resulting type for this call
       node->ResultType = core.VoidType;
 
-      // We should always be able to assume that an initializer is ONLY being
-      // called from the class it is within
+      // We should always be able to assume that an initializer is ONLY being called from the class it is within
       BoundType* classType = context->ClassTypeStack.Front();
       BoundType* baseType = classType->BaseType;
 
@@ -3276,11 +3136,10 @@ void Syntaxer::DecorateCheckFunctionCall(FunctionCallNode*& node, TypingContext*
         return ErrorAt(node, ErrorCode::BaseClassInitializerRequiresBaseClassInheritance, classType->Name.c_str());
       }
 
-      // Walk up the base class chain until we find any constructors (we inherit
-      // constructors) We start with the current class we're trying to create
-      // Note: We can safely look up to our base classes because if we don't
-      // have a constructor then we at least have been pre-constructed, and the
-      // user opted to not initialize anything with a constructor
+      // Walk up the base class chain until we find any constructors (we inherit constructors)
+      // We start with the current class we're trying to create
+      // Note: We can safely look up to our base classes because if we don't have a constructor
+      // then we at least have been pre-constructed, and the user opted to not initialize anything with a constructor
       const FunctionArray* constructors = baseType->GetOverloadedInheritedConstructors();
 
       // If there is only one overload of the function, then we know its type!
@@ -3299,12 +3158,10 @@ void Syntaxer::DecorateCheckFunctionCall(FunctionCallNode*& node, TypingContext*
         // Set the resulting type (the function on the node should now be valid)
         initializerNode->ResultType = initializerNode->InitializerFunction->FunctionType;
 
-        // If we got here, it means we successfully resolved the overload and
-        // checked it
+        // If we got here, it means we successfully resolved the overload and checked it
         resolvedAndChecked = true;
       }
-      // If the type we're creating is a native reference type and it has no
-      // constructors...
+      // If the type we're creating is a native reference type and it has no constructors...
       else if (baseType->Native && baseType->CopyMode == TypeCopyMode::ReferenceType)
       {
         // It is always an error if we have no constructors
@@ -3323,8 +3180,7 @@ void Syntaxer::DecorateCheckFunctionCall(FunctionCallNode*& node, TypingContext*
       Error("We don't currently handle constructor calling");
     }
   }
-  // Otherwise, it's something else (like a direct function call, a delegate
-  // call, or an error)
+  // Otherwise, it's something else (like a direct function call, a delegate call, or an error)
   else if (node->LeftOperand != nullptr)
   {
     // If the left hand node is a member access node...
@@ -3349,8 +3205,7 @@ void Syntaxer::DecorateCheckFunctionCall(FunctionCallNode*& node, TypingContext*
         functionMember->AccessedMember = functionMember->AccessedFunction;
         functionMember->ResultType = functionMember->AccessedFunction->FunctionType;
 
-        // If we got here, it means we successfully resolved the overload and
-        // checked it
+        // If we got here, it means we successfully resolved the overload and checked it
         resolvedAndChecked = true;
       }
     }
@@ -3361,15 +3216,13 @@ void Syntaxer::DecorateCheckFunctionCall(FunctionCallNode*& node, TypingContext*
     // If the left hand side was not a delegate type...
     if (delegateType == nullptr)
     {
-      // We're trying to invoke a function on something that isn't a function,
-      // like "5()"
+      // We're trying to invoke a function on something that isn't a function, like "5()"
       return ErrorAt(node, ErrorCode::FunctionCallOnNonCallableType);
     }
 
-    // Note: I believe this got removed in error but we STILL need to check
-    // against the delegate type IF we did not need to do overload resolution,
-    // as an example, invoking a stored delegate We never want to run this twice
-    // due to double implicit conversion issues
+    // Note: I believe this got removed in error but we STILL need to check against
+    // the delegate type IF we did not need to do overload resolution, as an example, invoking a stored delegate
+    // We never want to run this twice due to double implicit conversion issues
     if (resolvedAndChecked == false && Overload::TestCallAndImplicitConvert(delegateType, *node) == false)
     {
       // Report and error that we failed to resolve against the delegate
@@ -3394,8 +3247,7 @@ void Syntaxer::DecorateCheckBinaryOperator(BinaryOperatorNode*& node, TypingCont
   // Process all the right expression
   context->Walker->Walk(this, node->RightOperand, context);
 
-  // The right hand node only needs to be readable (in all cases, assignment,
-  // addition, etc)
+  // The right hand node only needs to be readable (in all cases, assignment, addition, etc)
   node->RightOperand->IoUsage = IoMode::ReadRValue;
 
   // If an error occurred, exit out
@@ -3412,21 +3264,18 @@ void Syntaxer::DecorateCheckBinaryOperator(BinaryOperatorNode*& node, TypingCont
   // If we actually found a valid operator...
   if (node->OperatorInfo.IsValid)
   {
-    // Note: Since an implicit cast of the left operand would change the node
-    // type, we must set the io-usage BEFORE we perform the implicit cast. Also
-    // note that an implicit cast of the left argument should never occur if the
-    // io usage is an l-value (that wouldn't make sense, GetBinaryOperator
-    // blocks these) Output the result type and outmode
+    // Note: Since an implicit cast of the left operand would change the node type, we must set the io-usage
+    // BEFORE we perform the implicit cast. Also note that an implicit cast of the left argument should never
+    // occur if the io usage is an l-value (that wouldn't make sense, GetBinaryOperator blocks these)
+    // Output the result type and outmode
     node->ResultType = node->OperatorInfo.Result;
     node->LeftOperand->IoUsage = node->OperatorInfo.Io;
 
-    // If this is a side effect operator that writes to the left hand side, we
-    // want to check if the left hand side is a temporary returned from a
-    // property getter (the write is now an error)
+    // If this is a side effect operator that writes to the left hand side, we want to check if
+    // the left hand side is a temporary returned from a property getter (the write is now an error)
     if (node->OperatorInfo.Io & IoMode::WriteLValue)
     {
-      // Note: We've already visited all our left hand side so all types and Io
-      // are computed
+      // Note: We've already visited all our left hand side so all types and Io are computed
       ExpressionNode* left = node->LeftOperand;
       MemberAccessNode* subMemberAccess = nullptr;
       while (MemberAccessNode* memberAccess = Type::DynamicCast<MemberAccessNode*>(left))
@@ -3445,16 +3294,13 @@ void Syntaxer::DecorateCheckBinaryOperator(BinaryOperatorNode*& node, TypingCont
       }
     }
 
-    // We already visited the left/right operands, which means its valid for us
-    // to generate any implicit type casts here Check to see if we need to cast
-    // the left side
+    // We already visited the left/right operands, which means its valid for us to generate any implicit type casts here
+    // Check to see if we need to cast the left side
     if (node->OperatorInfo.CastLhsTo != nullptr)
     {
       // Apply the implicit conversion
       bool implicitCastResult = ImplicitConvertAfterWalkAndIo(node->LeftOperand, node->OperatorInfo.CastLhsTo);
-      ErrorIf(implicitCastResult == false,
-              "The operator told us that we could implicit cast, why did this "
-              "fail?");
+      ErrorIf(implicitCastResult == false, "The operator told us that we could implicit cast, why did this fail?");
     }
 
     // Check to see if we need to cast the right side
@@ -3462,9 +3308,7 @@ void Syntaxer::DecorateCheckBinaryOperator(BinaryOperatorNode*& node, TypingCont
     {
       // Apply the implicit conversion
       bool implicitCastResult = ImplicitConvertAfterWalkAndIo(node->RightOperand, node->OperatorInfo.CastRhsTo);
-      ErrorIf(implicitCastResult == false,
-              "The operator told us that we could implicit cast, why did this "
-              "fail?");
+      ErrorIf(implicitCastResult == false, "The operator told us that we could implicit cast, why did this fail?");
     }
 
     // Our usage is always the most restrictive of how the node designates
@@ -3505,28 +3349,24 @@ void Syntaxer::DecorateCheckPropertyDelegateOperator(PropertyDelegateOperatorNod
     // If we didn't find a property...
     if (property == nullptr)
     {
-      // Report an error since we attempted to use the property delegate
-      // operator on a non-property
+      // Report an error since we attempted to use the property delegate operator on a non-property
       return ErrorAt(node, ErrorCode::PropertyDelegateOperatorRequiresProperty);
     }
 
     // Make sure the property has the get and set functions
     if (property->Get == nullptr && property->Set == nullptr)
     {
-      // Report an error since we can't form a property delegate to an object
-      // that has neither a get or set
+      // Report an error since we can't form a property delegate to an object that has neither a get or set
       return ErrorAt(node, ErrorCode::PropertyDelegateRequiresGetOrSet, property->Name.c_str());
     }
 
-    // The operand should either have a get or set, but we don't require one or
-    // the other
+    // The operand should either have a get or set, but we don't require one or the other
     node->Operand->IoUsage = IoMode::Ignore;
 
     // We're generating a temporary (just a read value)
     node->Io = IoMode::ReadRValue;
 
-    // We need to instantiate the 'Property' template (an object that Contains
-    // the get/set delegates)
+    // We need to instantiate the 'Property' template (an object that Contains the get/set delegates)
     Array<Constant> templateArguments;
     templateArguments.PushBack(property->PropertyType);
 
@@ -3544,8 +3384,7 @@ void Syntaxer::DecorateCheckPropertyDelegateOperator(PropertyDelegateOperatorNod
   }
   else
   {
-    // Report an error since we did some sort of an invalid binary operation
-    // between two types
+    // Report an error since we did some sort of an invalid binary operation between two types
     return ErrorAt(node, ErrorCode::PropertyDelegateOperatorRequiresProperty);
   }
 }
@@ -3608,8 +3447,7 @@ void Syntaxer::DecorateCheckUnaryOperator(UnaryOperatorNode*& node, TypingContex
   }
   else
   {
-    // Report an error since we did some sort of an invalid binary operation
-    // between two types
+    // Report an error since we did some sort of an invalid binary operation between two types
     return ErrorAt(node, ErrorCode::InvalidUnaryOperation, operandType->ToString().c_str());
   }
 }
@@ -3655,8 +3493,7 @@ void Syntaxer::DecorateCodeLocations(SyntaxNode*& node, TypingContext* context)
   }
 
   // We need to traverse the children!
-  // Normally we would return if any error occurred, but this is all useful
-  // information even with errors
+  // Normally we would return if any error occurred, but this is all useful information even with errors
   context->Walker->GenericWalkChildren(this, node, context);
 
   // If this node is a class node...
@@ -3688,8 +3525,7 @@ void Syntaxer::CheckExpressionIoModes(ExpressionNode*& node, TypingContext* cont
   {
     // Error checking
     ErrorIf(node->Io == IoMode::NotSet || node->Io == IoMode::Ignore,
-            "A node's usage case was not set by its handler (or somehow it was "
-            "set to ignore)");
+            "A node's usage case was not set by its handler (or somehow it was set to ignore)");
     ErrorIf(node->IoUsage == IoMode::NotSet, "The parent node of an expression did not set the child's io usage");
     ErrorIf(node->ResultType == nullptr, "All expression node types must be valid (or void)");
   }
@@ -3714,8 +3550,7 @@ void Syntaxer::ResolveMemberAccess(MemberAccessNode* node, const Resolver& resol
   // Get access to the core library
   Core& core = Core::GetInstance();
 
-  // Get the type instance for the type we're attempting to resolve on (the left
-  // operand generally)
+  // Get the type instance for the type we're attempting to resolve on (the left operand generally)
   BoundType* type = resolver.TypeInstance;
 
   // Attempt to find a field with the matching name...
@@ -3753,13 +3588,11 @@ void Syntaxer::ResolveMemberAccess(MemberAccessNode* node, const Resolver& resol
       // Grab the current library
       LibraryRef& library = this->AllLibraries[i];
 
-      // We need to look up the entire hierarchy (the property could be on any
-      // base classes)
+      // We need to look up the entire hierarchy (the property could be on any base classes)
       Type* baseIterator = type;
       do
       {
-        // Get the guid of the type (this should be legal here since we've
-        // collected all members)
+        // Get the guid of the type (this should be legal here since we've collected all members)
         GuidType guid = baseIterator->Hash();
 
         // If we're resolving a static member
@@ -3773,8 +3606,7 @@ void Syntaxer::ResolveMemberAccess(MemberAccessNode* node, const Resolver& resol
         if (properties != nullptr)
         {
           // Attempt to find the property by name
-          // If we find it, the loop will terminate because we don't need to
-          // keep looking
+          // If we find it, the loop will terminate because we don't need to keep looking
           property = properties->FindValue(node->Name, nullptr);
           if (property != nullptr)
             break;
@@ -3802,9 +3634,8 @@ void Syntaxer::ResolveMemberAccess(MemberAccessNode* node, const Resolver& resol
     node->Io = IoMode::Ignore;
 
     // The resulting type is always the type of the property
-    // Note this does NOT mean we produce this type (a set only property does
-    // not return a value) But the result type must be set in order to Assign to
-    // this property
+    // Note this does NOT mean we produce this type (a set only property does not return a value)
+    // But the result type must be set in order to Assign to this property
     node->ResultType = property->PropertyType;
 
     // If we have a valid getter
@@ -3831,13 +3662,11 @@ void Syntaxer::ResolveMemberAccess(MemberAccessNode* node, const Resolver& resol
       // Grab the current library
       LibraryRef& library = this->AllLibraries[i];
 
-      // We need to look up the entire hierarchy (the property could be on any
-      // base classes)
+      // We need to look up the entire hierarchy (the property could be on any base classes)
       Type* baseIterator = type;
       do
       {
-        // Get the guid of the type (this should be legal here since we've
-        // collected all members)
+        // Get the guid of the type (this should be legal here since we've collected all members)
         GuidType guid = baseIterator->Hash();
 
         // If we're resolving a static member
@@ -3858,10 +3687,8 @@ void Syntaxer::ResolveMemberAccess(MemberAccessNode* node, const Resolver& resol
           {
             // We found it!
 
-            // HACK: Quick hack to break out of the outer loop otherwise any
-            // other libraries that also extend this type will wipe out the
-            // result we found. Trevor you said this should be switched to your
-            // range later!
+            // HACK: Quick hack to break out of the outer loop otherwise any other libraries that also extend this type
+            // will wipe out the result we found. Trevor you said this should be switched to your range later!
             i = this->AllLibraries.Size();
             break;
           }
@@ -3879,19 +3706,16 @@ void Syntaxer::ResolveMemberAccess(MemberAccessNode* node, const Resolver& resol
     // The node represents a function member access
     node->MemberType = MemberAccessType::Function;
 
-    // The function will be referenced as a local (delegates are always locally
-    // generated)
+    // The function will be referenced as a local (delegates are always locally generated)
     node->Access.Type = OperandType::Local;
 
-    // A function can only be read (and in that same note, it really means
-    // create a delegate)
+    // A function can only be read (and in that same note, it really means create a delegate)
     node->Io = IoMode::ReadRValue;
 
     // If we have only one function
     if (functions->Size() == 1)
     {
-      // For now, we assume that the function we result in is the only one it
-      // can be
+      // For now, we assume that the function we result in is the only one it can be
       Function* accessedFunction = functions->Front();
       node->AccessedFunction = accessedFunction;
       node->AccessedMember = accessedFunction;
@@ -3911,8 +3735,7 @@ void Syntaxer::ResolveMemberAccess(MemberAccessNode* node, const Resolver& resol
     return;
   }
 
-  // A member access/identifier was used, but we couldn't find the member it was
-  // referencing!
+  // A member access/identifier was used, but we couldn't find the member it was referencing!
   return ErrorAt(node, ErrorCode::MemberNotFound, node->Name.c_str(), type->ToString().c_str());
 }
 
@@ -3922,9 +3745,8 @@ void Syntaxer::BuildGetSetSideEffectIndexerNodes(NodeType*& node,
                                                  ExpressionNode* NodeType::*operandMemberThatWasIndexer,
                                                  TypingContext* context)
 {
-  // No node directly points at a BinaryOperatorNode/UnaryOperatorNode
-  // (typically just expression children) This would otherwise be an unsafe
-  // assumption
+  // No node directly points at a BinaryOperatorNode/UnaryOperatorNode (typically just expression children)
+  // This would otherwise be an unsafe assumption
   NodeType* operatorNode = node;
   ExpressionNode*& parentsChildPointer = (ExpressionNode*&)node;
 
@@ -3937,15 +3759,13 @@ void Syntaxer::BuildGetSetSideEffectIndexerNodes(NodeType*& node,
   // [value] += Real3(1, 1, 5);
   // yield [source].Set([index0], [index1], [value]);
 
-  // The entire binary/unary operator gets replaced with a multi-expression that
-  // does get/op/set
+  // The entire binary/unary operator gets replaced with a multi-expression that does get/op/set
   MultiExpressionNode* multiGetSet = new MultiExpressionNode();
   multiGetSet->Location = indexer->Location;
   parentsChildPointer = multiGetSet;
 
-  // We explicitly use this as an expression (the indexer no longer owns the
-  // left hand side, typically member access) var [source] =
-  // this.GameBoard.Grid;
+  // We explicitly use this as an expression (the indexer no longer owns the left hand side, typically member access)
+  // var [source] = this.GameBoard.Grid;
   LocalVariableNode* sourceVar = new LocalVariableNode("source", this->ParentProject, indexer->LeftOperand);
   indexer->LeftOperand = nullptr;
   sourceVar->Location = indexer->Location;
@@ -3986,15 +3806,13 @@ void Syntaxer::BuildGetSetSideEffectIndexerNodes(NodeType*& node,
     indexVar->Location = indexer->Location;
     multiGetSet->Expressions.Add(indexVar);
 
-    // Make a local variable reference to the index variable (for invoking the
-    // getter)
+    // Make a local variable reference to the index variable (for invoking the getter)
     LocalVariableReferenceNode* indexRefGet = new LocalVariableReferenceNode();
     indexRefGet->Location = indexer->Location;
     indexRefGet->Value = indexVar->Name;
     getCall->Arguments.Add(indexRefGet);
 
-    // Make a local variable reference to the index variable (for invoking the
-    // setter)
+    // Make a local variable reference to the index variable (for invoking the setter)
     LocalVariableReferenceNode* indexRefSet = new LocalVariableReferenceNode();
     indexRefSet->Location = indexer->Location;
     indexRefSet->Value = indexVar->Name;
@@ -4005,16 +3823,15 @@ void Syntaxer::BuildGetSetSideEffectIndexerNodes(NodeType*& node,
   indexer->Arguments.Clear();
 
   // var [value] = [source].Get([index0], [index1]...);
-  // Because our multi-expression yields this value, we need to get the index
-  // that we pushed it into the expressions list as
+  // Because our multi-expression yields this value, we need to get the index that we pushed it into the expressions
+  // list as
   LocalVariableNode* valueVar = new LocalVariableNode("value", this->ParentProject, getCall);
   valueVar->Location = indexer->Location;
   multiGetSet->Expressions.Add(valueVar);
 
   // [value] += Real3(1, 1, 5); // Binary
   // ++[value];                 // Unary
-  // Here, we actually re-Assign the left operand of the binary/unary node to be
-  // a reference to the above value variable
+  // Here, we actually re-Assign the left operand of the binary/unary node to be a reference to the above value variable
   LocalVariableReferenceNode* valueRefOperation = new LocalVariableReferenceNode();
   valueRefOperation->Location = indexer->Location;
   valueRefOperation->Value = valueVar->Name;
@@ -4030,25 +3847,23 @@ void Syntaxer::BuildGetSetSideEffectIndexerNodes(NodeType*& node,
   multiGetSet->YieldChildExpressionIndex = multiGetSet->Expressions.Size();
   multiGetSet->Expressions.Add(setCall);
 
-  // We're done with the indexer (may want to store this later for formatting
-  // walkers)
+  // We're done with the indexer (may want to store this later for formatting walkers)
   delete indexer;
 
-  // Make sure all statements in the multi-expression node know they're being
-  // used as a statement
+  // Make sure all statements in the multi-expression node know they're being used as a statement
   for (size_t i = 0; i < multiGetSet->Expressions.Size(); ++i)
     multiGetSet->Expressions[i]->IsUsedAsStatement = node->IsUsedAsStatement;
   multiGetSet->IsUsedAsStatement = node->IsUsedAsStatement;
 
-  // Walk the children of the multi-node (because they could have binary/unary
-  // operators that also need to be transformed)
+  // Walk the children of the multi-node (because they could have binary/unary operators that also need to be
+  // transformed)
   context->Walker->GenericWalkChildren(this, multiGetSet, context);
 }
 
 void Syntaxer::IndexerBinaryOperator(BinaryOperatorNode*& node, TypingContext* context)
 {
-  // No node directly points at a BinaryOperatorNode (typically just expression
-  // children) This would otherwise be an unsafe assumption
+  // No node directly points at a BinaryOperatorNode (typically just expression children)
+  // This would otherwise be an unsafe assumption
   BinaryOperatorNode* binaryOperator = node;
   ExpressionNode*& parentsChildPointer = (ExpressionNode*&)node;
 
@@ -4056,8 +3871,7 @@ void Syntaxer::IndexerBinaryOperator(BinaryOperatorNode*& node, TypingContext* c
   IndexerCallNode* indexer = Type::DynamicCast<IndexerCallNode*>(binaryOperator->LeftOperand);
   if (indexer == nullptr)
   {
-    // Walk the children (because they could have binary operators that also
-    // need to be transformed)
+    // Walk the children (because they could have binary operators that also need to be transformed)
     context->Walker->GenericWalkChildren(this, binaryOperator, context);
     return;
   }
@@ -4065,8 +3879,7 @@ void Syntaxer::IndexerBinaryOperator(BinaryOperatorNode*& node, TypingContext* c
   // Based on the operator (if its a side effect operator...)
   switch (binaryOperator->Operator->TokenId)
   {
-  // The ultimate side effect operator! Not a compound operator though so we
-  // only need to run Set
+  // The ultimate side effect operator! Not a compound operator though so we only need to run Set
   case Grammar::Assignment:
   {
     // Example:
@@ -4084,8 +3897,8 @@ void Syntaxer::IndexerBinaryOperator(BinaryOperatorNode*& node, TypingContext* c
     setCall->IsUsedAsStatement = node->IsUsedAsStatement;
     parentsChildPointer = setCall;
 
-    // Our set call has all the same arguments as the indexer (plus the value,
-    // which we handle below) The indexer no longer owns these arguments
+    // Our set call has all the same arguments as the indexer (plus the value, which we handle below)
+    // The indexer no longer owns these arguments
     setCall->Arguments = indexer->Arguments;
     indexer->Arguments.Clear();
 
@@ -4093,19 +3906,16 @@ void Syntaxer::IndexerBinaryOperator(BinaryOperatorNode*& node, TypingContext* c
     setCall->Arguments.Add(binaryOperator->RightOperand);
     binaryOperator->RightOperand = nullptr;
 
-    // We're done with the binary operator and indexer (may want to store this
-    // later for formatting walkers) Note: The indexer gets deleted by the
-    // binary operator because its a child!
+    // We're done with the binary operator and indexer (may want to store this later for formatting walkers)
+    // Note: The indexer gets deleted by the binary operator because its a child!
     delete binaryOperator;
 
-    // Walk the children of the multi-node (because they could have binary
-    // operators that also need to be transformed)
+    // Walk the children of the multi-node (because they could have binary operators that also need to be transformed)
     context->Walker->GenericWalkChildren(this, setCall, context);
     return;
   }
 
-  // If the operator is a compound side-effect operator, then we need to invoke
-  // both Get and Set on the indexer
+  // If the operator is a compound side-effect operator, then we need to invoke both Get and Set on the indexer
   case Grammar::AssignmentSubtract:
   case Grammar::AssignmentAdd:
   case Grammar::AssignmentDivide:
@@ -4119,19 +3929,16 @@ void Syntaxer::IndexerBinaryOperator(BinaryOperatorNode*& node, TypingContext* c
   case Grammar::AssignmentBitwiseAnd:
   {
     // Build the nodes that perform the Get/Operator/Set
-    // Binary and unary are similar, so this was refactored into a single
-    // function
+    // Binary and unary are similar, so this was refactored into a single function
     this->BuildGetSetSideEffectIndexerNodes(node, indexer, &BinaryOperatorNode::LeftOperand, context);
     return;
   }
 
-  // We hit another operator, but it wasn't a side effect operator (just
-  // continue visiting)
+  // We hit another operator, but it wasn't a side effect operator (just continue visiting)
   default:
   {
 
-    // Walk the children (because they could have binary operators that also
-    // need to be transformed)
+    // Walk the children (because they could have binary operators that also need to be transformed)
     context->Walker->GenericWalkChildren(this, binaryOperator, context);
     return;
   }
@@ -4140,8 +3947,8 @@ void Syntaxer::IndexerBinaryOperator(BinaryOperatorNode*& node, TypingContext* c
 
 void Syntaxer::IndexerUnaryOperator(UnaryOperatorNode*& node, TypingContext* context)
 {
-  // No node directly points at a UnaryOperatorNode (typically just expression
-  // children) This would otherwise be an unsafe assumption
+  // No node directly points at a UnaryOperatorNode (typically just expression children)
+  // This would otherwise be an unsafe assumption
   UnaryOperatorNode* unaryOperator = node;
   ExpressionNode*& parentsChildPointer = (ExpressionNode*&)node;
 
@@ -4149,8 +3956,7 @@ void Syntaxer::IndexerUnaryOperator(UnaryOperatorNode*& node, TypingContext* con
   IndexerCallNode* indexer = Type::DynamicCast<IndexerCallNode*>(unaryOperator->Operand);
   if (indexer == nullptr)
   {
-    // Walk the children (because they could have binary operators that also
-    // need to be transformed)
+    // Walk the children (because they could have binary operators that also need to be transformed)
     context->Walker->GenericWalkChildren(this, unaryOperator, context);
     return;
   }
@@ -4158,24 +3964,20 @@ void Syntaxer::IndexerUnaryOperator(UnaryOperatorNode*& node, TypingContext* con
   // Based on the operator (if its a side effect operator...)
   switch (unaryOperator->Operator->TokenId)
   {
-  // The ultimate side effect operator! Not a compound operator though so we
-  // only need to run Set
+  // The ultimate side effect operator! Not a compound operator though so we only need to run Set
   case Grammar::Increment:
   case Grammar::Decrement:
   {
     // Build the nodes that perform the Get/Operator/Set
-    // Binary and unary are similar, so this was refactored into a single
-    // function
+    // Binary and unary are similar, so this was refactored into a single function
     this->BuildGetSetSideEffectIndexerNodes(node, indexer, &UnaryOperatorNode::Operand, context);
     return;
   }
 
-  // We hit another operator, but it wasn't a side effect operator (just
-  // continue visiting)
+  // We hit another operator, but it wasn't a side effect operator (just continue visiting)
   default:
   {
-    // Walk the children (because they could have binary operators that also
-    // need to be transformed)
+    // Walk the children (because they could have binary operators that also need to be transformed)
     context->Walker->GenericWalkChildren(this, unaryOperator, context);
     return;
   }
@@ -4184,13 +3986,12 @@ void Syntaxer::IndexerUnaryOperator(UnaryOperatorNode*& node, TypingContext* con
 
 void Syntaxer::IndexerIndexerCall(IndexerCallNode*& node, TypingContext* context)
 {
-  // No node directly points at a IndexerCallNode (typically just expression
-  // children) This would otherwise be an unsafe assumption
+  // No node directly points at a IndexerCallNode (typically just expression children)
+  // This would otherwise be an unsafe assumption
   IndexerCallNode* indexer = node;
   ExpressionNode*& parentsChildPointer = (ExpressionNode*&)node;
 
-  // Walk the children (because they could have binary operators that also need
-  // to be transformed)
+  // Walk the children (because they could have binary operators that also need to be transformed)
   context->Walker->GenericWalkChildren(this, indexer, context);
 
   // this.GameBoard.Grid[this.ComputeIndexX(), yValue];
@@ -4213,8 +4014,7 @@ void Syntaxer::IndexerIndexerCall(IndexerCallNode*& node, TypingContext* context
   getCall->Arguments = indexer->Arguments;
   indexer->Arguments.Clear();
 
-  // We're done with the indexer (may want to store this later for formatting
-  // walkers)
+  // We're done with the indexer (may want to store this later for formatting walkers)
   delete indexer;
   return;
 }
@@ -4234,8 +4034,8 @@ void Syntaxer::ResolveMember(MemberAccessNode*& node, TypingContext* context)
   // Get a reference to the left expression's type
   Type* leftType = node->LeftOperand->ResultType;
 
-  // If the left hand side is the 'any' type, it means we're accessing a dynamic
-  // property A dynamic property is one that is resolved by string at runtime
+  // If the left hand side is the 'any' type, it means we're accessing a dynamic property
+  // A dynamic property is one that is resolved by string at runtime
   AnyType* anyType = Type::DynamicCast<AnyType*>(leftType);
   if (anyType != nullptr)
   {
@@ -4245,29 +4045,25 @@ void Syntaxer::ResolveMember(MemberAccessNode*& node, TypingContext* context)
     node->MemberType = MemberAccessType::Dynamic;
     // node->Access.Type     = OperandType::;????
 
-    // Right now, we're only allowing reading from 'any' values (no writing to
-    // them)
+    // Right now, we're only allowing reading from 'any' values (no writing to them)
     node->Io = IoMode::ReadRValue;
     // node->Io = (IoMode::Enum)(IoMode::ReadRValue | IoMode::WriteLValue);
 
-    // The resulting type will always end up being the 'any' type (which allows
-    // for chaining)
+    // The resulting type will always end up being the 'any' type (which allows for chaining)
     node->ResultType = ZilchTypeId(Any);
     this->ErrorAt(node,
                   ErrorCode::GenericError,
-                  "Accessing members on the 'Any' type will result in dynamically "
-                  "looking up the value, however this is not yet supported");
+                  "Accessing members on the 'Any' type will result in dynamically looking up the value, however this "
+                  "is not yet supported");
     // Exit out early
     return;
   }
 
-  // Check if the left type is a bound type because we can directly look up
-  // members on a bound type
+  // Check if the left type is a bound type because we can directly look up members on a bound type
   BoundType* boundType = Type::GetBoundType(leftType);
   if (boundType != nullptr)
   {
-    // If this is accessing statics then use a static resolver, otherwise we're
-    // accessing instance members
+    // If this is accessing statics then use a static resolver, otherwise we're accessing instance members
     StaticTypeNode* staticType = Type::DynamicCast<StaticTypeNode*>(node->LeftOperand);
     if (staticType != nullptr)
     {
@@ -4297,16 +4093,14 @@ void Syntaxer::PrecomputeValueNode(ValueNode*& node, TypingContext* context)
 
 void Syntaxer::PrecomputeStringInterpolantNode(StringInterpolantNode*& node, TypingContext* context)
 {
-  // We don't need to walk any children because we know that our type will be a
-  // string
+  // We don't need to walk any children because we know that our type will be a string
   node->PrecomputedResultType = ZilchTypeId(String);
 }
 
 void Syntaxer::PrecomputeFunctionCallNode(FunctionCallNode*& node, TypingContext* context)
 {
   // We don't need to walk the left operand in this case because there is no
-  // type-precomputing that needs to be done on it (we directly look for a
-  // StaticTypeNode)
+  // type-precomputing that needs to be done on it (we directly look for a StaticTypeNode)
   if (StaticTypeNode* staticTypeNode = Type::DynamicCast<StaticTypeNode*>(node->LeftOperand))
   {
     BoundType* boundType = this->RetrieveBoundType(staticTypeNode->ReferencedSyntaxType, staticTypeNode->Location);
@@ -4315,8 +4109,7 @@ void Syntaxer::PrecomputeFunctionCallNode(FunctionCallNode*& node, TypingContext
     if (this->Errors.WasError)
       return;
 
-    // When using 'new' on a value type, the resulting type is actually a ref,
-    // eg new Real3 is ref Real3
+    // When using 'new' on a value type, the resulting type is actually a ref, eg new Real3 is ref Real3
     if (staticTypeNode->Mode == CreationMode::New && boundType->CopyMode == TypeCopyMode::ValueType)
       node->PrecomputedResultType = this->Builder->ReferenceOf(boundType);
     // Otherwise we just use the exact type the user constructed
@@ -4332,17 +4125,15 @@ void Syntaxer::PrecomputeMultiExpressionNode(MultiExpressionNode*& node, TypingC
 
   ExpressionNode* expression = node->Expressions[node->YieldChildExpressionIndex];
 
-  // In a multi-expression we just walk the one that is yielded and steal its
-  // precomputed type
+  // In a multi-expression we just walk the one that is yielded and steal its precomputed type
   context->Walker->Walk(this, expression, context);
   node->PrecomputedResultType = expression->PrecomputedResultType;
 }
 
 void Syntaxer::PrecomputeExpressionInitializerNode(ExpressionInitializerNode*& node, TypingContext* context)
 {
-  // We only handle the case where the expression initializer is on a local
-  // variable node (which is an expression) This should be all initializations
-  // such as Array[Integer]() { 5 }
+  // We only handle the case where the expression initializer is on a local variable node (which is an expression)
+  // This should be all initializations such as Array[Integer]() { 5 }
   if (LocalVariableNode* localVariableNode = Type::DynamicCast<LocalVariableNode*>(node->LeftOperand))
   {
     // The initial value of the local variable is actually the container

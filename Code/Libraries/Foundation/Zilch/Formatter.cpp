@@ -56,8 +56,7 @@ void ZilchCodeBuilder::WriteKeywordOrSymbolSpaceStyle(Grammar::Enum token,
                                                       SpaceStyle::Enum specific,
                                                       SpaceStyle::Enum globalDefault)
 {
-  // This tells us if we want to place spaces before or after (or around) the
-  // token
+  // This tells us if we want to place spaces before or after (or around) the token
   SpaceStyle::Enum spaceStyle = GetSpaceStyle(specific, globalDefault);
 
   // Prepend a space if we require it
@@ -81,9 +80,8 @@ void ZilchCodeBuilder::BeginScope(ScopeType::Enum scope)
   // For that matter, any kind of statement or thing that belongs on
   // its own line is repsonsible for emitting its own line before
 
-  // Technically these should always be set as long as the 'scope' value is
-  // valid, however we need to initialize them to defaults so the compiler
-  // doesn't complain about 'potentially uninitialized' values
+  // Technically these should always be set as long as the 'scope' value is valid, however we need
+  // to initialize them to defaults so the compiler doesn't complain about 'potentially uninitialized' values
   LineStyle::Enum specificLineStyle = LineStyle::NextLine;
   IndentStyle::Enum specificIndentStyle = IndentStyle::Indented;
 
@@ -115,23 +113,20 @@ void ZilchCodeBuilder::BeginScope(ScopeType::Enum scope)
     specificLineStyle = this->Format.LineStyleGetSetScope;
     specificIndentStyle = this->Format.IndentGetSetContents;
     break;
-  // We're adding scope to any other type of block (if statement, while loop,
-  // etc)
+  // We're adding scope to any other type of block (if statement, while loop, etc)
   case ScopeType::Block:
     specificLineStyle = this->Format.LineStyleBlockScope;
     specificIndentStyle = this->Format.IndentScopeContents;
     break;
   }
 
-  // For every situation, we could have a specific line or indent style, or we
-  // could fall back to the global
+  // For every situation, we could have a specific line or indent style, or we could fall back to the global
   LineStyle::Enum lineStyle = GetLineStyle(specificLineStyle, this->Format.LineStyleGlobalDefaultScope);
   IndentStyle::Enum indentStyle = GetIndentStyle(specificIndentStyle, this->Format.IndentGlobalDefault);
 
-  // It would be nice if scope was just a simple integer, however, because some
-  // styles require that certain scopes are indented, and others are not, and in
-  // some the braces themselves are indented... We need to push this structure
-  // into a stack instead (a stack of scopes)
+  // It would be nice if scope was just a simple integer, however, because some styles require that certain
+  // scopes are indented, and others are not, and in some the braces themselves are indented...
+  // We need to push this structure into a stack instead (a stack of scopes)
   ScopeStyle scopeStyle;
   scopeStyle.InnardsIndented = (indentStyle == IndentStyle::Indented);
 
@@ -154,8 +149,7 @@ void ZilchCodeBuilder::BeginScope(ScopeType::Enum scope)
     break;
 
   case LineStyle::SameLine:
-    // We always write out a space (this should probably become an option in the
-    // future)
+    // We always write out a space (this should probably become an option in the future)
     this->Write(" ");
     break;
   }
@@ -163,19 +157,16 @@ void ZilchCodeBuilder::BeginScope(ScopeType::Enum scope)
   // Now write out the 'begin scope' token, typically '{'
   this->WriteKeywordOrSymbol(Grammar::BeginScope);
 
-  // Add the scope to the scope stack so that when we 'EndScope' / pop it off,
-  // we know what to do
+  // Add the scope to the scope stack so that when we 'EndScope' / pop it off, we know what to do
   this->Scopes.PushBack(scopeStyle);
 
-  // If we're indenting the inside, then increase the indentation for the next
-  // line
+  // If we're indenting the inside, then increase the indentation for the next line
   if (scopeStyle.InnardsIndented)
   {
     ++this->Indentation;
   }
 
-  // If the user also requested the braces be indented, our standard behavior is
-  // to indent the innards yet again
+  // If the user also requested the braces be indented, our standard behavior is to indent the innards yet again
   if (scopeStyle.BracesIndented)
   {
     ++this->Indentation;
@@ -199,16 +190,13 @@ void ZilchCodeBuilder::EndScope()
     --this->Indentation;
   }
 
-  // Note: When emitting anything, we always assume we're on the last line,
-  // which means we must emit our own line Note: If you look in BeginScope,
-  // having 'BracesIndented' will actually increase the tabbing again At this
-  // point in time, we've only decreased the tabbing due to 'InnardsIndented',
-  // which means that this line we emit will still have tabbing for braces,
-  // which is good for when we emit the end brace
+  // Note: When emitting anything, we always assume we're on the last line, which means we must emit our own line
+  // Note: If you look in BeginScope, having 'BracesIndented' will actually increase the tabbing again
+  // At this point in time, we've only decreased the tabbing due to 'InnardsIndented', which means
+  // that this line we emit will still have tabbing for braces, which is good for when we emit the end brace
   this->WriteLineIndented();
 
-  // If it's braces were indented, decrease the indent again (see 2nd note above
-  // and BeginScope)
+  // If it's braces were indented, decrease the indent again (see 2nd note above and BeginScope)
   if (scope.BracesIndented)
   {
     --this->Indentation;
@@ -268,8 +256,7 @@ void ZilchCodeBuilder::WriteLineStyle(LineStyle::Enum specific, LineStyle::Enum 
     break;
 
   case LineStyle::SameLine:
-    // We always write out a space (this should probably become an option in the
-    // future)
+    // We always write out a space (this should probably become an option in the future)
     this->Write(" ");
     break;
   }
@@ -349,8 +336,7 @@ LineStyle::Enum ZilchCodeBuilder::GetLineStyle(LineStyle::Enum specific, LineSty
   ErrorIf(globalDefault == LineStyle::UseGlobalDefault,
           "The global default cannot be set to 'LineStyle::UseGlobalDefault'");
 
-  // Return the specific line style as long as it's not falling back on the
-  // default
+  // Return the specific line style as long as it's not falling back on the default
   if (specific != LineStyle::UseGlobalDefault)
   {
     return specific;
@@ -365,8 +351,7 @@ IndentStyle::Enum ZilchCodeBuilder::GetIndentStyle(IndentStyle::Enum specific, I
   ErrorIf(globalDefault == IndentStyle::UseGlobalDefault,
           "The global default cannot be set to 'IndentStyle::UseGlobalDefault'");
 
-  // Return the specific indent style as long as it's not falling back on the
-  // default
+  // Return the specific indent style as long as it's not falling back on the default
   if (specific != IndentStyle::UseGlobalDefault)
   {
     return specific;
@@ -381,8 +366,7 @@ SpaceStyle::Enum ZilchCodeBuilder::GetSpaceStyle(SpaceStyle::Enum specific, Spac
   ErrorIf(globalDefault == SpaceStyle::UseGlobalDefault,
           "The global default cannot be set to 'SpaceStyle::UseGlobalDefault'");
 
-  // Return the specific space style as long as it's not falling back on the
-  // default
+  // Return the specific space style as long as it's not falling back on the default
   if (specific != SpaceStyle::UseGlobalDefault)
   {
     return specific;
@@ -574,16 +558,14 @@ void CodeFormatter::FormatCommentsAndLines(SyntaxNode*& node, CodeFormatterConte
   //{
   //  if (context->LastClassOrEnum != nullptr)
   //  {
-  //    lineDifference = (int)(node->Location.StartLine -
-  //    context->LastClassOrEnum->Location.EndLine);
+  //     lineDifference = (int)(node->Location.StartLine - context->LastClassOrEnum->Location.EndLine);
   //  }
   //}
   // else if (StatementNode::IsNodeUsedAsStatement(node))
   //{
   //  if (context->LastStatement != nullptr)
   //  {
-  //    lineDifference = node->Location.StartLine -
-  //    context->LastStatement->Location.EndLine;
+  //     lineDifference = node->Location.StartLine - context->LastStatement->Location.EndLine;
   //  }
   //}
 
@@ -630,10 +612,9 @@ void CodeFormatter::FormatCommentsAndLines(SyntaxNode*& node, CodeFormatterConte
 
   if (StatementNode::IsNodeUsedAsStatement(node))
   {
-    // The only exception we have to the rule of 'you must write a line before
-    // you write yourself' is in expressions, which we don't know if they are
-    // going to be used as an expression or a statement Therefore we handle
-    // newlines before expressions here
+    // The only exception we have to the rule of 'you must write a line before you write yourself'
+    // is in expressions, which we don't know if they are going to be used as an expression or a statement
+    // Therefore we handle newlines before expressions here
     builder.WriteLineIndented();
   }
 
@@ -689,8 +670,7 @@ void CodeFormatter::FormatForEach(ForEachNode*& node, CodeFormatterContext* cont
 
   if (node->NonTraversedVariable != nullptr)
   {
-    // We don't want to do the standard walk here, because it would treat it as
-    // a statement!
+    // We don't want to do the standard walk here, because it would treat it as a statement!
     this->FormatLocalVariable(node->NonTraversedVariable, context);
   }
 
@@ -726,8 +706,7 @@ void CodeFormatter::FormatFor(ForNode*& node, CodeFormatterContext* context)
 
   if (node->ValueVariable != nullptr)
   {
-    // We don't want to do the standard walk here, because it would treat it as
-    // a statement!
+    // We don't want to do the standard walk here, because it would treat it as a statement!
     this->FormatLocalVariable(node->ValueVariable, context);
   }
 
@@ -882,8 +861,7 @@ void CodeFormatter::FormatValue(ValueNode*& node, CodeFormatterContext* context)
 
 void CodeFormatter::FormatUnaryOperator(UnaryOperatorNode*& node, CodeFormatterContext* context)
 {
-  // Note: Our formatter makes the assumption that all unary operators are to
-  // the left
+  // Note: Our formatter makes the assumption that all unary operators are to the left
   ZilchCodeBuilder& builder = context->Builder;
 
   // HACK, this needs a space style!
@@ -935,8 +913,7 @@ void CodeFormatter::FormatBinaryOperator(BinaryOperatorNode*& node, CodeFormatte
 {
   ZilchCodeBuilder& builder = context->Builder;
 
-  // We only need a grouping operator if our parent is another binary operator
-  // with a higher precedence
+  // We only need a grouping operator if our parent is another binary operator with a higher precedence
   bool needsGroup = false;
 
   BinaryOperatorNode* parentBinOp = Type::DynamicCast<BinaryOperatorNode*>(node->Parent);
@@ -948,21 +925,18 @@ void CodeFormatter::FormatBinaryOperator(BinaryOperatorNode*& node, CodeFormatte
     UntypedOperator parentPrecedence =
         shared.GetOperatorPrecedence(parentBinOp->Operator->TokenId, OperatorArity::Binary);
 
-    // If the parent has a higher precedence, then we need to wrap ourselves in
-    // a group Note: Higher precedence is denoted by a lower number, which is
-    // silly but seems to be how other languages do it
-    // (http://en.cppreference.com/w/cpp/language/operator_precedence)
+    // If the parent has a higher precedence, then we need to wrap ourselves in a group
+    // Note: Higher precedence is denoted by a lower number, which is silly but seems to be how
+    // other languages do it (http://en.cppreference.com/w/cpp/language/operator_precedence)
     if (parentPrecedence.Precedence < ourPrecedence.Precedence)
     {
       needsGroup = true;
     }
-    // If we have the same level of precedence, then there's a chance we may
-    // need parenthesis based on
+    // If we have the same level of precedence, then there's a chance we may need parenthesis based on
     else if (parentPrecedence.Precedence == ourPrecedence.Precedence)
     {
-      // Technically, if the operator is actually associative (as in math
-      // associative) we can ignore grouping when it's parent operator is the
-      // same *unless* we allow operator overloading to change that
+      // Technically, if the operator is actually associative (as in math associative) we can ignore
+      // grouping when it's parent operator is the same *unless* we allow operator overloading to change that
 
       // If we have a left to right associativity
       if (parentPrecedence.Associativity == OperatorAssociativity::LeftToRight)
@@ -992,8 +966,7 @@ void CodeFormatter::FormatBinaryOperator(BinaryOperatorNode*& node, CodeFormatte
 
   SpaceStyle::Enum globalOperatorSpaceStyle = SpaceStyle::BeforeAndAfter;
 
-  // HACK, maybe every operator needs it's own spacing, or access operators have
-  // a special mode
+  // HACK, maybe every operator needs it's own spacing, or access operators have a special mode
   if (node->Operator->TokenId == Grammar::Access || node->Operator->TokenId == Grammar::DynamicAccess ||
       node->Operator->TokenId == Grammar::NonVirtualAccess)
   {
@@ -1018,8 +991,7 @@ void CodeFormatter::FormatStatement(StatementNode*& node, CodeFormatterContext* 
   // This will always run, even if other handlers will handle it
 
   // If this node is not being used as a direct statement
-  // For example, an expression is a statement, but isn't always used as a
-  // statement
+  // For example, an expression is a statement, but isn't always used as a statement
   if (StatementNode::IsNodeUsedAsStatement(node) == false)
     return;
 
@@ -1353,9 +1325,8 @@ void CodeFormatter::FormatMemberVariable(MemberVariableNode*& node, CodeFormatte
     builder.BeginScope(ScopeType::Property);
 
     // Note: We don't actually want to walk the function nodes,
-    // because they will emit function signatures, instead we just walk their
-    // statements We also don't want to use 'GenericWalkChildren' because that
-    // will walk parameters
+    // because they will emit function signatures, instead we just walk their statements
+    // We also don't want to use 'GenericWalkChildren' because that will walk parameters
 
     if (node->Get != nullptr)
     {

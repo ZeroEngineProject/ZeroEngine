@@ -7,16 +7,14 @@
 namespace Zilch
 {
 // We can print Zilch messages in many different formats
-// This is used for printing errors, exceptions, and general code location
-// information
+// This is used for printing errors, exceptions, and general code location information
 namespace MessageFormat
 {
 enum Enum
 {
   // This is the standard format we use to print Zilch error messages
   // We try to be very descriptive about where our errors occur
-  // Style: 'In <origin> at line <line>, character <character> (within function
-  // <function>)'
+  // Style: 'In <origin> at line <line>, character <character> (within function <function>)'
   //        '  <message>'
   Zilch,
 
@@ -42,8 +40,7 @@ public:
   // This is true if the origin is set
   bool IsValid() const;
 
-  // Get a formatted message that includes this location (may include newlines
-  // depending on the format)
+  // Get a formatted message that includes this location (may include newlines depending on the format)
   String GetFormattedStringWithMessage(MessageFormat::Enum format, StringParam message) const;
 
   // Get this location formatted in different styles (does not include newlines)
@@ -55,8 +52,7 @@ public:
   // Creates a code location that is strictly at the end of this location
   CodeLocation GetEndOnlyLocation();
 
-  // This hash matches the hash used in the CodeEntry, and can generally be used
-  // to map back to files
+  // This hash matches the hash used in the CodeEntry, and can generally be used to map back to files
   size_t GetHash();
 
   // Check if another code location is at the same position and origin (only
@@ -66,11 +62,10 @@ public:
   // Every file and code string compiled gets a unique id
   String Code;
 
-  // Note: Primary is a location that we generally use when displaying errors or
-  // other visualizations For example, in a binary operator the location
-  // Start/End encompasses both the Left/Right operands however the primary
-  // location is the operator itself Primary should always be between start and
-  // end
+  // Note: Primary is a location that we generally use when displaying errors or other visualizations
+  // For example, in a binary operator the location Start/End encompasses both the Left/Right operands
+  // however the primary location is the operator itself
+  // Primary should always be between start and end
 
   // The line range that the node originated from
   // Lines start at a value of 1 (a value of 0 is invalid)
@@ -78,8 +73,8 @@ public:
   size_t PrimaryLine;
   size_t EndLine;
 
-  // The character range that the node originated from (relative to the start of
-  // the line) Characters start at a value of 1 (a value of 0 is invalid)
+  // The character range that the node originated from (relative to the start of the line)
+  // Characters start at a value of 1 (a value of 0 is invalid)
   size_t StartCharacter;
   size_t PrimaryCharacter;
   size_t EndCharacter;
@@ -92,16 +87,13 @@ public:
   // The file/script this node originated from
   String Origin;
 
-  // This is an optional library that we're from (typically filled out in the
-  // syntaxer phase)
+  // This is an optional library that we're from (typically filled out in the syntaxer phase)
   String Library;
 
-  // This is an optional class that we're from (typically filled out in the
-  // syntaxer phase)
+  // This is an optional class that we're from (typically filled out in the syntaxer phase)
   String Class;
 
-  // This is an optional function that we're from (typically filled out in the
-  // syntaxer phase)
+  // This is an optional function that we're from (typically filled out in the syntaxer phase)
   String Function;
 
   // Tells us if the location is within C++, which
@@ -138,9 +130,8 @@ public:
 namespace Zero
 {
 // Code locations should be directly memory movable
-// String would technically just increment a reference and then decrement, so
-// skip it! WARNING: If this ever becomes non-movable, then be sure to update
-// UserToken!
+// String would technically just increment a reference and then decrement, so skip it!
+// WARNING: If this ever becomes non-movable, then be sure to update UserToken!
 template <>
 struct ZeroShared MoveWithoutDestructionOperator<Zilch::CodeLocation>
 {

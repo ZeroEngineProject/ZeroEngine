@@ -14,14 +14,14 @@ ZilchDefineType(StringBuilderExtended, builder, type)
   ZilchFullBindMethod(builder, type, &StringBuilderExtended::Clear, ZilchNoOverload, "Clear", nullptr);
 
   ZilchFullBindMethod(
-      builder, type, &StringBuilderExtended::Write, (void (StringBuilderExtended::*)(AnyParam)), "Write", nullptr);
+      builder, type, &StringBuilderExtended::Write, (void(StringBuilderExtended::*)(AnyParam)), "Write", nullptr);
 
   ZilchFullBindMethod(
-      builder, type, &StringBuilderExtended::WriteLine, (void (StringBuilderExtended::*)()), "WriteLine", nullptr);
+      builder, type, &StringBuilderExtended::WriteLine, (void(StringBuilderExtended::*)()), "WriteLine", nullptr);
   ZilchFullBindMethod(builder,
                       type,
                       &StringBuilderExtended::WriteLine,
-                      (void (StringBuilderExtended::*)(AnyParam)),
+                      (void(StringBuilderExtended::*)(AnyParam)),
                       "WriteLine",
                       nullptr);
 }
@@ -392,8 +392,7 @@ void RuneIterator::Current(Call& call, ExceptionReport& report)
   {
     // Throw an exception since the range was empty and we called Current
     call.GetState()->ThrowException(report,
-                                    "The iterator reached the end and an attempt was made to get the "
-                                    "current value");
+                                    "The iterator reached the end and an attempt was made to get the current value");
     return;
   }
 
@@ -509,25 +508,25 @@ ZilchDefineType(StringRangeExtended, builder, type)
       .AddBoundGetterSetter(type, "Begin", iteratorType, nullptr, &StringRangeExtended::Begin, FunctionOptions::None)
       ->Description = ZilchDocumentString("Returns the RuneIterator at the start of this range.");
   ZilchFullBindMethod(builder, type, &StringRangeExtended::CompareTo, ZilchNoOverload, "CompareTo", nullptr)
-      ->Description = ZilchDocumentString("Compares this StringRange to the given StringRange and returns an "
-                                          "Integer to denote their relative sort order.");
+      ->Description = ZilchDocumentString(
+      "Compares this StringRange to the given StringRange and returns an Integer to denote their relative sort order.");
   ZilchFullBindMethod(builder, type, &StringRangeExtended::Contains, ZilchNoOverload, "Contains", nullptr)
       ->Description = ZilchDocumentString("Returns if the string Contains the specified substring.");
   builder.AddBoundGetterSetter(type, "End", iteratorType, nullptr, &StringRangeExtended::End, FunctionOptions::None)
-      ->Description = ZilchDocumentString("Returns the RuneIterator at the end (one past the "
-                                          "last Rune) of this range.");
+      ->Description =
+      ZilchDocumentString("Returns the RuneIterator at the end (one past the last Rune) of this range.");
   ZilchFullBindMethod(builder, type, &StringRangeExtended::EndsWith, ZilchNoOverload, "EndsWith", nullptr)
       ->Description = ZilchDocumentString("Returns true if the string ends with the specified substring.");
   builder
       .AddBoundFunction(
           type, "FindFirstOf", &StringRangeExtended::FindFirstOf, OneParameter(type), type, FunctionOptions::None)
-      ->Description = ZilchDocumentString("Returns a StringRange that Contains the first "
-                                          "occurrence of given StringRange.");
+      ->Description =
+      ZilchDocumentString("Returns a StringRange that Contains the first occurrence of given StringRange.");
   builder
       .AddBoundFunction(
           type, "FindLastOf", &StringRangeExtended::FindLastOf, OneParameter(type), type, FunctionOptions::None)
-      ->Description = ZilchDocumentString("Returns a StringRange that Contains the last "
-                                          "occurrence of given StringRange.");
+      ->Description =
+      ZilchDocumentString("Returns a StringRange that Contains the last occurrence of given StringRange.");
   builder
       .AddBoundFunction(type,
                         "FindRangeInclusive",
@@ -547,8 +546,8 @@ ZilchDefineType(StringRangeExtended, builder, type)
       ->Description = ZilchDocumentString("Finds the first StringRange that starts with 'startRange' and ends with "
                                           "'endRange'. This substring excludes 'startRange' and 'endRange'.");
   ZilchFullBindMethod(builder, type, &StringRangeExtended::Replace, ZilchNoOverload, "Replace", "oldValue newValue")
-      ->Description = ZilchDocumentString("Returns a new string with all occurances of a "
-                                          "substrings replaced with another substring.");
+      ->Description =
+      ZilchDocumentString("Returns a new string with all occurances of a substrings replaced with another substring.");
   builder
       .AddBoundFunction(type,
                         "Split",
@@ -556,8 +555,8 @@ ZilchDefineType(StringRangeExtended, builder, type)
                         OneParameter(type, "separator"),
                         splitRangeType,
                         FunctionOptions::None)
-      ->Description = ZilchDocumentString("Splits the string, according to the separator "
-                                          "string, into a range of substrings.");
+      ->Description =
+      ZilchDocumentString("Splits the string, according to the separator string, into a range of substrings.");
   builder
       .AddBoundFunction(type,
                         "SubString",
@@ -573,9 +572,9 @@ ZilchDefineType(StringRangeExtended, builder, type)
                         TwoParameters(integerType, "startByteIndex", "lengthInBytes"),
                         type,
                         FunctionOptions::None)
-      ->Description = ZilchDocumentString("Constructs a substring based upon a number of bytes. WARNING: strings "
-                                          "are UTF8 so indexing by bytes could produce unexpected results on "
-                                          "non-ascii strings.");
+      ->Description =
+      ZilchDocumentString("Constructs a substring based upon a number of bytes. WARNING: strings are UTF8 so indexing "
+                          "by bytes could produce unexpected results on non-ascii strings.");
   ZilchFullBindMethod(builder, type, &StringRangeExtended::StartsWith, ZilchNoOverload, "StartsWith", nullptr)
       ->Description = ZilchDocumentString("Returns true if the string starts with the specified substring.");
   builder.AddBoundFunction(type, "Trim", &StringRangeExtended::Trim, ParameterArray(), type, FunctionOptions::None)
@@ -607,9 +606,9 @@ ZilchDefineType(StringRangeExtended, builder, type)
                         OneParameter(integerType, "byteIndex"),
                         iteratorType,
                         FunctionOptions::None)
-      ->Description = ZilchDocumentString("Finds the iterator from a byte index. WARNING: Strings are UTF8 and "
-                                          "constructing an iterator from bytes indices can make an iterator in the "
-                                          "middle of a rune.");
+      ->Description =
+      ZilchDocumentString("Finds the iterator from a byte index. WARNING: Strings are UTF8 and constructing an "
+                          "iterator from bytes indices can make an iterator in the middle of a rune.");
   builder
       .AddBoundFunction(type,
                         "RuneIteratorFromRuneIndex",
@@ -617,9 +616,9 @@ ZilchDefineType(StringRangeExtended, builder, type)
                         OneParameter(integerType, "runeIndex"),
                         iteratorType,
                         FunctionOptions::None)
-      ->Description = ZilchDocumentString("Finds the iterator from a rune index (the 'character' index). WARNING: "
-                                          "this may be slow as finding an iterator from rune index requires a "
-                                          "linear search.");
+      ->Description =
+      ZilchDocumentString("Finds the iterator from a rune index (the 'character' index). WARNING: this may be slow as "
+                          "finding an iterator from rune index requires a linear search.");
 }
 
 String StringRangeExtended::ToString(const BoundType* type, const ::byte* data)
@@ -979,9 +978,7 @@ bool StringRangeExtended::ValidateRange(StringParam strRef, const StringRange& r
   {
     ExecutableState* state = ExecutableState::CallingState;
     ExceptionReport& report = state->GetCallingReport();
-    state->ThrowException(report,
-                          "The range is invalid. Most likely the begin/end "
-                          "iterators were manually moved.");
+    state->ThrowException(report, "The range is invalid. Most likely the begin/end iterators were manually moved.");
     return false;
   }
 

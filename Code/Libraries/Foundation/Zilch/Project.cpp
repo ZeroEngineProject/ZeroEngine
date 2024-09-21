@@ -43,8 +43,7 @@ bool CompletionEntry::operator<(const CompletionEntry& rhs) const
   if (this->Description.SizeInBytes() < rhs.Description.SizeInBytes())
     return false;
 
-  // Finally, the descriptions had the same length, so compare their contents
-  // (may be equal!)
+  // Finally, the descriptions had the same length, so compare their contents (may be equal!)
   return this->Description < rhs.Description;
 }
 
@@ -64,8 +63,8 @@ AutoCompleteInfo::AutoCompleteInfo() :
 
 String AutoCompleteInfo::GetShortTypeName(StringParam fullTypeName)
 {
-  // Empty strings should still return an entry when splitting (at least I think
-  // that would make sense), but just to be safe...
+  // Empty strings should still return an entry when splitting (at least I think that would make sense), but just to be
+  // safe...
   if (fullTypeName.Empty())
     return String();
 
@@ -296,8 +295,7 @@ bool Project::Tokenize(Array<UserToken>& tokensOut, Array<UserToken>& commentsOu
   return !this->WasError;
 }
 
-// This simple struct is used to define information about which syntax nodes
-// came from which lines
+// This simple struct is used to define information about which syntax nodes came from which lines
 class ZeroShared OriginInfo
 {
 public:
@@ -325,9 +323,8 @@ void MapLinesToNodes(HashMap<String, OriginInfo>& info, SyntaxNode* node)
 
   // Map the current node's line to the node itself
   // If another node exists under that same line, keep the first one
-  // This is so that comments get attached to the highest parent node occurring
-  // on that line (eg for 'var i = 5;' to the 'var' statement instead of the '5'
-  // expression);
+  // This is so that comments get attached to the highest parent node occurring on that line
+  // (eg for 'var i = 5;' to the 'var' statement instead of the '5' expression);
   origin.LineToNode.InsertNoOverwrite(node->Location.StartLine, node);
 
   // If this is the furthest node we've encountered in the file...
@@ -350,8 +347,7 @@ void Project::AttachCommentsToNodes(SyntaxTree& syntaxTree, Array<UserToken>& co
   // Setup the map that we use to associate lines with nodes
   HashMap<String, OriginInfo> info;
 
-  // Perform the actual line to node association, starting at the root going
-  // down
+  // Perform the actual line to node association, starting at the root going down
   MapLinesToNodes(info, syntaxTree.Root);
 
   // Loop through all the comments we parsed
@@ -363,38 +359,35 @@ void Project::AttachCommentsToNodes(SyntaxTree& syntaxTree, Array<UserToken>& co
     // We need to start by looking in the file/origin where the comment existed
     OriginInfo& origin = info[comment.Location.Origin];
 
-    // Check only if it's on the same line or the next line (don't attach
-    // comments if they have one line space in between)
+    // Check only if it's on the same line or the next line (don't attach comments if they have one line space in
+    // between)
     size_t endLine = comment.Location.EndLine + 1;
     for (size_t line = comment.Location.StartLine; line <= origin.MaxLine && line <= endLine; ++line)
     {
       // Attempt to find a node at the current line
       SyntaxNode* node = origin.LineToNode.FindValue(line, nullptr);
 
-      // If we found a node and that node's primary location is the line we're
-      // attaching to...
+      // If we found a node and that node's primary location is the line we're attaching to...
       if (node != nullptr && node->Location.PrimaryLine == line)
       {
-        // If this is an attribute, then instead attach it to the parent of the
-        // attribute (class, function, property, etc)
+        // If this is an attribute, then instead attach it to the parent of the attribute (class, function, property,
+        // etc)
         if (AttributeNode* attributeNode = node->FindParentOrSelf<AttributeNode>())
           node = attributeNode->Parent;
 
         // Append the comment to the node
         node->Comments.PushBack(comment.Token);
 
-        // Check if we need to attach this comment to any children who are at
-        // the exact same position This handles nodes such as IfRootNode and the
-        // first IfNode under it LineToNode will always start with the most root
-        // node
+        // Check if we need to attach this comment to any children who are at the exact same position
+        // This handles nodes such as IfRootNode and the first IfNode under it
+        // LineToNode will always start with the most root node
         NodeChildren children;
         node->PopulateChildren(children);
         ZilchForEach (SyntaxNode** childPtr, children)
         {
           SyntaxNode* child = *childPtr;
 
-          // Append the comment to the child also if the child has the same
-          // primary line and start position
+          // Append the comment to the child also if the child has the same primary line and start position
           if (child->Location.StartPosition == node->Location.StartPosition && child->Location.PrimaryLine == line)
             child->Comments.PushBack(comment.Token);
         }
@@ -410,8 +403,7 @@ void Project::AttachCommentsToNodes(SyntaxTree& syntaxTree, Array<UserToken>& co
         {
           UserToken& nextComment = comments[k];
 
-          // If the line is before the next comment, then we're done
-          // searching...
+          // If the line is before the next comment, then we're done searching...
           if (line < nextComment.Location.StartLine)
             break;
 
@@ -470,8 +462,7 @@ bool Project::CompileCheckedSyntaxTree(SyntaxTree& syntaxTreeOut,
   if (this->CompileUncheckedSyntaxTree(syntaxTreeOut, tokensOut, evaluation) == false)
     return false;
 
-  // Collect all the types, Assign types where they are needed, and perform
-  // syntax checking
+  // Collect all the types, Assign types where they are needed, and perform syntax checking
   syntaxer.ApplyToTree(syntaxTreeOut, builder, *this, dependencies);
 
   // Fix up any parent pointers (in case anything gets moved around)
@@ -492,8 +483,7 @@ LibraryRef Project::Compile(StringParam libraryName,
   LibraryBuilder builder(libraryName);
   builder.BuiltLibrary->TolerantMode = this->TolerantMode;
 
-  // Let the user know the library finished running the syntaxer (the user may
-  // add types here)
+  // Let the user know the library finished running the syntaxer (the user may add types here)
   ParseEvent preEvent;
   preEvent.Builder = &builder;
   preEvent.BuildingProject = this;
@@ -506,19 +496,16 @@ LibraryRef Project::Compile(StringParam libraryName,
   if (this->CompileCheckedSyntaxTree(treeOut, builder, tokensOut, dependencies, evaluation) == false)
     return nullptr;
 
-  // Let the user know the library finished running the syntaxer (the user may
-  // add types here)
+  // Let the user know the library finished running the syntaxer (the user may add types here)
   ParseEvent postEvent;
   postEvent.Builder = &builder;
   postEvent.BuildingProject = this;
   EventSend(this, Events::PostSyntaxer, &postEvent);
 
-  // Only generate code if we're not in tolerant mode (otherwise it would
-  // probably be seriously messed up...)
+  // Only generate code if we're not in tolerant mode (otherwise it would probably be seriously messed up...)
   if (this->TolerantMode == false)
   {
-    // The code generator uses the syntax tree to generate opcode for each
-    // function
+    // The code generator uses the syntax tree to generate opcode for each function
     CodeGenerator codeGenerator;
     LibraryRef library = codeGenerator.Generate(treeOut, builder);
 
@@ -535,8 +522,7 @@ LibraryRef Project::Compile(StringParam libraryName,
 
 LibraryRef Project::Compile(StringParam libraryName, Module& dependencies, EvaluationMode::Enum evaluation)
 {
-  // The syntax tree holds a more intuitive representation of the parsed program
-  // and is easy to traverse
+  // The syntax tree holds a more intuitive representation of the parsed program and is easy to traverse
   SyntaxTree syntaxTree;
   Array<UserToken> tokens;
   return this->Compile(libraryName, dependencies, evaluation, syntaxTree, tokens);
@@ -557,12 +543,10 @@ CompletionOverload& Project::AddAutoCompleteOverload(AutoCompleteInfo& info, Del
     overload.ReturnShortType = AutoCompleteInfo::GetShortTypeName(overload.ReturnType);
   }
 
-  // Walk through all the delegate parameters and add them as completion
-  // parameters
+  // Walk through all the delegate parameters and add them as completion parameters
   for (size_t i = 0; i < delegateType->Parameters.Size(); ++i)
   {
-    // Grab the current delegate parameter and make a completion parameter for
-    // it
+    // Grab the current delegate parameter and make a completion parameter for it
     DelegateParameter& delegateParam = delegateType->Parameters[i];
     CompletionParameter& completionParam = overload.Parameters.PushBack();
     completionParam.Type = delegateParam.ParameterType->ToString();
@@ -573,8 +557,8 @@ CompletionOverload& Project::AddAutoCompleteOverload(AutoCompleteInfo& info, Del
   return overload;
 }
 
-// This is a functor entirely used for the below function (should be a local to
-// the function, but some compilers don't support that...)
+// This is a functor entirely used for the below function (should be a local to the function, but some compilers don't
+// support that...)
 class AutoCompletePropertyFunctionQuery
 {
 public:
@@ -584,8 +568,7 @@ public:
   // Every time we encounter an extension property...
   bool operator()(Property* property)
   {
-    // Fill out the entry with information about the property name, description,
-    // and stringified type
+    // Fill out the entry with information about the property name, description, and stringified type
     CompletionEntry& entry = this->Info->CompletionEntries.PushBack();
     entry.Name = property->Name;
     entry.Description = property->Description;
@@ -600,8 +583,7 @@ public:
   // Every time we encounter an extension function...
   bool operator()(Function* function)
   {
-    // Fill out the entry with information about the property name, description,
-    // and stringified type
+    // Fill out the entry with information about the property name, description, and stringified type
     CompletionEntry& entry = this->Info->CompletionEntries.PushBack();
     entry.Name = function->Name;
     entry.Description = function->Description;
@@ -623,15 +605,13 @@ public:
 
 void Project::InitializeDefinitionInfo(CodeDefinition& resultOut, ReflectionObject* object)
 {
-  // Get the type of the documented object (could be a property type, function
-  // type, class/struct type, etc)
+  // Get the type of the documented object (could be a property type, function type, class/struct type, etc)
   resultOut.ResolvedType = object->GetTypeOrNull();
 
   // If this is a native location, we need to generate stub code
   if (object->NameLocation.IsNative)
   {
-    // Generate stub code for the library (if its already generated, this will
-    // do nothing)
+    // Generate stub code for the library (if its already generated, this will do nothing)
     Library* library = object->GetOwningLibrary();
     library->GenerateDefinitionStubCode();
   }
@@ -675,8 +655,7 @@ void Project::GetDefinitionInfo(Module& dependencies,
     // If we have a name such as a member or a variable...
     if (!resultOut.Name.Empty())
     {
-      // In almost all cases we should have gotten a valid type, so append it to
-      // the end with a ':'
+      // In almost all cases we should have gotten a valid type, so append it to the end with a ':'
       if (resultOut.ResolvedType != nullptr)
       {
         resultOut.ToolTip = BuildString(resultOut.Name, " : ", GetFriendlyTypeName(resultOut.ResolvedType));
@@ -688,8 +667,7 @@ void Project::GetDefinitionInfo(Module& dependencies,
       }
     }
     // Otherwise, we have no name, but we do have a type
-    // This occurs when we're pointing at a class/struct definition, or any
-    // expression, etc
+    // This occurs when we're pointing at a class/struct definition, or any expression, etc
     else if (resultOut.ResolvedType != nullptr)
     {
       resultOut.ToolTip = GetFriendlyTypeName(resultOut.ResolvedType);
@@ -713,8 +691,7 @@ void Project::GetDefinitionInfo(Module& dependencies,
       // Put the type of the definition at the beginning to give users more info
       resultOut.ToolTip = BuildString(name, " - ", resultOut.ToolTip);
 
-      // If the definition has a description, append that with a newline to the
-      // end
+      // If the definition has a description, append that with a newline to the end
       if (!resultOut.DefinedObject->Description.Empty())
       {
         resultOut.ToolTip = BuildString(resultOut.ToolTip, "\n", resultOut.DefinedObject->Description);
@@ -728,8 +705,7 @@ void Project::GetDefinitionInfoInternal(Module& dependencies,
                                         StringParam cursorOrigin,
                                         CodeDefinition& resultOut)
 {
-  // Temporary set tolerant mode to true (recall it on any exiting of this
-  // function)
+  // Temporary set tolerant mode to true (recall it on any exiting of this function)
   Zero::SetAndRecallOnDestruction<bool> changeTolerantMode(&this->TolerantMode, true);
 
   // Compile the entirety of the project and get the syntax tree out of it
@@ -743,8 +719,7 @@ void Project::GetDefinitionInfoInternal(Module& dependencies,
   Array<SyntaxNode*> nodes;
   syntaxTree.GetNodesAtCursor(cursorPosition, cursorOrigin, nodes);
 
-  // If we received no nodes, then return nothing (CodeDefinition will remain
-  // empty)
+  // If we received no nodes, then return nothing (CodeDefinition will remain empty)
   if (nodes.Empty())
     return;
 
@@ -772,8 +747,7 @@ void Project::GetDefinitionInfoInternal(Module& dependencies,
   if (!isValidToken)
     return;
 
-  // Walk through the nodes backwards (since the more leaf nodes end up at the
-  // back)
+  // Walk through the nodes backwards (since the more leaf nodes end up at the back)
   for (int i = (int)nodes.Size() - 1; i >= 0; --i)
   {
     // Grab the current node
@@ -971,8 +945,7 @@ void Project::GetAutoCompleteInfo(Module& dependencies,
   // First query auto complete type and function information
   this->GetAutoCompleteInfoInternal(dependencies, cursorPosition, cursorOrigin, resultOut);
 
-  // We basically consider the auto complete a success if it found anything that
-  // wasn't the error type (and not null)
+  // We basically consider the auto complete a success if it found anything that wasn't the error type (and not null)
   resultOut.Success = (resultOut.NearestType != nullptr && resultOut.NearestType != Core::GetInstance().ErrorType);
 
   // If we're trying to access a bound type...
@@ -981,8 +954,7 @@ void Project::GetAutoCompleteInfo(Module& dependencies,
   // If this wasn't a bound type, check first if its an indirect type
   if (boundType == nullptr)
   {
-    // In general we can access indirect types exactly like how we access bound
-    // types...
+    // In general we can access indirect types exactly like how we access bound types...
     Zilch::IndirectionType* indirectType = Zilch::Type::DynamicCast<Zilch::IndirectionType*>(resultOut.NearestType);
 
     // Just set the bound type to be the reference type and continue on
@@ -993,9 +965,8 @@ void Project::GetAutoCompleteInfo(Module& dependencies,
   // Make sure we have a valid type, but ignore integer literals
   if (boundType != nullptr)
   {
-    // Query the dependencies for all extension functions and properties for the
-    // bound type These functors also walk up base types and find any of their
-    // properties
+    // Query the dependencies for all extension functions and properties for the bound type
+    // These functors also walk up base types and find any of their properties
     AutoCompletePropertyFunctionQuery queryFunctor;
     queryFunctor.Info = &resultOut;
     queryFunctor.CursorOrigin = cursorOrigin;
@@ -1003,32 +974,29 @@ void Project::GetAutoCompleteInfo(Module& dependencies,
     ForEachFunction(resultOut.IsStatic, dependencies, boundType, queryFunctor);
   }
 
-  // If we have no actual function overloads (we still may be performing a call
-  // on a delegate or functor of some sort)...
+  // If we have no actual function overloads (we still may be performing a call on a delegate or functor of some
+  // sort)...
   if (resultOut.FunctionOverloads.Empty())
   {
-    // If the expression is a delegate type then generate an overload for the
-    // delegate call (we technically won't know descriptions or, in the future,
-    // parameter names...)
+    // If the expression is a delegate type then generate an overload for the delegate
+    // call (we technically won't know descriptions or, in the future, parameter names...)
     DelegateType* delegateType = Type::DynamicCast<DelegateType*>(resultOut.NearestType);
     if (delegateType != nullptr)
       this->AddAutoCompleteOverload(resultOut, delegateType);
 
-    // We always set the name to be "delegate" when we don't know where the
-    // actual function came from
+    // We always set the name to be "delegate" when we don't know where the actual function came from
     resultOut.FunctionName = Grammar::GetKeywordOrSymbol(Grammar::Delegate);
   }
   else
   {
-    // Now we handle any real overloads that we might have found (only when
-    // accessing a member on a type can we deal with overloads)
+    // Now we handle any real overloads that we might have found (only when accessing a member on a type can we deal
+    // with overloads)
     for (size_t i = 0; i < resultOut.FunctionOverloads.Size(); ++i)
     {
       // Grab the current overloaded function
       Function* function = resultOut.FunctionOverloads[i];
 
-      // Create a completion overload for it (filling out return type and
-      // parameters/names)
+      // Create a completion overload for it (filling out return type and parameters/names)
       CompletionOverload& overload = this->AddAutoCompleteOverload(resultOut, function->FunctionType);
 
       // Set the description (this could be an inherited description)
@@ -1049,24 +1017,20 @@ void Project::GetAutoCompleteInfo(Module& dependencies,
     }
   }
 
-  // If we have completion overloads, then try to find some sort of 'best'
-  // overload to show the user, in the event that the IDE does not have good
-  // support for an overload list or 'call-tips'
+  // If we have completion overloads, then try to find some sort of 'best' overload to show the user, in
+  // the event that the IDE does not have good support for an overload list or 'call-tips'
   if (resultOut.CompletionOverloads.Empty() == false)
   {
-    // Right now, we're only considering overloads that have descrptions
-    // (looking for the one with the most parameters)
+    // Right now, we're only considering overloads that have descrptions (looking for the one with the most parameters)
     int bestParameterCount = -1;
 
-    // Walk through all the completion overloads and look for the first with a
-    // description
+    // Walk through all the completion overloads and look for the first with a description
     for (size_t i = 0; i < resultOut.CompletionOverloads.Size(); ++i)
     {
       // Grab the current overload for convenience
       CompletionOverload& overload = resultOut.CompletionOverloads[i];
 
-      // We only consider overloads tha have a description, then we look for the
-      // one with the most parameters
+      // We only consider overloads tha have a description, then we look for the one with the most parameters
       int parameterCount = (int)overload.Parameters.Size();
       if (overload.Description.Empty() == false && parameterCount > bestParameterCount)
       {
@@ -1079,20 +1043,17 @@ void Project::GetAutoCompleteInfo(Module& dependencies,
     // If we still didn't find a good overload with a description...
     if (resultOut.BestCompletionOverload == -1)
     {
-      // Just find the one with the most parameters, this should always get at
-      // least one because all overloads have 0 or more parameters (and we start
-      // at -1)
+      // Just find the one with the most parameters, this should always get at least one
+      // because all overloads have 0 or more parameters (and we start at -1)
       bestParameterCount = -1;
 
-      // Walk through all the completion overloads and look for the first with a
-      // description
+      // Walk through all the completion overloads and look for the first with a description
       for (size_t i = 0; i < resultOut.CompletionOverloads.Size(); ++i)
       {
         // Grab the current overload for convenience
         CompletionOverload& overload = resultOut.CompletionOverloads[i];
 
-        // We only consider overloads tha have a description, then we look for
-        // the one with the most parameters
+        // We only consider overloads tha have a description, then we look for the one with the most parameters
         int parameterCount = (int)overload.Parameters.Size();
         if (parameterCount > bestParameterCount)
         {
@@ -1110,21 +1071,20 @@ void Project::GetAutoCompleteInfo(Module& dependencies,
   // If the user wants us to remove duplicate entries...
   if (resultOut.RemoveDuplicateNameEntries)
   {
-    // The last entry name that we hit (so we can compare the next one and see
-    // if its the same)
+    // The last entry name that we hit (so we can compare the next one and see if its the same)
     String lastName;
 
-    // Walk through all entries and only keep the first one for any duplicates
-    // (should already be sorted with longest descriptions first)
+    // Walk through all entries and only keep the first one for any duplicates (should already be sorted with longest
+    // descriptions first)
     for (size_t i = 0; i < resultOut.CompletionEntries.Size();)
     {
       // If the current entry has the same name as the last...
       CompletionEntry& entry = resultOut.CompletionEntries[i];
       if (entry.Name == lastName)
       {
-        // Note: We don't need to update 'lastName' because we know its the
-        // same! Remove this entry from the completions (this will iterate us
-        // forward since it moves all entries in front back by one)
+        // Note: We don't need to update 'lastName' because we know its the same!
+        // Remove this entry from the completions (this will iterate us forward since it moves all entries in front back
+        // by one)
         resultOut.CompletionEntries.EraseAt(i);
       }
       else
@@ -1142,13 +1102,11 @@ void Project::GetAutoCompleteInfoInternal(Module& dependencies,
                                           StringParam cursorOrigin,
                                           AutoCompleteInfo& resultOut)
 {
-  // Temporary set tolerant mode to true (recall it on any exiting of this
-  // function)
+  // Temporary set tolerant mode to true (recall it on any exiting of this function)
   Zero::SetAndRecallOnDestruction<bool> changeTolerantMode(&this->TolerantMode, true);
 
   // Always assume we're parsing an instance/expression
-  // Later on if we fail, we'll try to parse a type and therefore it may be a
-  // static
+  // Later on if we fail, we'll try to parse a type and therefore it may be a static
   resultOut.IsStatic = false;
 
   // Compile the entirety of the project and get the syntax tree out of it
@@ -1162,8 +1120,7 @@ void Project::GetAutoCompleteInfoInternal(Module& dependencies,
   Array<SyntaxNode*> nodes;
   syntaxTree.GetNodesAtCursor(cursorPosition, cursorOrigin, nodes);
 
-  // If we received no nodes, then return nothing (CodeDefinition will remain
-  // empty)
+  // If we received no nodes, then return nothing (CodeDefinition will remain empty)
   if (nodes.Empty())
     return;
 
@@ -1203,13 +1160,12 @@ void Project::GetAutoCompleteInfoInternal(Module& dependencies,
     if (expression == nullptr)
       continue;
 
-    // The result type may be null if it was unable to resolve... return
-    // whatever we found
+    // The result type may be null if it was unable to resolve... return whatever we found
     resultOut.NearestType = expression->ResultType;
 
-    // If the value we're accessing is a value node specifically, then it's a
-    // literal (note that LocalVariableReferenceNode inherits from ValueNode and
-    // is NOT a literal, hence the ZilchGetDerivedType == check).
+    // If the value we're accessing is a value node specifically, then it's a literal
+    // (note that LocalVariableReferenceNode inherits from ValueNode and is NOT a literal, hence the ZilchGetDerivedType
+    // == check).
     resultOut.IsLiteral = (expression->ZilchGetDerivedType() == ZilchTypeId(ValueNode));
 
     // Look to see if we're accessing a single function or a bunch of overloads
@@ -1222,8 +1178,7 @@ void Project::GetAutoCompleteInfoInternal(Module& dependencies,
       overloads = memberAccess->OverloadedFunctions;
       singleFunction = memberAccess->AccessedFunction;
     }
-    // If this is a creation call, we also want to pull out constructor
-    // overloads
+    // If this is a creation call, we also want to pull out constructor overloads
     else if (StaticTypeNode* staticType = Type::DynamicCast<StaticTypeNode*>(expression))
     {
       resultOut.IsStatic = true;
@@ -1240,8 +1195,7 @@ void Project::GetAutoCompleteInfoInternal(Module& dependencies,
     // If we just resolved a single function...
     else if (singleFunction != nullptr)
     {
-      // Add the single function (so that the user can get more documentation
-      // from it)
+      // Add the single function (so that the user can get more documentation from it)
       resultOut.FunctionOverloads.PushBack(singleFunction);
     }
     break;

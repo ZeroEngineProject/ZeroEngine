@@ -6,8 +6,7 @@
 
 namespace Zilch
 {
-// The timer maintains a precision of at around 1ms and attempts to deal with
-// wrap around
+// The timer maintains a precision of at around 1ms and attempts to deal with wrap around
 class ZeroShared Timer
 {
 public:

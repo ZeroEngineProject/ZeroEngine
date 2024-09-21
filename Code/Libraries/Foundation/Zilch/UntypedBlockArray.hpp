@@ -6,8 +6,7 @@
 
 namespace Zilch
 {
-// A block array (except it is untyped, and therefore works mostly with copyable
-// structs)
+// A block array (except it is untyped, and therefore works mostly with copyable structs)
 template <size_t BlockSize>
 class ZeroSharedTemplate UntypedBlockArray
 {
@@ -118,9 +117,8 @@ public:
   }
 
   // Get the total size
-  // Note: Do NOT use this as an absolute index, as it's possible that the next
-  // element that's added to the block array will get pushed into another block
-  // (wrong index...)
+  // Note: Do NOT use this as an absolute index, as it's possible that the next element
+  // that's added to the block array will get pushed into another block (wrong index...)
   size_t AbsoluteSize()
   {
     if (this->Blocks.Empty())
@@ -150,8 +148,7 @@ public:
     this->Blocks.Clear();
   }
 
-  // Request a chunk of memory of a given size, and return a pointer to the
-  // beginning of it
+  // Request a chunk of memory of a given size, and return a pointer to the beginning of it
   ::byte* RequestElementOfSize(size_t size, size_t* absoluteIndexOut = nullptr)
   {
     // Error checking and handling
@@ -180,9 +177,8 @@ private:
     ::byte* Data;
 
     // The length that we've written into the data block
-    // Note that the size of the memory pointed at by 'Data' is the BlockSize,
-    // however, we may not have written all the way up to the end due to
-    // different opcode sizes
+    // Note that the size of the memory pointed at by 'Data' is the BlockSize, however,
+    // we may not have written all the way up to the end due to different opcode sizes
     size_t LengthWritten;
   };
 

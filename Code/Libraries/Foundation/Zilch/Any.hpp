@@ -6,9 +6,8 @@
 
 namespace Zilch
 {
-// Returns an invalid type that is zeroed out (only used for not-crashing after
-// an assert) This places no requirement on default construction or copy
-// construction
+// Returns an invalid type that is zeroed out (only used for not-crashing after an assert)
+// This places no requirement on default construction or copy construction
 template <typename T>
 T& GetInvalid()
 {
@@ -50,12 +49,10 @@ public:
     type->IsInitializedAssert();
     ZilchTypeId(T)->IsInitializedAssert();
 
-    // Get how big the copyable size of the object is (size of a handle, or the
-    // entire value size)
+    // Get how big the copyable size of the object is (size of a handle, or the entire value size)
     size_t copyableSize = type->GetCopyableSize();
 
-    // Allocate room to store this type (may store locally and not actually
-    // allocate)
+    // Allocate room to store this type (may store locally and not actually allocate)
     ::byte* destination = this->AllocateData(copyableSize);
 
     // Store the type and copy construct the data into us
@@ -90,14 +87,12 @@ public:
     }
 
     // Check if we can directly convert the stored type into the requested type
-    // This supports derived -> base class casting (but not visa versa), enums
-    // to integers, etc
+    // This supports derived -> base class casting (but not visa versa), enums to integers, etc
     BoundType* toType = ZilchTypeId(T);
     if (this->StoredType->IsRawCastableTo(toType) == false)
     {
       ErrorIf(options == GetOptions::AssertOnNull,
-              "There was a value inside the Any of type '%s' but it cannot be "
-              "converted to '%s'",
+              "There was a value inside the Any of type '%s' but it cannot be converted to '%s'",
               this->StoredType->ToString().c_str(),
               toType->Name.c_str());
       return GetInvalid<T>();
@@ -124,8 +119,7 @@ public:
     return this->StoredType->IsRawCastableTo(checkType);
   }
 
-  // Copying will properly reference count handles, delegates this handle, and
-  // memcpy value types
+  // Copying will properly reference count handles, delegates this handle, and memcpy value types
   Any(const Any& other);
 
   // Creates an any from a handle and reference counts
@@ -134,20 +128,16 @@ public:
   // Creates an any from a delegate and reference counts
   Any(const Delegate& other);
 
-  // Constructor that initializes to the given data and type (the data is copied
-  // in using GenericCopyConstruct)
+  // Constructor that initializes to the given data and type (the data is copied in using GenericCopyConstruct)
   Any(const ::byte* data, Type* type);
 
-  // Construct a default instance of a particular type (equivalent of
-  // default(T))
+  // Construct a default instance of a particular type (equivalent of default(T))
   explicit Any(Type* type);
 
-  // Destructor that decrements reference counts and properly handles stored
-  // data
+  // Destructor that decrements reference counts and properly handles stored data
   ~Any();
 
-  // Copying will properly reference count handles, delegates this handle, and
-  // memcpy value types
+  // Copying will properly reference count handles, delegates this handle, and memcpy value types
   Any& operator=(const Any& rhs);
 
   // Checks if the internal handle/delegate/value is the same
@@ -161,42 +151,38 @@ public:
   // Hashes a handle (generally used by hashable containers)
   size_t Hash() const;
 
-  // Checks if the any itself is holding no value, or if the value stored within
-  // the any is null. This specifically checks Handles and Delegates for a null
-  // value
+  // Checks if the any itself is holding no value, or if the value stored within the any
+  // is null. This specifically checks Handles and Delegates for a null value
   bool IsNull() const;
   bool IsNotNull() const;
 
   // Converts the internal value to string (used for debugging)
   String ToString() const;
 
-  // Converts the internal value to a Handle. If it does not store a handle
-  // type, it will return an empty Handle.
+  // Converts the internal value to a Handle. If it does not store a handle type, it will
+  // return an empty Handle.
   Handle ToHandle() const;
 
-  // If the type stored internally is a Handle then this will invoke Dereference
-  // on the handle Otherwise this will return the same value as GetData
+  // If the type stored internally is a Handle then this will invoke Dereference on the handle
+  // Otherwise this will return the same value as GetData
   ::byte* Dereference() const;
 
   // Destruct any data stored by the any
   // This also clears the entire any out to zero
   void Clear();
 
-  // Allocates data if the size goes past the sizeof(this->Data), or returns a
-  // pointer to this->Data
+  // Allocates data if the size goes past the sizeof(this->Data), or returns a pointer to this->Data
   ::byte* AllocateData(size_t size);
 
-  // Get the raw type data that we point at (may be our internal Data, or may be
-  // allocated)
+  // Get the raw type data that we point at (may be our internal Data, or may be allocated)
   const ::byte* GetData() const;
 
   // Much like the copy constructor or assignment of an any, except it avoids
   // creating an extra 'any' in cases where we just have the memory and the type
   void AssignFrom(const ::byte* data, Type* type);
 
-  // Replaces our stored definition with a default constructed version of the
-  // given type (equivalent of default(T)) Typically makes handles null,
-  // delegates null, and value types cleared to 0
+  // Replaces our stored definition with a default constructed version of the given type (equivalent of default(T))
+  // Typically makes handles null, delegates null, and value types cleared to 0
   void DefaultConstruct(Type* type);
 
   // Generically copies the value of this any to another location
@@ -205,17 +191,16 @@ public:
   void CopyStoredValueTo(::byte* to) const;
 
   // Checks if the any is currently holding a value
-  // Note that the value MAY be null, which is still technically a value stored
-  // within the any If you wish to check for null for various stored types, use
-  // IsNull
+  // Note that the value MAY be null, which is still technically a value stored within the any
+  // If you wish to check for null for various stored types, use IsNull
   bool IsHoldingValue() const;
 
 public:
   // We want to store the largest type (the delegate, handle, etc)
   // The delegate stores the handle, so we know delegate is the biggest
-  // If the size of the type is bigger then can fit here, then we allocate a
-  // pointer instead
-  union {
+  // If the size of the type is bigger then can fit here, then we allocate a pointer instead
+  union
+  {
     ::byte Data[sizeof(Delegate)];
 
     // Ensure alignment on all platforms.
@@ -231,8 +216,7 @@ typedef const Any& AnyParam;
 
 // Given a type we know natively, return a value pointed at by a data pointer
 // If the data is not given, this will default construct the type
-// This is specialized by the Any type to return an Any that encapsulates the
-// value
+// This is specialized by the Any type to return an Any that encapsulates the value
 template <typename T>
 T CopyToAnyOrActualType(::byte* data, Type* dataType)
 {

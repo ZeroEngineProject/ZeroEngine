@@ -4,8 +4,8 @@
 
 namespace Zilch
 {
-// Unfortunately because there's some sort of bug in the MSVC linker, we have to
-// make a bunch of non-inlined comparison functions
+// Unfortunately because there's some sort of bug in the MSVC linker, we have to make a bunch of non-inlined comparison
+// functions
 ZeroNoInline bool LinkerEquals(Boolean a, Boolean b)
 {
   return a == b;
@@ -96,8 +96,7 @@ class ArrayRangeTemplate;
 
 // The template layout we use for arrays
 // As an optimization, the array can be instantiated for some known data types
-// For all other unknown types (such as structs created in Zilch) we use the
-// 'Any' type
+// For all other unknown types (such as structs created in Zilch) we use the 'Any' type
 template <typename T>
 class ArrayTemplate : public ArrayClass<T>
 {
@@ -123,7 +122,7 @@ public:
     // Loop through all entries in the array
     for (size_t i = 0; i < self->NativeArray.Size(); ++i)
     {
-      // Get a pointer to the value at the given index (as a byte*)
+      // Get a pointer to the value at the given index (as a ::byte*)
       ::byte* valuePointer = (::byte*)&self->NativeArray[i];
 
       // Convert that value to a string generically
@@ -132,8 +131,7 @@ public:
       // Append the stringified value to the builder
       builder.Append(valueString);
 
-      // If we're not the last element, add a comma (argument separator) and a
-      // space
+      // If we're not the last element, add a comma (argument separator) and a space
       bool isNotLastItem = (self->NativeArray.Size() - 1 != i);
       if (isNotLastItem)
       {
@@ -167,8 +165,7 @@ public:
     // Get the value
     ::byte* valueData = call.GetParameterUnchecked(parameter);
 
-    // Grab the data out generically (if this is an Any type, we handle that
-    // properly)
+    // Grab the data out generically (if this is an Any type, we handle that properly)
     return CopyToAnyOrActualType<T>(valueData, userData.ContainedType);
   }
 
@@ -253,8 +250,7 @@ public:
       return;
     }
 
-    // This function returns the popped value so copy it to return value before
-    // removal
+    // This function returns the popped value so copy it to return value before removal
     ArrayCopyReturnValue(call, self->NativeArray.Back());
 
     //  Remove the element
@@ -361,8 +357,7 @@ public:
     // Get the first argument, capacity
     Integer capacity = call.Get<Integer>(0);
 
-    // Reserve space on the array (setting to anything smaller than the current
-    // capacity is ignored)
+    // Reserve space on the array (setting to anything smaller than the current capacity is ignored)
     self->NativeArray.Reserve(capacity);
   }
 
@@ -384,10 +379,9 @@ public:
       return;
     }
 
-    // Reserve space on the array (setting to anything smaller than the current
-    // capacity is ignored) Normally we'd like to just invoke 'resize', however
-    // because this is an array of any types, each element needs to be default
-    // constructed to the contained value type
+    // Reserve space on the array (setting to anything smaller than the current capacity is ignored)
+    // Normally we'd like to just invoke 'resize', however because this is an array of any types,
+    // each element needs to be default constructed to the contained value type
     if (newSize > self->GetCount())
     {
       // First start by reserving space
@@ -399,8 +393,7 @@ public:
         // Add each element one by one and construct it to be the element type
         T& element = self->NativeArray.PushBack();
 
-        // If no default value was provided, use default construction (otherwise
-        // use the given default value)
+        // If no default value was provided, use default construction (otherwise use the given default value)
         element = CopyToAnyOrActualType<T>(defaultValue, userData.ContainedType);
       }
     }
@@ -425,19 +418,16 @@ public:
 
   static void ArrayConstructorResize(Call& call, ExceptionReport& report)
   {
-    // Construct the array and resize the number of elements, with no default
-    // value
+    // Construct the array and resize the number of elements, with no default value
     ArrayResizeConstructorHelper(call, report, nullptr);
   }
 
   static void ArrayConstructorResizeDefault(Call& call, ExceptionReport& report)
   {
-    // The second argument should be the default value we'd like to initialize
-    // elements with
+    // The second argument should be the default value we'd like to initialize elements with
     ::byte* defaultValue = call.GetParameterUnchecked(1);
 
-    // Construct the array and resize the number of elements, with no default
-    // value
+    // Construct the array and resize the number of elements, with no default value
     ArrayResizeConstructorHelper(call, report, defaultValue);
   }
 
@@ -449,8 +439,7 @@ public:
 
   static void ArrayResizeDefault(Call& call, ExceptionReport& report)
   {
-    // The second argument should be the default value we'd like to initialize
-    // elements with
+    // The second argument should be the default value we'd like to initialize elements with
     ::byte* defaultValue = call.GetParameterUnchecked(1);
 
     // Resize with the given default value
@@ -486,8 +475,7 @@ public:
       }
     }
 
-    // We didn't find the first index, just return -1 to indicate it was not
-    // found
+    // We didn't find the first index, just return -1 to indicate it was not found
     call.Set(Call::Return, -1);
   }
 
@@ -545,9 +533,7 @@ public:
   {
   public:
     DelegateCompare(ExecutableState* state, ExceptionReport& report, Delegate& comparer) :
-        State(state),
-        Report(&report),
-        Comparer(&comparer)
+        State(state), Report(&report), Comparer(&comparer)
     {
     }
 
@@ -557,9 +543,8 @@ public:
 
     bool operator()(T& left, T& right)
     {
-      // Ideally we would have exited out of the algorithm, but sort has no
-      // mechanism for that Just check if an exception was set upon coming in
-      // here, if so ignore it
+      // Ideally we would have exited out of the algorithm, but sort has no mechanism for that
+      // Just check if an exception was set upon coming in here, if so ignore it
       if (this->Report->HasThrownExceptions())
         return false;
 
@@ -570,13 +555,11 @@ public:
       call.DisableParameterChecks();
       call.Invoke(*this->Report);
 
-      // If the recent invocation threw an exception, then it means no return
-      // value was placed on the stack
+      // If the recent invocation threw an exception, then it means no return value was placed on the stack
       if (this->Report->HasThrownExceptions())
         return false;
 
-      // do a different compare depending on if this is a boolean compare
-      // function or a int compare function
+      // do a different compare depending on if this is a boolean compare function or a int compare function
       if (comparisonMode == ComparisonMode::BoolMode)
         return call.Get<bool>(Call::Return);
       else if (comparisonMode == ComparisonMode::CompareMode)
@@ -738,9 +721,8 @@ public:
     if (self->IsEmpty())
     {
       // Throw an exception since the range was empty and we called MoveNext
-      call.GetState()->ThrowException(report,
-                                      "The range reached the end, but then an attempt was made to make it "
-                                      "iterate forward more");
+      call.GetState()->ThrowException(
+          report, "The range reached the end, but then an attempt was made to make it iterate forward more");
       return;
     }
     else
@@ -798,8 +780,7 @@ public:
     {
       // Throw an exception since the range was empty and we called Current
       call.GetState()->ThrowException(report,
-                                      "The range reached the end and an attempt was made to get the "
-                                      "current value");
+                                      "The range reached the end and an attempt was made to get the current value");
       return;
     }
     else
@@ -808,16 +789,14 @@ public:
       ::byte* returnValue = call.GetReturnUnchecked();
       call.DisableReturnChecks();
 
-      // Copy the value at the array to the return type (this properly deals
-      // with the Any type)
+      // Copy the value at the array to the return type (this properly deals with the Any type)
       CopyFromAnyOrActualType(array->NativeArray[self->Current], returnValue);
     }
   }
 
   static String ArrayRangeToString(const BoundType* type, const ::byte* data)
   {
-    // Get the user data, because we need to know the contained arrays element
-    // type
+    // Get the user data, because we need to know the contained arrays element type
     Type* containedType = (Type*)type->UserData;
 
     // Create a string builder to generate the array ranges element entries
@@ -844,7 +823,7 @@ public:
     // Loop through all entries in the contained native array
     for (Integer i = self->Current; i < end; ++i)
     {
-      // Get a pointer to the value at the given index (as a byte*)
+      // Get a pointer to the value at the given index (as a ::byte*)
       ::byte* valuePointer = (::byte*)&array->NativeArray[i];
 
       // Convert that value to a string generically
@@ -853,8 +832,7 @@ public:
       // Append the stringified value to the builder
       builder.Append(valueString);
 
-      // If we're not the last element, add a comma (argument separator) and a
-      // space
+      // If we're not the last element, add a comma (argument separator) and a space
       bool isNotLastItem = (end - 1 != i);
       if (isNotLastItem)
       {
@@ -893,15 +871,13 @@ BoundType* InstantiateArray(LibraryBuilder& builder,
 
   String fullyQualifiedRangeName = rangeName.ToString();
 
-  ZeroTodo("The range type must have a valid destructor the decrements the "
-           "reference count on the 'array' handle");
+  ZeroTodo("The range type must have a valid destructor the decrements the reference count on the 'array' handle");
   BoundType* rangeType = builder.AddBoundType(
       "ArrayRange", fullyQualifiedRangeName, TypeCopyMode::ReferenceType, sizeof(ArrayRangeTemplate<T>));
 
   rangeType->ToStringFunction = ArrayRangeTemplate<T>::ArrayRangeToString;
 
-  // Create the array type instance (arrays and any other containers should be
-  // reference types!)
+  // Create the array type instance (arrays and any other containers should be reference types!)
   BoundType* arrayType =
       builder.AddBoundType(baseName, fullyQualifiedName, TypeCopyMode::ReferenceType, sizeof(ArrayTemplate<T>));
 
@@ -1210,9 +1186,7 @@ BoundType* InstantiateArray(LibraryBuilder& builder,
 
 // Make sure the size of ArrayClass is the same as ArrayTemplate
 static_assert(sizeof(ArrayClass<Byte>) == sizeof(ArrayTemplate<Byte>),
-              "The array base 'ArrayClass' and 'ArrayTemplate' should be "
-              "binary compatible with each other");
+              "The array base 'ArrayClass' and 'ArrayTemplate' should be binary compatible with each other");
 static_assert(sizeof(ArrayClass<Any>) == sizeof(ArrayTemplate<Any>),
-              "The array base 'ArrayClass' and 'ArrayTemplate' should be "
-              "binary compatible with each other");
+              "The array base 'ArrayClass' and 'ArrayTemplate' should be binary compatible with each other");
 } // namespace Zilch

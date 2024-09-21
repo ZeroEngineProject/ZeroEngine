@@ -33,8 +33,7 @@ private:
   // Reads back a character out of the input stream
   inline char ReadCharacter();
 
-  // Traverse through the rest of the input buffer and compare it to the given
-  // string
+  // Traverse through the rest of the input buffer and compare it to the given string
   bool DiffString(const char* string);
 
   // Attempts to read a keyword or a symbol (any non-varying token)
@@ -63,8 +62,7 @@ private:
   bool ParseInternal(Array<UserToken>& tokensOut, Array<UserToken>& commentsOut);
 
 public:
-  // When set, we will parse the special '`' characters in strings to mean
-  // string interpolation (default true)
+  // When set, we will parse the special '`' characters in strings to mean string interpolation (default true)
   bool EnableStringInterpolation;
 
 private:
@@ -78,8 +76,7 @@ private:
   String Data;
 
   // If the last character we read was a carriage return
-  // This is to support the CRLF style newlines (which only counts as one line,
-  // not two)
+  // This is to support the CRLF style newlines (which only counts as one line, not two)
   bool WasCarriageReturn;
 
   // The position in the data stream
@@ -88,17 +85,14 @@ private:
   // The most forward position we've reached
   size_t ForwardPosition;
 
-  // The location that we're at in the tokenizer (only updated when we read full
-  // tokens)
+  // The location that we're at in the tokenizer (only updated when we read full tokens)
   CodeLocation Location;
 
-  // The location that we're at in the tokenizer that is updated with every
-  // character read
+  // The location that we're at in the tokenizer that is updated with every character read
   size_t Character;
   size_t Line;
 
-  // The depth of comment we're in (how many nested block comments inside of
-  // block comments)
+  // The depth of comment we're in (how many nested block comments inside of block comments)
   size_t CommentDepth;
 
   // Not copyable

@@ -71,8 +71,7 @@ size_t BinaryOperator::Hash() const
   // Start off with a cleared out hash
   size_t result = 0;
 
-  // Hash both the left and right (add a random prime because they could be the
-  // same)
+  // Hash both the left and right (add a random prime because they could be the same)
   result ^= (size_t)(this->Lhs->Hash());
   result ^= (size_t)(this->Rhs->Hash() * 1276478784635841471);
 
@@ -129,10 +128,7 @@ bool UnaryOperator::operator==(const UnaryOperator& rhs) const
 }
 
 UntypedOperator::UntypedOperator() :
-    IsValid(false),
-    Operator(Grammar::Invalid),
-    Precedence(0),
-    Associativity(OperatorAssociativity::LeftToRight)
+    IsValid(false), Operator(Grammar::Invalid), Precedence(0), Associativity(OperatorAssociativity::LeftToRight)
 {
 }
 
@@ -466,8 +462,7 @@ Shared::Shared()
   // String to StringRange
   this->AddPrimitiveCast(core.StringType, core.StringRangeType, Instruction::ConvertStringToStringRangeExtended, true);
 
-// Note: These macros mirror those inside of InstructionEnum and VirtualMachine
-// (for generation of instructions)
+// Note: These macros mirror those inside of InstructionEnum and VirtualMachine (for generation of instructions)
 
 // Copy
 #define ZilchCopyOperators(WithType)                                                                                   \
@@ -624,8 +619,7 @@ Shared::Shared()
                                   (IoMode::Enum)(IoMode::ReadRValue | IoMode::WriteLValue));                           \
   }
 
-// Special integral operators, generic numeric operators, copy, equality, and
-// comparison
+// Special integral operators, generic numeric operators, copy, equality, and comparison
 #define ZilchIntegralOperators(WithType)                                                                               \
   {                                                                                                                    \
     BoundType* type = core.WithType##Type;                                                                             \
@@ -684,16 +678,14 @@ Shared::Shared()
   // Handle, Delegate, and Value equality operators are handled specially above
 
   ZilchCopyOperators(Boolean);
-  // Handle, Delegate, and Value copy (assignment) operators are handled
-  // specially above
+  // Handle, Delegate, and Value copy (assignment) operators are handled specially above
 
   // Boolean operators
   this->AddUnary(
       core.BooleanType, core.BooleanType, Grammar::LogicalNot, Instruction::LogicalNotBoolean, IoMode::ReadRValue);
 
-  // Note: These operators have instructions marked as invalid because short
-  // circuit is handled specially There is not actually an opcode/instruction
-  // that performs logical or/and
+  // Note: These operators have instructions marked as invalid because short circuit is handled specially
+  // There is not actually an opcode/instruction that performs logical or/and
   this->AddBinary(
       core.BooleanType, core.BooleanType, Grammar::LogicalAnd, Instruction::InvalidInstruction, IoMode::ReadRValue);
   this->AddBinary(
@@ -781,8 +773,7 @@ void Shared::AddPrecedence(size_t precedence,
                            OperatorArity::Enum arity,
                            Grammar::Enum oper)
 {
-  // Create a structure that describes everything we need to know generically
-  // about the operator
+  // Create a structure that describes everything we need to know generically about the operator
   UntypedOperator info;
   info.Associativity = associativity;
   info.Operator = oper;
@@ -791,26 +782,22 @@ void Shared::AddPrecedence(size_t precedence,
   info.IsValid = true;
 
   // It turns out since sometimes we use the same symbol for an operator,
-  // but in some cases it can be unary or binary, then we need to key off the
-  // 'arity'
+  // but in some cases it can be unary or binary, then we need to key off the 'arity'
   OperatorWithArity key;
   key.Operator = oper;
   key.Arity = arity;
 
-  // Map the operator to its precedence level, which is useful for code
-  // formatters
+  // Map the operator to its precedence level, which is useful for code formatters
   this->OperatorToPrecedence.InsertOrError(key, info, "The operator was inserted twice");
 
-  // Map the precedence level to any operators on that level, which is useful
-  // for documentation
+  // Map the precedence level to any operators on that level, which is useful for documentation
   if (precedence >= this->PrecedenceToOperators.Size())
   {
     // Make sure we can store the precedence up to this level
     this->PrecedenceToOperators.Resize(precedence + 1);
   }
 
-  // Get all the operators at the given precedence level (or create an empty
-  // array)
+  // Get all the operators at the given precedence level (or create an empty array)
   Array<UntypedOperator>& operators = this->PrecedenceToOperators[precedence];
 
   // Add the operator to the precedence list, and we're done!
@@ -837,8 +824,7 @@ Shared& Shared::GetInstance()
 BinaryOperator Shared::GetBinaryOperator(Type* lhs, Type* rhs, Grammar::Enum oper, bool allowRecursiveLookup)
 {
   // First attempt to find the operator in the specialized place
-  // This MUST be first, otherwise value assignment for primitives will be a
-  // slower memcpy
+  // This MUST be first, otherwise value assignment for primitives will be a slower memcpy
   BinaryOperator finder;
   finder.Lhs = lhs;
   finder.Rhs = rhs;
@@ -859,17 +845,15 @@ BinaryOperator Shared::GetBinaryOperator(Type* lhs, Type* rhs, Grammar::Enum ope
   if (lhsIsEnum || rhsIsEnum)
   {
     // Check to see if the operation is between an enum and an integer
-    // We Assign to the left, meaning the type we're converting to would be on
-    // the left
+    // We Assign to the left, meaning the type we're converting to would be on the left
     bool isEnumToInteger = Type::IsSame(lhs, integerType);
     bool isIntegerToEnum = Type::IsSame(rhs, integerType);
 
-    // Check to see if the operation is between the enum and another enum of the
-    // same kind
+    // Check to see if the operation is between the enum and another enum of the same kind
     bool isSameEnumWithEnum = lhsIsEnum && rhsIsEnum && Type::IsSame(lhs, rhs);
 
-    // Don't allow assignments with integer to enum (otheriwse if it's between
-    // enum/enum or enum to integer, let it through)
+    // Don't allow assignments with integer to enum (otheriwse if it's between enum/enum or enum to integer, let it
+    // through)
     if (isSameEnumWithEnum || isEnumToInteger || (isIntegerToEnum && oper != Grammar::Assignment))
     {
       // Treat both as integers, and see if the operation would have been valid
@@ -878,8 +862,7 @@ BinaryOperator Shared::GetBinaryOperator(Type* lhs, Type* rhs, Grammar::Enum ope
       // If the operator is valid
       if (integerOperator.IsValid)
       {
-        // Modify the operator slightly to make the inputs the same, and also
-        // make the result the enum type
+        // Modify the operator slightly to make the inputs the same, and also make the result the enum type
         if (Type::IsSame(integerOperator.Result, integerType))
         {
           // Set the result to the enum type
@@ -918,8 +901,7 @@ BinaryOperator Shared::GetBinaryOperator(Type* lhs, Type* rhs, Grammar::Enum ope
       }
     }
 
-    // If we can convert the left to the right hand side (we already know they
-    // aren't the same from above)
+    // If we can convert the left to the right hand side (we already know they aren't the same from above)
     CastOperator castLeftToRight = this->GetCastOperator(lhs, rhs);
     if (castLeftToRight.IsValid && castLeftToRight.CanBeImplicit && castLeftToRight.RequiresCodeGeneration == false)
     {
@@ -993,9 +975,8 @@ BinaryOperator Shared::GetBinaryOperator(Type* lhs, Type* rhs, Grammar::Enum ope
     }
   }
 
-  // We got to this point and didn't find any binary operators that worked
-  // without implicit casting When testing for implicit casting, it is common
-  // for us to look into our own casts
+  // We got to this point and didn't find any binary operators that worked without implicit casting
+  // When testing for implicit casting, it is common for us to look into our own casts
   if (allowRecursiveLookup == false)
     return BinaryOperator();
 
@@ -1054,10 +1035,9 @@ BinaryOperator Shared::GetBinaryOperator(Type* lhs, Type* rhs, Grammar::Enum ope
     BinaryOperator binaryOperatorWithCast = this->GetBinaryOperator(leftCast.To, rhs, oper, false);
     if (binaryOperatorWithCast.IsValid)
     {
-      // We can't allow implicit casting of the left argument when the operator
-      // is an l-value operator For example, we never want Integer = Real to
-      // attempt to cast Integer to Real to make it work This is partially
-      // mitigated by attempting the right operand first
+      // We can't allow implicit casting of the left argument when the operator is an l-value operator
+      // For example, we never want Integer = Real to attempt to cast Integer to Real to make it work
+      // This is partially mitigated by attempting the right operand first
       if ((binaryOperatorWithCast.Io & IoMode::WriteLValue) != 0)
         continue;
 
@@ -1094,8 +1074,7 @@ UnaryOperator Shared::GetUnaryOperator(Type* type, Grammar::Enum oper)
     // If the operator is valid
     if (integerOperator.IsValid)
     {
-      // Modify the operator slightly to make the inputs the same, and also make
-      // the result the enum type
+      // Modify the operator slightly to make the inputs the same, and also make the result the enum type
       if (Type::IsSame(integerOperator.Result, integerType))
         integerOperator.Result = type;
 
@@ -1123,8 +1102,7 @@ CastOperator Shared::GetCastOperator(Type* from, Type* to)
   Core& core = Core::GetInstance();
 
   // If the types are the exact same, then we require no conversion at all!
-  // Note: This check should always come first, to avoid situations like 'ToAny'
-  // when it's 'Any' to 'Any'
+  // Note: This check should always come first, to avoid situations like 'ToAny' when it's 'Any' to 'Any'
   if (Type::IsSame(from, to))
     return this->RawImplicitCast;
 
@@ -1136,8 +1114,7 @@ CastOperator Shared::GetCastOperator(Type* from, Type* to)
   if (Type::IsAnyType(from))
     return this->FromAnyCast;
 
-  // If we're attempting to convert from the 'AnyHandle' type to another
-  // handle...
+  // If we're attempting to convert from the 'AnyHandle' type to another handle...
   if (from == ZilchTypeId(Handle) && Type::IsHandleType(to))
     return this->FromAnyHandleCast;
 
@@ -1171,8 +1148,7 @@ CastOperator Shared::GetCastOperator(Type* from, Type* to)
   if (Type::IsDelegateType(from) && to == core.AnyDelegateType)
     return this->RawImplicitCast;
 
-  // If we are converting from a reference type (handle type) to the 'any
-  // handle'...
+  // If we are converting from a reference type (handle type) to the 'any handle'...
   if (Type::IsHandleType(from) && to == core.AnyHandleType)
     return this->RawImplicitCast;
 
@@ -1183,13 +1159,11 @@ CastOperator Shared::GetCastOperator(Type* from, Type* to)
   // If both types are reference types (only one level of indirection)...
   if (fromBoundType != nullptr && toBoundType != nullptr)
   {
-    // If the 'from' type is a 'to' type, meaning 'from' is either the same or
-    // more derived...
+    // If the 'from' type is a 'to' type, meaning 'from' is either the same or more derived...
     if (Type::BoundIsA(fromBoundType, toBoundType))
       return this->RawImplicitCast;
 
-    // If the 'to' type is a 'from' type, meaning 'from' is either the same or
-    // more base... ('to' is more derived)
+    // If the 'to' type is a 'from' type, meaning 'from' is either the same or more base... ('to' is more derived)
     if (Type::BoundIsA(toBoundType, fromBoundType))
       return this->DynamicDownCast;
   }

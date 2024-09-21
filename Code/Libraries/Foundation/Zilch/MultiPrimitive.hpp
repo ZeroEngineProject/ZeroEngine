@@ -6,8 +6,7 @@
 
 namespace Zilch
 {
-// Represents a type containing multiple primitives (ex. Real3 has 3 Real
-// members)
+// Represents a type containing multiple primitives (ex. Real3 has 3 Real members)
 class ZeroShared MultiPrimitive
 {
 public:

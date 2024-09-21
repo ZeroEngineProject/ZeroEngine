@@ -57,8 +57,7 @@ BoundType* Wrapper::Generate(LibraryBuilder& builder, Wrapper* wrapper, BoundTyp
     outerFunction->UserData = innerFunction;
   }
 
-  // There will always be one handle pointing at the inner type, and it will
-  // start AFTER our base class
+  // There will always be one handle pointing at the inner type, and it will start AFTER our base class
   outerType->Handles.PushBack(outerBaseSize);
 
   Function* outerDefaultConstructor = builder.AddBoundDefaultConstructor(outerType, &ConstructorCall);

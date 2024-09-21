@@ -41,8 +41,8 @@ public:
     {
       // Throw an exception since the range was empty and we called Current
       if (ExecutableState::CallingState)
-        ExecutableState::CallingState->ThrowException("The range reached the end and an attempt was made to get the "
-                                                      "current value");
+        ExecutableState::CallingState->ThrowException(
+            "The range reached the end and an attempt was made to get the current value");
 
       return GetInvalid<FrontResult>();
     }
@@ -66,8 +66,8 @@ public:
     {
       // Throw an exception since the range was empty and we called MoveNext
       if (ExecutableState::CallingState)
-        ExecutableState::CallingState->ThrowException("The range reached the end, but then an attempt was made to make "
-                                                      "it iterate forward more");
+        ExecutableState::CallingState->ThrowException(
+            "The range reached the end, but then an attempt was made to make it iterate forward more");
       return;
     }
 

@@ -27,8 +27,7 @@ ZilchDefineType(IEncoding, builder, type)
 {
   type->HandleManager = ZilchManagerId(PointerManager);
 
-  // Even though this is an interface, because it is native, it must have a
-  // constructor that can be implemented
+  // Even though this is an interface, because it is native, it must have a constructor that can be implemented
   ZilchFullBindDestructor(builder, type, IEncoding);
   ZilchFullBindConstructor(builder, type, IEncoding, nullptr);
 
@@ -51,8 +50,7 @@ ZilchDefineType(Utf8Encoding, builder, type)
 
 ZilchDefineType(IStreamClass, builder, type)
 {
-  // Even though this is an interface, because it is native, it must have a
-  // constructor that can be implemented
+  // Even though this is an interface, because it is native, it must have a constructor that can be implemented
   ZilchFullBindDestructor(builder, type, IStreamClass);
   ZilchFullBindConstructor(builder, type, IStreamClass, nullptr);
 
@@ -101,8 +99,8 @@ ZilchDefineType(IStreamClass, builder, type)
   ZilchFullBindMethod(
       builder, type, &IStreamClass::WriteText, (Integer(IStreamClass::*)(StringParam)), "WriteText", "text")
       ->IsVirtual = true;
-  // ZilchFullBindMethod(builder, type, &IStreamClass::Read, (ArrayClass<Byte>
-  // (IStreamClass::*)(Integer)), "Read", "byteCount");
+  // ZilchFullBindMethod(builder, type, &IStreamClass::Read, (ArrayClass<Byte> (IStreamClass::*)(Integer)), "Read",
+  // "byteCount");
   ZilchFullBindMethod(
       builder, type, &IStreamClass::ReadLine, (String(IStreamClass::*)(IEncoding&)), "ReadLine", nullptr)
       ->IsVirtual = true;
@@ -167,8 +165,7 @@ Integer Utf8Encoding::Write(Rune rune, IStreamClass& stream)
 
   for (Integer i = 0; i < encodedByteCount; ++i)
   {
-    // If we fail to write out a byte, return the amount we've already written
-    // (works because of 0 based indexing)
+    // If we fail to write out a byte, return the amount we've already written (works because of 0 based indexing)
     if (stream.WriteByte(utf8Bytes[i]) == 0)
       return i;
   }
@@ -223,15 +220,14 @@ void IStreamClass::SetPosition(DoubleInteger position)
   // Attempt to seek to the given position relative to the start
   if (this->Seek(position, StreamOrigin::Start) == false)
   {
-    // We failed the first seek, check if the position was negative (if so, seek
-    // to the start of the stream)
+    // We failed the first seek, check if the position was negative (if so, seek to the start of the stream)
     if (position < 0)
     {
       this->Seek(0, StreamOrigin::Start);
     }
     // Also check if the position was beyond the size of the stream
-    // This is valid for some streams, however we already know the above seek
-    // failed Clamp to the end of the stream
+    // This is valid for some streams, however we already know the above seek failed
+    // Clamp to the end of the stream
     else if (position > this->GetCount())
     {
       this->Seek(0, StreamOrigin::End);
@@ -327,8 +323,7 @@ bool IStreamClass::ValidateArray(ArrayClass<Byte>& data, Integer byteStart, Inte
     // If we allow resizing...
     if (resizeArrayIfNeeded)
     {
-      // Resize the array to go all the way to the end, and then zero out the
-      // bytes
+      // Resize the array to go all the way to the end, and then zero out the bytes
       data.NativeArray.Resize(byteEnd);
       memset(data.NativeArray.Data() + currentCount, 0, byteEnd - currentCount);
       data.Modified();
@@ -375,14 +370,12 @@ Integer IStreamClass::WriteText(StringParam text, IEncoding& destinationStreamEn
   StringRange range = text.All();
   ZilchForEach (Zero::Rune r, range)
   {
-    // Use whatever encoding they passed in to write out the rune (should be
-    // virtual)
+    // Use whatever encoding they passed in to write out the rune (should be virtual)
     Integer amountWritten = destinationStreamEncoding.Write(r, *this);
     if (amountWritten == 0)
       break;
 
-    // Accumulate how much was written (may be multiple bytes for each rune,
-    // depending on the encoding)
+    // Accumulate how much was written (may be multiple bytes for each rune, depending on the encoding)
     totalWritten += amountWritten;
   }
   return totalWritten;
@@ -400,13 +393,12 @@ String IStreamClass::ReadLine(IEncoding& sourceStreamEncoding)
 
   ZilchLoop
   {
-    // The encoding will translate bytes from the stream into valid characters
-    // (runes) If reading fails for any reason, encoding should always return
-    // the null character
+    // The encoding will translate bytes from the stream into valid characters (runes)
+    // If reading fails for any reason, encoding should always return the null character
     Rune rune = sourceStreamEncoding.Read(*this);
 
-    // We disregard carriage return. Maybe we shouldn't do this, but it
-    // simplifies our logic and doesn't cause it to read ahead in the stream
+    // We disregard carriage return. Maybe we shouldn't do this, but it simplifies
+    // our logic and doesn't cause it to read ahead in the stream
     // Only very old systems use just the CR to mean newline
     // If this is specifically just the LF (newline character)
     if (rune.mValue == '\n')
@@ -419,8 +411,7 @@ String IStreamClass::ReadLine(IEncoding& sourceStreamEncoding)
     if (rune.mValue == '\0')
       return builder.ToString();
 
-    // We concatenate all read runes together (should automatically encode Utf8
-    // because our strings are Utf8)
+    // We concatenate all read runes together (should automatically encode Utf8 because our strings are Utf8)
     builder.Append(rune.mValue);
   }
 }
@@ -437,17 +428,15 @@ String IStreamClass::ReadAllText(IEncoding& sourceStreamEncoding)
 
   ZilchLoop
   {
-    // The encoding will translate bytes from the stream into valid characters
-    // (runes) If reading fails for any reason, encoding should always return
-    // the null character
+    // The encoding will translate bytes from the stream into valid characters (runes)
+    // If reading fails for any reason, encoding should always return the null character
     Rune rune = sourceStreamEncoding.Read(*this);
 
     // If this is the end of a the stream (or an error occurred)
     if (rune.mValue == '\0')
       return builder.ToString();
 
-    // We concatenate all read runes together (should automatically encode Utf8
-    // because our strings are Utf8)
+    // We concatenate all read runes together (should automatically encode Utf8 because our strings are Utf8)
     builder.Append(rune.mValue);
   }
 }

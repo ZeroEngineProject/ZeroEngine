@@ -114,15 +114,13 @@ Any Debugger::QueryExpression(StringParam expression, Array<QueryResult>& result
   if (!this->IsBreakpointed)
     return Any();
 
-  // Save away all the state callbacks (we don't want them to get called while
-  // we make calls) Because we are swapping with an empty event handler, this
-  // also clears out all state callbacks
+  // Save away all the state callbacks (we don't want them to get called while we make calls) 
+  // Because we are swapping with an empty event handler, this also clears out all state callbacks
   ExecutableState* state = ExecutableState::CallingState;
   EventHandler savedEvents;
   EventSwapAll(&savedEvents, state);
 
-  // Temporary space used for traversing object paths and copying Zilch objects
-  // (Delegate is the largest object)
+  // Temporary space used for traversing object paths and copying Zilch objects (Delegate is the largest object)
   Any currentValue;
 
   Zero::StringTokenRange splitter(expression, '.');
@@ -165,8 +163,8 @@ Any Debugger::QueryExpression(StringParam expression, Array<QueryResult>& result
           ::byte* variableStackMemory = frame->Frame + variable->Local;
           currentValue = Any(variableStackMemory, variable->ResultType);
 
-          // If this is the first value, then write out its value (otherwise the
-          // parent would have written out our value)
+          // If this is the first value, then write out its value (otherwise the parent would have written out our
+          // value)
           if (splitter.Empty())
           {
             // Stringify the variable (gets its value)
@@ -194,8 +192,7 @@ Any Debugger::QueryExpression(StringParam expression, Array<QueryResult>& result
                 property = boundType->GetInstanceField(propertyName);
             }
 
-            // We allowe debugging of hidden properties, we just don't enumerate
-            // them
+            // We allowe debugging of hidden properties, we just don't enumerate them
             if (property != nullptr && property->Get != nullptr)
             {
               valueName = propertyName;
@@ -212,9 +209,8 @@ Any Debugger::QueryExpression(StringParam expression, Array<QueryResult>& result
             }
           }
 
-          // We want to avoid showing duplicate properties (when they are the
-          // exact same value) We do want to however support showing hidden
-          // properties
+          // We want to avoid showing duplicate properties (when they are the exact same value)
+          // We do want to however support showing hidden properties
           HashMap<String, String> evaluatedProperties;
 
           // Check to see if the type is a bound type
@@ -258,8 +254,7 @@ Any Debugger::QueryExpression(StringParam expression, Array<QueryResult>& result
               }
             }
 
-            // Iterate up to the base class (because we want to access base
-            // class properties too)
+            // Iterate up to the base class (because we want to access base class properties too)
             boundType = boundType->BaseType;
           }
 
@@ -286,15 +281,13 @@ bool Debugger::HasDebuggableProperties(Type* type)
   if (boundType == nullptr)
     return false;
 
-  // We have to walk through all properties and check for any non hidden
-  // properties
+  // We have to walk through all properties and check for any non hidden properties
   for (size_t i = 0; i < boundType->AllProperties.Size(); ++i)
   {
     // Grab the current property
     Property* property = boundType->AllProperties[i];
 
-    // As long as this property isn't hidden or marked static, then we can debug
-    // it!
+    // As long as this property isn't hidden or marked static, then we can debug it!
     if (property->IsHidden == false && property->IsStatic == false)
       return true;
   }
@@ -403,8 +396,7 @@ void Debugger::OnOpcodePreStep(OpcodeEvent* e)
   // Make sure we pump incoming messages
   this->Update();
 
-  // If we didn't get a code location, just skip this (something invalid must
-  // have happened)
+  // If we didn't get a code location, just skip this (something invalid must have happened)
   if (e->Location == nullptr)
     return;
 
@@ -429,8 +421,7 @@ void Debugger::OnOpcodePreStep(OpcodeEvent* e)
   this->LastLocation = location;
   this->LastCallStackDepth = state->StackFrames.Size();
 
-  // Lets us know whether the action was handled (so we don't need to check for
-  // breakpoints)
+  // Lets us know whether the action was handled (so we don't need to check for  breakpoints)
   bool actionPausedExecution = false;
 
   // Based on the action that was last set by the remote client
@@ -460,12 +451,10 @@ void Debugger::OnOpcodePreStep(OpcodeEvent* e)
   // If we're stepping out of a function...
   case DebuggerAction::StepOut:
   {
-    // If we're in the same state that we wanted to step out, and the call stack
-    // depth is less than what we started at
+    // If we're in the same state that we wanted to step out, and the call stack  depth is less than what we started at
     if (isNewLineOrFileFromStepLocation && state->StackFrames.Size() < this->StepOutOverCallStackDepth)
     {
-      // Not necessary, but lets just clear the state and depth to make things
-      // clearer
+      // Not necessary, but lets just clear the state and depth to make things clearer
       this->StepOutOverCallStackDepth = 0;
 
       // We stepped out of a function!
@@ -478,12 +467,11 @@ void Debugger::OnOpcodePreStep(OpcodeEvent* e)
   // The user wanted to pause on the next line (or next file, etc)...
   case DebuggerAction::StepOver:
   {
-    // If we're in the same state that we wanted to step over, and the call
-    // stack depth is the same as what we started at
+    // If we're in the same state that we wanted to step over, and the call stack depth is the same as what we started
+    // at
     if (isNewLineOrFileFromStepLocation && state->StackFrames.Size() <= this->StepOutOverCallStackDepth)
     {
-      // Not necessary, but lets just clear the state and depth to make things
-      // clearer
+      // Not necessary, but lets just clear the state and depth to make things  clearer
       this->StepOutOverCallStackDepth = 0;
 
       // We stepped out of a function!
@@ -497,10 +485,9 @@ void Debugger::OnOpcodePreStep(OpcodeEvent* e)
     break;
   }
 
-  // Note: We always test for breakpoints (when resumed, when stepping in, when
-  // stepping out, etc) Even when testing for breakpoints, there may be many
-  // opcode associated with one line We only want to break upon the first opcode
-  // for that line
+  // Note: We always test for breakpoints (when resumed, when stepping in, when stepping out, etc)
+  // Even when testing for breakpoints, there may be many opcode associated with one line
+  // We only want to break upon the first opcode for that line
   if (isNewLineOrFileFromLastLocation && actionPausedExecution == false)
   {
     // Grab the breakpoint line list by code location/id and state
@@ -610,13 +597,11 @@ void Debugger::Breakpoint(const CodeLocation& codeLocation)
   // Loop until we hit an again that causes us to resume
   while (this->Action == DebuggerAction::Pause)
   {
-    // Send out an event that lets the hosting application update its visuals
-    // (it's being debugged!)
+    // Send out an event that lets the hosting application update its visuals  (it's being debugged!)
     EventSend(this, Events::DebuggerPauseUpdate, &toSend);
     this->DebuggerPauseUpdate(codeLocation);
 
-    // While we're paused just pump messages (could be a breakpoint, after a
-    // step, or a true pause)
+    // While we're paused just pump messages (could be a breakpoint, after a  step, or a true pause)
     this->Update();
   }
 

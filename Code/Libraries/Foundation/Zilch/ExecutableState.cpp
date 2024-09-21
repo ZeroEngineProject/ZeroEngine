@@ -43,11 +43,7 @@ MemoryLeakEvent::MemoryLeakEvent() : State(nullptr), AllocatedLocation(nullptr)
 }
 
 OpcodeEvent::OpcodeEvent() :
-    State(nullptr),
-    CurrentFunction(nullptr),
-    ProgramCounter(InvalidOpcodeLocation),
-    StackOffset(0),
-    Location(nullptr)
+    State(nullptr), CurrentFunction(nullptr), ProgramCounter(InvalidOpcodeLocation), StackOffset(0), Location(nullptr)
 {
 }
 
@@ -209,14 +205,12 @@ bool PerFrameData::AttemptThrowStackExceptions(ExceptionReport& report)
   if (this->State->HitStackOverflow)
     return false;
 
-  // If we reached the max recursion depth (not necessarily an overflow, but
-  // definitely a limit)
+  // If we reached the max recursion depth (not necessarily an overflow, but definitely a limit)
   if (this->ErrorState == StackErrorState::MaxRecursionReached)
   {
     this->State->HitStackOverflow = true;
     this->State->ThrowException(report,
-                                "Maximum recursion depth reached (too many "
-                                "function called inside of other functions)");
+                                "Maximum recursion depth reached (too many function called inside of other functions)");
     return true;
   }
   // If we truly ran out of stack space...
@@ -224,8 +218,7 @@ bool PerFrameData::AttemptThrowStackExceptions(ExceptionReport& report)
   {
     this->State->HitStackOverflow = true;
     this->State->ThrowException(report,
-                                "The stack ran out of space (too many function "
-                                "called inside of other functions)");
+                                "The stack ran out of space (too many function called inside of other functions)");
     return true;
   }
 
@@ -323,8 +316,7 @@ ExecutableState::ExecutableState() :
   memset(this->Stack, 0xCD, totalStackSize);
 
   // Create a frame data that points to the beginning of the stack
-  // This frame should never be popped (FrameData should have a minimum size of
-  // 1)
+  // This frame should never be popped (FrameData should have a minimum size of 1)
   PerFrameData* baseFrame = new PerFrameData(this);
   this->StackFrames.PushBack(baseFrame);
 
@@ -351,25 +343,20 @@ ExecutableState::~ExecutableState()
   // We should always have the base frame
   ErrorIf(this->StackFrames.Size() == 0, "Base frame should always exist (this is bad)");
 
-  // In general no objects should still be existing by this point in time unless
-  // the user allocated and stored handles to objects, especially non-reference
-  // counted objects
+  // In general no objects should still be existing by this point in time unless the user allocated and stored
+  // handles to objects, especially non-reference counted objects
 
-  // Because the entire handle manager gets torn down and will no longer allow
-  // objects to be allocated, then static memory must be cleaned up first
-  // because it could access the static memory (we don't delete the memory yet,
-  // we just null it and release handles) We actually delete the memory for
-  // statics AFTER destructing the handle managers We could either do this, or
-  // we could destruct statics afterwards but make it throw if you try to
-  // allocate We currently destruct handled objects first, and then we destruct
-  // statics (but allocations are not allowed during destructors) and then
-  // afterward we actually tear down the memory for both statics and handle
-  // managers
+  // Because the entire handle manager gets torn down and will no longer allow objects to be allocated, then static
+  // memory must be cleaned up first because it could access the static memory (we don't delete the memory yet, we just
+  // null it and release handles) We actually delete the memory for statics AFTER destructing the handle managers We
+  // could either do this, or we could destruct statics afterwards but make it throw if you try to allocate We currently
+  // destruct handled objects first, and then we destruct statics (but allocations are not allowed during destructors)
+  // and then afterward we actually tear down the memory for both statics and handle managers
 
   // We need to clean up memory for static variables (release handles/delegates)
-  // Technically code could run during this phase (even code that accesses other
-  // deleted statics) To be entirely safe, we wait to delete the static memory
-  // (so we don't magically attempt to allocate it again on access)
+  // Technically code could run during this phase (even code that accesses other deleted statics)
+  // To be entirely safe, we wait to delete the static memory (so we don't magically attempt to allocate it again on
+  // access)
   typedef Pair<Field*, ::byte*> StaticFieldPair;
   ZilchForEach (StaticFieldPair& pair, this->StaticFieldToMemory)
   {
@@ -378,8 +365,8 @@ ExecutableState::~ExecutableState()
     ::byte* staticMemory = pair.second;
 
     // Destruct the memory in place and then delete the memory
-    // Note: When we actually flag statics as being initialized, keep that flag
-    // on so we don't try and reinitialize it in case someone refers to it below
+    // Note: When we actually flag statics as being initialized, keep that flag on
+    // so we don't try and reinitialize it in case someone refers to it below
     field->PropertyType->GenericDestruct(staticMemory);
 
     // We only really need to memset the object to zero if it has a complex copy
@@ -387,12 +374,10 @@ ExecutableState::~ExecutableState()
       memset(staticMemory, 0, field->PropertyType->GetCopyableSize());
   }
 
-  // Tell all the handle managers to delete their objects (only the ones owned
-  // by this ExecutableState)
+  // Tell all the handle managers to delete their objects (only the ones owned by this ExecutableState)
   ZilchForEach (HandleManager* manager, this->UniqueManagers.Values())
   {
-    // Walk through all allocated objects in this manager and delete their
-    // objects
+    // Walk through all allocated objects in this manager and delete their objects
     manager->DeleteAll(this);
   }
 
@@ -458,10 +443,9 @@ PerFrameData* ExecutableState::PushFrame(Function* function)
 
 PerFrameData* ExecutableState::PushFrame(::byte* frame, Function* function)
 {
-  // Unfortunately we incur an overhead for patched functions, however, this
-  // should be descently quick if the patched functions hash table is empty (it
-  // 'early outs' internally) This either finds a patched function, or returns
-  // the same function
+  // Unfortunately we incur an overhead for patched functions, however, this should
+  // be descently quick if the patched functions hash table is empty (it 'early outs' internally)
+  // This either finds a patched function, or returns the same function
   function = this->PatchedFunctions.FindValue(function, function);
 
   // Store a pointer to the newly created stack frame
@@ -503,8 +487,7 @@ PerFrameData* ExecutableState::PushFrame(::byte* frame, Function* function)
     newFrame->ErrorState = StackErrorState::Overflowed;
   }
 
-  // If we actually hit the end of the stack, including reserve size, then
-  // there's basically nothing we can do!
+  // If we actually hit the end of the stack, including reserve size, then there's basically nothing we can do!
   if (nextFrame >= endOfStack + this->OverflowStackSize || this->StackFrames.Size() >= this->MaxRecursionDepth * 2)
   {
     // Throw a fatal error!
@@ -513,30 +496,28 @@ PerFrameData* ExecutableState::PushFrame(::byte* frame, Function* function)
     EventSend(this, Events::FatalError, &toSend);
 
     // Time to quit the process!
-    Error("We hit a stack overflow more than once (used up the reserved stack "
-          "space). The fatal callback was called, and now we're aborting");
+    Error("We hit a stack overflow more than once (used up the reserved stack space). The fatal callback was called, "
+          "and now we're aborting");
     abort();
   }
 
-  // If this is the first call being made into the state and we have a default
-  // timeout set Note: This must be done before we push the stack frame below
+  // If this is the first call being made into the state and we have a default timeout set
+  // Note: This must be done before we push the stack frame below
   if (this->TimeoutSeconds != 0 && this->IsInCallStack() == false)
   {
     // Push the timeout with the number of seconds that the user set
     this->PushTimeout(newFrame, this->TimeoutSeconds);
   }
 
-  // Take the newly allocated (or recycled) stack frame and push it onto the
-  // stack frames list
+  // Take the newly allocated (or recycled) stack frame and push it onto the stack frames list
   this->StackFrames.PushBack(newFrame);
 
   // Make sure we cleared out any scopes from before
   ErrorIf(newFrame->Scopes.Empty() == false, "Improperly recycled stack frame");
 
   // Setup the frame data before we call the function
-  // We need to initialize ALL members since this is recycled (also avoids
-  // constructors) Note we don't need to set the State, as it should never
-  // change
+  // We need to initialize ALL members since this is recycled (also avoids constructors)
+  // Note we don't need to set the State, as it should never change
   newFrame->Frame = frame;
   newFrame->NextFrame = nextFrame;
   newFrame->CurrentFunction = function;
@@ -555,14 +536,12 @@ PerFrameData* ExecutableState::PopFrame()
   // Get the frame we're about to pop
   PerFrameData* frame = this->StackFrames.Back();
 
-  // We MUST save the timeout count as a temporary, because popping timeouts
-  // will decrement it
+  // We MUST save the timeout count as a temporary, because popping timeouts will decrement it
   size_t timeoutCount = frame->Timeouts;
 
   // Loop through all timeouts that still exist
-  // Note: It is VERY important that we do this before cleaning up scopes
-  // (delegates/handles) because destructors could get invoked and end up
-  // throwing exceptions again due to the timeout still existing
+  // Note: It is VERY important that we do this before cleaning up scopes (delegates/handles)
+  // because destructors could get invoked and end up throwing exceptions again due to the timeout still existing
   for (size_t i = 0; i < timeoutCount; ++i)
   {
     // Pop any timeouts for this frame
@@ -582,8 +561,8 @@ PerFrameData* ExecutableState::PopFrame()
     this->RecycledScopes.PushBack(scope);
   }
 
-  // We need to clean out all scopes (including the implicitly created first
-  // one) because we are going to be recycling the frame
+  // We need to clean out all scopes (including the implicitly created first one)
+  // because we are going to be recycling the frame
   frame->Scopes.Clear();
 
   // Recycle the stack frame
@@ -609,8 +588,7 @@ PerFrameData* ExecutableState::PopFrame()
 
   // Validation of timeouts
   ErrorIf(this->StackFrames.Size() == 1 && this->Timeouts.Empty() == false,
-          "If we popped the last stack frame (except the dummy) then all "
-          "timeouts should be gone!");
+          "If we popped the last stack frame (except the dummy) then all timeouts should be gone!");
 
   // Even though the frame is invalid, we should return it for debugging
   return frame;
@@ -620,8 +598,7 @@ Any ExecutableState::ExecuteStatement(StringParam code)
 {
   Project project;
 
-  // If an error occurs, this callback will output the error directly into this
-  // string
+  // If an error occurs, this callback will output the error directly into this string
   String errorMessage;
   EventConnect(&project, Events::CompilationError, OutputErrorStringCallback, &errorMessage);
 
@@ -634,10 +611,9 @@ Any ExecutableState::ExecuteStatement(StringParam code)
     return Any(errorMessage, this);
 
   // Patch the state with the new library
-  // Ideally we wouldn't have to do this, but if the user ever does anything to
-  // refer to the calling function and say, bind it to a delegate, attach it to
-  // an event handler, etc... then calling that function could crash Patching it
-  // will keep it alive for the remainder of our executable state
+  // Ideally we wouldn't have to do this, but if the user ever does anything to refer to the calling function
+  // and say, bind it to a delegate, attach it to an event handler, etc... then calling that function could crash
+  // Patching it will keep it alive for the remainder of our executable state
   this->ForcePatchLibrary(library);
 
   static const String ProgramError("Failed to find the program type (internal error)");
@@ -676,8 +652,7 @@ void ExecutableState::InitializeStackHandle(Handle& handle, ::byte* location, Pe
   // Set the type of this handle
   handle.StoredType = type;
 
-  // We are always guaranteed that the handle data is cleared before we get the
-  // user data portion
+  // We are always guaranteed that the handle data is cleared before we get the user data portion
   StackHandleData& data = *(StackHandleData*)handle.Data;
   data.StackLocation = location;
   data.UniqueId = scope->UniqueId;
@@ -692,8 +667,7 @@ void ExecutableState::InitializePointerHandle(Handle& handle, ::byte* location, 
   // Set the type of this handle
   handle.StoredType = type;
 
-  // We are always guaranteed that the handle data is cleared before we get the
-  // user data portion
+  // We are always guaranteed that the handle data is cleared before we get the user data portion
   this->PointerObjects->ObjectToHandle(location, type, handle);
 }
 
@@ -730,8 +704,7 @@ bool ExecutableState::PopTimeout(PerFrameData* frame)
   // We assume we're not going to throw any exceptions, see below
   bool result = false;
 
-  // If we already have an exception that we're dealing with, then don't try and
-  // throw another!
+  // If we already have an exception that we're dealing with, then don't try and throw another!
   if (frame->Report->HasThrownExceptions() == false)
   {
     // When popping the timeout we do one last validation
@@ -741,8 +714,7 @@ bool ExecutableState::PopTimeout(PerFrameData* frame)
 #if ZeroDebug
   // Verify that the frame is the same one that pushed this timeout
   ErrorIf(this->Timeouts.Back().Frame != frame,
-          "An incorrect frame was used to pop a timeout (not the one that "
-          "pushed it!)");
+          "An incorrect frame was used to pop a timeout (not the one that pushed it!)");
 #endif
 
   // Pop the last timeout off the stack
@@ -825,8 +797,8 @@ PerScopeData* ExecutableState::AllocateScope()
 
   // Every scope must be assigned a new id so that any references we form
   // to stack variables inside the scope will be safely pointed at
-  // If the scope goes away, this unique id gets set back to 0, or if it gets
-  // re-used then we make sure it will never have the same id it had before
+  // If the scope goes away, this unique id gets set back to 0, or if it gets re-used
+  // then we make sure it will never have the same id it had before
   newScope->UniqueId = this->UniqueIdScopeCounter;
   ++this->UniqueIdScopeCounter;
 
@@ -838,11 +810,10 @@ void ExecutableState::InvokePreConstructorOrRelease(Handle& handle, ExceptionRep
 {
   // Error checking
   ErrorIf(report.HasThrownExceptions(),
-          "Exceptions still set on the report when attempting to invoke the "
-          "pre-constructor");
+          "Exceptions still set on the report when attempting to invoke the pre-constructor");
 
-  // Iterate through this type and all it's base types, so we can call
-  // pre-constructors on each of them Technically, the order should not matter!
+  // Iterate through this type and all it's base types, so we can call pre-constructors on each of them
+  // Technically, the order should not matter!
   BoundType* type = handle.StoredType;
   while (type != nullptr)
   {
@@ -858,8 +829,7 @@ void ExecutableState::InvokePreConstructorOrRelease(Handle& handle, ExceptionRep
       // If we failed to execute the pre constructor, return a null handle
       if (report.HasThrownExceptions())
       {
-        // Clear the handle to a null handle (which should also delete the
-        // object)
+        // Clear the handle to a null handle (which should also delete the object)
         handle = Handle();
         return;
       }
@@ -874,8 +844,7 @@ void ExecutableState::UpdateCppVirtualTable(::byte* objectWithBaseVTable, BoundT
 {
   // Error checking
   ErrorIf(cppBaseType->BoundNativeVirtualCount > cppBaseType->RawNativeVirtualCount,
-          "We should never have more bound native virtual functions than the "
-          "actual v-table size");
+          "We should never have more bound native virtual functions than the actual v-table size");
 
   // First, check to see if this object is native or not
   if (cppBaseType->RawNativeVirtualCount == 0 || cppBaseType->BoundNativeVirtualCount == 0)
@@ -904,8 +873,8 @@ void ExecutableState::UpdateCppVirtualTable(::byte* objectWithBaseVTable, BoundT
   // and a copy (with replacements) of the native virtual table
   ::byte* fullVirtualTable = new ::byte[sizeof(BoundType*) + sizeof(ExecutableState*) + nativeVTableSizeBytes];
 
-  // Insert the type at the front of the v-table so we can resolve the virtual
-  // function This must be properly destructed with the executable state
+  // Insert the type at the front of the v-table so we can resolve the virtual function
+  // This must be properly destructed with the executable state
   new (fullVirtualTable) BoundType*(derivedType);
 
   // Insert the executable state at the front
@@ -971,8 +940,7 @@ void ExecutableState::UpdateCppVirtualTable(::byte* objectWithBaseVTable, BoundT
 
             if (parentZilchType == nullptr)
             {
-              Error("We should never reach a null base class before hitting "
-                    "the Cpp type");
+              Error("We should never reach a null base class before hitting the Cpp type");
               break;
             }
           } while (parentZilchType != cppBaseType);
@@ -984,8 +952,7 @@ void ExecutableState::UpdateCppVirtualTable(::byte* objectWithBaseVTable, BoundT
 
             // Error checking for v-table indices
             ErrorIf(function->NativeVirtual.Index >= cppBaseType->RawNativeVirtualCount,
-                    "We should never have a native virtual whose index is "
-                    "greater than the total v-table indices");
+                    "We should never have a native virtual whose index is greater than the total v-table indices");
 
             // Override the function in the v-table with our own thunk
             newVirtualTable[function->NativeVirtual.Index] = function->NativeVirtual.Thunk;
@@ -1019,13 +986,11 @@ void ExecutableState::ForcePatchLibrary(LibraryParam newLibrary)
   if (newLibrary == Core::GetInstance().GetLibrary())
     return;
 
-  // Figure out which old library we're currently patching (walk our
-  // dependencies)
+  // Figure out which old library we're currently patching (walk our dependencies)
   LibraryRef oldLibrary = nullptr;
   for (size_t i = 0; i < this->Dependencies.Size(); ++i)
   {
-    // If any library has the same name as the one we're patching with, we'll
-    // patch it (otherwise skip it!)
+    // If any library has the same name as the one we're patching with, we'll patch it (otherwise skip it!)
     LibraryRef library = this->Dependencies[i];
     if (library->Name == newLibrary->Name)
     {
@@ -1038,12 +1003,11 @@ void ExecutableState::ForcePatchLibrary(LibraryParam newLibrary)
   if (oldLibrary == nullptr)
     return;
 
-  // Increment the patch id, so that the user can re-enable certain features
-  // (for example, event connections)
+  // Increment the patch id, so that the user can re-enable certain features (for example, event connections)
   ++this->PatchId;
 
-  // We need to store the new library on ourselves because we're going to
-  // directly store their functions (need to keep them alive!)
+  // We need to store the new library on ourselves because we're going to directly store their functions (need to keep
+  // them alive!)
   this->PatchedLibraries.PushBack(newLibrary);
 
   // Loop through all bound types in the old library
@@ -1054,19 +1018,17 @@ void ExecutableState::ForcePatchLibrary(LibraryParam newLibrary)
     BoundType* oldType = oldBoundTypes.Front();
     oldBoundTypes.PopFront();
 
-    // Look for a type by the same name in the new library (this can totally be
-    // null!)
+    // Look for a type by the same name in the new library (this can totally be null!)
     BoundType* newTypeOrNull = newLibrary->BoundTypes.FindValue(oldType->Name, nullptr);
 
-    // If we found a new type, we need to scan through all instances of that
-    // type in memory and modify them
+    // If we found a new type, we need to scan through all instances of that type in memory and modify them
     if (newTypeOrNull != nullptr)
     {
       // Let the state know that we're patching
       this->PatchedBoundTypes.Insert(oldType, newTypeOrNull);
 
-      ZeroTodo("We MUST respect the HeapManagerExtraPatchSize to make sure we don't "
-               "go outside! What do we do in that case though... fail patching?");
+      ZeroTodo("We MUST respect the HeapManagerExtraPatchSize to make sure we don't go outside! What do we do in that "
+               "case though... fail patching?");
 
       // Loop through all heap objects and check if any of them are the old type
       ZilchForEach (const ::byte* object, this->HeapObjects->LiveObjects)
@@ -1074,10 +1036,9 @@ void ExecutableState::ForcePatchLibrary(LibraryParam newLibrary)
         // Just behind the allocated object is the header
         ObjectHeader& header = *(ObjectHeader*)(object - sizeof(ObjectHeader));
 
-        // Remember, we only compare names, which means the oldHeapType can
-        // actually be different than oldType This is especially true after
-        // we've patched multiple times (the object gets updated to a newer
-        // object, but still isn't the original!)
+        // Remember, we only compare names, which means the oldHeapType can actually be different than oldType
+        // This is especially true after we've patched multiple times (the object gets updated to a newer object, but
+        // still isn't the original!)
         BoundType* oldHeapType = header.Type;
         BoundType* newHeapType = newTypeOrNull;
 
@@ -1088,8 +1049,7 @@ void ExecutableState::ForcePatchLibrary(LibraryParam newLibrary)
         // Update the type on the slot's header
         header.Type = newTypeOrNull;
 
-        // Create a temporary buffer to copy all the values from the old heap
-        // type over
+        // Create a temporary buffer to copy all the values from the old heap type over
         size_t oldSize = oldHeapType->GetAllocatedSize();
         ::byte* temporaryBuffer = new ::byte[oldSize];
         memset(temporaryBuffer, 0x00, oldSize);
@@ -1099,8 +1059,7 @@ void ExecutableState::ForcePatchLibrary(LibraryParam newLibrary)
         Array<RemappedField> remappedFields;
         HashSet<Field*> handledNewFields;
 
-        // We have to destruct or copy all old fields to a temporary location
-        // before remapping them to the new type
+        // We have to destruct or copy all old fields to a temporary location before remapping them to the new type
         FieldMapValueRange oldInstanceFields = oldHeapType->InstanceFields.Values();
         while (oldInstanceFields.Empty() == false)
         {
@@ -1127,9 +1086,8 @@ void ExecutableState::ForcePatchLibrary(LibraryParam newLibrary)
             remappedField.SameType = newInstanceField->PropertyType;
           }
 
-          // We need to destruct the old field memory (regardless of whether
-          // we're remapping it) Remember, we copied it to a temporary buffer in
-          // the case we did a remap (above)
+          // We need to destruct the old field memory (regardless of whether we're remapping it)
+          // Remember, we copied it to a temporary buffer in the case we did a remap (above)
           oldInstanceField->PropertyType->GenericDestruct(oldInstanceFieldMemory);
         }
 
@@ -1144,16 +1102,14 @@ void ExecutableState::ForcePatchLibrary(LibraryParam newLibrary)
 
         delete[] temporaryBuffer;
 
-        // Now walk through all new instance fields, running initialization
-        // functions on them...
+        // Now walk through all new instance fields, running initialization functions on them...
         FieldMapValueRange newInstanceFields = newHeapType->InstanceFields.Values();
         while (newInstanceFields.Empty() == false)
         {
           Field* newInstanceField = newInstanceFields.Front();
           newInstanceFields.PopFront();
 
-          // Skip any fields we already handled (those that were copied over,
-          // for example)
+          // Skip any fields we already handled (those that were copied over, for example)
           if (handledNewFields.Contains(newInstanceField))
             continue;
 
@@ -1174,26 +1130,23 @@ void ExecutableState::ForcePatchLibrary(LibraryParam newLibrary)
       Function* newFunctionOrNull = nullptr;
 
       // If we actually found a new type (that maps from the old type)
-      // Then we're also going to attempt to find a new function that matches
-      // the signature
+      // Then we're also going to attempt to find a new function that matches the signature
       if (newTypeOrNull != nullptr)
       {
-        // Attempt to find a function with the exact same delegate signature and
-        // the same name (as well as being an instance or static)
+        // Attempt to find a function with the exact same delegate signature and the same name (as well as being an
+        // instance or static)
         FindMemberOptions::Enum options = FindMemberOptions::DoNotIncludeBaseClasses;
         if (oldFunction->IsStatic)
           options = (FindMemberOptions::Enum)(options | FindMemberOptions::Static);
         newFunctionOrNull = newTypeOrNull->FindFunction(oldFunction->Name, oldFunction->FunctionType, options);
       }
 
-      // If we didn't find a new function that patches over the old function
-      // (we're going to have to create one!)
+      // If we didn't find a new function that patches over the old function (we're going to have to create one!)
       if (newFunctionOrNull == nullptr)
       {
-        // The patch function directly refers to members of the other function,
-        // because we know the lifetime of those primitives should match the
-        // lifetime of the patch For example, the 'Type' DelegateType is owned
-        // by the oldLibrary, same with 'This'
+        // The patch function directly refers to members of the other function, because we know the lifetime
+        // of those primitives should match the lifetime of the patch
+        // For example, the 'Type' DelegateType is owned by the oldLibrary, same with 'This'
         Function* patchDummy = new Function();
         patchDummy->Owner = oldFunction->Owner;
         patchDummy->Name = oldFunction->Name;
@@ -1210,14 +1163,12 @@ void ExecutableState::ForcePatchLibrary(LibraryParam newLibrary)
         patchDummy->Location = oldFunction->Location;
         // NativeVirtual
 
-        // The patch dummy is a special function that returns default
-        // constructed values (runs no code)
+        // The patch dummy is a special function that returns default constructed values (runs no code)
         patchDummy->BoundFunction = VirtualMachine::PatchDummy;
 
-        // We technically only need enough stack space to match the delegate
-        // call, and nothing else (no local variables, etc) However, because we
-        // want to match the amount of data for parameter passing (and the this
-        // handle), we just use the old function's space
+        // We technically only need enough stack space to match the delegate call, and nothing else (no local variables,
+        // etc) However, because we want to match the amount of data for parameter passing (and the this handle), we
+        // just use the old function's space
         patchDummy->RequiredStackSpace = oldFunction->RequiredStackSpace;
 
         // Map the old function to the new function (currently this overwrites!)
@@ -1226,26 +1177,22 @@ void ExecutableState::ForcePatchLibrary(LibraryParam newLibrary)
       else
       {
         // NOTE: These are all the members we DO NOT need to patch over:
-        // Owner is not copied because the type that owns this is still the same
-        // (just patching the function, not the type yet) The type will be
-        // patched on its own anyways!
+        // Owner is not copied because the type that owns this is still the same (just patching the function, not the
+        // type yet) The type will be patched on its own anyways!
 
         // The name is not copied because it should be the exact same
         ErrorIf(oldFunction->Name != newFunctionOrNull->Name, "A function we were patching did not match its new name");
-        // We found this function by type, therefore the types should be the
-        // same (maybe not the same pointer, but type identity!)
+        // We found this function by type, therefore the types should be the same (maybe not the same pointer, but type
+        // identity!)
         ErrorIf(Type::IsSame(oldFunction->FunctionType, newFunctionOrNull->FunctionType) == false,
                 "A function we were patching did not match the new delegate type");
-        // A function can't suddenly change from being a property delegate to
-        // not being one...
+        // A function can't suddenly change from being a property delegate to not being one...
         if (oldFunction->OwningProperty && newFunctionOrNull->OwningProperty)
           ErrorIf(oldFunction->OwningProperty->Name != newFunctionOrNull->OwningProperty->Name,
                   "A function we were patching did not match IsPropertyGetOrSet");
-        else // This check is making sure that if one is null the other is also
-             // null
+        else // This check is making sure that if one is null the other is also null
           ErrorIf((oldFunction->OwningProperty != nullptr) || (newFunctionOrNull->OwningProperty != nullptr),
-                  "A function we were patching changed the state of having an "
-                  "owning property");
+                  "A function we were patching changed the state of having an owning property");
 
         // Map the old function to the new function (currently this overwrites!)
         this->PatchedFunctions.Insert(oldFunction, newFunctionOrNull);
@@ -1262,17 +1209,16 @@ void ExecutableState::PatchLibrary(LibraryRef newLibrary)
   // We cannot patch while an executable state is currently running
   ReturnIf(this->StackFrames.Size() > 1,
            ,
-           "Illegal to patch a library in an ExecutableState that has a "
-           "running stack frame");
+           "Illegal to patch a library in an ExecutableState that has a running stack frame");
   this->ForcePatchLibrary(newLibrary);
 }
 
 void ExecutableState::ClearStaticFieldsFromLibrary(Library* library)
 {
   // We need to clean up memory for static variables (release handles/delegates)
-  // Technically code could run during this phase (even code that accesses other
-  // deleted statics) To be entirely safe, we wait to delete the static memory
-  // (so we don't magically attempt to allocate it again on access)
+  // Technically code could run during this phase (even code that accesses other deleted statics)
+  // To be entirely safe, we wait to delete the static memory (so we don't magically attempt to allocate it again on
+  // access)
   ZilchForEach (Field* field, library->StaticFields)
   {
     ::byte* staticMemory = this->StaticFieldToMemory.FindValue(field, nullptr);
@@ -1280,8 +1226,8 @@ void ExecutableState::ClearStaticFieldsFromLibrary(Library* library)
       continue;
 
     // Destruct the memory in place and then delete the memory
-    // Note: When we actually flag statics as being initialized, keep that flag
-    // on so we don't try and reinitialize it in case someone refers to it below
+    // Note: When we actually flag statics as being initialized, keep that flag on
+    // so we don't try and reinitialize it in case someone refers to it below
     field->PropertyType->GenericDestruct(staticMemory);
 
     // We only really need to memset the object to zero if it has a complex copy
@@ -1313,9 +1259,7 @@ void ExecutableState::SetTimeout(size_t seconds)
 bool ExecutableState::IsInCallStack()
 {
   // Error checking
-  ErrorIf(this->StackFrames.Empty(),
-          "The stack frames should never be empty (we should always have a "
-          "dummy!)");
+  ErrorIf(this->StackFrames.Empty(), "The stack frames should never be empty (we should always have a dummy!)");
 
   // Technically we always have 1 dummy frame that exists
   return (this->StackFrames.Size() != 1);
@@ -1326,8 +1270,7 @@ ExecutableState::AllocateStackObject(::byte* stackLocation, PerScopeData* scope,
 {
   // Verify that the given pointer is within our stack
   ErrorIf(stackLocation < this->Stack || stackLocation > this->Stack + this->StackSize,
-          "The given stack location for allocating a stack object was not "
-          "within our stack");
+          "The given stack location for allocating a stack object was not within our stack");
 
   // Clear the memory of the stack location
   memset(stackLocation, 0, type->Size);
@@ -1350,8 +1293,7 @@ Handle ExecutableState::AllocateDefaultConstructedHeapObject(BoundType* type,
   // If we were given an invalid type to allocate, return early
   if (type == nullptr)
   {
-    Error("Given an invalid type to 'AllocateDefaultConstructedHeapObject' "
-          "(null type)");
+    Error("Given an invalid type to 'AllocateDefaultConstructedHeapObject' (null type)");
     return Handle();
   }
 
@@ -1368,17 +1310,15 @@ Handle ExecutableState::AllocateDefaultConstructedHeapObject(BoundType* type,
       // Allocate the heap object
       Handle handle = this->AllocateHeapObject(type, report, flags);
 
-      // If allocating the heap object with just the pre-constructor threw an
-      // exception, early out
+      // If allocating the heap object with just the pre-constructor threw an exception, early out
       if (report.HasThrownExceptions())
       {
         handle.Delete();
         return Handle();
       }
 
-      // Let base classes know (especially in plugins) what the derived class is
-      // that is being constructed Most likely the plugin will use this type to
-      // construct a handle
+      // Let base classes know (especially in plugins) what the derived class is that is being constructed
+      // Most likely the plugin will use this type to construct a handle
       BoundType* oldAllocatingType = this->AllocatingType;
       this->AllocatingType = type;
 
@@ -1399,14 +1339,12 @@ Handle ExecutableState::AllocateDefaultConstructedHeapObject(BoundType* type,
     else
     {
       // Show an error since we couldn't construct the object
-      Error("The default constructor could not be found for type '%s' but "
-            "constructors were provided",
+      Error("The default constructor could not be found for type '%s' but constructors were provided",
             type->ToString().c_str());
       return Handle();
     }
   }
-  // Otherwise, we have no constructors (this is ok so long as we aren't
-  // native!)
+  // Otherwise, we have no constructors (this is ok so long as we aren't native!)
   else if (type->Native == false)
   {
     // Just pre-construct the object
@@ -1414,8 +1352,7 @@ Handle ExecutableState::AllocateDefaultConstructedHeapObject(BoundType* type,
   }
 
   // Show an error since we couldn't construct the object
-  Error("The default constructor could not be found for type '%s' and native "
-        "types require a default constructor",
+  Error("The default constructor could not be found for type '%s' and native types require a default constructor",
         type->ToString().c_str());
   return Handle();
 }
@@ -1437,8 +1374,7 @@ Handle ExecutableState::AllocateCopyConstructedHeapObject(BoundType* type,
   // If we were given an invalid type to allocate, return early
   if (type == nullptr)
   {
-    Error("Given an invalid type to 'AllocateCopyConstructedHeapObject' (null "
-          "type)");
+    Error("Given an invalid type to 'AllocateCopyConstructedHeapObject' (null type)");
     return Handle();
   }
 
@@ -1455,8 +1391,7 @@ Handle ExecutableState::AllocateCopyConstructedHeapObject(BoundType* type,
       // Allocate the heap object
       Handle handle = this->AllocateHeapObject(type, report, flags);
 
-      // If allocating the heap object with just the pre-constructor threw an
-      // exception, early out
+      // If allocating the heap object with just the pre-constructor threw an exception, early out
       if (report.HasThrownExceptions())
       {
         handle.Delete();
@@ -1482,8 +1417,7 @@ Handle ExecutableState::AllocateCopyConstructedHeapObject(BoundType* type,
   Error("The copy constructor could not be found for type '%s'. "
         "This is often required for when an object is returned to Zilch "
         "via binding if the object has no safe handle manager itself. "
-        "If you are using automatic binding call ZilchBindConstructor(const "
-        "%s&);",
+        "If you are using automatic binding call ZilchBindConstructor(const %s&);",
         type->ToString().c_str(),
         type->ToString().c_str());
   return Handle();
@@ -1505,16 +1439,13 @@ Handle ExecutableState::AllocateHeapObject(BoundType* type, ExceptionReport& rep
   // This is sort of strange, because we can't even allocate the exception...
   if (this->DoNotAllowAllocation != 0)
   {
-    // Even though the exception cannot be allocated, it will still be reported
-    // to C++ callbacks and will still unroll
-    ZeroTodo("We should make this throw an exception, but then it cannot be "
-             "allocated currently... InternalException?");
+    // Even though the exception cannot be allocated, it will still be reported to C++ callbacks and will still unroll
+    ZeroTodo("We should make this throw an exception, but then it cannot be allocated currently... InternalException?");
     return Handle();
   }
 
-  // Let base classes know (especially in plugins) what the derived class is
-  // that is being constructed Most likely the plugin will use this type to
-  // construct a handle
+  // Let base classes know (especially in plugins) what the derived class is that is being constructed
+  // Most likely the plugin will use this type to construct a handle
   BoundType* oldAllocatingType = this->AllocatingType;
   this->AllocatingType = type;
 
@@ -1541,12 +1472,10 @@ Handle ExecutableState::AllocateHeapObject(BoundType* type, ExceptionReport& rep
 bool ExecutableState::ThrowExceptionOnTimeout(ExceptionReport& report)
 {
   // Get the ticks since last check (this also updates the timer to now)
-  // This MUST be called before the early out so that we don't accumulate up
-  // time not spent in Zilch
+  // This MUST be called before the early out so that we don't accumulate up time not spent in Zilch
   long long ticksSinceLastCheck = this->TimeoutTimer.GetAndUpdateTicks();
 
-  // Reset the timer so the the timer always returns us 'time passed since last
-  // check'
+  // Reset the timer so the the timer always returns us 'time passed since last check'
   this->TimeoutTimer.Reset();
 
   // Early out if we don't have any timeouts to abide by
@@ -1564,9 +1493,10 @@ bool ExecutableState::ThrowExceptionOnTimeout(ExceptionReport& report)
   if (timeout.AccumulatedTicks > timeout.LengthTicks && !this->EnableDebugEvents)
   {
     // Throw an exception to say we timed out
-    this->ThrowException(report,
-                         String::Format("Exceeded the allowed execution time of %d second(s). "
-                                        "Use the timeout statement to increase allowed time",
+    this->ThrowException(
+        report,
+        String::Format(
+            "Exceeded the allowed execution time of %d second(s). Use the timeout statement to increase allowed time",
                                         timeout.LengthTicks / Timer::TicksPerSecond));
 
     // We threw the exception and thus we return 'true', the timeout occurred
@@ -1592,8 +1522,8 @@ void ExecutableState::ThrowNullReferenceException(ExceptionReport& report, Strin
 
 void ExecutableState::ThrowNotImplementedException()
 {
-  this->ThrowException("This method is not implemented (its implementation may be abstract and "
-                       "a virutal function should overwrite it)");
+  this->ThrowException(
+      "This method is not implemented (its implementation may be abstract and a virutal function should overwrite it)");
 }
 
 void ExecutableState::ThrowException(StringParam message)
@@ -1609,10 +1539,10 @@ void ExecutableState::ThrowException(ExceptionReport& report, StringParam messag
 
   // Allocate a default constructed base exception
   // Note: We only allocate the exception and DO NOT default construct it
-  // This is because we know the exception will be fully initialized, and
-  // moreover if we run out of allocation space then returning a null handle is
-  // considered ok! The StackTrace allocator originally did not support memset
-  // to zero, but we made a special one called MemsetZeroDefaultAllocator
+  // This is because we know the exception will be fully initialized, and moreover if we run out of allocation space
+  // then returning a null handle is considered ok!
+  // The StackTrace allocator originally did not support memset to zero, but we made a special one called
+  // MemsetZeroDefaultAllocator
   ExceptionReport defaultExceptionReport;
   Handle handle = this->AllocateHeapObject(core.ExceptionType, defaultExceptionReport, HeapFlags::ReferenceCounted);
   if (handle.Manager != nullptr)
@@ -1621,14 +1551,12 @@ void ExecutableState::ThrowException(ExceptionReport& report, StringParam messag
   // Error testing
   ReturnIf(defaultExceptionReport.HasThrownExceptions(),
            ,
-           "Allocating the default exception object should NEVER throw an "
-           "exception");
+           "Allocating the default exception object should NEVER throw an exception");
 
   // Dereference a handle and grab a pointer to the exception object
   ::byte* memory = handle.Dereference();
 
-  // Because an exception can be null if we truly run out of memory, then just
-  // skip this portion
+  // Because an exception can be null if we truly run out of memory, then just skip this portion
   if (memory != nullptr)
   {
     // Grab a reference to the exception memory
@@ -1644,14 +1572,12 @@ void ExecutableState::ThrowException(ExceptionReport& report, StringParam messag
 
 void ExecutableState::ThrowException(ExceptionReport& report, Handle& handle)
 {
-  ZeroTodo("We need to verify that this handle is indeed a handle to an "
-           "Exception type");
+  ZeroTodo("We need to verify that this handle is indeed a handle to an Exception type");
 
   // Dereference a handle and grab a pointer to the exception object
   Exception* exception = (Exception*)handle.Dereference();
 
-  // If the exception was unable to be allocated we use this instead (max stack
-  // depth, out of objects, etc)
+  // If the exception was unable to be allocated we use this instead (max stack depth, out of objects, etc)
   Exception unableToAllocateException;
 
   // Only add the exception to the report if it exists and was allocated
@@ -1665,15 +1591,12 @@ void ExecutableState::ThrowException(ExceptionReport& report, Handle& handle)
   }
   else
   {
-    // We couldn't allocate the exception, so use a dummy one on the stack with
-    // a custom message
+    // We couldn't allocate the exception, so use a dummy one on the stack with a custom message
     exception = &unableToAllocateException;
-    unableToAllocateException.Message = "The exception could not be allocated (most likely we hit the max "
-                                        "stack depth, ran out of memory, or an exception was thrown in a "
-                                        "destructor)";
+    unableToAllocateException.Message = "The exception could not be allocated (most likely we hit the max stack depth, "
+                                        "ran out of memory, or an exception was thrown in a destructor)";
 
-    // We still want exception behavior, but we can't actually add the exception
-    // to the report (so force it!)
+    // We still want exception behavior, but we can't actually add the exception to the report (so force it!)
     report.ForceThrownExceptions = true;
   }
 
@@ -1709,16 +1632,14 @@ void ExecutableState::GetStackTrace(StackTrace& trace)
       Function* function = frame->CurrentFunction;
       stackEntry.ExecutingFunction = function;
 
-      // If this is a frame that we're managing (so we can get more call stack
-      // information) (Non-Active-Functions): For right now, since we don't have
-      // better location information about where the function is (using the
-      // first opcode is WRONG and points at the wrong location) We just opt to
-      // print the function out as if it's native, the user can search for it...
+      // If this is a frame that we're managing (so we can get more call stack information)
+      // (Non-Active-Functions): For right now, since we don't have better location information about where the
+      // function is (using the first opcode is WRONG and points at the wrong location)
+      // We just opt to print the function out as if it's native, the user can search for it...
       size_t programCounter = frame->ProgramCounter;
       if (programCounter != ProgramCounterNative && programCounter != ProgramCounterNotActive)
       {
-        // Get the code location (or null if for some reason we can't find
-        // it...)
+        // Get the code location (or null if for some reason we can't find it...)
         CodeLocation* codeLocation = function->OpcodeLocationToCodeLocation.FindPointer(programCounter);
 
         // If we found the code location
@@ -1729,8 +1650,7 @@ void ExecutableState::GetStackTrace(StackTrace& trace)
         }
         else
         {
-          Error("Unable to find code location for an opcode that belongs to a "
-                "function (invalid opcode offset?)");
+          Error("Unable to find code location for an opcode that belongs to a function (invalid opcode offset?)");
         }
       }
       else
@@ -1753,8 +1673,7 @@ const ::byte* ExecutableState::GetRawStack()
 ::byte* ExecutableState::GetStaticField(Field* field, ExceptionReport& report)
 {
   // Look for the static memory in a map of the fields on our state
-  // Static fields are done per executable state, so they get wiped each time we
-  // quit
+  // Static fields are done per executable state, so they get wiped each time we quit
   ::byte*& staticMemory = this->StaticFieldToMemory[field];
 
   // If no memory was allocated yet, then allocate some and clear it
@@ -1770,9 +1689,8 @@ const ::byte* ExecutableState::GetRawStack()
     // If an initializer exists, then invoke that
     if (field->Initializer != nullptr)
     {
-      // Unless an exception gets thrown, the field should be initialized after
-      // this Note that user code may cause cycles in initialization (which is
-      // why we memset first)
+      // Unless an exception gets thrown, the field should be initialized after this
+      // Note that user code may cause cycles in initialization (which is why we memset first)
       Call call(field->Initializer, this);
       call.Invoke(report);
     }
@@ -1806,8 +1724,7 @@ void Call::PerformStandardChecks(
         if (!((Type::IsEnumOrFlagsType(actualType)) && Type::IsSame(userType, ZilchTypeId(Integer))))
         {
           // Make sure we're trying to set the same type as the parameter
-          Error("The user's type and the parameter/return/this type are not "
-                "compatible");
+          Error("The user's type and the parameter/return/this type are not compatible");
         }
       }
     }
@@ -1831,8 +1748,7 @@ void Call::PerformStandardChecks(
         }
         else
         {
-          Error("Handles that refer to value types can only be passed in when "
-                "the type is a ref type (indirect type)");
+          Error("Handles that refer to value types can only be passed in when the type is a ref type (indirect type)");
         }
       }
     }
@@ -1951,8 +1867,7 @@ void Call::PerformStandardChecks(
     // Error checking for if we're static
     ErrorIf(thisVariable == nullptr, "Cannot get the 'this' handle stack location for a static function");
 
-    // Run a series of checks that tries to verify anything we can about what
-    // the user is doing
+    // Run a series of checks that tries to verify anything we can about what the user is doing
     this->PerformStandardChecks(size, userType, thisVariable->ResultType, primitive, io);
   }
 
@@ -1969,8 +1884,7 @@ void Call::PerformStandardChecks(
     ErrorIf(Core::GetInstance().VoidType == this->Data->CurrentFunction->FunctionType->Return,
             "The return type is void and cannot be get/set");
 
-    // Run a series of checks that tries to verify anything we can about what
-    // the user is doing
+    // Run a series of checks that tries to verify anything we can about what the user is doing
     this->PerformStandardChecks(size, userType, this->Data->CurrentFunction->FunctionType->Return, primitive, io);
   }
 
@@ -1993,8 +1907,7 @@ void Call::PerformStandardChecks(
   // As long as the user didn't disable checks...
   if (!(this->Data->Debug & CallDebug::NoParameterChecking))
   {
-    // Run a series of checks that tries to verify anything we can about what
-    // the user is doing
+    // Run a series of checks that tries to verify anything we can about what the user is doing
     this->PerformStandardChecks(size, userType, parameter.ParameterType, primitive, io);
   }
 
@@ -2090,8 +2003,7 @@ ExecutableState* Call::GetState()
 
 ::byte* Call::GetParametersUnchecked()
 {
-  // Get the stack offsetted by the size of the return (to where the parameters
-  // are)
+  // Get the stack offsetted by the size of the return (to where the parameters are)
   return this->Data->Frame + this->Data->CurrentFunction->FunctionType->Return->GetCopyableSize();
 }
 
@@ -2211,9 +2123,8 @@ void Call::MarkParameterAsSet(size_t parameterIndex)
 
 Call::Call(Function* function, ExecutableState* state)
 {
-  // If this is call being generated for the user, then we have to push the
-  // frame The virtual machine will do these steps for us when it's performing
-  // the call
+  // If this is call being generated for the user, then we have to push the frame
+  // The virtual machine will do these steps for us when it's performing the call
   ErrorIf(function == nullptr, "Attempting to invoke a null function in Call");
 
   // Push a new stack frame for the function we want to invoke
@@ -2242,9 +2153,9 @@ Call::Call(PerFrameData* data)
   // We still need to grab the stack
   this->Data = data;
 
-  // For calls being made by the VM, we don't care about parameters or 'this'
-  // being checked We also don't want anything to be destructed Having said
-  // that, we still want the return to be checked as it's set by the called
+  // For calls being made by the VM, we don't care about parameters or 'this' being checked
+  // We also don't want anything to be destructed
+  // Having said that, we still want the return to be checked as it's set by the called
   this->Data->Debug =
       (CallDebug::Enum)(CallDebug::NoParameterChecking | CallDebug::NoThisChecking | CallDebug::NoParameterDestruction |
                         CallDebug::NoThisDestruction | CallDebug::NoReturnDestruction);
@@ -2253,8 +2164,7 @@ Call::Call(PerFrameData* data)
 Call::~Call()
 {
   // HACK WE CURRENTLY DONT HANDLE EXCEPTIONS
-  ZeroTodo("Make sure we handle exceptions here (could have thrown before "
-           "returning)");
+  ZeroTodo("Make sure we handle exceptions here (could have thrown before returning)");
 
   // For convenience, get the current function
   Function* function = this->Data->CurrentFunction;
@@ -2266,8 +2176,7 @@ Call::~Call()
   // If parameter destruction is enabled...
   if ((this->Data->Debug & CallDebug::NoParameterDestruction) == 0)
   {
-    // Loop through all the parameters and destruct anything that needs to be
-    // destructed
+    // Loop through all the parameters and destruct anything that needs to be destructed
     for (size_t i = 0; i < parameters.Size(); ++i)
     {
       // Get the current parameter
@@ -2322,10 +2231,8 @@ Call::~Call()
   }
 
   // Pop all frames up to our own
-  // Note: This is very important since it's possible that other frames may
-  // exist that have no Call owner If an exception gets thrown between
-  // PrepForCall / FunctionCall opcodes, we will have an extra frame on the
-  // stack
+  // Note: This is very important since it's possible that other frames may exist that have no Call owner
+  // If an exception gets thrown between PrepForCall / FunctionCall opcodes, we will have an extra frame on the stack
   PerFrameData* poppedFrame = nullptr;
   do
   {
@@ -2346,8 +2253,7 @@ bool Call::Invoke()
 
 bool Call::Invoke(ExceptionReport& report)
 {
-  // If this stack frame needed to throw any exceptions (such as stack overflow
-  // or maximum recursion depth...)
+  // If this stack frame needed to throw any exceptions (such as stack overflow or maximum recursion depth...)
   if (this->Data->AttemptThrowStackExceptions(report))
   {
     // Early out, there's no need to do anything else from this call
@@ -2355,15 +2261,13 @@ bool Call::Invoke(ExceptionReport& report)
   }
 
   // Make sure we're not doing a call inside a call
-  // At some point in time a code refactor happened that introduced the
-  // PerFrameData* onto the Call object The scary part about this was that we
-  // were still getting the topFrame using 'state->StackFrames.Back()', instead
-  // of just accessing the PerFrameData* we stored (currently called Data), not
-  // sure why this was as maybe it was just missed code in a cleanup, but if we
-  // ever falsely get this assert this may be why!
+  // At some point in time a code refactor happened that introduced the PerFrameData* onto the Call object
+  // The scary part about this was that we were still getting the topFrame using 'state->StackFrames.Back()',
+  // instead of just accessing the PerFrameData* we stored (currently called Data), not sure why this was
+  // as maybe it was just missed code in a cleanup, but if we ever falsely get this assert this may be why!
   ErrorIf(this->Data != this->Data->State->StackFrames.Back(),
-          "The function being invoked should always be the top of the frame "
-          "(it is illegal to run a Call inside another Call)");
+          "The function being invoked should always be the top of the frame (it is illegal to run a Call inside "
+          "another Call)");
 
   // Store the top frame locally for efficiency
   PerFrameData* topFrame = this->Data;
@@ -2397,9 +2301,8 @@ bool Call::Invoke(ExceptionReport& report)
   if (function->This != nullptr)
   {
     // We need to check to see if the 'this' handle is valid
-    // Technically this is slower and maybe we should only do it for functions
-    // that are not the VM function It does make it a lot safer (so people
-    // writing external functions can always assume 'this' is valid)
+    // Technically this is slower and maybe we should only do it for functions that are not the VM function
+    // It does make it a lot safer (so people writing external functions can always assume 'this' is valid)
     Handle& thisHandle = *(Handle*)(topFrame->Frame + function->This->Local);
 
     // Dereference the handle and get a pointer back (may be null)
@@ -2445,8 +2348,7 @@ bool Call::Invoke(ExceptionReport& report)
   // Get whether the return value was set
   bool returnWasSet = (this->Data->Debug & CallDebug::SetReturn) != 0;
 
-  // If we threw any exceptions and the return value was not set, we will want
-  // to disable return destruction
+  // If we threw any exceptions and the return value was not set, we will want to disable return destruction
   if (report.HasThrownExceptions() && returnWasSet == false)
     this->DisableReturnDestruction();
 
@@ -2456,12 +2358,10 @@ bool Call::Invoke(ExceptionReport& report)
   // Get a reference to the core library
   Core& core = Core::GetInstance();
 
-  // Make sure the return value was set (we can ignore this if an exception gets
-  // thrown)
+  // Make sure the return value was set (we can ignore this if an exception gets thrown)
   ErrorIf(!(this->Data->Debug & CallDebug::NoReturnChecking) && (this->Data->Debug & CallDebug::SetReturn) == 0 &&
               !report.HasThrownExceptions() && Type::IsSame(function->FunctionType->Return, core.VoidType) == false,
-          "The return value was not set after a call (ignored when exceptions "
-          "are thrown)");
+          "The return value was not set after a call (ignored when exceptions are thrown)");
   return report.HasThrownExceptions() == false;
 }
 

@@ -11,18 +11,16 @@ namespace IoMode
 {
 enum Enum
 {
-  // Some expressions we ignore their io-usage (but never the io of the
-  // expression itself) Examples being expressions used as a standalone
-  // statement (nobody reads/writes)
+  // Some expressions we ignore their io-usage (but never the io of the expression itself)
+  // Examples being expressions used as a standalone statement (nobody reads/writes)
   Ignore = 0,
   // A variable is readable (constants, temporaries, property get)
   ReadRValue = 1,
   // A variable is writable (variables, property set)
   WriteLValue = 2,
-  // We're strictly doing a property 'set', which means 'WriteLValue' should be
-  // set This is used to let handle and delegate properties know that they are
-  // initializing a value rather than assigning a value (when assignment '=' is
-  // used)
+  // We're strictly doing a property 'set', which means 'WriteLValue' should be set
+  // This is used to let handle and delegate properties know that they are initializing
+  // a value rather than assigning a value (when assignment '=' is used)
   StrictPropertySet = 4,
   // If the access type was not set, we either haven't resolved it or it's a bug
   NotSet = (uint)-1
@@ -49,9 +47,9 @@ public:
   Type* Lhs;
   Type* Rhs;
 
-  // If the left or right hand argument needs to be casted for this operation to
-  // work This only appears when the direct operator does not exist, but an
-  // implicit cast of one side, or the other, or both exists
+  // If the left or right hand argument needs to be casted for this operation to work
+  // This only appears when the direct operator does not exist, but an implicit cast of one side, or the other, or both
+  // exists
   Type* CastLhsTo;
   Type* CastRhsTo;
 
@@ -64,9 +62,8 @@ public:
   // The resulting instruction
   Instruction::Enum Instruction;
 
-  // If the operation is communative but it's between two different types, this
-  // tells us if the opcode requires the arguments to be flipped (to reduce
-  // opcodes)
+  // If the operation is communative but it's between two different types, this tells
+  // us if the opcode requires the arguments to be flipped (to reduce opcodes)
   bool FlipArguments;
 
   // Whether or not this results in an l-value or r-value
@@ -115,8 +112,7 @@ enum Enum
 };
 }
 
-// Lets us query information about the validity of a cast, as well as what kind
-// it will be
+// Lets us query information about the validity of a cast, as well as what kind it will be
 class ZeroShared CastOperator
 {
 public:
@@ -142,8 +138,7 @@ public:
 
   // The resulting instruction if a single one exists (eg ConvertRealToInteger)
   // Only valid when the cast operation is Primitive
-  // Otherwise if no direct instruction exists, the instruction will be set to
-  // 'InvalidInstruction'
+  // Otherwise if no direct instruction exists, the instruction will be set to 'InvalidInstruction'
   Instruction::Enum PrimitiveInstruction;
 
   // If we allow this cast to be implicit (default false)
@@ -152,11 +147,10 @@ public:
   bool CanBeImplicit;
 
   // Some casts require actual instructions to run
-  // Ex: Real to Integer must perform a floating point conversion, Integer to
-  // the special Any type, etc Other casts can be directly raw convertable with
-  // no execution Ex: An enum value to an Integer, or a derived class to a base
-  // class (Cat to Animal) This will be set if the cast type requires any sort
-  // of code generation / execution
+  // Ex: Real to Integer must perform a floating point conversion, Integer to the special Any type, etc
+  // Other casts can be directly raw convertable with no execution
+  // Ex: An enum value to an Integer, or a derived class to a base class (Cat to Animal)
+  // This will be set if the cast type requires any sort of code generation / execution
   bool RequiresCodeGeneration;
 };
 
@@ -186,8 +180,7 @@ public:
   OperatorArity::Enum Arity;
 };
 
-// Contains information that is shared between the syntaxer and the code
-// generator
+// Contains information that is shared between the syntaxer and the code generator
 class ZeroShared Shared
 {
 public:
@@ -198,8 +191,7 @@ public:
   static Shared& GetInstance();
 
   // Lookup a binary operator between two types
-  // Both entries for communative operators will exist, eg, scalar * vector and
-  // vector * scalar
+  // Both entries for communative operators will exist, eg, scalar * vector and vector * scalar
   BinaryOperator GetBinaryOperator(Type* lhs, Type* rhs, Grammar::Enum oper, bool allowRecursiveLookup = true);
 
   // Lookup a unary operator
@@ -211,8 +203,7 @@ public:
   // Lookup a cast operator (can be explicit or implicit)
   CastOperator GetCastOperator(Type* from, Type* to);
 
-  // Get a structure that represents the precedence and associativity of an
-  // operator, regardless of types
+  // Get a structure that represents the precedence and associativity of an operator, regardless of types
   UntypedOperator GetOperatorPrecedence(Grammar::Enum oper, OperatorArity::Enum arity);
 
   // Gets all the operators stored in an array thats indexed by precedence
@@ -238,9 +229,8 @@ private:
       Type* lhs, Type* rhs, Type* result, Grammar::Enum oper, Instruction::Enum instruction, IoMode::Enum io);
 
   // Adds a binary operator where the operands are the same type
-  // Note: If the operator is the same type, we don't care if it's communative
-  // or not because we always perform the operation in the correct order, and we
-  // only need one opcode to represent it
+  // Note: If the operator is the same type, we don't care if it's communative or not because we always perform
+  // the operation in the correct order, and we only need one opcode to represent it
   void AddBinary(Type* sameType, Type* result, Grammar::Enum oper, Instruction::Enum instruction, IoMode::Enum io);
 
   // Adds a unary operator
@@ -270,12 +260,10 @@ private:
   BinaryOperator AnyEquality;
   BinaryOperator AnyInequality;
 
-  // Our hash set of binary operators that get registered once (hence the
-  // singleton)
+  // Our hash set of binary operators that get registered once (hence the singleton)
   HashSet<BinaryOperator> BinaryOperators;
 
-  // Our hash set of unary operators that get registered once (hence the
-  // singleton)
+  // Our hash set of unary operators that get registered once (hence the singleton)
   HashSet<UnaryOperator> UnaryOperators;
 
   // Special cast operators
@@ -289,14 +277,12 @@ private:
   CastOperator IntegerEnumCast;
   CastOperator NullToDelegate;
 
-  // Our hash set of casting operators that get registered once (hence the
-  // singleton)
+  // Our hash set of casting operators that get registered once (hence the singleton)
   HashSet<CastOperator> CastOperators;
 
   // Associate all the cast operators from this type to any other type
-  ZeroTodo("This should actually use some kind of policy because we're not "
-           "hashing types correctly (works because we only care about "
-           "BoundType* right now, Real/Integer, etc )");
+  ZeroTodo("This should actually use some kind of policy because we're not hashing types correctly (works because we "
+           "only care about BoundType* right now, Real/Integer, etc )");
   HashMap<Type*, Array<CastOperator>> PrimitiveCastOperatorsFrom;
 
   // We use this as a key into a hash map
@@ -311,8 +297,7 @@ private:
     OperatorArity::Enum Arity;
   };
 
-  // We map operators to their precedence and back (useful for code formatters
-  // and documentation)
+  // We map operators to their precedence and back (useful for code formatters and documentation)
   HashMap<OperatorWithArity, UntypedOperator> OperatorToPrecedence;
   Array<Array<UntypedOperator>> PrecedenceToOperators;
 };

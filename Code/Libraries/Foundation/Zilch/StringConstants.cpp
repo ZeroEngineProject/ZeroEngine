@@ -123,9 +123,7 @@ bool IsZilchQuoteCharacter(Zero::Rune r)
 StringRange StripStringQuotes(StringRange input)
 {
   // Error checking
-  ErrorIf(input.SizeInBytes() < 2,
-          "A string cannot contain quotes on both ends if it has a size less "
-          "than 2");
+  ErrorIf(input.SizeInBytes() < 2, "A string cannot contain quotes on both ends if it has a size less than 2");
   ErrorIf(IsZilchQuoteCharacter(input.Front()) == false, "The starting character was not a Zilch quotation");
   ErrorIf(IsZilchQuoteCharacter(input.Back()) == false, "The ending character was not a Zilch quotation");
 

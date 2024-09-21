@@ -11,8 +11,7 @@ namespace Zilch
 class Base64Encoder
 {
 public:
-  // Base64 encoding will always be longer than the original binary length (by a
-  // factor of 4/3)
+  // Base64 encoding will always be longer than the original binary length (by a factor of 4/3)
   static size_t ComputeSize(size_t length);
 
   // Encodes data and returns the base64 string (human readable)

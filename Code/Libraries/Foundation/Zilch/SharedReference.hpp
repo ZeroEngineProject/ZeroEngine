@@ -36,9 +36,8 @@ public:
   template <typename RefType>
   void AddLinkToList(RefType* ref)
   {
-    // This is a hack we have to do because member pointers are stupid and don't
-    // respect the mutable flag We basically use this typedef and cast our
-    // reference type to a different type then it really is
+    // This is a hack we have to do because member pointers are stupid and don't respect the mutable flag
+    // We basically use this typedef and cast our reference type to a different type then it really is
     typedef typename RefType::ReferencedType::RefLinkType::WeakType ChangedType;
 
     // Add ourself to the object's list of shared references
@@ -49,9 +48,8 @@ public:
   template <typename RefType>
   void RemoveLinkFromList(RefType* ref)
   {
-    // This is a hack we have to do because member pointers are stupid and don't
-    // respect the mutable flag We basically use this typedef and cast our
-    // reference type to a different type then it really is
+    // This is a hack we have to do because member pointers are stupid and don't respect the mutable flag
+    // We basically use this typedef and cast our reference type to a different type then it really is
     typedef typename RefType::ReferencedType::RefLinkType::WeakType ChangedType;
 
     // Unlink ourselves from the list
@@ -65,9 +63,8 @@ public:
   template <typename RefType>
   void AddLinkToList(RefType* ref)
   {
-    // This is a hack we have to do because member pointers are stupid and don't
-    // respect the mutable flag We basically use this typedef and cast our
-    // reference type to a different type then it really is
+    // This is a hack we have to do because member pointers are stupid and don't respect the mutable flag
+    // We basically use this typedef and cast our reference type to a different type then it really is
     typedef typename RefType::ReferencedType::RefLinkType::SharedType ChangedRefType;
     typedef typename RefType::ReferencedType::RefLinkType::ForType ChangedType;
 
@@ -81,9 +78,8 @@ public:
   template <typename RefType>
   void RemoveLinkFromList(RefType* ref)
   {
-    // This is a hack we have to do because member pointers are stupid and don't
-    // respect the mutable flag We basically use this typedef and cast our
-    // reference type to a different type then it really is
+    // This is a hack we have to do because member pointers are stupid and don't respect the mutable flag
+    // We basically use this typedef and cast our reference type to a different type then it really is
     typedef typename RefType::ReferencedType::RefLinkType::SharedType ChangedType;
 
     // Unlink ourselves from the list
@@ -162,8 +158,7 @@ public:
     }
   }
 
-  // Copy constructor (for ourselves, apparently ours wont get called even with
-  // the template version below)
+  // Copy constructor (for ourselves, apparently ours wont get called even with the template version below)
   Ref(const Ref& other)
   {
     // Copy over the information, and increment the
@@ -201,8 +196,7 @@ public:
     CopyFrom(other);
   }
 
-  // Destructor (decrements the reference count and potentially cleans up
-  // memory)
+  // Destructor (decrements the reference count and potentially cleans up memory)
   ~Ref()
   {
     // Clear the object this is referencing (which also can delete the object)
@@ -216,11 +210,10 @@ public:
     return HashPolicy<Type*>()(this->Object);
   }
 
-  // Assignment operator (for ourselves, apparently ours wont get called even
-  // with the template version below)
+  // Assignment operator (for ourselves, apparently ours wont get called even with the template version below)
   Ref& operator=(const Ref& other)
   {
-    return this->operator=<Type>(other);
+    return this->operator= <Type>(other);
   }
 
   // Assignment operator
@@ -308,8 +301,7 @@ public:
   }
 
 public:
-  // Copy over the information from another object and increment the reference
-  // to it
+  // Copy over the information from another object and increment the reference to it
   inline void CopyFrom(const Ref& other)
   {
     // Straight up copy over the info we need
@@ -318,8 +310,7 @@ public:
     CopyFrom<Type>(other);
   }
 
-  // Copy over the information from another object and increment the reference
-  // to it
+  // Copy over the information from another object and increment the reference to it
   template <typename TypeOrDerived, typename OtherModePolicy, typename OtherDeletePolicy>
   inline void CopyFrom(const Ref<TypeOrDerived, OtherModePolicy, OtherDeletePolicy>& other)
   {

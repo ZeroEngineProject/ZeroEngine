@@ -24,10 +24,9 @@ public:
   // Store the current type that we're building
   Array<BoundType*> ClassTypeStack;
 
-  // In general it should not be required to clear this context, however,
-  // because of tolerant mode it is possible to end a tree walk and still have
-  // data in the context stacks If we are not in tolerant mode, this will assert
-  // if anything is leftover
+  // In general it should not be required to clear this context, however, because of
+  // tolerant mode it is possible to end a tree walk and still have data in the context stacks
+  // If we are not in tolerant mode, this will assert if anything is leftover
   void Clear(bool tolerantMode);
 };
 
@@ -57,16 +56,14 @@ public:
   // Destructor
   ~Syntaxer();
 
-  // Perform type collecting, assigning, and checking on the tree or an
-  // individual expression
+  // Perform type collecting, assigning, and checking on the tree or an individual expression
   void ApplyToTree(SyntaxTree& syntaxTree, LibraryBuilder& builder, Project& project, const Module& dependencies);
 
   // Retrieves/resolves a type if it exists
   Type* RetrieveType(SyntaxType* syntaxType, const CodeLocation& location, const Module& dependencies);
 
 private:
-  // Walk through all dependenices, collect all their types and store them in a
-  // map
+  // Walk through all dependenices, collect all their types and store them in a map
   void PopulateDependencies();
 
   void FindDependencyCycles(BoundType* type,
@@ -94,29 +91,26 @@ private:
                                   const BoundSyntaxType* instanceType);
 
   // Retrieves a type by name (for cases where you expect the type to exist
-  // The 'classWeAreInsideOf' is only provided to give extra error information
-  // to the users for implicit members (not necessary)
+  // The 'classWeAreInsideOf' is only provided to give extra error information to the users for implicit members (not
+  // necessary)
   BoundType* RetrieveBoundType(BoundSyntaxType* type,
                                const CodeLocation& location,
                                BoundType* classWeAreInsideOf = nullptr);
 
-  // Retrieves a type if it exists (or potentially creates a type if it's a
-  // qualified version of a type that exists)
+  // Retrieves a type if it exists (or potentially creates a type if it's a qualified version of a type that exists)
   Type* RetrieveType(SyntaxType* syntaxType, const CodeLocation& location);
 
   // Make sure we don't have another class/struct/enum of the same name
   // Sets WasError if another type exists of the same name
   void PreventDuplicateTypeNames(StringParam name, const CodeLocation& location);
 
-  // Make sure we don't have another member of the same name (an exception is
-  // made for functions due to overloading) Sets WasError if another type exists
-  // of the same name
+  // Make sure we don't have another member of the same name (an exception is made for functions due to overloading)
+  // Sets WasError if another type exists of the same name
   void PreventDuplicateMemberNames(
       BoundType* type, StringParam memberName, const CodeLocation& location, bool isStatic, bool isFunction);
 
-  // Make sure we don't have another member of the same name on a base class (an
-  // exception is made for functions due to overloading) Sets WasError if
-  // another type exists of the same name
+  // Make sure we don't have another member of the same name on a base class (an exception is made for functions due to
+  // overloading) Sets WasError if another type exists of the same name
   void PreventNameHiddenBaseMembers(Member* member);
 
   // Collect a class type
@@ -128,12 +122,10 @@ private:
   // Collect all template instantiations
   void CollectTemplateInstantiations(SyntaxNode*& node, ClassContext* context);
 
-  // Given a list of syntax types, attempt to instantiate any referenced
-  // templates from them (recursive)
+  // Given a list of syntax types, attempt to instantiate any referenced templates from them (recursive)
   void InstantiateTemplatesFromSyntaxTypes(SyntaxTypes& types, ClassContext* context, const CodeLocation& location);
 
-  // Setup a class instance for a given class node (called by CollectClass, and
-  // CollectTemplateInstantiations)
+  // Setup a class instance for a given class node (called by CollectClass, and CollectTemplateInstantiations)
   void SetupClassInstance(StringParam baseName, ClassNode* node, ClassContext* context);
 
   // Setup the location for a function, as well as the this variable
@@ -142,8 +134,7 @@ private:
   // Convert a value to a constant
   Constant ValueNodeToConstant(ValueNode* node);
 
-  // Read all the attributes from an attribute node list into an array of
-  // attributes
+  // Read all the attributes from an attribute node list into an array of attributes
   void ReadAttributes(SyntaxNode* parentNode, NodeList<AttributeNode>& nodes, Array<Attribute>& attributesOut);
 
   // Setup the inheritance chain (including interfaces and base class)
@@ -155,8 +146,8 @@ private:
   // Setup the inheritance chain for enums (only one parent, no interfaces)
   void CollectEnumInheritance(EnumNode*& node, TypingContext* context);
 
-  // Collect/setup all the functions (the owner can be passed in for extension
-  // functions) Otherwise the owner is obtained from the typing context stack
+  // Collect/setup all the functions (the owner can be passed in for extension functions)
+  // Otherwise the owner is obtained from the typing context stack
   void SetupGenericFunction(GenericFunctionNode* node,
                             TypingContext* context,
                             const UserToken& name,
@@ -207,17 +198,14 @@ private:
   // Assign a type to the initializer
   void DecorateInitializer(InitializerNode*& node, TypingContext* context);
 
-  // Handle checking that the creation call is valid for its type (also infers
-  // new/local if not provided)
+  // Handle checking that the creation call is valid for its type (also infers new/local if not provided)
   void DecorateStaticTypeOrCreationCall(StaticTypeNode*& node, TypingContext* context);
 
-  // Handle initializing a created object or adding to a container (technically
-  // this can come after any expression)
+  // Handle initializing a created object or adding to a container (technically this can come after any expression)
   void DecorateExpressionInitializer(ExpressionInitializerNode*& node, TypingContext* context);
 
-  // A multi-expression is a single expression that runs multiple expressions
-  // and then yields the results of one of them This forwards the type of the
-  // yielded expresion (and walks them all)
+  // A multi-expression is a single expression that runs multiple expressions and then yields the results of one of them
+  // This forwards the type of the yielded expresion (and walks them all)
   void DecorateMultiExpression(MultiExpressionNode*& node, TypingContext* context);
 
   // Make sure typeid results in a type (of the most derived type)
@@ -226,19 +214,16 @@ private:
   // Make sure member results in a property (of the most derived type)
   void DecorateMemberId(MemberIdNode*& node, TypingContext* context);
 
-  // Assign member variable types (if required), and check that the
-  // initialization type matches
+  // Assign member variable types (if required), and check that the initialization type matches
   void CheckMemberVariable(MemberVariableNode*& node, TypingContext* context);
 
-  // Assign local variable types (if required), and check that the
-  // initialization type matches
+  // Assign local variable types (if required), and check that the initialization type matches
   void CheckLocalVariable(LocalVariableNode*& node, TypingContext* context);
 
   // Check the type of an delete statement's expression
   void CheckDelete(DeleteNode*& node, TypingContext* context);
 
-  // Check that the type of a throw statement is an exception type (inherits
-  // from)
+  // Check that the type of a throw statement is an exception type (inherits from)
   void CheckThrow(ThrowNode*& node, TypingContext* context);
 
   // Check the condition and statements in a conditional loop
@@ -283,12 +268,10 @@ private:
   // Mark the parent scope node as being a complete path
   void MarkParentScopeAsAllPathsReturn(SyntaxNode* parent, bool isDebugReturn);
 
-  // If the types are the same, no conversion is applied and the node is left
-  // alone If the types are different and an implicit conversion exists, then it
-  // will reparent the expression to a TypeCastNode Otherwise, it will return
-  // false since no conversion is available Note: Always remember to pass the
-  // actual node pointer in instead of a stack local so we can modify it in
-  // place!
+  // If the types are the same, no conversion is applied and the node is left alone
+  // If the types are different and an implicit conversion exists, then it will reparent the expression to a
+  // TypeCastNode Otherwise, it will return false since no conversion is available Note: Always remember to pass the
+  // actual node pointer in instead of a stack local so we can modify it in place!
   static bool ImplicitConvertAfterWalkAndIo(ExpressionNode*& nodeToReparent, Type* toType);
 
   // Check the type of a return value
@@ -312,15 +295,13 @@ private:
   // Check that the unary operator is valid and that it's types are valid
   void DecorateCheckUnaryOperator(UnaryOperatorNode*& node, TypingContext* context);
 
-  // Check all expressions and verify that their io modes are being used
-  // properly
+  // Check all expressions and verify that their io modes are being used properly
   void CheckExpressionIoModes(ExpressionNode*& node, TypingContext* context);
 
   // Make sure all nodes know which library, class, and function they belong to
   void DecorateCodeLocations(SyntaxNode*& node, TypingContext* context);
 
-  // Utility for replacing/clarifying a member access operator (works with both
-  // static and instance members)
+  // Utility for replacing/clarifying a member access operator (works with both static and instance members)
   void ResolveMemberAccess(MemberAccessNode* node, const Resolver& resolver);
 
   // Resolve the node type of a member (after a member access operator...)
@@ -333,29 +314,26 @@ private:
   void PrecomputeExpressionInitializerNode(ExpressionInitializerNode*& node, TypingContext* context);
   void PrecomputeTypeCastNode(TypeCastNode*& node, TypingContext* context);
 
-  // Because replacing the side-effect operator case for binary/unary operators
-  // is so similar, we functionalized it The template type should be the
-  // operator node type
+  // Because replacing the side-effect operator case for binary/unary operators is so similar, we functionalized it
+  // The template type should be the operator node type
   template <typename NodeType>
   void BuildGetSetSideEffectIndexerNodes(NodeType*& node,
                                          IndexerCallNode* indexer,
                                          ExpressionNode* NodeType::*operandMemberThatWasIndexer,
                                          TypingContext* context);
 
-  // When we hit a binary operator that has side effects and the left operand is
-  // an indexer We need to transform the binary operator into being a child of
-  // the indexer, and promote the indexer to parent If the binary operator is a
-  // straight assignment, then it only invokes Set, otherwise its a Get/Set
+  // When we hit a binary operator that has side effects and the left operand is an indexer
+  // We need to transform the binary operator into being a child of the indexer, and promote the indexer to parent
+  // If the binary operator is a straight assignment, then it only invokes Set, otherwise its a Get/Set
   void IndexerBinaryOperator(BinaryOperatorNode*& node, TypingContext* context);
 
-  // When we hit a unary operator that has side effects and the left operand is
-  // an indexer We need to transform the binary operator into being a child of
-  // the indexer, and promote the indexer to parent If the binary operator is a
-  // straight assignment, then it only invokes Set, otherwise its a Get/Set
+  // When we hit a unary operator that has side effects and the left operand is an indexer
+  // We need to transform the binary operator into being a child of the indexer, and promote the indexer to parent
+  // If the binary operator is a straight assignment, then it only invokes Set, otherwise its a Get/Set
   void IndexerUnaryOperator(UnaryOperatorNode*& node, TypingContext* context);
 
-  // If we visit an indexer by itself (not as a side effect left-binary/unary
-  // operator) then we simply replace it with a call to .Get(index0, index1...)
+  // If we visit an indexer by itself (not as a side effect left-binary/unary operator) then we simply
+  // replace it with a call to .Get(index0, index1...)
   void IndexerIndexerCall(IndexerCallNode*& node, TypingContext* context);
 
 private:
@@ -383,8 +361,7 @@ private:
   // All named tempalte types
   HashMap<String, ClassNode*> InternalBoundTemplates;
 
-  // A map that allows us to cut down on the number of qualified types we
-  // allocate
+  // A map that allows us to cut down on the number of qualified types we allocate
   TypeToIndirect IndirectTypes;
 
   // All the branch walkers

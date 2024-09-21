@@ -64,8 +64,7 @@ enum Enum
 }
 
 // This is the form that the intermediate three-address opcode will take
-// An opcode is basically a single instruction with its operand (like an
-// assembly command)
+// An opcode is basically a single instruction with its operand (like an assembly command)
 class ZeroShared Opcode
 {
 public:
@@ -78,9 +77,8 @@ public:
   Instruction::AlignedEnum Instruction;
 
 #  ifdef ZeroDebug
-  // Make the class virtual in debug mode so that we can view a list of opcodes
-  // easily Having a vtable in visual studio also gives us a reflected view of
-  // the derived class
+  // Make the class virtual in debug mode so that we can view a list of opcodes easily
+  // Having a vtable in visual studio also gives us a reflected view of the derived class
   virtual ~Opcode()
   {
   }
@@ -124,7 +122,8 @@ public:
   // What type of operand are we trying to access?
   OperandType::Enum Type;
 
-  union {
+  union
+  {
     // An offset to:
     //  - A handle on the stack
     //  - A constant within a function's constant space
@@ -135,9 +134,8 @@ public:
     Field* StaticField;
   };
 
-  // When going through a handle, this can be a field offset onto the derefenced
-  // handle (a member) This also works with stack localss and even constants (as
-  // well as static fields!)
+  // When going through a handle, this can be a field offset onto the derefenced handle (a member)
+  // This also works with stack localss and even constants (as well as static fields!)
   size_t FieldOffset;
 };
 
@@ -146,8 +144,8 @@ class ZeroShared TimeoutOpcode : public Opcode
 {
 public:
   // Even though it might be more efficient to store this in ticks
-  // Technically if want this format to be savable and platform independent,
-  // it's better to save it in seconds
+  // Technically if want this format to be savable and platform independent, it's better
+  // to save it in seconds
   size_t LengthSeconds;
 };
 
@@ -209,8 +207,7 @@ public:
   ByteCodeOffset JumpOffsetIfStatic;
 };
 
-// Creates a fresh string builder that we use for efficient concatenation of
-// strings
+// Creates a fresh string builder that we use for efficient concatenation of strings
 class ZeroShared BeginStringBuilderOpcode : public Opcode
 {
 public:
@@ -223,8 +220,7 @@ public:
   OperandLocal SaveStringHandleLocal;
 };
 
-// Creates a fresh string builder that we use for efficient concatenation of
-// strings
+// Creates a fresh string builder that we use for efficient concatenation of strings
 class ZeroShared AddToStringBuilderOpcode : public Opcode
 {
 public:
@@ -323,19 +319,17 @@ public:
   OperandLocal Output;
 };
 
-// Convert a type into the 'Any' type (which means copying it's value into the
-// variant)
+// Convert a type into the 'Any' type (which means copying it's value into the variant)
 class ZeroShared AnyConversionOpcode : public ConversionOpcode
 {
 public:
   // For ConvertToAny:
   // The type we're going to be putting into the Any
-  // Note that we may actually do extra introspection to find a more derived
-  // type As an example, if we attempt to store an Animal into the Any, the type
-  // stored on this opcode would be the Animal, even if the underlying value was
-  // really a Cat however, when we actually do the operation, we'll know if it's
-  // a handle type and then we'll pull the derived type Cat out and store that
-  // on the Any
+  // Note that we may actually do extra introspection to find a more derived type
+  // As an example, if we attempt to store an Animal into the Any, the type stored on
+  // this opcode would be the Animal, even if the underlying value was really a Cat
+  // however, when we actually do the operation, we'll know if it's a handle type
+  // and then we'll pull the derived type Cat out and store that on the Any
 
   // For ConvertFromAny:
   // We compare the type stored within the Any to this type to ensure that
@@ -347,8 +341,8 @@ public:
 class ZeroShared DowncastConversionOpcode : public ConversionOpcode
 {
 public:
-  // We check to make sure the type stored in the handle is a type that is
-  // either more derived or the same as this related type
+  // We check to make sure the type stored in the handle is a type that is either
+  // more derived or the same as this related type
   Type* ToType;
 };
 
@@ -356,8 +350,7 @@ public:
 class ZeroShared AnyDynamicGet : public Opcode
 {
 public:
-  // An index into the constant table where the member's name lives (as a
-  // string)
+  // An index into the constant table where the member's name lives (as a string)
   OperandIndex StringConstant;
 };
 

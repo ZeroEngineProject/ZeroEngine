@@ -202,41 +202,38 @@ enum Enum
   // the handle to the reference, and not the object itself).
   ReferenceType,
 
-  // All enums bound to Zilch must be of Integer size, so force it on all
-  // platforms
+  // All enums bound to Zilch must be of Integer size, so force it on all platforms
   ForceIntegerSize = 0x7FFFFFFF
 };
 }
 
-// The user can define 'ZilchDisableDocumentation' globally to disable all
-// processing of documentation strings in Zilch (freeing up memory) If the user
-// wants to make a single build of an executable, but optionally choose whether
-// to enable documentation or not, they can pass in These functions will return
-// an empty string in the case that runtime documentation is disabled (which is
-// implied by compile time disabling)
+// The user can define 'ZilchDisableDocumentation' globally to disable all processing of documentation strings in Zilch
+// (freeing up memory) If the user wants to make a single build of an executable, but optionally choose whether to
+// enable documentation or not, they can pass in These functions will return an empty string in the case that runtime
+// documentation is disabled (which is implied by compile time disabling)
 String GetDocumentationStringOrEmpty(StringParam string);
 String GetDocumentationCStringOrEmpty(cstr string);
 
 // If the user disabled documentation at compile-time...
 #  if defined(ZilchDisableDocumentation)
-// Defines a documentation string and allows users to easily disable
-// documentation via globally defining 'ZilchDisableDocumentation'
+// Defines a documentation string and allows users to easily disable documentation via globally defining
+// 'ZilchDisableDocumentation'
 #    define ZilchDocumentString(DocumentationString) Zilch::String()
 
-// Defines a static member function that allows us to query the documentation
-// for a particular member (including properties, functions, and fields)
+// Defines a static member function that allows us to query the documentation for a particular member (including
+// properties, functions, and fields)
 #    define ZilchDocument(Member, DocumentationString)                                                                 \
       static Zilch::String Member##Documentation()                                                                     \
       {                                                                                                                \
         return Zilch::String();                                                                                        \
       }
 #  else
-// Defines a documentation string and allows users to easily disable
-// documentation via globally defining 'ZilchDisableDocumentation'
+// Defines a documentation string and allows users to easily disable documentation via globally defining
+// 'ZilchDisableDocumentation'
 #    define ZilchDocumentString(DocumentationString) Zilch::GetDocumentationStringOrEmpty(DocumentationString)
 
-// Defines a global function that allows us to query the documentation for a
-// particular type including classes, enums, primitives, etc)
+// Defines a global function that allows us to query the documentation for a particular type including classes, enums,
+// primitives, etc)
 #    define ZilchDocument(Name, DocumentationString)                                                                   \
       static Zilch::String Name##Documentation()                                                                       \
       {                                                                                                                \
@@ -246,9 +243,8 @@ String GetDocumentationCStringOrEmpty(cstr string);
 #  endif
 } // namespace Zilch
 
-// To speed up compilation, we also put all of our includes here rather than
-// being inside any of the headers NOTE: These headers must be sorted in order
-// of dependencies (e.g. Delegate has a Handle, so Handle must come first)
+// To speed up compilation, we also put all of our includes here rather than being inside any of the headers
+// NOTE: These headers must be sorted in order of dependencies (e.g. Delegate has a Handle, so Handle must come first)
 #  include "Handle.hpp"
 #  include "Delegate.hpp"
 #  include "Traits.hpp"

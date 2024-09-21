@@ -238,9 +238,8 @@ JsonReader::ReadIntoTreeFromString(CompilationErrors& errors, StringParam json, 
 
   Array<JsonValue*> objectArrayStack;
 
-  // Normally we'd have to worry about this being a pointer to an element in an
-  // array that's resizing however, this will only ever point to the back
-  // element and therefore will be valid
+  // Normally we'd have to worry about this being a pointer to an element in an array that's resizing
+  // however, this will only ever point to the back element and therefore will be valid
   JsonMember* member = nullptr;
   bool foundColon = false;
   bool isNegative = false;
@@ -422,8 +421,7 @@ JsonReader::ReadIntoTreeFromString(CompilationErrors& errors, StringParam json, 
           {
             errors.Raise(token.Location,
                          ErrorCode::GenericError,
-                         "We can only add values to an array (not to an object "
-                         "unless we use the member syntax)");
+                         "We can only add values to an array (not to an object unless we use the member syntax)");
             return nullptr;
           }
 
@@ -502,8 +500,7 @@ void JsonBuilder::Key(StringRange name)
   // If the stack size is zero...
   ReturnIf(this->Stack.Size() == 0,
            ,
-           "You must be in the middle of an object to start a key/member "
-           "(currently at the root!)");
+           "You must be in the middle of an object to start a key/member (currently at the root!)");
 
   // Error checking
   ErrorIf(this->Stack.Back() != JsonType::Object, "You must be in the middle of an object to start a key/member");
@@ -702,8 +699,7 @@ void JsonBuilder::RawValue(StringParam value)
   // For the node above us, we've always written to it when we get here
   this->IsWrittenTo = true;
 
-  // No matter what, we either just wrote an array value or finished writing to
-  // a member
+  // No matter what, we either just wrote an array value or finished writing to a member
   this->IsMember = false;
 }
 
@@ -739,8 +735,7 @@ void JsonBuilder::Begin(JsonType::Enum type)
   // Mark that we have yet to write anything
   this->IsWrittenTo = false;
 
-  // No matter what, we either just wrote an array value or finished writing to
-  // a member
+  // No matter what, we either just wrote an array value or finished writing to a member
   this->IsMember = false;
 }
 

@@ -41,8 +41,7 @@ static Function* FromVirtual(LibraryBuilder& builder,
       classBoundType, name, boundFunction, parameters, ZilchTypeId(void), FunctionOptions::Virtual, nativeVirtual);
   ++classBoundType->BoundNativeVirtualCount;
   ErrorIf(classBoundType->BoundNativeVirtualCount > classBoundType->RawNativeVirtualCount,
-          "The number of bound virtual functions must never exceed the actual "
-          "v-table count");
+          "The number of bound virtual functions must never exceed the actual v-table count");
   return functionRef;
 }
 template <typename FunctionType, FunctionType function, typename Class, typename Arg0>
@@ -90,8 +89,7 @@ static Function* FromVirtual(LibraryBuilder& builder,
       classBoundType, name, boundFunction, parameters, ZilchTypeId(void), FunctionOptions::Virtual, nativeVirtual);
   ++classBoundType->BoundNativeVirtualCount;
   ErrorIf(classBoundType->BoundNativeVirtualCount > classBoundType->RawNativeVirtualCount,
-          "The number of bound virtual functions must never exceed the actual "
-          "v-table count");
+          "The number of bound virtual functions must never exceed the actual v-table count");
   return functionRef;
 }
 template <typename FunctionType, FunctionType function, typename Class, typename Arg0, typename Arg1>
@@ -142,8 +140,7 @@ static Function* FromVirtual(LibraryBuilder& builder,
       classBoundType, name, boundFunction, parameters, ZilchTypeId(void), FunctionOptions::Virtual, nativeVirtual);
   ++classBoundType->BoundNativeVirtualCount;
   ErrorIf(classBoundType->BoundNativeVirtualCount > classBoundType->RawNativeVirtualCount,
-          "The number of bound virtual functions must never exceed the actual "
-          "v-table count");
+          "The number of bound virtual functions must never exceed the actual v-table count");
   return functionRef;
 }
 template <typename FunctionType, FunctionType function, typename Class, typename Arg0, typename Arg1, typename Arg2>
@@ -197,8 +194,7 @@ static Function* FromVirtual(LibraryBuilder& builder,
       classBoundType, name, boundFunction, parameters, ZilchTypeId(void), FunctionOptions::Virtual, nativeVirtual);
   ++classBoundType->BoundNativeVirtualCount;
   ErrorIf(classBoundType->BoundNativeVirtualCount > classBoundType->RawNativeVirtualCount,
-          "The number of bound virtual functions must never exceed the actual "
-          "v-table count");
+          "The number of bound virtual functions must never exceed the actual v-table count");
   return functionRef;
 }
 template <typename FunctionType,
@@ -267,8 +263,7 @@ static Function* FromVirtual(LibraryBuilder& builder,
       classBoundType, name, boundFunction, parameters, ZilchTypeId(void), FunctionOptions::Virtual, nativeVirtual);
   ++classBoundType->BoundNativeVirtualCount;
   ErrorIf(classBoundType->BoundNativeVirtualCount > classBoundType->RawNativeVirtualCount,
-          "The number of bound virtual functions must never exceed the actual "
-          "v-table count");
+          "The number of bound virtual functions must never exceed the actual v-table count");
   return functionRef;
 }
 template <typename FunctionType,
@@ -342,8 +337,7 @@ static Function* FromVirtual(LibraryBuilder& builder,
       classBoundType, name, boundFunction, parameters, ZilchTypeId(void), FunctionOptions::Virtual, nativeVirtual);
   ++classBoundType->BoundNativeVirtualCount;
   ErrorIf(classBoundType->BoundNativeVirtualCount > classBoundType->RawNativeVirtualCount,
-          "The number of bound virtual functions must never exceed the actual "
-          "v-table count");
+          "The number of bound virtual functions must never exceed the actual v-table count");
   return functionRef;
 }
 template <typename FunctionType,
@@ -422,8 +416,7 @@ static Function* FromVirtual(LibraryBuilder& builder,
       classBoundType, name, boundFunction, parameters, ZilchTypeId(void), FunctionOptions::Virtual, nativeVirtual);
   ++classBoundType->BoundNativeVirtualCount;
   ErrorIf(classBoundType->BoundNativeVirtualCount > classBoundType->RawNativeVirtualCount,
-          "The number of bound virtual functions must never exceed the actual "
-          "v-table count");
+          "The number of bound virtual functions must never exceed the actual v-table count");
   return functionRef;
 }
 template <typename FunctionType,
@@ -507,8 +500,7 @@ static Function* FromVirtual(LibraryBuilder& builder,
       classBoundType, name, boundFunction, parameters, ZilchTypeId(void), FunctionOptions::Virtual, nativeVirtual);
   ++classBoundType->BoundNativeVirtualCount;
   ErrorIf(classBoundType->BoundNativeVirtualCount > classBoundType->RawNativeVirtualCount,
-          "The number of bound virtual functions must never exceed the actual "
-          "v-table count");
+          "The number of bound virtual functions must never exceed the actual v-table count");
   return functionRef;
 }
 template <typename FunctionType, FunctionType function, typename Class, typename Return>
@@ -553,8 +545,7 @@ static Function* FromVirtual(LibraryBuilder& builder,
       classBoundType, name, boundFunction, parameters, ZilchTypeId(Return), FunctionOptions::Virtual, nativeVirtual);
   ++classBoundType->BoundNativeVirtualCount;
   ErrorIf(classBoundType->BoundNativeVirtualCount > classBoundType->RawNativeVirtualCount,
-          "The number of bound virtual functions must never exceed the actual "
-          "v-table count");
+          "The number of bound virtual functions must never exceed the actual v-table count");
   return functionRef;
 }
 template <typename FunctionType, FunctionType function, typename Class, typename Return, typename Arg0>
@@ -602,8 +593,7 @@ static Function* FromVirtual(LibraryBuilder& builder,
       classBoundType, name, boundFunction, parameters, ZilchTypeId(Return), FunctionOptions::Virtual, nativeVirtual);
   ++classBoundType->BoundNativeVirtualCount;
   ErrorIf(classBoundType->BoundNativeVirtualCount > classBoundType->RawNativeVirtualCount,
-          "The number of bound virtual functions must never exceed the actual "
-          "v-table count");
+          "The number of bound virtual functions must never exceed the actual v-table count");
   return functionRef;
 }
 template <typename FunctionType, FunctionType function, typename Class, typename Return, typename Arg0, typename Arg1>
@@ -654,8 +644,7 @@ static Function* FromVirtual(LibraryBuilder& builder,
       classBoundType, name, boundFunction, parameters, ZilchTypeId(Return), FunctionOptions::Virtual, nativeVirtual);
   ++classBoundType->BoundNativeVirtualCount;
   ErrorIf(classBoundType->BoundNativeVirtualCount > classBoundType->RawNativeVirtualCount,
-          "The number of bound virtual functions must never exceed the actual "
-          "v-table count");
+          "The number of bound virtual functions must never exceed the actual v-table count");
   return functionRef;
 }
 template <typename FunctionType,
@@ -721,8 +710,7 @@ static Function* FromVirtual(LibraryBuilder& builder,
       classBoundType, name, boundFunction, parameters, ZilchTypeId(Return), FunctionOptions::Virtual, nativeVirtual);
   ++classBoundType->BoundNativeVirtualCount;
   ErrorIf(classBoundType->BoundNativeVirtualCount > classBoundType->RawNativeVirtualCount,
-          "The number of bound virtual functions must never exceed the actual "
-          "v-table count");
+          "The number of bound virtual functions must never exceed the actual v-table count");
   return functionRef;
 }
 template <typename FunctionType,
@@ -793,8 +781,7 @@ static Function* FromVirtual(LibraryBuilder& builder,
       classBoundType, name, boundFunction, parameters, ZilchTypeId(Return), FunctionOptions::Virtual, nativeVirtual);
   ++classBoundType->BoundNativeVirtualCount;
   ErrorIf(classBoundType->BoundNativeVirtualCount > classBoundType->RawNativeVirtualCount,
-          "The number of bound virtual functions must never exceed the actual "
-          "v-table count");
+          "The number of bound virtual functions must never exceed the actual v-table count");
   return functionRef;
 }
 template <typename FunctionType,
@@ -870,8 +857,7 @@ static Function* FromVirtual(LibraryBuilder& builder,
       classBoundType, name, boundFunction, parameters, ZilchTypeId(Return), FunctionOptions::Virtual, nativeVirtual);
   ++classBoundType->BoundNativeVirtualCount;
   ErrorIf(classBoundType->BoundNativeVirtualCount > classBoundType->RawNativeVirtualCount,
-          "The number of bound virtual functions must never exceed the actual "
-          "v-table count");
+          "The number of bound virtual functions must never exceed the actual v-table count");
   return functionRef;
 }
 template <typename FunctionType,
@@ -953,8 +939,7 @@ static Function* FromVirtual(LibraryBuilder& builder,
       classBoundType, name, boundFunction, parameters, ZilchTypeId(Return), FunctionOptions::Virtual, nativeVirtual);
   ++classBoundType->BoundNativeVirtualCount;
   ErrorIf(classBoundType->BoundNativeVirtualCount > classBoundType->RawNativeVirtualCount,
-          "The number of bound virtual functions must never exceed the actual "
-          "v-table count");
+          "The number of bound virtual functions must never exceed the actual v-table count");
   return functionRef;
 }
 template <typename FunctionType,
@@ -1041,7 +1026,6 @@ static Function* FromVirtual(LibraryBuilder& builder,
       classBoundType, name, boundFunction, parameters, ZilchTypeId(Return), FunctionOptions::Virtual, nativeVirtual);
   ++classBoundType->BoundNativeVirtualCount;
   ErrorIf(classBoundType->BoundNativeVirtualCount > classBoundType->RawNativeVirtualCount,
-          "The number of bound virtual functions must never exceed the actual "
-          "v-table count");
+          "The number of bound virtual functions must never exceed the actual v-table count");
   return functionRef;
 }

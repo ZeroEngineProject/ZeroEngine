@@ -15,27 +15,24 @@ ZilchDeclareEvent(CompilationError, ErrorEvent);
 // Type-defines
 typedef Array<const CodeLocation*> LocationArray;
 
-// The default error callback prints compiler errors to stderr (pass null for
-// userData)
+// The default error callback prints compiler errors to stderr (pass null for userData)
 ZeroShared void DefaultErrorCallback(ErrorEvent* e);
 
 // A special callback that assumes the user-data is a pointer to a String class
 ZeroShared void OutputErrorStringCallback(ErrorEvent* e, void* stringPointer);
 
-// This class provides a general output handler that we can use in all modules
-// (for outputting messages, warnings, and errors)
+// This class provides a general output handler that we can use in all modules (for outputting messages, warnings, and
+// errors)
 class ZeroShared CompilationErrors : public EventHandler
 {
 public:
   // Constructor
   CompilationErrors();
 
-  // Enum values are not valid to pass to a variadic function and fail default
-  // argument promotions ErrorCode::Enum values are casted to and passed in as
-  // an integer to the following functions for this reason
+  // Enum values are not valid to pass to a variadic function and fail default argument promotions
+  // ErrorCode::Enum values are casted to and passed in as an integer to the following functions for this reason
 
-  // Print out an error message with extra context (one extra location, given a
-  // va_list)
+  // Print out an error message with extra context (one extra location, given a va_list)
   void RaiseArgs(const CodeLocation& location,
                  StringParam extra,
                  const CodeLocation& associatedLocation,
@@ -49,8 +46,7 @@ public:
                  int errorCode,
                  va_list args);
 
-  // Print out an error message with extra context (multiple locations, given a
-  // va_list)
+  // Print out an error message with extra context (multiple locations, given a va_list)
   void RaiseArgs(const CodeLocation& location, int errorCode, va_list args);
 
   // Print out an error message with extra context (one extra location)
@@ -82,8 +78,7 @@ public:
   // cases and should not be set by the user as it can lead to missed errors
   bool IgnoreMultipleErrors;
 
-  // If this is set, errors will be reported but ignored (which allows parsing
-  // and syntaxing to continue)
+  // If this is set, errors will be reported but ignored (which allows parsing and syntaxing to continue)
   bool TolerantMode;
 };
 } // namespace Zilch

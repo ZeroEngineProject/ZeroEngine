@@ -23,8 +23,7 @@ String Base64Encoder::Encode(const ::byte* data, size_t length)
   size_t computedLength = ComputeSize(length);
 
   // The data that we're encoding as we go along
-  // Eventually this should probably be refactored to be a ByteBuffer (similar
-  // to other builders)
+  // Eventually this should probably be refactored to be a ByteBuffer (similar to other builders)
   Zero::StringNode* node = String::AllocateNode(computedLength);
   ::byte* encodedData = (::byte*)node->Data;
   size_t written = encoder.EncodeData(data, length, encodedData);

@@ -60,14 +60,12 @@ void VisitBoundTypeLibraryArray(const HashSet<LibraryRef>& librarySet,
     return;
   visitedTypes.Insert(type);
 
-  // Check if we have a base type, if so visit it first (pretty much the entire
-  // point of this!)
+  // Check if we have a base type, if so visit it first (pretty much the entire point of this!)
   BoundType* base = type->BaseType;
   if (base != nullptr && librarySet.Contains(base->SourceLibrary))
     VisitBoundTypeLibraryArray(librarySet, visitedTypes, base, typesInOrder);
 
-  // Push back our type (note that base types would have been pushed before
-  // ours)
+  // Push back our type (note that base types would have been pushed before ours)
   typesInOrder.PushBack(type);
 }
 
@@ -89,8 +87,7 @@ void ComputeTypesInDependencyOrder(const Array<LibraryRef>& libraries,
       if (boundType == nullptr)
         continue;
 
-      // Visiting a type walks its base types first, and then adds them to the
-      // 'typesOut' array
+      // Visiting a type walks its base types first, and then adds them to the 'typesOut' array
       VisitBoundTypeLibraryArray(outLibrarySet, visitedTypes, boundType, outOrderedTypes);
     }
   }
@@ -107,9 +104,7 @@ bool DelegateTypePolicy::Equal(DelegateType* a, DelegateType* b) const
 }
 
 LibraryBuilder::LibraryBuilder(StringParam name, StringParam namespaceForPlugins) :
-    UserData(nullptr),
-    CreatableInScriptDefault(true),
-    ComputedDelegateAndFunctionSizes(false)
+    UserData(nullptr), CreatableInScriptDefault(true), ComputedDelegateAndFunctionSizes(false)
 {
   // Start out by creating a new library that we'll populate
   this->BuiltLibrary = LibraryRef(new Library());
@@ -344,8 +339,7 @@ InstantiatedTemplate LibraryBuilder::InstantiateTemplate(StringParam baseName,
       // Validate that all the template argument types match
       for (size_t i = 0; i < info->TemplateParameters.Size(); ++i)
       {
-        // If the types of the constants do not match with the expected template
-        // type...
+        // If the types of the constants do not match with the expected template type...
         if (arguments[i].Type != info->TemplateParameters[i].Type)
         {
           // Fail out because the user provided an invalid number of arguments
@@ -393,8 +387,7 @@ InstantiatedTemplate LibraryBuilder::InstantiateTemplate(StringParam baseName,
 
           // Error checking
           ErrorIf(result.Type->Name != fullyQualifiedTemplateName,
-                  "The template instantiator needs to create a type with the "
-                  "given fully qualified name");
+                  "The template instantiator needs to create a type with the given fully qualified name");
         }
         else
         {
@@ -432,9 +425,8 @@ GetterSetter* LibraryBuilder::AddExtensionGetterSetter(
     // Store the extension map (could be static or instance)
     GetterSetterMap* propertiesByName = nullptr;
 
-    // We also need to get the function extension map so we can add the getter
-    // and setter functions Technically these functions aren't referencable,
-    // except if native code looks them up (just to be proper!)
+    // We also need to get the function extension map so we can add the getter and setter functions
+    // Technically these functions aren't referencable, except if native code looks them up (just to be proper!)
     FunctionMultiMap* functionsByName = nullptr;
 
     // Add the property to the library extension map
@@ -452,8 +444,7 @@ GetterSetter* LibraryBuilder::AddExtensionGetterSetter(
     // Add the property to the named map
     bool inserted = propertiesByName->InsertNoOverwrite(name, property);
     ErrorIf(inserted == false,
-            "Another property with the same name (%s) was added to the "
-            "extension methods map for type (%s), "
+            "Another property with the same name (%s) was added to the extension methods map for type (%s), "
             "or two types came out with the same guid (which would be bad)",
             name.c_str(),
             forType->Name.c_str());
@@ -483,13 +474,11 @@ LibraryBuilder::AddSendsEvent(BoundType* forType, StringParam name, BoundType* s
   GuidType guid = ZilchTypeId(EventsClass)->Hash();
   GetterSetterMap& properties = this->BuiltLibrary->StaticExtensionGetterSetters[guid];
 
-  // Check to see if we do not yet have a property by this name (if we do, we
-  // won't bother to create another)
+  // Check to see if we do not yet have a property by this name (if we do, we won't bother to create another)
   Property* existingProperty = properties.FindValue(sendsEvent->Name, nullptr);
   if (existingProperty == nullptr)
   {
-    // Create an extension property on the events object so that the event can
-    // be accessed by name
+    // Create an extension property on the events object so that the event can be accessed by name
     Property* property = this->AddExtensionGetterSetter(ZilchTypeId(EventsClass),
                                                         name,
                                                         ZilchTypeId(String),
@@ -498,8 +487,7 @@ LibraryBuilder::AddSendsEvent(BoundType* forType, StringParam name, BoundType* s
                                                         MemberOptions::Static);
     sendsEvent->EventProperty = property;
 
-    // Store the event name in the complex user data (the 'EventsProperty' will
-    // pull it out when it needs it)
+    // Store the event name in the complex user data (the 'EventsProperty' will pull it out when it needs it)
     property->Get->ComplexUserData.WriteObject(name);
 
     // Add in the type that the event declares it sends
@@ -507,10 +495,8 @@ LibraryBuilder::AddSendsEvent(BoundType* forType, StringParam name, BoundType* s
   }
   else
   {
-    // This isn't quite correct, but since we don't actually care about the
-    // event type...
-    ZeroTodo("Don't allow two sends events with the same name, unless maybe "
-             "they are the same type?");
+    // This isn't quite correct, but since we don't actually care about the event type...
+    ZeroTodo("Don't allow two sends events with the same name, unless maybe they are the same type?");
     sendsEvent->EventProperty = existingProperty;
   }
 
@@ -566,11 +552,9 @@ Function* LibraryBuilder::CreateRawFunction(BoundType* owner,
   // If the user is creating a native virtual function...
   if (nativeVirtual.Index != NativeVirtualInfo::NonVirtual)
   {
-    // Just make sure the user marked this function as virtual, just for
-    // consistency
+    // Just make sure the user marked this function as virtual, just for consistency
     ErrorIf((options & FunctionOptions::Virtual) == 0,
-            "The FunctionOptions::Virtual flag must be set when creating a "
-            "native virtual function");
+            "The FunctionOptions::Virtual flag must be set when creating a native virtual function");
     options |= FunctionOptions::Virtual;
   }
 
@@ -624,14 +608,12 @@ Function* LibraryBuilder::CreateRawConstructor(BoundType* owner, BoundFn functio
   // Get a reference to the core library
   Core& core = Core::GetInstance();
 
-  // If the type is native, then we want this constructor to call
-  // SetNativeTypeFullyConstructed on the handle manager
+  // If the type is native, then we want this constructor to call SetNativeTypeFullyConstructed on the handle manager
   BoundFn invokedFunction = function;
   if (owner->Native)
     invokedFunction = VirtualMachine::NativeConstructor;
 
-  // Create the constructor and set the 'original' bound-function on it (may not
-  // be used)
+  // Create the constructor and set the 'original' bound-function on it (may not be used)
   Function* constructor = this->CreateRawFunction(
       owner, ConstructorName, invokedFunction, parameters, core.VoidType, FunctionOptions::None);
   constructor->NativeConstructor = function;
@@ -705,8 +687,7 @@ GetterSetter* LibraryBuilder::CreateRawGetterSetter(
       value.Name = ValueKeyword;
       value.ParameterType = type;
 
-      // Get a reference to the core so we can get the void type (setters have
-      // no return value)
+      // Get a reference to the core so we can get the void type (setters have no return value)
       Core& core = Core::GetInstance();
 
       // Generate the set function
@@ -755,16 +736,13 @@ void InstanceFieldSetter(Call& call, ExceptionReport& report)
   // Get the memory offsetted to the field
   ::byte* fieldMemory = memory + field->Offset;
 
-  // Get a direct pointer to the parameter (could be a primitive, such as a
-  // handle)
+  // Get a direct pointer to the parameter (could be a primitive, such as a handle)
   ::byte* parameterMemory = call.GetParameterUnchecked(0);
 
-  // Generically destruct the existing field (release reference, etc) the
-  // current parameter's memory
+  // Generically destruct the existing field (release reference, etc) the current parameter's memory
   field->PropertyType->GenericDestruct(fieldMemory);
 
-  // Now copy construct the parameter they are trying to set over the field
-  // memory
+  // Now copy construct the parameter they are trying to set over the field memory
   field->PropertyType->GenericCopyConstruct(fieldMemory, parameterMemory);
 }
 
@@ -784,8 +762,7 @@ void InstanceFieldGetter(Call& call, ExceptionReport& report)
   ::byte* returnMemory = call.GetReturnUnchecked();
   call.DisableReturnChecks();
 
-  // Now copy construct the parameter they are trying to set over the field
-  // memory
+  // Now copy construct the parameter they are trying to set over the field memory
   field->PropertyType->GenericCopyConstruct(returnMemory, fieldMemory);
 }
 
@@ -799,16 +776,13 @@ void StaticFieldSetter(Call& call, ExceptionReport& report)
   if (report.HasThrownExceptions())
     return;
 
-  // Get a direct pointer to the parameter (could be a primitive, such as a
-  // handle)
+  // Get a direct pointer to the parameter (could be a primitive, such as a handle)
   ::byte* parameterMemory = call.GetParameterUnchecked(0);
 
-  // Generically destruct the existing field (release reference, etc) the
-  // current parameter's memory
+  // Generically destruct the existing field (release reference, etc) the current parameter's memory
   field->PropertyType->GenericDestruct(fieldMemory);
 
-  // Now copy construct the parameter they are trying to set over the field
-  // memory
+  // Now copy construct the parameter they are trying to set over the field memory
   field->PropertyType->GenericCopyConstruct(fieldMemory, parameterMemory);
 }
 
@@ -826,8 +800,7 @@ void StaticFieldGetter(Call& call, ExceptionReport& report)
   ::byte* returnMemory = call.GetReturnUnchecked();
   call.DisableReturnChecks();
 
-  // Now copy construct the parameter they are trying to set over the field
-  // memory
+  // Now copy construct the parameter they are trying to set over the field memory
   field->PropertyType->GenericCopyConstruct(returnMemory, fieldMemory);
 }
 
@@ -920,8 +893,7 @@ void LibraryBuilder::AddTemplateInstantiator(StringParam baseName,
   // Perform the callback
   bool inserted = this->BuiltLibrary->TemplateHandlers.InsertNoOverwrite(baseName, info);
   ErrorIf(inserted == false,
-          "Another template instantiator of the same name (%s) was added to "
-          "the Library Builder.",
+          "Another template instantiator of the same name (%s) was added to the Library Builder.",
           baseName.c_str());
 }
 
@@ -989,8 +961,8 @@ void LibraryBuilder::AddNativeBoundType(BoundType* type, BoundType* base, TypeCo
   {
     if (base->IsInitialized() == false)
     {
-      String message = String::Format("The base type must be initialized before we "
-                                      "initialize our type %s.\n----------------\n",
+      String message =
+          String::Format("The base type must be initialized before we initialize our type %s.\n----------------\n",
                                       type->Name.c_str());
       base->IsInitializedAssert(message.c_str());
     }
@@ -1041,9 +1013,8 @@ void LibraryBuilder::GenerateGetSetFields()
       field->Get->OwningProperty = field;
 
       // The userdata for the getter and setter is just the original field
-      // This works out well because in the Syntaxer, we defer the computation
-      // of offset This way, we don't need to know the offset (the field will be
-      // updated!)
+      // This works out well because in the Syntaxer, we defer the computation of offset
+      // This way, we don't need to know the offset (the field will be updated!)
       field->Get->UserData = field;
       field->Owner->AddRawFunction(field->Get);
     }
@@ -1062,9 +1033,8 @@ void LibraryBuilder::GenerateGetSetFields()
       field->Set->OwningProperty = field;
 
       // The userdata for the getter and setter is just the original field
-      // This works out well because in the Syntaxer, we defer the computation
-      // of offset This way, we don't need to know the offset (the field will be
-      // updated!)
+      // This works out well because in the Syntaxer, we defer the computation of offset
+      // This way, we don't need to know the offset (the field will be updated!)
       field->Set->UserData = field;
       field->Owner->AddRawFunction(field->Set);
     }
@@ -1085,8 +1055,7 @@ String LibraryBuilder::FixIdentifier(StringParam ident, TokenCheck::Flags flags,
   // We're going to be overwriting this identifier
   String identifier = ident;
 
-  // If the identifier Contains the scope resolution operator from C++, take
-  // everything after it
+  // If the identifier Contains the scope resolution operator from C++, take everything after it
   if ((flags & TokenCheck::SkipPastScopeResolution) == 0)
   {
     // If we found the scope resolution operator...
@@ -1097,8 +1066,7 @@ String LibraryBuilder::FixIdentifier(StringParam ident, TokenCheck::Flags flags,
       // If the end is simply an enum, ideally use the name before
       if (ident.EndsWith("::Enum"))
         identifier = identifier.SubString(identifier.Begin(), index.Begin());
-      // Otherwise trim the identifier to everything after the scope resolution
-      // operator
+      // Otherwise trim the identifier to everything after the scope resolution operator
       else
         identifier = identifier.SubString(index.End(), identifier.End());
     }
@@ -1129,8 +1097,7 @@ String LibraryBuilder::FixIdentifier(StringParam ident, TokenCheck::Flags flags,
     // Check if this is a special identifier
     if (first == '[' && last == ']')
     {
-      // If the user wishes to remove the outer brackets, then strip them off
-      // and continue
+      // If the user wishes to remove the outer brackets, then strip them off and continue
       if (removeOuterBrackets)
       {
         StringIterator begin = identifier.Begin();
@@ -1139,8 +1106,7 @@ String LibraryBuilder::FixIdentifier(StringParam ident, TokenCheck::Flags flags,
         --end;
         identifier = identifier.SubString(begin, end);
       }
-      // Otherwise it doesn't matter what comes in between, this is special
-      // (hidden effectively
+      // Otherwise it doesn't matter what comes in between, this is special (hidden effectively
       else
         return identifier;
     }
@@ -1162,8 +1128,7 @@ String LibraryBuilder::FixIdentifier(StringParam ident, TokenCheck::Flags flags,
       // The first letter must always be [A-Z]
       if (CharacterUtilities::IsAlpha(r))
       {
-        // We read a letter! Check to see if its a mismatch for the upper or
-        // lower identifier
+        // We read a letter! Check to see if its a mismatch for the upper or lower identifier
         bool isUpper = CharacterUtilities::IsUpper(r);
         bool isLower = !isUpper;
 
@@ -1178,17 +1143,15 @@ String LibraryBuilder::FixIdentifier(StringParam ident, TokenCheck::Flags flags,
         {
           // Append an uppercase version of the first letter
           ErrorIf(asserts, "The first letter '%c' must be uppercase", r.mValue);
-          // As a special case, we ignore the Hungarian notations (starting with
-          // a lowercase letter then an uppercase) (below we also ignore the '_'
-          // prefix by not appending symbols at the start) We need to peek at
-          // the next character (and make sure that's even valid)
+          // As a special case, we ignore the Hungarian notations (starting with a lowercase letter then an uppercase)
+          // (below we also ignore the '_' prefix by not appending symbols at the start)
+          // We need to peek at the next character (and make sure that's even valid)
           StringRange peekRange = identifierRange;
           peekRange.PopFront();
           bool isNextUpperOrUnderscore =
               !peekRange.Empty() && (CharacterUtilities::IsUpper(peekRange.Front()) || r.mValue == '_');
 
-          // Automatically make the next character uppercase, unless we detected
-          // Hungarian notation
+          // Automatically make the next character uppercase, unless we detected Hungarian notation
           if (isNextUpperOrUnderscore == false)
           {
             builder.Append(Zero::UTF8::ToUpper(r.mValue));
@@ -1204,21 +1167,18 @@ String LibraryBuilder::FixIdentifier(StringParam ident, TokenCheck::Flags flags,
       }
       else
       {
-        // We don't Append anything here because we haven't hit the first
-        // character yet...
+        // We don't Append anything here because we haven't hit the first character yet...
         ErrorIf(asserts, "The first character '%c' must be a letter", r.mValue);
       }
     }
-    // If any part of the rest of the identifier is NOT alpha-numeric or
-    // underscore
+    // If any part of the rest of the identifier is NOT alpha-numeric or underscore
     else if (CharacterUtilities::IsAlphaNumeric(r.mValue) == false && r.mValue != '_')
     {
       ErrorIf(asserts,
-              "Character '%c' in the identifier must be either a letter, "
-              "number, or underscore (no other symbols)",
+              "Character '%c' in the identifier must be either a letter, number, or underscore (no other symbols)",
               r.mValue);
-      // We should only Append invalid characters if the user specified one (not
-      // null) and if the user doesn't want multiple of the same character
+      // We should only Append invalid characters if the user specified one (not null)
+      // and if the user doesn't want multiple of the same character
       bool shouldAppendInvalidCharacter =
           invalidCharacter != '\0' && (noMultipleInvalidCharacters == false || builder.GetSize() == 0 ||
                                        builder[builder.GetSize() - 1] != invalidCharacter);
@@ -1273,14 +1233,13 @@ void LibraryBuilder::ComputeDelegateAndFunctionSizesOnce()
   if (this->ComputedDelegateAndFunctionSizes)
     return;
 
-  // We only want to do this once (otherwise required stack offsets for
-  // functions can get messed up, eg if we added locals and then went back and
-  // recomputed the sizes and overwrite the stack offsets)
+  // We only want to do this once (otherwise required stack offsets for functions can get messed up,
+  // eg if we added locals and then went back and recomputed the sizes and overwrite the stack offsets)
   this->ComputedDelegateAndFunctionSizes = true;
 
-  // For how we give parameter positions, check CodeGenerator.cpp around line
-  // 233 Returns go at the beginning, parameters go after returns, and the this
-  // handle (if it exists) goes after the parameters
+  // For how we give parameter positions, check CodeGenerator.cpp around line 233
+  // Returns go at the beginning, parameters go after returns, and the
+  // this handle (if it exists) goes after the parameters
 
   // Create a range to iterate through all the delegate types
   Array<DelegateType*>::range delegateTypes = this->DelegateTypes.All();
@@ -1328,15 +1287,13 @@ void LibraryBuilder::ComputeDelegateAndFunctionSizesOnce()
     delegateType->TotalStackSizeExcludingThisHandle = parameterStackOffset;
   }
 
-  // Now that we computed all delegate type sizes / stack offsets, we can update
-  // any functions to reflect those offsets This is also generally required to
-  // be done before code generation so we know required stack size (just for
+  // Now that we computed all delegate type sizes / stack offsets, we can update any functions to reflect those offsets
+  // This is also generally required to be done before code generation so we know required stack size (just for
   // parameters and returns)
   FunctionArray& functions = this->BuiltLibrary->OwnedFunctions;
   for (size_t i = 0; i < functions.Size(); ++i)
   {
-    // The base required stack space for any function is the parameters and
-    // return sizes totaled
+    // The base required stack space for any function is the parameters and return sizes totaled
     Function* function = functions[i];
     function->RequiredStackSpace = function->FunctionType->TotalStackSizeExcludingThisHandle;
     function->ComputeHash();
@@ -1344,8 +1301,7 @@ void LibraryBuilder::ComputeDelegateAndFunctionSizesOnce()
     // If the function has a this handle
     if (function->This != nullptr)
     {
-      // The this handle is the last parameter (after the returns and the
-      // parameters)
+      // The this handle is the last parameter (after the returns and the parameters)
       function->This->Local = (OperandLocal)function->FunctionType->ThisHandleStackOffset;
 
       // Add the size of the this handle
@@ -1356,8 +1312,8 @@ void LibraryBuilder::ComputeDelegateAndFunctionSizesOnce()
 
 String GetInheritedDescription(Function* function)
 {
-  // FindFunction will walk up the base class chain for me, but we need to make
-  // sure we look for the same type of functions
+  // FindFunction will walk up the base class chain for me, but we need to make sure we look for the same type of
+  // functions
   FindMemberOptions::Enum options = FindMemberOptions::None;
   if (function->IsStatic)
     options = FindMemberOptions::Static;
@@ -1377,8 +1333,8 @@ String GetInheritedDescription(Function* function)
       break;
 
     // Find will automatically walk up base classes to look for the function
-    // We are puposefully looking on our base class for the same exact function
-    // as ourselves This will return null if we have no parent function
+    // We are puposefully looking on our base class for the same exact function as ourselves
+    // This will return null if we have no parent function
     foundFunction = baseType->FindFunction(function->Name, function->FunctionType, options);
     if (foundFunction == nullptr)
       break;
@@ -1397,8 +1353,7 @@ LibraryRef LibraryBuilder::CreateLibrary()
   // (may have already been done by the Syntaxer)
   library->ComputeTypesInDependencyOrderOnce();
 
-  // Generate getters and setters for any field that hasn't already been
-  // generated
+  // Generate getters and setters for any field that hasn't already been generated
   this->GenerateGetSetFields();
 
   // We need to create all the bound functions
@@ -1429,8 +1384,7 @@ LibraryRef LibraryBuilder::CreateLibrary()
     boundTypes.PopFront();
 
     ErrorIf(boundType->BaseType != nullptr && boundType->BaseType->CopyMode != boundType->CopyMode,
-            "The type %s must be bound with the same TypeCopyMode as its base "
-            "class %s",
+            "The type %s must be bound with the same TypeCopyMode as its base class %s",
             boundType->Name.c_str(),
             boundType->BaseType->Name.c_str());
 
@@ -1441,8 +1395,7 @@ LibraryRef LibraryBuilder::CreateLibrary()
     boundType->SourceLibrary = library.Object;
   }
 
-  // Make sure all delegates know their sizes (may be computed more than once
-  // due to code-gen needing the sizes)
+  // Make sure all delegates know their sizes (may be computed more than once due to code-gen needing the sizes)
   this->ComputeDelegateAndFunctionSizesOnce();
 
   // Clear out our built library so we don't use the this builder anymore
@@ -1495,8 +1448,7 @@ DelegateType* LibraryBuilder::GetDelegateType(const ParameterArray& parameters, 
 
   // Make sure all delegates have returns
   ErrorIf(returnType == nullptr,
-          "To mark a delegate/function as having no return, use the void type "
-          "via ZilchTypeId(void)");
+          "To mark a delegate/function as having no return, use the void type via ZilchTypeId(void)");
 
   // Make sure to store a strong reference, since we now own the type
   this->BuiltLibrary->OwnedTypes.PushBack(delegateType);
@@ -1521,8 +1473,7 @@ Library::Library() : GeneratedDefinitionStubCode(false), UserData(nullptr), Tole
 
 void Library::GenerateDefinitionStubCode()
 {
-  // If we already generated the stub code, our library should not have changed
-  // so early out
+  // If we already generated the stub code, our library should not have changed so early out
   if (this->GeneratedDefinitionStubCode)
     return;
   this->GeneratedDefinitionStubCode = true;
@@ -1547,14 +1498,12 @@ void VisitBoundType(HashSet<BoundType*>& visitedTypes, BoundType* type, Array<Bo
     return;
   visitedTypes.Insert(type);
 
-  // Check if we have a base type, if so visit it first (pretty much the entire
-  // point of this!)
+  // Check if we have a base type, if so visit it first (pretty much the entire point of this!)
   BoundType* base = type->BaseType;
   if (base != nullptr && base->SourceLibrary == type->SourceLibrary)
     VisitBoundType(visitedTypes, base, typesInOrder);
 
-  // Push back our type (note that base types would have been pushed before
-  // ours)
+  // Push back our type (note that base types would have been pushed before ours)
   typesInOrder.PushBack(type);
 }
 
@@ -1574,8 +1523,7 @@ void Library::ComputeTypesInDependencyOrderOnce()
     if (boundType == nullptr)
       continue;
 
-    // Visiting a type walks its base types first, and then adds them to the
-    // 'typesOut' array
+    // Visiting a type walks its base types first, and then adds them to the 'typesOut' array
     VisitBoundType(visitedTypes, boundType, this->TypesInDependencyOrder);
   }
 }
@@ -1623,16 +1571,15 @@ Library::~Library()
   // First, release all components
   this->ClearComponents();
 
-  // If this library was made via a plugin, then the library now manages the
-  // plugin and will delete it
+  // If this library was made via a plugin, then the library now manages the plugin and will delete it
   if (this->Plugin)
   {
     this->Plugin->UninitializeSafe();
 
     ExternalLibrary* sharedLibrary = this->Plugin->SharedLibrary;
 
-    // We need to delete the plugin first because the destructor is virutal and
-    // is defined within the external library's loaded code
+    // We need to delete the plugin first because the destructor is virutal and is defined
+    // within the external library's loaded code
     delete this->Plugin;
 
     // Now we can delete the external library
@@ -1666,8 +1613,7 @@ Library::~Library()
 
 Module::Module()
 {
-  // Always add the core library (both for the linker, and as a compiler
-  // dependence)
+  // Always add the core library (both for the linker, and as a compiler dependence)
   this->PushBack(Core::GetInstance().GetLibrary());
 }
 
@@ -1711,8 +1657,7 @@ ExecutableState* Module::Link() const
       // Grab the current code entry
       CodeEntry* entry = &library->Entries[j];
 
-      // Map the code entry id to the entry itself on the state (we should never
-      // collide here!)
+      // Map the code entry id to the entry itself on the state (we should never collide here!)
       state->CodeHashToCodeEntry.InsertNoOverwrite(entry->GetHash(), entry);
     }
   }
@@ -1767,8 +1712,7 @@ void Module::BuildFunctionDocumentation(Array<DocumentationFunction*>& addTo, co
   // Get the instance functions
   FunctionMultiValueRange functionArrays = functions.Values();
 
-  // Normally it's a map of strings to overloaded functions, so we need to loop
-  // through all arrays
+  // Normally it's a map of strings to overloaded functions, so we need to loop through all arrays
   while (functionArrays.Empty() == false)
   {
     // Grab the current instance function array and move to the next
@@ -1791,8 +1735,7 @@ void Module::BuildFunctionDocumentation(Array<DocumentationFunction*>& addTo, co
     // Grab the current function
     Function* function = functions[i];
 
-    // Skip the special getter and setter functions (those are documented by
-    // properties)
+    // Skip the special getter and setter functions (those are documented by properties)
     if (function->OwningProperty != nullptr)
       continue;
 
@@ -1831,8 +1774,7 @@ void Module::BuildFunctionDocumentation(Array<DocumentationFunction*>& addTo, co
       docFunction->Parameters.PushBack(docParameter);
     }
 
-    // If this function is a constructor, it has no description, and it takes no
-    // arguments (defaulted)...
+    // If this function is a constructor, it has no description, and it takes no arguments (defaulted)...
     if (function->Name == ConstructorName && docFunction->Description.Empty() && docFunction->Parameters.Empty())
     {
       // Set the description to something special
@@ -1948,8 +1890,7 @@ DocumentationModule* Module::BuildDocumentation()
     // Create a temporary library builder to build templates
     LibraryBuilder builder("Documenation");
 
-    // Loop through all template handlers, instantiate them as templates that
-    // take the 'Any' type
+    // Loop through all template handlers, instantiate them as templates that take the 'Any' type
     HashMap<String, InstantiateTemplateInfo>::valuerange templates = library->TemplateHandlers.Values();
     while (templates.Empty() == false)
     {
@@ -2376,9 +2317,7 @@ String Module::BuildDocumentationHtml()
 }
 
 InstantiatedTemplate::InstantiatedTemplate() :
-    Type(nullptr),
-    ExpectedArguments(0),
-    Result(TemplateResult::FailedInstantiatorDidNotReturnType)
+    Type(nullptr), ExpectedArguments(0), Result(TemplateResult::FailedInstantiatorDidNotReturnType)
 {
 }
 
@@ -2575,8 +2514,7 @@ ParameterArray FiveParameters(
   return parameters;
 }
 
-// ExtensionPropertyMapRange::ExtensionPropertyMapRange(LibraryArray& libraries,
-// bool isStatic, Type* type) :
+// ExtensionPropertyMapRange::ExtensionPropertyMapRange(LibraryArray& libraries, bool isStatic, Type* type) :
 //  CurrentMap(nullptr),
 //  LibraryIndex(0),
 //  BaseIterator(type),
@@ -2595,8 +2533,8 @@ ParameterArray FiveParameters(
 //{
 //  LibraryRef& library = this->Libraries[this->LibraryIndex];
 
-//  // Get the guid of the type (this should be legal here since we've collected
-//  all members) GuidType guid = this->BaseIterator->Hash();
+//  // Get the guid of the type (this should be legal here since we've collected all members)
+//  GuidType guid = this->BaseIterator->Hash();
 //
 //  // Get the array of properties (may be empty)
 //  PropertyMap* properties = nullptr;
@@ -2621,8 +2559,9 @@ ParameterArray FiveParameters(
 // PropertyMap* ExtensionPropertyMapRange::front()
 //{
 
-//    // We need to look up the entire heirarchy (the property could be on any
-//    base classes) Type* baseIterator = type; while (baseIterator != nullptr)
+//    // We need to look up the entire heirarchy (the property could be on any base classes)
+//    Type* baseIterator = type;
+//    while (baseIterator != nullptr)
 //    {
 
 //

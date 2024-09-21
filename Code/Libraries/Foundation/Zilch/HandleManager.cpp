@@ -31,10 +31,7 @@ HandleManagers::~HandleManagers()
 void HandleManagers::AddSharedManager(HandleManagerId id, HandleManager* manager)
 {
   // Error checking
-  ReturnIf(this->Locked,
-           ,
-           "We cannot add to the handle managers after we've created the "
-           "ZilchSetup");
+  ReturnIf(this->Locked, , "We cannot add to the handle managers after we've created the ZilchSetup");
 
   this->Shared.Insert(id, manager);
 }
@@ -42,10 +39,7 @@ void HandleManagers::AddSharedManager(HandleManagerId id, HandleManager* manager
 void HandleManagers::AddUniqueCreator(HandleManagerId id, CreateHandleManagerFn creator)
 {
   // Error checking
-  ReturnIf(this->Locked,
-           ,
-           "We cannot add to the handle managers after we've created the "
-           "ZilchSetup");
+  ReturnIf(this->Locked, , "We cannot add to the handle managers after we've created the ZilchSetup");
 
   this->Unique.Insert(id, creator);
 }
@@ -61,12 +55,11 @@ HandleManager* HandleManagers::GetManager(HandleManagerId id, ExecutableState* s
   if (state == nullptr)
     state = ExecutableState::CallingState;
 
-  // If we didn't find it in the shared, and we were given no executable
-  // state...
+  // If we didn't find it in the shared, and we were given no executable state...
   if (state == nullptr)
   {
-    Error("We were unable to find the shared handle manager and no executable "
-          "state was given to look up local handle managers");
+    Error("We were unable to find the shared handle manager and no executable state was given to look up local handle "
+          "managers");
     return this->Shared.FindValue(ZilchManagerId(PointerManager), nullptr);
   }
 
@@ -96,9 +89,7 @@ HandleManager* HandleManagers::GetManager(HandleManagerId id, ExecutableState* s
   else
   {
     // Error handling
-    Error("We were not able to instantiate a handle manager or find a shared "
-          "one for id '%d'",
-          id);
+    Error("We were not able to instantiate a handle manager or find a shared one for id '%d'", id);
     return nullptr;
   }
 }
@@ -113,8 +104,7 @@ HandleManagerId HandleManagers::GetNextId()
   // Error checking
   ReturnIf(this->Locked,
            (HandleManagerId)-1,
-           "We cannot get new unique ids for handle managers after we've "
-           "created the ZilchSetup");
+           "We cannot get new unique ids for handle managers after we've created the ZilchSetup");
 
   return this->UniqueCounter++;
 }
@@ -163,8 +153,7 @@ String HandleManager::GetName()
 
 void HandleManager::Allocate(BoundType* type, Handle& handleToInitialize, size_t customFlags)
 {
-  Error("This HandleManager did not override the Allocate method (the "
-        "allocated handle will be null)");
+  Error("This HandleManager did not override the Allocate method (the allocated handle will be null)");
 }
 
 void HandleManager::DeleteAll(ExecutableState* state)
@@ -187,8 +176,8 @@ void HandleManager::SetNativeTypeFullyConstructed(const Handle& handle, bool val
 bool HandleManager::GetNativeTypeFullyConstructed(const Handle& handle)
 {
   // By default we return true and assume everything worked
-  // This could crash if an exception occurs and we never fully constructed the
-  // base, and then we invoke the C++ destructor
+  // This could crash if an exception occurs and we never fully constructed the base, and then we invoke the C++
+  // destructor
   return true;
 }
 
@@ -263,8 +252,7 @@ void HeapManager::Allocate(BoundType* type, Handle& handleToInitialize, size_t c
   if (customFlags & HeapObjectFlags::NonReferenceCounted)
     handleToInitialize.Flags = HandleFlags::NoReferenceCounting;
 
-  // We are always guaranteed that the handle data is cleared before we get the
-  // user data portion
+  // We are always guaranteed that the handle data is cleared before we get the user data portion
   HeapHandleData& data = *(HeapHandleData*)handleToInitialize.Data;
   data.Header = &header;
   data.UniqueId = header.UniqueId;
@@ -282,16 +270,14 @@ void HeapManager::ObjectToHandle(const ::byte* object, BoundType* type, Handle& 
   // First, check if this object was even allocated through us
   if (this->LiveObjects.Contains(object) == false)
   {
-    // Since the object that was passed in isn't managed by us, the only valid
-    // way to get a handle to it is to use the pointer manager Most likely this
-    // will be fine since we're passing through binding and not typically
-    // invoking user code
+    // Since the object that was passed in isn't managed by us, the only valid way to get a handle to it is to use the
+    // pointer manager Most likely this will be fine since we're passing through binding and not typically invoking user
+    // code
     ExceptionReport report;
     HandleManager* manager = HandleManagers::GetInstance().GetManager(ZilchManagerId(PointerManager));
     Handle fromHandle(object, type, manager);
 
-    // Copy construct the object into an allocated version (with reference
-    // counting and safe handles that we now manage)
+    // Copy construct the object into an allocated version (with reference counting and safe handles that we now manage)
     handleToInitialize =
         this->State->AllocateCopyConstructedHeapObject(type, report, HeapFlags::ReferenceCounted, fromHandle);
     return;
@@ -307,8 +293,7 @@ void HeapManager::ObjectToHandle(const ::byte* object, BoundType* type, Handle& 
   else
     ++header.ReferenceCount;
 
-  // We are always guaranteed that the handle data is cleared before we get the
-  // user data portion
+  // We are always guaranteed that the handle data is cleared before we get the user data portion
   HeapHandleData& data = *(HeapHandleData*)handleToInitialize.Data;
   data.Header = &header;
   data.UniqueId = header.UniqueId;
@@ -316,10 +301,9 @@ void HeapManager::ObjectToHandle(const ::byte* object, BoundType* type, Handle& 
 
 void HeapManager::DeleteAll(ExecutableState* state)
 {
-  // Note: The executable state has a special flag set to not allow allocation
-  // of any more objects (and all destructors catch exceptions that occur) This
-  // is so we don't need to continue cleaning up objects at the end, since we
-  // know all will be destructed
+  // Note: The executable state has a special flag set to not allow allocation of any more
+  // objects (and all destructors catch exceptions that occur)
+  // This is so we don't need to continue cleaning up objects at the end, since we know all will be destructed
 
   // Theoretically all memory from a system should be cleaned up by itself
   // We really need to incorporate leak detection here
@@ -344,12 +328,10 @@ void HeapManager::DeleteAll(ExecutableState* state)
     EventSend(state, Events::MemoryLeak, &toSend);
 
     // Delete the object forcibly
-    // Note that this Delete should call HeapManager::Delete, which will remove
-    // this from LiveObjects!
+    // Note that this Delete should call HeapManager::Delete, which will remove this from LiveObjects!
     bool deleted = handle.Delete();
     ErrorIf(deleted != true,
-            "Delete on the handle returned that the object was not deleted (it "
-            "always should be deletable)");
+            "Delete on the handle returned that the object was not deleted (it always should be deletable)");
   }
 
   ErrorIf(this->LiveObjects.Empty() == false, "All objects should be cleared by this point");
@@ -435,8 +417,7 @@ void StackManager::Allocate(BoundType* type, Handle& handleToInitialize, size_t 
   StackHandleData& data = *(StackHandleData*)handle.Data;
 
   // If the scope we're looking at has a different id than this handle, then
-  // it means the original stack/scope we looked at is gone, so the value is no
-  // longer valid
+  // it means the original stack/scope we looked at is gone, so the value is no longer valid
   if (data.Scope->UniqueId != data.UniqueId)
     return nullptr;
 
@@ -448,8 +429,7 @@ void StackManager::ObjectToHandle(const ::byte* object, BoundType* type, Handle&
 {
   StackHandleData& data = *(StackHandleData*)handleToInitialize.Data;
   data.StackLocation = const_cast<::byte*>(object);
-  Error("Use ExecutableState's InitializeStackHandle to create a handle to an "
-        "object on the stack");
+  Error("Use ExecutableState's InitializeStackHandle to create a handle to an object on the stack");
 }
 
 PointerManager::PointerManager(ExecutableState* state) : HandleManager(state)
@@ -531,8 +511,7 @@ bool StringManager::IsEqual(const Handle& handleLhs,
   String& stringLhs = *(String*)objectLhs;
   String& stringRhs = *(String*)objectRhs;
 
-  // Compare the two nodes, then compare the hash values and lengths, then
-  // directly compare the strings
+  // Compare the two nodes, then compare the hash values and lengths, then directly compare the strings
   return stringLhs == stringRhs;
 }
 
@@ -546,8 +525,7 @@ void StringManager::AddReference(const Handle& handle)
 
 ReleaseResult::Enum StringManager::ReleaseReference(const Handle& handle)
 {
-  // Directly decrement a refernece on the string node, delete it if it reaches
-  // 0
+  // Directly decrement a refernece on the string node, delete it if it reaches 0
   String& str = *(String*)handle.Data;
   Zero::StringNode* node = str.GetNode();
   node->release();

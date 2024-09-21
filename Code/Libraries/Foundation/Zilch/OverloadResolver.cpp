@@ -24,8 +24,7 @@ bool Overload::ResolveAndImplicitConvert(const FunctionArray* functions,
       // Check the current function type against the call
       if (TestDelegateTypeVsCall(function->FunctionType, functionCallNode, pass))
       {
-        // If we're on the last pass, then we need to generate implicit
-        // conversion code
+        // If we're on the last pass, then we need to generate implicit conversion code
         if (pass == OverloadPass::AnyImplicitConversion)
           GenerateImplicitCasts(function->FunctionType, functionCallNode);
 
@@ -70,8 +69,7 @@ void Overload::GetFunctionCallSignatureString(StringBuilder& builder, const Func
     }
     else
     {
-      Error("Attempting to print a signature where one of the argument types "
-            "is invalid!");
+      Error("Attempting to print a signature where one of the argument types is invalid!");
     }
 
     // If we're not at the end
@@ -116,8 +114,7 @@ void Overload::ReportError(CompilationErrors& errors,
   ErrorIf(functions == nullptr || functions->Empty(),
           "We cannot report overloading errors when no functions were provided");
 
-  // Get the name of one of the functions (we know there is at least one
-  // function in this array)
+  // Get the name of one of the functions (we know there is at least one function in this array)
   String name = (*functions)[0]->Name;
 
   // Get the calling signature
@@ -157,8 +154,7 @@ bool Overload::TestCallAndImplicitConvert(DelegateType* delegateType, FunctionCa
     return true;
   if (TestDelegateTypeVsCall(delegateType, functionCallNode, OverloadPass::AnyImplicitConversion))
   {
-    // In the last phase, we need to actually generate implicit casts
-    // (TypeCastNodes)
+    // In the last phase, we need to actually generate implicit casts (TypeCastNodes)
     GenerateImplicitCasts(delegateType, functionCallNode);
     return true;
   }
@@ -202,10 +198,9 @@ bool Overload::TestDelegateTypeVsCall(DelegateType* delegateType,
   // Get the arguments for the function call
   NodeList<ExpressionNode>::range arguments = functionCallNode.Arguments.All();
 
-  // First, check that the call has the same number of arguments as the type's
-  // parameters NOTE: This is important that we do this first, since the
-  // positional check below test is there are no parameters (and assumes both
-  // have the same number)
+  // First, check that the call has the same number of arguments as the type's parameters
+  // NOTE: This is important that we do this first, since the positional check below
+  // test is there are no parameters (and assumes both have the same number)
   if (delegateType->Parameters.Size() != argumentCount)
     return false;
 
@@ -215,8 +210,7 @@ bool Overload::TestDelegateTypeVsCall(DelegateType* delegateType,
     // Get the current delegate parameter
     const DelegateParameter& delegateParameter = delegateType->Parameters[i];
 
-    // If we are calling with named arguments and the current parameter has a
-    // name
+    // If we are calling with named arguments and the current parameter has a name
     if (functionCallNode.IsNamed && delegateParameter.Name.Empty() == false)
     {
       if (functionCallNode.ArgumentNames[i] != delegateParameter.Name)
@@ -250,9 +244,8 @@ bool Overload::TestDelegateTypeVsCall(DelegateType* delegateType,
 
     case OverloadPass::RawImplicitConversion:
     {
-      // In this phase the types can be different but must be implicitly raw
-      // convertable Ex: Conversion from NullType to Animal (does no work
-      // because NullType is also a handle)
+      // In this phase the types can be different but must be implicitly raw convertable
+      // Ex: Conversion from NullType to Animal (does no work because NullType is also a handle)
       CastOperator cast = shared.GetCastOperator(fromType, toType);
       if (cast.IsValid == false || cast.CanBeImplicit == false || cast.RequiresCodeGeneration)
         return false;
@@ -261,9 +254,8 @@ bool Overload::TestDelegateTypeVsCall(DelegateType* delegateType,
 
     case OverloadPass::AnyImplicitConversion:
     {
-      // In this phase the types can be different but must be implicitly
-      // convertable (code generation may occur) Ex: Conversion from an Integer
-      // to a Real
+      // In this phase the types can be different but must be implicitly convertable (code generation may occur)
+      // Ex: Conversion from an Integer to a Real
       CastOperator cast = shared.GetCastOperator(fromType, toType);
       if (cast.IsValid == false || cast.CanBeImplicit == false)
         return false;
@@ -283,8 +275,7 @@ bool Overload::TestDelegateTypeVsCall(DelegateType* delegateType,
   return true;
 }
 
-// void Overload::DetectAmbiguities(FunctionArray& functions, Function*
-// function)
+// void Overload::DetectAmbiguities(FunctionArray& functions, Function* function)
 //{
 //}
 } // namespace Zilch

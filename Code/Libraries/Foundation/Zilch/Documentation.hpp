@@ -113,12 +113,10 @@ public:
   // The static methods that belong to this type (sorted by name, owned)
   Array<DocumentationFunction*> StaticMethods;
 
-  // The instance methods that belong to this type (sorted by name, includes
-  // data members, owned)
+  // The instance methods that belong to this type (sorted by name, includes data members, owned)
   Array<DocumentationProperty*> InstanceProperties;
 
-  // The static methods that belong to this type (sorted by name, includes data
-  // members, owned)
+  // The static methods that belong to this type (sorted by name, includes data members, owned)
   Array<DocumentationProperty*> StaticProperties;
 };
 
@@ -173,8 +171,8 @@ public:
   size_t Columns;
   size_t Rows;
 
-  // How many of the first rows are header rows (does not add to the total
-  // number) Must be less than or equal to Rows
+  // How many of the first rows are header rows (does not add to the total number)
+  // Must be less than or equal to Rows
   size_t HeaderRows;
 };
 

@@ -26,12 +26,10 @@ public:
   // Friends
   friend class StaticLibraries;
 
-  // Check if this library was built, is in the process of being built, or
-  // hasn't started building yet
+  // Check if this library was built, is in the process of being built, or hasn't started building yet
   BuildState::Enum GetBuildState();
 
-  // Whether we can currently build types or not (used in ZilchTypeId and
-  // Binding)
+  // Whether we can currently build types or not (used in ZilchTypeId and Binding)
   virtual bool CanBuildTypes();
 
   // Get the library that we represent
@@ -62,9 +60,8 @@ protected:
   virtual void SetupBinding(LibraryBuilder& builder);
 
   // Any dependencies these libraries have upon other libraries
-  // For example, many libraries depend upon the 'Core' library to be built
-  // before themselves, so that primitive types such as 'Integer' and 'Real'
-  // exist
+  // For example, many libraries depend upon the 'Core' library to be built before
+  // themselves, so that primitive types such as 'Integer' and 'Real' exist
   Array<StaticLibrary*> Dependencies;
 
 private:
@@ -132,12 +129,11 @@ private:
 // When we don't care about a namespace for a static library
 #  define ZilchNoNamespace ZZ::String()
 
-// This allows us to define an initialize all the types that belong within our
-// library This should be put in a translational unit (cpp) that can see all of
-// the types that need to be registered We opted for this instead of automatic
-// or pre-main initialization because there were issues on some compilers that
-// would optimize out pre-main code if it was never referenced anywhere (but
-// would otherwise be available to script)
+// This allows us to define an initialize all the types that belong within our library
+// This should be put in a translational unit (cpp) that can see all of the types that need to be registered
+// We opted for this instead of automatic or pre-main initialization because there were issues on some compilers
+// that would optimize out pre-main code if it was never referenced anywhere (but would otherwise be available to
+// script)
 #  define ZilchDefineStaticLibrary(Name)                                                                               \
     Name* Name::Instance = nullptr;                                                                                    \
     void Name::SetupBinding(ZZ::LibraryBuilder& builder)

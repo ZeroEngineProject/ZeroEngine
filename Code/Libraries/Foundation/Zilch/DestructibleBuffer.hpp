@@ -6,16 +6,13 @@
 
 namespace Zilch
 {
-// Aligns a number to a machine byte boundary (either the same or a larger
-// value)
+// Aligns a number to a machine byte boundary (either the same or a larger value)
 ZeroShared size_t AlignToBusWidth(size_t value);
 
-// A function that will invoke the destructor on an object (does not call delete
-// or free!)
+// A function that will invoke the destructor on an object (does not call delete or free!)
 typedef void (*DestructFn)(void* object);
 
-// A function that will invoke the copy constructor from one object to another
-// uninitialized place in memory
+// A function that will invoke the copy constructor from one object to another uninitialized place in memory
 typedef void (*CopyConstructFn)(const void* from, void* to);
 
 // A function for wrapping a destructor of any object in the above signature
@@ -46,13 +43,12 @@ ZeroSharedTemplate DestructFn GetDestructor()
   }
 }
 
-// A function for wrapping a copy constructor of any object in the above
-// signature
+// A function for wrapping a copy constructor of any object in the above signature
 template <typename T>
 ZeroSharedTemplate void CopyConstructorWrapper(const void* from, void* to)
 {
-  // Use placement new to construct the object at the 'to' location (but invoke
-  // the copy constructor using the from object reference)
+  // Use placement new to construct the object at the 'to' location (but invoke the copy constructor using the from
+  // object reference)
   new (to) T(*(T*)from);
 }
 
@@ -72,8 +68,7 @@ ZeroSharedTemplate CopyConstructFn GetCopyConstructor()
   }
 }
 
-// Used to write arbitrary data to a buffer where some of the data could be
-// destructed
+// Used to write arbitrary data to a buffer where some of the data could be destructed
 class ZeroShared DestructibleBuffer
 {
 public:
@@ -102,9 +97,9 @@ public:
   // Allocates writable memory that the user can work with
   // If the destructor passed in is null, then no destructor will be pushed
   ::byte* Allocate(size_t size,
-                 DestructFn destructor = nullptr,
-                 CopyConstructFn copyConstructor = nullptr,
-                 size_t* positionOut = nullptr);
+                   DestructFn destructor = nullptr,
+                   CopyConstructFn copyConstructor = nullptr,
+                   size_t* positionOut = nullptr);
 
   // Writes memory directly to the buffer
   // If the destructor passed in is null, then no destructor will be pushed
@@ -115,8 +110,7 @@ public:
   template <typename T>
   T& WriteObject(const T& value, size_t* positionOut = nullptr)
   {
-    // Allocate the memory for the object and push a wrapper around it's
-    // destructor
+    // Allocate the memory for the object and push a wrapper around it's destructor
     ::byte* newData = this->Allocate(sizeof(T), GetDestructor<T>(), GetCopyConstructor<T>(), positionOut);
 
     // Copy the object we got into the allocated data and return it
@@ -128,8 +122,7 @@ public:
   template <typename T>
   T& CreateObject(size_t* positionOut = nullptr)
   {
-    // Allocate the memory for the object and push a wrapper around it's
-    // destructor
+    // Allocate the memory for the object and push a wrapper around it's destructor
     ::byte* newData = this->Allocate(sizeof(T), GetDestructor<T>(), GetCopyConstructor<T>(), positionOut);
 
     // Default construct the type into the allocated data and return it
@@ -160,12 +153,10 @@ private:
     size_t AbsolutePosition;
 
     // The destructor (typically wrapped) to call on the object's memory
-    // This destrcutor should never call free or delete, just the class
-    // destructor
+    // This destrcutor should never call free or delete, just the class destructor
     DestructFn Destructor;
 
-    // When we copy construct the entire buffer, we'll walk through and copy
-    // construct its entries
+    // When we copy construct the entire buffer, we'll walk through and copy construct its entries
     CopyConstructFn CopyConstructor;
   };
 

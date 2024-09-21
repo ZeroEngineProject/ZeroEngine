@@ -50,16 +50,13 @@ ZeroShared StringRange StripStringQuotes(StringRange input);
 // Adds quotes to the string
 ZeroShared StringRange AddStringQuotes(StringRange input);
 
-// Perform string escape replacements and outlining quotes (directly used for
-// string literals)
+// Perform string escape replacements and outlining quotes (directly used for string literals)
 ZeroShared String ReplaceStringEscapesAndStripQuotes(StringRange input);
 
-// Replaces all ascii escapable characters with escapes and adds quotes to the
-// string
+// Replaces all ascii escapable characters with escapes and adds quotes to the string
 ZeroShared String EscapeStringAndAddQuotes(StringRange input);
 
-// Change an identifier between lower and upper camel cases (just modifies the
-// first letter)
+// Change an identifier between lower and upper camel cases (just modifies the first letter)
 ZeroShared String ToLowerCamelCase(StringRange input);
 ZeroShared String ToUpperCamelCase(StringRange input);
 } // namespace Zilch

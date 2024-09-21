@@ -17,8 +17,7 @@ public:
   Array<BoundType*> ClassTypeStack;
 };
 
-// This class uses the syntax tree (after type checking) to generate a byte-code
-// known as the "three-address"
+// This class uses the syntax tree (after type checking) to generate a byte-code known as the "three-address"
 class ZeroShared CodeGenerator
 {
 public:
@@ -29,9 +28,8 @@ public:
   LibraryRef Generate(SyntaxTree& syntaxTree, LibraryBuilder& builder);
 
 private:
-  // Walks through the members of a type and determines the total size of those
-  // members If a member is left uncomputed, then it will be walked and computed
-  // also
+  // Walks through the members of a type and determines the total size of those members
+  // If a member is left uncomputed, then it will be walked and computed also
   void ComputeSize(BoundType* type, const CodeLocation& location);
 
   // Store the class in the code context
@@ -55,8 +53,7 @@ private:
   // Generate debug breakpoints
   void GenerateDebugBreak(DebugBreakNode*& node, GeneratorContext* context);
 
-  // Generate the initialization of member variables (static and fields) and
-  // also generate properties
+  // Generate the initialization of member variables (static and fields) and also generate properties
   void GenerateMemberVariable(MemberVariableNode*& node, GeneratorContext* context);
 
   // Generate opcode for timeout statements
@@ -127,8 +124,7 @@ private:
   // Generate opcode for property-member 'set'
   void GeneratePropertySetMemberAccess(MemberAccessNode*& node, GeneratorContext* context);
 
-  // Generate opcode for the initializers in the initializer list (base, this,
-  // etc)
+  // Generate opcode for the initializers in the initializer list (base, this, etc)
   void GenerateInitializer(InitializerNode*& node, GeneratorContext* context);
 
   // Allocate a delegate opcode of type T
@@ -140,8 +136,7 @@ private:
                     Instruction::Enum instruction,
                     DebugOrigin::Enum debug);
 
-  // Create an instance delegate for the given type or source (the this handle
-  // will be created)
+  // Create an instance delegate for the given type or source (the this handle will be created)
   void CreateInstanceDelegateAndThisHandle(Function* caller,
                                            Function* toCall,
                                            Type* thisType,
@@ -151,8 +146,7 @@ private:
                                            const CodeLocation& location,
                                            DebugOrigin::Enum debug);
 
-  // Create an instance delegate for the given type or source (we provide the
-  // this handle)
+  // Create an instance delegate for the given type or source (we provide the this handle)
   void CreateInstanceDelegateWithThisHandle(Function* caller,
                                             Function* toCall,
                                             const Operand& thisHandle,
@@ -183,16 +177,14 @@ private:
   // Generate opcode for function calls
   void GenerateFunctionCall(FunctionCallNode*& node, GeneratorContext* context);
 
-  // Generate the opcode for a function call (*before* opcode for argument
-  // copying)
+  // Generate the opcode for a function call (*before* opcode for argument copying)
   void GenerateCallOpcodePreArgs(Function* caller,
                                  DelegateType* delegateTypeToCall,
                                  const Operand& delegateLocal,
                                  const CodeLocation& location,
                                  DebugOrigin::Enum debugOrigin);
 
-  // Generate the opcode for a function call (*after* opcode for argument
-  // copying)
+  // Generate the opcode for a function call (*after* opcode for argument copying)
   void GenerateCallOpcodePostArgs(Function* caller,
                                   DelegateType* delegateTypeToCall,
                                   Operand* returnAccessOut,
@@ -217,8 +209,7 @@ private:
   // Invokes 'Add' and initializes members
   void GenerateExpressionInitializer(ExpressionInitializerNode*& node, GeneratorContext* context);
 
-  // Perform all the expressions of the multi-expression, and then yield the
-  // access to one of them
+  // Perform all the expressions of the multi-expression, and then yield the access to one of them
   void GenerateMultiExpression(MultiExpressionNode*& node, GeneratorContext* context);
 
   // Allocate a local on a function (and setup an access to point at it)
@@ -257,8 +248,7 @@ private:
                         DebugOrigin::Enum debugOrigin,
                         const CodeLocation& location);
 
-  // Determine the proper opcode for copy operations (we're initializing the
-  // return value)
+  // Determine the proper opcode for copy operations (we're initializing the return value)
   void GenerateCopyToReturn(Function* function,
                             Type* type,
                             const Operand& source,

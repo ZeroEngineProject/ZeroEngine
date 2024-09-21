@@ -9,18 +9,15 @@ namespace Zilch
 namespace Events
 {
 // We send this even on a BuildPlugin prior to any code being built
-// During this phase we can populate the event with any dependent libraries
-// (such as our own StaticLibrary)
+// During this phase we can populate the event with any dependent libraries (such as our own StaticLibrary)
 ZilchDeclareEvent(PreBuild, BuildEvent);
 } // namespace Events
 
-// The signature of the CreateZilchPlugin function that we look for in the
-// shared library
+// The signature of the CreateZilchPlugin function that we look for in the shared library
 typedef Plugin* (*CreateZilchPluginFn)();
 
 // An event sent to plugins when we are building a project
-// This event allows plugins to populate their own built libraries as
-// dependencies
+// This event allows plugins to populate their own built libraries as dependencies
 class ZeroShared BuildEvent : public EventData
 {
 public:
@@ -68,9 +65,8 @@ public:
   static EventHandler GlobalEvents;
 };
 
-// This class must be implemented to create a custom plugin (also implement the
-// below function) This class will be created upon building a library, and will
-// be destroyed whenever the library itself dies
+// This class must be implemented to create a custom plugin (also implement the below function)
+// This class will be created upon building a library, and will be destroyed whenever the library itself dies
 class ZeroShared Plugin : public EventHandler
 {
 public:
@@ -80,15 +76,13 @@ public:
 
   Plugin();
 
-  // Returns a pointer to the plugin if it is able to be loaded, or null if it
-  // failed to load The plugin's lifetime will be associated with the library we
-  // are building (deleted when it dies) All plugins loaded should have the
-  // '.zilchPlugin' extension (a shared object or dynamic linked library) It may
-  // fail to load if the path specified isn't accessible, isn't a valid shared
-  // library, or doesn't export the CreateZilchPlugin function Loading a plugin
-  // will attempt to make a local/temporary copy so that dynamic reloading can
-  // be done (on certain platforms) This ideally prevents our program from
-  // locking the plugin file
+  // Returns a pointer to the plugin if it is able to be loaded, or null if it failed to load
+  // The plugin's lifetime will be associated with the library we are building (deleted when it dies)
+  // All plugins loaded should have the '.zilchPlugin' extension (a shared object or dynamic linked library)
+  // It may fail to load if the path specified isn't accessible, isn't a valid shared library,
+  // or doesn't export the CreateZilchPlugin function
+  // Loading a plugin will attempt to make a local/temporary copy so that dynamic reloading can be done (on certain
+  // platforms) This ideally prevents our program from locking the plugin file
   static LibraryRef LoadFromFile(Status& status, Module& dependencies, StringParam filePath, void* userData = nullptr);
   static void LoadFromDirectory(Status& status,
                                 Module& dependencies,
@@ -96,8 +90,7 @@ public:
                                 StringParam directory,
                                 void* userData = nullptr);
 
-  // Contexts values that are returned from a status when failing to load a
-  // plugin.
+  // Contexts values that are returned from a status when failing to load a plugin.
   static const u32 StatusContextEmpty = 1;
   static const u32 StatusContextNotValid = 2;
   static const u32 StatusContextNoCreateZilchPlugin = 3;
@@ -107,8 +100,7 @@ public:
   // Initializes the plugin (safe to call more than once)
   void InitializeSafe();
 
-  // Uninitializes the plugin (safe to call more than once, only uninitializes
-  // if it was initialized)
+  // Uninitializes the plugin (safe to call more than once, only uninitializes if it was initialized)
   void UninitializeSafe();
 
   // Checks if this plugin was initialized
@@ -117,32 +109,28 @@ public:
   // Get the static library that the plugin initialized
   virtual LibraryRef GetLibrary() = 0;
 
-  // User data passed by the call to LoadPlugin (or specified inside of a
-  // Project when adding a plugin)
+  // User data passed by the call to LoadPlugin (or specified inside of a Project when adding a plugin)
   void* UserData;
 
 protected:
-  // Invoked when we fully load an initialize the plugin and are building a
-  // project At this time, the plugin may add dependencies to the project that
-  // is currently building. The plugin may also build libraries at this time
+  // Invoked when we fully load an initialize the plugin and are building a project
+  // At this time, the plugin may add dependencies to the project that is
+  // currently building. The plugin may also build libraries at this time
   virtual void PreBuild(BuildEvent* event);
 
   // An opportunity to run any one time initialization logic for a plugin
-  // This will only run upon a full compilation of Zilch (not when AutoComplete
-  // or Definition info is queried)
+  // This will only run upon a full compilation of Zilch (not when AutoComplete or Definition info is queried)
   virtual void Initialize();
 
   // An opportunity to run any one time uninitialization logic for a plugin
-  // This will only run upon a full compilation of Zilch (not when AutoComplete
-  // or Definition info is queried)
+  // This will only run upon a full compilation of Zilch (not when AutoComplete or Definition info is queried)
   virtual void Uninitialize();
 
   // We don't want users to delete a plugin directly
   virtual ~Plugin();
 
 private:
-  // Whether or not we ran 'Initialize' (not when AutoComplete or Definition
-  // info is queried)
+  // Whether or not we ran 'Initialize' (not when AutoComplete or Definition info is queried)
   bool Initialized;
 
   // The library that our code is loaded from
@@ -150,12 +138,10 @@ private:
 };
 
 // Construct a handle for plugin purposes
-// This will use the currently AllocatingType on ExecutableState, as well as a
-// PointerManager
+// This will use the currently AllocatingType on ExecutableState, as well as a PointerManager
 ZeroShared void CreateAllocatingHandle(Handle& handle, void* pointer);
 
-// Mangles function names so they become unique and do not collide with
-// overloads
+// Mangles function names so they become unique and do not collide with overloads
 class ZeroShared NameMangler
 {
 public:
@@ -165,8 +151,7 @@ public:
   // Get a unique id from a delegate type
   GuidType GetDelegateTypeId(DelegateType* type);
 
-  // Find a function by mangled name and asserts if it cannot find it (function
-  // name is intentionally a cstr)
+  // Find a function by mangled name and asserts if it cannot find it (function name is intentionally a cstr)
   Function* FindFunction(GuidType functionHash, const char* functionName, StringParam typeName);
 
 private:
@@ -174,14 +159,13 @@ private:
   HashMap<GuidType, Function*> HashToFunction;
 };
 
-// Finds a bound type in the provided library with the specified name and
-// asserts if it cannot find it (type name is intentionally a cstr)
+// Finds a bound type in the provided library with the specified name and asserts if it cannot find it (type name is
+// intentionally a cstr)
 ZeroShared BoundType* FindLibraryType(LibraryRef library, const char* name);
 
-// A helper used to patch the specified type (used in stub code generation, also
-// asserts) Replaces the static bound type with the bound type found in the
-// provided library with the specified name Returns the patched bound type, else
-// nullptr
+// A helper used to patch the specified type (used in stub code generation, also asserts)
+// Replaces the static bound type with the bound type found in the provided library with the specified name
+// Returns the patched bound type, else nullptr
 template <typename T>
 ZeroSharedTemplate BoundType* PatchLibraryType(LibraryRef library, const char* name)
 {
@@ -190,8 +174,7 @@ ZeroSharedTemplate BoundType* PatchLibraryType(LibraryRef library, const char* n
   BoundType* foundType = FindLibraryType(library, name);
   if (foundType != nullptr)
   {
-    // Our static bound type was never initialized? (We created this bound
-    // type?)
+    // Our static bound type was never initialized? (We created this bound type?)
     if (outputType->IsInitialized() == false)
     {
       // We are responsible for releasing this bound type before replacing it
@@ -216,8 +199,7 @@ public:
 };
 
 // Generates C++ code that can be used within plugins which will allow users to
-// conveniently make calls to types bound to Zilch (or even Zilch scripts
-// themselves)
+// conveniently make calls to types bound to Zilch (or even Zilch scripts themselves)
 class ZeroShared NativeStubCode
 {
 public:
@@ -238,21 +220,18 @@ public:
   // Note: If this is not set to a define, then you MUST use quotes
   String PrecompiledHeader;
 
-  // Text appended to the hpp file (at the top, middle after the include guards,
-  // and bottom)
+  // Text appended to the hpp file (at the top, middle after the include guards, and bottom)
   String HppHeader;
   String HppMiddle;
   String HppFooter;
 
-  // Text appended to the cpp file (at the top, middle after the include guards,
-  // and bottom)
+  // Text appended to the cpp file (at the top, middle after the include guards, and bottom)
   String CppHeader;
   String CppMiddle;
   String CppFooter;
 
-  // If you want to have a custom define emitted within the hpp's public section
-  // of a class This is useful if you utilize the 'HppHeader' section above to
-  // create a custom define that adds members
+  // If you want to have a custom define emitted within the hpp's public section of a class
+  // This is useful if you utilize the 'HppHeader' section above to create a custom define that adds members
   HashMap<BoundType*, String> CustomClassHeaderDefines;
 
   // These will be filled out with C++ code when we call 'Generate'
@@ -276,8 +255,7 @@ private:
   String GenerateCpp();
 };
 
-// Use this in a single translational unit (cpp) that can see the declaration of
-// the above plugin
+// Use this in a single translational unit (cpp) that can see the declaration of the above plugin
 #  define ZilchDefinePluginInterface(PluginClass)                                                                      \
     ZeroExportC long GetZilchPluginVersion()                                                                           \
     {                                                                                                                  \
@@ -288,8 +266,7 @@ private:
       return new PluginClass();                                                                                        \
     }
 
-// This is a common macro for implementing a single static library and plugin in
-// one
+// This is a common macro for implementing a single static library and plugin in one
 #  define ZilchDeclareStaticLibraryAndPlugin(LibraryName, PluginName, ...)                                             \
     ZilchDeclareStaticLibrary(LibraryName, ZilchNoNamespace, ZeroNoImportExport, ##__VA_ARGS__);                       \
     class PluginName : public ZZ::Plugin                                                                               \
@@ -302,8 +279,7 @@ private:
       void Uninitialize() override;                                                                                    \
     };
 
-// This is a common macro for implementing a single static library and plugin in
-// one
+// This is a common macro for implementing a single static library and plugin in one
 #  define ZilchDefineStaticLibraryAndPlugin(LibraryName, PluginName, ...)                                              \
     ZilchDefinePluginInterface(PluginName);                                                                            \
     PluginName::~PluginName()                                                                                          \
@@ -328,8 +304,7 @@ private:
 
 // A base class for all reference native stubs that cannot be constructed,
 // destructed, or copied in any way (basically never derferenced)
-// WARNING: Do NOT add a virtual function to this class as it will destroy the
-// layout of plugin stub classes
+// WARNING: Do NOT add a virtual function to this class as it will destroy the layout of plugin stub classes
 class ZeroShared ReferenceType
 {
 public:
@@ -340,8 +315,7 @@ public:
 };
 
 // A base class for all value types
-// WARNING: Do NOT add a virtual function to this class as it will destroy the
-// layout of plugin stub classes
+// WARNING: Do NOT add a virtual function to this class as it will destroy the layout of plugin stub classes
 class ZeroShared ValueType
 {
 public:
@@ -356,16 +330,15 @@ ZeroSharedTemplate T Default()
 }
 
 // All stub generated C++ code uses external binding with this library
-// This library pretends to be the static library that the type belongs to, but
-// it will be redirected when we hook-up types through the dll/so-boundary
+// This library pretends to be the static library that the type belongs to, but it will be redirected
+// when we hook-up types through the dll/so-boundary
 class ZeroShared PluginStubLibrary : public StaticLibrary
 {
 public:
   // Grab the singleton instance of the plugin stub
   static PluginStubLibrary& GetInstance();
 
-  // This is a special case where we always allow plugins to "build" so that we
-  // can do type hookups
+  // This is a special case where we always allow plugins to "build" so that we can do type hookups
   bool CanBuildTypes() override;
 
 private:

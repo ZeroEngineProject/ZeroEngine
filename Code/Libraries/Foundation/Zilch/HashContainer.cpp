@@ -18,11 +18,7 @@ AnyHashMapRange::AnyHashMapRange() : ModifyId(0)
 }
 
 HashMapUserData::HashMapUserData() :
-    KeyType(nullptr),
-    ValueType(nullptr),
-    PairRangeType(nullptr),
-    ValueRangeType(nullptr),
-    KeyRangeType(nullptr)
+    KeyType(nullptr), ValueType(nullptr), PairRangeType(nullptr), ValueRangeType(nullptr), KeyRangeType(nullptr)
 {
 }
 
@@ -47,12 +43,10 @@ void HashMapGetOrDefault(Call& call, ExceptionReport& report)
   // The first index is always the key, read that
   ::byte* keyData = call.GetParameterUnchecked(0);
 
-  // The second index is a default value that gets returned when we fail to find
-  // the key
+  // The second index is a default value that gets returned when we fail to find the key
   ::byte* defaultValueData = call.GetParameterUnchecked(1);
 
-  // Construct an 'any' (we can avoid this step if we use a special finder, but
-  // who cares for right now)
+  // Construct an 'any' (we can avoid this step if we use a special finder, but who cares for right now)
   Any key(keyData, userData.KeyType);
   Any* value = (*self).FindPointer(key);
 
@@ -60,8 +54,7 @@ void HashMapGetOrDefault(Call& call, ExceptionReport& report)
   ::byte* returnValue = call.GetReturnUnchecked();
   call.DisableReturnChecks();
 
-  // If we found the value, copy it to the return, otherwise copy the default to
-  // the return
+  // If we found the value, copy it to the return, otherwise copy the default to the return
   if (value != nullptr)
     value->CopyStoredValueTo(returnValue);
   else
@@ -79,8 +72,7 @@ void HashMapGetOrDefaultNull(Call& call, ExceptionReport& report)
   // The first index is always the key, read that
   ::byte* keyData = call.GetParameterUnchecked(0);
 
-  // Construct an 'any' (we can avoid this step if we use a special finder, but
-  // who cares for right now)
+  // Construct an 'any' (we can avoid this step if we use a special finder, but who cares for right now)
   Any key(keyData, userData.KeyType);
   Any* value = (*self).FindPointer(key);
 
@@ -88,8 +80,7 @@ void HashMapGetOrDefaultNull(Call& call, ExceptionReport& report)
   ::byte* returnValue = call.GetReturnUnchecked();
   call.DisableReturnChecks();
 
-  // If we found the value, copy it to the return, otherwise copy the default to
-  // the return
+  // If we found the value, copy it to the return, otherwise copy the default to the return
   if (value != nullptr)
     value->CopyStoredValueTo(returnValue);
   else
@@ -107,8 +98,7 @@ void HashMapGetOrError(Call& call, ExceptionReport& report)
   // The first index is always the key, read that
   ::byte* keyData = call.GetParameterUnchecked(0);
 
-  // Construct an 'any' (we can avoid this step if we use a special finder, but
-  // who cares for right now)
+  // Construct an 'any' (we can avoid this step if we use a special finder, but who cares for right now)
   Any key(keyData, userData.KeyType);
 
   Any* value = (*self).FindPointer(key);
@@ -139,8 +129,7 @@ void HashMapContains(Call& call, ExceptionReport& report)
   // The first index is always the key, read that
   ::byte* keyData = call.GetParameterUnchecked(0);
 
-  // Construct an 'any' (we can avoid this step if we use a special finder, but
-  // who cares for right now)
+  // Construct an 'any' (we can avoid this step if we use a special finder, but who cares for right now)
   Any key(keyData, userData.KeyType);
 
   bool containsKey = self->ContainsKey(key);
@@ -191,8 +180,7 @@ void HashMapSetOrIgnore(Call& call, ExceptionReport& report)
 
   bool noKeyDoInsert = (self->FindPointer(key) == nullptr);
 
-  // Insert the value into the map under that key only if one doesn't already
-  // exist
+  // Insert the value into the map under that key only if one doesn't already exist
   if (noKeyDoInsert)
     (*self)[key] = value;
 
@@ -215,8 +203,7 @@ void HashMapSetOrError(Call& call, ExceptionReport& report)
   Any key(keyData, userData.KeyType);
   Any value(valueData, userData.ValueType);
 
-  // Insert the value into the map under that key only if one doesn't already
-  // exist
+  // Insert the value into the map under that key only if one doesn't already exist
   if (Any* foundValue = self->FindPointer(key))
   {
     String message = String::Format("The key '%s' already existed within the map with a value of '%s'",
@@ -241,8 +228,7 @@ void HashMapRemoveOrError(Call& call, ExceptionReport& report)
   // The first index is always the key, read that
   ::byte* keyData = call.GetParameterUnchecked(0);
 
-  // Construct an 'any' (we can avoid this step if we use a special finder, but
-  // who cares for right now)
+  // Construct an 'any' (we can avoid this step if we use a special finder, but who cares for right now)
   Any key(keyData, userData.KeyType);
 
   Any* value = (*self).FindPointer(key);
@@ -269,8 +255,7 @@ void HashMapRemoveOrIgnore(Call& call, ExceptionReport& report)
   // The first index is always the key, read that
   ::byte* keyData = call.GetParameterUnchecked(0);
 
-  // Construct an 'any' (we can avoid this step if we use a special finder, but
-  // who cares for right now)
+  // Construct an 'any' (we can avoid this step if we use a special finder, but who cares for right now)
   Any key(keyData, userData.KeyType);
 
   Any* value = (*self).FindPointer(key);
@@ -352,8 +337,7 @@ BoundType* Core::InstantiateHashMap(LibraryBuilder& builder,
   BoundType* valueRangeType =
       builder.InstantiateTemplate("HashMapValueRange", ZilchConstants(valueType), Module()).Type;
 
-  // Create the array type instance (arrays and any other containers should be
-  // reference types!)
+  // Create the array type instance (arrays and any other containers should be reference types!)
   BoundType* containerType =
       builder.AddBoundType(baseName, fullyQualifiedName, TypeCopyMode::ReferenceType, sizeof(AnyHashMap));
 
@@ -438,8 +422,7 @@ void AnyHashMapRange::MoveNext()
   // If the hash map we originated from is null, then also throw an exception
   if (this->HashMap.IsNull())
   {
-    state->ThrowException("The hash map this range referenced is null (or "
-                          "deleted) and cannot be ");
+    state->ThrowException("The hash map this range referenced is null (or deleted) and cannot be ");
     return;
   }
 
@@ -447,8 +430,7 @@ void AnyHashMapRange::MoveNext()
   if (this->IsEmpty())
   {
     // Throw an exception since the range was empty and we called MoveNext
-    state->ThrowException("The range reached the end, but then an attempt was "
-                          "made to make it iterate forward more");
+    state->ThrowException("The range reached the end, but then an attempt was made to make it iterate forward more");
     return;
   }
 
@@ -488,8 +470,7 @@ void HashMapRangeCurrent(Call& call, ExceptionReport& report)
   AnyHashMap* hashMap = (AnyHashMap*)self->HashMap.Dereference();
   if (self->HashMap.IsNull())
   {
-    state->ThrowException("The hash map this range referenced is null (or "
-                          "deleted) and cannot be ");
+    state->ThrowException("The hash map this range referenced is null (or deleted) and cannot be ");
     return;
   }
 
@@ -506,13 +487,11 @@ void HashMapRangeCurrent(Call& call, ExceptionReport& report)
   {
     // Throw an exception since the range was empty and we called Current
     call.GetState()->ThrowException(report,
-                                    "The range reached the end and an attempt "
-                                    "was made to get the current value");
+                                    "The range reached the end and an attempt was made to get the current value");
     return;
   }
 
-  // Grab the key-value pair that we'll be returning (either part of it, or the
-  // whole thing)
+  // Grab the key-value pair that we'll be returning (either part of it, or the whole thing)
   AnyKeyValue& keyValue = self->Range.Front();
 
   // If this is a pair then we need to allocate a KeyValue pair
@@ -546,8 +525,7 @@ void HashMapRangeCurrent(Call& call, ExceptionReport& report)
     ::byte* returnValue = call.GetReturnUnchecked();
     call.DisableReturnChecks();
 
-    // Copy the value at the array to the return type (this properly deals with
-    // the Any type)
+    // Copy the value at the array to the return type (this properly deals with the Any type)
     if (mode == HashMapRangeMode::Key)
       CopyFromAnyOrActualType(keyValue.first, returnValue);
     else
@@ -584,8 +562,7 @@ BoundType* Core::InstantiateHashMapRange(LibraryBuilder& builder,
   }
   else
   {
-    // The type we return when accessing 'Current' is either the key or value
-    // (whatever T was passed in)
+    // The type we return when accessing 'Current' is either the key or value (whatever T was passed in)
     currentType = templateTypes[0].TypeValue;
   }
 

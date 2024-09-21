@@ -106,8 +106,7 @@ private:
                Array<Array<GrammarNode<TokenType>*>>& nodes);
 
   // We specialize these functions
-  // For example, it is only legal to add a string literal in the tokenizer, and
-  // a token literal in the parser
+  // For example, it is only legal to add a string literal in the tokenizer, and a token literal in the parser
   template <typename TokenType>
   void AddStringLiteralNode(StringParam string, Array<GrammarNode<TokenType>*>& nodes);
   template <typename TokenType>

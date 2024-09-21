@@ -45,23 +45,19 @@ void BlockingWebSocketConnection::SendFullPacket(Status& status,
   size_t headerSize = 0;
 
   // Write the first two bytes (flags / opcode, and the payload)
-  // Since we're always sending a full packet (not truncated or fragments) then
-  // this is always a FIN packet
+  // Since we're always sending a full packet (not truncated or fragments) then this is always a FIN packet
   header[0] |= 0x80;
 
-  // Set the opcode bit depending on if we're in text or binary or some other
-  // control opcode
+  // Set the opcode bit depending on if we're in text or binary or some other control opcode
   header[0] |= (::byte)packetType;
 
-  // We don't bother to set the mask bit, so just set the second byte as the
-  // size (and onward if we need it)
+  // We don't bother to set the mask bit, so just set the second byte as the size (and onward if we need it)
   if (length < 126)
   {
     header[1] = (::byte)length;
     headerSize = 2;
   }
-  // If we're using 2 bytes to describe the size (1 byte just to say we're using
-  // 2 bytes...)
+  // If we're using 2 bytes to describe the size (1 byte just to say we're using 2 bytes...)
   else if (length <= 0xFFFF)
   {
     header[1] = 126;
@@ -69,8 +65,7 @@ void BlockingWebSocketConnection::SendFullPacket(Status& status,
     *((unsigned short*)(header + 2)) = NetworkFlip((unsigned short)length);
     headerSize = 4;
   }
-  // If we're using 8 bytes to describe the size (1 byte just to say we're using
-  // 8 bytes...)
+  // If we're using 8 bytes to describe the size (1 byte just to say we're using 8 bytes...)
   else
   {
     header[1] = 127;
@@ -78,21 +73,17 @@ void BlockingWebSocketConnection::SendFullPacket(Status& status,
     headerSize = 10;
   }
 
-  // Send the header off first (this will block until it sends the entire
-  // thing!)
+  // Send the header off first (this will block until it sends the entire thing!)
   size_t sentSizeHeader = this->RemoteSocket.Send(status, header, (int)headerSize, SocketFlags::None);
   ErrorIf(sentSizeHeader != 0 && sentSizeHeader != (int)headerSize,
-          "We should always send the entire header, send should block until "
-          "its all sent!");
+          "We should always send the entire header, send should block until its all sent!");
   if (status.Failed())
     return;
 
-  // Now send the rest of the payload data (could be done in one send, no
-  // problem though!)
+  // Now send the rest of the payload data (could be done in one send, no problem though!)
   size_t sentSizeData = this->RemoteSocket.Send(status, data, (int)length, SocketFlags::None);
   ErrorIf(sentSizeData != 0 && sentSizeData != (int)length,
-          "We should always send the entire data, send should block until its "
-          "all sent!");
+          "We should always send the entire data, send should block until its all sent!");
   if (status.Failed())
     return;
 }
@@ -114,8 +105,7 @@ WebSocketPacketType::Enum BlockingWebSocketConnection::ReceiveFullPacket(Status&
   bool rsv3 = false;
   WebSocketPacketType::Enum opcode = WebSocketPacketType::Invalid;
 
-  // Clear the data, just so that if the user is reusing a buffer, they don't
-  // get confused
+  // Clear the data, just so that if the user is reusing a buffer, they don't get confused
   dataOut.Clear();
 
   // Read until we hit a full packet (return inside loop below)
@@ -136,9 +126,8 @@ WebSocketPacketType::Enum BlockingWebSocketConnection::ReceiveFullPacket(Status&
     this->ReadData.Insert(this->ReadData.End(), buffer, buffer + amountReceived);
     ::byte* data = this->ReadData.Data();
 
-    // The minimum amount of data a packet can be is 6, but the header can be
-    // larger because of extended sizes This includes the opcode/starting bits
-    // (1), the payload length (1), and the mask (4)
+    // The minimum amount of data a packet can be is 6, but the header can be larger because of extended sizes
+    // This includes the opcode/starting bits (1), the payload length (1), and the mask (4)
     if (readHeader == false && this->ReadData.Size() >= 6)
     {
       // First, read the header byte which tells us all the options
@@ -159,17 +148,15 @@ WebSocketPacketType::Enum BlockingWebSocketConnection::ReceiveFullPacket(Status&
       size_t position = 2;
       payloadSize = sizeByte;
 
-      // Assume right now that we successfully read the header (we may still
-      // fail below if we don't have enough header data)
+      // Assume right now that we successfully read the header (we may still fail below if we don't have enough header
+      // data)
       readHeader = true;
 
-      // If the size is 126, then it means we have an extra 16 bits of data (2
-      // bytes)
+      // If the size is 126, then it means we have an extra 16 bits of data (2 bytes)
       if (sizeByte == 126)
       {
-        // We're reading an extended payload size of 2 bytes, which means we
-        // must have at least 8 bytes (6 + 2) of data in total for the whole
-        // header
+        // We're reading an extended payload size of 2 bytes, which means we must have at least 8 bytes (6 + 2) of data
+        // in total for the whole header
         if (this->ReadData.Size() >= 8)
         {
           payloadSize = NetworkFlip((unsigned short)(data[2] + (data[3] << 8)));
@@ -177,17 +164,15 @@ WebSocketPacketType::Enum BlockingWebSocketConnection::ReceiveFullPacket(Status&
         }
         else
         {
-          // We couldn't read the extended payload, because we didn't have
-          // enough data read for it
+          // We couldn't read the extended payload, because we didn't have enough data read for it
           readHeader = false;
         }
       }
       // If the size is 127, then we have an extra 64 bits of data (8 bytes)
       else if (sizeByte == 127)
       {
-        // We're reading an extended payload size of 8 bytes, which means we
-        // must have at least 14 bytes (6 + 8) of data in total for the whole
-        // header
+        // We're reading an extended payload size of 8 bytes, which means we must have at least 14 bytes (6 + 8) of data
+        // in total for the whole header
         if (this->ReadData.Size() >= 14)
         {
           payloadSize = (size_t)NetworkFlip(
@@ -198,8 +183,7 @@ WebSocketPacketType::Enum BlockingWebSocketConnection::ReceiveFullPacket(Status&
         }
         else
         {
-          // We couldn't read the extended payload, because we didn't have
-          // enough data read for it
+          // We couldn't read the extended payload, because we didn't have enough data read for it
           readHeader = false;
         }
       }
@@ -216,23 +200,20 @@ WebSocketPacketType::Enum BlockingWebSocketConnection::ReceiveFullPacket(Status&
       }
     }
 
-    // If we already read the header and we have enough data to read the entire
-    // packet...
+    // If we already read the header and we have enough data to read the entire packet...
     if (readHeader && this->ReadData.Size() >= payloadSize)
     {
       // Get a pointer to the data (for convenience)
       ::byte* readData = this->ReadData.Data();
 
-      // Directly create a string node that we'll Assign to a string (where we
-      // copy our data into)
+      // Directly create a string node that we'll Assign to a string (where we copy our data into)
       Zero::StringNode* node = String::AllocateNode(payloadSize);
 
       // Loop through the payload and apply the mask to it
       for (size_t i = 0; i < payloadSize; ++i)
       {
         // Grab the current mask character (rotates by 4 over and over)
-        // Apply this mask to the current byte we're reading, and put it into
-        // the user output
+        // Apply this mask to the current byte we're reading, and put it into the user output
         char maskChar = mask[i % 4];
         node->Data[i] = readData[i] ^ maskChar;
       }
@@ -240,8 +221,7 @@ WebSocketPacketType::Enum BlockingWebSocketConnection::ReceiveFullPacket(Status&
       // Now output the string from the node we just created
       dataOut = String(node);
 
-      // We're done, we read a full packet, remove the data we read so that the
-      // next packet can be processed
+      // We're done, we read a full packet, remove the data we read so that the next packet can be processed
       this->ReadData.Erase(Array<::byte>::range(readData, readData + payloadSize));
       return opcode;
     }
@@ -257,8 +237,8 @@ void BlockingWebSocketListener::Initialize(Status& status, int port)
   // Web sockets are strictly TCP
   this->ListenerSocket.Open(status, SocketAddressFamily::InternetworkV4, SocketType::Stream, SocketProtocol::Tcp);
 
-  // First create a local socket address, bound to any network adapter (let the
-  // OS choose) Use the port that the user passed in
+  // First create a local socket address, bound to any network adapter (let the OS choose)
+  // Use the port that the user passed in
   SocketAddress localAddress;
   localAddress.SetIpv4(status, String(), ushort(port), SocketAddressResolutionFlags::AnyAddress);
 
@@ -271,8 +251,7 @@ void BlockingWebSocketListener::Initialize(Status& status, int port)
   if (status.Failed())
     return;
 
-  // Now listen on the socket, which should allow incoming connections to be
-  // accepted
+  // Now listen on the socket, which should allow incoming connections to be accepted
   this->ListenerSocket.Listen(status, static_cast<uint>(Socket::GetMaxListenBacklog()));
 }
 
@@ -297,19 +276,16 @@ void BlockingWebSocketListener::Accept(Status& status, BlockingWebSocketConnecti
   // The default buffer size we use (big enough for a tcp window)
   const int ReceiveBufferSize = 4096;
 
-  // Even though it's not the most efficient approach, we're going to take all
-  // data we receive and stuff it into this array before we try and parse it
-  // (keeps data contiguous) A better data structure would be able to work with
-  // the temporary received data, and then only Append what isn't read at the
-  // end
+  // Even though it's not the most efficient approach, we're going to take all data we receive
+  // and stuff it into this array before we try and parse it (keeps data contiguous)
+  // A better data structure would be able to work with the temporary received data, and then
+  // only Append what isn't read at the end
   Array<::byte> remainingHeaderData;
 
-  // Whether or not we read the full header (denoted when we read two newlines
-  // in a row)
+  // Whether or not we read the full header (denoted when we read two newlines in a row)
   bool readFullHttpHeader = false;
 
-  // We've accepted a connection, but we don't know if this is a proper
-  // websocket yet...
+  // We've accepted a connection, but we don't know if this is a proper websocket yet...
   do
   {
     // Read the data from the socket
@@ -332,8 +308,7 @@ void BlockingWebSocketListener::Accept(Status& status, BlockingWebSocketConnecti
     // Get a pointer to the remaining data, for convenience
     char* data = (char*)remainingHeaderData.Data();
 
-    // Track whether we already hit a newline (used to break out from the HTTP
-    // request - two newlines)
+    // Track whether we already hit a newline (used to break out from the HTTP request - two newlines)
     bool justHitNewline = false;
 
     // Loop through remaining data...
@@ -353,12 +328,10 @@ void BlockingWebSocketListener::Accept(Status& status, BlockingWebSocketConnecti
           break;
         }
 
-        // Mark that we just hit a newline (gets reset in the 'else' clause
-        // below)
+        // Mark that we just hit a newline (gets reset in the 'else' clause below)
         justHitNewline = true;
 
-        // Create a range that points from the start of the current line to the
-        // end (where we are now, the newline!)
+        // Create a range that points from the start of the current line to the end (where we are now, the newline!)
         StringRange range(lastLineStart, data + i);
 
         // If we have yet to read that this is a get-request...
@@ -374,8 +347,7 @@ void BlockingWebSocketListener::Accept(Status& status, BlockingWebSocketConnecti
             // This is NOT a get request, or it's an old version!
             connectionOut.RemoteSocket.Close(status);
 
-            // Return that the http request was not valid (regardless of if
-            // closing the socket failed)
+            // Return that the http request was not valid (regardless of if closing the socket failed)
             status.SetFailed("Not a valid HTTP 1.1 client request");
             return;
           }
@@ -395,8 +367,7 @@ void BlockingWebSocketListener::Accept(Status& status, BlockingWebSocketConnecti
             httpHeaderKey = httpHeaderKey.Trim();
             httpHeaderValue = httpHeaderValue.Trim();
 
-            // Finally, map the key to the value so we can lookup any header
-            // values later
+            // Finally, map the key to the value so we can lookup any header values later
             connectionOut.Headers.Insert(httpHeaderKey, httpHeaderValue);
           }
           else
@@ -412,8 +383,7 @@ void BlockingWebSocketListener::Accept(Status& status, BlockingWebSocketConnecti
       }
       else if (c != '\r')
       {
-        // As long as we're not hitting the carriage return, mark this as no
-        // longer a newline
+        // As long as we're not hitting the carriage return, mark this as no longer a newline
         justHitNewline = false;
       }
     }
@@ -424,8 +394,7 @@ void BlockingWebSocketListener::Accept(Status& status, BlockingWebSocketConnecti
   // Loop until we read the full header
   while (readFullHttpHeader == false);
 
-  // A special guid appended to the 'accept' message that the server sends back
-  // (just to identify web sockets)
+  // A special guid appended to the 'accept' message that the server sends back (just to identify web sockets)
   static const String ServerGuid("258EAFA5-E914-47DA-95CA-C5AB0DC85B11");
   static const String SecWebSocketKey("Sec-WebSocket-Key");
 
@@ -476,8 +445,7 @@ void ThreadedWebSocketConnection::SendPacket(StringParam message, WebSocketPacke
 
   // We need to tell the send thread that it now has data to send (unblocks it)
   // This MUST happen inside the locks, otherwise it's possibly to consume
-  // all messages in the send thread before the singal, and cause the send
-  // thread to exit
+  // all messages in the send thread before the singal, and cause the send thread to exit
   this->SendEvent.Signal();
   this->SendLock.Unlock();
 }
@@ -504,8 +472,7 @@ void ThreadedWebSocketConnection::Close()
   if (this->IsValid() == false)
     return;
 
-  // Shutdown the remote connection, which should signal that we're ending the
-  // connection
+  // Shutdown the remote connection, which should signal that we're ending the connection
   WebSocketEvent shutdownEvent;
   shutdownEvent.Connection = this;
   this->BlockingConnection.RemoteSocket.Shutdown(shutdownEvent.ErrorStatus, SocketIo::Both);
@@ -520,8 +487,7 @@ void ThreadedWebSocketConnection::Close()
   this->SendMessages.Clear();
   this->SendLock.Unlock();
 
-  // Signal the send event, if it gets signaled and there's no messages, it
-  // means we're closing
+  // Signal the send event, if it gets signaled and there's no messages, it means we're closing
   this->SendEvent.Signal();
   this->SendThread.WaitForCompletion();
 
@@ -544,8 +510,7 @@ void ThreadedWebSocketConnection::Close()
 
 void ThreadedWebSocketConnection::Update()
 {
-  // Lock the recieve buffer and bring all messages to the owning recieve
-  // message array
+  // Lock the recieve buffer and bring all messages to the owning recieve message array
   this->IncomingLock.Lock();
   this->OwnerIncomingEvents.Swap(this->ThreadIncomingEvents);
   this->IncomingLock.Unlock();
@@ -556,21 +521,18 @@ void ThreadedWebSocketConnection::Update()
     // Grab the current message and send out a received event
     WebSocketEvent* event = &this->OwnerIncomingEvents[i];
 
-    // Depending on what happened, send out either an error message or a
-    // received data message Note: Errors can originate both from the send and
-    // receive thread
+    // Depending on what happened, send out either an error message or a received data message
+    // Note: Errors can originate both from the send and receive thread
     if (event->ErrorStatus.Failed())
     {
-      // Only send out the error if its a real error (we don't consider
-      // receive/close errors as bad errors)
+      // Only send out the error if its a real error (we don't consider receive/close errors as bad errors)
       if (Socket::IsCommonReceiveError(event->ErrorStatus.Context) == false)
         EventSend(this, Events::WebSocketError, event);
     }
     else
     {
       // Based on the packet type..
-      // Note: We don't currently handle pong because we don't care (nor do we
-      // send out pings)
+      // Note: We don't currently handle pong because we don't care (nor do we send out pings)
       switch (event->PacketType)
       {
       // If we received either text or binary data, let the user know
@@ -589,8 +551,7 @@ void ThreadedWebSocketConnection::Update()
         this->SendPacket(event->Data, WebSocketPacketType::Pong);
         break;
 
-      // When the socket is closed, we must send a close response and close our
-      // own socket
+      // When the socket is closed, we must send a close response and close our own socket
       case WebSocketPacketType::Close:
         this->SendPacket(event->Data, WebSocketPacketType::Close);
         break;
@@ -604,19 +565,17 @@ void ThreadedWebSocketConnection::Update()
   // Clear out the owning messages
   this->OwnerIncomingEvents.Clear();
 
-  // Now, if we ever experienced a disconnect, either via a non-writable socket
-  // or a thread terminates then we'll attempt to close the socket The receive
-  // thread can terminate on any error or upon a gracefull disconnect (receives
-  // 0 data) The send thread can terminate on any error or upon sending the
-  // final web-socket close packet
+  // Now, if we ever experienced a disconnect, either via a non-writable socket or a thread terminates
+  // then we'll attempt to close the socket
+  // The receive thread can terminate on any error or upon a gracefull disconnect (receives 0 data)
+  // The send thread can terminate on any error or upon sending the final web-socket close packet
   if (this->ReceiveThread.IsCompleted() || this->SendThread.IsCompleted())
     this->Close();
 }
 
 void ThreadedWebSocketConnection::Initialize()
 {
-  // The send event will be used to signal the send thread that we have data
-  // outgoing
+  // The send event will be used to signal the send thread that we have data outgoing
   this->SendEvent.Initialize();
 
   // Initialize all of our threads
@@ -646,8 +605,7 @@ OsInt ThreadedWebSocketConnection::ReceiveEntryPoint(void* context)
     self->ThreadIncomingEvents.PushBack(receivedEvent);
     self->IncomingLock.Unlock();
 
-    // If we failed to for any reason (or disconnected gracefully), exit out of
-    // the thread
+    // If we failed to for any reason (or disconnected gracefully), exit out of the thread
     if (receivedEvent.PacketType == WebSocketPacketType::Invalid)
       return 0;
   }
@@ -666,11 +624,9 @@ OsInt ThreadedWebSocketConnection::SendEntryPoint(void* context)
     // Wait for any messages to be put on the queue
     self->SendEvent.Wait();
 
-    // Make sure OUR message queue is empty (this is safe to do outside the
-    // lock)
+    // Make sure OUR message queue is empty (this is safe to do outside the lock)
     ErrorIf(messageQueue.Empty() == false,
-            "We should have sent all messages before attempting to swap with "
-            "the main thread");
+            "We should have sent all messages before attempting to swap with the main thread");
 
     // We got some messages, lock and swap with our own message buffer
     self->SendLock.Lock();
@@ -684,13 +640,12 @@ OsInt ThreadedWebSocketConnection::SendEntryPoint(void* context)
     }
 
     // Very quickly swap our entire send messages array with theirs
-    // Note: This should always clear our their array because ours should be
-    // empty
+    // Note: This should always clear our their array because ours should be empty
     messageQueue.Swap(self->SendMessages);
 
     // Due to a race condition that can happen where the main thread queues up
-    // a message between the Wait and the Lock, then we will have the event set
-    // in the next loop, yet we will have cleared all the messages (swapped)
+    // a message between the Wait and the Lock, then we will have the event set in the next loop,
+    // yet we will have cleared all the messages (swapped)
     self->SendEvent.Reset();
 
     // We're done, that was fast!
@@ -722,8 +677,7 @@ OsInt ThreadedWebSocketConnection::SendEntryPoint(void* context)
         return 0;
       }
 
-      // If the last packet was a close packet, we must not send any more data,
-      // as per the web-socket RFC
+      // If the last packet was a close packet, we must not send any more data, as per the web-socket RFC
       if (message.PacketType == WebSocketPacketType::Close)
         return 0;
     }
@@ -767,21 +721,18 @@ void ThreadedWebSocketListener::Close()
   if (this->BlockingListener.ListenerSocket.IsOpen() == false)
     return;
 
-  // We only want to terminate the accepting listener socket while inside the
-  // lock, to prevent a race condition We also want to terminate the socket for
-  // any connection that is currently being accepted (if it exists)
+  // We only want to terminate the accepting listener socket while inside the lock, to prevent a race condition
+  // We also want to terminate the socket for any connection that is currently being accepted (if it exists)
   this->AcceptingConnectionLock.Lock();
 
-  // Close the remote connection, which should signal that we're ending the
-  // connection
+  // Close the remote connection, which should signal that we're ending the connection
   WebSocketEvent listenerCloseEvent;
   this->BlockingListener.ListenerSocket.Close(listenerCloseEvent.ErrorStatus);
 
   // Blocking connection close event
   WebSocketEvent acceptingCloseEvent;
 
-  // If the accepting connection is valid (we have one that is currently being
-  // accepted
+  // If the accepting connection is valid (we have one that is currently being accepted
   if (this->AcceptingConnection != nullptr && this->AcceptingConnection->BlockingConnection.IsValid())
     this->AcceptingConnection->BlockingConnection.RemoteSocket.Close(acceptingCloseEvent.ErrorStatus);
 
@@ -789,25 +740,22 @@ void ThreadedWebSocketListener::Close()
   this->AcceptingConnectionLock.Unlock();
 
   // The accept thread should encounter an error (accept will unblock)
-  // and then because the listener descriptor was closed and made invalid by
-  // calling 'Close', the thread should terminate Wait until the accept thread
-  // ends...
+  // and then because the listener descriptor was closed and made invalid by calling 'Close', the thread should
+  // terminate Wait until the accept thread ends...
   this->AcceptThread.WaitForCompletion();
 
   // If the listener close status failed for any reason, dispatch an event out
   if (listenerCloseEvent.ErrorStatus.Failed())
     EventSend(this, Events::WebSocketError, &listenerCloseEvent);
 
-  // If the accepting connection's close status failed for any reason, dispatch
-  // an event out
+  // If the accepting connection's close status failed for any reason, dispatch an event out
   if (acceptingCloseEvent.ErrorStatus.Failed())
     EventSend(this, Events::WebSocketError, &acceptingCloseEvent);
 }
 
 void ThreadedWebSocketListener::Update()
 {
-  // Lock the recieve buffer and bring all messages to the owning recieve
-  // message array
+  // Lock the recieve buffer and bring all messages to the owning recieve message array
   this->IncomingLock.Lock();
   this->OwnerIncomingEvents.Swap(this->ThreadIncomingEvents);
   this->IncomingLock.Unlock();
@@ -818,8 +766,7 @@ void ThreadedWebSocketListener::Update()
     // Grab the current message and send out a received event
     WebSocketEvent* event = &this->OwnerIncomingEvents[i];
 
-    // Depending on what happened, send out either an error message or a
-    // accepted connection message
+    // Depending on what happened, send out either an error message or a accepted connection message
     if (event->Connection != nullptr)
       EventSend(this, Events::WebSocketAcceptedConnection, event);
     else
@@ -829,8 +776,8 @@ void ThreadedWebSocketListener::Update()
   // Clear out the owning messages
   this->OwnerIncomingEvents.Clear();
 
-  // Now, if we ever experienced a disconnect, either via a non-writable socket
-  // or a thread terminates Then we'll attempt to close the socket
+  // Now, if we ever experienced a disconnect, either via a non-writable socket or a thread terminates
+  // Then we'll attempt to close the socket
   if (this->AcceptThread.IsCompleted())
     this->Close();
 }
@@ -845,10 +792,9 @@ OsInt ThreadedWebSocketListener::AcceptEntryPoint(void* context)
     // An event we send out if an error occurs
     WebSocketEvent acceptEvent;
 
-    // Before accepting any connections, we need to check if we're terminating,
-    // and also let the owning thread know the current connection we're
-    // accepting (so if the owning thread destructs this object, it can also
-    // close the accepting connection)
+    // Before accepting any connections, we need to check if we're terminating, and also let the owning
+    // thread know the current connection we're accepting (so if the owning thread destructs this object, it
+    // can also close the accepting connection)
     self->AcceptingConnectionLock.Lock();
 
     // If we no longer have a valid blocking listener, just exit out
@@ -859,40 +805,36 @@ OsInt ThreadedWebSocketListener::AcceptEntryPoint(void* context)
       return 0;
     }
 
-    // Create a new connection that can be accepted, and let the owning thread
-    // know what it is Again, this is so the owning thread can cancel both the
-    // listening and accepting sockets so we don't deadlock on receieve
+    // Create a new connection that can be accepted, and let the owning thread know what it is
+    // Again, this is so the owning thread can cancel both the listening and accepting sockets so we don't deadlock on
+    // receieve
     ThreadedWebSocketConnection* connection = new ThreadedWebSocketConnection();
     self->AcceptingConnection = connection;
 
     // Let the owning thread resume
     self->AcceptingConnectionLock.Unlock();
 
-    // Accept an incoming connection (blocks until the connection is fully acked
-    // according to web-sockets) Will unblock if the sockets are terminated by
-    // the owning thread
+    // Accept an incoming connection (blocks until the connection is fully acked according to web-sockets)
+    // Will unblock if the sockets are terminated by the owning thread
     self->BlockingListener.Accept(acceptEvent.ErrorStatus, connection->BlockingConnection);
 
-    // Now that we've finished accepting (could have failed, or could be a valid
-    // connection) we are no longer accepting this 'connection'
+    // Now that we've finished accepting (could have failed, or could be a valid connection)
+    // we are no longer accepting this 'connection'
     self->AcceptingConnectionLock.Lock();
 
-    // Clear out the accepting connection so the owning thread won't try and
-    // close it
+    // Clear out the accepting connection so the owning thread won't try and close it
     self->AcceptingConnection = nullptr;
 
     // Let the owning thread resume
     self->AcceptingConnectionLock.Unlock();
 
-    // If we didn't fail to accept a connection, then tell the main thread about
-    // the connection
+    // If we didn't fail to accept a connection, then tell the main thread about the connection
     if (acceptEvent.ErrorStatus.Succeeded())
     {
       // This is an accepted connection with no errors!
       acceptEvent.Connection = connection;
 
-      // Initialize the connection, which generally spins up the send/receive
-      // threads
+      // Initialize the connection, which generally spins up the send/receive threads
       connection->Initialize();
 
       // Lock the recieve buffer and push the connection into it
@@ -905,8 +847,8 @@ OsInt ThreadedWebSocketListener::AcceptEntryPoint(void* context)
       // Any failure to connect should destroy the connection
       delete connection;
 
-      // If the extended error code was set, it means we ran into a true socket
-      // error (or the socket was closed) so terminate the connection
+      // If the extended error code was set, it means we ran into a true socket error (or the socket was closed) so
+      // terminate the connection
       if (acceptEvent.ErrorStatus.Context != 0 && Socket::IsCommonAcceptError(acceptEvent.ErrorStatus.Context) == false)
       {
         // We only dispatch the error message if it's not a close event
@@ -927,8 +869,7 @@ OsInt ThreadedWebSocketListener::AcceptEntryPoint(void* context)
 
 ThreadedWebSocketServer::ThreadedWebSocketServer(size_t maxConnections) : MaximumConnections(maxConnections)
 {
-  // We want to know when connections are accepted, and when errors occur with
-  // the listener
+  // We want to know when connections are accepted, and when errors occur with the listener
   EventConnect(
       &this->Listener, Events::WebSocketAcceptedConnection, &ThreadedWebSocketServer::OnAcceptedConnection, this);
   EventForward(&this->Listener, Events::WebSocketError, this);
@@ -1009,8 +950,7 @@ void ThreadedWebSocketServer::OnAcceptedConnection(WebSocketEvent* event)
   // Add the connection to our own tracked list
   this->Connections.PushBack(event->Connection);
 
-  // Forward the event on us, so anyone listening can see we got a new
-  // connection
+  // Forward the event on us, so anyone listening can see we got a new connection
   EventSend(this, event->EventName, event);
 
   // Forward all the errors, disconnect, and receive data events

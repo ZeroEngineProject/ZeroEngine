@@ -1,7 +1,6 @@
 // MIT Licensed (see LICENSE.md).
 
-// Note: This code is based on Steve Reid's 100% Public Domain Sha1
-// implementation (thank you Steve!)
+// Note: This code is based on Steve Reid's 100% Public Domain Sha1 implementation (thank you Steve!)
 
 #pragma once
 #ifndef ZILCH_SHA1_HPP

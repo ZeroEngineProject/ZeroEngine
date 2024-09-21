@@ -118,8 +118,7 @@ public:
   DumpValue(StringBuilderExtended& builder, Type* type, const ::byte* value, Integer howDeep, Integer currentDepth);
 
 public:
-  // Responsible for the console sending and receiveing events (how we hook up
-  // callbacks!)
+  // Responsible for the console sending and receiveing events (how we hook up callbacks!)
   static EventHandler Events;
 };
 } // namespace Zilch

@@ -13,8 +13,7 @@ ZeroShared BoundType* InstantiateArray(LibraryBuilder& builder,
                                        const Array<Constant>& templateTypes,
                                        const void* userData);
 
-// For every instantiated array, it may want to look up information about what
-// it Contains
+// For every instantiated array, it may want to look up information about what it Contains
 class ZeroShared ArrayUserData
 {
 public:
@@ -26,9 +25,8 @@ public:
 };
 
 // This is the base definition of our array class
-// It is not technically the leaf level class, but it is binary compatible with
-// the Zilch Array template We add no members or virtuals in the derived class,
-// and static assert that the sizes are the same
+// It is not technically the leaf level class, but it is binary compatible with the Zilch Array template
+// We add no members or virtuals in the derived class, and static assert that the sizes are the same
 template <typename T>
 class ZeroSharedTemplate ArrayClass
 {
@@ -48,13 +46,12 @@ public:
   // but for arrays of primitive/built in types, it will be optimized
   Array<T> NativeArray;
 
-  // A special counter that we use to denote whenever the container has been
-  // modified
+  // A special counter that we use to denote whenever the container has been modified
   Integer ModifyId;
 };
 
-// These are all the specializations that are optimized to store exactly that
-// data type All values that are unknown will be stored as the 'Any' type
+// These are all the specializations that are optimized to store exactly that data type 
+// All values that are unknown will be stored as the 'Any' type
 #  define ZilchDeclareDefineArray(ElementType, Linkage)                                                                \
     ZilchDeclareCustomType(                                                                                            \
         ArrayClass<ElementType>,                                                                                       \

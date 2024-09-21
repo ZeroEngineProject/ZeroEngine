@@ -61,12 +61,10 @@ public:
   // Converts the value and it's children into Json
   String ToString();
 
-  // Get a member (reports errors if this is not an object, or if the member
-  // doesn't exist)
+  // Get a member (reports errors if this is not an object, or if the member doesn't exist)
   JsonValue* GetMember(StringParam name, JsonErrorMode::Enum errorMode = JsonErrorMode::ReportError);
 
-  // Index a value of an array (reports errors if this is not an array, or if
-  // the index is out of bounds)
+  // Index a value of an array (reports errors if this is not an array, or if the index is out of bounds)
   JsonValue* IndexValue(size_t index, JsonErrorMode::Enum errorMode = JsonErrorMode::ReportError);
 
   // Helper functions for pulling native types out of a json value
@@ -171,8 +169,7 @@ public:
   // Writes the json tree out
   void WriteTree(JsonValue* value);
 
-  // Start a key/member inside of an object (illegal to do at the root or inside
-  // an array)
+  // Start a key/member inside of an object (illegal to do at the root or inside an array)
   void Key(StringRange name);
 
   // Write a value to Json (only legal as a member or in an array)
@@ -193,8 +190,8 @@ public:
   void RawValue(StringParam value);
 
   // Start either a Json object or array
-  // When inside an object, it's only legal to call this after creating a
-  // 'Member' When inside an array, it is always legal to call this
+  // When inside an object, it's only legal to call this after creating a 'Member'
+  // When inside an array, it is always legal to call this
   void Begin(JsonType::Enum type);
 
   // End a Json object or array

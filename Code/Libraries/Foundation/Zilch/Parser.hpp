@@ -17,12 +17,10 @@ public:
   // Destructor
   ~Parser();
 
-  // Parses all scripts in a project into an syntax tree (with classes,
-  // functions, members, etc)
+  // Parses all scripts in a project into an syntax tree (with classes, functions, members, etc)
   void ParseIntoTree(const Array<UserToken>& tokens, SyntaxTree& syntaxTree, EvaluationMode::Enum evaluation);
 
-  // Parses a single expression in the context of a function (evaluation of
-  // local variables, etc)
+  // Parses a single expression in the context of a function (evaluation of local variables, etc)
   void ParseExpressionInFunctionAndClass(const Array<UserToken>& expression,
                                          const Array<UserToken>& function,
                                          const Array<UserToken>& classTokensWithoutFunction,
@@ -31,8 +29,7 @@ public:
   // From a token stream, just attempt to parse a single type
   SyntaxType* ParseType(const Array<UserToken>& type);
 
-  // Checks if a token either has zero elements, or if the only element is the
-  // End/Eof element
+  // Checks if a token either has zero elements, or if the only element is the End/Eof element
   static bool IsTokenStreamEmpty(const Array<UserToken>& tokens);
 
   // Tests if a list of attributes Contains a particular attribute by name
@@ -48,8 +45,7 @@ private:
   // Print out an error message corresponding to the current token
   void ErrorHereArgs(int errorCode, va_list argList);
 
-  // Print out an error message corresponding to the current token (with extra
-  // context if needed)
+  // Print out an error message corresponding to the current token (with extra context if needed)
   void ErrorHereArgs(int errorCode, StringParam extra, va_list argList);
 
   // Set the starting line and character of a syntax node
@@ -61,28 +57,22 @@ private:
   // Set the ending line and character of a syntax node
   void SetNodeLocationEndHere(SyntaxNode* node);
 
-  // Set the starting line and character of a syntax node (at the last saved
-  // token)
+  // Set the starting line and character of a syntax node (at the last saved token)
   void SetNodeLocationStartToLastSave(SyntaxNode* node);
 
-  // Set the starting line and character of a syntax node (at the last saved
-  // token)
+  // Set the starting line and character of a syntax node (at the last saved token)
   void SetNodeLocationPrimaryToLastSave(SyntaxNode* node);
 
-  // Set the ending line and character of a syntax node (at the last saved
-  // token)
+  // Set the ending line and character of a syntax node (at the last saved token)
   void SetNodeLocationEndToLastSave(SyntaxNode* node);
 
-  // Set the starting line and character of a syntax node to a given token's
-  // position
+  // Set the starting line and character of a syntax node to a given token's position
   static void SetNodeLocationStartToToken(SyntaxNode* node, const UserToken& token);
 
-  // Set the starting line and character of a syntax node to a given token's
-  // position
+  // Set the starting line and character of a syntax node to a given token's position
   static void SetNodeLocationPrimaryToToken(SyntaxNode* node, const UserToken& token);
 
-  // Set the ending line and character of a syntax node to a given token's
-  // position
+  // Set the ending line and character of a syntax node to a given token's position
   static void SetNodeLocationEndToToken(SyntaxNode* node, const UserToken& token);
 
   // Saves the tokens position onto the stack
@@ -91,36 +81,31 @@ private:
   // Recalls the token position by using the value on the top of the stack
   void RecallTokenPosition();
 
-  // Accepts the current token position as the new token position, and removes
-  // the saved version from the stack
+  // Accepts the current token position as the new token position, and removes the saved version from the stack
   void AcceptTokenPosition();
 
-  // Attempts to accept any one of the given tokens, and outputs the one that
-  // matches (also moves the token index ahead by one)
+  // Attempts to accept any one of the given tokens, and outputs the one that matches (also moves the token index ahead
+  // by one)
   bool AcceptAnyArgs(size_t parameters, const UserToken** out_token, va_list vl);
 
-  // Attempts to accept any one of the given tokens, and outputs the one that
-  // matches (also moves the token index ahead by one)
+  // Attempts to accept any one of the given tokens, and outputs the one that matches (also moves the token index ahead
+  // by one)
   bool AcceptAny(size_t parameters, const UserToken** out_token, ...);
 
-  // Accepts the tokens in the order that they're given (moves the token index
-  // ahead by the number of tokens passed in, if they all match)
+  // Accepts the tokens in the order that they're given (moves the token index ahead by the number of tokens passed in,
+  // if they all match)
   bool Accept(size_t parameters, ...);
 
-  // Accepts the tokens in the order that they're given and returns values out
-  // through parameters
+  // Accepts the tokens in the order that they're given and returns values out through parameters
   bool AcceptAndRetrieve(size_t parameters, ...);
 
-  // Expects a given grammar constant, and otherwise produces an error (variadic
-  // for the error context)
+  // Expects a given grammar constant, and otherwise produces an error (variadic for the error context)
   bool Expect(Grammar::Enum grammarConstant, int errorCode, ...);
 
-  // Expects a given grammar constant, and otherwise produces an error (variadic
-  // for the error context)
+  // Expects a given grammar constant, and otherwise produces an error (variadic for the error context)
   bool ExpectAndRetrieve(Grammar::Enum grammarConstant, const UserToken*& outToken, int errorCode, ...);
 
-  // Expects a given grammar constant, and otherwise produces an error (variadic
-  // for the error context)
+  // Expects a given grammar constant, and otherwise produces an error (variadic for the error context)
   bool ExpectAndRetrieveArgs(Grammar::Enum grammarConstant, const UserToken*& outToken, int errorCode, va_list vl);
 
   // A helper function to read the contents of a delgate syntax type
@@ -132,10 +117,9 @@ private:
   // Read a type for the typing system
   SyntaxType* ReadTypeInfo();
 
-  // Typically only used in tolerant mode, this will skip tokens until we find
-  // the ending scope It will also properly count scopes up and down as it looks
-  // for the end Returns true if it find the end (and will advance the token),
-  // or false and the token will not move
+  // Typically only used in tolerant mode, this will skip tokens until we find the ending scope
+  // It will also properly count scopes up and down as it looks for the end
+  // Returns true if it find the end (and will advance the token), or false and the token will not move
   bool MoveToScopeEnd();
 
   // Find the nearest scope to a given code location
@@ -152,13 +136,11 @@ private:
   void AttachLastAttributeToNode(SyntaxNode* node, NodeList<AttributeNode>& attributes);
 
   // Accept a type specifier (return type for a function)
-  // Returns true if it parses successfully, false otherwise (note that no type
-  // specifier will return true!)
+  // Returns true if it parses successfully, false otherwise (note that no type specifier will return true!)
   bool AcceptOptionalTypeSpecifier(SyntaxType*& outSyntaxType, int notFound, ...);
 
   // Accept a type specifier (return type for a function)
-  // Returns true if it parses successfully, false otherwise (note that no type
-  // specifier will return true!)
+  // Returns true if it parses successfully, false otherwise (note that no type specifier will return true!)
   bool AcceptOptionalTypeSpecifierArgs(SyntaxType*& outSyntaxType, int notFound, va_list args);
 
   // Expect an argument list
@@ -210,19 +192,16 @@ private:
   // Parse a function parameter
   ParameterNode* Parameter();
 
-  // A binary operator helper for parsing expressions (with right to left
-  // associativity)
+  // A binary operator helper for parsing expressions (with right to left associativity)
   ExpressionNode* BinaryOperatorRightToLeftAssociative(ExpressionFn currentPrecedence,
                                                        ExpressionFn nextPrecedence,
                                                        int parameters,
                                                        ...);
 
-  // A binary operator helper for parsing expressions (with left to right
-  // associativity)
+  // A binary operator helper for parsing expressions (with left to right associativity)
   ExpressionNode* BinaryOperatorLeftToRightAssociative(ExpressionFn nextPrecedence, int parameters, ...);
 
-  // Parse an expression (including all precedent levels of operators, lower
-  // number = lower precedence)
+  // Parse an expression (including all precedent levels of operators, lower number = lower precedence)
   ExpressionNode* Expression();
   ExpressionNode* Expression00();
   ExpressionNode* Expression01();
@@ -240,8 +219,7 @@ private:
   ExpressionNode* Expression13();
   ExpressionNode* Expression14();
 
-  // The post-expression takes care of right hand side operataors whose operands
-  // arent exactly a "single" expression
+  // The post-expression takes care of right hand side operataors whose operands arent exactly a "single" expression
   ExpressionNode* PostExpression(ExpressionNode* leftOperand);
 
   // Parse an indexer call
@@ -253,8 +231,7 @@ private:
   // Parse a member access
   MemberAccessNode* MemberAccess(ExpressionNode* leftOperand);
 
-  // Parse the expression initializer { } which can initialize members and add
-  // to containers
+  // Parse the expression initializer { } which can initialize members and add to containers
   ExpressionNode* ExpressionInitializer(ExpressionNode* leftOperand);
 
   // Parse a delete statement
@@ -329,8 +306,7 @@ private:
   // Read a memberid expression (which returns property information)
   ExpressionNode* MemberId();
 
-  // Create a string literal value node (always sets the token directly to be a
-  // string literal)
+  // Create a string literal value node (always sets the token directly to be a string literal)
   ValueNode* CreateStringLiteral(const UserToken* token);
 
   // Parse a string interpolant
@@ -339,14 +315,13 @@ private:
   // Parse a value
   ExpressionNode* Value();
 
-  // Read attributes for static, virtual, and overriding and apply them to a
-  // node Expects that the node has the IsStatic and Virtualized members
+  // Read attributes for static, virtual, and overriding and apply them to a node
+  // Expects that the node has the IsStatic and Virtualized members
   template <typename Node>
   void ApplyVirtualStaticExtensionAttributes(Node* node);
 
 private:
-  // The last attribute we parsed, which will be attached to whatever node
-  // follows it
+  // The last attribute we parsed, which will be attached to whatever node follows it
   NodeList<AttributeNode> LastAttributes;
 
   // Store a reference to the error handler
@@ -358,8 +333,7 @@ private:
   // The tokenizer we'll use that stores the input stream of tokens
   const Array<UserToken>* TokenStream;
 
-  // This stack maintains any saved token positions (makes it easy to recall if
-  // necessary)
+  // This stack maintains any saved token positions (makes it easy to recall if necessary)
   PodArray<size_t> TokenPositions;
 
   // The index of the token we're currently parsing

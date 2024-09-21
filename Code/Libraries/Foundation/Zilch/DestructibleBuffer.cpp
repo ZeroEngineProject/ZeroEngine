@@ -16,8 +16,7 @@ size_t AlignToBusWidth(size_t value)
   if (remainder == 0)
     return value;
 
-  // Add whatever bytes we need to add to make our size aligned with the bus
-  // width
+  // Add whatever bytes we need to add to make our size aligned with the bus width
   return value + (MaxPrimtiveSize - remainder);
 }
 
@@ -27,9 +26,8 @@ DestructibleBuffer::DestructibleBuffer()
 
 DestructibleBuffer::DestructibleBuffer(const DestructibleBuffer& from) : Entries(from.Entries), Data(from.Data)
 {
-  // We already directly copied over all the block array data (handed by its
-  // copy constructor) Note: Untyped block array memcopies all its data over,
-  // but in truth we need to copy construct each of them
+  // We already directly copied over all the block array data (handed by its copy constructor)
+  // Note: Untyped block array memcopies all its data over, but in truth we need to copy construct each of them
   for (size_t i = 0; i < this->Entries.Size(); ++i)
   {
     // Grab the current entry
@@ -107,8 +105,7 @@ void DestructibleBuffer::Clear()
     *positionOut = absolutePosition;
   }
 
-  // Clear out the new data, just for safety (this also helps when we align
-  // data)
+  // Clear out the new data, just for safety (this also helps when we align data)
   memset(newData, 0, size);
 
   // If we were given a destructor

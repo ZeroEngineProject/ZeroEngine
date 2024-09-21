@@ -9,8 +9,7 @@ namespace Zilch
 // Invalid constants
 const size_t InvalidOpcodeLocation = (size_t)-1;
 
-// A delegate is a simple type that consists of an index for a function, as well
-// as the this pointer object
+// A delegate is a simple type that consists of an index for a function, as well as the this pointer object
 class ZeroShared Delegate
 {
 public:
@@ -28,8 +27,7 @@ public:
   // Hashes a handle (generally used by hashable containers)
   size_t Hash() const;
 
-  // Checks if the value stored within the delegate is null (no function
-  // pointer)
+  // Checks if the value stored within the delegate is null (no function pointer)
   bool IsNull() const;
   bool IsNotNull() const;
 

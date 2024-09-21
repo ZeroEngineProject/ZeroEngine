@@ -35,15 +35,13 @@ bool SendsEventSorter(SendsEvent* lhs, SendsEvent* rhs)
 
 bool PropertySorter(Property* lhs, Property* rhs)
 {
-  // Sort from A to Z (properties should be unique, so no need to sort them by
-  // type)
+  // Sort from A to Z (properties should be unique, so no need to sort them by type)
   return lhs->Name < rhs->Name;
 }
 
 bool FunctionSorter(Function* lhs, Function* rhs)
 {
-  // Sort the entire stringified function (this sorts the signature and the
-  // parameters)
+  // Sort the entire stringified function (this sorts the signature and the parameters)
   return lhs->ToString() < rhs->ToString();
 }
 
@@ -55,8 +53,8 @@ void StubCode::Generate(BoundType* type)
   this->StartNativeLocation(type->Location);
   this->GenerateHeader(type);
 
-  ZeroTodo("We may want to handle attributes for GetEventHandlerFunction being "
-           "non-null (may be an interface) / CreatableInScript / Native");
+  ZeroTodo("We may want to handle attributes for GetEventHandlerFunction being non-null (may be an interface) / "
+           "CreatableInScript / Native");
 
   if (type->CopyMode == TypeCopyMode::ReferenceType)
   {
@@ -374,8 +372,7 @@ void StubCode::GenerateHeader(ReflectionObject* object, Array<Attribute>& attrib
   ZilchCodeBuilder& codeBuilder = this->Builder;
   CodeFormat& format = codeBuilder.Format;
 
-  // We don't actually have a grammar symbol for single line comment (we should
-  // probably make it one...)
+  // We don't actually have a grammar symbol for single line comment (we should probably make it one...)
   String wrappedDescription = Zero::WordWrap(object->Description, format.CommentWordWrapLength);
   ZilchForEach (StringRange line, wrappedDescription.Split("\n"))
   {
@@ -383,8 +380,8 @@ void StubCode::GenerateHeader(ReflectionObject* object, Array<Attribute>& attrib
     codeBuilder.WriteLineIndented();
   }
 
-  ZeroTodo("We may want to handle the 'IsHidden' attribute specially here "
-           "because it may not exist inside 'Attributes'");
+  ZeroTodo(
+      "We may want to handle the 'IsHidden' attribute specially here because it may not exist inside 'Attributes'");
 
   // Write out all attributes
   ZilchForEach (Attribute& attribute, attributes)
@@ -426,14 +423,12 @@ void StubCode::GenerateHeader(ReflectionObject* object, Array<Attribute>& attrib
 
 void StubCode::StartNativeLocation(CodeLocation& location)
 {
-  // If we're not tracking native locations, or this location isn't native then
-  // early out Note: Non-native locations should already be set by the
-  // tokenizer/parser/syntaxer
+  // If we're not tracking native locations, or this location isn't native then early out
+  // Note: Non-native locations should already be set by the tokenizer/parser/syntaxer
   if (this->SetNativeLocations == false || location.IsNative == false)
     return;
 
-  // Track this location so that we can set the 'Code' portion when we finalize
-  // this stub code
+  // Track this location so that we can set the 'Code' portion when we finalize this stub code
   this->NativeLocations.PushBack(&location);
 
   ZilchCodeBuilder& codeBuilder = this->Builder;
@@ -451,9 +446,8 @@ void StubCode::StartNativeLocation(CodeLocation& location)
 
 void StubCode::EndNativeLocation(CodeLocation& location)
 {
-  // If we're not tracking native locations, or this location isn't native then
-  // early out Note: Non-native locations should already be set by the
-  // tokenizer/parser/syntaxer
+  // If we're not tracking native locations, or this location isn't native then early out
+  // Note: Non-native locations should already be set by the tokenizer/parser/syntaxer
   if (this->SetNativeLocations == false || location.IsNative == false)
     return;
 

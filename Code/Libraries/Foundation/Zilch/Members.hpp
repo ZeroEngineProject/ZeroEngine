@@ -44,15 +44,14 @@ public:
   void Clear();
 
   // Convert the value we store into a string
-  // The value will be represented as if it were a Zilch token (quotes will be
-  // added to strings, etc)
+  // The value will be represented as if it were a Zilch token (quotes will be added to strings, etc)
   String ToString() const;
 
   // The type of the constant (literals only, default Null)
   ConstantType::Enum Type;
 
-  // When Type is String, this will be the fully unescaped version of the string
-  // (default empty) When Type is Type, this will be the full name of the type
+  // When Type is String, this will be the fully unescaped version of the string (default empty)
+  // When Type is Type, this will be the full name of the type
   String StringValue;
 
   // Integer and DoubleInteger values are both stored here (default 0)
@@ -87,22 +86,19 @@ public:
   AttributeParameter(StringParam name, Boolean value);
   AttributeParameter(StringParam name, Zilch::Type* value);
 
-  // An optional name given to the parameter (if the user used name parameter
-  // calling)
+  // An optional name given to the parameter (if the user used name parameter calling)
   String Name;
 };
 
 // An attribute provides extra data about classes, functions, fields,
 // properties, etc that the language normally does not provide
-// An example would be marking a property as have a range of values from 1 to
-// 100 eg [Range(1, 100)]
+// An example would be marking a property as have a range of values from 1 to 100 eg [Range(1, 100)]
 class ZeroShared Attribute
 {
 public:
   Attribute();
 
-  // Checks to see if an attribute parameter exists (returns a pointer to the
-  // attribute parameter)
+  // Checks to see if an attribute parameter exists (returns a pointer to the attribute parameter)
   AttributeParameter* HasAttributeParameter(StringParam name);
 
   void AddParameter(StringParam value);
@@ -127,8 +123,7 @@ public:
   // The name of the attribute
   String Name;
 
-  // All the parameters we parsed from the attributes in the order they were
-  // given
+  // All the parameters we parsed from the attributes in the order they were given
   Array<AttributeParameter> Parameters;
 
   // Adds an attribute to the owning reflection object (useful for chaining)
@@ -156,8 +151,7 @@ public:
   // Gets the library that owns our documented object
   virtual Library* GetOwningLibrary() = 0;
 
-  // If this documented object has a resulting type (or represents a type) this
-  // will return it
+  // If this documented object has a resulting type (or represents a type) this will return it
   virtual Type* GetTypeOrNull();
 
   // Used to chain operations on reflection objects.
@@ -181,8 +175,7 @@ public:
   // All the attributes attached to this type
   Array<Attribute> Attributes;
 
-  // All documented objects can be hidden (for things parsed in language, use
-  // the [Hidden] attribute)
+  // All documented objects can be hidden (for things parsed in language, use the [Hidden] attribute)
   bool IsHidden;
 
   // The code location at which the object was defined
@@ -212,8 +205,7 @@ enum Enum
 typedef unsigned Flags;
 } // namespace MemberOptions
 
-// All primitives that appear on types (properties, fields, functions, etc) are
-// members
+// All primitives that appear on types (properties, fields, functions, etc) are members
 class ZeroShared Member : public ReflectionObject
 {
 public:
@@ -241,8 +233,7 @@ public:
   bool ValidateInstanceHandle(const Any& instance, Handle& thisHandle);
 };
 
-// A class property basically consists of two functions that let us get and set
-// a variable
+// A class property basically consists of two functions that let us get and set a variable
 class ZeroShared Property : public Member
 {
 public:
@@ -257,9 +248,8 @@ public:
   // Returns whether or not the Set function is null (added for readability).
   bool IsReadOnly();
 
-  // Mark if this property is hidden when null (useful for showing things like
-  // optional components) This only applies to nullable types like handles and
-  // delegates
+  // Mark if this property is hidden when null (useful for showing things like optional components)
+  // This only applies to nullable types like handles and delegates
   bool IsHiddenWhenNull;
 
   // The type and offset into the class it belongs to
@@ -283,8 +273,7 @@ public:
   ZilchDeclareType(GetterSetter, TypeCopyMode::ReferenceType);
 };
 
-// A class field basically consists of the type, as well as the offset into the
-// memory block
+// A class field basically consists of the type, as well as the offset into the memory block
 class ZeroShared Field : public Property
 {
 public:
@@ -297,15 +286,12 @@ public:
   size_t Offset;
 
   // Used to initialize this field only
-  // This functionality is used by on the fly patching of classes, as well as by
-  // static fields (which are initialized upon the first use) This function
-  // generally Contains the initializer expression and a return opcode (no
-  // arguments, no return value) WARNING: Field initializers do not assume a
-  // value exists in its previous place and will NOT destruct any previous
-  // values If the initializer does not exist then it is generally acceptable to
-  // call GenericDefaultConstruct (which will typically just zero out memory)
-  // Instance field initializers must be given a valid instance of the object
-  // that Contains the field (for the 'this' parameter)
+  // This functionality is used by on the fly patching of classes, as well as by static fields (which are initialized
+  // upon the first use) This function generally Contains the initializer expression and a return opcode (no arguments,
+  // no return value) WARNING: Field initializers do not assume a value exists in its previous place and will NOT
+  // destruct any previous values If the initializer does not exist then it is generally acceptable to call
+  // GenericDefaultConstruct (which will typically just zero out memory) Instance field initializers must be given a
+  // valid instance of the object that Contains the field (for the 'this' parameter)
   Function* Initializer;
 };
 

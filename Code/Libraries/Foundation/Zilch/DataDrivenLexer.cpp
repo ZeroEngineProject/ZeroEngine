@@ -4,9 +4,8 @@
 
 namespace Zilch
 {
-// To simplify our parsing, we work with generic nodes (and only specific nodes
-// in specific cases) Because of this, we need to ensure that the sizes always
-// match
+// To simplify our parsing, we work with generic nodes (and only specific nodes in specific cases)
+// Because of this, we need to ensure that the sizes always match
 static_assert(sizeof(GrammarNode<Character>) == sizeof(GrammarNode<Token>),
               "The sizes of the grammar nodes do not match");
 
@@ -214,13 +213,11 @@ void DataDrivenLexer::Parse(StringParam input,
 
   parser.Parse();
 
-  // String diffParserTreeOutput =
-  // parserTreeBuilder.mTree->GetDebugRepresentation();
+  // String diffParserTreeOutput = parserTreeBuilder.mTree->GetDebugRepresentation();
   //
   // String graph = parserTreeBuilder.mTree->GetGraphRepresentation();
-  // Zero::WriteToFile("C:\\Sandbox\\Graph.gv", (const ::byte*)graph.c_str(),
-  // graph.size()); system("C:\\Progra~2\\Graphviz2.38\\bin\\dot.exe -Tpng
-  // \"C:\\Sandbox\\Graph.gv\" > \"C:\\Sandbox\\Graph.png\"");
+  // Zero::WriteToFile("C:\\Sandbox\\Graph.gv", (const ::byte*)graph.c_str(), graph.size());
+  // system("C:\\Progra~2\\Graphviz2.38\\bin\\dot.exe -Tpng \"C:\\Sandbox\\Graph.gv\" > \"C:\\Sandbox\\Graph.png\"");
   // system("C:\\Sandbox\\Graph.png");
 }
 
@@ -277,8 +274,8 @@ void DataDrivenLexer::AddStringLiteralNode<Token>(StringParam string, Array<Gram
 template <>
 void DataDrivenLexer::AddTokenLiteralNode<Character>(StringParam string, Array<GrammarNode<Character>*>& nodes)
 {
-  Error("Cannot add token literals in a tokenizer (the tokens must come from "
-        "the tokenizer, and be used in the parser)");
+  Error(
+      "Cannot add token literals in a tokenizer (the tokens must come from the tokenizer, and be used in the parser)");
   nodes.PushBack(&T());
 }
 

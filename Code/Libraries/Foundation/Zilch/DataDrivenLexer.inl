@@ -49,8 +49,7 @@ void DataDrivenLexer::EndRule(ParseNodeInfo<Token>* info,
     grammar.mIgnore.Insert(&toBeIgnored);
 
     ErrorIf(this->mMode == DataDrivenLexerMode::Parser,
-            "Cannot have an ignore on a parser grammar (it is made exclusively "
-            "for token grammars)");
+            "Cannot have an ignore on a parser grammar (it is made exclusively for token grammars)");
   }
   else if (rule == shared.mKeywordStatement)
   {
@@ -62,8 +61,7 @@ void DataDrivenLexer::EndRule(ParseNodeInfo<Token>* info,
     grammar.mKeywords[keyword] = &toBeKeyword;
 
     ErrorIf(this->mMode == DataDrivenLexerMode::Parser,
-            "Cannot have a keyword on a parser grammar (it is made exclusively "
-            "for token grammars)");
+            "Cannot have a keyword on a parser grammar (it is made exclusively for token grammars)");
   }
   else if (rule == shared.mRuleStatement)
   {
@@ -109,8 +107,7 @@ void DataDrivenLexer::EndRule(ParseNodeInfo<Token>* info,
     node.mOperand = &grammar[captureAndRuleName];
     nodes.Back().PushBack(&node);
   }
-  // If this is a binary operator (we should have pushed a node array in the
-  // StartRule)
+  // If this is a binary operator (we should have pushed a node array in the StartRule)
   else if (rule == shared.mGrammarExpressionOr || rule == shared.mGrammarExpressionConcatenate)
   {
     Array<GrammarNode<TokenType>*>& operands = nodes.Back();
@@ -132,12 +129,10 @@ void DataDrivenLexer::EndRule(ParseNodeInfo<Token>* info,
     }
     else
     {
-      Error("We expected at least one operand (two or more for the binary "
-            "operators, just 1 if its a pass through)");
+      Error("We expected at least one operand (two or more for the binary operators, just 1 if its a pass through)");
     }
   }
-  // If this is a unary operator (we should have pushed a node array in the
-  // StartRule)
+  // If this is a unary operator (we should have pushed a node array in the StartRule)
   else if (rule == shared.mGrammarExpressionUnary)
   {
     Array<GrammarNode<TokenType>*>& operands = nodes.Back();
@@ -169,27 +164,24 @@ void DataDrivenLexer::EndRule(ParseNodeInfo<Token>* info,
     GrammarNode<Character>* valueRule = value.mRule;
 
     // If this is an identifier, then we're just referring to another rule
-    // Note that the rule may not even exist yet (grammar[] creates the rule
-    // implicitly)
+    // Note that the rule may not even exist yet (grammar[] creates the rule implicitly)
     if (valueRule == shared.mIdentifier)
     {
       GrammarRule<TokenType>& rule = grammar[valueName];
       nodes.Back().PushBack(&rule);
     }
-    // A string literal is either a single character or a character range (range
-    // set) This can only be used by the tokenizer
+    // A string literal is either a single character or a character range (range set)
+    // This can only be used by the tokenizer
     else if (valueRule == shared.mStringLiteral)
     {
       this->AddStringLiteralNode(valueName, nodes.Back());
     }
-    // A token literal must only be used by the parser and refers to a rule
-    // defined by the tokenizer
+    // A token literal must only be used by the parser and refers to a rule defined by the tokenizer
     else if (valueRule == shared.mTokenLiteral)
     {
       this->AddTokenLiteralNode(valueName, nodes.Back());
     }
-    // Epsilon just returns true when we attempt to evaluate it... parse
-    // nothing!
+    // Epsilon just returns true when we attempt to evaluate it... parse nothing!
     else if (valueRule == shared.mEpsilon)
     {
       nodes.Back().PushBack(new GrammarNode<TokenType>());
@@ -235,8 +227,7 @@ void DataDrivenLexer::EndRule(ParseNodeInfo<Token>* info,
     }
     else
     {
-      Error("We expected at least one operand (two or more for the "
-            "concatenation, just 1 if its a pass through)");
+      Error("We expected at least one operand (two or more for the concatenation, just 1 if its a pass through)");
     }
   }
   else if (rule == shared.mReplacementExpressionText)
@@ -259,12 +250,10 @@ void DataDrivenLexer::EndRule(ParseNodeInfo<Token>* info,
   }
   else if (rule == shared.mReplacementExpressionJoin || rule == shared.mReplacementExpressionForeach)
   {
-    // We previously pushed a context when we started, so that other captures
-    // nested could occur
+    // We previously pushed a context when we started, so that other captures nested could occur
     this->mCaptureNodes.PopBack();
 
-    // We must have one replacement and capture operand (this is the push from
-    // the Post expression)
+    // We must have one replacement and capture operand (this is the push from the Post expression)
     CaptureExpressionNode*& capture = this->mCaptureNodes.Back();
     Array<ReplacementNode*>& operands = this->mReplacementNodes.Back();
     if (operands.Size() == 1 && capture != nullptr)
@@ -325,8 +314,7 @@ void DataDrivenLexer::EndRule(ParseNodeInfo<Token>* info,
       else
       {
         ErrorIf(nestedCaptureName.IsValid() == false,
-                "If we didn't get a start index, we must have gotten a nested "
-                "capture name");
+                "If we didn't get a start index, we must have gotten a nested capture name");
         this->mCaptureNodes.Back() = &((*capture)[nestedCaptureName.mString]);
       }
     }

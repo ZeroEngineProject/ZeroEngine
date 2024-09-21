@@ -69,14 +69,12 @@ public:
   ~Library();
 
   // Clears all components from all types within this library
-  // This is implicit called by the destructor, however it may be useful to call
-  // this method to clear any components that aren't from types defined in our
-  // library
+  // This is implicit called by the destructor, however it may be useful to call this method
+  // to clear any components that aren't from types defined in our library
   void ClearComponents();
 
-  // For any native type wihin this library, we will generate stub code for that
-  // native type We don't do this by default (to save memory) but we will
-  // generate and store the stub code on demand
+  // For any native type wihin this library, we will generate stub code for that native type
+  // We don't do this by default (to save memory) but we will generate and store the stub code on demand
   void GenerateDefinitionStubCode();
 
   // Either returns the special custom namespace name for plugins, or
@@ -90,11 +88,10 @@ public:
   // this is the namespace that all generated code will go inside
   String NamespaceForPlugins;
 
-  // The source code this library was built from (generally the result of a
-  // Project) If this library is native / build via generation, this array will
-  // be empty If a type is compiled from script, it should point back at the
-  // script it resulted from Code locations also reference the index into this
-  // array
+  // The source code this library was built from (generally the result of a Project)
+  // If this library is native / build via generation, this array will be empty
+  // If a type is compiled from script, it should point back at the script it resulted from
+  // Code locations also reference the index into this array
   Array<CodeEntry> Entries;
 
   // Store all the types compiled in this library
@@ -118,17 +115,16 @@ public:
   // We especially use this in plugin stub code generation
   Array<BoundType*> TypesInDependencyOrder;
 
-  // We single out static fields because their memory must be specially
-  // destructed
+  // We single out static fields because their memory must be specially destructed
   Array<Field*> StaticFields;
 
-  // This map controls how we extend types with functions without using
-  // inheritance We map a type guid to the functions we extend it with
+  // This map controls how we extend types with functions without using inheritance
+  // We map a type guid to the functions we extend it with
   FunctionExtensionMap StaticExtensionFunctions;
   FunctionExtensionMap InstanceExtensionFunctions;
 
-  // This map controls how we extend types with properties without using
-  // inheritance We map a type guid to the properties we extend it with
+  // This map controls how we extend types with properties without using inheritance
+  // We map a type guid to the properties we extend it with
   GetterSetterExtensionMap StaticExtensionGetterSetters;
   GetterSetterExtensionMap InstanceExtensionGetterSetters;
 
@@ -138,8 +134,7 @@ public:
   // Callbacks that we try and call to handle template
   HashMap<String, InstantiateTemplateInfo> TemplateHandlers;
 
-  // Whether or not we generated stub code (typically for 'go to definition'
-  // features)
+  // Whether or not we generated stub code (typically for 'go to definition' features)
   bool GeneratedDefinitionStubCode;
 
   // A pointer to any data the user wants to attach
@@ -160,8 +155,7 @@ private:
   // Constructor
   Library();
 
-  // Computes types in base to derived order (done typically in CreateLibrary or
-  // in the Syntaxer)
+  // Computes types in base to derived order (done typically in CreateLibrary or in the Syntaxer)
   void ComputeTypesInDependencyOrderOnce();
 
   // Not copyable
@@ -177,8 +171,7 @@ void ComputeTypesInDependencyOrder(const Array<LibraryRef>& libraries,
                                    Array<BoundType*>& outOrderedTypes);
 
 // For some reason we encounter linker errors when exporting a dll
-// unless we use explicit instantiation for these types (related to the .def
-// file)
+// unless we use explicit instantiation for these types (related to the .def file)
 template class Ref<Library>;
 
 // A hashing policy for the delegate type set
@@ -224,16 +217,13 @@ enum Enum
   // A template instantiator by the same name could not be found
   FailedNameNotFound,
 
-  // The template instantiator provided by the user failed to instantiate a
-  // template
+  // The template instantiator provided by the user failed to instantiate a template
   FailedInstantiatorDidNotReturnType,
 
-  // We failed to instantiate the template because we provided the wrong number
-  // of arguments
+  // We failed to instantiate the template because we provided the wrong number of arguments
   FailedInvalidArgumentCount,
 
-  // We failed to instantiate the template because we provided an invalid
-  // argument
+  // We failed to instantiate the template because we provided an invalid argument
   FailedArgumentTypeMismatch
 };
 }
@@ -301,8 +291,7 @@ public:
   // Set the original source code entries that this library is being built from
   void SetEntries(const Array<CodeEntry>& entries);
 
-  // Add a function to the library and bound type (pass nullptr for thisType if
-  // the function is static)
+  // Add a function to the library and bound type (pass nullptr for thisType if the function is static)
   Function* AddBoundFunction(BoundType* owner,
                              StringParam name,
                              BoundFn function,
@@ -311,8 +300,7 @@ public:
                              FunctionOptions::Flags options,
                              NativeVirtualInfo nativeVirtual = NativeVirtualInfo());
 
-  // Add a function to the library as an extension of another type (pass nullptr
-  // for thisType if the function is static)
+  // Add a function to the library as an extension of another type (pass nullptr for thisType if the function is static)
   Function* AddExtensionFunction(BoundType* forType,
                                  StringParam name,
                                  BoundFn function,
@@ -320,8 +308,7 @@ public:
                                  Type* returnType,
                                  FunctionOptions::Flags options);
 
-  // Add an already created function to the library as an extension of another
-  // type
+  // Add an already created function to the library as an extension of another type
   void AddRawExtensionFunction(Function* function);
 
   // Add a pre-constructor to the library and bound type
@@ -359,8 +346,7 @@ public:
                                            const Array<Constant>& arguments,
                                            const LibraryArray& fromLibraries);
 
-  // Add a function to the library (pass nullptr for thisType if the function is
-  // static)
+  // Add a function to the library (pass nullptr for thisType if the function is static)
   Function* CreateRawFunction(BoundType* owner,
                               String name,
                               BoundFn function,
@@ -409,19 +395,19 @@ public:
   // Dereference the given type and get the resulting type from that
   BoundType* Dereference(IndirectionType* type);
 
-  // Given a created delegate type, add or merge it into the delegate set (and
-  // return the proper type that we should be using...)
+  // Given a created delegate type, add or merge it into the delegate set (and return the proper type that we should be
+  // using...)
   DelegateType* GetDelegateType(const ParameterArray& parameters, Type* returnType);
 
-  // Adds a callback to the library that will be called any time a user attempts
-  // to instantiate a template type with this name
+  // Adds a callback to the library that will be called any time a user attempts to instantiate a template type with
+  // this name
   void AddTemplateInstantiator(StringParam baseName,
                                InstantiateTemplateCallback callback,
                                const StringArray& templateTypeParameters,
                                void* userData);
 
-  // Adds a callback to the library that will be called any time a user attempts
-  // to instantiate a template type with this name
+  // Adds a callback to the library that will be called any time a user attempts to instantiate a template type with
+  // this name
   void AddTemplateInstantiator(StringParam baseName,
                                InstantiateTemplateCallback callback,
                                const Array<TemplateParameter>& templateParameters,
@@ -435,9 +421,8 @@ public:
                           size_t size,
                           size_t nativeVirtualCount = 0);
 
-  // This is ONLY used by automatic C++ binding because the BoundType must
-  // already exist to solve dependency issues, so the library builder cannot
-  // 'new' the BoundType itself
+  // This is ONLY used by automatic C++ binding because the BoundType must already exist to solve dependency issues,
+  // so the library builder cannot 'new' the BoundType itself
   void AddNativeBoundType(BoundType* type);
   void AddNativeBoundType(BoundType* type, BoundType* base, TypeCopyMode::Enum mode);
 
@@ -447,9 +432,8 @@ public:
   // Create a library from the builder
   LibraryRef CreateLibrary();
 
-  // After computing the sizes of all types, we can go back through any created
-  // delegates and udpate their information (such as required stack space,
-  // parameter positions, etc)
+  // After computing the sizes of all types, we can go back through any created delegates
+  // and udpate their information (such as required stack space, parameter positions, etc)
   void ComputeDelegateAndFunctionSizesOnce();
 
   // Checks to see if an upper-identifier is valid
@@ -461,14 +445,13 @@ public:
   // Checks to see if a identifier is valid
   static bool CheckIdentifier(StringParam identifier, TokenCheck::Flags flags);
 
-  // Attempts to fix an identifier to make it valid (this may make it collide
-  // with others) Removed leading invalid characters until we reach a letter The
-  // following invalid characters will be replaced with 'invalidCharacter'
-  // (default underscore) Use '\0' for the invalid character to have it removed
-  // from the identifier Identifiers will be forced to have the first letter
-  // uppercased or lowercased depending on the flags If 'None' is specified, the
-  // identifier returned will not be modified to be upper/lower If the string is
-  // empty, this will return either "empty" or "Empty"
+  // Attempts to fix an identifier to make it valid (this may make it collide with others)
+  // Removed leading invalid characters until we reach a letter
+  // The following invalid characters will be replaced with 'invalidCharacter' (default underscore)
+  // Use '\0' for the invalid character to have it removed from the identifier
+  // Identifiers will be forced to have the first letter uppercased or lowercased depending on the flags
+  // If 'None' is specified, the identifier returned will not be modified to be upper/lower
+  // If the string is empty, this will return either "empty" or "Empty"
   static String FixIdentifier(StringParam identifier, TokenCheck::Flags flags, char invalidCharacter = '_');
 
   // A pointer to any data the user wants to attach
@@ -491,12 +474,10 @@ public:
   BoundTypeMap BoundTypes;
 
 private:
-  // A constant we can pass in as a get/set that signifies to not actually
-  // generate the get/set Function object
+  // A constant we can pass in as a get/set that signifies to not actually generate the get/set Function object
   static const BoundFn DoNotGenerate;
 
-  // A constant that will generate a get/set Function object (can later be
-  // replaced)
+  // A constant that will generate a get/set Function object (can later be replaced)
   static const BoundFn NoOperation;
 
   // Generates the property getter/setter for fields
@@ -505,13 +486,13 @@ private:
   void GenerateGetSetFields();
 
 private:
-  // Store a set of all the delegate types (note that delegate types are shared,
-  // eg the same definition results in the same type)
+  // Store a set of all the delegate types (note that delegate types are shared, eg the same definition results in the
+  // same type)
   Array<DelegateType*> DelegateTypes;
 
-  // Whether we computed the size of all the delegates and the function stack
-  // offsets This only needs to be done once, generally after all types,
-  // members, and functions have been collected (after all syntaxing)
+  // Whether we computed the size of all the delegates and the function stack offsets
+  // This only needs to be done once, generally after all types, members, and functions have been collected (after all
+  // syntaxing)
   bool ComputedDelegateAndFunctionSizes;
 
   // Not copyable
@@ -531,8 +512,7 @@ public:
   // Link libraries together to create a single executable application
   ExecutableState* Link() const;
 
-  // Builds a documentation object that Contains all the libraries, types,
-  // functions, etc
+  // Builds a documentation object that Contains all the libraries, types, functions, etc
   DocumentationModule* BuildDocumentation();
 
   // Create an html/javascript file that defines our documentation
@@ -581,16 +561,14 @@ ForEachExtensionGetterSetter(bool isStatic, const LibraryArray& libraries, Bound
   // Loop through all the libraries
   for (size_t i = 0; i < libraries.Size(); ++i)
   {
-    // We need to look up the entire heirarchy (the property could be on any
-    // base classes)
+    // We need to look up the entire heirarchy (the property could be on any base classes)
     BoundType* baseIterator = type;
     while (baseIterator != nullptr)
     {
       // Grab the current library
       const LibraryRef& library = libraries[i];
 
-      // Get the guid of the type (this should be legal here since we've
-      // collected all members)
+      // Get the guid of the type (this should be legal here since we've collected all members)
       GuidType guid = baseIterator->Hash();
 
       // Get the array of properties (may be empty)
@@ -626,16 +604,14 @@ ForEachExtensionFunction(bool isStatic, const LibraryArray& libraries, BoundType
   // Loop through all the libraries
   for (size_t i = 0; i < libraries.Size(); ++i)
   {
-    // We need to look up the entire heirarchy (the property could be on any
-    // base classes)
+    // We need to look up the entire heirarchy (the property could be on any base classes)
     BoundType* baseIterator = type;
     while (baseIterator != nullptr)
     {
       // Grab the current library
       const LibraryRef& library = libraries[i];
 
-      // Get the guid of the type (this should be legal here since we've
-      // collected all members)
+      // Get the guid of the type (this should be legal here since we've collected all members)
       GuidType guid = baseIterator->Hash();
 
       // Get the map of all functions
@@ -670,8 +646,7 @@ ForEachExtensionFunction(bool isStatic, const LibraryArray& libraries, BoundType
   }
 }
 
-// The functor should return a bool (true means stop, false means keep going)
-// and takes (Property*)
+// The functor should return a bool (true means stop, false means keep going) and takes (Property*)
 template <typename Functor>
 ZeroSharedTemplate void
 ForEachGetterSetter(bool isStatic, const LibraryArray& libraries, BoundType* type, Functor functor)
@@ -700,8 +675,7 @@ ForEachGetterSetter(bool isStatic, const LibraryArray& libraries, BoundType* typ
   ForEachExtensionGetterSetter(isStatic, libraries, type, functor);
 }
 
-// The functor should return a bool (true means stop, false means keep going)
-// and takes (Function*)
+// The functor should return a bool (true means stop, false means keep going) and takes (Function*)
 template <typename Functor>
 ZeroSharedTemplate void ForEachFunction(bool isStatic, const LibraryArray& libraries, BoundType* type, Functor functor)
 {

@@ -462,10 +462,9 @@ void SyntaxNode::PopulateSyntaxTypes(SyntaxTypes& typesOut)
     SyntaxNode** node = children[i];
     if (Type::DynamicCast<SyntaxType*>(*node) != nullptr)
     {
-      // We know this is a syntax type, but we need a pointer to the pointer so
-      // it can be possibly modified This is technically an unsafe cast, but we
-      // 'soft' guarantee that we will only modify the second pointer with the
-      // correct type
+      // We know this is a syntax type, but we need a pointer to the pointer so it can be possibly modified
+      // This is technically an unsafe cast, but we 'soft' guarantee that we will only modify the second pointer with
+      // the correct type
       const SyntaxType*& syntaxType = *(const SyntaxType**)node;
       typesOut.Add(syntaxType);
     }
@@ -625,10 +624,8 @@ void SyntaxTree::ShowGraphVizRepresentation()
 
     fclose(fp);
 
-    // system("C:\\Progra~1\\Graphviz2.26.3\\bin\\dot.exe -Tpng \"C:\\temp.gv\"
-    // > \"C:\\temp.png\"");
-    system("C:\\Progra~2\\Graphviz2.38\\bin\\dot.exe -Tpng "
-           "\"C:\\Temp\\Parse.gv\" > \"C:\\Temp\\Parse.png\"");
+    // system("C:\\Progra~1\\Graphviz2.26.3\\bin\\dot.exe -Tpng \"C:\\temp.gv\" > \"C:\\temp.png\"");
+    system("C:\\Progra~2\\Graphviz2.38\\bin\\dot.exe -Tpng \"C:\\Temp\\Parse.gv\" > \"C:\\Temp\\Parse.png\"");
 
     system("C:\\Temp\\Parse.png");
   }
@@ -651,15 +648,15 @@ bool StatementNode::IsNodeUsedAsStatement(SyntaxNode* node)
     return expression->IsUsedAsStatement;
   }
 
-  // If the node is a function or class node... which, because it's a scope
-  // node, is considered a statement (and should probably not be!)
+  // If the node is a function or class node... which, because it's a scope node,
+  // is considered a statement (and should probably not be!)
   if (Type::DynamicCast<GenericFunctionNode*>(node) != nullptr || Type::DynamicCast<ClassNode*>(node) != nullptr)
   {
     return false;
   }
 
-  // If the node is a member variable node... which, because it's a variable
-  // node, is considered a statement (and should probably not be!)
+  // If the node is a member variable node... which, because it's a variable node,
+  // is considered a statement (and should probably not be!)
   if (Type::DynamicCast<MemberVariableNode*>(node) != nullptr)
   {
     return false;
@@ -789,15 +786,14 @@ StaticTypeNode* FunctionCallNode::FindCreationCall()
   if (StaticTypeNode* staticType = Type::DynamicCast<StaticTypeNode*>(this->LeftOperand))
     return staticType;
 
-  // If this function call node is being used to invoke a constructor, we'll
-  // know because our left operand will actually be a local variable whose
-  // initial value is a CreationCallNode This is a bit complicated and maybe
-  // should be refactored, but this works for now
+  // If this function call node is being used to invoke a constructor, we'll know because our left operand will actually
+  // be a local variable whose initial value is a CreationCallNode
+  // This is a bit complicated and maybe should be refactored, but this works for now
   StaticTypeNode* creationNode = nullptr;
   LocalVariableNode* creationLocalVariable = Type::DynamicCast<LocalVariableNode*>(this->LeftOperand);
 
-  // If the left operand was indeed a local variable, then look for a direct
-  // reference to the CreationCallNode as the initial value
+  // If the left operand was indeed a local variable, then look for a direct reference to the CreationCallNode as the
+  // initial value
   if (creationLocalVariable != nullptr)
     return Type::DynamicCast<StaticTypeNode*>(creationLocalVariable->InitialValue);
 
@@ -824,9 +820,7 @@ String MemberAccessNode::ToString() const
 }
 
 TypeIdNode::TypeIdNode() :
-    CompileTimeSyntaxType(nullptr),
-    Value(nullptr),
-    CompileTimeType(Core::GetInstance().ErrorType)
+    CompileTimeSyntaxType(nullptr), Value(nullptr), CompileTimeType(Core::GetInstance().ErrorType)
 {
 }
 
@@ -906,10 +900,9 @@ VariableNode::VariableNode() : InitialValue(nullptr), IsStatic(false), ResultSyn
   // All variables can be both read from and written to
   this->Io = (IoMode::Enum)(IoMode::ReadRValue | IoMode::WriteLValue);
 
-  // Because we reuse this node as a statement in many explicit cases, then the
-  // parent 'IoUsage' is always set to ignore Normally this should be set by
-  // every parent, but variable nodes can only be used as expressions internally
-  // (not in the parser)
+  // Because we reuse this node as a statement in many explicit cases, then the parent 'IoUsage' is always set to ignore
+  // Normally this should be set by every parent, but variable nodes can only be used as expressions internally (not in
+  // the parser)
   this->IoUsage = IoMode::Ignore;
 }
 
@@ -930,8 +923,8 @@ LocalVariableNode::LocalVariableNode(StringParam baseName,
 {
   this->IsGenerated = true;
 
-  // The variable name includes the base name as well as brackets (so that the
-  // user cannot type the name in via the parser)
+  // The variable name includes the base name as well as brackets (so that the user cannot type the name in via the
+  // parser)
   if (optionalInitialValue != nullptr)
     this->Name.Location = optionalInitialValue->Location;
   this->Name.Token =
@@ -939,8 +932,7 @@ LocalVariableNode::LocalVariableNode(StringParam baseName,
   ++parentProject->VariableUniqueIdCounter;
 
   // This is entirely just to avoid a redudant copy into a local variable,
-  // since the CreationCallNode already allocates stack space (and we only need
-  // the local variable for the name lookup!)
+  // since the CreationCallNode already allocates stack space (and we only need the local variable for the name lookup!)
   this->InitialValue = optionalInitialValue;
   this->ForwardLocalAccessIfPossible = true;
 }
@@ -1129,9 +1121,7 @@ LoopScopeNode::LoopScopeNode(const LoopScopeNode& toCopy) : ScopeNode(toCopy)
   ErrorIf(toCopy.Breaks.Empty() == false, "You cannot copy a loop scope node with pointers to other break nodes");
 
   // Error checking
-  ErrorIf(toCopy.Continues.Empty() == false,
-          "You cannot copy a loop scope node with pointers to other continue "
-          "nodes");
+  ErrorIf(toCopy.Continues.Empty() == false, "You cannot copy a loop scope node with pointers to other continue nodes");
 }
 
 ConditionalLoopNode::ConditionalLoopNode() : Condition(nullptr)
@@ -1180,10 +1170,7 @@ void GenericFunctionNode::PopulateChildren(NodeChildren& childrenOut)
 }
 
 FunctionNode::FunctionNode() :
-    ReturnType(nullptr),
-    ExtensionOwner(nullptr),
-    IsStatic(false),
-    Virtualized(VirtualMode::NonVirtual)
+    ReturnType(nullptr), ExtensionOwner(nullptr), IsStatic(false), Virtualized(VirtualMode::NonVirtual)
 {
 }
 

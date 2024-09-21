@@ -9,19 +9,13 @@ UserToken::UserToken() : TokenId(Grammar::Invalid), Start(0), Length(0)
 }
 
 UserToken::UserToken(Grammar::Enum tokenId, CodeLocation* location) :
-    Token(Grammar::GetKeywordOrSymbol(tokenId)),
-    TokenId(tokenId),
-    Start(0),
-    Length(0)
+    Token(Grammar::GetKeywordOrSymbol(tokenId)), TokenId(tokenId), Start(0), Length(0)
 {
   this->SetLocationAndStartLength(location);
 }
 
 UserToken::UserToken(StringParam token, Grammar::Enum tokenId, CodeLocation* location) :
-    Token(token),
-    TokenId(tokenId),
-    Start(0),
-    Length(0)
+    Token(token), TokenId(tokenId), Start(0), Length(0)
 {
   this->SetLocationAndStartLength(location);
 }
@@ -43,9 +37,7 @@ cstr UserToken::c_str() const
 }
 
 Tokenizer::Tokenizer(CompilationErrors& errors) :
-    EnableStringInterpolation(true),
-    Errors(errors),
-    WasCarriageReturn(false)
+    EnableStringInterpolation(true), Errors(errors), WasCarriageReturn(false)
 {
   ZilchErrorIfNotStarted(Tokenizer);
 
@@ -137,8 +129,8 @@ bool Tokenizer::ParseInternal(Array<UserToken>& tokensOut, Array<UserToken>& com
   // Loop and read tokens until we get an error or reach the end
   while (this->ReadToken(&nextToken))
   {
-    // If we got here, then we know the symbol is valid because the ReadToken
-    // returned true Do something based on the symbol's type
+    // If we got here, then we know the symbol is valid because the ReadToken returned true
+    // Do something based on the symbol's type
     switch (nextToken.TokenId)
     {
     // If we get a comment start symbol, continue on into block comment testing
@@ -164,8 +156,7 @@ bool Tokenizer::ParseInternal(Array<UserToken>& tokensOut, Array<UserToken>& com
         // If we ended the multi-line comment, create a single token for it
         if (this->CommentDepth == 0)
         {
-          // We use the end position of the start, and the start position of the
-          // end to strip the /* and */
+          // We use the end position of the start, and the start position of the end to strip the /* and */
           nextToken.Start = multiLineCommentStart.EndPosition;
           nextToken.Length = nextToken.Location.StartPosition - nextToken.Start;
           nextToken.Token = this->Data.SubStringFromByteIndices(nextToken.Start, nextToken.Location.StartPosition);
@@ -220,8 +211,7 @@ bool Tokenizer::ParseInternal(Array<UserToken>& tokensOut, Array<UserToken>& com
   // printf("------ Begin Tokens ------\n");
   // for (size_t i = 0; i < tokensOut.Size(); ++i)
   //{
-  //  printf("Token: %d : %d '%s'\n", i, tokensOut[i].TokenId,
-  //  tokensOut[i].Token.c_str());
+  //   printf("Token: %d : %d '%s'\n", i, tokensOut[i].TokenId, tokensOut[i].Token.c_str());
   //}
   // printf("------ End Tokens ------\n");
 
@@ -255,8 +245,7 @@ char Tokenizer::ReadCharacter()
   if (this->Position >= this->Data.SizeInBytes())
   {
     // Increment the position by a byte even though we're past the end
-    // We rely on this position being pushed out to properly get the length of
-    // tokens
+    // We rely on this position being pushed out to properly get the length of tokens
     ++this->Position;
 
     // Return the null character. Every place that calls ReadCharacter
@@ -292,12 +281,10 @@ bool Tokenizer::DiffString(const char* string)
   // Have we matched the string to the input stream yet?
   bool match = false;
 
-  // Loop until we reach the end of the given string, or we hit an invalid
-  // character
+  // Loop until we reach the end of the given string, or we hit an invalid character
   ZilchLoop
   {
-    // If we hit the end of our given string (and we've matched up to this
-    // point) then it's a match!
+    // If we hit the end of our given string (and we've matched up to this point) then it's a match!
     if (string[localStringPos] == '\0')
     {
       // Mark it as being a match and jump out
@@ -305,12 +292,10 @@ bool Tokenizer::DiffString(const char* string)
       break;
     }
     // Otherwise, if the characters were not the same, we must break out
-    // Eof is handled because the string we compare with should never have eof
-    // in it (see the check above)
+    // Eof is handled because the string we compare with should never have eof in it (see the check above)
     else if (ReadCharacter() != string[localStringPos])
     {
-      // Backup the position by once since we just read a character that wasn't
-      // in this string
+      // Backup the position by once since we just read a character that wasn't in this string
       --this->Position;
       break;
     }
@@ -331,8 +316,7 @@ bool Tokenizer::ReadKeywordOrSymbol(UserToken* outToken,
   // Was a token ever accepted?
   bool acceptedToken = false;
 
-  // Store the type of token we're parsing (we should know immediately from the
-  // first branch)
+  // Store the type of token we're parsing (we should know immediately from the first branch)
   tokenType = TokenCategory::Unknown;
 
 // In the event that we've gotten here,
@@ -344,8 +328,7 @@ bool Tokenizer::ReadKeywordOrSymbol(UserToken* outToken,
     // If the token type we started reading was a keyword...
     if (tokenType == TokenCategory::Keyword)
     {
-      // As long as the last character read was not an alpha-numeric
-      // character...
+      // As long as the last character read was not an alpha-numeric character...
       if (CharacterUtilities::IsAlphaNumeric(character) == false && character != '_')
       {
         // Backup the last read character
@@ -355,8 +338,7 @@ bool Tokenizer::ReadKeywordOrSymbol(UserToken* outToken,
         return true;
       }
 
-      // It's not at the end of a token, don't accept it... (but keep the
-      // position where it is)
+      // It's not at the end of a token, don't accept it... (but keep the position where it is)
       return false;
     }
     else
@@ -392,17 +374,15 @@ bool Tokenizer::ReadIdentifier(UserToken* outToken, bool startedFromKeyword, siz
       if (CharacterUtilities::IsAlphaNumeric(character) == false && character != '_')
         break;
     }
-    // Otherwise, we haven't accepted anything yet (so we're on the first
-    // character)
+    // Otherwise, we haven't accepted anything yet (so we're on the first character)
     else
     {
-      // If the first character is not just an alpha character, then we must
-      // stop We cannot begin an identifier with an underscore
+      // If the first character is not just an alpha character, then we must stop
+      // We cannot begin an identifier with an underscore
       if (CharacterUtilities::IsAlpha(character) == false)
         break;
 
-      // If the first character is upper case, then this is an upper case
-      // identifier
+      // If the first character is upper case, then this is an upper case identifier
       if (CharacterUtilities::IsUpper(character))
         assumedTokenType = Grammar::UpperIdentifier;
     }
@@ -452,15 +432,13 @@ bool Tokenizer::ReadNumber(UserToken* outToken, size_t& lastAcceptedPos, char& c
   // While what we're reading is a digit or a decimal place
   ZilchLoop
   {
-    // Clear the flag so we know that the next character cannot be a sign (store
-    // the flag for this loop)
+    // Clear the flag so we know that the next character cannot be a sign (store the flag for this loop)
     bool canBeExplonentialSign = nextCanBeExplonentialSign;
     nextCanBeExplonentialSign = false;
 
-    // Note: Normally if ReadNumber was standalone, we'd need to be careful that
-    // we never read something that starts with a '.', 'e', or 'd' as a token,
-    // however because it only ever gets called after ReadIdentifier and
-    // ReadKeywordOrSymbol it cannot happen
+    // Note: Normally if ReadNumber was standalone, we'd need to be careful that we never
+    // read something that starts with a '.', 'e', or 'd' as a token, however
+    // because it only ever gets called after ReadIdentifier and ReadKeywordOrSymbol it cannot happen
 
     // If the character is a digit...
     if (CharacterUtilities::IsNumeric(character))
@@ -471,17 +449,15 @@ bool Tokenizer::ReadNumber(UserToken* outToken, size_t& lastAcceptedPos, char& c
       // We read something! So we must accept the token
       acceptedToken = true;
     }
-    // We only bother to read any other kind of symbol if we read a number
-    // already
+    // We only bother to read any other kind of symbol if we read a number already
     else if (acceptedToken)
     {
       // If the character is a decimal place...
       if (character == '.')
       {
-        // If we haven't yet accepted a number, then it can't just start with
-        // '.' (Though technically this should have been accepted as a symbol in
-        // the first place...) Also break if we already determined it was a
-        // real, and then we broke out
+        // If we haven't yet accepted a number, then it can't just start with '.'
+        // (Though technically this should have been accepted as a symbol in the first place...)
+        // Also break if we already determined it was a real, and then we broke out
         if (isRealPos != (size_t)-1 || acceptedToken == false)
           break;
 
@@ -491,25 +467,22 @@ bool Tokenizer::ReadNumber(UserToken* outToken, size_t& lastAcceptedPos, char& c
       // If we hit an exponent 'e' and we're not already an exponent
       else if (character == 'e' && isScientificNotation == false)
       {
-        // Since we're an exponent, the next character is allowed to be a '-' or
-        // '+'
+        // Since we're an exponent, the next character is allowed to be a '-' or '+'
         nextCanBeExplonentialSign = true;
       }
       // Check to see if this character is a sign...
       else if (canBeExplonentialSign && (character == '-' || character == '+'))
       {
-        // We don't do anything here, including not accepting this token
-        // position We need a number to follow in order to accept this!
+        // We don't do anything here, including not accepting this token position
+        // We need a number to follow in order to accept this!
       }
       // If we hit the 'double size' marker...
       else if (character == 'd')
       {
-        // If the number ends in a 'd', it means our number is double sized (64
-        // bit typically)
+        // If the number ends in a 'd', it means our number is double sized (64 bit typically)
         isDoubleSize = true;
 
-        // Accept the number and break out, since 'd' only ever occurs at the
-        // end
+        // Accept the number and break out, since 'd' only ever occurs at the end
         lastAcceptedPos = this->Position;
         acceptedToken = true;
         break;
@@ -562,16 +535,14 @@ bool Tokenizer::ReadNumber(UserToken* outToken, size_t& lastAcceptedPos, char& c
 
 bool Tokenizer::ReadString(UserToken* outToken, size_t& lastAcceptedPos, char& character)
 {
-  // We only consider this string to be an interpolant end if it starts with a
-  // grave accent
+  // We only consider this string to be an interpolant end if it starts with a grave accent
   bool isInterpolantEnd = (this->EnableStringInterpolation && character == '`');
 
   // If the character is not a quote, then return failure immediately
   if (character != '"' && isInterpolantEnd == false)
     return false;
 
-  // This is only used for tolerant mode when we don't parse a string because it
-  // wasn't closed
+  // This is only used for tolerant mode when we don't parse a string because it wasn't closed
   size_t startPosition = this->Position;
 
   // Was an escape character hit?
@@ -617,8 +588,7 @@ bool Tokenizer::ReadString(UserToken* outToken, size_t& lastAcceptedPos, char& c
         // Set that the last accepted position was this position
         lastAcceptedPos = this->Position;
 
-        // If we're ending this string with a grave, then it means we're
-        // starting an interpolant
+        // If we're ending this string with a grave, then it means we're starting an interpolant
         bool isInterpolantStart = (this->EnableStringInterpolation && character == '`');
 
         // If the character is an interpolant starting character...
@@ -657,8 +627,7 @@ bool Tokenizer::ReadString(UserToken* outToken, size_t& lastAcceptedPos, char& c
       {
         // If we're in tolerant mode, most likely the user was typing a string
         // or string interpolant and it wasn't yet closed
-        // What we're going to do here is just parse this as a string token and
-        // cut it off
+        // What we're going to do here is just parse this as a string token and cut it off
         if (this->Errors.TolerantMode)
         {
           // Set that the last accepted position was this position
@@ -681,8 +650,7 @@ bool Tokenizer::ReadString(UserToken* outToken, size_t& lastAcceptedPos, char& c
 
 bool Tokenizer::ReadToken(UserToken* outToken)
 {
-  // Store the last position at which we accepted a token (or the beginning of
-  // the token)
+  // Store the last position at which we accepted a token (or the beginning of the token)
   size_t lastAcceptedPos = this->Position;
 
   // Set the starting position that the token is reading from
@@ -691,16 +659,14 @@ bool Tokenizer::ReadToken(UserToken* outToken)
   // Store the character that we read
   char character = '\0';
 
-  // Store the type of token we're parsing (we should know immediately from the
-  // first branch)
+  // Store the type of token we're parsing (we should know immediately from the first branch)
   TokenCategory::Enum tokenType;
 
   // Loop until we accept a token
   ZilchLoop
   {
     // Attempt to read a keyword or symbol
-    // Internally we call 'ReadCharacter', which can return eof, so we handle it
-    // below
+    // Internally we call 'ReadCharacter', which can return eof, so we handle it below
     if (ReadKeywordOrSymbol(outToken, lastAcceptedPos, character, tokenType) == true)
     {
       // Break out since we've found the full token
@@ -714,8 +680,7 @@ bool Tokenizer::ReadToken(UserToken* outToken)
         // Store away the position
         lastAcceptedPos = this->Position - 1;
 
-        // Read the identifier (we don't actually need to check the return since
-        // we always know its 'true')
+        // Read the identifier (we don't actually need to check the return since we always know its 'true')
         bool result = ReadIdentifier(outToken, true, lastAcceptedPos, character);
         ErrorIf(result != true, "Reading the identifier must always succeed");
         break;
@@ -776,8 +741,7 @@ bool Tokenizer::ReadToken(UserToken* outToken)
         }
 
         // If we got here, some sort of unknown data must have been input
-        // Add a parsing error that informs the user that a token could not be
-        // read
+        // Add a parsing error that informs the user that a token could not be read
         this->Errors.Raise(this->Location, ErrorCode::UnidentifiedSymbol, badCharacter);
         return false;
       }
@@ -821,9 +785,8 @@ void Tokenizer::UpdateLineAndCharacterNumber(char character)
     // Check if the character matches that of the newline or carriage return
     if (character == '\n' || character == '\r')
     {
-      // As long as the last character wasn't a carriage return and this
-      // character isn't a newline (CRLF)... Note: If this was a full CRLF, we
-      // already incremented the line on the first CR, no need to do it again!
+      // As long as the last character wasn't a carriage return and this character isn't a newline (CRLF)...
+      // Note: If this was a full CRLF, we already incremented the line on the first CR, no need to do it again!
       if ((this->WasCarriageReturn && character == '\n') == false)
       {
         // Increment the line count since we hit a line

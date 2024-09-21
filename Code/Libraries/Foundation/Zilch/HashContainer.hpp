@@ -17,8 +17,7 @@ public:
   // Invalidates all active ranges via incrementing a modification id
   void Modified();
 
-  // A special counter that we use to denote whenever the container has been
-  // modified
+  // A special counter that we use to denote whenever the container has been modified
   Integer ModifyId;
 };
 

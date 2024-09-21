@@ -13,8 +13,7 @@ namespace Events
 // The program will be immediately aborted after this event is run
 ZilchDeclareEvent(FatalError, FatalErrorEvent);
 
-// Sent on ExecutableState when an exception occurs and isn't handled (can be
-// user thrown, etc)
+// Sent on ExecutableState when an exception occurs and isn't handled (can be user thrown, etc)
 ZilchDeclareEvent(PreUnhandledException, ExceptionEvent);
 ZilchDeclareEvent(UnhandledException, ExceptionEvent);
 
@@ -27,8 +26,7 @@ ZilchDeclareEvent(OpcodePostStep, OpcodeEvent);
 ZilchDeclareEvent(EnterFunction, OpcodeEvent);
 ZilchDeclareEvent(ExitFunction, OpcodeEvent);
 
-// Whenever an scripted object is leaked, it is reported when the executable
-// state is torn down
+// Whenever an scripted object is leaked, it is reported when the executable state is torn down
 ZilchDeclareEvent(MemoryLeak, MemoryLeakEvent);
 } // namespace Events
 
@@ -45,8 +43,7 @@ public:
   CodeLocation* AllocatedLocation;
 };
 
-// An event intended for debuggers and profilers (used when we enter/exit
-// functions and step opcodes)
+// An event intended for debuggers and profilers (used when we enter/exit functions and step opcodes)
 class ZeroShared OpcodeEvent : public EventData
 {
 public:
@@ -70,8 +67,7 @@ public:
   Exception* ThrownException;
 };
 
-// The types of fatal errors that can occur inside of Zilch (non recoverable
-// errors)
+// The types of fatal errors that can occur inside of Zilch (non recoverable errors)
 namespace FatalError
 {
 enum Enum
@@ -106,9 +102,8 @@ public:
   void PerformCleanup();
 
   // Handles on the stack that need to be cleaned up
-  // This includes 'this' handles inside delegates, any handles that get copied
-  // to the stack, and or any handles that are created (such as via local/new,
-  // or stack/member handles)
+  // This includes 'this' handles inside delegates, any handles that get copied to the stack,
+  // and or any handles that are created (such as via local/new, or stack/member handles)
   Array<Any*> AnysToBeCleaned;
   Array<Handle*> HandlesToBeCleaned;
   Array<Delegate*> DelegatesToBeCleaned;
@@ -190,8 +185,7 @@ public:
   bool AttemptThrowStackExceptions(ExceptionReport& report);
 
   // Checks if a variable is initialized within the current frame
-  // Note: This is only intended to be used by a debugger, and may be incorrect
-  // for value types
+  // Note: This is only intended to be used by a debugger, and may be incorrect for value types
   bool IsVariableInitialized(Variable* variable);
 
   // For the current stack frame, this is where all the data lies
@@ -202,9 +196,8 @@ public:
   ExecutableState* State;
 
   // The active program counter for this call stack
-  // By default, this is set to 'ProgramCounterNotActive' which indicates it
-  // should not be used For C++ bound functions, this is 'ProgramCounterNative'
-  // which means it is active but more information is needed
+  // By default, this is set to 'ProgramCounterNotActive' which indicates it should not be used
+  // For C++ bound functions, this is 'ProgramCounterNative' which means it is active but more information is needed
   size_t ProgramCounter;
 
   // The current function that is being executed
@@ -214,26 +207,22 @@ public:
   // This is also used to destruct things when exceptions are thrown
   Array<PerScopeData*> Scopes;
 
-  // Used for debugging (we can't invoke a function until all parameters are
-  // written)
+  // Used for debugging (we can't invoke a function until all parameters are written)
   CallDebug::Enum Debug;
 
   // Where we report exceptions to
-  // This is only set when actually entering the call, not when the frame is
-  // created
+  // This is only set when actually entering the call, not when the frame is created
   ExceptionReport* Report;
 
-  // When we're inside the VM, this is the location that we jump to if an
-  // exception occurs This is only set when actually inside the VM's
-  // 'ExecuteNext' function
+  // When we're inside the VM, this is the location that we jump to if an exception occurs
+  // This is only set when actually inside the VM's 'ExecuteNext' function
   jmp_buf ExceptionJump;
 
   // The number of timeouts we have associated with this stack frame
   // When this frame gets destroyed/unrolled, we need to pop these timeouts
   size_t Timeouts;
 
-  // The frame itself could have been created past the recursion depth or in an
-  // overflowed state
+  // The frame itself could have been created past the recursion depth or in an overflowed state
   StackErrorState::Enum ErrorState;
 };
 
@@ -291,19 +280,16 @@ public:
   // Constructor
   Timeout();
 
-  // The length of the timeout in ticks (once the accumulation reaches this we
-  // throw an exception) We also use this to print a meaningful exception
-  // message
+  // The length of the timeout in ticks (once the accumulation reaches this we throw an exception)
+  // We also use this to print a meaningful exception message
   long long LengthTicks;
 
-  // Stores the amount of ticks accumulated under this timeout (based on the
-  // Timer class) Every timeout is exclusive, which means while a timeout is
-  // active it's parents DO NOT accumulate time
+  // Stores the amount of ticks accumulated under this timeout (based on the Timer class)
+  // Every timeout is exclusive, which means while a timeout is active it's parents DO NOT accumulate time
   long long AccumulatedTicks;
 
 #  if ZeroDebug
-  // Only used to verify that the correct frame that pushed us is the only one
-  // to pop us
+  // Only used to verify that the correct frame that pushed us is the only one to pop us
   PerFrameData* Frame;
 #  endif
 };
@@ -330,9 +316,8 @@ public:
   // The exceptions that are being thrown (as we unravel the stack)
   Array<Handle> Exceptions;
 
-  // In the event that an exception could not be allocated (or other fringe
-  // reasons) we must set this flag (which forces 'HasThrownExceptions' to
-  // return true, even when Exceptions is empty)
+  // In the event that an exception could not be allocated (or other fringe reasons)
+  // we must set this flag (which forces 'HasThrownExceptions' to return true, even when Exceptions is empty)
   bool ForceThrownExceptions;
 
 private:
@@ -361,9 +346,8 @@ public:
   friend class Debugger;
   friend class Library;
 
-  // Because users often need to access the state in their own bound functions,
-  // we provide a thread local that is the last running state (set before each
-  // call to Zilch, and reset to the previous after the call)
+  // Because users often need to access the state in their own bound functions, we provide a thread local
+  // that is the last running state (set before each call to Zilch, and reset to the previous after the call)
   static ExecutableState* CallingState;
   static ExecutableState* GetCallingState();
 
@@ -374,17 +358,15 @@ public:
   ~ExecutableState();
 
   // Patch a library that already exists on the same state (by name)
-  // The executable state must not be running inside any code (no stack frame)
-  // and currently the library must have no other libraries that depend upon it
-  // (a leaf library)
+  // The executable state must not be running inside any code (no stack frame) and currently
+  // the library must have no other libraries that depend upon it (a leaf library)
   void PatchLibrary(LibraryRef newLibrary);
 
-  // Set the timeout for this state in seconds (equivalent of a timeout
-  // statement in language) Any code that runs for longer than this amount of
-  // time will throw an exception saying that it timed out. This is mainly used
-  // to prevent user code from infinite looping/recursing This can only be set
-  // while we're not inside a call-stack A value of 0 seconds will clear the
-  // timeout
+  // Set the timeout for this state in seconds (equivalent of a timeout statement in language)
+  // Any code that runs for longer than this amount of time will throw an exception saying
+  // that it timed out. This is mainly used to prevent user code from infinite looping/recursing
+  // This can only be set while we're not inside a call-stack
+  // A value of 0 seconds will clear the timeout
   void SetTimeout(size_t seconds);
 
   // Checks if we are currently inside a call stack
@@ -402,15 +384,14 @@ public:
   Handle AllocateHeapObject(BoundType* type, ExceptionReport& report, HeapFlags::Enum flags);
 
   // Allocates an object on the heap and returns a handle to the object
-  // Both the pre-constructor and default constructor will be called (or an
-  // exception will be thrown) Note that the memory will be managed by the
-  // language itself
+  // Both the pre-constructor and default constructor will be called (or an exception will be thrown)
+  // Note that the memory will be managed by the language itself
   Handle AllocateDefaultConstructedHeapObject(BoundType* type, ExceptionReport& report, HeapFlags::Enum flags);
   Handle AllocateDefaultConstructedHeapObject(BoundType* type, HeapFlags::Enum flags = HeapFlags::ReferenceCounted);
 
   // Allocates an object on the heap and returns a handle to the object
-  // The object will be pre-constructed and then the copy constructor will be
-  // invoked on it Note that the memory will be managed by the language itself
+  // The object will be pre-constructed and then the copy constructor will be invoked on it
+  // Note that the memory will be managed by the language itself
   Handle AllocateCopyConstructedHeapObject(BoundType* type,
                                            ExceptionReport& report,
                                            HeapFlags::Enum flags,
@@ -420,8 +401,7 @@ public:
   HandleOf<T> AllocateDefaultConstructed(BoundType* typeToAllocate = nullptr,
                                          HeapFlags::Enum flags = HeapFlags::ReferenceCounted)
   {
-    // If the user provided no specific type to allocate, then assume its the T
-    // type
+    // If the user provided no specific type to allocate, then assume its the T type
     if (typeToAllocate == nullptr)
       typeToAllocate = ZilchTypeId(T);
 
@@ -444,19 +424,17 @@ public:
   // Get a pointer to the current stack for the current function
   // If the function has a return value, then it is the first value on the stack
   // After the return value comes the parameters, in tightly packed order
-  // If the function is an instance method, then the last value is the 'this'
-  // handle, whose type is actually 'Handle'; handles can be dereferenced to get
-  // a direct pointer to the object Only ever read up to the size of your
-  // return, parameters, and this handle
+  // If the function is an instance method, then the last value is the 'this' handle,
+  // whose type is actually 'Handle'; handles can be dereferenced to get a
+  // direct pointer to the object
+  // Only ever read up to the size of your return, parameters, and this handle
   ::byte* GetCurrentStackFrame();
 
   // Executes a statement or expression and returns the result
-  // The dependent libraries are assumed to be the same libraries as the state
-  // compiled with (not including patches) If the statement fails to compile, it
-  // will return a string that is the compilation error If the statement results
-  // in an exception, this will return the a string with all the exceptions
-  // concatenated This uses the 'patch library' logic to Append a patch to the
-  // running state
+  // The dependent libraries are assumed to be the same libraries as the state compiled with (not including patches)
+  // If the statement fails to compile, it will return a string that is the compilation error
+  // If the statement results in an exception, this will return the a string with all the exceptions concatenated
+  // This uses the 'patch library' logic to Append a patch to the running state
   Any ExecuteStatement(StringParam code);
 
   // Throws a standard null reference exception
@@ -465,12 +443,10 @@ public:
   // Throws a standard null reference exception with a custom message
   void ThrowNullReferenceException(ExceptionReport& report, StringParam customMessage);
 
-  // If a function is not implemented, this is a standard exception that lets
-  // the user know
+  // If a function is not implemented, this is a standard exception that lets the user know
   void ThrowNotImplementedException();
 
-  // Throws a standard exception with the given message using the
-  // ExceptionReport from the latest stack frame
+  // Throws a standard exception with the given message using the ExceptionReport from the latest stack frame
   void ThrowException(StringParam message);
 
   // Throws a standard exception with the given message
@@ -479,10 +455,9 @@ public:
   // Throws an exception allocated by the user
   void ThrowException(ExceptionReport& report, Handle& exception);
 
-  // Ensures that a scope does not exceed a time limit (throws an exception if
-  // it does) This should be periodically called in native C++ code for proper
-  // timeout protection Returns true if we threw a timeout exception, false
-  // otherwise
+  // Ensures that a scope does not exceed a time limit (throws an exception if it does)
+  // This should be periodically called in native C++ code for proper timeout protection
+  // Returns true if we threw a timeout exception, false otherwise
   bool ThrowExceptionOnTimeout(ExceptionReport& report);
 
   // Gets the latest exception report via the thread local 'CallingState'
@@ -498,18 +473,16 @@ public:
     return (T*)HandleManagers::GetInstance().GetManager(ZilchManagerId(T), this);
   }
 
-  // Update the virtual table of a native C++ object, or do nothing if it's not
-  // virtual or native
+  // Update the virtual table of a native C++ object, or do nothing if it's not virtual or native
   void UpdateCppVirtualTable(::byte* objectWithBaseVTable, BoundType* cppBaseType, BoundType* derivedType);
 
   // Get the raw stack array
   const ::byte* GetRawStack();
 
-  // Get a static field from this state (must be a field in one of the dependent
-  // libraries) If the field is not initialized, it will run the initializer
-  // code (user defined code) to attempt to initialize the value, though it is
-  // first initialized to zero memory An exception can be thrown from user code
-  // when attempting to initialize the field
+  // Get a static field from this state (must be a field in one of the dependent libraries)
+  // If the field is not initialized, it will run the initializer code (user defined code)
+  // to attempt to initialize the value, though it is first initialized to zero memory
+  // An exception can be thrown from user code when attempting to initialize the field
   ::byte* GetStaticField(Field* field, ExceptionReport& report);
 
   // A pointer to any data the user wants to attach
@@ -521,12 +494,11 @@ public:
   mutable DestructibleBuffer ComplexUserData;
 
 private:
-  // Applies a patch, but skips some checks (used when we know patching a
-  // library is safe)
+  // Applies a patch, but skips some checks (used when we know patching a library is safe)
   void ForcePatchLibrary(LibraryParam newLibrary);
 
-  // When a library is freed we need to erase all static fields from that
-  // library to prevent crashes in the executable state destructor
+  // When a library is freed we need to erase all static fields from that library to prevent crashes in the executable
+  // state destructor
   void ClearStaticFieldsFromLibrary(Library* library);
 
   // Gets a pointer to the next stack frame
@@ -539,8 +511,7 @@ private:
   // Push a new stack frame and returns the location on the stack
   PerFrameData* PushFrame(Function* function);
 
-  // A slightly more optimal version of pushing a stack frame (used internally
-  // in execution)
+  // A slightly more optimal version of pushing a stack frame (used internally in execution)
   PerFrameData* PushFrame(::byte* frame, Function* function);
 
   // Pops a stack frame and return a pointer to where the return value should be
@@ -550,8 +521,7 @@ private:
   void InitializeStackHandle(Handle& handle, ::byte* location, PerScopeData* scope, BoundType* type);
 
   // Initialize a handle with a direct pointer value
-  // Generally unsafe, but used in cases such as statics which are guaranteed to
-  // exist and therefore safe
+  // Generally unsafe, but used in cases such as statics which are guaranteed to exist and therefore safe
   void InitializePointerHandle(Handle& handle, ::byte* location, BoundType* type);
 
   // Invokes the pre-constructor (which initializes memory) on a handle
@@ -560,11 +530,10 @@ private:
   // Allocates or recycles a scope
   PerScopeData* AllocateScope();
 
-  // A timeout is a low level construct that allows us to ensure code does not
-  // run beyond a certain time Timeouts do not work while calling native code
-  // (except upon native code's return) This will push a timeout based on a
-  // given number of seconds Returns true if we threw a timeout exception, false
-  // otherwise
+  // A timeout is a low level construct that allows us to ensure code does not run beyond a certain time
+  // Timeouts do not work while calling native code (except upon native code's return)
+  // This will push a timeout based on a given number of seconds
+  // Returns true if we threw a timeout exception, false otherwise
   bool PushTimeout(PerFrameData* frame, size_t seconds);
 
   // Exits a timeout scope and validates that the timeout was not reached
@@ -578,35 +547,29 @@ public:
   // Enables debug events (opcode step, enter/exit function, etc)
   bool EnableDebugEvents;
 
-  // Maps old functions to the new functions they were patched with (only if any
-  // library was patched in the state)
+  // Maps old functions to the new functions they were patched with (only if any library was patched in the state)
   HashMap<Function*, Function*> PatchedFunctions;
 
-  // Maps old types to the new types they were patched with (only if any library
-  // was patched in the state)
+  // Maps old types to the new types they were patched with (only if any library was patched in the state)
   HashMap<BoundType*, BoundType*> PatchedBoundTypes;
 
-  // Libraries that we need to keep alive because we were patched using their
-  // types and functions
+  // Libraries that we need to keep alive because we were patched using their types and functions
   // HashMap<LibraryRef, LibraryRef> PatchedLibraries;
   Array<LibraryRef> PatchedLibraries;
 
-  // An id that is guaranteed to start at 0 and counts up every time we are
-  // patched This can be used to re-enable features after a patch occurs on the
-  // state (such as event handlers)
+  // An id that is guaranteed to start at 0 and counts up every time we are patched
+  // This can be used to re-enable features after a patch occurs on the state (such as event handlers)
   size_t PatchId;
 
-  // Externally set breakpoints will overwrite the instruction, so we remap the
-  // opcode's index to its original instruction here (if a breakpoint gets
-  // unset, we use this to write back the original instruction)
+  // Externally set breakpoints will overwrite the instruction, so we remap the opcode's index
+  // to its original instruction here (if a breakpoint gets unset, we use this to write back the original instruction)
   HashMap<size_t, Instruction::Enum> ExternalBreakpoints;
 
   // Static variables are currently just looked up by their pointer
-  // If the static field memory does not exist, it will be created and zeroed
-  // out In the future, we'll also run the initializer upon the memory the first
-  // time it is accessed We may reserve a header byte to know whether the memory
-  // has been fully initialized, because accessing a field that has been created
-  // but not fully initialized means there is a cycle
+  // If the static field memory does not exist, it will be created and zeroed out
+  // In the future, we'll also run the initializer upon the memory the first time it is accessed
+  // We may reserve a header byte to know whether the memory has been fully initialized,
+  // because accessing a field that has been created but not fully initialized means there is a cycle
   HashMap<Field*, ::byte*> StaticFieldToMemory;
 
   // We need a way to map virtual function ids into our function
@@ -615,13 +578,12 @@ public:
   // The size of the stack
   const size_t StackSize;
 
-  // Reserved space after the stack, this is only used when we reach a stack
-  // overflow
+  // Reserved space after the stack, this is only used when we reach a stack overflow
   const size_t OverflowStackSize;
 
   // If this reference count is greater than 0, then we do not allow allocation
-  // This is true when running any destructors (destructors must not allocate
-  // objects, or call any functions that allocate)
+  // This is true when running any destructors (destructors must not allocate objects, or call any functions that
+  // allocate)
   size_t DoNotAllowAllocation;
 
   // The maximum number of recursive calls we allow in this state
@@ -639,53 +601,47 @@ public:
   PointerManager* PointerObjects;
 
   // The current type we are allocating (set by AllocateHeapObject)
-  // This is useful for when we need to access the 'virtual type' from a base
-  // class of a constructing object
+  // This is useful for when we need to access the 'virtual type' from a base class of a constructing object
   BoundType* AllocatingType;
 
-  // All the virtual tables (of varying sizes) for each native type that has
-  // virtual methods bound
+  // All the virtual tables (of varying sizes) for each native type that has virtual methods bound
   HashMap<BoundType*, ::byte*> NativeVirtualTables;
 
   // The handle managers we use to dereference and setup handles
   mutable HashMap<HandleManagerId, HandleManager*> UniqueManagers;
 
-  // Map code entry ids to the code entry itself (the entry will be alive as
-  // long as the library is alive) This maintains a list of all code entries
-  // used by this state
+  // Map code entry ids to the code entry itself (the entry will be alive as long as the library is alive)
+  // This maintains a list of all code entries used by this state
   HashMap<size_t, CodeEntry*> CodeHashToCodeEntry;
 
   // Data that we need each time we jump into a new stack frame
   Array<PerFrameData*> StackFrames;
 
-  // Every time we allocate a stack frame, we don't actually delete it, but
-  // rather put it into this free list of stack frames These are destroyed along
-  // with the executable state
+  // Every time we allocate a stack frame, we don't actually delete it, but rather put it into this free list of stack
+  // frames These are destroyed along with the executable state
   OwnedArray<PerFrameData*> RecycledFrames;
 
   // Recycled for memory efficiency (see RecycledFrames)
   OwnedArray<PerScopeData*> RecycledScopes;
 
-  // Every time we allocate a scope (even for saved versions) we give it a
-  // unique id so that way references formed to stack variables can be correctly
-  // used It is very important that the scopes be recycled, because handles
-  // continue to point at old scopes We use 0 as a special value that means a
-  // scope is not valid (in the recycle list) so the counter starts at 1
+  // Every time we allocate a scope (even for saved versions) we give it a unique
+  // id so that way references formed to stack variables can be correctly used
+  // It is very important that the scopes be recycled, because handles continue to point at old scopes
+  // We use 0 as a special value that means a scope is not valid (in the recycle list) so the counter starts at 1
   Uid UniqueIdScopeCounter;
 
-  // This stack of string builders that we use for efficient concatenation of
-  // strings
+  // This stack of string builders that we use for efficient concatenation of strings
   Array<StringBuilder> StringBuilders;
 
-  // In the case where we have no globally set timeout, and we have no timeout
-  // statements, this array will be empty. Otherwise if a timeout exists it will
-  // be checked by the virtual machine Note: Timeouts are closely related to
-  // stack frames, as they can only be pushed or popped by the same stack frame
+  // In the case where we have no globally set timeout, and we have no timeout statements,
+  // this array will be empty. Otherwise if a timeout exists it will be checked by the
+  // virtual machine
+  // Note: Timeouts are closely related to stack frames, as they can only be pushed
+  // or popped by the same stack frame
   Array<Timeout> Timeouts;
 
   // The timer we use to measure timeouts
-  // Ideally this timer would have a high fidelity to prevent timing
-  // inaccuracies
+  // Ideally this timer would have a high fidelity to prevent timing inaccuracies
   Timer TimeoutTimer;
 
   // The amount of time we require when executing a timeout
@@ -698,16 +654,16 @@ public:
   // Note that the stack is of a fixed size, and should never be reallocated
   ::byte* Stack;
 
-  // Once we hit a stack overflow we no longer have stack space to invoke
-  // anything such as destructors, or constructing the exception itself! To fix
-  // this issue, we use an extra reserve of space at the end of the stack,
-  // however it is only valid to access that stack space when this flag is set
+  // Once we hit a stack overflow we no longer have stack space to invoke anything
+  // such as destructors, or constructing the exception itself! To fix this issue,
+  // we use an extra reserve of space at the end of the stack, however it is only
+  // valid to access that stack space when this flag is set
   // If a destructor then stack overflows while another stack overflow occurred,
   // we hit a fatal error
   bool HitStackOverflow;
 
-  // When no exception reports exist on the call stack, this one will be
-  // returned This report is always cleared upon its request
+  // When no exception reports exist on the call stack, this one will be returned
+  // This report is always cleared upon its request
   ExceptionReport DefaultReport;
 
   // Not copyable
@@ -780,8 +736,7 @@ ZeroSharedTemplate void InternalWriteRef(const T& value, ::byte* stackFrame, Exe
   // If this is a redirected type...
   if (ZilchStaticType(T)::DirectRead)
   {
-    // Get a raw pointer to the value (removes all const, reference, and other
-    // qualifiers)
+    // Get a raw pointer to the value (removes all const, reference, and other qualifiers)
     handle->StoredType = type;
 
     // Setup the newly created handle
@@ -793,8 +748,7 @@ ZeroSharedTemplate void InternalWriteRef(const T& value, ::byte* stackFrame, Exe
     size_t size = sizeof(typename ZilchStaticType(T)::RepresentedType);
     ::byte* data = (::byte*)alloca(size);
 
-    // This was a redirect, so just take the type of the redirect and put it on
-    // the handle
+    // This was a redirect, so just take the type of the redirect and put it on the handle
     handle->StoredType = type;
 
     // Convert the value to the redirected type within our temporary buffer
@@ -849,8 +803,8 @@ public:
     public:                                                                                                            \
       static T Get(Call& call, size_t index);                                                                          \
       static void Set(Call& call, size_t index, SetT value);                                                           \
-      static ::byte* GetArgumentPointer(Call& call, size_t index);                                                       \
-      static T CastArgumentPointer(::byte* stackPointer);                                                                \
+      static ::byte* GetArgumentPointer(Call& call, size_t index);                                                     \
+      static T CastArgumentPointer(::byte* stackPointer);                                                              \
     };
 
 #  define ZilchCallHelperTemplateSpecialization(T, SetT)                                                               \
@@ -859,13 +813,12 @@ public:
     public:                                                                                                            \
       static T Get(Call& call, size_t index);                                                                          \
       static void Set(Call& call, size_t index, SetT value);                                                           \
-      static ::byte* GetArgumentPointer(Call& call, size_t index);                                                       \
-      static T CastArgumentPointer(::byte* stackPointer);                                                                \
+      static ::byte* GetArgumentPointer(Call& call, size_t index);                                                     \
+      static T CastArgumentPointer(::byte* stackPointer);                                                              \
     };
 
-// Facilitates invoking Zilch functions including parameter passing and grabbing
-// return values Also is passed into each call when implementing a custom
-// function that is bound to Zilch
+// Facilitates invoking Zilch functions including parameter passing and grabbing return values
+// Also is passed into each call when implementing a custom function that is bound to Zilch
 class ZeroShared Call
 {
 public:
@@ -878,18 +831,15 @@ public:
   // Constructor for calling a delegate (automatically sets the this handle)
   Call(const Delegate& delegate, ExecutableState* state = ExecutableState::CallingState);
 
-  // Destructor (constructor is private so only the ExecutableState can create
-  // it)
+  // Destructor (constructor is private so only the ExecutableState can create it)
   ~Call();
 
-  // All getters and setters below perform checks on the size and type (if
-  // possible) These are special constants that represent the 'this' handle and
-  // return value
+  // All getters and setters below perform checks on the size and type (if possible)
+  // These are special constants that represent the 'this' handle and return value
   static const size_t Return = (size_t)-1;
   static const size_t This = (size_t)-2;
 
-  // Set either a parameter or return for the call (value types only, this not
-  // allowed)
+  // Set either a parameter or return for the call (value types only, this not allowed)
   void SetValue(size_t index, const ::byte* input, size_t size);
 
   // Set either a parameter, return, or this handle for the call
@@ -898,8 +848,7 @@ public:
   // Set either a parameter or return for the call (this not allowed)
   void SetDelegate(size_t index, const Delegate& value);
 
-  // Set either a parameter or return for the call (value types only, this not
-  // allowed)
+  // Set either a parameter or return for the call (value types only, this not allowed)
   template <typename T>
   void SetValue(size_t index, const T& value)
   {
@@ -915,8 +864,7 @@ public:
     InternalWriteValue<T>(value, stack);
   }
 
-  // Set either a parameter, return, or this handle for the call (reference
-  // types only)
+  // Set either a parameter, return, or this handle for the call (reference types only)
   template <typename T>
   void SetHandle(size_t index, const T& value)
   {
@@ -939,8 +887,7 @@ public:
     return CallHelper<T>::Set(*this, index, value);
   }
 
-  // Get either a parameter or return from the call (value types only, this not
-  // allowed)
+  // Get either a parameter or return from the call (value types only, this not allowed)
   void GetValue(size_t index, ::byte* output, size_t size);
 
   // Get either a parameter, return, or this handle from the call
@@ -955,24 +902,22 @@ public:
   // Get either a parameter or return from the call (this not allowed)
   ::byte* GetDelegatePointer(size_t index);
 
-  // Get either a parameter or return from the call (value types only, this not
-  // allowed)
+  // Get either a parameter or return from the call (value types only, this not allowed)
   template <typename T>
   T GetValue(size_t index)
   {
     // Get the stack location and perform checks
     ::byte* stack = this->GetChecked(index,
-                                   sizeof(typename ZilchStaticType(T)::RepresentedType),
-                                   ZilchTypeId(T),
-                                   CheckPrimitive::Value,
-                                   Direction::Get);
+                                     sizeof(typename ZilchStaticType(T)::RepresentedType),
+                                     ZilchTypeId(T),
+                                     CheckPrimitive::Value,
+                                     Direction::Get);
 
     // Read the value from the stack and return it (or convert it)
     return InternalReadValue<T>(stack);
   }
 
-  // Get either a parameter, return, or this handle from the call (reference
-  // types only)
+  // Get either a parameter, return, or this handle from the call (reference types only)
   template <typename T>
   T GetHandle(size_t index)
   {
@@ -983,8 +928,7 @@ public:
     return InternalReadRef<T>(stack);
   }
 
-  // Get either a parameter or return from the call (value types only, this not
-  // allowed)
+  // Get either a parameter or return from the call (value types only, this not allowed)
   template <typename T>
   ::byte* GetValuePointer(size_t index)
   {
@@ -996,8 +940,7 @@ public:
                             Direction::Get);
   }
 
-  // Get either a parameter, return, or this handle from the call (reference
-  // types only)
+  // Get either a parameter, return, or this handle from the call (reference types only)
   template <typename T>
   ::byte* GetHandlePointer(size_t index)
   {
@@ -1014,8 +957,7 @@ public:
     return CallHelper<T>::Get(*this, index);
   }
 
-  // Get a parameter from the call object. If the result is equal to null then
-  // an exception is thrown.
+  // Get a parameter from the call object. If the result is equal to null then an exception is thrown.
   template <typename T>
   T GetNonNull(size_t index)
   {
@@ -1023,16 +965,14 @@ public:
   }
 
   // Same as Get but without the type cast
-  // Throws exception if casting the data from the stack to the given type will
-  // result in a null value cast
+  // Throws exception if casting the data from the stack to the given type will result in a null value cast
   template <typename T>
   ::byte* GetArgumentPointer(size_t index)
   {
     return CallHelper<T>::GetArgumentPointer(*this, index);
   }
 
-  // Does the type cast for the pointer returned by GetArgumentPointer, given
-  // type must be the same
+  // Does the type cast for the pointer returned by GetArgumentPointer, given type must be the same
   template <typename T>
   T CastArgumentPointer(::byte* stackPointer)
   {
@@ -1040,13 +980,12 @@ public:
   }
 
   // Invoke the function / call
-  // All parameters must be set before invoking (and the 'this' if it's an
-  // instance method) Returns true if it succeeded, false if any exceptions were
-  // thrown
+  // All parameters must be set before invoking (and the 'this' if it's an instance method)
+  // Returns true if it succeeded, false if any exceptions were thrown
   bool Invoke(ExceptionReport& report);
 
-  // The same as the above invoke, but it uses the last exception report on the
-  // stack Returns true if it succeeded, false if any exceptions were thrown
+  // The same as the above invoke, but it uses the last exception report on the stack
+  // Returns true if it succeeded, false if any exceptions were thrown
   bool Invoke();
 
   // Get a reference to the executable state
@@ -1092,18 +1031,16 @@ public:
   // Only disable this feature if you plan on manually cleaning up the stack
   void DisableParameterDestruction();
 
-  // Disables the automatic destruction of the 'this' handle at the end of the
-  // call Only disable this feature if you plan on manually cleaning up the
-  // stack
+  // Disables the automatic destruction of the 'this' handle at the end of the call
+  // Only disable this feature if you plan on manually cleaning up the stack
   void DisableThisDestruction();
 
-  // Disables the automatic destruction of the return value at the end of the
-  // call Only disable this feature if you plan on manually cleaning up the
-  // stack
+  // Disables the automatic destruction of the return value at the end of the call
+  // Only disable this feature if you plan on manually cleaning up the stack
   void DisableReturnDestruction();
 
-  // Tells the debugging features that the parameter, return, or this handle was
-  // set Only use this if you set the return via direct stack memory
+  // Tells the debugging features that the parameter, return, or this handle was set
+  // Only use this if you set the return via direct stack memory
   void MarkAsSet(size_t index);
 
   // Tells the debugging features that the return value was set
@@ -1203,8 +1140,7 @@ template <typename T>
   }
 }
 
-// A helper for allocating a type within Zilch using the current executable
-// state
+// A helper for allocating a type within Zilch using the current executable state
 #  define ZilchAllocate(T, ...) (ZZ::ExecutableState::GetCallingState()->AllocateDefaultConstructed<T>(__VA_ARGS__))
 #  define ZilchAllocateUntyped(...)                                                                                    \
     (ZZ::ExecutableState::GetCallingState()->AllocateDefaultConstructedHeapObject(__VA_ARGS__))

@@ -8,8 +8,7 @@ Any::Any() : StoredType(nullptr)
 {
   ZilchErrorIfNotStarted(Any);
 
-  // Memset the area to empty, so any handles or primitives we store won't get
-  // messed up by exceptions
+  // Memset the area to empty, so any handles or primitives we store won't get messed up by exceptions
   memset(this->Data, 0, sizeof(this->Data));
 }
 
@@ -17,8 +16,7 @@ Any::Any(NullPointerType) : StoredType(nullptr)
 {
   ZilchErrorIfNotStarted(Any);
 
-  // Memset the area to empty, so any handles or primitives we store won't get
-  // messed up by exceptions
+  // Memset the area to empty, so any handles or primitives we store won't get messed up by exceptions
   memset(this->Data, 0, sizeof(this->Data));
 }
 
@@ -34,13 +32,11 @@ Any::Any(Type* type)
     return;
   }
 
-  // Get how big the copyable size of the object is (size of a handle, or the
-  // entire value size)
+  // Get how big the copyable size of the object is (size of a handle, or the entire value size)
   size_t copyableSize = type->GetCopyableSize();
 
-  // Allocate room to store this type (may store locally and not actually
-  // allocate)
-  ::byte* destination = this->AllocateData(copyableSize);
+  // Allocate room to store this type (may store locally and not actually allocate)
+  byte* destination = this->AllocateData(copyableSize);
 
   // Store the type and default construct the data into us
   this->StoredType = type;
@@ -54,8 +50,7 @@ Any::Any(const ::byte* data, Type* type)
   // If we're trying to construct an any from an any, just directly copy it
   if (Type::IsAnyType(type))
   {
-    // Memset the area to empty, so any handles or primitives we store won't get
-    // messed up by exceptions
+    // Memset the area to empty, so any handles or primitives we store won't get messed up by exceptions
     this->StoredType = nullptr;
     memset(this->Data, 0, sizeof(this->Data));
 
@@ -64,16 +59,13 @@ Any::Any(const ::byte* data, Type* type)
   }
   else
   {
-    // When storing any type within an any, we should always store the most
-    // derived type
+    // When storing any type within an any, we should always store the most derived type
     type = type->GenericGetVirtualType(data);
 
-    // Get how big the copyable size of the object is (size of a handle, or the
-    // entire value size)
+    // Get how big the copyable size of the object is (size of a handle, or the entire value size)
     size_t copyableSize = type->GetCopyableSize();
 
-    // Allocate room to store this type (may store locally and not actually
-    // allocate)
+    // Allocate room to store this type (may store locally and not actually allocate)
     ::byte* destination = this->AllocateData(copyableSize);
 
     // Store the type and copy construct the data into us
@@ -90,12 +82,10 @@ Any::Any(const Any& other)
   // If we're copying from an any that actually Contains data...
   if (this->StoredType != nullptr)
   {
-    // Get how big the copyable size of the object is (size of a handle, or the
-    // entire value size)
+    // Get how big the copyable size of the object is (size of a handle, or the entire value size)
     size_t copyableSize = this->StoredType->GetCopyableSize();
 
-    // Allocate room to store this type (may store locally and not actually
-    // allocate)
+    // Allocate room to store this type (may store locally and not actually allocate)
     ::byte* destination = this->AllocateData(copyableSize);
 
     // Copy the right hand data into our data
@@ -103,8 +93,7 @@ Any::Any(const Any& other)
   }
   else
   {
-    // Memset the area to empty, so any handles or primitives we store won't get
-    // messed up by exceptions
+    // Memset the area to empty, so any handles or primitives we store won't get messed up by exceptions
     memset(this->Data, 0, sizeof(this->Data));
   }
 }
@@ -144,8 +133,7 @@ Any::~Any()
   // We assume that the size of the object will fit within our data section
   ::byte* result = this->Data;
 
-  // If the type is bigger then we can store... (note than storing an 'any'
-  // inside an 'any' will always hit this case!)
+  // If the type is bigger then we can store... (note than storing an 'any' inside an 'any' will always hit this case!)
   if (size > sizeof(this->Data))
   {
     // Allocate memory to store the data
@@ -167,12 +155,10 @@ const ::byte* Any::GetData() const
   // Get the size of the handle, delegate, or entire value type (copyable size)
   size_t copyableSize = this->StoredType->GetCopyableSize();
 
-  // If the type is bigger then we can store... (note than storing an 'any'
-  // inside an 'any' will always hit this case!)
+  // If the type is bigger then we can store... (note than storing an 'any' inside an 'any' will always hit this case!)
   if (copyableSize > sizeof(this->Data))
   {
-    // The size of the object was large, which meant we must be storing it by
-    // pointer instead
+    // The size of the object was large, which meant we must be storing it by pointer instead
     return *((::byte**)this->Data);
   }
 
@@ -185,23 +171,20 @@ void Any::Clear()
   // If we're storing anything...
   if (this->StoredType != nullptr)
   {
-    // Get the size of the handle, delegate, or entire value type (copyable
-    // size)
+    // Get the size of the handle, delegate, or entire value type (copyable size)
     size_t copyableSize = this->StoredType->GetCopyableSize();
 
     // Memory that we need to free
     ::byte* toBeDeleted = nullptr;
 
-    // Where we store the memory that needs to be destructed (via
-    // GenericDestruct)
+    // Where we store the memory that needs to be destructed (via GenericDestruct)
     ::byte* data = this->Data;
 
-    // If the type is bigger then we can store... (note than storing an 'any'
-    // inside an 'any' will always hit this case!)
+    // If the type is bigger then we can store... (note than storing an 'any' inside an 'any' will always hit this
+    // case!)
     if (copyableSize > sizeof(this->Data))
     {
-      // The size of the object was large, which meant we must be storing it by
-      // pointer instead
+      // The size of the object was large, which meant we must be storing it by pointer instead
       data = *((::byte**)this->Data);
 
       // Since we're clearing, we also want to free the data
@@ -214,8 +197,7 @@ void Any::Clear()
     // Delete the memory (could be null!)
     delete[] toBeDeleted;
 
-    // Memset the area to empty, so any handles or primitives we store won't get
-    // messed up by exceptions
+    // Memset the area to empty, so any handles or primitives we store won't get messed up by exceptions
     memset(this->Data, 0, sizeof(this->Data));
 
     // Clear the stored type
@@ -238,12 +220,10 @@ Any& Any::operator=(const Any& other)
   // If we're copying from an any that actually Contains data...
   if (this->StoredType != nullptr)
   {
-    // Get how big the copyable size of the object is (size of a handle, or the
-    // entire value size)
+    // Get how big the copyable size of the object is (size of a handle, or the entire value size)
     size_t copyableSize = this->StoredType->GetCopyableSize();
 
-    // Allocate room to store this type (may store locally and not actually
-    // allocate)
+    // Allocate room to store this type (may store locally and not actually allocate)
     ::byte* destination = this->AllocateData(copyableSize);
 
     // Copy the right hand data into our data
@@ -257,20 +237,20 @@ Any& Any::operator=(const Any& other)
 bool Any::operator==(const Any& rhs) const
 {
   // The types must compare the same for the values to be the same
-  // Remember that the types stored are the MOST derived type in terms of
-  // inheritance Example: var derviedClass = new Cat(); var baseClass : Animal =
-  // derviedClass; var any : Any = baseClass; The 'StoredType' in Any will be
-  // 'Cat', not 'Animal' (most derived)
+  // Remember that the types stored are the MOST derived type in terms of inheritance
+  // Example:
+  // var derviedClass = new Cat();
+  // var baseClass : Animal = derviedClass;
+  // var any : Any = baseClass;
+  // The 'StoredType' in Any will be 'Cat', not 'Animal' (most derived)
   if (this->StoredType != rhs.StoredType)
     return false;
 
-  // If the types are both null, return true (we already know they are the same
-  // based on the above check)
+  // If the types are both null, return true (we already know they are the same based on the above check)
   if (this->StoredType == nullptr)
     return true;
 
-  // Generically compare the type with each other (we know they are the same
-  // type!)
+  // Generically compare the type with each other (we know they are the same type!)
   return this->StoredType->GenericEquals(this->GetData(), rhs.GetData());
 }
 
@@ -350,8 +330,7 @@ void Any::AssignFrom(const ::byte* data, Type* type)
   // Get the copyable size (size of the handle, delegate, or value type, etc)
   size_t copyableSize = type->GetCopyableSize();
 
-  // Allocate room to store this type (may store locally and not actually
-  // allocate)
+  // Allocate room to store this type (may store locally and not actually allocate)
   ::byte* destination = this->AllocateData(copyableSize);
 
   // Copy the right hand data into our data
@@ -374,8 +353,7 @@ void Any::DefaultConstruct(Type* type)
   // Get the copyable size (size of the handle, delegate, or value type, etc)
   size_t copyableSize = type->GetCopyableSize();
 
-  // Allocate room to store this type (may store locally and not actually
-  // allocate)
+  // Allocate room to store this type (may store locally and not actually allocate)
   ::byte* destination = this->AllocateData(copyableSize);
 
   // Default construct the value into our data

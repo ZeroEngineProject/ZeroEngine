@@ -44,12 +44,11 @@ public:
   // The name of the error
   String Name;
 
-  // A reason given for why the error occurs that generally explains to the user
-  // why it exists and common pitfalls (human friendly!)
+  // A reason given for why the error occurs that generally explains to the user why it exists and common pitfalls
+  // (human friendly!)
   String Reason;
 
-  // A series of examples as to where the error occurs and examples of fixes (as
-  // well as a brief explanation)
+  // A series of examples as to where the error occurs and examples of fixes (as well as a brief explanation)
   Array<ErrorExample> Examples;
 };
 
@@ -57,8 +56,7 @@ public:
 class ZeroShared ErrorDatabase
 {
 public:
-  // Get the singleton instance of the error database (which also initializes
-  // it)
+  // Get the singleton instance of the error database (which also initializes it)
   static ErrorDatabase& GetInstance();
 
   // Get the error info for a given error code
@@ -88,20 +86,18 @@ public:
   CodeLocation Location;
 
   // Other locations associated with the error
-  // For example, duplicate class names would include the other place where the
-  // class was defined Never rely upon this being set in certain errors, as
-  // sometimes the locations are unknown and do not get populated
+  // For example, duplicate class names would include the other place where the class was defined
+  // Never rely upon this being set in certain errors, as sometimes the locations are unknown and do not get populated
   Array<CodeLocation> AssociatedOtherLocations;
 
-  // A reason given for why the error occurs that generally explains to the user
-  // why it exists and common pitfalls (human friendly!)
+  // A reason given for why the error occurs that generally explains to the user why it exists and common pitfalls
+  // (human friendly!)
   String Reason;
 
   // The exact error message, including context
   String ExactError;
 
-  // A series of examples as to where the error occurs and examples of fixes (as
-  // well as a brief explanation)
+  // A series of examples as to where the error occurs and examples of fixes (as well as a brief explanation)
   Array<ErrorExample> Examples;
 
   // Get the standard formatting for error messages

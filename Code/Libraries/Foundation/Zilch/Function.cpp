@@ -87,14 +87,12 @@ void Function::ComputeHash()
 
 String Function::ToString() const
 {
-  // The string we build for a function is the name of the class, then the name
-  // of the function and then the entire signature, ex: Animal.Attack(damage :
-  // Integer) : String
+  // The string we build for a function is the name of the class, then the name of the function
+  // and then the entire signature, ex: Animal.Attack(damage : Integer) : String
   StringBuilder builder;
 
   // This should NEVER be null, but we have a case where we're getting a crash
-  // For now, we're going to skip writing the name and access symbol, but we'll
-  // put an assert in to try and catch it
+  // For now, we're going to skip writing the name and access symbol, but we'll put an assert in to try and catch it
   if (this->Owner != nullptr)
   {
     builder.Append(this->Owner->Name);
@@ -169,8 +167,7 @@ Any Function::Invoke(const Any& instance, ArrayClass<Any>* arguments)
 
   ExecutableState* state = ExecutableState::CallingState;
 
-  // Count how many arguments we were given (null array is fine, but treated as
-  // 0 arguments)
+  // Count how many arguments we were given (null array is fine, but treated as 0 arguments)
   size_t argumentCount = 0;
   if (arguments != nullptr)
     argumentCount = arguments->NativeArray.Size();
@@ -180,8 +177,8 @@ Any Function::Invoke(const Any& instance, ArrayClass<Any>* arguments)
   size_t expectedCount = parameters.Size();
   if (argumentCount != expectedCount)
   {
-    String message = String::Format("Attempting to invoke a function with an incorrect "
-                                    "number of arguments (got %d, expected %d)",
+    String message =
+        String::Format("Attempting to invoke a function with an incorrect number of arguments (got %d, expected %d)",
                                     argumentCount,
                                     expectedCount);
     state->ThrowException(message);
@@ -195,14 +192,13 @@ Any Function::Invoke(const Any& instance, ArrayClass<Any>* arguments)
     Type* argumentType = arguments->NativeArray[i].StoredType;
 
     // Look up a cast operator between the two types
-    // Note that if the types are the same, a cast always technically exists of
-    // 'Raw' type This ALSO gives us an invalid cast and handles if the user
-    // gave us a empty any (with a null StoredType)
+    // Note that if the types are the same, a cast always technically exists of 'Raw' type
+    // This ALSO gives us an invalid cast and handles if the user gave us a empty any (with a null StoredType)
     CastOperator cast = Shared::GetInstance().GetCastOperator(argumentType, expectedType);
     if (cast.IsValid == false || cast.Operation != CastOperation::Raw)
     {
-      String message = String::Format("Parameter %d expected the type '%s' but was given "
-                                      "'%s' (which could not be raw-converted)",
+      String message =
+          String::Format("Parameter %d expected the type '%s' but was given '%s' (which could not be raw-converted)",
                                       i,
                                       expectedType->ToString().c_str(),
                                       argumentType->ToString().c_str());
@@ -217,8 +213,7 @@ Any Function::Invoke(const Any& instance, ArrayClass<Any>* arguments)
   if (this->IsStatic == false)
     call.SetHandle(Call::This, thisHandle);
 
-  // The call will assert because we don't bother to mark all parameters as set
-  // (we validated already)
+  // The call will assert because we don't bother to mark all parameters as set (we validated already)
   call.DisableParameterChecks();
 
   // Copy each argument from the any to the Zilch stack (as its actual value)

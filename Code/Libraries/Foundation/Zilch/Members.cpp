@@ -40,8 +40,7 @@ ZilchDefineType(GetterSetter, builder, type)
 ZilchDefineType(Field, builder, type)
 {
   type->HandleManager = ZilchManagerId(PointerManager);
-  // ZilchFullBindField(builder, type, &Field::Offset, "Offset",
-  // PropertyBinding::Get);
+  // ZilchFullBindField(builder, type, &Field::Offset, "Offset", PropertyBinding::Get);
 }
 
 ZilchDefineType(Variable, builder, type)
@@ -414,9 +413,8 @@ void Property::SetValue(const Any& instance, const Any& value)
   ReturnIf(expectedType == nullptr, , "The PropertyType was null");
 
   // Look up a cast operator between the two types
-  // Note that if the types are the same, a cast always technically exists of
-  // 'Raw' type This ALSO gives us an invalid cast and handles if the user gave
-  // us a empty any (with a null StoredType)
+  // Note that if the types are the same, a cast always technically exists of 'Raw' type
+  // This ALSO gives us an invalid cast and handles if the user gave us a empty any (with a null StoredType)
   CastOperator cast = Shared::GetInstance().GetCastOperator(argumentType, expectedType);
   if (cast.IsValid == false || cast.Operation != CastOperation::Raw)
   {
@@ -428,8 +426,8 @@ void Property::SetValue(const Any& instance, const Any& value)
     else
       argumentTypeName = NullString;
 
-    String message = String::Format("The setter expected the type '%s' but was given '%s' "
-                                    "(which could not be raw-converted)",
+    String message =
+        String::Format("The setter expected the type '%s' but was given '%s' (which could not be raw-converted)",
                                     expectedType->ToString().c_str(),
                                     argumentTypeName.c_str());
     return state->ThrowException(message);
@@ -440,8 +438,7 @@ void Property::SetValue(const Any& instance, const Any& value)
   if (this->IsStatic == false)
     call.SetHandle(Call::This, thisHandle);
 
-  // The call will assert because we don't bother to mark all parameters as set
-  // (we validated already)
+  // The call will assert because we don't bother to mark all parameters as set (we validated already)
   call.DisableParameterChecks();
 
   // Copy the value from the any to the Zilch stack (as its actual value)
@@ -474,17 +471,12 @@ Type* Variable::GetTypeOrNull()
 }
 
 SendsEvent::SendsEvent() :
-    SentType(Core::GetInstance().ErrorType),
-    Owner(Core::GetInstance().ErrorType),
-    EventProperty(nullptr)
+    SentType(Core::GetInstance().ErrorType), Owner(Core::GetInstance().ErrorType), EventProperty(nullptr)
 {
 }
 
 SendsEvent::SendsEvent(BoundType* owner, StringParam name, BoundType* sentType) :
-    Name(name),
-    SentType(sentType),
-    Owner(owner),
-    EventProperty(nullptr)
+    Name(name), SentType(sentType), Owner(owner), EventProperty(nullptr)
 {
 }
 

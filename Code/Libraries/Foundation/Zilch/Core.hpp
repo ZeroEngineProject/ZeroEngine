@@ -62,24 +62,19 @@ public:
   BoundType* ExceptionType;
   BoundType* MathType;
 
-  // Void is a special type that can actually be declared, but is typically used
-  // for specifying no return type
+  // Void is a special type that can actually be declared, but is typically used for specifying no return type
   BoundType* VoidType;
 
-  // The null type is the type that the constant 'null' has before implicit
-  // conversion
+  // The null type is the type that the constant 'null' has before implicit conversion
   BoundType* NullType;
 
-  // This is used when types cannot be resolved (it should never show up in code
-  // generation) Using this type helps to prevent crashes, which is useful for
-  // more tolerant cases like code-completion
+  // This is used when types cannot be resolved (it should never show up in code generation)
+  // Using this type helps to prevent crashes, which is useful for more tolerant cases like code-completion
   BoundType* ErrorType;
 
-  // The overloaded methods type is akin to the ErrorType and is only used when
-  // we encounter method overloads Typically this type is replaced by another
-  // type, however in the event that overloads are not resolved this will be the
-  // final resulting type (an entirely useless type that should probably be an
-  // error to store)
+  // The overloaded methods type is akin to the ErrorType and is only used when we encounter method overloads
+  // Typically this type is replaced by another type, however in the event that overloads are not resolved
+  // this will be the final resulting type (an entirely useless type that should probably be an error to store)
   BoundType* OverloadedMethodsType;
 
   // A special array of vector types
@@ -88,20 +83,17 @@ public:
   BoundType* RealTypes[MaxComponents];
   BoundType* IntegerTypes[MaxComponents];
   BoundType* BooleanTypes[MaxComponents];
-  // Note: AllRealTypes and AllIntegerTypes are currently expected to have a 1-1
-  // mapping in the same order (so a function that takes a real2 can return an
-  // int2)
+  // Note: AllRealTypes and AllIntegerTypes are currently expected to have a 1-1 mapping in the same
+  // order (so a function that takes a real2 can return an int2)
   Array<BoundType*> AllRealTypes;
   Array<BoundType*> AllIntegerTypes;
   Array<BoundType*> AllBooleanTypes;
 
   BoundType* VectorScalarBoundTypes[VectorScalarTypes::Size];
-  // To perform generic axis functions we need to know how to set a value for a
-  // given type to 1
+  // To perform generic axis functions we need to know how to set a value for a given type to 1
   typedef void (*ScalarTypeOneFunction)(::byte* outData);
   ScalarTypeOneFunction ScalarTypeOneFunctions[VectorScalarTypes::Size];
-  // An array of types to vectors (so VectorScalarTypes::Integer to an array of
-  // IntegerTypes)
+  // An array of types to vectors (so VectorScalarTypes::Integer to an array of IntegerTypes)
   BoundType** VectorTypes[VectorScalarTypes::Size];
 
   // Special array of what matrix types to make (real, int, etc...)
@@ -125,8 +117,7 @@ public:
   // This can currently not be declared in language, but can be used from C++
   BoundType* AnyHandleType;
 
-  // A type that can be set to anything (delegates, value types, reference
-  // types, etc)
+  // A type that can be set to anything (delegates, value types, reference types, etc)
   AnyType* AnythingType;
 
 protected:
@@ -196,18 +187,16 @@ class ZeroShared StackTrace
 public:
   // Get the most recent non-native call (for debugging and visualization)
   // or return null if the entire stack is native or empty
-  // Typically when an exception occurs (or any place a stack trace happens) you
-  // will want to use this to point the user at the location where the error
-  // occurred in their code
+  // Typically when an exception occurs (or any place a stack trace happens) you will
+  // want to use this to point the user at the location where the error occurred in their code
   StackEntry* GetMostRecentNonNativeStackEntry();
 
-  // Get the relevant location that the exception occurred (where should show
-  // the user) This will invoke the above 'GetMostRecentNonNativeStackEntry'
-  // function, and if it returns null it will return an empty location
+  // Get the relevant location that the exception occurred (where should show the user)
+  // This will invoke the above 'GetMostRecentNonNativeStackEntry' function, and if it
+  // returns null it will return an empty location
   CodeLocation GetMostRecentNonNativeLocation();
 
-  // Get the standard formatting for stack traces (used by exception printing
-  // too)
+  // Get the standard formatting for stack traces (used by exception printing too)
   String GetFormattedMessage(MessageFormat::Enum format);
 
   // The code locations of the entire stack and what functions were called
@@ -231,8 +220,7 @@ public:
   // Get the standard formatting for error messages
   String GetFormattedMessage(MessageFormat::Enum format);
 
-  // The error that occurred as a human readable string, including technical
-  // details
+  // The error that occurred as a human readable string, including technical details
   String Message;
 
   // The code locations of the entire stack and what functions were called
