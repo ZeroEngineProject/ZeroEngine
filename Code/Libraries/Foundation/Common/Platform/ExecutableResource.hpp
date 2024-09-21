@@ -15,9 +15,8 @@ public:
   // On destruction the changes are committed to the executable
   ~ExecutableResourceUpdater();
 
-  // If a resource does not exist, it will be added. If it exists, it will be
-  // updated/overwritten. If the data is nullptr and the size is 0, the resource
-  // will be removed.
+  // If a resource does not exist, it will be added. If it exists, it will be updated/overwritten.
+  // If the data is nullptr and the size is 0, the resource will be removed.
   void Update(const char* name, const char* type, const ::byte* data, size_t size);
 
   // Make the executable appear with a different icon within the shell.

@@ -5,12 +5,7 @@ namespace Zero
 {
 template <typename TokenType>
 GrammarNode<TokenType>::GrammarNode() :
-    mType(GrammarNodeType::Epsilon),
-    mLhs(nullptr),
-    mRhs(nullptr),
-    mOperand(nullptr),
-    mGrammarSet(nullptr),
-    mOrderId(0)
+    mType(GrammarNodeType::Epsilon), mLhs(nullptr), mRhs(nullptr), mOperand(nullptr), mGrammarSet(nullptr), mOrderId(0)
 {
 }
 
@@ -158,8 +153,7 @@ template <typename TokenType>
 GrammarSet<TokenType>::~GrammarSet()
 {
   // We have to delete all the rule children before the rules themselves
-  // Because the children can point back at the rule (and try to dereference it
-  // during destruction)
+  // Because the children can point back at the rule (and try to dereference it during destruction)
   forRange (GrammarRule<TokenType>* rule, this->mRules.Values())
   {
     GrammarNode<TokenType>::DeleteNode(rule->mOperand);
@@ -261,12 +255,7 @@ TokenType Capture<TokenType>::GetFirstToken(StringParam name, const TokenType& f
 
 template <typename TokenType>
 ParseNodeInfo<TokenType>::ParseNodeInfo() :
-    mRule(nullptr),
-    mStartInclusive(0),
-    mEndExclusive(0),
-    mAccepted(false),
-    mFailed(false),
-    mCapture(nullptr)
+    mRule(nullptr), mStartInclusive(0), mEndExclusive(0), mAccepted(false), mFailed(false), mCapture(nullptr)
 {
 }
 
@@ -605,8 +594,8 @@ void RecursiveDescentParser<TokenType, StreamType, ParseHandlerType>::Parse()
   else if (this->mTokenMode)
   {
     String nextTokenText = this->mNextToken.ToEscapedString();
-    String message = String::Format("Got an unexpected token '%s' (nothing was parsed and "
-                                    "the invalid token will be skipped)",
+    String message =
+        String::Format("Got an unexpected token '%s' (nothing was parsed and the invalid token will be skipped)",
                                     nextTokenText.c_str());
     this->SetError(message);
     ++this->mIndex;
@@ -711,8 +700,7 @@ bool RecursiveDescentParser<TokenType, StreamType, ParseHandlerType>::EvaluateGr
         this->ReplaceAndBackup(replacementText, startInclusive, endExclusive);
 
         // Every time we backup, we restart walking through the replacements
-        // This is because one replacement could have changed the text for
-        // another replacement
+        // This is because one replacement could have changed the text for another replacement
         i = 0;
       }
     }
@@ -729,19 +717,17 @@ bool RecursiveDescentParser<TokenType, StreamType, ParseHandlerType>::EvaluateGr
 
     if (this->ShouldInvokeParseHandler())
     {
-      // If the index is invalid, then we set it to our current index, because
-      // this is the first
+      // If the index is invalid, then we set it to our current index, because this is the first
       if (this->mNonStartedRuleIndex >= this->mNonStartedRules.Size())
         this->mNonStartedRuleIndex = this->mNonStartedRules.Size();
 
-      // We're not going to tell the user that a rule started until we've read
-      // at least one token
+      // We're not going to tell the user that a rule started until we've read at least one token
       this->mNonStartedRules.PushBack(rule);
     }
 
     // Capture nodes always create capture rules
-    // However, rules also implicitly create a capture root (captures don't go
-    // beyond rules when parsing) This is NOT the case when inside replacements
+    // However, rules also implicitly create a capture root (captures don't go beyond rules when parsing)
+    // This is NOT the case when inside replacements
     bool createCaptureNode = (this->IsInReplacement() == false);
     if (createCaptureNode)
     {
@@ -770,9 +756,8 @@ bool RecursiveDescentParser<TokenType, StreamType, ParseHandlerType>::EvaluateGr
       this->mAcceptedRule = static_cast<GrammarRule<TokenType>*>(node);
     }
 
-    // We basically always want to create parse nodes, even if we failed (except
-    // when inside replacements) The only exception is if nothing is parsed,
-    // then we pretty much don't want them
+    // We basically always want to create parse nodes, even if we failed (except when inside replacements)
+    // The only exception is if nothing is parsed, then we pretty much don't want them
     if (this->ShouldInvokeParseHandler())
     {
       this->mNonStartedRules.PopBack();
@@ -781,9 +766,8 @@ bool RecursiveDescentParser<TokenType, StreamType, ParseHandlerType>::EvaluateGr
       bool parsedAnything = (endExclusive != startInclusive);
       if (parsedAnything)
       {
-        // Dispatch the event on the rule that was parsed, as well as on the
-        // entire parser itself Note: The destructor of ParseNodeInfo
-        // automatically destroys the capture (if it isn't stolen by the user)
+        // Dispatch the event on the rule that was parsed, as well as on the entire parser itself
+        // Note: The destructor of ParseNodeInfo automatically destroys the capture (if it isn't stolen by the user)
         ParseNodeInfo<TokenType> toSend;
         toSend.mStartInclusive = startInclusive;
         toSend.mEndExclusive = endExclusive;
@@ -800,10 +784,9 @@ bool RecursiveDescentParser<TokenType, StreamType, ParseHandlerType>::EvaluateGr
     }
     else
     {
-      // Note: In the above case, the destructor of ParseNodeInfo automatically
-      // destroys the capture (if it isn't stolen by the user) Delete the
-      // capture node if we had one (if anyone consumed it or stole it, this
-      // will be set to null) For example if the parse node steals it (above)
+      // Note: In the above case, the destructor of ParseNodeInfo automatically destroys the capture (if it isn't stolen
+      // by the user) Delete the capture node if we had one (if anyone consumed it or stole it, this will be set to
+      // null) For example if the parse node steals it (above)
       delete captureRoot;
     }
 
@@ -828,19 +811,16 @@ bool RecursiveDescentParser<TokenType, StreamType, ParseHandlerType>::EvaluateGr
 
   case GrammarNodeType::Concatenate:
   {
-    // It is only an error if the left hand side does not advance the token
-    // stream
+    // It is only an error if the left hand side does not advance the token stream
     size_t startInclusive = this->mIndex;
     if (this->EvaluateGrammar(node->mLhs) == false)
       return false;
     size_t endExclusive = this->mIndex;
 
-    // The only case in which we can have an error is if this fails, AND we read
-    // something on the left side
+    // The only case in which we can have an error is if this fails, AND we read something on the left side
     bool lhsAdvancedTokenStream = (startInclusive != endExclusive);
 
-    // For error recovery, we keep reading until we succeed or reach the null
-    // terminator
+    // For error recovery, we keep reading until we succeed or reach the null terminator
     for (;;)
     {
       // This handles any backing out done by the lhs, as well as the rhs
@@ -855,14 +835,13 @@ bool RecursiveDescentParser<TokenType, StreamType, ParseHandlerType>::EvaluateGr
       if (this->EvaluateGrammar(node->mRhs))
         return true;
 
-      // Failing to parse the right side is ok, unless we parsed something on
-      // the left hand side In that case, it's definitely an error
+      // Failing to parse the right side is ok, unless we parsed something on the left hand side
+      // In that case, it's definitely an error
       if (lhsAdvancedTokenStream == false)
         return false;
 
-      // If we're in tokenization mode, then this is only an error if we never
-      // accepted a token (we still want to backout because we are finished,
-      // however)
+      // If we're in tokenization mode, then this is only an error if we never accepted a token
+      // (we still want to backout because we are finished, however)
       if (this->mTokenMode && this->mAcceptedRule != nullptr)
       {
         // All we do is backout quietly
@@ -872,9 +851,8 @@ bool RecursiveDescentParser<TokenType, StreamType, ParseHandlerType>::EvaluateGr
       else
       {
         // We're going to print an error message out here
-        // If we're not in token mode, SetError will eat a single token (which
-        // may result in the null terminator token) Because we're in a loop,
-        // we'll end up re-running
+        // If we're not in token mode, SetError will eat a single token (which may result in the null terminator token)
+        // Because we're in a loop, we'll end up re-running
         String nextUnit = this->mNextToken.ToEscapedString();
 
         if (this->mLastAttemptedAccept != nullptr)
@@ -893,9 +871,8 @@ bool RecursiveDescentParser<TokenType, StreamType, ParseHandlerType>::EvaluateGr
         ++this->mIndex;
         this->mNextToken = this->mStream->GetToken(this->mIndex);
 
-        // If we reached the end of the stream, then we obviously failed to
-        // parse (exit out) However, we return true because we want to keep any
-        // parse nodes that may have been created
+        // If we reached the end of the stream, then we obviously failed to parse (exit out)
+        // However, we return true because we want to keep any parse nodes that may have been created
         if (this->mNextToken.IsEnd())
           this->mBackout = true;
       }
@@ -976,8 +953,8 @@ bool RecursiveDescentParser<TokenType, StreamType, ParseHandlerType>::EvaluateGr
       if (this->ShouldInvokeParseHandler())
       {
         // Inform the user of all the rules that have now started
-        // Note that the non-started rule index may be out of bounds, which
-        // indicates it is not valid and there are no rules to be started
+        // Note that the non-started rule index may be out of bounds, which indicates it is not valid and there
+        // are no rules to be started
         for (size_t i = this->mNonStartedRuleIndex; i < this->mNonStartedRules.Size(); ++i)
         {
           GrammarRule<TokenType>* rule = this->mNonStartedRules[i];
@@ -1174,8 +1151,7 @@ void RecursiveDescentParser<TokenType, StreamType, ParseHandlerType>::EvaluateCa
     if (endIndexInclusive < 0)
       endIndexInclusive += captures.Size();
 
-    // The index could still be out of bounds (more negative than the size, or
-    // greater)
+    // The index could still be out of bounds (more negative than the size, or greater)
     for (size_t i = startIndexInclusive; i <= endIndexInclusive; ++i)
     {
       if (i >= 0 && i < (int)capturesOut.Size())
@@ -1262,8 +1238,7 @@ TokenRange<ParseHandlerType>::TokenRange(GrammarSet<Character>& set,
                                          GrammarRule<Character>& rule,
                                          StringParam input,
                                          bool debug) :
-    mSet(&set),
-    mHasRunFirstIteration(false)
+    mSet(&set), mHasRunFirstIteration(false)
 {
   this->mParser.mDebug = debug;
   this->mParser.mStream = &this->mStream;
@@ -1274,10 +1249,7 @@ TokenRange<ParseHandlerType>::TokenRange(GrammarSet<Character>& set,
 
 template <typename ParseHandlerType>
 TokenRange<ParseHandlerType>::TokenRange(const TokenRange& rhs) :
-    mParser(rhs.mParser),
-    mStream(rhs.mStream),
-    mSet(rhs.mSet),
-    mHasRunFirstIteration(rhs.mHasRunFirstIteration)
+    mParser(rhs.mParser), mStream(rhs.mStream), mSet(rhs.mSet), mHasRunFirstIteration(rhs.mHasRunFirstIteration)
 {
   this->mParser.mStream = &this->mStream;
 }
@@ -1329,8 +1301,8 @@ void TokenRange<ParseHandlerType>::PopFront()
 {
   this->mParser.Parse();
 
-  // While we still have a valid range, and we're finding ignorable tokens (or
-  // error tokens) Then skip them by parsing again
+  // While we still have a valid range, and we're finding ignorable tokens (or error tokens)
+  // Then skip them by parsing again
   while (!this->Empty() &&
          (this->mSet->mIgnore.Contains(this->mParser.mAcceptedRule) || this->mParser.mStatus.Failed()))
     this->mParser.Parse();
@@ -1375,8 +1347,8 @@ void TokenStream<ParseHandlerType>::Replace(StringParam text, size_t startInclus
   this->mRange.mParser.ReplaceAndBackup(text, startCharInclusive, endCharExclusive);
   this->mRange.PopFront();
 
-  // Since we're iteratively building this token stream, just remove everything
-  // after the start Getting a token will rebuild the token stream
+  // Since we're iteratively building this token stream, just remove everything after the start
+  // Getting a token will rebuild the token stream
   this->mTokens.Resize(startInclusive);
 }
 } // namespace Zero

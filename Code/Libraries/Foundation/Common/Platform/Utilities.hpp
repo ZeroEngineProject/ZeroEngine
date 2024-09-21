@@ -6,9 +6,9 @@ namespace Zero
 /// System Memory Information
 struct ZeroShared MemoryInfo
 {
-  uint Reserve;
-  uint Commit;
-  uint Free;
+  size_t Reserve;
+  size_t Commit;
+  size_t Free;
 };
 
 namespace Os
@@ -54,7 +54,9 @@ ZeroShared bool ShellOpenFile(StringParam file);
 ZeroShared bool ShellEditFile(StringParam file);
 
 // Open the application with parameters.
-ZeroShared bool ShellOpenApplication(StringParam file, StringParam parameters = String(), StringParam workingDirectory = String());
+ZeroShared bool ShellOpenApplication(StringParam file,
+                                     StringParam parameters = String(),
+                                     StringParam workingDirectory = String());
 
 // On browser based platforms, we can't access the user's file-system so we need to download files instead.
 ZeroShared bool SupportsDownloadingFiles();
@@ -89,8 +91,7 @@ ZeroShared String GetInstalledExecutable(StringParam organization, StringParam n
 // address to generate the id.
 ZeroShared u64 GenerateUniqueId64();
 
-// Waits for expression to evaluate to true, checking approximately every
-// pollPeriod (in milliseconds)
+// Waits for expression to evaluate to true, checking approximately every pollPeriod (in milliseconds)
 #define WaitUntil(expression, pollPeriod)                                                                              \
   do                                                                                                                   \
   {                                                                                                                    \

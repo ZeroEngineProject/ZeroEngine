@@ -8,8 +8,7 @@ extern const cstr cSharedLibraryExtensionWithoutDot;
 extern const cstr cExecutableExtensionWithDot;
 extern const cstr cSharedLibraryExtensionWithDot;
 
-/// An externally loaded native library (example, a Windows .dll or *nix .so
-/// file)
+/// An externally loaded native library (example, a Windows .dll or *nix .so file)
 class ZeroShared ExternalLibrary
 {
 public:

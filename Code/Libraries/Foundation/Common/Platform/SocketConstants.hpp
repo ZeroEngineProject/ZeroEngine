@@ -23,8 +23,7 @@ static const size_t Ipv6SocketAddressBytes = 28;
 /// Socket address storage structure size
 static const size_t SocketAddressStorageBytes = 128;
 
-/// Maximum fully qualified domain name string length (including null
-/// terminator)
+/// Maximum fully qualified domain name string length (including null terminator)
 static const size_t MaxFullyQualifiedDomainNameStringLength = 1025;
 /// Maximum host name string length (including null terminator)
 static const size_t MaxHostNameStringLength = 255;

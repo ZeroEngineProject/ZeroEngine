@@ -17,8 +17,7 @@ class StringIterator;
 class StringSplitRange;
 
 typedef const String& StringParam;
-// Should later be changed to "String&" without const. Commented out for now to
-// prevent/fix wrong usage
+// Should later be changed to "String&" without const. Commented out for now to prevent/fix wrong usage
 // typedef const String& StringRef;
 typedef const StringRange& StringRangeParam;
 
@@ -42,9 +41,8 @@ struct StringNode
   typedef size_t size_type;
   typedef s32 count_type;
 
-  // A special flag we use to indicate that the string pool had been destructed,
-  // but the node still exists Note this must be the same hash code as the empty
-  // / default string
+  // A special flag we use to indicate that the string pool had been destructed, but the node still exists
+  // Note this must be the same hash code as the empty / default string
   static const size_type StringPoolFreeHashCode = (size_type)0;
 
   volatile count_type RefCount;
@@ -132,8 +130,7 @@ public:
   static String Format(cstr format, ...);
   static String FormatArgs(cstr format, va_list va);
 
-  // Gets the string node that represents this string (only use in advanced
-  // cases)
+  // Gets the string node that represents this string (only use in advanced cases)
   StringNode* GetNode() const;
 
   template <typename type>
@@ -177,18 +174,16 @@ public:
   static String Join(StringRangeParam separator, const String* strings, size_t stringCount);
   static String JoinInternal(StringRangeParam separator, const StringRange* values, size_t count);
 
-  // A simple policy (to be used with Join below) to convert a the value type of
-  // a range of Strings to StringRanges (aka to convert range.Front() to a
-  // StringRange)
+  // A simple policy (to be used with Join below) to convert a the value type of a
+  // range of Strings to StringRanges (aka to convert range.Front() to a StringRange)
   struct SimplePolicy
   {
     StringRange ToStringRange(StringParam value);
   };
 
-  // Joins the given range with the provided separator. The range is assumed to
-  // be copyable (to get the size of the range) and the policy is expected to
-  // have a ToStringRange member function that takes the type of range.Front()
-  // and returns a StringRange.
+  // Joins the given range with the provided separator. The range is assumed to be copyable
+  // (to get the size of the range) and the policy is expected to have a ToStringRange member
+  // function that takes the type of range.Front() and returns a StringRange.
   template <typename RangeType, typename PolicyType>
   static String JoinRange(StringRangeParam separator, RangeType range, PolicyType policy);
 

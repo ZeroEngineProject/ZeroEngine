@@ -26,8 +26,8 @@ public:
   template <typename type>
   friend struct MoveWithoutDestructionOperator;
 
-  StringBuilder(){};
-  ~StringBuilder(){};
+  StringBuilder() {};
+  ~StringBuilder() {};
   void operator+=(StringRange adapter)
   {
     Append(adapter);
@@ -40,14 +40,14 @@ public:
   void Append(char character);
   void AppendFormat(cstr format, ...);
   void Append(Rune rune);
-  void Append(cstr begin, uint sizeInBytes);
+  void Append(cstr begin, size_t sizeInBytes);
   char& operator[](size_t index);
 
   void Repeat(size_t count, StringParam str);
 
 private:
-  StringBuilder(const StringBuilder&){};
-  void operator=(const StringBuilder&){};
+  StringBuilder(const StringBuilder&) {};
+  void operator=(const StringBuilder&) {};
 };
 
 template <>
@@ -101,7 +101,7 @@ inline StringBuilder& operator<<(StringBuilder& builder, const type& value)
 {
   const uint bufferSize = 128;
   char buffer[bufferSize];
-  uint size = ToBuffer(buffer, bufferSize, value);
+  size_t size = ToBuffer(buffer, bufferSize, value);
   builder.Append(String(buffer, buffer + size));
   return builder;
 }
@@ -113,10 +113,10 @@ inline String GetBinaryString(const T& value)
   ::byte* valueCursor = (::byte*)&value;
 
   // Read every byte (from left to right)
-  for (uint i = 0; i < sizeof(value); ++i)
+  for (size_t i = 0; i < sizeof(value); ++i)
   {
     // Read every bit in the byte (from left to right)
-    for (uint j = 0; j < 8; ++j)
+    for (size_t j = 0; j < 8; ++j)
       result += *valueCursor & LBIT(j) ? '1' : '0';
 
     // Next byte

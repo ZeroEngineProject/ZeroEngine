@@ -27,8 +27,7 @@ protected:
   // Internal node value
   struct Node
   {
-    // The value stored in the node (only valid if 'next' is not set to
-    // 'cHashOpenNode');
+    // The value stored in the node (only valid if 'next' is not set to 'cHashOpenNode');
     ValueType Value;
 
     // Can be set to another node in the chain, or to 'cHashOpenNode'
@@ -162,8 +161,7 @@ public:
       Node& node = oldTable[i];
       if (node.next != cHashOpenNode)
       {
-        // If this errors here, it means most likely their 'equals' operator is
-        // wrong
+        // If this errors here, it means most likely their 'equals' operator is wrong
         InsertInternal(node.Value, OnCollisionError);
       }
     }

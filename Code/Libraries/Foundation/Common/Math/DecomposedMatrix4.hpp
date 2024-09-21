@@ -17,8 +17,7 @@ struct ZeroShared DecomposedMatrix4
   Vector3 TransformNormal(Vec3Param normal);
   Vector3 InverseTransformNormal(Vec3Param normal);
 
-  /// Transform the surface normal by doing the inverse transpose of the
-  /// transform.
+  /// Transform the surface normal by doing the inverse transpose of the transform.
   Vector3 TransformSurfaceNormal(Vec3Param direction);
   Vector3 InverseTransformSurfaceNormal(Vec3Param direction);
 

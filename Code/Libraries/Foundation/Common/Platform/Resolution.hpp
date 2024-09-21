@@ -69,8 +69,7 @@ ZeroShared inline uint GetAspectIndex(Resolution& toTest)
 }
 
 // Return the index of the first resolution that is greater than or
-// equal to minWidth and minHeight. Return the first resolution to pass or the
-// last in the list
+// equal to minWidth and minHeight. Return the first resolution to pass or the last in the list
 ZeroShared inline int FindMinResolution(Array<Resolution>& resolutions, int minWidth, int minHeight)
 {
   for (uint i = 0; i < resolutions.Size(); ++i)
@@ -85,9 +84,10 @@ ZeroShared inline int FindMinResolution(Array<Resolution>& resolutions, int minW
 /// Get the current resolution of the desktop.
 ZeroShared Resolution GetDesktopResolution();
 
-/// Enumerate all Resolutions valid for the display adapter with the given bit
-/// depth and aspect ratio bitDepth zero for any bit depth resolution any
-/// resolution with the same aspect ratio (0,0) will return all.
+/// Enumerate all Resolutions valid for the display adapter with the given bit depth
+/// and aspect ratio
+/// bitDepth zero for any bit depth
+/// resolution any resolution with the same aspect ratio (0,0) will return all.
 ZeroShared void Enumerate(Array<Resolution>& resolutions, uint bitDepth, Resolution aspect);
 
 } // namespace Zero

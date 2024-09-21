@@ -11,8 +11,7 @@ uint Random::mGlobalSeed = 1299827;
 Random::Random(void)
 {
   // we need something with higher precision than seconds (such as time(0)),
-  // so use clock which is the number of clock ticks since the program was
-  // executed.
+  // so use clock which is the number of clock ticks since the program was executed.
   mSeed = (uint)Zero::Time::GenerateSeed();
   mSeed ^= mGlobalSeed;
 
@@ -204,8 +203,8 @@ Quaternion Random::RotationQuaternion(void)
 {
   // This algorithm generates a Gaussian deviate for each coordinate, so the
   // total effect is to generate a symmetric 4-D Gaussian distribution, by
-  // separability. Projecting onto the surface of the hypersphere gives a
-  // uniform distribution
+  // separability. Projecting onto the surface of the hypersphere gives a uniform
+  // distribution
   float x = FloatRange(-1.0f, 1.0f);
   float y = FloatRange(-1.0f, 1.0f);
   float z = FloatRange(-1.0f, 1.0f);
@@ -301,8 +300,8 @@ float Random::BellCurve(float center, float range, float standardDeviation)
       s = u1 * u1 + u2 * u2;
     } while (s >= 1.0f || s == 0.0f);
 
-    // this technically generates 2 random for every call but we're only saving
-    // one now. the other one generated is u2 * multiplier
+    // this technically generates 2 random for every call but we're only saving one now.
+    // the other one generated is u2 * multiplier
     float multiplier = Math::Sqrt(-2.0f * Math::Log(s) / s);
     randVal = u1 * multiplier;
 
@@ -314,8 +313,7 @@ float Random::BellCurve(float center, float range, float standardDeviation)
     // Restarting is the only way to properly deal with this.
   } while (randVal < -3.0f || randVal > 3.0f);
 
-  // shift over to the center and remap the [-3,3] range to [center - range,
-  // center + range]
+  // shift over to the center and remap the [-3,3] range to [center - range, center + range]
   randVal = randVal * (range / 3.0f) + center;
 
   return randVal;

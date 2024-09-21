@@ -62,8 +62,7 @@ public:
 
   /// Gets the time in milliseconds since the last reset
   TimeMs TimeMilliseconds() const;
-  /// Gets the time in milliseconds between the last update and the update
-  /// before it
+  /// Gets the time in milliseconds between the last update and the update before it
   TimeMs TimeDeltaMilliseconds() const;
   /// Updates the clock and gets the time in milliseconds since the last reset
   TimeMs UpdateAndGetTimeMilliseconds();

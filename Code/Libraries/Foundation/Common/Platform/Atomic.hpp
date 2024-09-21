@@ -8,9 +8,8 @@ namespace Zero
 // Atomic Operations
 //
 
-/// Atomic operations provide fast, lockless, indivisible, thread-safe
-/// operations These methods are used to implement multithreaded lock-free data
-/// structures with well defined behavior
+/// Atomic operations provide fast, lockless, indivisible, thread-safe operations
+/// These methods are used to implement multithreaded lock-free data structures with well defined behavior
 
 /// Sets the value stored in target
 void AtomicStore(volatile s8* target, s8 value);
@@ -232,8 +231,8 @@ public:
     return FetchAdd(value);
   }
 
-  /// Subtracts the specified value to the current value (equivalent to
-  /// FetchSubtract()) Returns the current value
+  /// Subtracts the specified value to the current value (equivalent to FetchSubtract())
+  /// Returns the current value
   value_type operator-=(value_type value)
   {
     return FetchSubtract(value);

@@ -71,8 +71,7 @@ void FileModifiedState::EndFileModified(StringParam filePath)
   instance->mThreadLock.Unlock();
 
   // On some platforms modified files won't have the correct time (Emscripten).
-  // Since we call this in all places where files are modified, this keeps them
-  // up to date.
+  // Since we call this in all places where files are modified, this keeps them up to date.
   SetFileToCurrentTime(filePath);
 }
 

@@ -195,10 +195,7 @@ ByteBufferBlock::ByteBufferBlock()
 }
 
 ByteBufferBlock::ByteBufferBlock(ByteBufferBlock&& rhs) :
-    mData(rhs.mData),
-    mSize(rhs.mSize),
-    mCurrent(rhs.mCurrent),
-    mOwnsData(rhs.mOwnsData)
+    mData(rhs.mData), mSize(rhs.mSize), mCurrent(rhs.mCurrent), mOwnsData(rhs.mOwnsData)
 {
   rhs.mData = nullptr;
   rhs.mSize = 0;
@@ -207,10 +204,7 @@ ByteBufferBlock::ByteBufferBlock(ByteBufferBlock&& rhs) :
 }
 
 ByteBufferBlock::ByteBufferBlock(MoveReference<ByteBufferBlock> rhs) :
-    mData(rhs->mData),
-    mSize(rhs->mSize),
-    mCurrent(rhs->mCurrent),
-    mOwnsData(rhs->mOwnsData)
+    mData(rhs->mData), mSize(rhs->mSize), mCurrent(rhs->mCurrent), mOwnsData(rhs->mOwnsData)
 {
   rhs->mData = nullptr;
   rhs->mSize = 0;
@@ -293,7 +287,7 @@ void ByteBufferBlock::Deallocate()
   mOwnsData = false;
 }
 
-void ByteBufferBlock::Seek(int offset, uint /*origin*/)
+void ByteBufferBlock::Seek(size_t offset, size_t /*origin*/)
 {
   mCurrent += offset;
 }

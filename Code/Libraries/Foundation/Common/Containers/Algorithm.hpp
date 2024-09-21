@@ -55,8 +55,8 @@ inputRange Find(inputRange input, const serachValueType& searchValue)
 }
 
 // Linearly searches the input range and returns the range starting with either
-// the Predicate(value) == true or an empty version of input range if value is
-// not found.
+// the Predicate(value) == true or an empty version of input range if value is not
+// found.
 template <typename inputRange, typename Predicate>
 inputRange FindIf(inputRange input, Predicate predicate)
 {
@@ -327,8 +327,7 @@ void SortWithLess(range r, type* dummy)
 template <typename range>
 void Sort(range r)
 {
-  // if you see an error on this line, odds are you passed in an array instead
-  // of array.All()
+  // if you see an error on this line, odds are you passed in an array instead of array.All()
   size_t temp = sizeof(typename range::contiguousRangeType);
   SortWithLess(r, &r.Front());
 }
@@ -336,8 +335,7 @@ void Sort(range r)
 template <typename range, typename Comparer>
 void Sort(range r, Comparer comparer)
 {
-  // if you see an error on this line, odds are you passed in an array instead
-  // of array.All()
+  // if you see an error on this line, odds are you passed in an array instead of array.All()
   size_t temp = sizeof(typename range::contiguousRangeType);
   UnusedParameter(temp);
   QuickSort(r.Begin(), r.End(), &r.Front(), comparer);
@@ -407,9 +405,9 @@ valueType& BinarySearch(rangeType& range, const searchType& searchValue, valueTy
   }
 }
 
-/// Performs a binary search to find the lower bound of the specified value in
-/// the range Returns an iterator to the first value in the range that is
-/// greater-or-equal (predicate true) to the specified value, else end
+/// Performs a binary search to find the lower bound of the specified value in the range
+/// Returns an iterator to the first value in the range that is greater-or-equal (predicate true) to the specified
+/// value, else end
 template <typename rangeType, typename valueType, typename predicate>
 rangeType LowerBound(rangeType r, const valueType& value, predicate pred)
 {
@@ -435,9 +433,9 @@ iteratorType LowerBound(iteratorType begin, iteratorType end, const valueType& v
   return LowerBound(BuildRange(begin, end), value, pred).Begin();
 }
 
-/// Performs a binary search to find the upper bound of the specified value in
-/// the range Returns an iterator to the first value in the range that is
-/// greater (predicate false) than the specified value, else end
+/// Performs a binary search to find the upper bound of the specified value in the range
+/// Returns an iterator to the first value in the range that is greater (predicate false) than the specified value, else
+/// end
 template <typename rangeType, typename valueType, typename predicate>
 rangeType UpperBound(rangeType r, const valueType& value, predicate pred)
 {

@@ -21,8 +21,8 @@ ReturnIf: Operates the same as Warn except that the it will cause the current
 
 Error/ErrorIf: Indicates that a problem has occurred and if execution continues
                it will put the program in a invalid state and most likely crash.
-               The equivalent of assert this always triggers a break point
-expect in the final build where the program will crash.
+               The equivalent of assert this always triggers a break point expect
+               in the final build where the program will crash.
 
 Verify(): Runs the function and generates an error if the function returns non
           zero. When diagnostic disabled the function call will remain but the

@@ -41,8 +41,7 @@ public:
   // If there are no matches
   bool Empty() const;
 
-  // Grabs the match by index (0 is always the entire match, 1 and on are
-  // sub-strings / captures groups)
+  // Grabs the match by index (0 is always the entire match, 1 and on are sub-strings / captures groups)
   StringRange operator[](size_t index) const;
 
   // Helpers to get the first and last element
@@ -58,8 +57,7 @@ public:
   // Formats a match with a special $ format string
   String Format(StringRange format) const;
 
-  // Formats a match with a special $ format string and outputs directly into a
-  // string builder
+  // Formats a match with a special $ format string and outputs directly into a string builder
   void Format(StringRange format, StringBuilder& builder) const;
 
 private:
@@ -92,15 +90,13 @@ public:
   // Assignment operator
   Regex& operator=(const Regex& source);
 
-  // Search a given string and return matches (clears matches that are passed
-  // in)
+  // Search a given string and return matches (clears matches that are passed in)
   void Search(StringRange text, Matches& matches, RegexFlags::Type flags = RegexFlags::None) const;
 
   // Replace all matches in a given string
   String Replace(StringRange source, StringRange replaceWith) const;
 
-  // Escape a string so that it can be used directly in a regex, typically for
-  // finding exactly that string
+  // Escape a string so that it can be used directly in a regex, typically for finding exactly that string
   static String Escape(StringRange input, EscapeMode::Enum mode, RegexFlavor::Enum flavor = RegexFlavor::EcmaScript);
 
   // Validate the regular expression

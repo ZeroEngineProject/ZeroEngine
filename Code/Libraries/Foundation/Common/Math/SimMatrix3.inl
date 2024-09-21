@@ -420,8 +420,7 @@ SimInline SimMat3 AffineInverse3(SimMat3Param transform)
 SimInline SimMat3 AffineInverseWithScale3(SimMat3Param transform)
 {
   SimMat3 invScale;
-  // invert the scale by dividing each column by its squared length (so the
-  // length is 1/length)
+  // invert the scale by dividing each column by its squared length (so the length is 1/length)
   invScale.columns[0] = Divide(transform.columns[0], LengthSq3(transform.columns[0]));
   invScale.columns[1] = Divide(transform.columns[1], LengthSq3(transform.columns[1]));
   invScale.columns[2] = Divide(transform.columns[2], LengthSq3(transform.columns[2]));

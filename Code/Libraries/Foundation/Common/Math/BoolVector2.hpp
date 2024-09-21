@@ -19,8 +19,8 @@ struct ZeroShared BoolVector2
   }
   explicit BoolVector2(bool x, bool y);
 
-  bool& operator[](uint index);
-  bool operator[](uint index) const;
+  bool& operator[](size_t index);
+  bool operator[](size_t index) const;
 
   // Unary Operators
   BoolVector2 operator!(void) const;
@@ -32,7 +32,8 @@ struct ZeroShared BoolVector2
   /// Set all of the values of this vector at once.
   void Set(bool x, bool y);
 
-  union {
+  union
+  {
     struct
     {
       bool x, y;

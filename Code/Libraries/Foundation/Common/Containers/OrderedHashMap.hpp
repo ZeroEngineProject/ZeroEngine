@@ -7,10 +7,9 @@
 namespace Zero
 {
 
-/// A hashmap that preserving insertion order, typically for displaying data in
-/// a consistent order such as in a property grid. Currently implemented as a
-/// hashmap of linked list nodes. Can be optimized later, meant as a quick and
-/// easy solution for now.
+/// A hashmap that preserving insertion order, typically for displaying data in a consistent order such as in a property
+/// grid. Currently implemented as a hashmap of linked list nodes. Can be optimized later, meant as a quick and easy
+/// solution for now.
 template <typename KeyType, typename ValueType, typename SubSorter = less<KeyType>>
 class OrderedHashMap
 {
@@ -102,8 +101,7 @@ public:
   void InsertOrOverride(const KeyType& key, const ValueType& value)
   {
     Node* node = mMap.FindValue(key, nullptr);
-    // If the key already exist then just override the value, don't update the
-    // order in the list
+    // If the key already exist then just override the value, don't update the order in the list
     if (node != nullptr)
     {
       node->mPair.second = value;
@@ -138,8 +136,7 @@ public:
   void SortedInsertOrOverride(const KeyType& key, const ValueType& value)
   {
     Node* node = mMap.FindValue(key, nullptr);
-    // If the key already exist then just override the value, don't update the
-    // order in the list
+    // If the key already exist then just override the value, don't update the order in the list
     if (node != nullptr)
     {
       node->mPair.second = value;

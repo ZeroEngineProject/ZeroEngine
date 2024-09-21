@@ -24,9 +24,7 @@ public:
 
   /// Move Constructor
   IdSequence(MoveReference<IdSequence> rhs) :
-      mNext(rhs->mNext),
-      mMissing(ZeroMove(rhs->mMissing)),
-      mVerified(rhs->mVerified)
+      mNext(rhs->mNext), mMissing(ZeroMove(rhs->mMissing)), mVerified(rhs->mVerified)
   {
   }
 
@@ -105,8 +103,7 @@ public:
     return true;
   }
 
-  /// Returns true if the specified ID is verified (preceding sequence is
-  /// complete), else false
+  /// Returns true if the specified ID is verified (preceding sequence is complete), else false
   bool IsVerified(Id id) const
   {
     return id <= mVerified;

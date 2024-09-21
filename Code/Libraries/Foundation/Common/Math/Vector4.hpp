@@ -16,13 +16,13 @@ typedef Vector4* Vec4Ptr;
 /// Four dimensional vector
 struct ZeroShared Vector4
 {
-  Vector4(){};
+  Vector4() {};
   explicit Vector4(real x, real y, real z, real w);
   explicit Vector4(real xyzw);
   explicit Vector4(ConstRealPointer data);
 
-  real& operator[](uint index);
-  real operator[](uint index) const;
+  real& operator[](size_t index);
+  real operator[](size_t index) const;
 
   // Unary Operators
   Vector4 operator-() const;
@@ -72,11 +72,9 @@ struct ZeroShared Vector4
   static real Normalize(Vec4Ref value);
   /// Calculate and return a unit-length copy of the given vector.
   static Vector4 Normalized(Vec4Param value);
-  /// Try to normalize the given vector if possible. Safeguards against zero
-  /// divisions.
+  /// Try to normalize the given vector if possible. Safeguards against zero divisions.
   static real AttemptNormalize(Vec4Ref value);
-  /// Attempts to return a normalized given vector. Safeguards against zero
-  /// divisions.
+  /// Attempts to return a normalized given vector. Safeguards against zero divisions.
   static Vector4 AttemptNormalized(Vec4Param value);
 
   /// Fused multiply add:  v0 + v1 * scalar
@@ -105,8 +103,7 @@ struct ZeroShared Vector4
   /// Return a copy of this vector with each element has been rounded.
   static Vector4 Round(Vec4Param value);
 
-  /// Linearly interpolate between the two vectors, the t-value is restricted to
-  /// [0, 1].
+  /// Linearly interpolate between the two vectors, the t-value is restricted to [0, 1].
   static Vector4 Lerp(Vec4Param start, Vec4Param end, real tValue);
   /// Projects the input vector onto the given vector (must be normalized)
   static Vector4 ProjectOnVector(Vec4Param input, Vec4Param normalizedVector);
@@ -116,14 +113,12 @@ struct ZeroShared Vector4
   static Vector4 ReflectAcrossVector(Vec4Param input, Vec4Param normalizedVector);
   /// Calculates the reflection vector across a given plane.
   static Vector4 ReflectAcrossPlane(Vec4Param input, Vec4Param planeNormal);
-  /// Calculates the refraction vector through a plane given a certain index of
-  /// refraction.
+  /// Calculates the refraction vector through a plane given a certain index of refraction.
   static Vector4 Refract(Vec4Param input, Vec4Param planeNormal, real refractionIndex);
   /// Get the angle between the two vectors in radians.
   static real AngleBetween(Vec4Param a, Vec4Param b);
 
-  /// Returns if all elements of the two vectors are within epsilon of each
-  /// other
+  /// Returns if all elements of the two vectors are within epsilon of each other
   static bool ApproximatelyEqual(Vec4Param lhs, Vec4Param rhs, real epsilon);
   /// Checks to see if the values of this vector's elements are usable.
   bool Valid() const;
@@ -149,11 +144,11 @@ struct ZeroShared Vector4
   /// Calculates the reflection vector across a given plane.
   Vector4 ReflectAcrossPlane(Vec4Param planeNormal) const;
 
-  /// Calculates the refraction vector through a plane given a certain index of
-  /// refraction.
+  /// Calculates the refraction vector through a plane given a certain index of refraction.
   Vector4 Refract(Vec4Param planeNormal, real refractionIndex) const;
 
-  union {
+  union
+  {
     struct
     {
       real x, y, z, w;
@@ -184,11 +179,9 @@ ZeroShared real DistanceSq(Vec4Param lhs, Vec4Param rhs);
 ZeroShared real Normalize(Vec4Ref value);
 /// Calculate and return a unit-length copy of the given vector.
 ZeroShared Vector4 Normalized(Vec4Param value);
-/// Try to normalize the given vector if possible. Safeguards against zero
-/// divisions.
+/// Try to normalize the given vector if possible. Safeguards against zero divisions.
 ZeroShared real AttemptNormalize(Vec4Ref value);
-/// Attempts to return a normalized given vector. Safeguards against zero
-/// divisions.
+/// Attempts to return a normalized given vector. Safeguards against zero divisions.
 ZeroShared Vector4 AttemptNormalized(Vec4Param value);
 
 /// Fused multiply add:  v0 + v1 * scalar
@@ -217,8 +210,7 @@ ZeroShared Vector4 Truncate(Vec4Param value);
 /// Return a copy of this vector with each element has been rounded.
 ZeroShared Vector4 Round(Vec4Param value);
 
-/// Linearly interpolate between the two vectors, the t-value is restricted to
-/// [0, 1].
+/// Linearly interpolate between the two vectors, the t-value is restricted to [0, 1].
 ZeroShared Vector4 Lerp(Vec4Param start, Vec4Param end, real tValue);
 
 /// Projects the input vector onto the given vector (must be normalized)
@@ -229,8 +221,7 @@ ZeroShared Vector4 ProjectOnPlane(Vec4Param input, Vec4Param planeNormal);
 ZeroShared Vector4 ReflectAcrossVector(Vec4Param input, Vec4Param normalizedVector);
 /// Calculates the reflection vector across a given plane.
 ZeroShared Vector4 ReflectAcrossPlane(Vec4Param input, Vec4Param planeNormal);
-/// Calculates the refraction vector through a plane given a certain index of
-/// refraction.
+/// Calculates the refraction vector through a plane given a certain index of refraction.
 ZeroShared Vector4 Refract(Vec4Param input, Vec4Param planeNormal, real refractionIndex);
 /// Get the angle between the two vectors in radians.
 ZeroShared real AngleBetween(Vec4Param a, Vec4Param b);

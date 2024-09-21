@@ -97,15 +97,13 @@ public:
     Insert(p5);
   }
 
-  /// Warning: Depending on the contents of the hash sets, this may be
-  /// expensive.
+  /// Warning: Depending on the contents of the hash sets, this may be expensive.
   HashSet(const HashSet& other)
   {
     *this = other;
   }
 
-  /// Warning: Depending on the contents of the hash sets, this may be
-  /// expensive.
+  /// Warning: Depending on the contents of the hash sets, this may be expensive.
   void operator=(const HashSet& other)
   {
     // Don't self Assign

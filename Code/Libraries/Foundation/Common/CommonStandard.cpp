@@ -24,7 +24,7 @@ void CommonLibrary::Initialize()
   Git::Initialize();
 
   // This is printed to any log for debugging purposes.
-  //ZPrint("Paths:\n"
+  // ZPrint("Paths:\n"
   //       "  Application: %s\n"
   //       "      Working: %s\n"
   //       "    Documents: %s\n"

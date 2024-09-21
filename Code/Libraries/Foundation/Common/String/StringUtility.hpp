@@ -9,13 +9,11 @@ namespace Zero
 ZeroShared bool CaseInsensitiveStringLess(StringParam a, StringParam b);
 
 // Split string into to two parts not including the delimiter
-// if the delimiter is not found it will return an empty range as the second
-// range.
+// if the delimiter is not found it will return an empty range as the second range.
 ZeroShared Pair<StringRange, StringRange> SplitOnFirst(StringRange filename, Rune delimiter);
 
 // Split string into to two parts not including the delimiter
-// if the delimiter is not found it will return an empty range as the second
-// range.
+// if the delimiter is not found it will return an empty range as the second range.
 ZeroShared Pair<StringRange, StringRange> SplitOnLast(StringRange filename, Rune delimiter);
 
 // Strip all of string before last of delimiter

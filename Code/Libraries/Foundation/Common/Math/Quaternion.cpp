@@ -15,13 +15,13 @@ Quaternion::Quaternion(real xx, real yy, real zz, real ww)
   w = ww;
 }
 
-real& Quaternion::operator[](uint index)
+real& Quaternion::operator[](size_t index)
 {
   ErrorIf(index > 3, "Quaternion - Subscript out of range.");
   return V4()[index];
 }
 
-real Quaternion::operator[](uint index) const
+real Quaternion::operator[](size_t index) const
 {
   ErrorIf(index > 3, "Quaternion - Subscript out of range.");
   return V4()[index];
@@ -261,8 +261,8 @@ Quaternion Quaternion::SlerpUnnormalized(QuatParam start, QuatParam end, real tV
 
   real cosTheta = Dot(start, end);
 
-  // Check to ensure that the shortest path is taken (cosine of the angle
-  // between the two quaternions is positive).
+  // Check to ensure that the shortest path is taken (cosine of the angle between
+  // the two quaternions is positive).
   bool flip = cosTheta < real(0.0);
   if (flip)
   {
@@ -331,10 +331,9 @@ real Quaternion::AngleBetween(QuatParam a, QuatParam b)
 {
   real dot = Dot(a, b);
   dot = Math::Clamp(dot, real(-1.0), real(1.0));
-  // quaternions are a 2-1 mapping, so we could get a rotation that is 400
-  // degrees instead of 40 degrees, to fix this we can simply abs the dot
-  // product. This works out because we convert our initial [0,360] range to
-  // [0,180] then scale up by 2 (2-1 mapping).
+  // quaternions are a 2-1 mapping, so we could get a rotation that is 400 degrees
+  // instead of 40 degrees, to fix this we can simply abs the dot product. This works
+  // out because we convert our initial [0,360] range to [0,180] then scale up by 2 (2-1 mapping).
   real correctedDot = Math::Abs(dot);
   real angle = real(2.0) * Math::ArcCos(correctedDot);
   return angle;

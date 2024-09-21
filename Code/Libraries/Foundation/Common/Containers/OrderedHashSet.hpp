@@ -7,10 +7,9 @@
 namespace Zero
 {
 
-/// A hashset that preserving insertion order, typically for displaying data in
-/// a consistent order such as in a property grid. Currently implemented as a
-/// hashset of linked list nodes. Can be optimized later, meant as a quick and
-/// easy solution for now.
+/// A hashset that preserving insertion order, typically for displaying data in a consistent order such as in a property
+/// grid. Currently implemented as a hashset of linked list nodes. Can be optimized later, meant as a quick and easy
+/// solution for now.
 template <typename T>
 class OrderedHashSet
 {
@@ -133,8 +132,7 @@ public:
   void InsertOrOverride(const T& value)
   {
     Node* node = mMap.FindValue(value, nullptr);
-    // If the key already exist then just override the value, don't update the
-    // order in the list
+    // If the key already exist then just override the value, don't update the order in the list
     if (node != nullptr)
     {
       node->mValue = value;

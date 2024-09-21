@@ -24,8 +24,7 @@ public:
   // Initializes the thread but does not run it.
   bool Initialize(EntryFunction entryFunction, void* instance, StringParam threadName);
 
-  // Close the thread handle. The thread should have been shut down before
-  // calling this function.
+  // Close the thread handle. The thread should have been shut down before calling this function.
   void Close();
 
   // Block waiting for the thread to complete.

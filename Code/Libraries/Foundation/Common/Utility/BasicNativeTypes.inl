@@ -1,7 +1,6 @@
 // MIT Licensed (see LICENSE.md).
 
-// (See "NativeType.hpp" for more information about basic native type
-// declarations.)
+// (See "NativeType.hpp" for more information about basic native type declarations.)
 
 // ----------------------------------------------------------------------------
 // Available Basic Native Type Declaration Macros:
@@ -19,8 +18,7 @@
 DeclareBasicNativeTypePrimitive(bool, Bool) // aka Boolean
 
     // Char Type
-    // (C++ mandates 'char' is a distinct type. It is not a typedef for 'signed
-    // char' nor 'unsigned char'.)
+    // (C++ mandates 'char' is a distinct type. It is not a typedef for 'signed char' nor 'unsigned char'.)
     DeclareBasicNativeTypePrimitive(char, Char)
 
     // Fixed-Width Signed Integral Types
@@ -38,10 +36,9 @@ DeclareBasicNativeTypePrimitive(bool, Bool) // aka Boolean
     DeclareBasicNativeTypePrimitive(double, Double) // aka DoubleReal
 
     // Multi-Primitive Math Types
-    // ("Forward declared" by name in Common in order to be included as a named
-    // BasicNativeType::Enum value.
-    //  "Fully declared" with actual type information in Math in order to define
-    //  the required type trait information via template specializations.)
+    // ("Forward declared" by name in Common in order to be included as a named BasicNativeType::Enum value.
+    //  "Fully declared" with actual type information in Math in order to define the required type trait information via
+    //  template specializations.)
     ForwardDeclareBasicNativeType(BoolVector2) // aka Boolean2
     ForwardDeclareBasicNativeType(BoolVector3) // aka Boolean3
     ForwardDeclareBasicNativeType(BoolVector4) // aka Boolean4
@@ -61,6 +58,6 @@ DeclareBasicNativeTypePrimitive(bool, Bool) // aka Boolean
     DeclareBasicNativeType(String, String) // aka String
 
     // ----------------------------------------------------------------------------------------------------------------------------------
-    // Note: String is assumed to be the last declaration in this file, we rely
-    // on this to calculate enum size in BasicNativeType::Size.
+    // Note: String is assumed to be the last declaration in this file, we rely on this to calculate enum size in
+    // BasicNativeType::Size.
     // ----------------------------------------------------------------------------------------------------------------------------------

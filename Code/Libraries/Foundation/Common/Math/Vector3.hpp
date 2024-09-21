@@ -17,15 +17,15 @@ typedef Vector3* Vec3Ptr;
 /// Three dimensional vector.
 struct ZeroShared Vector3
 {
-  Vector3(){};
+  Vector3() {};
   explicit Vector3(real x, real y, real z);
   // Splat all elements
   explicit Vector3(real xyz);
   explicit Vector3(Vec2Param vec2, real z = real(0.0));
   explicit Vector3(ConstRealPointer data);
 
-  real& operator[](uint index);
-  real operator[](uint index) const;
+  real& operator[](size_t index);
+  real operator[](size_t index) const;
 
   // Unary Operators
   Vector3 operator-() const;
@@ -77,11 +77,9 @@ struct ZeroShared Vector3
   static real Normalize(Vec3Ref value);
   /// Calculate and return a unit-length copy of the given vector.
   static Vector3 Normalized(Vec3Param value);
-  /// Try to normalize the given vector if possible. Safeguards against zero
-  /// divisions.
+  /// Try to normalize the given vector if possible. Safeguards against zero divisions.
   static real AttemptNormalize(Vec3Ref value);
-  /// Attempts to return a normalized given vector. Safeguards against zero
-  /// divisions.
+  /// Attempts to return a normalized given vector. Safeguards against zero divisions.
   static Vector3 AttemptNormalized(Vec3Param value);
 
   /// Fused multiply add:  v0 + v1 * scalar
@@ -110,19 +108,16 @@ struct ZeroShared Vector3
   /// Return a copy of this vector with each element has been rounded.
   static Vector3 Round(Vec3Param value);
 
-  /// Linearly interpolate between the two vectors, the t-value is restricted to
-  /// [0, 1].
+  /// Linearly interpolate between the two vectors, the t-value is restricted to [0, 1].
   static Vector3 Lerp(Vec3Param start, Vec3Param end, real tValue);
-  /// Spherical linear interpolation. Interpolates along the surface of the unit
-  /// sphere. Normalizes input, checks for degenerate/ambiguous cases.
+  /// Spherical linear interpolation. Interpolates along the surface of the unit sphere.
+  /// Normalizes input, checks for degenerate/ambiguous cases.
   static Vector3 Slerp(Vec3Param start, Vec3Param end, real tValue);
-  /// Same as Slerp except this function assumes the user has deal with
-  /// degenerate/ambiguous cases. Used when multiple calls are made to Slerp and
-  /// the user wants to fix degeneracies once ahead of time.
+  /// Same as Slerp except this function assumes the user has deal with degenerate/ambiguous cases.
+  /// Used when multiple calls are made to Slerp and the user wants to fix degeneracies once ahead of time.
   static Vector3 SlerpFast(Vec3Param start, Vec3Param end, real tValue);
-  /// Same as Slerp except this function does not normalize the input vectors.
-  /// This is the 'pure' mathematical Slerp function. This effectively traces
-  /// along an ellipse defined by the two input vectors.
+  /// Same as Slerp except this function does not normalize the input vectors. This is the 'pure' mathematical
+  /// Slerp function. This effectively traces along an ellipse defined by the two input vectors.
   static Vector3 SlerpUnnormalized(Vec3Param start, Vec3Param end, real tValue);
   /// Projects the input vector onto the given vector (must be normalized)
   static Vector3 ProjectOnVector(Vec3Param input, Vec3Param normalizedVector);
@@ -132,14 +127,12 @@ struct ZeroShared Vector3
   static Vector3 ReflectAcrossVector(Vec3Param input, Vec3Param normalizedVector);
   /// Calculates the reflection vector across a given plane.
   static Vector3 ReflectAcrossPlane(Vec3Param input, Vec3Param planeNormal);
-  /// Calculates the refraction vector through a plane given a certain index of
-  /// refraction.
+  /// Calculates the refraction vector through a plane given a certain index of refraction.
   static Vector3 Refract(Vec3Param input, Vec3Param planeNormal, real refractionIndex);
   /// Get the angle between the two vectors in radians.
   static real AngleBetween(Vec3Param a, Vec3Param b);
 
-  /// Returns if all elements of the two vectors are within epsilon of each
-  /// other
+  /// Returns if all elements of the two vectors are within epsilon of each other
   static bool ApproximatelyEqual(Vec3Param lhs, Vec3Param rhs, real epsilon);
   /// Checks to see if the values of this vector's elements are usable.
   bool Valid() const;
@@ -178,13 +171,13 @@ struct ZeroShared Vector3
   Vector3 ReflectAcrossVector(Vec3Param normalizedVector) const;
   /// Calculates the reflection vector across a given plane.
   Vector3 ReflectAcrossPlane(Vec3Param planeNormal) const;
-  /// Calculates the refraction vector through a plane given a certain index of
-  /// refraction.
+  /// Calculates the refraction vector through a plane given a certain index of refraction.
   Vector3 Refract(Vec3Param planeNormal, real refractionIndex) const;
   /// Flip this vector so it's pointing in the opposite direction.
   Vec3Ref Negate();
 
-  union {
+  union
+  {
     struct
     {
       real x, y, z;
@@ -216,11 +209,9 @@ ZeroShared real DistanceSq(Vec3Param lhs, Vec3Param rhs);
 ZeroShared real Normalize(Vec3Ref value);
 /// Calculate and return a unit-length copy of the given vector.
 ZeroShared Vector3 Normalized(Vec3Param value);
-/// Try to normalize the given vector if possible. Safeguards against zero
-/// divisions.
+/// Try to normalize the given vector if possible. Safeguards against zero divisions.
 ZeroShared real AttemptNormalize(Vec3Ref value);
-/// Attempts to return a normalized given vector. Safeguards against zero
-/// divisions.
+/// Attempts to return a normalized given vector. Safeguards against zero divisions.
 ZeroShared Vector3 AttemptNormalized(Vec3Param value);
 
 /// Fused multiply add:  v0 + v1 * scalar
@@ -249,19 +240,16 @@ ZeroShared Vector3 Truncate(Vec3Param value);
 /// Return a copy of this vector with each element has been rounded.
 ZeroShared Vector3 Round(Vec3Param value);
 
-/// Linearly interpolate between the two vectors, the t-value is restricted to
-/// [0, 1].
+/// Linearly interpolate between the two vectors, the t-value is restricted to [0, 1].
 ZeroShared Vector3 Lerp(Vec3Param start, Vec3Param end, real tValue);
-/// Spherical linear interpolation. Interpolates along the surface of the unit
-/// sphere. Normalizes input, checks for degenerate/ambiguous cases.
+/// Spherical linear interpolation. Interpolates along the surface of the unit sphere.
+/// Normalizes input, checks for degenerate/ambiguous cases.
 ZeroShared Vector3 Slerp(Vec3Param start, Vec3Param end, real tValue);
-/// Same as Slerp except this function assumes the user has deal with
-/// degenerate/ambiguous cases. Used when multiple calls are made to Slerp and
-/// the user wants to fix degeneracies once ahead of time.
+/// Same as Slerp except this function assumes the user has deal with degenerate/ambiguous cases.
+/// Used when multiple calls are made to Slerp and the user wants to fix degeneracies once ahead of time.
 ZeroShared Vector3 SlerpFast(Vec3Param start, Vec3Param end, real tValue);
-/// Same as Slerp except this function does not normalize the input vectors.
-/// This is the 'pure' mathematical Slerp function. This effectively traces
-/// along an ellipse defined by the two input vectors.
+/// Same as Slerp except this function does not normalize the input vectors. This is the 'pure' mathematical
+/// Slerp function. This effectively traces along an ellipse defined by the two input vectors.
 ZeroShared Vector3 SlerpUnnormalized(Vec3Param start, Vec3Param end, real tValue);
 
 /// Projects the input vector onto the given vector (must be normalized)
@@ -272,8 +260,7 @@ ZeroShared Vector3 ProjectOnPlane(Vec3Param input, Vec3Param planeNormal);
 ZeroShared Vector3 ReflectAcrossVector(Vec3Param input, Vec3Param normalizedVector);
 /// Calculates the reflection vector across a given plane.
 ZeroShared Vector3 ReflectAcrossPlane(Vec3Param input, Vec3Param planeNormal);
-/// Calculates the refraction vector through a plane given a certain index of
-/// refraction.
+/// Calculates the refraction vector through a plane given a certain index of refraction.
 ZeroShared Vector3 Refract(Vec3Param input, Vec3Param planeNormal, real refractionIndex);
 /// Get the angle between the two vectors in radians.
 ZeroShared real AngleBetween(Vec3Param a, Vec3Param b);

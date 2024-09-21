@@ -137,8 +137,7 @@ ZeroSharedTemplate inline T Clamp(const T value)
   return Clamp(value, T(0), T(1));
 }
 
-/// Clamps between min and max but it sets a bool saying whether or not a value
-/// was clamped.
+/// Clamps between min and max but it sets a bool saying whether or not a value was clamped.
 template <typename T>
 ZeroSharedTemplate inline T DebugClamp(const T x, const T xMin, const T xMax, bool& wasClamped)
 {

@@ -61,8 +61,8 @@ void Pool::Deallocate(MemPtr ptr, size_t /*numberOfBytes*/)
     return;
 
 #ifdef ZeroDebug
-  // 0xFAFAFAFA is our own byte pattern used to show that we deallocated the
-  // memory, but have not yet released it to the os
+  // 0xFAFAFAFA is our own byte pattern used to show that we deallocated the memory, but have not
+  // yet released it to the os
   memset(ptr, 0xFA, mBlockSize);
 #endif
 

@@ -30,11 +30,11 @@ struct ZeroShared Quaternion
 {
   static const Quaternion cIdentity;
 
-  Quaternion(){};
+  Quaternion() {};
   explicit Quaternion(real x, real y, real z, real w);
 
-  real& operator[](uint index);
-  real operator[](uint index) const;
+  real& operator[](size_t index);
+  real operator[](size_t index) const;
 
   // Unary Operators
   Quaternion operator-() const;
@@ -94,20 +94,18 @@ struct ZeroShared Quaternion
   /// Return the inverted quaternion.
   static Quaternion Inverted(QuatParam value);
 
-  /// Multiply the two quaternions together. Quaternion multiplication order is
-  /// right-to-left.
+  /// Multiply the two quaternions together. Quaternion multiplication order is right-to-left.
   static Quaternion Multiply(QuatParam lhs, QuatParam rhs);
   /// Multiply the given vector by a quaternion.
   static Vector3 Multiply(QuatParam lhs, Vec3Param rhs);
 
-  /// Linearly interpolate between two quaternions (n-lerp). This should rarely
-  /// be used over Slerp.
+  /// Linearly interpolate between two quaternions (n-lerp). This should rarely be used over Slerp.
   static Quaternion Lerp(QuatParam start, QuatParam end, real tValue);
-  /// Spherical linear interpolation between two quaternions. Used to
-  /// interpolate between two rotations. Will normalize the inputs.
+  /// Spherical linear interpolation between two quaternions. Used to interpolate between two rotations. Will normalize
+  /// the inputs.
   static Quaternion Slerp(QuatParam start, QuatParam end, real tValue);
-  /// Spherical linear interpolation between two quaternions. Used to
-  /// interpolate between two rotations. Assumes the inputs are normalized.
+  /// Spherical linear interpolation between two quaternions. Used to interpolate between two rotations. Assumes the
+  /// inputs are normalized.
   static Quaternion SlerpUnnormalized(QuatParam start, QuatParam end, real tValue);
   /// Compute the exponential of a quaternion.
   static Quaternion Exponent(QuatParam value);

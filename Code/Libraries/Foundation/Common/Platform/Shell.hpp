@@ -23,8 +23,7 @@ struct FileDialogFilter
 
 typedef void (*FileDialogCallback)(Array<String>& files, void* userData);
 
-/// FileDialogConfig is used to configure the Open File Dialog and the Save File
-/// Dialog.
+/// FileDialogConfig is used to configure the Open File Dialog and the Save File Dialog.
 struct FileDialogInfo
 {
   FileDialogInfo();
@@ -173,8 +172,7 @@ enum Enum
 };
 } // namespace Keys
 
-/// As the extra mouse buttons are typically Back and Forward they have been
-/// named accordingly.
+/// As the extra mouse buttons are typically Back and Forward they have been named accordingly.
 DeclareEnum6(MouseButtons, Left, Right, Middle, XOneBack, XTwoForward, None);
 
 /// Standard Mouse Cursors
@@ -291,14 +289,11 @@ public:
   Image mImage;
 };
 
-/// Monitor coordinates means a position anywhere on the desktop relative to the
-/// primary monitor's top left corner. Client coordinates means a position
-/// within a window (not including title bar if the window has a border). Sizes
-/// are in pixels and are independent of Monitor or Client coordinates (because
-/// Monitor to Client only translates)
+/// Monitor coordinates means a position anywhere on the desktop relative to the primary monitor's top left corner.
+/// Client coordinates means a position within a window (not including title bar if the window has a border).
+/// Sizes are in pixels and are independent of Monitor or Client coordinates (because Monitor to Client only translates)
 
-/// Contains any code to pump operating system messages and return information
-/// about the shell.
+/// Contains any code to pump operating system messages and return information about the shell.
 class Shell
 {
 public:
@@ -311,8 +306,7 @@ public:
   /// OS specific line-scroll setting when using the mouse scroll wheel.
   uint GetScrollLineCount();
 
-  /// Get the monitor rectangle for the primary monitor (in monitor
-  /// coordinates).
+  /// Get the monitor rectangle for the primary monitor (in monitor coordinates).
   IntRect GetPrimaryMonitorRectangle();
 
   /// Get the monitor size for the primary monitor (in monitor coordinates).
@@ -384,8 +378,8 @@ public:
 
 /// Flags used to control the behavior of an ShellWindow
 DeclareBitField7(WindowStyleFlags,
-                 // Is the window visible. This is 'NotVisible' instead of
-                 // visible so that the default is visible.
+                 // Is the window visible. This is 'NotVisible' instead of visible so that the
+                 // default is visible.
                  NotVisible,
                  // Main window
                  MainWindow,
@@ -408,8 +402,7 @@ DeclareEnum5(WindowState,
              Maximized,
              // Arbitrarily sized window
              Windowed,
-             // Window covers everything including the taskbar and is minimized
-             // without focus
+             // Window covers everything including the taskbar and is minimized without focus
              Fullscreen,
              // Restore window to previous state before being minimizing
              Restore);
@@ -499,20 +492,17 @@ public:
   String GetTitle();
   void SetTitle(StringParam title);
 
-  /// State of the Window, Set state to Minimize, Maximize, or Restore the
-  /// window
+  /// State of the Window, Set state to Minimize, Maximize, or Restore the window
   WindowState::Enum GetState();
   void SetState(WindowState::Enum windowState);
 
-  /// When the mouse is captured it will only allow mouse events to be sent to
-  /// this window (no other operating system windows or other windows we've
-  /// created).
+  /// When the mouse is captured it will only allow mouse events to be sent to this
+  /// window (no other operating system windows or other windows we've created).
   void SetMouseCapture(bool capture);
   bool GetMouseCapture();
 
   /// Try to take Focus and bring the window to the foreground.
-  /// The OS may prevent this from working if this app is not the foreground
-  /// app.
+  /// The OS may prevent this from working if this app is not the foreground app.
   void TakeFocus();
   /// Does this window have focus?
   bool HasFocus();
@@ -529,12 +519,10 @@ public:
   /// Returns the last value to SetProgress (default 0).
   float GetProgress();
 
-  /// Sets the progress visible to the operating system (for example, when
-  /// downloading a file).
+  /// Sets the progress visible to the operating system (for example, when downloading a file).
   void SetProgress(ProgressType::Enum progressType, float progress);
 
-  /// Fix the window (specifically for Intel related Windowing issues with
-  /// OpenGL)
+  /// Fix the window (specifically for Intel related Windowing issues with OpenGL)
   void PlatformSpecificFixup();
 
   /// If this window has it's own buttons, then we may not need to draw our own.
@@ -549,12 +537,10 @@ public:
   /// Files have been drag-dropped onto this window.
   void (*mOnMouseDropFiles)(Math::IntVec2Param clientPosition, const Array<String>& files, ShellWindow* window);
 
-  /// An update that is called in cases where the window may be frozen (such as
-  /// dragging on the Windows OS).
+  /// An update that is called in cases where the window may be frozen (such as dragging on the Windows OS).
   void (*mOnFrozenUpdate)(ShellWindow* window);
 
-  /// Occurs when the window is resized (may occur even if the size is the same
-  /// and should be protected against).
+  /// Occurs when the window is resized (may occur even if the size is the same and should be protected against).
   void (*mOnClientSizeChanged)(Math::IntVec2Param clientSize, ShellWindow* window);
 
   void (*mOnMinimized)(ShellWindow* window);
@@ -581,8 +567,7 @@ public:
   /// Called when a mouse moves (raw input without pointer balistics applied).
   void (*mOnRawMouseChanged)(Math::IntVec2Param movement, ShellWindow* window);
 
-  /// Called when the window is asking if a position should result in dragging
-  /// or resizing the window.
+  /// Called when the window is asking if a position should result in dragging or resizing the window.
   WindowBorderArea::Enum (*mOnHitTest)(Math::IntVec2Param clientPosition, ShellWindow* window);
 
   /// Called when an input device is updated.

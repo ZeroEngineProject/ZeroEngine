@@ -199,7 +199,7 @@ void SplineCurve::MakeContinuous(Vec3Array& points) const
   Vec3 ab = points[0] - points[1];
   points.Insert(points.Begin(), points[0] + ab);
 
-  uint size = points.Size();
+  size_t size = points.Size();
   Vec3 cd = points[size - 1] - points[size - 2];
   points.PushBack(points[size - 1] + cd);
 }
@@ -264,8 +264,7 @@ void SplineCurve::GetPoints(const Vec3Array& points, Vec3Array& results, real er
     Vec3Param cp3 = points[i + 3];
 
     // add the start, mid and last point to the stack (need the middle point
-    // since the spline is cubic, this "approximates" each sub-section as a
-    // quadratic)
+    // since the spline is cubic, this "approximates" each sub-section as a quadratic)
     Zero::Array<PointData> stack;
     PointData firstPoint = ComputePointData<Policy>(real(0.0), cp0, cp1, cp2, cp3);
     PointData centerPoint = ComputePointData<Policy>(real(0.5), cp0, cp1, cp2, cp3);
@@ -277,7 +276,7 @@ void SplineCurve::GetPoints(const Vec3Array& points, Vec3Array& results, real er
 
     while (stack.Size() != 1)
     {
-      uint size = stack.Size();
+      size_t size = stack.Size();
 
       PointData data0 = stack[size - 1];
       PointData data1 = stack[size - 2];
@@ -398,7 +397,7 @@ void BakedCurve::Bake(const SplineCurve& curve, real error)
 
 uint BakedCurve::Size() const
 {
-  return mArcLengthTable.Size();
+  return static_cast<uint>(mArcLengthTable.Size());
 }
 
 real BakedCurve::GetTotalArcLength() const
@@ -437,9 +436,9 @@ Vec3 BakedCurve::SampleTable(float distance, Vec3* tangent) const
 
   real oldDistance = distance;
   distance = Math::FMod(distance, GetTotalArcLength());
-  // If the user passes in the total arc-length, fmod will return the start
-  // point not the end point. To fix this if fmod returns 0 but our original
-  // value wasn't zero then instead use the total arc-length.
+  // If the user passes in the total arc-length, fmod will return the start point
+  // not the end point. To fix this if fmod returns 0 but our original value
+  // wasn't zero then instead use the total arc-length.
   if (distance == real(0.0) && oldDistance != real(0.0))
     distance = GetTotalArcLength();
   // fmod can still return negative numbers so convert to positive
@@ -462,8 +461,8 @@ Vec3 BakedCurve::SampleTable(float distance, Vec3* tangent) const
   Vec3 p1 = upperBoundData.Position;
   Vec3 samplePoint = Math::Lerp(p0, p1, t);
 
-  // if the user wants a tangent, compute it simply as the vector from the first
-  // to second point, where we are on this linear segment doesn't matter
+  // if the user wants a tangent, compute it simply as the vector from the first to
+  // second point, where we are on this linear segment doesn't matter
   if (tangent != nullptr)
   {
     Vec3 tangentDir = p1 - p0;
@@ -535,7 +534,7 @@ uint BakedCurve::SampleLowerBound(real distance) const
 {
   // binary search for the lower bound
   uint begin = 0;
-  uint end = mArcLengthTable.Size() - 1;
+  uint end = static_cast<uint>(mArcLengthTable.Size()) - 1;
 
   while (begin < end)
   {

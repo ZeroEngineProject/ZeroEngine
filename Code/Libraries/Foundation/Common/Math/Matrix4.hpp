@@ -36,7 +36,7 @@ struct ZeroShared Matrix4
 #endif
 
 public:
-  Matrix4(){};
+  Matrix4() {};
   Matrix4(real p00,
           real p01,
           real p02,
@@ -56,10 +56,10 @@ public:
   Matrix4(Vec4Param basisX, Vec4Param basisY, Vec4Param basisZ, Vec4Param basisW);
   Matrix4(ConstRealPointer data_);
 
-  const Vector4& operator[](uint index) const;
-  Vector4& operator[](uint index);
-  real operator()(uint r, uint c) const;
-  real& operator()(uint r, uint c);
+  const Vector4& operator[](size_t index) const;
+  Vector4& operator[](size_t index);
+  real operator()(size_t r, size_t c) const;
+  real& operator()(size_t r, size_t c);
 
   // Binary operators (reals)
   void operator*=(real rhs);
@@ -88,11 +88,9 @@ public:
   BasisVector GetBasis(uint index) const;
   /// Set a basis vector.
   void SetBasis(uint index, Vec4Param basis);
-  /// Accesses the 3-D basis vector at the given index, ignores the last
-  /// element.
+  /// Accesses the 3-D basis vector at the given index, ignores the last element.
   Vector3 GetBasis3(uint index) const;
-  /// Get a cross vector which is defined as the elements perpendicular to the
-  /// basis vector.
+  /// Get a cross vector which is defined as the elements perpendicular to the basis vector.
   CrossVector GetCross(uint index) const;
   void SetCross(uint index, Vec4Param cross);
   /// Check if all values are valid.
@@ -117,16 +115,14 @@ public:
   /// Returns if the matrix was invertible.
   static bool SafeInvert(Mat4Ref mat);
 
-  /// Multiply the two matrices together. Matrix multiplication order is
-  /// right-to-left.
+  /// Multiply the two matrices together. Matrix multiplication order is right-to-left.
   static Matrix4 Multiply(Mat4Param lhs, Mat4Param rhs);
   /// Multiply the given vector by a matrix.
   static Vector4 Multiply(Mat4Param lhs, Vec4Param rhs);
-  /// Multiply the given vector by a matrix. The vector is promoted to the point
-  /// Vec4(x, y, z, 1). No homogeneous division is applied.
+  /// Multiply the given vector by a matrix. The vector is promoted to the point Vec4(x, y, z, 1). No homogeneous
+  /// division is applied.
   static Vector3 MultiplyPoint(Mat4Param lhs, Vec3Param rhs);
-  /// Multiply the given vector by a matrix. The vector is promoted to the
-  /// vector Vec4(x, y, z, 0).
+  /// Multiply the given vector by a matrix. The vector is promoted to the vector Vec4(x, y, z, 0).
   static Vector3 MultiplyNormal(Mat4Param lhs, Vec3Param rhs);
 
   /// Generates a three dimensional scale matrix.
@@ -141,10 +137,9 @@ public:
   static Matrix4 GenerateTransform(Vec3Param translation, Mat3Param rotatation, Vec3Param scale);
   /// Decompose the given matrix into translation, rotation, and scale
   static void Decompose(Mat4Param transform, Vec3Ref translation, Mat3Ref rotation, Vec3Ref scale);
-  /// Attempts to decompose this matrix into a scale, rotation, and
-  /// translational component while removing shear. The "original" matrix is not
-  /// necessarily recovered, though the resulting matrix is orthonormal among
-  /// its components.
+  /// Attempts to decompose this matrix into a scale, rotation, and translational
+  /// component while removing shear. The "original" matrix is not necessarily
+  /// recovered, though the resulting matrix is orthonormal among its components.
   static void Decompose(Mat4Param transform, Vec3Ref translation, Mat3Ref rotation, Vec3Ref shear, Vec3Ref scale);
 
   /// Transposes this matrix in place.
@@ -155,8 +150,7 @@ public:
   Mat4Ref Invert();
   /// Returns the inverse of this matrix.
   Matrix4 Inverted() const;
-  /// Inverts in place, but clamps the determinant to the smallest positive
-  /// float number.
+  /// Inverts in place, but clamps the determinant to the smallest positive float number.
   bool SafeInvert();
   /// Inverts, but clamps the determinant to the smallest positive float number.
   Matrix4 SafeInverted() const;
@@ -165,11 +159,9 @@ public:
   void Scale(real x, real y, real z);
   /// Converts this matrix into a pure scaling matrix.
   void Scale(Vec3Param axis);
-  /// Converts this matrix into a pure rotation matrix, given an axis-angle
-  /// pair.
+  /// Converts this matrix into a pure rotation matrix, given an axis-angle pair.
   void Rotate(real x, real y, real z, real radians);
-  /// Converts this matrix into a pure rotation matrix, given an axis-angle
-  /// pair.
+  /// Converts this matrix into a pure rotation matrix, given an axis-angle pair.
   void Rotate(Vec3Param axis, real radians);
   /// Converts this matrix into a pure translation matrix for 3-D vectors.
   void Translate(real x, real y, real z);
@@ -184,10 +176,9 @@ public:
   /// Decomposes this matrix into its scale, rotation, and translational
   /// components.
   void Decompose(Vec3Ptr scale, Mat3Ptr rotate, Vec3Ptr translate) const;
-  /// Attempts to decompose this matrix into a scale, rotation, and
-  /// translational component while removing shear. The "original" matrix is not
-  /// necessarily recovered, though the resulting matrix is orthonormal among
-  /// its components.
+  /// Attempts to decompose this matrix into a scale, rotation, and translational
+  /// component while removing shear. The "original" matrix is not necessarily
+  /// recovered, though the resulting matrix is orthonormal among its components.
   void Decompose(Vec3Ptr scale, Vec3Ptr shear, Mat3Ptr rotate, Vec3Ptr translate) const;
 
   /// Accesses the elements in the "x-axis" of the matrix, with the "x-axis"
@@ -206,13 +197,14 @@ public:
   void SetBasis(uint index, real x, Vec3Param basisVector3);
   void SetBasis(uint index, real x, real y, real z, real w);
 
-  /// Accesses the cross vector at the given index, with the cross vector
-  /// defined as the elements in the matrix perpendicular to that of the
-  /// corresponding basis vector.
+  /// Accesses the cross vector at the given index, with the cross vector defined
+  /// as the elements in the matrix perpendicular to that of the corresponding
+  /// basis vector.
   void SetCross(uint index, Vec3Param crossVector3, real w);
   void SetCross(uint index, real x, real y, real z, real w);
 
-  union {
+  union
+  {
     struct
     {
 #if ColumnBasis == 1
@@ -230,16 +222,14 @@ public:
 
 ZeroShared Matrix4 operator*(real lhs, Mat4Param rhs);
 
-/// Multiply the two matrices together. Matrix multiplication order is
-/// right-to-left.
+/// Multiply the two matrices together. Matrix multiplication order is right-to-left.
 ZeroShared Matrix4 Multiply(Mat4Param lhs, Mat4Param rhs);
 /// Multiply the given vector by a matrix.
 ZeroShared Vector4 Multiply(Mat4Param lhs, Vec4Param rhs);
-/// Multiply the given vector by a matrix. The vector is promoted to the point
-/// Vec4(x, y, z, 1). No homogeneous division is applied.
+/// Multiply the given vector by a matrix. The vector is promoted to the point Vec4(x, y, z, 1). No homogeneous division
+/// is applied.
 ZeroShared Vector3 MultiplyPoint(Mat4Param lhs, Vec3Param rhs);
-/// Multiply the given vector by a matrix. The vector is promoted to the vector
-/// Vec4(x, y, z, 0).
+/// Multiply the given vector by a matrix. The vector is promoted to the vector Vec4(x, y, z, 0).
 ZeroShared Vector3 MultiplyNormal(Mat4Param lhs, Vec3Param rhs);
 
 ZeroShared Vector4 Transform(Mat4Param mat, Vec4Param vector);

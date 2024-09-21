@@ -144,10 +144,7 @@ public:
 
   /// Move Constructor
   Array(MoveReference<this_type> other) :
-      base_type(*other),
-      mData(other->mData),
-      mCapacity(other->mCapacity),
-      mSize(other->mSize)
+      base_type(*other), mData(other->mData), mCapacity(other->mCapacity), mSize(other->mSize)
   {
     other->ReleaseData();
   }
@@ -179,9 +176,7 @@ public:
     PushBack(p1);
   }
   Array(ContainerInitializerDummy*, const_reference p0, const_reference p1, const_reference p2) :
-      mData(nullptr),
-      mCapacity(0),
-      mSize(0)
+      mData(nullptr), mCapacity(0), mSize(0)
   {
     Reserve(3);
     PushBack(p0);
@@ -189,9 +184,7 @@ public:
     PushBack(p2);
   }
   Array(ContainerInitializerDummy*, const_reference p0, const_reference p1, const_reference p2, const_reference p3) :
-      mData(nullptr),
-      mCapacity(0),
-      mSize(0)
+      mData(nullptr), mCapacity(0), mSize(0)
   {
     Reserve(4);
     PushBack(p0);
@@ -205,9 +198,7 @@ public:
         const_reference p2,
         const_reference p3,
         const_reference p4) :
-      mData(nullptr),
-      mCapacity(0),
-      mSize(0)
+      mData(nullptr), mCapacity(0), mSize(0)
   {
     Reserve(5);
     PushBack(p0);
@@ -223,9 +214,7 @@ public:
         const_reference p3,
         const_reference p4,
         const_reference p5) :
-      mData(nullptr),
-      mCapacity(0),
-      mSize(0)
+      mData(nullptr), mCapacity(0), mSize(0)
   {
     Reserve(6);
     PushBack(p0);
@@ -277,8 +266,7 @@ public:
   //
 
   /// Maximum number of elements before the internal buffer must be reallocated
-  /// Adjusted automatically on insertion or manually with reserve and
-  /// set_capacity
+  /// Adjusted automatically on insertion or manually with reserve and set_capacity
   size_type capacity() const
   {
     return mCapacity;
@@ -473,8 +461,7 @@ public:
   }
 
   /// Changes the number of elements stored in the array
-  /// Removes or default constructs elements at the back of the array as
-  /// necessary
+  /// Removes or default constructs elements at the back of the array as necessary
   void Resize(size_type newSize)
   {
     // Check to see if the size did not change
@@ -739,8 +726,7 @@ public:
   }
 
   /// Removes the first equivalent element from the array
-  /// Returns true if successful, else false (an equivalent element was not
-  /// found)
+  /// Returns true if successful, else false (an equivalent element was not found)
   template <typename CompareType>
   bool EraseValue(const CompareType& value)
   {
@@ -768,8 +754,7 @@ public:
   // Search Operations
   //
 
-  /// Returns the index of the first equivalent element from the array, else
-  /// InvalidIndex
+  /// Returns the index of the first equivalent element from the array, else InvalidIndex
   template <typename CompareType>
   size_type FindIndex(const CompareType& value) const
   {
@@ -782,8 +767,7 @@ public:
     return InvalidIndex;
   }
 
-  /// Returns an iterator to the first equivalent element in the array, else
-  /// End()
+  /// Returns an iterator to the first equivalent element in the array, else End()
   template <typename CompareType>
   iterator FindIterator(const CompareType& value)
   {
@@ -800,8 +784,7 @@ public:
     return const_cast<this_type*>(this)->FindIterator(value);
   }
 
-  /// Returns a pointer to the first equivalent element in the array, else
-  /// nullptr
+  /// Returns a pointer to the first equivalent element in the array, else nullptr
   template <typename CompareType>
   pointer FindPointer(const CompareType& value) const
   {
@@ -885,8 +868,7 @@ protected:
     }
   }
 
-  /// Removes the specified number of elements from the array starting at the
-  /// given position
+  /// Removes the specified number of elements from the array starting at the given position
   void EraseElements(pointer where, size_type numberOfElements)
   {
     size_type elementsToMove = (End() - where) - numberOfElements;
@@ -901,8 +883,7 @@ protected:
     mSize -= numberOfElements;
   }
 
-  /// Expands the underlying array capacity as necessary to fit the specified
-  /// new size
+  /// Expands the underlying array capacity as necessary to fit the specified new size
   void ExpandToNewSize(size_type newSize)
   {
     // Do not expand if new size fits in current capacity

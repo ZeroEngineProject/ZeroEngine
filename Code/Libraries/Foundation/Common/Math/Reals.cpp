@@ -131,8 +131,7 @@ real Log10(real val)
 
 real Log2(real val)
 {
-  // log(2) is a constant (and actually calling log(2.0) caused a linker crash
-  // so use the constant)
+  // log(2) is a constant (and actually calling log(2.0) caused a linker crash so use the constant)
   real log2 = real(0.693147182);
   return Log(val) / log2;
 }

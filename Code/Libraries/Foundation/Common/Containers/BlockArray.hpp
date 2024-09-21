@@ -8,9 +8,9 @@
 namespace Zero
 {
 
-/// Generic front deque array class. Store objects in buckets of a 1 <<
-/// shiftSize. Fast when the total number of objects being inserted is not
-/// known. Currently hardcoded as only storing pod types.
+/// Generic front deque array class. Store objects in buckets of a 1 << shiftSize.
+/// Fast when the total number of objects being inserted is not known.
+/// Currently hardcoded as only storing pod types.
 template <typename type, uint shiftSize = 6, typename Allocator = DefaultAllocator>
 class PodBlockArray : public AllocationContainer<Allocator>
 {
@@ -311,8 +311,7 @@ public:
 
   void ChangeCapacity(size_type newCapacity)
   {
-    // we never shrink at the moment, so if the capacity is the same or less do
-    // nothing
+    // we never shrink at the moment, so if the capacity is the same or less do nothing
     if (newCapacity <= mCapacity)
       return;
 
@@ -395,15 +394,13 @@ public:
     // update the capacity
     ChangeCapacity(newSize);
 
-    // now we have to set the default value in all of the new buckets (only if
-    // we grew)
+    // now we have to set the default value in all of the new buckets (only if we grew)
     if (newSize > mSize)
     {
-      // The sizes within each bucket. Note that size with a block size of 64,
-      // size 64 needs to stay 64 and not turn into 0. This is done with the
-      // extra +-1 terms. This will cause a size of 0 to get incorrect values,
-      // but we should only ever have a size 0 here when going from 0 to
-      // something which is handled as a special case.
+      // The sizes within each bucket. Note that size with a block size of 64, size 64 needs
+      // to stay 64 and not turn into 0. This is done with the extra +-1 terms. This will cause a
+      // size of 0 to get incorrect values, but we should only ever have a size 0 here when going
+      // from 0 to something which is handled as a special case.
       size_type sizeInOldBucket = ((mSize - 1) & BucketMask) + 1;
       size_type sizeInNewBucket = ((newSize - 1) & BucketMask) + 1;
       // The index of each bucket
@@ -426,8 +423,7 @@ public:
       }
       else
       {
-        // First, set the default value in any remaining portion of the old
-        // bucket
+        // First, set the default value in any remaining portion of the old bucket
         UninitializedFill(mData[oldBucketIndex] + sizeInOldBucket, BucketSize - sizeInOldBucket, defaultvalue);
         // Now fill any complete buckets up
         for (uint i = oldBucketIndex + 1; i < newBucketIndex; ++i)

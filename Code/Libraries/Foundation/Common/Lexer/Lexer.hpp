@@ -176,8 +176,7 @@ public:
   // JoinCapture, ForeachCapture
   CaptureExpressionNode* mCaptureReference;
 
-  // Binary (Concatenate), ForeachCapture (rhs), JoinCapture (rhs) for
-  // inbetweens
+  // Binary (Concatenate), ForeachCapture (rhs), JoinCapture (rhs) for inbetweens
   ReplacementNode* mLhs;
   ReplacementNode* mRhs;
 };
@@ -187,8 +186,7 @@ ReplacementNode& R(CaptureExpressionNode& capture);
 ReplacementNode& R(CaptureExpressionNode& capture, ReplacementNode& replaceEach);
 ReplacementNode& R(CaptureExpressionNode& capture, StringParam name, ReplacementNode& replaceEach);
 
-// Capture nodes always result in a forest of captures (which can be linearized
-// by replacement nodes)
+// Capture nodes always result in a forest of captures (which can be linearized by replacement nodes)
 DeclareEnum6(CaptureExpressionNodeType, NamedCapture, NestedCapture, IndexRange, Exists, Not, Union);
 class CaptureExpressionNode
 {
@@ -252,25 +250,21 @@ public:
   void AddIgnore(StringParam ruleName);
   void AddIgnore(GrammarRule<TokenType>& rule);
 
-  // Whenever we parse this exact string, we accept it as this keyword (only
-  // used by when tokenizing)
+  // Whenever we parse this exact string, we accept it as this keyword (only used by when tokenizing)
   HashMap<String, GrammarRule<TokenType>*> mKeywords;
 
-  // Whenever we parse this exact string, we accept it as this keyword (only
-  // used by when tokenizing)
+  // Whenever we parse this exact string, we accept it as this keyword (only used by when tokenizing)
   HashSet<GrammarRule<TokenType>*> mIgnore;
 
 private:
-  // This counter assigns ids to rules so that they may be used in range
-  // comparisons
+  // This counter assigns ids to rules so that they may be used in range comparisons
   int mOrderIdCounter;
   HashMap<String, GrammarRule<TokenType>*> mRules;
 };
 
-// We use 1 as a base for both values because almost every text editor starts at
-// 1 The algorithm we use to count lines attempts to match many common text
-// editor techniques By default, we initialize the line and character to 0 (so
-// you can tell if its valid or not)
+// We use 1 as a base for both values because almost every text editor starts at 1
+// The algorithm we use to count lines attempts to match many common text editor techniques
+// By default, we initialize the line and character to 0 (so you can tell if its valid or not)
 class CharacterLocation
 {
 public:
@@ -470,8 +464,7 @@ private:
   void SetErrorAndBackout(StringParam error);
 
   // This will only ever be Token, RangeSet, or NotRangeSet
-  // This is the last character or token node we attempted to accept that failed
-  // (used for error reporting)
+  // This is the last character or token node we attempted to accept that failed (used for error reporting)
   GrammarNode<TokenType>* mLastAttemptedAccept;
 
   // A stack of capture variable names
@@ -486,17 +479,14 @@ private:
   // Captures are based on the rules being parsed
   Array<Capture<TokenType>*> mCaptureStack;
 
-  // As we enter rules, we need to know which ones have been started so that we
-  // can tell the user This is only used when a ParseHandler is present (so we
-  // know not to call StartRule unless we actually read a token This must be a
-  // stack because we can enter multiple rules without reading a token (Start ->
-  // Object -> Name, then token) Once we start a rule, we'll set the value to
-  // null
+  // As we enter rules, we need to know which ones have been started so that we can tell the user
+  // This is only used when a ParseHandler is present (so we know not to call StartRule unless we actually read a token
+  // This must be a stack because we can enter multiple rules without reading a token (Start -> Object -> Name, then
+  // token) Once we start a rule, we'll set the value to null
   Array<GrammarRule<TokenType>*> mNonStartedRules;
   // This index represents the first non started rule in the list (non-null)
-  // This is so that we can efficiently loop through the rules that haven't
-  // started If the index is larger than the number of started rules, then its
-  // not valid
+  // This is so that we can efficiently loop through the rules that haven't started
+  // If the index is larger than the number of started rules, then its not valid
   size_t mNonStartedRuleIndex;
 
   // This is a stack that only exists for reporting error information

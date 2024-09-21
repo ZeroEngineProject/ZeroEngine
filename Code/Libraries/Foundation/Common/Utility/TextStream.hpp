@@ -10,7 +10,7 @@ class TextStream
 {
 public:
   virtual void Write(cstr text) = 0;
-  virtual ~TextStream(){};
+  virtual ~TextStream() {};
 };
 
 class TextStreamDebugPrint : public TextStream
@@ -37,7 +37,7 @@ public:
 
 class TextStreamNull : public TextStream
 {
-  void Write(cstr text) override{};
+  void Write(cstr text) override {};
 };
 
 } // namespace Zero

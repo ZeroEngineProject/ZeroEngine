@@ -11,8 +11,7 @@ u32 CountTrailingZeros(u32 x);
 /// Returns number of most significant zeros
 u32 CountLeadingZeros(u32 x);
 
-/// These versions can be called for platform implementations without the
-/// intrinsic.
+/// These versions can be called for platform implementations without the intrinsic.
 u32 CountTrailingZerosNonIntrinsic(u32 x);
 u32 CountLeadingZerosNonIntrinsic(u32 x);
 

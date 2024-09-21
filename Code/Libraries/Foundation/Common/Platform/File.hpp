@@ -8,14 +8,14 @@ DeclareEnum4(FileMode,
              // Open file for reading, reading starts at beginning of file
              // If the file does not exist opening will fail
              Read,
-             // Open file for writing, if the file exists it be truncated to
-             // zero If the file does not exist it will be created
+             // Open file for writing, if the file exists it be truncated to zero
+             // If the file does not exist it will be created
              Write,
              // Open file for writing, writing starts at the end of the file
              // If the file does not exist it will be created
              Append,
-             // Open for reading and writing, reading/writing starts at the
-             // beginning of file If the file does not exist it will be created
+             // Open for reading and writing, reading/writing starts at the beginning of file
+             // If the file does not exist it will be created
              ReadWrite);
 
 // Hint on how the file will be accessed
@@ -48,16 +48,15 @@ public:
   ~File();
 
   /// Open the file
-  /// We take an optional status (this should eventually be refactored, but we
-  /// wanted to keep current asserting functionality)
+  /// We take an optional status (this should eventually be refactored, but we wanted to keep current asserting
+  /// functionality)
   bool Open(StringParam filePath,
             FileMode::Enum mode,
             FileAccessPattern::Enum accessPattern,
             FileShare::Enum share = FileShare::Unspecified,
             Status* status = nullptr);
 
-  /// Creates a file from an OsHandle (cannot fail, assumes the OS handle is
-  /// valid)
+  /// Creates a file from an OsHandle (cannot fail, assumes the OS handle is valid)
   void Open(OsHandle handle, FileMode::Enum mode);
 
   /// Creates a file from a standard C FILE pointer
@@ -79,8 +78,7 @@ public:
   /// Read data from the file
   size_t Read(Status& status, ::byte* data, size_t sizeInBytes);
 
-  /// Is there data left to read from this file. Primarily for use when the file
-  /// is a pipe.
+  /// Is there data left to read from this file. Primarily for use when the file is a pipe.
   bool HasData(Status& status);
 
   /// Force all reads / write to the disk
@@ -97,9 +95,8 @@ public:
   /// Is the file currently open?
   bool IsOpen();
 
-  /// Duplicates this file into the destination file. Assumes that this file
-  /// handle is valid. Also assumes both files were created in this
-  /// application's process.
+  /// Duplicates this file into the destination file. Assumes that this file handle is valid.
+  /// Also assumes both files were created in this application's process.
   void Duplicate(Status& status, File& destinationFile);
 
 private:

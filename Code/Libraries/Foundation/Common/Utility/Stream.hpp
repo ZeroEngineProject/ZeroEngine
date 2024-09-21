@@ -19,16 +19,15 @@ public:
   virtual void Flush() = 0;
 
   // Reads data into a block. By default this will just call Read and fill a
-  // ByteBufferBlock with owned data. As an optimization, streams like
-  // FixedMemoryStream may just return a direct pointer to the data. Note that
-  // the Stream should not be written to while the user is holding the
-  // ByteBufferBlock as it may invalidate (e.g. ArrayByteMemoryStream...). Note
-  // that reading 0 bytes will NOT set status to Failed.
+  // ByteBufferBlock with owned data. As an optimization, streams like FixedMemoryStream
+  // may just return a direct pointer to the data. Note that the Stream should not
+  // be written to while the user is holding the ByteBufferBlock as it may invalidate
+  // (e.g. ArrayByteMemoryStream...).
+  // Note that reading 0 bytes will NOT set status to Failed.
   virtual void ReadMemoryBlock(Status& status, ByteBufferBlock& block, size_t size);
 
   // Helper non virtual functions
-  // These functions assert if they're outside the range (and return 0 / write
-  // nothing)
+  // These functions assert if they're outside the range (and return 0 / write nothing)
   size_t Peek(::byte* data, size_t sizeInBytes);
   void PeekMemoryBlock(Status& status, ByteBufferBlock& block, size_t size);
   ::byte PeekByte();

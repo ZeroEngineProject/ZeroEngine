@@ -28,7 +28,7 @@ MemPtr zStaticAllocate(size_t size);
   {                                                                                                                    \
     return ptr;                                                                                                        \
   };                                                                                                                   \
-  static void operator delete(void* mem, void* ptr){};
+  static void operator delete(void* mem, void* ptr) {};
 
 #define ImplementOverloadedNewWithAllocator(ClassName, AllocatorObj)                                                   \
   void* ClassName::operator new(size_t size)                                                                           \

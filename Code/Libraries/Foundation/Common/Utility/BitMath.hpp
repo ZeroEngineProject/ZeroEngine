@@ -16,7 +16,7 @@ static_assert(CHAR_BIT == 8, "Platform byte length must be 8 bits");
 /// Converts Bits to Bytes
 #define BITS_TO_BYTES(b) (((b) + 7) >> 3)
 /// Converts Bytes to Bits
-#define BYTES_TO_BITS(B) ((B)*8)
+#define BYTES_TO_BITS(B) (static_cast<Bits>((B) * 8))
 
 /// Unsigned integer bit size
 #define UINT_BITS (BYTES_TO_BITS(sizeof(uint)))
@@ -29,14 +29,14 @@ static_assert(CHAR_BIT == 8, "Platform byte length must be 8 bits");
 #define LBIT(N) (uint8(128) >> (N))
 
 /// Sets the right-justified bit N of Byte if Condition is true, else clears it
-#define ASSIGN_RBIT(Condition, Byte, N) ((*(uint8*)Byte) ^= ((-(bool)(Condition) ^ ((uint8)*Byte)) & RBIT(N)))
+#define ASSIGN_RBIT(Condition, Byte, N) ((*(uint8*)Byte) ^= ((-(bool)(Condition) ^ ((uint8) * Byte)) & RBIT(N)))
 /// Sets the left-justified bit N of Byte if Condition is true, else clears it
-#define ASSIGN_LBIT(Condition, Byte, N) ((*(uint8*)Byte) ^= ((-(bool)(Condition) ^ ((uint8)*Byte)) & LBIT(N)))
+#define ASSIGN_LBIT(Condition, Byte, N) ((*(uint8*)Byte) ^= ((-(bool)(Condition) ^ ((uint8) * Byte)) & LBIT(N)))
 
 /// Equivalent to (X / 8)
 #define DIV8(X) ((X) >> 3)
 /// Equivalent to (X % 8)
-#define MOD8(X) ((X)&7)
+#define MOD8(X) ((X) & 7)
 /// Rounds X up to the next multiple of 8
 #define ROUND_UP_8(X) (MOD8(X) == 0 ? (X) : (X) + (8 - MOD8(X)))
 
@@ -52,7 +52,7 @@ static_assert(CHAR_BIT == 8, "Platform byte length must be 8 bits");
 
 /// Rounds X up to the next highest power of 2
 #define ROUND_UP_POW2(X)                                                                                               \
-  (ROUND_UP_POW2_32(ROUND_UP_POW2_16(ROUND_UP_POW2_8(ROUND_UP_POW2_4(ROUND_UP_POW2_2(ROUND_UP_POW2_1((X)-1)))))) + 1)
+  (ROUND_UP_POW2_32(ROUND_UP_POW2_16(ROUND_UP_POW2_8(ROUND_UP_POW2_4(ROUND_UP_POW2_2(ROUND_UP_POW2_1((X) - 1)))))) + 1)
 
 /// Returns the number of bits needed to represent X
 #define BITS_NEEDED_TO_REPRESENT(X) (LOG2(X) + 1)
@@ -146,7 +146,8 @@ enum Enum
 };
 typedef uint32 Type;
 } // namespace Endianness
-static const union {
+static const union
+{
   uint8 bytes[4];
   Endianness::Enum value;
 } platformEndianness = {{0x01, 0x02, 0x03, 0x04}};
@@ -207,8 +208,7 @@ inline R_ENABLE_IF(is_integral<T>::value&& is_signed<T>::value, Bits) BitsNeeded
 }
 
 /// Returns true if the fixed-size buffer is completely zeroed, else false
-/// (Note: Incurs static memory overhead equal to specified buffer size.
-/// Optimized for speed.)
+/// (Note: Incurs static memory overhead equal to specified buffer size. Optimized for speed.)
 template <size_t N>
 inline bool BufferIsZeroed(const ::byte (&buffer)[N])
 {
@@ -237,8 +237,7 @@ inline const T& Clamp(const T& value, const T& minValue, const T& maxValue)
   return std::max(std::min(value, maxValue), minValue);
 }
 
-/// Returns the interpolated value between a and b at alpha [0, 1], where 0 is a
-/// and 1 is b
+/// Returns the interpolated value between a and b at alpha [0, 1], where 0 is a and 1 is b
 template <typename T, typename F>
 inline T Interpolate(T a, T b, F alpha)
 {
@@ -252,21 +251,19 @@ inline T Average(T previous, T current, F currentWeight)
   return T((previous * (F(1) - currentWeight)) + (current * currentWeight));
 }
 
-/// Returns the specified floating-point value rounded to the nearest integer
-/// value (represented in the same floating-point type)
+/// Returns the specified floating-point value rounded to the nearest integer value (represented in the same
+/// floating-point type)
 template <typename T>
 inline R_ENABLE_IF(is_floating_point<T>::value, T) Round(T value)
 {
   return std::floor(value + T(0.5));
 }
 
-/// Divides the numerator by the denominator and ceils the result without
-/// branching or casting to intermediary types
+/// Divides the numerator by the denominator and ceils the result without branching or casting to intermediary types
 template <typename T>
 inline R_ENABLE_IF(is_integral<T>::value, T) DivCeil(T numerator, T denominator)
 {
-  // Formula from StackOverflow answer ( http://stackoverflow.com/a/17005764 ),
-  // Ben Voigt, June 9th, 2013
+  // Formula from StackOverflow answer ( http://stackoverflow.com/a/17005764 ), Ben Voigt, June 9th, 2013
   return (numerator / denominator) + T(((numerator < 0) ^ (denominator > 0)) && (numerator % denominator));
 }
 template <typename T>

@@ -26,8 +26,7 @@ struct ZeroSharedTemplate has_member_to_string_helper
   static const bool value = (sizeof(Test<T>(0)) == sizeof(yes));
 };
 
-/// Provides a constant defined as true if T has a to string function, else
-/// defined as false
+/// Provides a constant defined as true if T has a to string function, else defined as false
 template <typename T>
 struct ZeroSharedTemplate has_member_to_string : public integral_constant<bool, has_member_to_string_helper<T>::value>
 {
@@ -67,14 +66,12 @@ ZeroSharedTemplate String ToString(T* const value, bool shortFormat = false)
 }
 
 // Calls global function "ToBuffer" with specified value
-// (Enabled for types without a member "ToString" function, but with a global
-// "ToBuffer" function)
+// (Enabled for types without a member "ToString" function, but with a global "ToBuffer" function)
 template <typename T, TF_ENABLE_IF(!has_member_to_string<T>::value && has_global_to_buffer<T>::value)>
 ZeroSharedTemplate String ToString(const T& value, bool shortFormat = false)
 {
   // Create zeroed character buffer
-  // (Note: Ideally this would be statically allocated, but then calling
-  // ToString wouldn't be thread safe)
+  // (Note: Ideally this would be statically allocated, but then calling ToString wouldn't be thread safe)
   char buffer[cToStringBufferSize] = {};
 
   // Write value to character buffer
@@ -98,8 +95,7 @@ struct ZeroSharedTemplate has_global_to_string_helper
   static const bool value = (sizeof(Test<T>(0)) == sizeof(yes));
 };
 
-/// Provides a constant defined as true if T has a global to string function,
-/// else defined as false
+/// Provides a constant defined as true if T has a global to string function, else defined as false
 template <typename T>
 struct ZeroSharedTemplate has_global_to_string : public integral_constant<bool, has_global_to_string_helper<T>::value>
 {

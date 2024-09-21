@@ -153,8 +153,7 @@ Bits BitStream::WriteBits(const ::byte* data, Bits dataBits)
     if (remDataBits) // Not byte aligned?
     {
       // Byte align data
-      // (We simply end up writing extra bits from the data to write another
-      // full byte)
+      // (We simply end up writing extra bits from the data to write another full byte)
       dataBits += (8 - remDataBits);
 
       // Data should now be byte aligned
@@ -380,8 +379,7 @@ Bits BitStream::ReadBits(::byte* data, Bits dataBits) const
     if (remDataBits) // Not byte aligned?
     {
       // Byte align data
-      // (We simply end up reading extra bits from the data to read another full
-      // byte)
+      // (We simply end up reading extra bits from the data to read another full byte)
       dataBits += (8 - remDataBits);
 
       // Data should now be byte aligned
@@ -603,8 +601,7 @@ void BitStream::ReallocateIfNecessary(Bits additionalBits)
 
     // First allocation?
     if (!mByteCapacity)
-      Reallocate(std::max(growSize, (Bytes)BITSTREAM_DEFAULT_RESERVE_BYTES),
-                 true); // Use whichever is larger
+      Reallocate(std::max(growSize, (Bytes)BITSTREAM_DEFAULT_RESERVE_BYTES), true); // Use whichever is larger
     else
       Reallocate(growSize, true);
   }

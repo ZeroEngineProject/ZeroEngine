@@ -6,8 +6,7 @@
 // '__continueLoop' variable is used to both only loop once on the
 // second for loop, and to detect breaks.
 // This function is used to Assign values to '__continueLoop' inside an
-// if statement while avoiding the warning of assignment in a conditional
-// statement
+// if statement while avoiding the warning of assignment in a conditional statement
 template <typename T>
 bool AssignValue(T& toBeAssigned, T value)
 {
@@ -42,19 +41,17 @@ void VoidReturn();
         for (value = rangeName.Front(); !__continueLoop; __continueLoop = true)                                        \
   rangePrePop
 
-// This is the classic version that we use which will pop after the entire
-// iteration of the loop is complete Because some ranges may return references
-// to values they actually store, we must use this order of popping
+// This is the classic version that we use which will pop after the entire iteration of the loop is complete
+// Because some ranges may return references to values they actually store, we must use this order of popping
 #define forRange(value, rangeExpr) ZeroForRangeHelper(value, __rangeT, (rangeExpr).All(), __rangeT.PopFront(), )
 #define forRangeRef(value, rangeExpr)                                                                                  \
   ZeroForRangeReferenceHelper(value, __rangeT, (rangeExpr).All(), __rangeT.PopFront(), )
 
-// A newer version of range iteration which allows us to name our range variable
-// (so we can query it) This version will call 'front' and then immediately
-// after grabbing the value it will call 'PopFront' This means if the range does
-// something irregular such as storing the value and modifying the stored value
-// in PopFront, it will break This form of iteration is generally safer however
-// for iterating through intrusive lists and unlinking them as you go
+// A newer version of range iteration which allows us to name our range variable (so we can query it)
+// This version will call 'front' and then immediately after grabbing the value it will call 'PopFront'
+// This means if the range does something irregular such as storing the value and modifying the stored value in
+// PopFront, it will break This form of iteration is generally safer however for iterating through intrusive lists and
+// unlinking them as you go
 #define ZeroForRangeVar(value, rangeName, rangeExpr)                                                                   \
   ZeroForRangeHelper(value, rangeName, (rangeExpr).All(), VoidReturn(), if (PopFront(rangeName)))
 #define ZeroForRangeRefVar(value, rangeName, rangeExpr)                                                                \

@@ -16,9 +16,8 @@ struct SortPolicy : public ComparePolicy<ValueType>
   /// Typedefs
   typedef ValueType value_type;
 
-  /// Default behavior is to expect the value type to have a less-than operator
-  /// callable with the compare type If a compilation error occurs here, define
-  /// a compatible less-than operator or use another sort policy
+  /// Default behavior is to expect the value type to have a less-than operator callable with the compare type
+  /// If a compilation error occurs here, define a compatible less-than operator or use another sort policy
   template <typename CompareType>
   bool operator()(const value_type& lhs, const CompareType& rhs) const
   {
@@ -56,10 +55,9 @@ struct PointerSortPolicy
 
 /// Sorted Array is an Associative Sequenced Container
 /// Contains a sorted set of objects in a contiguous dynamic array
-/// Insertion order of equivalent objects is preserved, with newer objects
-/// inserted at the lower bound Search, insertion, and removal operations have
-/// O(log n) complexity Functionality is similar to std::multiset but with
-/// better performance
+/// Insertion order of equivalent objects is preserved, with newer objects inserted at the lower bound
+/// Search, insertion, and removal operations have O(log n) complexity
+/// Functionality is similar to std::multiset but with better performance
 template <typename ValueType, typename Sorter = SortPolicy<ValueType>, typename Allocator = DefaultAllocator>
 class SortedArray : public Array<ValueType, Allocator>
 {
@@ -133,8 +131,7 @@ public:
   // Search Operations
   //
 
-  /// Returns an iterator to the first equivalent element in the array, else
-  /// End()
+  /// Returns an iterator to the first equivalent element in the array, else End()
   template <typename CompareType>
   iterator FindIterator(const CompareType& value)
   {
@@ -151,8 +148,7 @@ public:
     return const_cast<this_type*>(this)->FindIterator(value);
   }
 
-  /// Returns the index of the first equivalent element in the array, else
-  /// InvalidIndex
+  /// Returns the index of the first equivalent element in the array, else InvalidIndex
   template <typename CompareType>
   size_type FindIndex(const CompareType& value) const
   {
@@ -165,8 +161,7 @@ public:
       return base_type::InvalidIndex;
   }
 
-  /// Returns a pointer to the first equivalent element in the array, else
-  /// nullptr
+  /// Returns a pointer to the first equivalent element in the array, else nullptr
   template <typename CompareType>
   pointer FindPointer(const CompareType& value) const
   {
@@ -178,8 +173,7 @@ public:
       return base_type::mData + index;
   }
 
-  /// Returns the value of the first equivalent element in the array, else
-  /// valueIfNotFound
+  /// Returns the value of the first equivalent element in the array, else valueIfNotFound
   template <typename CompareType>
   const_reference FindValue(const CompareType& value, const_reference valueIfNotFound) const
   {
@@ -260,8 +254,7 @@ public:
       Insert(ZeroMove(inputRange.Front()));
   }
 
-  /// Clears the array and inserts a range of elements at their sorted positions
-  /// in the array
+  /// Clears the array and inserts a range of elements at their sorted positions in the array
   template <typename iteratorType>
   void Assign(iteratorType begin, iteratorType end)
   {
@@ -286,9 +279,8 @@ public:
   //
 
   /// Removes the first equivalent element from the array
-  /// Returns a pair consisting of a pointer to the element following the erased
-  /// element (or End() if the element could not be found), and a bool which
-  /// will be true if the erase took place, else false
+  /// Returns a pair consisting of a pointer to the element following the erased element (or End() if the element could
+  /// not be found), and a bool which will be true if the erase took place, else false
   template <typename CompareType>
   pointer_bool_pair EraseValue(const CompareType& value)
   {

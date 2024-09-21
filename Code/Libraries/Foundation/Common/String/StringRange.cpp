@@ -17,43 +17,36 @@ StringRange::StringRange(cstr cstring) : mOriginalString(cstring)
 }
 
 StringRange::StringRange(StringParam str) :
-    mOriginalString(str),
-    mBegin(str.Data()),
-    mEnd(str.Data() + str.SizeInBytes())
+    mOriginalString(str), mBegin(str.Data()), mEnd(str.Data() + str.SizeInBytes())
 {
 }
 
 StringRange::StringRange(StringRangeParam strRange) :
-    mOriginalString(strRange.mOriginalString),
-    mBegin(strRange.mBegin),
-    mEnd(strRange.mEnd)
+    mOriginalString(strRange.mOriginalString), mBegin(strRange.mBegin), mEnd(strRange.mEnd)
 {
 }
 
 StringRange::StringRange(StringIterator pbegin, StringIterator pend) :
-    mOriginalString(pbegin.mIteratorRange.mOriginalString),
-    mBegin(pbegin.Data()),
-    mEnd(pend.Data())
+    mOriginalString(pbegin.mIteratorRange.mOriginalString), mBegin(pbegin.Data()), mEnd(pend.Data())
 {
   ErrorIf(pbegin.mIteratorRange.mOriginalString != pend.mIteratorRange.mOriginalString,
           "Got two iterators from different strings");
 }
 
 StringRange::StringRange(StringIterator pbegin, size_t sizeInBytes) :
-    mOriginalString(pbegin.mIteratorRange.mOriginalString),
-    mBegin(pbegin.Data())
+    mOriginalString(pbegin.mIteratorRange.mOriginalString), mBegin(pbegin.Data())
 {
-  int bytesToEndFromIterator = mOriginalString.SizeInBytes() - (pbegin.Data() - mOriginalString.Data());
+  ptrdiff_t bytesToEndFromIterator = mOriginalString.SizeInBytes() - (pbegin.Data() - mOriginalString.Data());
   // if someone really messed up bytes to end could be negative, use int.
-  if ((int)sizeInBytes > bytesToEndFromIterator)
+  if ((ptrdiff_t)sizeInBytes > bytesToEndFromIterator)
     mEnd = pbegin.Data() + bytesToEndFromIterator;
   else
     mEnd = pbegin.Data() + sizeInBytes;
 }
 
 // Treats begin byte as the beginning of the original string
-// This constructor can be very dangerous if you compare this constructed range
-// to any existing ranges/strings
+// This constructor can be very dangerous if you compare this constructed range to
+// any existing ranges/strings
 StringRange::StringRange(cstr currentByte, cstr endByte) : mOriginalString(currentByte, endByte - currentByte)
 {
   // passing in a cstr will allocate a new buffer for the string so we need
@@ -73,9 +66,7 @@ StringRange::StringRange(cstr originalBegin, cstr currentByte, cstr endByte) :
 
 // For internal iterator use only
 StringRange::StringRange(StringParam orginalStr, cstr currentByte, cstr endByte) :
-    mOriginalString(orginalStr),
-    mBegin(currentByte),
-    mEnd(endByte)
+    mOriginalString(orginalStr), mBegin(currentByte), mEnd(endByte)
 {
 }
 
@@ -197,7 +188,7 @@ bool StringRange::operator!=(char c) const
 StringRange StringRange::FindFirstOf(Rune rune) const
 {
   ::byte buffer[4];
-  uint sizeInBytes = UTF8::UnpackUtf8RuneIntoBuffer(rune, buffer);
+  size_t sizeInBytes = UTF8::UnpackUtf8RuneIntoBuffer(rune, buffer);
 
   return FindFirstByBytes((char*)buffer, sizeInBytes);
 }
@@ -210,7 +201,7 @@ StringRange StringRange::FindFirstOf(StringRangeParam value) const
 StringRange StringRange::FindLastOf(Rune rune) const
 {
   ::byte buffer[4];
-  uint sizeInBytes = UTF8::UnpackUtf8RuneIntoBuffer(rune, buffer);
+  size_t sizeInBytes = UTF8::UnpackUtf8RuneIntoBuffer(rune, buffer);
 
   return FindLastByBytes((char*)buffer, sizeInBytes);
 }
@@ -220,18 +211,18 @@ StringRange StringRange::FindLastOf(StringRangeParam value) const
   return FindLastByBytes(value.mBegin, value.SizeInBytes());
 }
 
-StringRange StringRange::FindFirstByBytes(cstr buffer, uint valueSizeInBytes) const
+StringRange StringRange::FindFirstByBytes(cstr buffer, size_t valueSizeInBytes) const
 {
   size_t rangeSize = SizeInBytes();
 
   if (!valueSizeInBytes || valueSizeInBytes > rangeSize)
     return StringRange();
 
-  uint searchSize = rangeSize - valueSizeInBytes;
+  size_t searchSize = rangeSize - valueSizeInBytes;
 
-  for (uint i = 0; i <= searchSize; i += UTF8::EncodedCodepointLength(mBegin[i]))
+  for (size_t i = 0; i <= searchSize; i += UTF8::EncodedCodepointLength(mBegin[i]))
   {
-    uint j;
+    size_t j;
     for (j = 0; j < valueSizeInBytes; ++j)
     {
       if (mBegin[i + j] != buffer[j])
@@ -245,7 +236,7 @@ StringRange StringRange::FindFirstByBytes(cstr buffer, uint valueSizeInBytes) co
   return StringRange();
 }
 
-StringRange StringRange::FindLastByBytes(cstr buffer, uint valueSizeInBytes) const
+StringRange StringRange::FindLastByBytes(cstr buffer, size_t valueSizeInBytes) const
 {
   size_t rangeSize = SizeInBytes();
 
@@ -302,8 +293,8 @@ StringIterator StringRange::FindLastNonWhitespaceRuneIt() const
     }
     --it;
   }
-  // the whole thing is whitespace, will return the begin position and if begin
-  // == end then it will be an empty string
+  // the whole thing is whitespace, will return the begin position and if begin == end then it will
+  // be an empty string
   if (!it.IsCurrentRuneWhitespace())
     return it;
   return End();
@@ -334,8 +325,7 @@ bool StringRange::Contains(StringRangeParam value) const
 
 bool StringRange::StartsWith(StringRangeParam value) const
 {
-  // if the substring is larger than our entire string, we can't possibly start
-  // with it
+  // if the substring is larger than our entire string, we can't possibly start with it
   size_t bytes = SizeInBytes();
   size_t subStrBytes = value.SizeInBytes();
   if (subStrBytes > bytes)
@@ -346,8 +336,7 @@ bool StringRange::StartsWith(StringRangeParam value) const
 
 bool StringRange::EndsWith(StringRangeParam value) const
 {
-  // if the substring is larger than our entire string, we can't possibly end
-  // with it
+  // if the substring is larger than our entire string, we can't possibly end with it
   size_t bytes = SizeInBytes();
   size_t subStrBytes = value.SizeInBytes();
   if (subStrBytes > bytes)
@@ -391,8 +380,7 @@ String StringRange::Replace(StringRangeParam oldValue, StringRangeParam newValue
   {
     // find the old value in the string
     StringRange valueRange = currentRange.FindFirstOf(oldValue);
-    // if we didn't find anything we're done (and we have to Append what was
-    // left of the string)
+    // if we didn't find anything we're done (and we have to Append what was left of the string)
     if (valueRange.Empty())
     {
       newString.Append(currentRange);
@@ -767,14 +755,14 @@ bool StringIterator::operator>(const StringIterator& rhs) const
   return false;
 }
 
-StringIterator StringIterator::operator+(uint numElements) const
+StringIterator StringIterator::operator+(ptrdiff_t numElements) const
 {
   StringIterator it = *this;
   it += numElements;
   return it;
 }
 
-StringIterator StringIterator::operator-(uint numElements) const
+StringIterator StringIterator::operator-(ptrdiff_t numElements) const
 {
   StringIterator it = *this;
   it -= numElements;
@@ -793,7 +781,7 @@ int StringIterator::operator-(StringIterator rhs) const
   return elements;
 }
 
-StringIterator& StringIterator::operator+=(uint numElements)
+StringIterator& StringIterator::operator+=(ptrdiff_t numElements)
 {
   while (numElements)
   {
@@ -803,7 +791,7 @@ StringIterator& StringIterator::operator+=(uint numElements)
   return *this;
 }
 
-StringIterator& StringIterator::operator-=(uint numElements)
+StringIterator& StringIterator::operator-=(ptrdiff_t numElements)
 {
   while (numElements)
   {
@@ -814,7 +802,7 @@ StringIterator& StringIterator::operator-=(uint numElements)
 }
 
 // Backwards compatibility, should modify later
-char StringIterator::operator[](uint numBytes) const
+char StringIterator::operator[](ptrdiff_t numBytes) const
 {
   return (char)*(mIteratorRange.mBegin + numBytes);
 }

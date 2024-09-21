@@ -9,12 +9,10 @@
 namespace Zero
 {
 
-/// Array map is an associative container (like a hash-map) however the key type
-/// is neither sorted nor hashed and therefore the search time for an element is
-/// linear. The memory footprint, however, is much smaller than that of a
-/// hash-map. Furthermore, because the key is neither sorted nor hashed, the key
-/// can be changed without having to remove and re-Insert an element (and can be
-/// changed while iterating through this container).
+/// Array map is an associative container (like a hash-map) however the key type is neither sorted nor hashed
+/// and therefore the search time for an element is linear. The memory footprint, however, is much smaller than
+/// that of a hash-map. Furthermore, because the key is neither sorted nor hashed, the key can be changed without
+/// having to remove and re-Insert an element (and can be changed while iterating through this container).
 template <typename KeyType,
           typename DataType,
           typename Comparer = ComparePolicy<KeyType>,

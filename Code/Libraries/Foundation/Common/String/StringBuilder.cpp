@@ -113,7 +113,7 @@ void StringBuilder::AppendFormat(cstr format, ...)
   va_end(va);
 }
 
-void StringBuilder::Append(cstr begin, uint sizeInBytes)
+void StringBuilder::Append(cstr begin, size_t sizeInBytes)
 {
   ByteBuffer::Append((byteType*)begin, sizeInBytes);
 }

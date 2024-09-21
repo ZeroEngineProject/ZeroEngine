@@ -26,11 +26,7 @@ public:
   }
 
   StatusContext(StatusState::Enum state, StringParam message) :
-      State(state),
-      Message(message),
-      IgnoreMessage(false),
-      CallbackOnFailure(nullptr),
-      UserDataOnFailure(nullptr)
+      State(state), Message(message), IgnoreMessage(false), CallbackOnFailure(nullptr), UserDataOnFailure(nullptr)
   {
   }
 
@@ -118,17 +114,14 @@ public:
   StatusState::Enum State;
   // A custom error message (generally only set when the State is Failure)
   String Message;
-  // Some functions want to return more detail on why they failed or information
-  // about the failure This is usually an enumeration, operating specific error
-  // code, etc
+  // Some functions want to return more detail on why they failed or information about the failure
+  // This is usually an enumeration, operating specific error code, etc
   T Context;
-  // As an optimization, we can suggest that we don't care about the message
-  // string This is only a suggestion and may not be used (but should be heeded
-  // in high performance areas)
+  // As an optimization, we can suggest that we don't care about the message string
+  // This is only a suggestion and may not be used (but should be heeded in high performance areas)
   bool IgnoreMessage;
   // A function pointer that is automatically invoked when the status fails
-  // This is useful for triggering asserts or global callbacks (must use
-  // SetFailed, AppendFailed, or PrependFailed)
+  // This is useful for triggering asserts or global callbacks (must use SetFailed, AppendFailed, or PrependFailed)
   StatusFn CallbackOnFailure;
   void* UserDataOnFailure;
 };

@@ -45,8 +45,7 @@ struct is_same_helper<TypeA, TypeA>
   static const bool value = true;
 };
 
-/// Provides a constant defined as true if TypeA and TypeB are the same exact
-/// type, else defined as false
+/// Provides a constant defined as true if TypeA and TypeB are the same exact type, else defined as false
 template <typename TypeA, typename TypeB>
 struct is_same : public integral_constant<bool, (is_same_helper<TypeA, TypeB>::value)>
 {
@@ -71,8 +70,7 @@ struct is_base_of : public decltype(is_base_of_helper<BaseType>((DerivedType*)nu
 // Make Type
 //
 
-/// Provides a typedef defined as T (seems pointless but it's actual necessary
-/// to use this in some cases)
+/// Provides a typedef defined as T (seems pointless but it's actual necessary to use this in some cases)
 template <typename T>
 struct make_type
 {
@@ -83,8 +81,7 @@ struct make_type
 // Make Void
 //
 
-/// Provides a typedef defined as void (seems pointless but it's actual
-/// necessary to use this in some cases)
+/// Provides a typedef defined as void (seems pointless but it's actual necessary to use this in some cases)
 template <typename>
 struct make_void
 {
@@ -107,8 +104,7 @@ struct is_class_helper<T, typename make_void<int T::*>::type>
   static const bool value = true;
 };
 
-/// Provides a constant defined as true if T is a class or struct type, else
-/// defined as false
+/// Provides a constant defined as true if T is a class or struct type, else defined as false
 template <typename T>
 struct is_class : public integral_constant<bool, (is_class_helper<T>::value)>
 {
@@ -165,8 +161,7 @@ struct remove_const_and_volatile
 // Type Traits
 //
 
-/// Provides a constant defined as true if T is a pointer type, else defined as
-/// false
+/// Provides a constant defined as true if T is a pointer type, else defined as false
 template <typename T>
 struct is_pointer : public FalseType
 {
@@ -176,8 +171,7 @@ struct is_pointer<T*> : public TrueType
 {
 };
 
-/// Provides a constant defined as true if T is a reference type, else defined
-/// as false
+/// Provides a constant defined as true if T is a reference type, else defined as false
 template <typename T>
 struct is_reference : public FalseType
 {
@@ -187,8 +181,7 @@ struct is_reference<T&> : public TrueType
 {
 };
 
-/// Provides a constant defined as true if T is a floating-point type, else
-/// defined as false
+/// Provides a constant defined as true if T is a floating-point type, else defined as false
 template <typename T>
 struct is_floating_point : public FalseType
 {
@@ -202,8 +195,7 @@ struct is_floating_point<double> : public TrueType
 {
 };
 
-/// Provides a constant defined as true if T is a signed arithmetic type, else
-/// defined as false
+/// Provides a constant defined as true if T is a signed arithmetic type, else defined as false
 template <typename T>
 struct is_signed : public FalseType
 {
@@ -237,8 +229,7 @@ struct is_signed<double> : public TrueType
 {
 };
 
-/// Provides a constant defined as true if T is an unsigned arithmetic type,
-/// else defined as false
+/// Provides a constant defined as true if T is an unsigned arithmetic type, else defined as false
 template <typename T>
 struct is_unsigned : public FalseType
 {
@@ -264,8 +255,7 @@ struct is_unsigned<uchar> : public TrueType
 {
 };
 
-/// Provides a constant defined as true if T is an integral type, else defined
-/// as false
+/// Provides a constant defined as true if T is an integral type, else defined as false
 template <typename T>
 struct is_integral : public FalseType
 {
@@ -319,8 +309,7 @@ struct is_integral<bool> : public TrueType
 {
 };
 
-/// Provides a constant defined as true if T is a bool type, else defined as
-/// false
+/// Provides a constant defined as true if T is a bool type, else defined as false
 template <typename T>
 struct is_bool : public FalseType
 {
@@ -330,8 +319,7 @@ struct is_bool<bool> : public TrueType
 {
 };
 
-/// Provides a constant defined as true if T is a void type, else defined as
-/// false
+/// Provides a constant defined as true if T is a void type, else defined as false
 template <typename T>
 struct is_void : public FalseType
 {
@@ -341,17 +329,14 @@ struct is_void<void> : public TrueType
 {
 };
 
-/// Provides a constant defined as true if T is a nullptr_t type, else defined
-/// as false
+/// Provides a constant defined as true if T is a nullptr_t type, else defined as false
 template <typename T>
 struct is_null_pointer : public FalseType
 {
 };
-// template<> struct is_null_pointer<NullPointerType> : public TrueType  {}; //
-// TODO
+// template<> struct is_null_pointer<NullPointerType> : public TrueType  {}; // TODO
 
-/// Provides a constant defined as true if T is a array type, else defined as
-/// false
+/// Provides a constant defined as true if T is a array type, else defined as false
 template <typename T>
 struct is_array : public FalseType
 {
@@ -375,16 +360,14 @@ struct is_member_pointer_helper<T U::*> : public TrueType
 {
 };
 
-/// Provides a constant defined as true if T is a member pointer type, else
-/// defined as false
+/// Provides a constant defined as true if T is a member pointer type, else defined as false
 template <typename T>
 struct is_member_pointer
     : public integral_constant<bool, (is_member_pointer_helper<typename remove_const_and_volatile<T>::type>::value)>
 {
 };
 
-// These classes are guaranteed to be sizeof() 1 and 2, for use in compile time
-// conditionals
+// These classes are guaranteed to be sizeof() 1 and 2, for use in compile time conditionals
 struct yes
 {
   char bytes[1];
@@ -406,8 +389,7 @@ struct is_union_or_class_helper
   static const bool value = sizeof((Test<T>(0))) == sizeof(yes);
 };
 
-/// Provides a constant defined as true if T is a union or class type, else
-/// defined as false
+/// Provides a constant defined as true if T is a union or class type, else defined as false
 template <typename T>
 struct is_union_or_class : public integral_constant<bool, (is_union_or_class_helper<T>::value)>
 {
@@ -415,8 +397,7 @@ struct is_union_or_class : public integral_constant<bool, (is_union_or_class_hel
 
 /// TODO: Update type traits to use compiler intrinsics per compiler
 /// TODO: Implement is_function, and exclude function types
-/// Provides a constant defined as true if T is an enum type, else defined as
-/// false
+/// Provides a constant defined as true if T is an enum type, else defined as false
 template <typename T>
 struct is_enum
     : public integral_constant<bool,
@@ -428,8 +409,7 @@ struct is_enum
 };
 
 /// Use SFINAE to detect if we have a member
-/// This must be a macro because the name of the member cannot be provided as a
-/// template argument
+/// This must be a macro because the name of the member cannot be provided as a template argument
 #define ZeroDeclareHasMemberTrait(TypeTraitName, MemberName)                                                           \
   template <typename ZilchT>                                                                                           \
   static ::Zero::TrueType check_##TypeTraitName(decltype(&ZilchT::MemberName)*);                                       \
@@ -440,30 +420,28 @@ struct is_enum
   {                                                                                                                    \
   };
 
-/// Provides a constant defined as true if T is an enum or integral type, else
-/// defined as false
+/// Provides a constant defined as true if T is an enum or integral type, else defined as false
 template <typename T>
 struct is_enum_or_integral : public integral_constant<bool, (is_enum<T>::value || is_integral<T>::value)>
 {
 };
 
-/// Provides a constant defined as true if T is an arithmetic (integral or
-/// floating point) type, else defined as false
+/// Provides a constant defined as true if T is an arithmetic (integral or floating point) type, else defined as false
 template <typename T>
 struct is_arithmetic : public integral_constant<bool, (is_integral<T>::value || is_floating_point<T>::value)>
 {
 };
 
-/// Provides a constant defined as true if T is a fundamental (arithmetic, void,
-/// or nullptr_t) type, else defined as false
+/// Provides a constant defined as true if T is a fundamental (arithmetic, void, or nullptr_t) type, else defined as
+/// false
 template <typename T>
 struct is_fundamental
     : public integral_constant<bool, (is_arithmetic<T>::value || is_void<T>::value || is_null_pointer<T>::value)>
 {
 };
 
-/// Provides a constant defined as true if T is a scalar (arithmetic, enum,
-/// pointer, or nullptr_t) type, else defined as false
+/// Provides a constant defined as true if T is a scalar (arithmetic, enum, pointer, or nullptr_t) type, else defined as
+/// false
 template <typename T>
 struct is_scalar : public integral_constant<bool,
                                             (is_arithmetic<T>::value || is_enum<T>::value || is_pointer<T>::value ||
@@ -471,33 +449,28 @@ struct is_scalar : public integral_constant<bool,
 {
 };
 
-/// Provides a constant defined as true if T is a POD type, else defined as
-/// false
+/// Provides a constant defined as true if T is a POD type, else defined as false
 template <typename T>
 struct is_pod : public integral_constant<bool, (is_scalar<T>::value)>
 {
 };
 
-/// Provides a constant defined as true if T has a trivial constructor, else
-/// defined as false
+/// Provides a constant defined as true if T has a trivial constructor, else defined as false
 template <typename T>
 struct has_trivial_constructor : public integral_constant<bool, is_pod<T>::value>
 {
 };
-/// Provides a constant defined as true if T has a trivial copy constructor,
-/// else defined as false
+/// Provides a constant defined as true if T has a trivial copy constructor, else defined as false
 template <typename T>
 struct has_trivial_copy : public integral_constant<bool, is_pod<T>::value>
 {
 };
-/// Provides a constant defined as true if T has a trivial copy assignment
-/// operator, else defined as false
+/// Provides a constant defined as true if T has a trivial copy assignment operator, else defined as false
 template <typename T>
 struct has_trivial_assign : public integral_constant<bool, is_pod<T>::value>
 {
 };
-/// Provides a constant defined as true if T has a trivial destructor, else
-/// defined as false
+/// Provides a constant defined as true if T has a trivial destructor, else defined as false
 template <typename T>
 struct has_trivial_destructor : public integral_constant<bool, is_pod<T>::value>
 {
@@ -514,8 +487,7 @@ struct StandardTraits
   typedef has_trivial_destructor<T> has_trivial_destructor_;
 };
 
-/// Provides type trait overrides to treat a type as POD, provided for
-/// convenience
+/// Provides type trait overrides to treat a type as POD, provided for convenience
 struct PodOverride
 {
   typedef TrueType is_pod_;
@@ -529,8 +501,7 @@ struct PodOverride
 // Conditional
 //
 
-/// Provides a typedef defined as TypeA if Condition is true, else defined as
-/// TypeB
+/// Provides a typedef defined as TypeA if Condition is true, else defined as TypeB
 template <bool Condition, typename TypeA, typename TypeB>
 struct conditional
 {
@@ -546,9 +517,8 @@ struct conditional<false, TypeA, TypeB>
 // Enable/Disable If
 //
 
-/// Provides a typedef defined as Type (void by default) if Condition is true,
-/// else contains nothing Used to selectively "enable" templated class and
-/// function declarations if the specific condition is met
+/// Provides a typedef defined as Type (void by default) if Condition is true, else contains nothing
+/// Used to selectively "enable" templated class and function declarations if the specific condition is met
 template <bool Condition, typename Type = void>
 struct enable_if
 {
@@ -559,9 +529,9 @@ struct enable_if<true, Type>
   typedef Type type;
 };
 
-/// Provides a typedef defined as Type (void by default) if Condition is false,
-/// else contains nothing This enables the exact inverse of enable_if templated
-/// class and function declarations if the specific condition is met
+/// Provides a typedef defined as Type (void by default) if Condition is false, else contains nothing
+/// This enables the exact inverse of enable_if templated class and function declarations if the specific condition is
+/// met
 template <bool Condition, typename Type = void>
 struct disable_if
 {
@@ -873,8 +843,7 @@ struct Decay
 // Move Semantics (2)
 //
 
-/// Provides a constant defined as true if T is a MoveReference<T> type, else
-/// defined as false
+/// Provides a constant defined as true if T is a MoveReference<T> type, else defined as false
 template <typename T>
 struct is_move_reference : public FalseType
 {
@@ -925,8 +894,7 @@ struct has_default_constructor_helper
   static const bool value = (sizeof(Test<T>(0)) == sizeof(yes));
 };
 
-/// Provides a constant defined as true if T has a default constructor, else
-/// defined as false
+/// Provides a constant defined as true if T has a default constructor, else defined as false
 template <typename T>
 struct has_default_constructor : public integral_constant<bool, (has_default_constructor_helper<T>::value)>
 {
@@ -948,13 +916,11 @@ struct has_copy_constructor_helper
   static const bool value = (sizeof(Test<T>(0)) == sizeof(yes));
 };
 
-/// Provides a constant defined as true if T has a copy constructor, else
-/// defined as false
+/// Provides a constant defined as true if T has a copy constructor, else defined as false
 template <typename T>
 struct has_copy_constructor : std::is_copy_constructible<T>
 {
-}; //: public integral_constant<bool, (has_copy_constructor_helper<T>::value) >
-   //{};
+}; //: public integral_constant<bool, (has_copy_constructor_helper<T>::value) > {};
 
 //
 // has_move_constructor
@@ -972,8 +938,7 @@ struct has_move_constructor_helper
   static const bool value = (sizeof(Test<T>(0)) == sizeof(yes));
 };
 
-/// Provides a constant defined as true if T has a move constructor, else
-/// defined as false
+/// Provides a constant defined as true if T has a move constructor, else defined as false
 template <typename T>
 struct has_move_constructor : public integral_constant<bool, (has_move_constructor_helper<T>::value)>
 {
@@ -995,8 +960,7 @@ struct has_destructor_helper
   static const bool value = (sizeof(Test<T>(0)) == sizeof(yes));
 };
 
-/// Provides a constant defined as true if T has a destructor, else defined as
-/// false
+/// Provides a constant defined as true if T has a destructor, else defined as false
 template <typename T>
 struct has_destructor : public integral_constant<bool, (has_destructor_helper<T>::value)>
 {
@@ -1074,10 +1038,9 @@ private:
 
 // GCC and Clang attempt to compile templates that aren't instantiated if their
 // code does not depend on template parameters. This helper allows us to define
-// a constant and force a dependency on a template parameter, allowing things
-// like static assert to be used in a non-compiling template, for example:
-// StaticAssert(MissingSpecialization, False<T>::Value, "Must be specialized
-// (non-generic T version)");
+// a constant and force a dependency on a template parameter, allowing things like
+// static assert to be used in a non-compiling template, for example:
+// StaticAssert(MissingSpecialization, False<T>::Value, "Must be specialized (non-generic T version)");
 template <typename T, typename V, V value>
 struct ConstantTValue
 {

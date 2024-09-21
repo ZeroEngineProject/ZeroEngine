@@ -19,8 +19,8 @@ struct ZeroShared BoolVector3
   }
   explicit BoolVector3(bool x, bool y, bool z);
 
-  bool& operator[](uint index);
-  bool operator[](uint index) const;
+  bool& operator[](size_t index);
+  bool operator[](size_t index) const;
 
   // Unary Operators
   BoolVector3 operator!(void) const;
@@ -32,7 +32,8 @@ struct ZeroShared BoolVector3
   /// Set all of the values of this vector at once.
   void Set(bool x, bool y, bool z);
 
-  union {
+  union
+  {
     struct
     {
       bool x, y, z;

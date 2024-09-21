@@ -16,14 +16,14 @@ typedef Matrix2* Mat2Ptr;
 struct ZeroShared Matrix2
 {
 public:
-  Matrix2(){};
+  Matrix2() {};
   Matrix2(real p00, real p01, real p10, real p11);
   Matrix2(ConstRealPointer data_);
 
-  Vec2Ref operator[](uint index);
-  Vec2Param operator[](uint index) const;
-  real& operator()(uint r, uint c);
-  real operator()(uint r, uint c) const;
+  Vec2Ref operator[](size_t index);
+  Vec2Param operator[](size_t index) const;
+  real& operator()(size_t r, size_t c);
+  real operator()(size_t r, size_t c) const;
 
   // Binary operators (reals)
   void operator*=(real rhs);
@@ -52,8 +52,7 @@ public:
   Vector2 GetBasis(uint index) const;
   /// Set a basis vector.
   void SetBasis(uint index, Vec2Param basis);
-  /// Get a cross vector which is defined as the elements perpendicular to the
-  /// basis vector.
+  /// Get a cross vector which is defined as the elements perpendicular to the basis vector.
   Vector2 GetCross(uint index) const;
   void SetCross(uint index, Vec2Param cross);
   /// Check if all values are valid.
@@ -78,8 +77,7 @@ public:
   /// Returns if the matrix was invertible.
   static bool SafeInvert(Mat2Ref mat);
 
-  /// Multiply the two matrices together. Matrix multiplication order is
-  /// right-to-left.
+  /// Multiply the two matrices together. Matrix multiplication order is right-to-left.
   static Matrix2 Multiply(Mat2Param lhs, Mat2Param rhs);
   /// Multiply the given vector by a matrix.
   static Vector2 Multiply(Mat2Param lhs, Vec2Param rhs);
@@ -102,7 +100,8 @@ public:
   void Scale(Vec2Param rhs);
   Vector2 Transform(Vec2Param vector) const;
 
-  union {
+  union
+  {
     struct
     {
       real m00, m01, m10, m11;

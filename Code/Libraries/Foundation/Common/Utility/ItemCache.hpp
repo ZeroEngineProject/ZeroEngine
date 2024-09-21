@@ -10,9 +10,9 @@ namespace Zero
 
 /// Maps unique IDs to unique items (where 0 is an invalid ID)
 /// Provides quick look up for a given ID or item
-/// Can be operated bi-directionally, but primarily built to be used in a single
-/// direction (either outgoing mapping from item to ID, or incoming mapping from
-/// ID to item) Designed for use with UintN IDs
+/// Can be operated bi-directionally, but primarily built to be used in a single direction
+/// (either outgoing mapping from item to ID, or incoming mapping from ID to item)
+/// Designed for use with UintN IDs
 template <typename Item, typename Id>
 class ItemCache
 {
@@ -43,9 +43,7 @@ public:
   }
   /// Move Constructor
   ItemCache(MoveReference<ItemCache> rhs) :
-      mIdStore(ZeroMove(rhs->mIdStore)),
-      mItemIdMap(ZeroMove(rhs->mItemIdMap)),
-      mIdItemMap(ZeroMove(rhs->mIdItemMap))
+      mIdStore(ZeroMove(rhs->mIdStore)), mItemIdMap(ZeroMove(rhs->mItemIdMap)), mIdItemMap(ZeroMove(rhs->mIdItemMap))
   {
   }
 
@@ -134,9 +132,8 @@ public:
     // Success
     return result.first;
   }
-  /// Maps a unique item to a generated ID or returns the existing mapping (if
-  /// the mapping already exists) Returns a pointer to the item-id-pair if
-  /// successful, else nullptr
+  /// Maps a unique item to a generated ID or returns the existing mapping (if the mapping already exists)
+  /// Returns a pointer to the item-id-pair if successful, else nullptr
   item_id_pointer GetOrMapItem(const Item& item)
   {
     // Get next ID (don't actually acquire it yet)
@@ -188,9 +185,8 @@ public:
     // Success
     return true;
   }
-  /// Maps a unique ID to a given item, overwriting the equivalent entry if one
-  /// already exists Returns true if insertion took place, else false if
-  /// assignment took place
+  /// Maps a unique ID to a given item, overwriting the equivalent entry if one already exists
+  /// Returns true if insertion took place, else false if assignment took place
   bool MapIdOverwrite(Id id, const Item& item)
   {
     // Map unique ID to item

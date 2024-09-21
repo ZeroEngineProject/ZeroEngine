@@ -18,9 +18,8 @@ public:
   bool mRedirectStandardInput;  // Default: false
 };
 
-/// Process class used for managing external processes and redirecting their
-/// stdio. Used to launch and monitor various external programs, compilers and
-/// tools.
+/// Process class used for managing external processes and redirecting their stdio.
+/// Used to launch and monitor various external programs, compilers and tools.
 class ZeroShared Process
 {
 public:
@@ -47,23 +46,21 @@ public:
   // Wait for the process to close (returns the exit code).
   // Do not call this after closing a process
   int WaitForClose();
-  // Wait for the process to close up to a maximum time-limit(returns the exit
-  // code). Do not call this after closing a process.
+  // Wait for the process to close up to a maximum time-limit(returns the exit code).
+  // Do not call this after closing a process.
   int WaitForClose(unsigned long milliseconds);
 
   //  Returns if the process is running or not.
   bool IsRunning();
 
-  // Close the process handle. This does not force the process to exit or wait
-  // for the process.
+  // Close the process handle. This does not force the process to exit or wait for the process.
   void Close();
 
   // Terminate the process (unsafe)
   void Terminate();
 
-  // Opening these will allow for reading/writing through the provided
-  // filestream interface. Close should close all these pipes unless they have
-  // been stolen by the below functions:
+  // Opening these will allow for reading/writing through the provided filestream interface.
+  // Close should close all these pipes unless they have been stolen by the below functions:
   void OpenStandardOut(File& fileStream);
   void OpenStandardError(File& fileStream);
   void OpenStandardIn(File& fileStream);
@@ -94,10 +91,9 @@ ZeroShared void GetProcesses(Array<ProcessInfo>& results);
 ZeroShared void KillProcess(OsInt processId, int exitCode = 1);
 /// Find a process by name (returns 0 for the id and empty strings if it fails)
 ZeroShared ProcessInfo FindProcess(StringParam processName);
-/// Register the current application with the operating system's restart
-/// services. Allows an installer to restart this application when running. The
-/// application name is auto-added to the arguments. See the specific platform
-/// for flags.
+/// Register the current application with the operating system's restart services.
+/// Allows an installer to restart this application when running.
+/// The application name is auto-added to the arguments. See the specific platform for flags.
 ZeroShared void RegisterApplicationRestartCommand(StringParam commandLineArgs, uint flags = 0);
 
 class SimpleProcess : public Process
@@ -110,8 +106,8 @@ public:
   void
   ExecProcess(StringParam debugName, StringParam commandLine, TextStream* stream = nullptr, bool showWindow = false);
 
-  // Wait for the process to close and read the rest of the output (returns the
-  // exit code) Do not call this after closing a process
+  // Wait for the process to close and read the rest of the output (returns the exit code)
+  // Do not call this after closing a process
   int WaitForClose();
 
   void Cancel();

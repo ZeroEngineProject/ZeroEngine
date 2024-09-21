@@ -32,8 +32,7 @@ ZeroSharedTemplate VectorType GenericReflectAcrossVector(const VectorType& input
   return 2 * GenericProjectOnVector(input, planeNormal) - input;
 }
 
-/// Calculates the refraction vector through a plane given a certain index of
-/// refraction.
+/// Calculates the refraction vector through a plane given a certain index of refraction.
 template <typename VectorType>
 ZeroSharedTemplate VectorType GenericRefract(const VectorType& incidentVector,
                                              const VectorType& planeNormal,
@@ -50,11 +49,10 @@ ZeroSharedTemplate VectorType GenericRefract(const VectorType& incidentVector,
 // Equal to Cos(ToRadius(1))
 const float cSlerpParallelEpsilon = 0.999849f;
 
-// Geometric Slerp between two vectors. This version assumes the user has
-// pre-validated the data so the inputs are not zero, are normalized, and that
-// there isn't a degenerate solution (e.g. the vectors are parallel). Used when
-// the data-set has been pre-emptively cleaned up so that multiple validation
-// checks are done 'offline' and all calls can be fast.
+// Geometric Slerp between two vectors. This version assumes the user has pre-validated
+// the data so the inputs are not zero, are normalized, and that there isn't a degenerate
+// solution (e.g. the vectors are parallel). Used when the data-set has been pre-emptively
+// cleaned up so that multiple validation checks are done 'offline' and all calls can be fast.
 template <typename VectorType>
 VectorType FastGeometricSlerp(const VectorType& start, const VectorType& end, real t)
 {
@@ -69,8 +67,7 @@ VectorType FastGeometricSlerp(const VectorType& start, const VectorType& end, re
 
   real u = Math::Cos(theta * t);
   real v = Math::Sin(theta * t);
-  // Compute an orthonormal bases to use for interpolation by projecting start
-  // out of end.
+  // Compute an orthonormal bases to use for interpolation by projecting start out of end.
   VectorType perpendicularVector = end - start * cosTheta;
   perpendicularVector.Normalize();
 
@@ -78,8 +75,8 @@ VectorType FastGeometricSlerp(const VectorType& start, const VectorType& end, re
   return result;
 }
 
-// Geometric Slerp between two vectors. This version will check for any possible
-// degeneracy cases and normalize the input vectors.
+// Geometric Slerp between two vectors. This version will check for any possible degeneracy cases and normalize the
+// input vectors.
 template <typename VectorType>
 VectorType SafeGeometricSlerp(const VectorType& startUnNormalized, const VectorType& endUnNormalized, real t)
 {
@@ -98,25 +95,21 @@ VectorType SafeGeometricSlerp(const VectorType& startUnNormalized, const VectorT
   // If the inputs are not parallel
   if (Math::Abs(cosTheta) < cSlerpParallelEpsilon)
   {
-    // Compute an orthonormal bases to use for interpolation by projecting start
-    // out of end.
+    // Compute an orthonormal bases to use for interpolation by projecting start out of end.
     perpendicularVector = end - start * cosTheta;
     perpendicularVector.AttemptNormalize();
   }
-  // Otherwise the vectors are almost parallel so we need to special case the
-  // perpendicular vector
+  // Otherwise the vectors are almost parallel so we need to special case the perpendicular vector
   else
   {
-    // The vectors are parallel. Fall back to a small angle approximation and
-    // just lerp.
+    // The vectors are parallel. Fall back to a small angle approximation and just lerp.
     if (cosTheta > 0)
     {
       perpendicularVector = end;
       u = (1 - t);
       v = t;
     }
-    // The vectors are anti-parallel. There are multiple solutions so pick any
-    // perpendicular vector.
+    // The vectors are anti-parallel. There are multiple solutions so pick any perpendicular vector.
     else
     {
       perpendicularVector = GeneratePerpendicularVector(start);
@@ -129,8 +122,7 @@ VectorType SafeGeometricSlerp(const VectorType& startUnNormalized, const VectorT
 }
 
 // Geometric Slerp between two vectors. This is the 'pure' mathematical
-// Slerp function. This effectively traces along an ellipse defined by the two
-// input vectors.
+// Slerp function. This effectively traces along an ellipse defined by the two input vectors.
 template <typename VectorType>
 VectorType SafeGeometricSlerpUnnormalized(const VectorType& start, const VectorType& end, real t)
 {
@@ -140,8 +132,7 @@ VectorType SafeGeometricSlerpUnnormalized(const VectorType& start, const VectorT
     return start;
 
   real cosTheta = Math::Dot(start, end);
-  // Compute the actual angle since (the inputs are not assumed to be
-  // normalized)
+  // Compute the actual angle since (the inputs are not assumed to be normalized)
   cosTheta /= (startLength * endLength);
   // Clamp for float errors (ACos can't handle values outside [-1, 1]
   cosTheta = Math::Clamp(cosTheta, -1.0f, 1.0f);
@@ -154,27 +145,23 @@ VectorType SafeGeometricSlerpUnnormalized(const VectorType& start, const VectorT
   // If the inputs are not parallel
   if (Math::Abs(cosTheta) < cSlerpParallelEpsilon)
   {
-    // Compute an orthonormal bases to use for interpolation by projecting start
-    // out of end.
+    // Compute an orthonormal bases to use for interpolation by projecting start out of end.
     perpendicularVector = end - start * cosTheta;
-    // Instead of normalizing this vector, we need to apply the normalization
-    // factor from the generic Slerp formula (see Wikipedia).
+    // Instead of normalizing this vector, we need to apply the normalization factor
+    // from the generic Slerp formula (see Wikipedia).
     perpendicularVector /= Math::Sin(theta);
   }
-  // Otherwise the vectors are almost parallel so we need to special case the
-  // perpendicular vector
+  // Otherwise the vectors are almost parallel so we need to special case the perpendicular vector
   else
   {
-    // The vectors are parallel. Fall back to a small angle approximation and
-    // just lerp.
+    // The vectors are parallel. Fall back to a small angle approximation and just lerp.
     if (cosTheta > 0)
     {
       perpendicularVector = end;
       u = (1 - t);
       v = t;
     }
-    // The vectors are anti-parallel. There are multiple solutions so pick any
-    // perpendicular vector.
+    // The vectors are anti-parallel. There are multiple solutions so pick any perpendicular vector.
     else
     {
       perpendicularVector = GeneratePerpendicularVector(start);

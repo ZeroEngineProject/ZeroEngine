@@ -20,8 +20,8 @@ struct ZeroShared IntVector3
   }
   explicit IntVector3(int x, int y, int z);
 
-  int& operator[](uint index);
-  int operator[](uint index) const;
+  int& operator[](size_t index);
+  int operator[](size_t index) const;
 
   // Unary Operators
   IntVector3 operator-(void) const;
@@ -83,7 +83,8 @@ struct ZeroShared IntVector3
   /// Set all of this vector's elements to 0.
   void ZeroOut(void);
 
-  union {
+  union
+  {
     struct
     {
       int x, y, z;

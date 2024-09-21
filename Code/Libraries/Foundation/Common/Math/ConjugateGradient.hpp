@@ -12,9 +12,9 @@ namespace Math
 /// for the vector x where b is a vector and A is a matrix. Solving for x can be
 /// computationally cheaper than computing the inverse of A when A is large and
 /// especially when A is very sparse.
-/// The conjugate gradient solving method only works with positive-definite
-/// matrices, that is if you were to graph the matrix A, it would have to be a
-/// 'paraboloid that points up (by traveling down we will find the origin)
+/// The conjugate gradient solving method only works with positive-definite matrices,
+/// that is if you were to graph the matrix A, it would have to be a 'paraboloid that
+/// points up (by traveling down we will find the origin)
 struct ConjugateGradientSolver
 {
   ConjugateGradientSolver()
@@ -23,8 +23,7 @@ struct ConjugateGradientSolver
     mErrorTolerance = real(.001f);
   }
 
-  /// X0 is the initial values and also the results (set to 0 if there is no
-  /// initial)
+  /// X0 is the initial values and also the results (set to 0 if there is no initial)
   template <typename MatrixType, typename VectorType, typename PolicyType, typename ErrorCallbackType>
   void SolveSlow(MatrixType& A, VectorType& b, VectorType& x0, PolicyType& policy, ErrorCallbackType& errCallback)
   {

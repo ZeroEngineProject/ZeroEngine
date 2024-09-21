@@ -99,8 +99,8 @@ void ToAxisAngle(QuatParam quaternion, Vec3Ptr axis, real* radians)
   axis->z = tempQuat.z * invSinAngle;
 }
 
-/// Convert a 3x3 matrix to a set of Euler angles (in radians). The desired
-/// order of the rotations is expected to be in the given Euler angle structure.
+/// Convert a 3x3 matrix to a set of Euler angles (in radians). The desired order
+/// of the rotations is expected to be in the given Euler angle structure.
 EulerAngles ToEulerAngles(Mat3Param matrix, EulerOrders::Enum order)
 {
   EulerAngles eulerAngles(order);
@@ -226,8 +226,8 @@ void ToEulerAngles(Mat4Param matrix, EulerAnglesPtr eulerAngles)
   }
 }
 
-/// Convert a quaternion to a set of Euler angles (in radians). The desired
-/// order of the rotations is expected to be in the given Euler angle structure.
+/// Convert a quaternion to a set of Euler angles (in radians). The desired order
+/// of the rotations is expected to be in the given Euler angle structure.
 EulerAngles ToEulerAngles(QuatParam quaternion, EulerOrders::Enum order)
 {
   EulerAngles eulerAngles(order);
@@ -1291,8 +1291,7 @@ real SignedAngle(Vec3Param a, Vec3Param b, Vec3Param up)
   // If we're actually on the left side...
   if (rightDot > real(0.0))
   {
-    // Compute the real final angle given the quadrant it's in (kinda like
-    // atan2)
+    // Compute the real final angle given the quadrant it's in (kinda like atan2)
     finalAngle = -finalAngle;
   }
 

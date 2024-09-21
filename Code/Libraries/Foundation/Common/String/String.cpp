@@ -15,8 +15,7 @@ public:
   ~StringPool();
   static StringPool& GetInstance();
 
-  // The empty node is an optimization for empty strings, but it still has to be
-  // in the pool
+  // The empty node is an optimization for empty strings, but it still has to be in the pool
   StringNode& GetEmptyNode();
 
   SpinLock mLock;
@@ -133,7 +132,7 @@ String::String(char character)
 String::String(Rune rune)
 {
   ::byte utf8Bytes[4];
-  int bytesRead = UTF8::UnpackUtf8RuneIntoBuffer(rune, utf8Bytes);
+  size_t bytesRead = UTF8::UnpackUtf8RuneIntoBuffer(rune, utf8Bytes);
 
   Assign((char*)utf8Bytes, bytesRead);
 }
@@ -230,9 +229,8 @@ StringRange String::All() const
 
 String& String::operator=(const String& other)
 {
-  // Instead of checking if we're doing self assignment with the string, its
-  // much more useful to check if we're self assigning the node (because there
-  // could be two different String objects with the same StringNode)
+  // Instead of checking if we're doing self assignment with the string, its much more useful to check if
+  // we're self assigning the node (because there could be two different String objects with the same StringNode)
   if (this->mNode == other.mNode)
     return *this;
 
@@ -256,8 +254,7 @@ void String::initializeToDefault()
 
 void String::InitializeCharacter(int character)
 {
-  // This is an optimization where we keep pre-allocated character strings
-  // around for ascii characters
+  // This is an optimization where we keep pre-allocated character strings around for ascii characters
   if (character < cPreAllocatedCharacterCount)
   {
     Assign(GetPreAllocatedCharacterStrings()[character].mNode);
@@ -281,8 +278,7 @@ String::String(int unicodeCharacter, bool)
 
 String* String::GetPreAllocatedCharacterStrings()
 {
-// We do this all in one line to take advantage of compiler generated thread
-// safety
+// We do this all in one line to take advantage of compiler generated thread safety
 #define S(value) String(value, true)
   static String ascii[] = {
       S(0),   S(1),   S(2),   S(3),   S(4),   S(5),   S(6),   S(7),   S(8),   S(9),   S(10),  S(11),  S(12),
@@ -326,9 +322,8 @@ public:
 
   bool Equal(const TemporaryString& temp, StringNode* node)
   {
-    // Note that we MUST use memcmp here and not strcmp because the temporary
-    // string could not be null terminated (we could be constructing a string
-    // from a range)
+    // Note that we MUST use memcmp here and not strcmp because the temporary string
+    // could not be null terminated (we could be constructing a string from a range)
     return temp.mSize == node->Size && temp.mHash == node->HashCode && memcmp(temp.mData, node->Data, temp.mSize) == 0;
   }
 };
@@ -339,9 +334,7 @@ void String::Assign(const_pointer data, size_type size)
   if (!data)
   {
     data = "";
-    ErrorIf(size != 0,
-            "When given a null pointer to construct an empty string, the size "
-            "must also be 0!");
+    ErrorIf(size != 0, "When given a null pointer to construct an empty string, the size must also be 0!");
     size = 0;
   }
 
@@ -366,9 +359,8 @@ void String::Assign(const_pointer data, size_type size)
     else
     {
       // Note: It is OK if the existingNode's RefCount is 0 here
-      // This happens in the case where we're creating the SAME string on one
-      // thread but it's literally being released on another thread at the same
-      // time (already ref count 0)
+      // This happens in the case where we're creating the SAME string on one thread
+      // but it's literally being released on another thread at the same time (already ref count 0)
       StringNode* existingNode = foundRange.Front();
       Assign(existingNode);
     }
@@ -433,11 +425,11 @@ void String::ComputeStringStats(StringStats& stats)
 
 void String::DebugForceReleaseStringPoolLock()
 {
-  // On rare occasions, a crash could've happened when the string pool's spin
-  // lock was locked. This forces it to be unlocked so that crash handler can
-  // continue. There's a chance we could be in an invalid state but we're
-  // already crashing. This makes the worst case scenario that we double crash
-  // and get no report instead of infinite looping on a background process.
+  // On rare occasions, a crash could've happened when the string pool's spin lock
+  // was locked. This forces it to be unlocked so that crash handler can continue.
+  // There's a chance we could be in an invalid state but we're already crashing.
+  // This makes the worst case scenario that we double crash and get no report
+  // instead of infinite looping on a background process.
 #if defined(ZeroStringPooling)
   StringPool& pool = StringPool::GetInstance();
   pool.mLock.Unlock();
@@ -458,9 +450,8 @@ void String::poolOrDeleteNode(StringNode* node)
     else
     {
       // Note: It is OK if the existingNode's RefCount is 0 here
-      // This happens in the case where we're creating the SAME string on one
-      // thread but it's literally being released on another thread at the same
-      // time (already ref count 0)
+      // This happens in the case where we're creating the SAME string on one thread
+      // but it's literally being released on another thread at the same time (already ref count 0)
       zDeallocate(node);
       Assign(existingNode);
     }
@@ -690,8 +681,8 @@ String String::Join(StringRangeParam separator, const String* strings, size_t st
   Array<StringRange> values;
   values.Resize(stringCount);
 
-  // String range Contains string and garbage data causes string to attempt to
-  // release the string data
+  // String range Contains string and garbage data causes string to attempt to release
+  // the string data
   for (size_t i = 0; i < stringCount; ++i)
     values[i] = strings[i].All();
 
@@ -703,8 +694,7 @@ String String::JoinInternal(StringRangeParam separator, const StringRange* value
   if (count == 0)
     return String();
 
-  // count the total size needed (don't include an extra for the null as the
-  // string constructor adds the null)
+  // count the total size needed (don't include an extra for the null as the string constructor adds the null)
   size_t separatorSize = separator.SizeInBytes();
   size_t totalSize = separatorSize * (count - 1);
   for (size_t i = 0; i < count; ++i)
@@ -801,9 +791,8 @@ String String::ToLower() const
 String String::Repeat(Rune rune, size_t numberOfTimes)
 {
   ::byte utf8Bytes[4];
-  int bytesRead = UTF8::UnpackUtf8RuneIntoBuffer(rune, utf8Bytes);
-  // Create a temporary memory buffer that Contains the character repeated over
-  // and over
+  size_t bytesRead = UTF8::UnpackUtf8RuneIntoBuffer(rune, utf8Bytes);
+  // Create a temporary memory buffer that Contains the character repeated over and over
   size_t bufferSize = numberOfTimes * bytesRead;
   char* buffer = (char*)alloca(bufferSize);
   // Advance the buffer by the amount by the amount of bytes written each copy

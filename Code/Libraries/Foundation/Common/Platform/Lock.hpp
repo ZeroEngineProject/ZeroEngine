@@ -101,8 +101,8 @@ struct ZeroSharedTemplate Locked
     rhs->mLock = nullptr;
   }
 
-  /// Note: Behaves like a move assignment operator! Provided for convenience
-  /// only! Copy Assignment Operator
+  /// Note: Behaves like a move assignment operator! Provided for convenience only!
+  /// Copy Assignment Operator
   Locked& operator=(const Locked& rhs)
   {
     if (mLock)
@@ -160,8 +160,7 @@ struct ZeroSharedTemplate Locked
     return *mObject;
   }
 
-  /// Returns true if there is no locked object, else false (there is a locked
-  /// object)
+  /// Returns true if there is no locked object, else false (there is a locked object)
   bool IsEmpty() const
   {
     return mObject ? false : true;
@@ -241,9 +240,8 @@ public:
   {
   }
   /// Constructor
-  /// Note: We copy the container to provide thread-safety for the container
-  /// itself This is also why LockedRange is designed for containers of pointer
-  /// items
+  /// Note: We copy the container to provide thread-safety for the container itself
+  /// This is also why LockedRange is designed for containers of pointer items
   LockedRange(const container_type& container) : mContainer(container), mRange(mContainer.All()) // This is correct
   {
   }
@@ -255,8 +253,7 @@ public:
 
   /// Move Constructor
   LockedRange(MoveReference<LockedRange> rhs) :
-      mContainer(ZeroMove(rhs->mContainer)),
-      mRange(mContainer.All()) // This is correct
+      mContainer(ZeroMove(rhs->mContainer)), mRange(mContainer.All()) // This is correct
   {
   }
 

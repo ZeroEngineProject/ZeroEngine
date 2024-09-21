@@ -120,18 +120,15 @@ bool CompareFile(Status& status, StringParam filePath1, StringParam filePath2)
     size_t file1Read = file1.Read(status, file1Buffer, ReadSize);
     size_t file2Read = file2.Read(status, file2Buffer, ReadSize);
 
-    // If we ever read a different amount (it either means eof or error for
-    // either file)
+    // If we ever read a different amount (it either means eof or error for either file)
     if (file1Read != file2Read)
       return false;
 
-    // We already compared the size, so we can just compare up to the point that
-    // both read
+    // We already compared the size, so we can just compare up to the point that both read
     if (memcmp(file1Buffer, file2Buffer, file1Read) != 0)
       return false;
 
-    // If we hit the end of both files (or magically an error in the exact same
-    // spot of both files...)
+    // If we hit the end of both files (or magically an error in the exact same spot of both files...)
     if (file1Read != ReadSize)
       break;
   }
@@ -160,8 +157,7 @@ bool CompareFileAndString(Status& status, StringParam filePath, StringParam stri
   {
     size_t fileRead = file.Read(status, fileBuffer, ReadSize);
 
-    // This should never happen unless somehow the file has an error and reads
-    // more than it should
+    // This should never happen unless somehow the file has an error and reads more than it should
     if (index + fileRead > string.SizeInBytes())
       return false;
 
@@ -177,8 +173,7 @@ bool CompareFileAndString(Status& status, StringParam filePath, StringParam stri
       if (index != string.SizeInBytes())
         return false;
 
-      // Otherwise break out here (we could just return true, but control flow
-      // paths...)
+      // Otherwise break out here (we could just return true, but control flow paths...)
       break;
     }
   }

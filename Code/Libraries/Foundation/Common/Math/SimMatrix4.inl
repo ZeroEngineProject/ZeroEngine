@@ -609,8 +609,7 @@ SimInline SimMat4 AffineInverseWithScale4x4(SimMat4Param transform)
   */
 
   SimMat4 invScale;
-  // invert the scale by dividing each column by its squared length (so the
-  // length is 1/length)
+  // invert the scale by dividing each column by its squared length (so the length is 1/length)
   invScale.columns[0] = Divide(transform.columns[0], LengthSq4(transform.columns[0]));
   invScale.columns[1] = Divide(transform.columns[1], LengthSq4(transform.columns[1]));
   invScale.columns[2] = Divide(transform.columns[2], LengthSq4(transform.columns[2]));

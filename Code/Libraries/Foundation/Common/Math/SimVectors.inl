@@ -246,8 +246,7 @@ SimInline SimVec Refract3(SimVecParam incident, SimVecParam normal, SimVecParam 
 {
   // IDotN = dot(Incident,Normal)
   // R = 1.0f - RefractionIndex * RefractionIndex * (1.0f - IDotN * IDotN)
-  // Result = RefractionIndex * Incident - Normal * (RefractionIndex * IDotN +
-  // sqrt(R))
+  // Result = RefractionIndex * Incident - Normal * (RefractionIndex * IDotN + sqrt(R))
 
   SimVec iDotN = Dot3(incident, normal);
   SimVec r = MultiplySubtract(iDotN, iDotN, gSimOne);
@@ -324,8 +323,7 @@ SimInline SimVec Refract4(SimVecParam incident, SimVecParam normal, SimVecParam 
 {
   // IDotN = dot(Incident,Normal)
   // R = 1.0f - RefractionIndex * RefractionIndex * (1.0f - IDotN * IDotN)
-  // Result = RefractionIndex * Incident - Normal * (RefractionIndex * IDotN +
-  // sqrt(R))
+  // Result = RefractionIndex * Incident - Normal * (RefractionIndex * IDotN + sqrt(R))
 
   SimVec iDotN = Dot4(incident, normal);
   SimVec r = MultiplySubtract(iDotN, iDotN, gSimOne);
@@ -347,8 +345,7 @@ SimInline SimVec DotXM(SimVecParam lhs, SimVecParam rhs)
 {
   SimVec vTemp2 = rhs;
   SimVec vTemp = Multiply(lhs, vTemp2);
-  vTemp2 = VecShuffle(vTemp2, vTemp, 1, 0, 0,
-                      0);                        // Copy X to the Z position and Y to the W position
+  vTemp2 = VecShuffle(vTemp2, vTemp, 1, 0, 0, 0); // Copy X to the Z position and Y to the W position
   vTemp2 = Add(vTemp2, vTemp);                   // Add Z = X+Z; W = Y+W;
   vTemp = VecShuffle(vTemp, vTemp2, 0, 3, 0, 0); // Copy W to the Z position
   vTemp = Add(vTemp, vTemp2);                    // Add Z and W together

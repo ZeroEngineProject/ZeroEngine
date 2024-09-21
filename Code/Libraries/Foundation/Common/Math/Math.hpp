@@ -30,8 +30,8 @@ ZeroShared void ToAxisAngle(QuatParam quaternion, Vec4Ptr axisAngle);
 /// Converts a quaternion to an axis-angle pair (in radians).
 ZeroShared void ToAxisAngle(QuatParam quaternion, Vec3Ptr axis, real* radians);
 
-/// Convert a 3x3 matrix to a set of Euler angles (in radians). The desired
-/// order of the rotations is expected to be in the given Euler angle structure.
+/// Convert a 3x3 matrix to a set of Euler angles (in radians). The desired order
+/// of the rotations is expected to be in the given Euler angle structure.
 ZeroShared EulerAngles ToEulerAngles(Mat3Param matrix, EulerOrders::Enum order = EulerOrders::XYZs);
 ZeroShared void ToEulerAngles(Mat3Param matrix, EulerAnglesPtr eulerAngles);
 
@@ -40,8 +40,8 @@ ZeroShared void ToEulerAngles(Mat3Param matrix, EulerAnglesPtr eulerAngles);
 ZeroShared EulerAngles ToEulerAngles(Mat4Param matrix, EulerOrders::Enum order = EulerOrders::XYZs);
 ZeroShared void ToEulerAngles(Mat4Param matrix, EulerAnglesPtr eulerAngles);
 
-/// Convert a quaternion to a set of Euler angles (in radians). The desired
-/// order of the rotations is expected to be in the given Euler angle structure.
+/// Convert a quaternion to a set of Euler angles (in radians). The desired order
+/// of the rotations is expected to be in the given Euler angle structure.
 ZeroShared EulerAngles ToEulerAngles(QuatParam quaternion, EulerOrders::Enum order = EulerOrders::XYZs);
 ZeroShared void ToEulerAngles(QuatParam quaternion, EulerAnglesPtr eulerAngles);
 
@@ -160,11 +160,9 @@ ZeroShared Quaternion ToQuaternion(real x, real y, real z);
 /// Generates the quaternion that rotates start to end.
 ZeroShared Quaternion RotationQuaternionBetween(Vec3Param start, Vec3Param end);
 
-/// Generates a vector perpendicular to the given vector. The result is not
-/// normalized.
+/// Generates a vector perpendicular to the given vector. The result is not normalized.
 ZeroShared Vec2 GeneratePerpendicularVector(Vec2Param input);
-/// Generates a vector perpendicular to the given vector. The result is not
-/// normalized.
+/// Generates a vector perpendicular to the given vector. The result is not normalized.
 ZeroShared Vec3 GeneratePerpendicularVector(Vec3Param input);
 
 /// Generates a set of orthonormal vectors from the given vectors, modifying u

@@ -47,9 +47,7 @@ String FilePath::Combine(StringRange path0, StringRange path1, StringRange path2
 String FilePath::CombineWithExtension(StringRange path, StringRange fileName, StringRange ext)
 {
   if (!ext.Empty())
-    ErrorIf(ext.Front() != '.',
-            "CombineWithExtension assumes that the passed in extension has the "
-            "'.'");
+    ErrorIf(ext.Front() != '.', "CombineWithExtension assumes that the passed in extension has the '.'");
 
   const StringRange* paths[2];
   paths[0] = &path;
@@ -192,8 +190,7 @@ String FilePath::Combine(const StringRange** paths, uint count, StringRange exte
   {
     const StringRange& path = *paths[i];
 
-    // if this string was empty, don't do anything (don't add extra slashes or
-    // anything weird)
+    // if this string was empty, don't do anything (don't add extra slashes or anything weird)
     if (path.Empty())
       continue;
 

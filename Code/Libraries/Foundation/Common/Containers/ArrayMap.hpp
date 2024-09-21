@@ -72,8 +72,7 @@ public:
   typedef typename base_type::pointer pointer;
   typedef typename base_type::const_reference const_reference;
 
-  /// Range adapter that presents only the key members in a key-data pair range,
-  /// intended for convenience
+  /// Range adapter that presents only the key members in a key-data pair range, intended for convenience
   struct key_range : public range
   {
     typedef key_reference FrontResult;
@@ -109,8 +108,7 @@ public:
     }
   };
 
-  /// Range adapter that presents only the data members in a key-data pair
-  /// range, intended for convenience
+  /// Range adapter that presents only the data members in a key-data pair range, intended for convenience
   struct data_range : public range
   {
     typedef data_reference FrontResult;
@@ -213,8 +211,7 @@ public:
     return base_type::FindValue(searchKey, ifNotFound);
   }
 
-  /// Returns a pointer to the key of the equivalent element in the array, else
-  /// nullptr
+  /// Returns a pointer to the key of the equivalent element in the array, else nullptr
   template <typename KeyCompareType>
   key_pointer FindKeyPointer(const KeyCompareType& searchKey) const
   {
@@ -238,8 +235,7 @@ public:
       return base_type::mData[index].first;
   }
 
-  /// Returns a pointer to the data of the equivalent element in the array, else
-  /// nullptr
+  /// Returns a pointer to the data of the equivalent element in the array, else nullptr
   template <typename KeyCompareType>
   data_pointer FindPointer(const KeyCompareType& searchKey) const
   {
@@ -268,9 +264,8 @@ public:
   //
 
   /// Inserts a new element if an equivalent element does not already exist
-  /// Returns a pair consisting of a pointer to the inserted element (or the
-  /// equivalent element which prevented it's insertion), and a bool which will
-  /// be true if the insertion took place, else false if no changes were made
+  /// Returns a pair consisting of a pointer to the inserted element (or the equivalent element which prevented it's
+  /// insertion), and a bool which will be true if the insertion took place, else false if no changes were made
   pointer_bool_pair FindOrInsert(const_key_reference key, const_data_reference data)
   {
     // Get lower bound
@@ -320,9 +315,8 @@ public:
   }
 
   /// Inserts a unique element at it's sorted position in the array
-  /// Returns a pair consisting of a pointer to the inserted element (or the
-  /// equivalent element which prevented it's insertion), and a bool which will
-  /// be true if the insertion took place, else false if no changes were made
+  /// Returns a pair consisting of a pointer to the inserted element (or the equivalent element which prevented it's
+  /// insertion), and a bool which will be true if the insertion took place, else false if no changes were made
   pointer_bool_pair Insert(const_key_reference key, const_data_reference data)
   {
     value_type value = value_type(key, data);
@@ -334,11 +328,9 @@ public:
     return base_type::Insert(ZeroMove(value));
   }
 
-  /// Inserts a unique element at it's sorted position in the array or assigns
-  /// over a previously inserted equivalent element Returns a pair consisting of
-  /// a pointer to the inserted element (or the equivalent element which was
-  /// assigned to), and a bool which will be true if the insertion took place,
-  /// else false if the assignment took place
+  /// Inserts a unique element at it's sorted position in the array or assigns over a previously inserted equivalent
+  /// element Returns a pair consisting of a pointer to the inserted element (or the equivalent element which was
+  /// assigned to), and a bool which will be true if the insertion took place, else false if the assignment took place
   pointer_bool_pair InsertOrAssign(const_key_reference key, const_data_reference data)
   {
     value_type value = value_type(key, data);
@@ -356,8 +348,7 @@ public:
 
   /// Removes the first element with equivalent data from the array
   /// Note: This is a linear operation
-  /// Returns true if an erase took place, else false if the element was not
-  /// found
+  /// Returns true if an erase took place, else false if the element was not found
   template <typename DataCompareType>
   bool EraseData(const DataCompareType& searchData)
   {

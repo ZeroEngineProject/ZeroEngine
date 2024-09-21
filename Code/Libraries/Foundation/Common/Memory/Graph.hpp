@@ -38,8 +38,7 @@ struct ZeroShared Stats
 
 /// Base Memory graph node. All allocators are derived from this class for
 /// runtime memory statics collection and debugging. Class provides a graph
-/// structure for hierarchical grouping of memory and the ability to name
-/// allocators.
+/// structure for hierarchical grouping of memory and the ability to name allocators.
 class ZeroShared Graph : public LinkBase
 {
 public:

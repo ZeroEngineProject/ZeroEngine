@@ -45,8 +45,7 @@ Variant::operator T() const
 template <typename T>
 bool Variant::operator==(const T& rhs) const
 {
-  // Variant is not storing a value of the same type? (Is empty or different
-  // type?)
+  // Variant is not storing a value of the same type? (Is empty or different type?)
   if (!Is<T>())
     return false;
 
@@ -137,8 +136,7 @@ void Variant::DefaultConstruct()
 
   // (Verify type is copy constructible and destructible, else fail to compile)
   static_assert(has_copy_constructor<UnqualifiedType>::value && has_destructor<UnqualifiedType>::value,
-                "Types assigned to variant must have both an accessible copy "
-                "constructor and destructor.");
+                "Types assigned to variant must have both an accessible copy constructor and destructor.");
 
   // Destroy current stored value, if any
   // (Does not free memory or forget the current stored type)
@@ -164,8 +162,7 @@ void Variant::Assign(const T& rhs)
 
   // (Verify type is copy constructible and destructible, else fail to compile)
   static_assert(has_copy_constructor<UnqualifiedType>::value && has_destructor<UnqualifiedType>::value,
-                "Types assigned to variant must have both an accessible copy "
-                "constructor and destructor.");
+                "Types assigned to variant must have both an accessible copy constructor and destructor.");
 
   // Destroy current stored value, if any
   // (Does not free memory or forget the current stored type)
@@ -191,8 +188,7 @@ void Variant::Assign(MoveReference<T> rhs)
 
   // (Verify type is copy constructible and destructible, else fail to compile)
   static_assert(has_copy_constructor<UnqualifiedType>::value && has_destructor<UnqualifiedType>::value,
-                "Types assigned to variant must have both an accessible copy "
-                "constructor and destructor.");
+                "Types assigned to variant must have both an accessible copy constructor and destructor.");
 
   // Destroy current stored value, if any
   // (Does not free memory or forget the current stored type)
@@ -226,8 +222,7 @@ PrimitiveType& Variant::GetPrimitiveMemberOrError(size_t index) const
     return *primitiveValue;
 
   Error("%s%s",
-        String::Format("Unable to get primitive member on stored value of "
-                       "specified type '%s' from Variant - ",
+        String::Format("Unable to get primitive member on stored value of specified type '%s' from Variant - ",
                        NativeTypeOf(T)->mDebugTypeName)
             .c_str(),
         (mNativeType == nullptr
@@ -260,8 +255,7 @@ PrimitiveType* Variant::GetPrimitiveMemberOrNull(size_t index) const
 
   // (Specified index should not be out of bounds)
   ErrorIf(index >= PrimitiveCount,
-          "Specified index is out of bounds while attempting to access a "
-          "primitive member on variant's stored value");
+          "Specified index is out of bounds while attempting to access a primitive member on variant's stored value");
 
   // Variant is not storing a value of type T?
   if (!Is<T>())

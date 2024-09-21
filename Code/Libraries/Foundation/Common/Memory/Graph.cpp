@@ -44,12 +44,10 @@ MemPtr zStaticAllocate(size_t size)
   // are allocated from a fixed size buffer this allows them to have controlled
   // or optional initialization and prevents them from showing up in leaks
   ErrorIf(BufferLocation + size >= StaticMemoryGraphBuffer + cStaticMemoryBufferSize,
-          "Allocated too many memory graph objects. Increase "
-          "cStaticMemoryBufferSize.");
+          "Allocated too many memory graph objects. Increase cStaticMemoryBufferSize.");
   ::byte* current = BufferLocation;
   BufferLocation += size;
-  // DebugPrint("Max Static Memory %d\n", uint(BufferLocation -
-  // StaticMemoryGraphBuffer));
+  // DebugPrint("Max Static Memory %d\n", uint(BufferLocation - StaticMemoryGraphBuffer));
   return current;
 }
 

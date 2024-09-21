@@ -84,9 +84,8 @@ OsInt SimpleProcess::ReadThreadEntryPoint(void* data)
     const size_t BufferSize = 4096;
 
     // We add 1 for an extra null terminator at the end
-    // (technically the null terminator could go anywhere since we place it at
-    // the end of the amount we read)
-    ::byte buffer[BufferSize + 1];
+    // (technically the null terminator could go anywhere since we place it at the end of the amount we read)
+    byte buffer[BufferSize + 1];
 
     size_t amountRead = self->mStandardOut.Read(status, buffer, BufferSize);
 

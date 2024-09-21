@@ -7,8 +7,7 @@
 // Todo: Handle enum hash policies in a way that works for all compilers.
 // We need to make a specialization because the hash maps do not work with enums
 // On other compilers, the 'Enum' type is actually an int, which would produce a
-// duplicate definition compiler error since a specialization of int already
-// exists.
+// duplicate definition compiler error since a specialization of int already exists.
 
 namespace Zero
 {
@@ -53,8 +52,7 @@ struct ZeroSharedTemplate has_hash_function_helper
   static const bool value = (sizeof(Test<T>(0)) == sizeof(yes));
 };
 
-/// Provides a constant defined as true if T has a hash function, else defined
-/// as false
+/// Provides a constant defined as true if T has a hash function, else defined as false
 template <typename T>
 struct ZeroSharedTemplate has_hash_function : public integral_constant<bool, has_hash_function_helper<T>::value>
 {
@@ -68,8 +66,7 @@ struct ZeroSharedTemplate has_hash_function : public integral_constant<bool, has
 template <typename T, typename Enable = void>
 struct ZeroSharedTemplate HashPolicy : public ComparePolicy<T>
 {
-  // (Dummy operator() required for has_valid_hash_policy<T> to compile
-  // properly)
+  // (Dummy operator() required for has_valid_hash_policy<T> to compile properly)
   inline size_t operator()(const T&)
   {
     Error("The empty HashPolicy should never be called");
@@ -219,8 +216,7 @@ struct ZeroShared HashPolicy<s64> : public ComparePolicy<s64>
 // Pair::Hash
 //
 
-/// Implementation of Pair's Hash function (relies on HashPolicy, so must be
-/// defined here)
+/// Implementation of Pair's Hash function (relies on HashPolicy, so must be defined here)
 template <typename type0, typename type1>
 size_t Pair<type0, type1>::Hash() const
 {
@@ -246,9 +242,8 @@ struct ZeroSharedTemplate has_valid_hash_policy_helper
   static const bool value = (sizeof(Test<T>(0)) == sizeof(yes));
 };
 
-/// Provides a constant defined as true if T has a valid hash policy, else
-/// defined as false A hash policy is valid if it has a function callable as:
-/// size_t operator()(const T& value) const;
+/// Provides a constant defined as true if T has a valid hash policy, else defined as false
+/// A hash policy is valid if it has a function callable as: size_t operator()(const T& value) const;
 template <typename T>
 struct ZeroSharedTemplate has_valid_hash_policy : public integral_constant<bool, has_valid_hash_policy_helper<T>::value>
 {

@@ -15,8 +15,7 @@ extern errno_t wcscpy_s(wchar_t* dest, rsize_t destsz, const wchar_t* src);
 extern errno_t strncpy_s(char* dest, rsize_t destsz, const char* src, rsize_t count);
 #endif
 
-// A temporary non-thread safe buffer that is only used for counting the lengths
-// of printfs
+// A temporary non-thread safe buffer that is only used for counting the lengths of printfs
 extern char gDiscardBuffer[2];
 
 #define ZeroVSPrintf(destination, bufferSizeBytes, format, args) vsprintf_s(destination, bufferSizeBytes, format, args)

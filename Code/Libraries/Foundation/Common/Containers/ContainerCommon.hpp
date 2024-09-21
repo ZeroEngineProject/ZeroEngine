@@ -13,9 +13,8 @@
 namespace Zero
 {
 
-// Returns an invalid type that is zeroed out (only used for not-crashing after
-// an assert) This places no requirement on default construction or copy
-// construction
+// Returns an invalid type that is zeroed out (only used for not-crashing after an assert)
+// This places no requirement on default construction or copy construction
 template <typename T>
 T& GetInvalidObject()
 {
@@ -23,11 +22,10 @@ T& GetInvalidObject()
   return (T&)*Invalid;
 }
 
-/// A special dummy type that we pass in as the first argument to a container's
-/// constructor to enable passing in a list of values that we initialize the
-/// container with This entirely exists to resolve ambiguities with other
-/// constructors (such as Array(size_t), if T was size_t there would be an
-/// issue)
+/// A special dummy type that we pass in as the first argument to a container's constructor
+/// to enable passing in a list of values that we initialize the container with
+/// This entirely exists to resolve ambiguities with other constructors (such as Array(size_t), if T was size_t there
+/// would be an issue)
 class ContainerInitializerDummy
 {
 public:
@@ -35,10 +33,9 @@ public:
 #define ZeroInit ((Zero::ContainerInitializerDummy*)nullptr)
 
 /// Base class for containers that use allocators.
-/// WARNING: This should be a ZeroSharedTemplate, however Release is optimizing
-/// out the constructor for an unknown reason and therefore the definition isn't
-/// getting exported to the dll We force both sides (dll and us) to generate the
-/// definition by forcing it as an export
+/// WARNING: This should be a ZeroSharedTemplate, however Release is optimizing out the constructor
+/// for an unknown reason and therefore the definition isn't getting exported to the dll
+/// We force both sides (dll and us) to generate the definition by forcing it as an export
 template <typename AllocatorType>
 class ZeroExport AllocationContainer
 {
@@ -128,10 +125,9 @@ Pair<type0, type1> MakePair(const type0& first, const type1& second)
   return Pair<type0, type1>(first, second);
 }
 
-/// Moves the specified type to a different memory destination without calling
-/// the destructor on the source instance Used by our containers to speed up
-/// shifting operations Provide a template specialization for your own class to
-/// define this behavior, else this default will be used
+/// Moves the specified type to a different memory destination without calling the destructor on the source instance
+/// Used by our containers to speed up shifting operations
+/// Provide a template specialization for your own class to define this behavior, else this default will be used
 template <typename type>
 struct MoveWithoutDestructionOperator
 {
@@ -532,9 +528,9 @@ struct DataBlock
 //
 
 /// Statically verifies a given function has a specific signature
-/// Fails to compile if the given function does not have the exact signature
-/// specified First parameter : Function pointer type with desired signature to
-/// verify Second parameter: Named function to verify has the desired signature
+/// Fails to compile if the given function does not have the exact signature specified
+/// First parameter : Function pointer type with desired signature to verify
+/// Second parameter: Named function to verify has the desired signature
 template <typename Fn, Fn>
 struct ZeroSharedTemplate static_verify_function_signature
 {
@@ -557,8 +553,7 @@ struct ZeroSharedTemplate has_equality_operator_helper
   static const bool value = (sizeof(Test<T>(0)) == sizeof(yes));
 };
 
-/// Provides a constant defined as true if T has an equality operator, else
-/// defined as false
+/// Provides a constant defined as true if T has an equality operator, else defined as false
 template <typename T>
 struct ZeroSharedTemplate has_equality_operator : public integral_constant<bool, has_equality_operator_helper<T>::value>
 {
@@ -588,8 +583,7 @@ struct ZeroSharedTemplate ComparePolicy
 };
 
 /// Default compare policy
-/// Available for instantiation if T has an accessible self-type equality
-/// operator
+/// Available for instantiation if T has an accessible self-type equality operator
 template <typename T>
 struct ZeroSharedTemplate ComparePolicy<T, TC_ENABLE_IF(has_equality_operator<T>::value)>
 {
@@ -641,9 +635,8 @@ struct ZeroSharedTemplate has_valid_compare_policy_helper
   static const bool value = (sizeof(Test<T>(0)) == sizeof(yes));
 };
 
-/// Provides a constant defined as true if T has a valid compare policy, else
-/// defined as false A compare policy is valid if it has a function callable as:
-/// bool Equal(const T& left, const T& right) const;
+/// Provides a constant defined as true if T has a valid compare policy, else defined as false
+/// A compare policy is valid if it has a function callable as: bool Equal(const T& left, const T& right) const;
 template <typename T>
 struct ZeroSharedTemplate has_valid_compare_policy
     : public integral_constant<bool, has_valid_compare_policy_helper<T>::value>

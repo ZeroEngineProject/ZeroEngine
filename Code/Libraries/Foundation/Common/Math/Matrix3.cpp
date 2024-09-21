@@ -33,17 +33,17 @@ Matrix3::Matrix3(ConstRealPointer data_)
   m22 = data_[8];
 }
 
-Vector3& Matrix3::operator[](uint index)
+Vector3& Matrix3::operator[](size_t index)
 {
   return ((Vector3*)this)[index];
 }
 
-const Vector3& Matrix3::operator[](uint index) const
+const Vector3& Matrix3::operator[](size_t index) const
 {
   return ((Vector3*)this)[index];
 }
 
-real& Matrix3::operator()(uint r, uint c)
+real& Matrix3::operator()(size_t r, size_t c)
 {
   ErrorIf(r > 2, "Matrix3 - Index out of range.");
   ErrorIf(c > 2, "Matrix3 - Index out of range.");
@@ -55,7 +55,7 @@ real& Matrix3::operator()(uint r, uint c)
 #endif
 }
 
-real Matrix3::operator()(uint r, uint c) const
+real Matrix3::operator()(size_t r, size_t c) const
 {
   ErrorIf(r > 2, "Matrix3 - Index out of range.");
   ErrorIf(c > 2, "Matrix3 - Index out of range.");

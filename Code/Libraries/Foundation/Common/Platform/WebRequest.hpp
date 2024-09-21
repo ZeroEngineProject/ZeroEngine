@@ -76,8 +76,7 @@ public:
 };
 
 // Performs a single web request asynchronously.
-// The mOnComplete callback will always be called (even when errors occur)
-// except if it is cancelled.
+// The mOnComplete callback will always be called (even when errors occur) except if it is cancelled.
 class WebRequest
 {
 public:
@@ -92,9 +91,9 @@ public:
   // be accessed by other threads (consider it immutable).
   void Run();
 
-  // Callable by any thread and signals that this web request is to be
-  // cancelled. The below data will become mutable again after this call. Does
-  // nothing if no web request is currently running.
+  // Callable by any thread and signals that this web request is to be cancelled.
+  // The below data will become mutable again after this call.
+  // Does nothing if no web request is currently running.
   void Cancel();
 
   // Returns true if a web request is actively running, false otherwise.
@@ -109,15 +108,15 @@ public:
   // Shared:
   // Return the boundary used in multipart/form requests.
   String GetBoundary();
-  // Return the content type used in multipart/form requests, which includes the
-  // boundary. This always ends in the HTTP newline (\r\n).
+  // Return the content type used in multipart/form requests, which includes the boundary.
+  // This always ends in the HTTP newline (\r\n).
   String GetContentTypeHeader();
   // Concatenates all post data and adds boundaries.
   String GetPostDataWithBoundaries();
   // Gets the headers concatenated with the standard HTTP newline (\r\n).
   // This also includes the content type header at the beginning.
   String GetNewlineSeparatedHeaders();
-  // The user agent we use for this version of the executable (use if possible).
+  // The user agent we use for this version of Zero (use if possible).
   static String GetUserAgent();
 
   // The data and callbacks must be set before calling Run.
@@ -131,6 +130,8 @@ public:
   WebRequestCompleteFn mOnComplete;
   void* mUserData;
 
+  // Internals
+  // May be used to signal we're canceling.
   ZeroDeclarePrivateDataBytes(128);
 };
 

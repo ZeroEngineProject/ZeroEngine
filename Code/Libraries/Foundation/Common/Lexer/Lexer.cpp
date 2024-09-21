@@ -159,12 +159,7 @@ Token::Token() : mEnd(true), mError(false), mRule(nullptr), mStartInclusive(0), 
 }
 
 Token::Token(GrammarRule<Character>* rule) :
-    mEnd(false),
-    mError(false),
-    mRule(rule),
-    mStartInclusive(0),
-    mEndExclusive(0),
-    mStream(nullptr)
+    mEnd(false), mError(false), mRule(rule), mStartInclusive(0), mEndExclusive(0), mStream(nullptr)
 {
 }
 
@@ -231,10 +226,7 @@ bool Token::operator>=(const Token& rhs) const
 }
 
 ReplacementNode::ReplacementNode() :
-    mType(ReplacementNodeType::Text),
-    mCaptureReference(nullptr),
-    mLhs(nullptr),
-    mRhs(nullptr)
+    mType(ReplacementNodeType::Text), mCaptureReference(nullptr), mLhs(nullptr), mRhs(nullptr)
 {
 }
 
@@ -337,8 +329,7 @@ GrammarNode<Character>& T(StringRange rangeSet)
       newRange.mStartInclusive = rangeStart;
       newRange.mEndInclusive = rune.value;
 
-      // If the user did a-z-A we would actually include the second - as a
-      // character
+      // If the user did a-z-A we would actually include the second - as a character
       rangeStart = '\0';
       range = false;
     }
@@ -359,9 +350,8 @@ GrammarNode<Character>& T(StringRange rangeSet)
     }
   }
 
-  // If we started a range, but it had no end, then the - character is included
-  // as a character Note that this WILL NOT be hit when it is a single dash for
-  // the entire string
+  // If we started a range, but it had no end, then the - character is included as a character
+  // Note that this WILL NOT be hit when it is a single dash for the entire string
   if (range)
   {
     node.mSingleTokens.PushBack(rangeStart);
@@ -562,9 +552,8 @@ void CharacterLocation::Compute(StringRange input, CharacterLocation* outLocatio
     // Check if the character matches that of the newline or carriage return
     if (rune == '\n' || rune == '\r')
     {
-      // As long as the last character wasn't a carriage return and this
-      // character isn't a newline (CRLF)... Note: If this was a full CRLF, we
-      // already incremented the line on the first CR, no need to do it again!
+      // As long as the last character wasn't a carriage return and this character isn't a newline (CRLF)...
+      // Note: If this was a full CRLF, we already incremented the line on the first CR, no need to do it again!
       if ((wasCariageReturn && rune == '\n') == false)
       {
         // Increment the line count since we hit a line
@@ -578,8 +567,7 @@ void CharacterLocation::Compute(StringRange input, CharacterLocation* outLocatio
       location.mCharacter = 1;
     }
 
-    // If we're computing the index from the location, then check if the line
-    // and character matches
+    // If we're computing the index from the location, then check if the line and character matches
     if (computeIndex && location.mLine == outLocation->mLine && location.mCharacter == outLocation->mCharacter)
       break;
 

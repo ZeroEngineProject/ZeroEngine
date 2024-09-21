@@ -34,8 +34,7 @@ SimVec AndVec(SimVecParam vec, SimVecParam mask);
 SimVec AndNotVec(SimVecParam vec, SimVecParam mask);
 SimVec XorVec(SimVecParam vec, SimVecParam mask);
 // logic
-// returns a simvec that has all bits set if an element was equal and all bits
-// cleared otherwise
+// returns a simvec that has all bits set if an element was equal and all bits cleared otherwise
 SimVec Equal(SimVecParam lhs, SimVecParam rhs);
 SimVec NotEqual(SimVecParam lhs, SimVecParam rhs);
 SimVec Greater(SimVecParam lhs, SimVecParam rhs);

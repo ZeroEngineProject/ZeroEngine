@@ -92,8 +92,8 @@ public:
   BlockRange Blocks();
 
 private:
-  ByteBuffer(const ByteBuffer&){};
-  void operator=(const ByteBuffer&){};
+  ByteBuffer(const ByteBuffer&) {};
+  void operator=(const ByteBuffer&) {};
 
 protected:
   Array<byteType*> mBlocks;
@@ -103,8 +103,8 @@ protected:
   byteType* mCurBlockBuffer;
 };
 
-/// ByteBufferBlock is a simple wrapper around a single contiguous block of
-/// memory. has same interface as a file.
+/// ByteBufferBlock is a simple wrapper around a single contiguous block of memory.
+/// has same interface as a file.
 class ByteBufferBlock
 {
 public:
@@ -140,7 +140,7 @@ public:
   size_t Write(::byte value);
 
   // Seek to position
-  void Seek(int offset, uint origin);
+  void Seek(size_t offset, size_t origin);
 
   // Pointer to current position in buffer.
   ::byte* GetCurrent();

@@ -6,9 +6,8 @@ namespace Zero
 
 //                             Basic Native Type //
 
-/// Basic native types are fundamental, standard engine types associated with
-/// additional compile-time type trait information Provides a constant defined
-/// as true if T is a basic native type, else defined as false (ex. bool, int,
+/// Basic native types are fundamental, standard engine types associated with additional compile-time type trait
+/// information Provides a constant defined as true if T is a basic native type, else defined as false (ex. bool, int,
 /// float, IntVector2, Vector3, String)
 template <typename T>
 struct IsBasicNativeType
@@ -16,49 +15,45 @@ struct IsBasicNativeType
   static const bool Value = false;
 };
 
-/// Arithmetic basic native types are integral or floating-point types made up
-/// of one or more arithmetic primitives Provides a constant defined as true if
-/// T is an arithmetic basic native type, else defined as false (ex. bool, int,
-/// float, IntVector2, Vector3)
+/// Arithmetic basic native types are integral or floating-point types made up of one or more arithmetic primitives
+/// Provides a constant defined as true if T is an arithmetic basic native type, else defined as false
+/// (ex. bool, int, float, IntVector2, Vector3)
 template <typename T>
 struct IsBasicNativeTypeArithmetic
 {
   static const bool Value = false;
 };
 
-/// Integral basic native types are arithmetic types made up of one or more
-/// integral arithmetic primitives Provides a constant defined as true if T is
-/// an integral arithmetic basic native type, else defined as false (ex. bool,
-/// int, IntVector2)
+/// Integral basic native types are arithmetic types made up of one or more integral arithmetic primitives
+/// Provides a constant defined as true if T is an integral arithmetic basic native type, else defined as false
+/// (ex. bool, int, IntVector2)
 template <typename T>
 struct IsBasicNativeTypeIntegral
 {
   static const bool Value = false;
 };
 
-/// Floating-point basic native types are arithmetic types made up of one or
-/// more floating-point arithmetic primitives Provides a constant defined as
-/// true if T is an floating-point arithmetic basic native type, else defined as
-/// false (ex. float, Vector3)
+/// Floating-point basic native types are arithmetic types made up of one or more floating-point arithmetic primitives
+/// Provides a constant defined as true if T is an floating-point arithmetic basic native type, else defined as false
+/// (ex. float, Vector3)
 template <typename T>
 struct IsBasicNativeTypeFloatingPoint
 {
   static const bool Value = false;
 };
 
-/// Basic native type primitives are arithmetic basic native types that are also
-/// built-in C++ arithmetic types Provides a constant defined as true if T is a
-/// basic native type primitive, else defined as false (ex. bool, int, float)
+/// Basic native type primitives are arithmetic basic native types that are also built-in C++ arithmetic types
+/// Provides a constant defined as true if T is a basic native type primitive, else defined as false
+/// (ex. bool, int, float)
 template <typename T>
 struct IsBasicNativeTypePrimitive
 {
   static const bool Value = false;
 };
 
-/// Basic native type multi-primitives are arithmetic basic native types that
-/// are also user-defined types made up of multiple primitive member values
-/// Provides a constant defined as true if T is a basic native type
-/// multi-primitive, else defined as false (ex. IntVector2, Vector3)
+/// Basic native type multi-primitives are arithmetic basic native types that are also user-defined types made up of
+/// multiple primitive member values Provides a constant defined as true if T is a basic native type multi-primitive,
+/// else defined as false (ex. IntVector2, Vector3)
 template <typename T>
 struct IsBasicNativeTypeMultiPrimitive
 {
@@ -66,16 +61,14 @@ struct IsBasicNativeTypeMultiPrimitive
 };
 
 /// Define basic native type macros
-/// (Makes the type name available as a unique enum value in
-/// BasicNativeType::Enum)
+/// (Makes the type name available as a unique enum value in BasicNativeType::Enum)
 #define ForwardDeclareBasicNativeType(Name) , Name
 #define DeclareBasicNativeType(T, Name) , Name
 #define DeclareBasicNativeTypePrimitive(T, Name) , Name
 #define DeclareBasicNativeTypeMultiPrimitive(T, Name, PrimitiveT, PrimitiveCount) , Name
 
 /// Basic native types enumeration
-/// (Provides all basic native types with a compile-time constant native type
-/// ID)
+/// (Provides all basic native types with a compile-time constant native type ID)
 namespace BasicNativeType
 {
 typedef uint Type;
@@ -99,24 +92,21 @@ enum
 #undef DeclareBasicNativeTypePrimitive
 #undef DeclareBasicNativeTypeMultiPrimitive
 
-/// Provides the corresponding BasicNativeType enum value of T, else
-/// BasicNativeType::Unknown
+/// Provides the corresponding BasicNativeType enum value of T, else BasicNativeType::Unknown
 template <typename T>
 struct BasicNativeTypeToEnum
 {
   static const BasicNativeType::Enum Value = BasicNativeType::Unknown;
 };
 
-/// Provides the corresponding type of the BasicNativeType enum value, else type
-/// void
+/// Provides the corresponding type of the BasicNativeType enum value, else type void
 template <BasicNativeType::Enum Value>
 struct BasicNativeTypeFromEnum
 {
   typedef void Type;
 };
 
-/// Provides the underlying primitive member type and count of T, else type void
-/// and count 0
+/// Provides the underlying primitive member type and count of T, else type void and count 0
 template <typename T>
 struct BasicNativeTypePrimitiveMembers
 {
@@ -221,8 +211,8 @@ struct BasicNativeTypePrimitiveMembers
 // Include basic native type template specializations
 #include "BasicNativeTypes.inl"
 
-// (Intentionally left basic native type macros defined to be used later by
-// "BasicNativeTypesMath.inl" in the Math project)
+// (Intentionally left basic native type macros defined to be used later by "BasicNativeTypesMath.inl" in the Math
+// project)
 
 //                               Native Type ID //
 
@@ -253,16 +243,15 @@ static const NativeTypeId cConstantNativeTypeIdCount = (cConstantNativeTypeIdMax
 /// Runtime generated native type IDs
 static const NativeTypeId cRuntimeNativeTypeIdMin = cConstantNativeTypeIdMax + 1;
 
-/// Returns true if the specified native type ID is a runtime native type ID (as
-/// opposed to a compile-time constant ID), else false
+/// Returns true if the specified native type ID is a runtime native type ID (as opposed to a compile-time constant ID),
+/// else false
 inline bool IsRuntimeNativeTypeId(NativeTypeId nativeTypeId)
 {
   return nativeTypeId >= cRuntimeNativeTypeIdMin;
 }
 
-/// Returns true if the specified native type ID is a constant native type ID
-/// (as opposed to a runtime generated ID), else false (Includes the
-/// invalid/unknown native type ID)
+/// Returns true if the specified native type ID is a constant native type ID (as opposed to a runtime generated ID),
+/// else false (Includes the invalid/unknown native type ID)
 inline bool IsConstantNativeTypeId(NativeTypeId nativeTypeId)
 {
   return !IsRuntimeNativeTypeId(nativeTypeId);
@@ -315,23 +304,19 @@ NativeTypeId GetNativeTypeId()
 
 //
 // Opaque Function Interface:
-// Allows callers to operate on type-erased objects at run-time through this
-// generic interface.
+// Allows callers to operate on type-erased objects at run-time through this generic interface.
 //
 
-/// Destructs the object at source (does not delete or free, only calls the
-/// object's destructor)
+/// Destructs the object at source (does not delete or free, only calls the object's destructor)
 typedef void (*DestructObjectFn)(void* source);
 
 /// Default constructs a new object in place at destination
 typedef void (*DefaultConstructObjectFn)(void* destination);
 
-/// Copy constructs a new object in place at destination, copied from the object
-/// at source
+/// Copy constructs a new object in place at destination, copied from the object at source
 typedef void (*CopyConstructObjectFn)(const void* source, void* destination);
 
-/// Move constructs a new object in place at destination, moved from the object
-/// at source
+/// Move constructs a new object in place at destination, moved from the object at source
 typedef void (*MoveConstructObjectFn)(void* source, void* destination);
 
 /// Returns true if the object at lhs is equal to the object at rhs, else false
@@ -340,23 +325,21 @@ typedef bool (*EqualToObjectFn)(const void* lhs, const void* rhs);
 /// Returns the hash of the object at source
 typedef size_t (*HashObjectFn)(const void* source);
 
-/// Returns the string representation of the object at source (formatted
-/// according to shortFormat if applicable)
+/// Returns the string representation of the object at source (formatted according to shortFormat if applicable)
 typedef String (*ObjectToStringFn)(const void* source, bool shortFormat);
 
-/// Parses the source string as the erased type and assigns the result to the
-/// object at destination
+/// Parses the source string as the erased type and assigns the result to the object at destination
 typedef void (*StringToObjectFn)(StringRange source, void* destination);
 
 //
 // Transparent Function Definitions:
 // Satisfies the opaque function interface for any given type.
-// Hardcodes actual static type requirements and necessary type-remembrance
-// conversions in the templated function definition itself.
+// Hardcodes actual static type requirements and necessary type-remembrance conversions in the templated function
+// definition itself.
 //
 
-/// Destructs the object at source (does not delete or free, only calls the
-/// object's destructor) (Requires an accessible destructor on T)
+/// Destructs the object at source (does not delete or free, only calls the object's destructor)
+/// (Requires an accessible destructor on T)
 template <typename T>
 ZeroSharedTemplate void DestructObject(void* source)
 {
@@ -364,8 +347,7 @@ ZeroSharedTemplate void DestructObject(void* source)
   T& sourceObject = *reinterpret_cast<T*>(source);
 
   // Invoke the destructor on the object
-  // (We don't call delete or free because we're not managing this memory, only
-  // uninitializing it)
+  // (We don't call delete or free because we're not managing this memory, only uninitializing it)
   sourceObject.~T();
 }
 
@@ -378,29 +360,27 @@ ZeroSharedTemplate void DefaultConstructObject(void* destination)
   new (destination) T();
 }
 
-/// Copy constructs a new object in place at destination, copied from the object
-/// at source (Requires an accessible copy constructor on T)
+/// Copy constructs a new object in place at destination, copied from the object at source
+/// (Requires an accessible copy constructor on T)
 template <typename T>
 ZeroSharedTemplate void CopyConstructObject(const void* source, void* destination)
 {
   // Get source object
   const T& sourceObject = *reinterpret_cast<const T*>(source);
 
-  // Use placement new to copy construct in place at 'destination', copying the
-  // source object
+  // Use placement new to copy construct in place at 'destination', copying the source object
   new (destination) T(sourceObject);
 }
 
-/// Move constructs a new object in place at destination, moved from the object
-/// at source (Requires an accessible move constructor on T)
+/// Move constructs a new object in place at destination, moved from the object at source
+/// (Requires an accessible move constructor on T)
 template <typename T>
 ZeroSharedTemplate void MoveConstructObject(void* source, void* destination)
 {
   // Get source object
   T& sourceObject = *reinterpret_cast<T*>(source);
 
-  // Use placement new to move construct in place at 'destination', moving the
-  // source object
+  // Use placement new to move construct in place at 'destination', moving the source object
   new (destination) T(ZeroMove(sourceObject));
 }
 
@@ -435,9 +415,8 @@ ZeroSharedTemplate size_t HashObject(const void* source)
   return hashPolicy(sourceObject);
 }
 
-/// Returns the string representation of the object at source (formatted
-/// according to shortFormat if applicable) (Requires a global to string
-/// function for T)
+/// Returns the string representation of the object at source (formatted according to shortFormat if applicable)
+/// (Requires a global to string function for T)
 template <typename T>
 ZeroSharedTemplate String ObjectToString(const void* source, bool shortFormat)
 {
@@ -448,8 +427,8 @@ ZeroSharedTemplate String ObjectToString(const void* source, bool shortFormat)
   return ToString(sourceObject, shortFormat);
 }
 
-/// Parses the source string as the erased type and assigns the result to the
-/// object at destination (Requires a global to value function for T)
+/// Parses the source string as the erased type and assigns the result to the object at destination
+/// (Requires a global to value function for T)
 template <typename T>
 ZeroSharedTemplate void StringToObject(StringRange source, void* destination)
 {
@@ -462,15 +441,13 @@ ZeroSharedTemplate void StringToObject(StringRange source, void* destination)
 
 //
 // Transparent Function Generation:
-// Determines at compile-time the appropriate transparent function definition to
-// return for any given type. Uses C++ type traits and SFINAE to determine each
-// type's capabilities in order to choose the function with the most appropriate
-// behavior. Returns nullptr to allow for optional type functionality, queryable
-// at runtime to support dynamic programming.
+// Determines at compile-time the appropriate transparent function definition to return for any given type.
+// Uses C++ type traits and SFINAE to determine each type's capabilities in order to choose the function with the most
+// appropriate behavior. Returns nullptr to allow for optional type functionality, queryable at runtime to support
+// dynamic programming.
 //
 
-/// Gets a destruct object function if the type has an accessible destructor,
-/// else returns nullptr
+/// Gets a destruct object function if the type has an accessible destructor, else returns nullptr
 template <typename T, TF_ENABLE_IF(has_destructor<T>::value)>
 ZeroSharedTemplate DestructObjectFn GetDestructObjectFn()
 {
@@ -482,8 +459,7 @@ ZeroSharedTemplate DestructObjectFn GetDestructObjectFn()
   return nullptr;
 }
 
-/// Gets a default construct object function if the type has an accessible
-/// default constructor, else returns nullptr
+/// Gets a default construct object function if the type has an accessible default constructor, else returns nullptr
 template <typename T, TF_ENABLE_IF(has_default_constructor<T>::value)>
 ZeroSharedTemplate DefaultConstructObjectFn GetDefaultConstructObjectFn()
 {
@@ -495,8 +471,7 @@ ZeroSharedTemplate DefaultConstructObjectFn GetDefaultConstructObjectFn()
   return nullptr;
 }
 
-/// Gets a copy construct object function if the type has an accessible copy
-/// constructor, else returns nullptr
+/// Gets a copy construct object function if the type has an accessible copy constructor, else returns nullptr
 template <typename T, TF_ENABLE_IF(has_copy_constructor<T>::value)>
 ZeroSharedTemplate CopyConstructObjectFn GetCopyConstructObjectFn()
 {
@@ -508,8 +483,7 @@ ZeroSharedTemplate CopyConstructObjectFn GetCopyConstructObjectFn()
   return nullptr;
 }
 
-/// Gets a move construct object function if the type has an accessible move
-/// constructor, else returns nullptr
+/// Gets a move construct object function if the type has an accessible move constructor, else returns nullptr
 template <typename T, TF_ENABLE_IF(has_move_constructor<T>::value)>
 ZeroSharedTemplate MoveConstructObjectFn GetMoveConstructObjectFn()
 {
@@ -521,8 +495,7 @@ ZeroSharedTemplate MoveConstructObjectFn GetMoveConstructObjectFn()
   return nullptr;
 }
 
-/// Gets an equal to object function if the type has a valid compare policy,
-/// else returns nullptr
+/// Gets an equal to object function if the type has a valid compare policy, else returns nullptr
 template <typename T, TF_ENABLE_IF(has_valid_compare_policy<T>::value)>
 ZeroSharedTemplate EqualToObjectFn GetEqualToObjectFn()
 {
@@ -534,8 +507,7 @@ ZeroSharedTemplate EqualToObjectFn GetEqualToObjectFn()
   return nullptr;
 }
 
-/// Gets a hash object function if the type has a valid hash policy, else
-/// returns nullptr
+/// Gets a hash object function if the type has a valid hash policy, else returns nullptr
 template <typename T, TF_ENABLE_IF(has_valid_hash_policy<T>::value)>
 ZeroSharedTemplate HashObjectFn GetHashObjectFn()
 {
@@ -547,8 +519,7 @@ ZeroSharedTemplate HashObjectFn GetHashObjectFn()
   return nullptr;
 }
 
-/// Gets an object to string function if the type has a global to string
-/// function, else returns nullptr
+/// Gets an object to string function if the type has a global to string function, else returns nullptr
 template <typename T, TF_ENABLE_IF(has_global_to_string<T>::value)>
 ZeroSharedTemplate ObjectToStringFn GetObjectToStringFn()
 {
@@ -560,8 +531,7 @@ ZeroSharedTemplate ObjectToStringFn GetObjectToStringFn()
   return nullptr;
 }
 
-/// Gets a string to object function if the type has a global to value function,
-/// else returns nullptr
+/// Gets a string to object function if the type has a global to value function, else returns nullptr
 template <typename T, TF_ENABLE_IF(has_global_to_value<T>::value)>
 ZeroSharedTemplate StringToObjectFn GetStringToObjectFn()
 {
@@ -575,31 +545,26 @@ ZeroSharedTemplate StringToObjectFn GetStringToObjectFn()
 
 //                                Native Type //
 
-/// Gets the native type singleton uniquely representing type T (ignoring
-/// qualifications)
+/// Gets the native type singleton uniquely representing type T (ignoring qualifications)
 #define NativeTypeOf(T) NativeType::GetInstance<typename Decay<T>::Type>()
 
-/// Gets the native type ID uniquely identifying type T (ignoring
-/// qualifications)
+/// Gets the native type ID uniquely identifying type T (ignoring qualifications)
 #define NativeTypeIdOf(T) GetNativeTypeId<typename Decay<T>::Type>()
 
-/// Gets the constant native type ID uniquely identifying type T (ignoring
-/// qualifications), else fails to compile
+/// Gets the constant native type ID uniquely identifying type T (ignoring qualifications), else fails to compile
 #define ConstantNativeTypeIdOf(T) ConstantNativeTypeId<typename Decay<T>::Type>::Value
 
 // TODO: Make NativeType singletons unique across EXE and DLLs
 
-/// Native type contains type-erased run-time type information about a
-/// particular C++ type. Type information is generated according to compile-time
-/// type traits for its given type. Native type is a lazy singleton, uniquely
-/// representing its given type.
+/// Native type contains type-erased run-time type information about a particular C++ type.
+/// Type information is generated according to compile-time type traits for its given type.
+/// Native type is a lazy singleton, uniquely representing its given type.
 class ZeroShared NativeType
 {
 protected:
   /// Constructs a native type object representing type T
   template <typename T>
-  NativeType(T*) // (C++ requires a dummy parameter in order to specify a
-                 // templated default constructor)
+  NativeType(T*) // (C++ requires a dummy parameter in order to specify a templated default constructor)
   {
     // Initialize type info
     mDebugTypeName = typeid(T).name();
@@ -618,19 +583,16 @@ protected:
     // Is a primitive?
     if (IsBasicNativeTypePrimitive<T>::Value)
     {
-      // (NOTE: We must initialize using 'this' here instead of relying on
-      // NativeTypeOf() because we are still constructing this NativeType!
-      // Trying to access a local static while initializing said local static
-      // from the same thread causes a thread deadlock!)
+      // (NOTE: We must initialize using 'this' here instead of relying on NativeTypeOf() because we are still
+      // constructing this NativeType! Trying to access a local static while initializing said local static from the
+      // same thread causes a thread deadlock!)
       mBasicNativeTypePrimitiveMembersType = this;
     }
     // Is not a primitive?
     else
     {
-      // (This NativeType should not be the same C++ type as it's primitive
-      // members' NativeType,
-      //  otherwise it should be initialized above using 'this' to prevent a
-      //  thread deadlock.)
+      // (This NativeType should not be the same C++ type as it's primitive members' NativeType,
+      //  otherwise it should be initialized above using 'this' to prevent a thread deadlock.)
       Assert(typeid(T) != typeid(typename BasicNativeTypePrimitiveMembers<T>::Type));
       mBasicNativeTypePrimitiveMembersType = NativeTypeOf(typename BasicNativeTypePrimitiveMembers<T>::Type);
     }
@@ -650,9 +612,8 @@ protected:
 
 public:
   /// Gets the unique native type object representing type T
-  /// Note: It's recommended to use the NativeTypeOf(T) macro instead of calling
-  /// this directly, as the macro automatically handles decaying the type to
-  /// it's most core identity (removes qualifications)
+  /// Note: It's recommended to use the NativeTypeOf(T) macro instead of calling this directly,
+  /// as the macro automatically handles decaying the type to it's most core identity (removes qualifications)
   template <typename T>
   static NativeType* GetInstance()
   {
@@ -666,13 +627,11 @@ public:
   //
 
   /// Implementation-defined type name, suitable for debugging purposes only
-  /// Provided by std::type_info::name which only guarantees it will return a
-  /// valid null-terminated string
+  /// Provided by std::type_info::name which only guarantees it will return a valid null-terminated string
   cstr mDebugTypeName;
 
   /// Unique C++ type identifier
-  /// Constant for basic native types, generated on first access at runtime for
-  /// all other types
+  /// Constant for basic native types, generated on first access at runtime for all other types
   NativeTypeId mTypeId;
 
   /// Size of type in bytes
@@ -707,12 +666,12 @@ public:
   /// (Runtime version of IsBasicNativeTypeMultiPrimitive)
   bool mIsBasicNativeTypeMultiPrimitive;
 
-  /// Corresponding BasicNativeType enum value of T, else
-  /// BasicNativeType::Unknown (Runtime version of BasicNativeTypeToEnum)
+  /// Corresponding BasicNativeType enum value of T, else BasicNativeType::Unknown
+  /// (Runtime version of BasicNativeTypeToEnum)
   BasicNativeType::Enum mBasicNativeTypeEnum;
 
-  /// Underlying arithmetic basic native type's primitive members type, else
-  /// nullptr (Runtime version of BasicNativeTypePrimitiveMembers::Type)
+  /// Underlying arithmetic basic native type's primitive members type, else nullptr
+  /// (Runtime version of BasicNativeTypePrimitiveMembers::Type)
   NativeType* mBasicNativeTypePrimitiveMembersType;
 
   /// Underlying arithmetic basic native type's primitive members count, else 0

@@ -88,13 +88,11 @@ StringRange Matches::Suffix() const
 
 String Matches::Format(StringRange format) const
 {
-  // Unfortunately we pretty much have to construct an std::string here for the
-  // format, and the result is an std::string I would love to at least make the
-  // result just output to a buffer, but I can't figure out how to measure the
-  // length of the output We could possibly create an 'OutputIterator' for
-  // StringBuilder that mimics a char* (writes a character on assignment,
-  // advances on ++) It also appears that VS2010 doesn't implement all of the
-  // overloads of format
+  // Unfortunately we pretty much have to construct an std::string here for the format, and the result is an std::string
+  // I would love to at least make the result just output to a buffer, but I can't figure out how to measure the length
+  // of the output We could possibly create an 'OutputIterator' for StringBuilder that mimics a char* (writes a
+  // character on assignment, advances on ++) It also appears that VS2010 doesn't implement all of the overloads of
+  // format
   std::string stdFormat(format.mBegin, format.mEnd);
   std::string result = mPrivate->InternalMatch.format(stdFormat);
   return String(result.c_str(), result.size());
@@ -278,8 +276,7 @@ String Regex::Escape(StringRange input, EscapeMode::Enum mode, RegexFlavor::Enum
       // If the current character is a symbol...
       if (ispunct(current.value) && current != '_')
       {
-        // If the current character is itself an escape, and we allow input
-        // escapes...
+        // If the current character is itself an escape, and we allow input escapes...
         if (current == '\\' && mode == EscapeMode::Extended && input.SizeInBytes() > 1)
         {
           // Get the next character

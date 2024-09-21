@@ -104,8 +104,7 @@ public:
   static const u64 cRandMax64 = 0x7FFF7FFF7FFF7FFF;
 
   // Global seed only when we don't seed the random
-  // This is set every time anyone calls 'Next()', even if it's not used by the
-  // class
+  // This is set every time anyone calls 'Next()', even if it's not used by the class
   static uint mGlobalSeed;
 
   uint mSeed;

@@ -36,14 +36,14 @@ struct ZeroShared Matrix3
 #endif
 
 public:
-  Matrix3(void){};
+  Matrix3(void) {};
   explicit Matrix3(real p00, real p01, real p02, real p10, real p11, real p12, real p20, real p21, real p22);
   explicit Matrix3(ConstRealPointer data_);
 
-  Vector3& operator[](uint index);
-  const Vector3& operator[](uint index) const;
-  real& operator()(uint r, uint c);
-  real operator()(uint r, uint c) const;
+  Vector3& operator[](size_t index);
+  const Vector3& operator[](size_t index) const;
+  real& operator()(size_t r, size_t c);
+  real operator()(size_t r, size_t c) const;
 
   // Binary operators (reals)
   void operator*=(real rhs);
@@ -72,8 +72,7 @@ public:
   BasisVector GetBasis(uint index) const;
   /// Set a basis vector.
   void SetBasis(uint index, Vec3Param basis);
-  /// Get a cross vector which is defined as the elements perpendicular to the
-  /// basis vector.
+  /// Get a cross vector which is defined as the elements perpendicular to the basis vector.
   CrossVector GetCross(uint index) const;
   void SetCross(uint index, Vec3Param cross);
   /// Check if all values are valid.
@@ -98,16 +97,14 @@ public:
   /// Returns if the matrix was invertible.
   static bool SafeInvert(Mat3Ref mat);
 
-  /// Multiply the two matrices together. Matrix multiplication order is
-  /// right-to-left.
+  /// Multiply the two matrices together. Matrix multiplication order is right-to-left.
   static Matrix3 Multiply(Mat3Param lhs, Mat3Param rhs);
   /// Multiply the given vector by a matrix.
   static Vector3 Multiply(Mat3Param lhs, Vec3Param rhs);
-  /// Multiply the given vector by a matrix. The vector is promoted to the point
-  /// Vec3(x, y, 1). No homogeneous division is applied.
+  /// Multiply the given vector by a matrix. The vector is promoted to the point Vec3(x, y, 1). No homogeneous division
+  /// is applied.
   static Vector2 MultiplyPoint(Mat3Param lhs, Vec2Param rhs);
-  /// Multiply the given vector by a matrix. The vector is promoted to the
-  /// vector Vec3(x, y, 0).
+  /// Multiply the given vector by a matrix. The vector is promoted to the vector Vec3(x, y, 0).
   static Vector2 MultiplyNormal(Mat3Param lhs, Vec2Param rhs);
 
   /// Generates a two dimensional scale matrix.
@@ -143,8 +140,7 @@ public:
   /// Inverts this matrix in place.
   Mat3Ref Invert();
 
-  /// Inverts in place, but clamps the determinant to the smallest positive
-  /// float number.
+  /// Inverts in place, but clamps the determinant to the smallest positive float number.
   bool SafeInvert();
 
   /// Inverts, but clamps the determinant to the smallest positive float number.
@@ -156,12 +152,10 @@ public:
   /// Converts this matrix into a pure scaling matrix.
   void Scale(Vec3Param rhs);
 
-  /// Converts this matrix into a pure rotation matrix, given an axis-angle
-  /// pair.
+  /// Converts this matrix into a pure rotation matrix, given an axis-angle pair.
   void Rotate(real x, real y, real z, real radian);
 
-  /// Converts this matrix into a pure rotation matrix, given an axis-angle
-  /// pair.
+  /// Converts this matrix into a pure rotation matrix, given an axis-angle pair.
   void Rotate(Vec3Param rhs, real radian);
 
   /// Converts this matrix into a pure translation matrix for 2-D vectors.
@@ -195,7 +189,8 @@ public:
   void SetBasis(uint index, real x, real y, real z);
   void SetCross(uint index, real x, real y, real z);
 
-  union {
+  union
+  {
     struct
     {
 #if ColumnBasis == 1
@@ -212,16 +207,14 @@ public:
 
 ZeroShared Matrix3 operator*(real lhs, Mat3Param rhs);
 
-/// Multiply the two matrices together. Matrix multiplication order is
-/// right-to-left.
+/// Multiply the two matrices together. Matrix multiplication order is right-to-left.
 ZeroShared Matrix3 Multiply(Mat3Param lhs, Mat3Param rhs);
 /// Multiply the given vector by a matrix.
 ZeroShared Vector3 Multiply(Mat3Param lhs, Vec3Param rhs);
-/// Multiply the given vector by a matrix. The vector is promoted to the point
-/// Vec3(x, y, 1). No homogeneous division is applied.
+/// Multiply the given vector by a matrix. The vector is promoted to the point Vec3(x, y, 1). No homogeneous division is
+/// applied.
 ZeroShared Vector2 MultiplyPoint(Mat3Param lhs, Vec2Param rhs);
-/// Multiply the given vector by a matrix. The vector is promoted to the vector
-/// Vec3(x, y, 0).
+/// Multiply the given vector by a matrix. The vector is promoted to the vector Vec3(x, y, 0).
 ZeroShared Vector2 MultiplyNormal(Mat3Param lhs, Vec2Param rhs);
 
 /// This builds a matrix that should be used on 2D points/vectors

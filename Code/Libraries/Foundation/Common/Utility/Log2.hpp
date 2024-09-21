@@ -2,8 +2,7 @@
 #pragma once
 
 // Written as an unholy macro so it can be used at compile time.
-// We could have used a constexpr function instead of this madness if we had
-// that C++11 feature!
+// We could have used a constexpr function instead of this madness if we had that C++11 feature!
 
 #define LOG2_64(X) ((X) == 0 ? 63 : 0)
 #define LOG2_63(X) ((X) == 0 ? 62 : LOG2_64((X) >> 1))

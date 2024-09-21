@@ -586,8 +586,7 @@ inline R_ENABLE_IF(is_integral<T>::value&& is_integral<R>::value,
   // Left-shift quantized value
   UV leftShiftedQuantizedValue = (quantizedValue << (BYTES_TO_BITS(sizeof(UV)) - bitSize));
 
-  // Convert to network byte order (big endian), which is naturally
-  // right-aligned, as necessary
+  // Convert to network byte order (big endian), which is naturally right-aligned, as necessary
   UV rightAlignedQuantizedValue = NetworkFlip(leftShiftedQuantizedValue);
 
   // Write the right-aligned quantized value
@@ -645,8 +644,7 @@ inline R_ENABLE_IF(is_floating_point<T>::value,
   // Left-shift quantized value
   UV leftShiftedQuantizedValue = (quantizedValue << (BYTES_TO_BITS(sizeof(UV)) - bitSize));
 
-  // Convert to network byte order (big endian), which is naturally
-  // right-aligned, as necessary
+  // Convert to network byte order (big endian), which is naturally right-aligned, as necessary
   UV rightAlignedQuantizedValue = NetworkFlip(leftShiftedQuantizedValue);
 
   // Write the right-aligned quantized value
@@ -699,8 +697,7 @@ inline Bits BitStream::TrimFront()
 
 // inline void BitStream::Unwrite(Bits bitsToUnwrite)
 // {
-//   mBitsWritten = (mBitsWritten > bitsToUnwrite) ? (mBitsWritten -
-//   bitsToUnwrite) : 0;
+//   mBitsWritten = (mBitsWritten > bitsToUnwrite) ? (mBitsWritten - bitsToUnwrite) : 0;
 // }
 
 inline void BitStream::SetBitsWritten(Bits bitsWritten)
@@ -908,8 +905,7 @@ BitStream::ReadQuantized(T& value_, R minValue_, R maxValue_, R quantum_) const
   if (!bitsRead) // Unable?
     return 0;
 
-  // Convert from network byte order (big endian), which is naturally
-  // right-aligned, as necessary
+  // Convert from network byte order (big endian), which is naturally right-aligned, as necessary
   UV leftShiftedQuantizedValue = NetworkFlip(rightAlignedQuantizedValue);
 
   // Right-shift left-shifted quantized value
@@ -970,8 +966,7 @@ BitStream::ReadQuantized(T& value_, R minValue_, R maxValue_, R quantum_) const
   if (!bitsRead) // Unable?
     return 0;
 
-  // Convert from network byte order (big endian), which is naturally
-  // right-aligned, as necessary
+  // Convert from network byte order (big endian), which is naturally right-aligned, as necessary
   UV leftShiftedQuantizedValue = NetworkFlip(rightAlignedQuantizedValue);
 
   // Right-shift left-shifted quantized value

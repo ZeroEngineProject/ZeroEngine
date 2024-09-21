@@ -21,7 +21,7 @@ template <typename type>
 struct ZeroSharedTemplate Link
 {
 #if DEBUGLINKS
-  Link() : Next((type*)ObjListPtrDebugValue), Prev((type*)ObjListPtrDebugValue){};
+  Link() : Next((type*)ObjListPtrDebugValue), Prev((type*)ObjListPtrDebugValue) {};
 #endif
   type* Next;
   type* Prev;
@@ -147,10 +147,9 @@ public:
     pointer end;
   };
 
-  // The exact same interface as range, except when you PopFront and popBack are
-  // swapped, as well as front and back This means that 'begin' and 'end' are
-  // actually the exact same as a normal range's begin/end, but we iterate the
-  // end here
+  // The exact same interface as range, except when you PopFront and popBack are swapped, as well as front and back
+  // This means that 'begin' and 'end' are actually the exact same as a normal range's begin/end, but we iterate the end
+  // here
   class reverse_range
   {
   public:
@@ -220,7 +219,7 @@ public:
   {
   public:
     friend class BaseInList;
-    iterator(){};
+    iterator() {};
     iterator(pointer ptr) : mPtr(ptr)
     {
     }

@@ -8,9 +8,9 @@
 /// matrix interfaces do not change (and neither does the code that uses them).
 /// The reason why this should be changed is for the memory layout with respect
 /// to SIMD operations. Early versions of SSE (2 and 3) are more efficient with
-/// column operations (so basis vectors in the rows, I know it's backwards but
-/// go with it), and xmvector and SSE 4 are more efficient with row operations
-/// (so basis vectors in the columns).
+/// column operations (so basis vectors in the rows, I know it's backwards but go
+/// with it), and xmvector and SSE 4 are more efficient with row operations (so
+/// basis vectors in the columns).
 #ifndef ColumnBasis
 #  define ColumnBasis 1
 #endif

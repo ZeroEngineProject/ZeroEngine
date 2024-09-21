@@ -47,20 +47,17 @@ public:
   /// Returns true if this is a non-empty IPv4/IPv6 address, else false
   bool IsValid() const;
 
-  /// Returns the valid IP address protocol version, else
-  /// InternetProtocol::Unspecified
+  /// Returns the valid IP address protocol version, else InternetProtocol::Unspecified
   InternetProtocol::Enum GetInternetProtocol() const;
 
-  /// Returns the valid IP address as a numeric "host:port" string, else
-  /// String()
+  /// Returns the valid IP address as a numeric "host:port" string, else String()
   const String& GetString() const;
   /// Returns the valid IP address as a hash value, else 0
   size_t Hash() const;
 
   /// Sets the IP address host
-  /// Specifying InternetProtocol::Unspecified will attempt to resolve IPv6
-  /// first, then IPv4 Will block until host name resolution completes or times
-  /// out
+  /// Specifying InternetProtocol::Unspecified will attempt to resolve IPv6 first, then IPv4
+  /// Will block until host name resolution completes or times out
   void SetHost(Status& status, StringParam host, InternetProtocol::Enum internetProtocol);
   void SetHost(Status& status, StringParam host);
   void SetHost(StringParam host, InternetProtocol::Enum internetProtocol);

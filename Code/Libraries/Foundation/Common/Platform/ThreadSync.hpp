@@ -53,8 +53,7 @@ private:
   ZeroDeclarePrivateData(Semaphore, 8);
 };
 
-/// Not fully implemented as it's currently only needed for interprocess
-/// communication
+/// Not fully implemented as it's currently only needed for interprocess communication
 class ZeroShared InterprocessMutex
 {
 public:

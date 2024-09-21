@@ -52,8 +52,8 @@ public:
   StringRange FindLastOf(Rune rune) const;
   StringRange FindLastOf(StringRangeParam value) const;
 
-  StringRange FindFirstByBytes(cstr buffer, uint valueSizeInBytes) const;
-  StringRange FindLastByBytes(cstr buffer, uint valueSizeInBytes) const;
+  StringRange FindFirstByBytes(cstr buffer, size_t valueSizeInBytes) const;
+  StringRange FindLastByBytes(cstr buffer, size_t valueSizeInBytes) const;
 
   StringIterator FindFirstNonWhitespaceRuneIt() const;
   StringIterator FindLastNonWhitespaceRuneIt() const;
@@ -169,12 +169,12 @@ public:
   bool operator<(StringIteratorParam rhs) const;
   bool operator>(StringIteratorParam rhs) const;
 
-  StringIterator operator+(uint numElements) const;
-  StringIterator operator-(uint numElements) const;
+  StringIterator operator+(ptrdiff_t numElements) const;
+  StringIterator operator-(ptrdiff_t numElements) const;
   int operator-(StringIterator rhs) const;
-  StringIterator& operator+=(uint numElements);
-  StringIterator& operator-=(uint numElements);
-  char operator[](uint numBytes) const;
+  StringIterator& operator+=(ptrdiff_t numElements);
+  StringIterator& operator-=(ptrdiff_t numElements);
+  char operator[](ptrdiff_t numBytes) const;
 
   StringIterator& operator++();
   StringIterator& operator--();
@@ -324,8 +324,7 @@ String WordWrap(StringRange input, size_t maxLineLength);
 template <typename RangeType, typename PolicyType>
 String String::JoinRange(StringRangeParam separator, RangeType range, PolicyType policy)
 {
-  // First we need to know how big the range is, so copy the range and iterate
-  // over to count
+  // First we need to know how big the range is, so copy the range and iterate over to count
   RangeType counterRange = range;
   size_t count = 0;
   for (; !counterRange.Empty(); counterRange.PopFront())
@@ -344,8 +343,7 @@ String String::JoinRange(StringRangeParam separator, RangeType range, PolicyType
 
   String result = JoinInternal(separator, values, count);
 
-  // Have to manually call the destructor on every string range since we called
-  // placement new
+  // Have to manually call the destructor on every string range since we called placement new
   for (size_t i = 0; i < count; ++i)
   {
     values[i].~StringRange();

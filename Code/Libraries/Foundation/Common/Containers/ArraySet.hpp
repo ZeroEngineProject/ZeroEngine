@@ -104,9 +104,8 @@ public:
   }
 
   /// Inserts a unique element at it's sorted position in the array
-  /// Returns a pair consisting of a pointer to the inserted element (or the
-  /// equivalent element which prevented it's insertion), and a bool which will
-  /// be true if the insertion took place, else false if no changes were made
+  /// Returns a pair consisting of a pointer to the inserted element (or the equivalent element which prevented it's
+  /// insertion), and a bool which will be true if the insertion took place, else false if no changes were made
   pointer_bool_pair Insert(const_reference value)
   {
     // Get lower bound
@@ -136,11 +135,9 @@ public:
     }
   }
 
-  /// Inserts a unique element at it's sorted position in the array or assigns
-  /// over a previously inserted equivalent element Returns a pair consisting of
-  /// a pointer to the inserted element (or the equivalent element which was
-  /// assigned to), and a bool which will be true if the insertion took place,
-  /// else false if the assignment took place
+  /// Inserts a unique element at it's sorted position in the array or assigns over a previously inserted equivalent
+  /// element Returns a pair consisting of a pointer to the inserted element (or the equivalent element which was
+  /// assigned to), and a bool which will be true if the insertion took place, else false if the assignment took place
   pointer_bool_pair InsertOrAssign(const_reference value)
   {
     // Get lower bound
@@ -199,8 +196,7 @@ public:
       Insert(ZeroMove(inputRange.Front()));
   }
 
-  /// Clears the array and inserts a range of elements at their sorted positions
-  /// in the array
+  /// Clears the array and inserts a range of elements at their sorted positions in the array
   template <typename iteratorType>
   void Assign(iteratorType begin, iteratorType end)
   {
