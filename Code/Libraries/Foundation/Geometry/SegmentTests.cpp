@@ -770,8 +770,8 @@ Type SegmentSphere(Vec3Param segmentStart,
     return None;
   }
 
-  // If discriminant = 0 (or close to 0 in our case), the segment might
-  // intersect the sphere tangentially
+  // If discriminant = 0 (or close to 0 in our case), the segment might intersect
+  // the sphere tangentially
   if (Math::IsZero(discr))
   {
     // Intersection must happen between endpoints of the segment

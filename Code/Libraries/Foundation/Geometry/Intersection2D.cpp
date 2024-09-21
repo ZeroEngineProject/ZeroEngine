@@ -56,8 +56,8 @@ Type ClosestPointOnSegmentToPoint(Vec2Param segmentPointA, Vec2Param segmentPoin
   }
 }
 
-// Find the intersection (the shared values) between the two intervals and
-// return the difference between the minimum and maximum value of the resulting
+// Find the intersection (the shared values) between the two intervals and return
+// the difference between the minimum and maximum value of the resulting
 // interval. A negative result indicates that the two intervals are not
 // intersecting.
 real IntersectIntervals(Vec2Param intervalA, Vec2Param intervalB)
@@ -212,8 +212,7 @@ Type BoxBox(Vec2Param boxCenterA,
   // Edge on box A, intersectionPoint/edge on box B
   if (axisIndex < 2)
   {
-    // Find the intersectionPoint on box B that is furthest in the direction of
-    // box A
+    // Find the intersectionPoint on box B that is furthest in the direction of box A
     real testValue = -Math::PositiveMax();
     for (uint i = 0; i < 4; ++i)
     {
@@ -255,8 +254,7 @@ Type BoxBox(Vec2Param boxCenterA,
   // Edge on box B, intersectionPoint/edge on box A
   else
   {
-    // Find the intersectionPoint on box A that is furthest in the direction of
-    // box B
+    // Find the intersectionPoint on box A that is furthest in the direction of box B
     real testValue = -Math::PositiveMax();
     for (uint i = 0; i < 4; ++i)
     {
@@ -417,9 +415,8 @@ Type CircleConvexPolygon(Vec2Param circleCenter,
   real minCircleToPolyLength = Math::PositiveMax();
   Vec2 closestPoint;
 
-  // Loop through all of the polygon's sides/segments to find the
-  // intersectionPoint on the polygon that is closest to the center of the
-  // sphere
+  // Loop through all of the polygon's sides/segments to find the intersectionPoint on the
+  // polygon that is closest to the center of the sphere
   const uint lastPoint = convexPolygonPointCount - 1;
   uint currPoint, nextPoint;
   for (uint i = 0; i < convexPolygonPointCount; ++i)
@@ -438,9 +435,8 @@ Type CircleConvexPolygon(Vec2Param circleCenter,
     }
   }
 
-  // If the distance of intersectionPoint on the polygon closest to the circle's
-  // center is less than the circle's radius, then the circle is intersecting
-  // the polygon.
+  // If the distance of intersectionPoint on the polygon closest to the circle's center is
+  // less than the circle's radius, then the circle is intersecting the polygon.
   if (minCircleToPolyLength < circleRadius)
   {
     if (manifold != nullptr)
@@ -545,8 +541,8 @@ Type ConvexPolygonConvexPolygon(const Vec2* convexPolygonPointsA,
     }
   }
 
-  // No information requested, and by this intersectionPoint we know that there
-  // is a collision between the two polygons
+  // No information requested, and by this intersectionPoint we know that there is a
+  // collision between the two polygons
   if (manifold == nullptr)
   {
     return Point;
@@ -673,9 +669,9 @@ Type SegmentSegment(Vec2Param segmentStartA,
     {
       if (intersectionPoint != nullptr)
       {
-        // Segments intersect. Find intersection point along L(t) = a + t *
-        // (b-a) Given height h1 of a over cd and height h2 of b over cd, t = h1
-        // / (h1 - h2) = (b * h1 / 2) / (b * h1 / 2 - b * h2 / h3)
+        // Segments intersect. Find intersection point along L(t) = a + t * (b-a)
+        // Given height h1 of a over cd and height h2 of b over cd,
+        // t = h1 / (h1 - h2) = (b * h1 / 2) / (b * h1 / 2 - b * h2 / h3)
         //                   = area3 / (area3 - area4), where b (the base of the
         // triangles cda cdb, i.e., the length of cd) cancels out.
         intersectionPoint->T = area3 / (area3 - area4);

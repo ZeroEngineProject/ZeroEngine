@@ -10,15 +10,15 @@ const uint cMaxSupportPoints = 8;
 
 /// Calculate the centroid of the 2D polygon. Assumes the 2D points are ordered
 /// in such a way that they describe the polygon's perimeter.
-void CalculatePolygonCentriod(const Vec2* polyPoints, uint polyPointCount, Vec2Ptr barycenter);
+void CalculatePolygonCentriod(const Vec2* polyPoints, size_t polyPointCount, Vec2Ptr barycenter);
 
 /// Given an ordered set of 2D points that describe the perimeter of a polygon,
 /// return whether the points are clockwise (negative) or
 /// counter-clockwise (positive).
-real DetermineWindingOrder(const Vec2* polyPoints, uint polyPointCount);
+real DetermineWindingOrder(const Vec2* polyPoints, size_t polyPointCount);
 
 /// Generate an axis-aligned bounding box for the given set of 2D points.
-void GenerateAabb(const Vec2* points, uint pointCount, Vec2Ptr min, Vec2Ptr max);
+void GenerateAabb(const Vec2* points, size_t pointCount, Vec2Ptr min, Vec2Ptr max);
 
 /// Returns 2 times the signed triangle area. The result is positive is abc is
 /// counter-clockwise, negative if abc is clockwise, zero if abc is degenerate.
@@ -92,7 +92,7 @@ void ComputeBestFitPlane(const Vec3* polyPoints, uint polyPointCount, Vec3Ptr pl
 /// assumes a scale of (1, 1, 1).
 real CalculateTriMeshVolume(const Vec3* triMeshPoints,
                             const uint* triMeshTriangles,
-                            uint triangleCount,
+                            size_t triangleCount,
                             Vec3Param scale = NoScale);
 real CalculateTriMeshVolume(const Array<Vec3>& triMeshPoints,
                             const Array<uint>& triMeshTriangles,
@@ -102,7 +102,7 @@ real CalculateTriMeshVolume(const Array<Vec3>& triMeshPoints,
 /// If no scale is provided then it assumes a scale of (1, 1, 1).
 Vec3 CalculateTriMeshCenterOfMass(const Vec3* triMeshPoints,
                                   const uint* triMeshTriangles,
-                                  uint triangleCount,
+                                  size_t triangleCount,
                                   Vec3Param scale = NoScale);
 Vec3 CalculateTriMeshCenterOfMass(const Array<Vec3>& triMeshPoints,
                                   const Array<uint>& triMeshTriangles,
@@ -111,7 +111,7 @@ Vec3 CalculateTriMeshCenterOfMass(const Array<Vec3>& triMeshPoints,
 /// Scale can be applied afterwards to centerOfMass as scale * centerOfMass
 /// and volume can be scaled as scale.x * scale.y * scale.z * volume
 void CalculateTriMeshCenterOfMassAndVolume(
-    const Vec3* triMeshPoints, const uint* triMeshTriangles, uint triangleCount, Vec3Ref centerOfMass, real& volume);
+    const Vec3* triMeshPoints, const uint* triMeshTriangles, size_t triangleCount, Vec3Ref centerOfMass, real& volume);
 void CalculateTriMeshCenterOfMassAndVolume(const Array<Vec3>& triMeshPoints,
                                            const Array<uint>& triMeshTriangles,
                                            Vec3Ref centerOfMass,
@@ -124,7 +124,7 @@ void CalculateTriMeshCenterOfMassAndVolume(const Array<Vec3>& triMeshPoints,
 /// provided then it assumes a scale of (1, 1, 1).
 void CalculateTriMeshInertiaTensor(const Vec3* triMeshPoints,
                                    const uint* triMeshTriangles,
-                                   uint triangleCount,
+                                   size_t triangleCount,
                                    Vec3Param centerOfMass,
                                    Mat3Ptr inertiaTensor,
                                    Vec3Param scale = NoScale);
@@ -136,10 +136,9 @@ void CalculateTriMeshInertiaTensor(const Array<Vec3>& triMeshPoints,
 
 #undef NoScale
 
-/// Combines an inertia tensor that was computed about it's local center of mass
-/// with one computed about a different center of mass. This is used to compute
-/// the total inertia tensor of an object made out of sub pieces. (Parallel axis
-/// theorem)
+/// Combines an inertia tensor that was computed about it's local center of mass with
+/// one computed about a different center of mass. This is used to compute the total
+/// inertia tensor of an object made out of sub pieces. (Parallel axis theorem)
 void CombineInertiaTensor(Mat3Ref totalInertiaTensor,
                           Vec3Param totalCenterOfMass,
                           Mat3Param localInertiaTensor,
@@ -214,8 +213,7 @@ Vec3 NormalFromPointOnCapsule(Vec3Param point, Vec3Param capsulePointA, Vec3Para
 Vec3 NormalFromPointOnCylinder(
     Vec3Param point, Vec3Param cylinderCenter, real cylinderRadius, real cylinderHalfHeight, Mat3Param cylinderBasis);
 
-/// Get the normal on an ellipsoid at the specified point on the given
-/// ellipsoid.
+/// Get the normal on an ellipsoid at the specified point on the given ellipsoid.
 Vec3 NormalFromPointOnEllipsoid(Vec3Param point,
                                 Vec3Param ellipsoidCenter,
                                 Vec3Param ellipsoidRadii,
@@ -239,8 +237,8 @@ Vec3 NormalFromPointOnTriangle(Vec3Param point,
                                Vec3Param trianglePointB,
                                Vec3Param trianglePointC);
 
-/// Get the texture coordinates on a cylinder at the specified point on the
-/// given cylinder.
+/// Get the texture coordinates on a cylinder at the specified point on the given
+/// cylinder.
 Vec2 TextureCoordinatesFromPointOnCylinder(
     Vec3Param point, Vec3Param cylinderCenter, real cylinderHalfHeight, real cylinderRadius, Mat3Param cylinderBasis);
 
@@ -258,8 +256,7 @@ Vec2 TextureCoordinatesFromPointOnObb(Vec3Param point,
                                       Vec3Param obbHalfExtents,
                                       Mat3Param obbBasis);
 
-/// Get the texture coordinates on a sphere at the specified point on the
-/// sphere.
+/// Get the texture coordinates on a sphere at the specified point on the sphere.
 Vec2 TextureCoordinatesFromPointOnSphere(Vec3Param point,
                                          Vec3Param sphereCenter,
                                          real sphereRadius,

@@ -14,8 +14,7 @@ ZilchDefineExternalBaseType(Ray, TypeCopyMode::ValueType, builder, type)
   ZilchFullBindMethod(builder, type, &Ray::GetPoint, ZilchNoOverload, "GetPoint", "tValue")->Description =
       ZilchDocumentString("Returns the point at the given t-value.");
   ZilchFullBindMethod(builder, type, &Ray::GetTValue, ZilchNoOverload, "GetTValue", "point")->Description =
-      ZilchDocumentString("Returns the t-value that would result in the given "
-                          "point projected onto the ray.");
+      ZilchDocumentString("Returns the t-value that would result in the given point projected onto the ray.");
   type->ToStringFunction = Zilch::BoundTypeToGlobalToString<Ray>;
   type->AddAttribute(ExportDocumentation);
 }
@@ -30,8 +29,7 @@ ZilchDefineExternalBaseType(Segment, TypeCopyMode::ValueType, builder, type)
   ZilchFullBindMethod(builder, type, &Segment::GetPoint, ZilchNoOverload, "GetPoint", "tValue")->Description =
       ZilchDocumentString("Returns the point at the given t-value.");
   ZilchFullBindMethod(builder, type, &Segment::GetTValue, ZilchNoOverload, "GetTValue", "point")->Description =
-      ZilchDocumentString("Returns the t-value that would result in the given "
-                          "point projected onto the segment.");
+      ZilchDocumentString("Returns the t-value that would result in the given point projected onto the segment.");
   type->ToStringFunction = Zilch::BoundTypeToGlobalToString<Segment>;
   type->AddAttribute(ExportDocumentation);
 }
@@ -57,25 +55,20 @@ ZilchDefineExternalBaseType(Aabb, TypeCopyMode::ValueType, builder, type)
       ZilchDocumentString("Does this aabb overlap/intersect the given aabb?");
   ZilchFullBindMethod(builder, type, &Aabb::Set, ZilchNoOverload, "Set", "point");
   ZilchFullBindMethod(builder, type, &Aabb::SetCenterAndHalfExtents, ZilchNoOverload, "Set", "center, halfExtents");
-  ZilchBindMethod(SetInvalid)->Description = ZilchDocumentString("Sets this aabb to an invalid aabb "
-                                                                 "(Real3.PositiveMax, Real3.NegativeMin)). "
+  ZilchBindMethod(SetInvalid)->Description =
+      ZilchDocumentString("Sets this aabb to an invalid aabb (Real3.PositiveMax, Real3.NegativeMin)). "
                                                                  "This also makes expansion easier.");
 
   ZilchBindGetterSetter(Extents);
   ZilchBindGetterSetter(HalfExtents);
-  ZilchFullBindGetterSetter(builder,
-                            type,
-                            &Aabb::GetCenter,
-                            (Vec3(Aabb::*)() const),
-                            &Aabb::SetCenter,
-                            (void (Aabb::*)(Vec3Param)),
-                            "Center");
+  ZilchFullBindGetterSetter(
+      builder, type, &Aabb::GetCenter, (Vec3(Aabb::*)() const), &Aabb::SetCenter, (void(Aabb::*)(Vec3Param)), "Center");
 
   // Expose later when we do a more full pass on the math library and geometry
-  // ZilchFullBindMethod(builder, type, &Aabb::TransformAabb,
-  // ZilchConstInstanceOverload(Aabb, Mat4Param), "Transform", "transform")
-  //  ->Description = ZilchDocumentString("Computes the aabb of the current aabb
-  //  after applying the given transformation.");
+  // ZilchFullBindMethod(builder, type, &Aabb::TransformAabb, ZilchConstInstanceOverload(Aabb, Mat4Param), "Transform",
+  // "transform")
+  //  ->Description = ZilchDocumentString("Computes the aabb of the current aabb after applying the given
+  //  transformation.");
 
   ZilchBindGetter(Volume);
   ZilchBindGetter(SurfaceArea);

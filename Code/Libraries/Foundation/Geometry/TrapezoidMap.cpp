@@ -53,16 +53,14 @@ struct Frame
   {
   }
   Frame(TrapezoidMap::RegionId regionId_, s32 depth_, s32 winding_) :
-      regionId(regionId_),
-      depth(depth_),
-      winding(winding_)
+      regionId(regionId_), depth(depth_), winding(winding_)
   {
   }
 };
 
 TrapezoidMap::TrapezoidMap(const Array<Vec2>& vertices, const Array<uint>& contours, s32 edgeCount, s32 seed) :
-    mNodes(vertices.Size() * 4 + 1 + vertices.Size() * 2),
-    mRegions(vertices.Size() * 2 + 1 + 1),
+    mNodes(static_cast<s32>(vertices.Size() * 4 + 1 + vertices.Size() * 2)),
+    mRegions(static_cast<s32>(vertices.Size() * 2 + 1 + 1)),
     mRandom(seed),
     mIsValid(true)
 {
@@ -97,18 +95,18 @@ TrapezoidMap::TrapezoidMap(const Array<Vec2>& vertices, const Array<uint>& conto
   region->NodeIndex = mRoot;
 
   // Compute end index table
-  size_t vertexCount = mVertices.Size();
+  int vertexCount = (int)mVertices.Size();
   mContourId.Resize(vertexCount);
   mEndIndex.Resize(vertexCount);
   mWindingOrder.Resize(vertexCount);
-  size_t offset = 0;
-  for (size_t i = 0; i < contours.Size(); ++i)
+  int offset = 0;
+  for (int i = 0; i < (int)contours.Size(); ++i)
   {
-    size_t size = contours[i];
+    int size = contours[i];
     if (size > 0)
     {
       s8 winding = Geometry::DetermineWindingOrder(&mVertices[offset], size) >= 0.f ? 1 : -1;
-      for (size_t j = 0; j < size; ++j)
+      for (int j = 0; j < size; ++j)
       {
         mContourId[j + offset] = i;
         mEndIndex[j + offset] = (j + 1) % size + offset;
@@ -118,14 +116,14 @@ TrapezoidMap::TrapezoidMap(const Array<Vec2>& vertices, const Array<uint>& conto
     offset += size;
   }
   mPrevIndex.Resize(vertexCount);
-  for (size_t i = 0; i < vertexCount; ++i)
+  for (int i = 0; i < vertexCount; ++i)
   {
     mPrevIndex[mEndIndex[i]] = i;
   }
 
   mFarthestEnd.Resize(vertexCount);
   mFarthestPrev.Resize(vertexCount);
-  for (size_t i = 0; i < vertexCount; ++i)
+  for (int i = 0; i < vertexCount; ++i)
   {
     mFarthestEnd[i] = i;
     mFarthestPrev[i] = i;
@@ -134,7 +132,7 @@ TrapezoidMap::TrapezoidMap(const Array<Vec2>& vertices, const Array<uint>& conto
   // Compute top/bot index tables
   mTopIndex.Resize(vertexCount);
   mBotIndex.Resize(vertexCount);
-  for (size_t i = 0; i < vertexCount; ++i)
+  for (int i = 0; i < vertexCount; ++i)
   {
     // Edge goes from a to b
     VertexId indexA = i;
@@ -151,7 +149,7 @@ TrapezoidMap::TrapezoidMap(const Array<Vec2>& vertices, const Array<uint>& conto
       {
         for (size_t k = indexA; k != j; k = mEndIndex[k])
         {
-          mFarthestEnd[k] = prev;
+          mFarthestEnd[k] = (int)prev;
         }
 
         break;
@@ -161,7 +159,7 @@ TrapezoidMap::TrapezoidMap(const Array<Vec2>& vertices, const Array<uint>& conto
     }
   }
 
-  for (size_t i = 0; i < vertexCount; ++i)
+  for (int i = 0; i < vertexCount; ++i)
   {
     // Edge goes from a to b
     VertexId indexA = mEndIndex[mFarthestEnd[i]];
@@ -185,7 +183,7 @@ TrapezoidMap::TrapezoidMap(const Array<Vec2>& vertices, const Array<uint>& conto
     }
   }
 
-  for (size_t i = 0; i < vertexCount; ++i)
+  for (s32 i = 0; i < vertexCount; ++i)
   {
     // Edge goes from a to b
     VertexId indexA = i;
@@ -205,7 +203,7 @@ TrapezoidMap::TrapezoidMap(const Array<Vec2>& vertices, const Array<uint>& conto
 
   // Initialize regions below lookup
   mRegionsBelow.Resize(vertexCount);
-  for (size_t i = 0; i < vertexCount; ++i)
+  for (int i = 0; i < vertexCount; ++i)
   {
     BelowCache* cache = &mRegionsBelow[i];
     cache->Index[0] = -1;
@@ -216,7 +214,7 @@ TrapezoidMap::TrapezoidMap(const Array<Vec2>& vertices, const Array<uint>& conto
   Array<VertexId> order(vertices.Size());
   for (size_t i = 0; i < order.Size(); ++i)
   {
-    order[i] = i;
+    order[i] = (int)i;
   }
 
   s32 edgesInserted = 0;
@@ -242,7 +240,7 @@ TrapezoidMap::TrapezoidMap(const Array<Vec2>& vertices, const Array<uint>& conto
     rootId[i] = 0;
   }
 
-  s32 phaseCount = ComputeLogStarN(vertices.Size());
+  s32 phaseCount = ComputeLogStarN((s32)vertices.Size());
   size_t verticesPerPhase = phaseCount == 0 ? 0 : mVertices.Size() / phaseCount;
   for (s32 i = 0; i < phaseCount; ++i)
   {
@@ -357,7 +355,7 @@ TrapezoidMap::TrapezoidMap(const Array<Vec2>& vertices, const Array<uint>& conto
         }
 
         const BelowCache* belowCache = &mRegionsBelow[topId];
-        s32 index = 0;
+        size_t index = 0;
         for (size_t i = 0; i < 3; ++i)
         {
           if (belowCache->Index[i] == regionId)
@@ -414,7 +412,7 @@ bool TrapezoidMap::IsAboveInternal(TrapezoidMap::VertexId idA, TrapezoidMap::Ver
       Vec2 delta1 = mVertices[mEndIndex[mFarthestEnd[idA]]] - a;
 
       s32 end = mEndIndex[mFarthestEnd[idA]];
-      s32 size = mVertices.Size();
+      s32 size = (s32)mVertices.Size();
       if (idA < end)
       {
         idA += size;
@@ -995,8 +993,7 @@ bool TrapezoidMap::InsertEdge(EdgeId edgeId)
     EdgeId oldEdgeId = regionA->RightEdge;
 
     // ErrorIf(EqualsExact(mVertices[oldEdgeId], mVertices[botEdgeIndex]));
-    // ErrorIf(EqualsExact(mVertices[mEndIndex[oldEdgeId]],
-    // mVertices[botEdgeIndex]));
+    // ErrorIf(EqualsExact(mVertices[mEndIndex[oldEdgeId]], mVertices[botEdgeIndex]));
 
     // Check if the edge is contained in the right region
     if (!IsLeftInternal(oldEdgeId, mEndIndex[oldEdgeId], botEdgeIndex))

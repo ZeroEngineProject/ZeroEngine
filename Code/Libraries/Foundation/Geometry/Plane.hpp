@@ -22,8 +22,7 @@ struct Plane
   /// Sets the normal and distance to the origin of the plane.
   void Set(Vec3Param normal, real distance);
   /// Sets the normal and distance to the plane (read the explanation of
-  /// the SetPosition function for an explanation of how the position is
-  /// treated.
+  /// the SetPosition function for an explanation of how the position is treated.
   void Set(Vec3Param normal, Vec3Param position);
 
   /// Returns the normal of the plane.
@@ -42,8 +41,8 @@ struct Plane
   const Vec4& GetData() const;
 
 public:
-  // Holds the normal of the plane in the first 3 elements (xyz) and the
-  // distance to the origin in the 4th element (w).
+  // Holds the normal of the plane in the first 3 elements (xyz) and the distance
+  // to the origin in the 4th element (w).
   Vec4 mData;
 };
 

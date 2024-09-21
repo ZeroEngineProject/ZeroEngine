@@ -267,10 +267,8 @@ ZilchDefineType(Triangle, builder, type)
 }
 
 //// Draw a circle clipped to given plane
-// void DrawClippedCircle(DebugViewState& viewState, Vec3Param position, float
-// radius, Vec3Param axis,
-//                       float lineWidth, ByteColor frontColor, ByteColor
-//                       backColor, Plane clipPlane)
+// void DrawClippedCircle(DebugViewState& viewState, Vec3Param position, float radius, Vec3Param axis,
+//                        float lineWidth, ByteColor frontColor, ByteColor backColor, Plane clipPlane)
 //{
 //  if (radius < cMinCircleRadius)
 //    return;
@@ -336,8 +334,8 @@ ZilchDefineType(Triangle, builder, type)
 // uint Adjacent[] = { 0,5, 0,3, 0,2, 0,4, 2,1, 1,4,
 //                    1,3, 1,5, 2,5, 5,3, 3,4, 2,4 };
 //
-// void DrawOrientedBoxVerts(DebugViewState& viewState, ByteColor color, float
-// width, uint filled, uint backShade, Vec3* verts)
+// void DrawOrientedBoxVerts(DebugViewState& viewState, ByteColor color, float width, uint filled, uint backShade, Vec3*
+// verts)
 //{
 //  bool faceVisible[] = {true, true, true, true, true, true};
 //
@@ -347,8 +345,7 @@ ZilchDefineType(Triangle, builder, type)
 //    Vec3 transformedPoints[8];
 //
 //    for(uint i=0;i<8;++i)
-//      transformedPoints[i] =
-//      Math::TransformPointProjectedCol(viewState.WorldViewProj, verts[i]);
+//       transformedPoints[i] = Math::TransformPointProjectedCol(viewState.WorldViewProj, verts[i]);
 //
 //    for(uint f = 0; f < 6; ++f)
 //    {
@@ -371,15 +368,14 @@ ZilchDefineType(Triangle, builder, type)
 //  {
 //    bool visible = faceVisible[ Adjacent[c] ] || faceVisible[ Adjacent[c+1] ];
 //    ByteColor lineColor = visible ? color : backColor;
-//    viewState.Draw->LineSegment(lineColor, verts[EdgeIndices[c]],
-//    verts[EdgeIndices[c+1]]);
+//     viewState.Draw->LineSegment(lineColor, verts[EdgeIndices[c]], verts[EdgeIndices[c+1]]);
 //  }
 //}
 //
 // void DrawOrientedBox(DebugViewState& viewState, ByteColor color,
 //                     Vec3Param position, Vec3 extents, Mat3Param basis,
-//                     float width, uint onlyCorners, uint filled, uint
-//                     backShade, uint onTop)
+//                      float width, uint onlyCorners, uint filled, uint backShade,
+//                      uint onTop)
 //{
 //  Vec3 boxAxis[3] = { extents.x * basis.BasisX(),
 //                      extents.y * basis.BasisY(),
@@ -431,15 +427,13 @@ ZilchDefineType(Triangle, builder, type)
 //      float length = lineSegment.AttemptNormalize();
 //      float edgeLength = length * 0.3f;
 //
-//      viewState.Draw->LineSegment(lineColor, p0, p0 - lineSegment *
-//      edgeLength); viewState.Draw->LineSegment(lineColor, p1, p1 + lineSegment
-//      * edgeLength);
+//       viewState.Draw->LineSegment(lineColor, p0, p0 - lineSegment * edgeLength);
+//       viewState.Draw->LineSegment(lineColor, p1, p1 + lineSegment * edgeLength);
 //    }
 //  }
 //  else
 //  {
-//    DrawOrientedBoxVerts(viewState, lineColor, width, filled, backShade,
-//    verts);
+//     DrawOrientedBoxVerts(viewState, lineColor, width, filled, backShade, verts);
 //  }
 //
 //  if (filled)
@@ -473,8 +467,7 @@ ZilchDefineType(Triangle, builder, type)
 //}
 //
 //
-// void DrawDebugObject(DebugDrawer* drawer, DebugViewState& viewState, Sphere&
-// sphere)
+// void DrawDebugObject(DebugDrawer* drawer, DebugViewState& viewState, Sphere& sphere)
 //{
 //  viewState.DepthTest = !sphere.GetOnTop();
 //  float distanceToEye = (sphere.mPosition - viewState.EyePosition).Length();
@@ -505,8 +498,7 @@ ZilchDefineType(Triangle, builder, type)
 //  // Compute horizon so a silhouette can be draw
 //  Vec3 eyeDir = viewState.EyeDirection;
 //  Vec3 eyeToCenter = (sphere.mPosition - viewState.EyePosition);
-//  HorizonCircle circle = ComputeHorizon(viewState, sphere.mPosition,
-//  sphere.mRadius, eyeToCenter);
+//   HorizonCircle circle = ComputeHorizon(viewState, sphere.mPosition, sphere.mRadius, eyeToCenter);
 //
 //  // horizon clip plane
 //  Plane clipPlane(-eyeToCenter, circle.Center);
@@ -520,14 +512,12 @@ ZilchDefineType(Triangle, builder, type)
 //      ByteColor backColor = frontColor;
 //      SetAlphaByte(backColor, 32);
 //
-//      DrawClippedCircle(viewState, sphere.mPosition, sphere.mRadius,
-//      Vec3::Axes[i],
+//       DrawClippedCircle(viewState, sphere.mPosition, sphere.mRadius, Vec3::Axes[i],
 //        sphere.mWidth, frontColor, backColor, clipPlane);
 //    }
 //
 //    // Draw border horizon circle
-//    DrawCircle(viewState, circle.Center, circle.Radius, eyeToCenter,
-//    sphere.mWidth, Color::Gray);
+//     DrawCircle(viewState, circle.Center, circle.Radius, eyeToCenter, sphere.mWidth, Color::Gray);
 //  }
 //  else
 //  {
@@ -538,14 +528,12 @@ ZilchDefineType(Triangle, builder, type)
 //    // Draw each axis circle
 //    for(uint i=0;i<3;++i)
 //    {
-//      DrawClippedCircle(viewState, sphere.mPosition, sphere.mRadius,
-//      Vec3::Axes[i],
+//       DrawClippedCircle(viewState, sphere.mPosition, sphere.mRadius, Vec3::Axes[i],
 //                        sphere.mWidth, color, backColor, clipPlane);
 //    }
 //
 //    // Draw border horizon circle
-//    DrawCircle(viewState, circle.Center, circle.Radius, eyeToCenter,
-//    sphere.mWidth, color);
+//     DrawCircle(viewState, circle.Center, circle.Radius, eyeToCenter, sphere.mWidth, color);
 //  }
 //}
 
@@ -1071,8 +1059,7 @@ void Frustum::GetVertices(const DebugViewData& viewData, DebugVertexArray& verti
   float viewScale = 1.0f;
   if (GetViewScaled())
   {
-    // doesn't matter which frustum point is used, the view scale will come out
-    // the same
+    // doesn't matter which frustum point is used, the view scale will come out the same
     viewScale = GetViewScale(mPoints[0], viewData);
 
     Vec3 points[8];

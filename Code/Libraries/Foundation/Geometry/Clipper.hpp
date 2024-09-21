@@ -24,11 +24,7 @@ struct OperationInput
   f32 CollinearAngleTolerance;
 
   OperationInput() :
-      Operation(Operation::Union),
-      ContoursA(0),
-      ContoursB(0),
-      DistanceTolerance(0.f),
-      CollinearAngleTolerance(0.f)
+      Operation(Operation::Union), ContoursA(0), ContoursB(0), DistanceTolerance(0.f), CollinearAngleTolerance(0.f)
   {
   }
 };
@@ -54,7 +50,7 @@ struct Vec2_t
   Vec2_t()
   {
   }
-  Vec2_t(float_t xx, float_t yy) : x(xx), y(yy){};
+  Vec2_t(float_t xx, float_t yy) : x(xx), y(yy) {};
 };
 typedef Array<Array<Vec2_t>> HighPrecisionContourArray;
 

@@ -16,12 +16,10 @@ struct SubShape
 };
 typedef Array<SubShape> SubShapeArray;
 
-/// Uses the Hertel-Mehlhorn algorithm for combining a triangle mesh into convex
-/// shapes.
+/// Uses the Hertel-Mehlhorn algorithm for combining a triangle mesh into convex shapes.
 void Combine2dConvexMeshes(const Array<Vec2>& vertices, SubShapeArray& shapes, SubShapeArray& newShapes);
 
-/// Create 2d meshes with the triangulator then combine them into larger convex
-/// pieces.
+/// Create 2d meshes with the triangulator then combine them into larger convex pieces.
 bool Create2dMeshesWithTriangulator(const Array<Vec2>& vertices, SubShapeArray& meshes);
 
 /// This will create a convex mesh decomposition from vertices.

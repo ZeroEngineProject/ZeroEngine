@@ -70,16 +70,16 @@ Construct the lower hull
   While 'lower' is not empty
     add 'lower[0]' to the end of 'lower_hull'
     remove 'lower[0]' from 'lower'
-    while Size('lower_hull') >= 3 and the last 3 points of 'lower_hull' are not
-convex remove the next to last element from 'lower_hull'
+    while Size('lower_hull') >= 3 and the last 3 points of 'lower_hull' are not convex
+      remove the next to last element from 'lower_hull'
 
 Construct the upper hull
   Add 'left' to 'upper_hull'
     While 'upper' is not empty
       add 'upper[0]' to the end of 'upper_hull'
       remove 'upper[0]' from 'upper'
-      while Size('upper_hull') >= 3 and the last 3 points of 'upper_hull' are
-not convex remove the next to last element from 'upper_hull'
+      while Size('upper_hull') >= 3 and the last 3 points of 'upper_hull' are not convex
+        remove the next to last element from 'upper_hull'
 
   Merge 'upper_hull' and 'lower_hull' to form 'hull'
   return 'hull'

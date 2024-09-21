@@ -25,9 +25,9 @@ bool Sphere::Overlap(const Sphere& rhs)
 void Sphere::Compute(const Vec3Array& pts)
 {
   mCenter.ZeroOut();
-  uint size = pts.Size();
+  size_t size = pts.Size();
   ErrorIf(size == 0, "Computing the bounding sphere of a vector of zero points.");
-  for (uint i = 0; i < size; ++i)
+  for (size_t i = 0; i < size; ++i)
     mCenter += pts[i];
   mCenter /= static_cast<real>(size);
 
@@ -58,9 +58,8 @@ void Sphere::Expand(Vec3Param point)
   // Make sure that the new point isn't already contained in the sphere
   if (sqDist > mRadius * mRadius)
   {
-    // This effectively computes the point on the "opposite" side of the sphere
-    // from where the point is and then constructs a new sphere from this point
-    // and the given point.
+    // This effectively computes the point on the "opposite" side of the sphere from where the point is
+    // and then constructs a new sphere from this point and the given point.
     float oldRadius = mRadius;
     float dist = Math::Sqrt(sqDist);
     float newRadius = (dist + mRadius) * 0.5f;
@@ -118,9 +117,8 @@ Ellipsoid Sphere::Transform(Mat4Param transformation) const
 Sphere Sphere::UniformTransform(Mat4Param transformation) const
 {
   // since this is a uniform transform (uniform scale) then we know we'll be
-  // returning a sphere. The easiest way to write this is the same as
-  // transforming to an ellipsoid, just assuming that the resultant radii are
-  // all equal.
+  // returning a sphere. The easiest way to write this is the same as transforming
+  // to an ellipsoid, just assuming that the resultant radii are all equal.
   Ellipsoid ellipsoid = Transform(transformation);
 
   Sphere ret;

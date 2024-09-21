@@ -238,8 +238,8 @@ Type PointTetrahedron(Vec3Param point,
 }
 
 // Test to see if the given point lies on or inside the given counterclockwise
-// triangle. Treats the point as if it was lying on the plane of the triangle,
-// so this can be more accurately described as "point vs triangular prism".
+// triangle. Treats the point as if it was lying on the plane of the triangle, so
+// this can be more accurately described as "point vs triangular prism".
 Type PointTriangle(
     Vec3Param point, Vec3Param trianglePointA, Vec3Param trianglePointB, Vec3Param trianglePointC, real epsilon)
 {

@@ -18,21 +18,21 @@ Polygon::Polygon(const Array<Vec2>& rhs) : mData(rhs)
 {
 }
 
-Polygon::Polygon(const Vec2* verts, uint size)
+Polygon::Polygon(const Vec2* verts, size_t size)
 {
   mData.Resize(size);
 
-  for (uint i = 0; i < size; ++i)
+  for (size_t i = 0; i < size; ++i)
     mData[i] = verts[i];
 }
 
 // Indexing operators.
-Vec2& Polygon::operator[](uint index)
+Vec2& Polygon::operator[](size_t index)
 {
   return mData[index];
 }
 
-const Vec2& Polygon::operator[](uint index) const
+const Vec2& Polygon::operator[](size_t index) const
 {
   return mData[index];
 }
@@ -56,7 +56,7 @@ float PolygonQuantizeFloat(float value)
 // Quantizes the shape to a constant precision.
 void Polygon::Quantize()
 {
-  for (uint i = 0; i < mData.Size(); ++i)
+  for (size_t i = 0; i < mData.Size(); ++i)
   {
     mData[i].x = PolygonQuantizeFloat(mData[i].x);
     mData[i].y = PolygonQuantizeFloat(mData[i].y);
@@ -73,7 +73,7 @@ void Polygon::Clear()
 void Polygon::Translate(Vec2Param translation)
 {
   // Translate each vertex
-  for (uint i = 0; i < mData.Size(); ++i)
+  for (size_t i = 0; i < mData.Size(); ++i)
     mData[i] += translation;
 }
 
@@ -88,7 +88,7 @@ void Polygon::Scale(Vec2Param scalar)
 void Polygon::Scale(Vec2Param scalar, Vec2Param center)
 {
   // Scale each vertex
-  for (uint i = 0; i < mData.Size(); ++i)
+  for (size_t i = 0; i < mData.Size(); ++i)
   {
     // Bring the coordinates into the local space of the center
     mData[i] -= center;
@@ -117,7 +117,7 @@ void Polygon::Rotate(real radians, Vec2Param center)
   rotationMtx.m11 = Math::Cos(radians);
 
   // Rotate each vertex
-  for (uint i = 0; i < mData.Size(); ++i)
+  for (size_t i = 0; i < mData.Size(); ++i)
   {
     // Bring the coordinates into the local space of the center
     mData[i] -= center;
@@ -137,7 +137,7 @@ void Polygon::Grow(real distance, bool beaking, Polygon* output)
     return;
 
   output->mData.Assign(mData.All());
-  for (uint i = 0; i < mData.Size(); ++i)
+  for (size_t i = 0; i < mData.Size(); ++i)
   {
     Vec2 prev = mData[PrevIndex(i)];
     Vec2 curr = mData[i];
@@ -171,7 +171,7 @@ void Polygon::RemoveCollinearPoints(real tolerance)
   if (mData.Size() < 3)
     return;
 
-  for (uint i = 0; i < mData.Size();)
+  for (size_t i = 0; i < mData.Size();)
   {
     Vec2 prev = mData[PrevIndex(i)];
     Vec2 curr = mData[i];
@@ -195,7 +195,7 @@ void Polygon::RemoveCollinearPoints(real tolerance)
 // Removes all duplicate points in the shape.
 void Polygon::RemoveDuplicatePoints()
 {
-  for (uint i = 0; i < mData.Size();)
+  for (size_t i = 0; i < mData.Size();)
   {
     if (mData[i] == mData[NextIndex(i)])
       mData.EraseAt(i);
@@ -207,12 +207,12 @@ void Polygon::RemoveDuplicatePoints()
 // Removes all self intersections.
 void Polygon::RemoveSelfIntersections()
 {
-  for (uint i = 0; i < mData.Size(); ++i)
+  for (size_t i = 0; i < mData.Size(); ++i)
   {
     Vec2 p0 = mData[i];
     Vec2 p1 = mData[NextIndex(i)];
 
-    for (uint j = i + 1; j < mData.Size(); ++j)
+    for (size_t j = i + 1; j < mData.Size(); ++j)
     {
       Vec2 p2 = mData[j];
       Vec2 p3 = mData[NextIndex(j)];
@@ -231,7 +231,7 @@ void Polygon::RemoveSelfIntersections()
         else
         {
           // Erase all vertices
-          for (uint k = j; k > i; --k)
+          for (size_t k = j; k > i; --k)
             mData.EraseAt(k);
 
           // Add the point
@@ -261,7 +261,7 @@ void Polygon::MakeClockwise()
 }
 
 // Returns the amount of vertices in the polygon.
-uint Polygon::Size() const
+size_t Polygon::Size() const
 {
   return mData.Size();
 }
@@ -273,13 +273,13 @@ bool Polygon::Empty()
 }
 
 // Returns the next index (wraps around).
-uint Polygon::NextIndex(uint index) const
+size_t Polygon::NextIndex(size_t index) const
 {
   return (index + 1) % Size();
 }
 
 // Returns the previous index (wraps around).
-uint Polygon::PrevIndex(uint index)
+size_t Polygon::PrevIndex(size_t index)
 {
   if (index == 0)
     return mData.Size() - 1;
@@ -296,7 +296,7 @@ real Polygon::GetPerimeterLength()
 {
   real length = 0.0f;
 
-  for (uint i = 0; i < mData.Size(); ++i)
+  for (size_t i = 0; i < mData.Size(); ++i)
   {
     Vec2 curr = mData[i];
     Vec2 next = mData[NextIndex(i)];
@@ -314,7 +314,7 @@ Vec2 Polygon::GetBarycenter()
     return Vec2();
 
   Vec2 center = mData[0];
-  for (uint i = 1; i < mData.Size(); ++i)
+  for (size_t i = 1; i < mData.Size(); ++i)
     center += mData[i];
 
   center /= float(mData.Size());
@@ -427,7 +427,7 @@ bool Polygon::Validate(Array<String>& errors) const
   }
 
   // Check for duplicate points
-  for (uint i = 0; i < mData.Size(); ++i)
+  for (size_t i = 0; i < mData.Size(); ++i)
   {
     if (mData[i] == mData[NextIndex(i)])
     {
@@ -438,21 +438,20 @@ bool Polygon::Validate(Array<String>& errors) const
 
   // Go through all of the segments in the polygon and test to see if any are
   // intersecting
-  uint pointCount = uint(mData.Size());
-  for (uint i = 0; i < (pointCount - 2); ++i)
+  size_t pointCount = mData.Size();
+  for (size_t i = 0; i < (pointCount - 2); ++i)
   {
     // Test the current edge against all non-neighboring edges
-    //(there's no way to intersect neighboring edges unless overlapping
-    // linearly)
-    uint edgeI[2] = {i, i + 1};
-    for (uint j = i + 2; j < pointCount; ++j)
+    //(there's no way to intersect neighboring edges unless overlapping linearly)
+    size_t edgeI[2] = {i, i + 1};
+    for (size_t j = i + 2; j < pointCount; ++j)
     {
       if (i == 0 && j == (pointCount - 1))
       {
         continue;
       }
 
-      uint edgeJ[2] = {j, NextIndex(j)};
+      size_t edgeJ[2] = {j, NextIndex(j)};
       Vec2 points[2];
       ShapeSegResult::Enum result =
           ShapeSegmentSegment(mData[edgeI[0]], mData[edgeI[1]], mData[edgeJ[0]], mData[edgeJ[1]], points);
@@ -461,12 +460,11 @@ bool Polygon::Validate(Array<String>& errors) const
     }
   }
 
-  // Go through all of the segments and check for intersection with their
-  // neighbors
-  for (uint i = 0; i < (pointCount - 1); ++i)
+  // Go through all of the segments and check for intersection with their neighbors
+  for (size_t i = 0; i < (pointCount - 1); ++i)
   {
-    uint thisEdge[2] = {i, i + 1};
-    uint nextEdge[2] = {i + 1, (i + 2) % pointCount};
+    size_t thisEdge[2] = {i, i + 1};
+    size_t nextEdge[2] = {i + 1, (i + 2) % pointCount};
     Vec2 points[2];
     ShapeSegResult::Enum result =
         ShapeSegmentSegment(mData[thisEdge[0]], mData[thisEdge[1]], mData[nextEdge[0]], mData[nextEdge[1]], points);
@@ -529,10 +527,10 @@ void Polygon::DebugDrawFilled(ByteColor color, Mat4Param transform) const
 
   Array<uint> indices;
   Array<uint> contours;
-  contours.PushBack(copy.mData.Size());
+  contours.PushBack((uint)copy.mData.Size());
   bool result = Geometry::Triangulate(copy.mData, contours, &indices);
 
-  uint triangleCount = indices.Size() / 3;
+  size_t triangleCount = indices.Size() / 3;
   if (result == true && triangleCount > 0)
   {
     for (size_t i = 0; i < triangleCount * 3; i += 3)
@@ -620,12 +618,12 @@ ShapeSegResult::Enum ShapeSegmentSegment(Vec2Param segmentStartA,
         extents[3] = Dot(lineDir, d);
 
         // Sort the points
-        uint indices[4] = {0, 1, 2, 3};
+        size_t indices[4] = {0, 1, 2, 3};
 
         // Bubble sort
-        for (uint i = 0; i < 3; ++i)
+        for (size_t i = 0; i < 3; ++i)
         {
-          for (uint j = 0; j < 3 - i; ++j)
+          for (size_t j = 0; j < 3 - i; ++j)
           {
             if (extents[indices[j]] < extents[indices[j + 1]])
               Math::Swap(indices[j], indices[j + 1]);
@@ -668,17 +666,17 @@ ShapeSegResult::Enum ShapeSegmentSegment(Vec2Param segmentStartA,
 /// Transforms the polygon by the given matrix.
 void TransformPolygon(Mat3Param matrix, Polygon* polygon)
 {
-  uint size = polygon->Size();
+  size_t size = polygon->Size();
   // Transform each point
-  for (uint i = 0; i < size; ++i)
+  for (size_t i = 0; i < size; ++i)
     polygon->mData[i] = Math::TransformPoint(matrix, polygon->mData[i]);
 }
 
 void TransformPolygon(Mat4Param matrix, Polygon* polygon)
 {
-  uint size = polygon->Size();
+  size_t size = polygon->Size();
   // Transform each point
-  for (uint i = 0; i < size; ++i)
+  for (size_t i = 0; i < size; ++i)
     polygon->mData[i] = Math::ToVector2(Math::TransformPoint(matrix, Math::ToVector3(polygon->mData[i])));
 }
 

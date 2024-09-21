@@ -157,8 +157,9 @@ Type Mpr::SweptTest(const SupportShape* shapeA, const SupportShape* shapeB, Inte
       //       t += cTimeOfIntersectionEpsilon;
       //       t = real(1.0) - t;
       //
-      //       //Offset for the support points as if the left object were at the
-      //       top mLeftOffset  = mTranslation; mLeftOffset *= t - real(1.0);
+      //       //Offset for the support points as if the left object were at the top
+      //       mLeftOffset  = mTranslation;
+      //       mLeftOffset *= t - real(1.0);
       //
       //       //Modified version of center calculation
       //       mCenter[cLeftShape] += mLeftOffset;
@@ -673,8 +674,7 @@ void Mpr::DrawDebug(uint debugFlag) const
   //
   //
   // #define DrawLine(a, b, color)\
-//   Zero::gDebugDraw->Add(Zero::Debug::Line((a),
-  //   (b)).Color((color)).OnTop(true));
+//   Zero::gDebugDraw->Add(Zero::Debug::Line((a), (b)).Color((color)).OnTop(true));
   //
   //   DrawLine(mCsoCenter, mCsoSupport[0], Color::White);
   //   DrawLine(mCsoCenter, mCsoSupport[1], Color::White);
@@ -685,10 +685,9 @@ void Mpr::DrawDebug(uint debugFlag) const
 //   DrawLine((b), (c), color);        \
 //   DrawLine((c), (a), color);
   //
-  //   DrawTriangle(mCsoSupport[0], mCsoSupport[1], mCsoSupport[2],
-  //   Color::Blue); DrawTriangle(mLeftSupport[0], mLeftSupport[1],
-  //   mLeftSupport[2], Color::Green); DrawTriangle(mRightSupport[0],
-  //   mRightSupport[1], mRightSupport[2], Color::Pink);
+  //   DrawTriangle(mCsoSupport[0], mCsoSupport[1], mCsoSupport[2], Color::Blue);
+  //   DrawTriangle(mLeftSupport[0], mLeftSupport[1], mLeftSupport[2], Color::Green);
+  //   DrawTriangle(mRightSupport[0], mRightSupport[1], mRightSupport[2], Color::Pink);
   // #undef DrawTriangle
   // #undef DrawLine
 }

@@ -18,17 +18,16 @@ namespace Intersection
 namespace
 {
 // Threshold used to determine what kind of collision has occurred between an
-// oriented bounding box and a halfspace. The points of the oriented bounding
-// box are projected onto the halfspace's normal and if the negative projections
-// differ by less than this amount then the points are grouped together to
-// result in a face, edge, or point for the contact point.
+// oriented bounding box and a halfspace. The points of the oriented bounding box
+// are projected onto the halfspace's normal and if the negative projections
+// differ by less than this amount then the points are grouped together to result
+// in a face, edge, or point for the contact point.
 const real cObbPlanePoints = real(0.07);
 
-// Threshold used to determine if two oriented bounding boxes are colliding on
-// an axis. Their points are projected onto that axis and if the distance
-// between the centers of the oriented bounding boxes is greater than the
-// half-lengths of their projections then they are separating. This test is done
-// using
+// Threshold used to determine if two oriented bounding boxes are colliding on an
+// axis. Their points are projected onto that axis and if the distance between
+// the centers of the oriented bounding boxes is greater than the half-lengths of
+// their projections then they are separating. This test is done using
 //"projections - distance" and that value is compared with this threshold.
 const real cObbObbZero = real(0.0002);
 
@@ -38,15 +37,15 @@ const real cObbObbZero = real(0.0002);
 const real cObbObbFudgeFactor = real(1.05);
 
 // This is used to check if the normal is pointing from box A to box B. The
-// normal is compared (dotted) against the vector from the center of box A to
-// box B. If this dot product is above this epsilon, then the normal is pointing
-// the wrong way.
+// normal is compared (dotted) against the vector from the center of box A to box
+// B. If this dot product is above this epsilon, then the normal is pointing the
+// wrong way.
 const real cObbObbNormalCheck = real(-0.0000001);
 
 // This is used to check if the contact points are stored with box A first and
 // box B second (in an array). The vector from box A's contact point to box B's
-// contact point is compared (dotted) against the vector from the center of box
-// A to box B. If this dot product is above this epsilon, then the points are in
+// contact point is compared (dotted) against the vector from the center of box A
+// to box B. If this dot product is above this epsilon, then the points are in
 // the wrong order.
 const real cObbObbPointCheck = real(0.0000001);
 
@@ -195,12 +194,12 @@ uint ClipQuadWithRectangle(Vec2Param rectangleHalfExtents, const Vec2* inPoints,
       Vec2* clip = clipPoint;           // Where to store the end resulting point
       clipPointCount = 0;               // No clipping has occurred on this side yet
 
-      // Used to help clarify when the next point of the quad should be the
-      // first point of the quad
+      // Used to help clarify when the next point of the quad should be the first
+      // point of the quad
       uint nextEnd = quadPointCount - 1;
 
-      // Go through all of the edges of the quad and attempt to clip them
-      // against the current side of the rectangle.
+      // Go through all of the edges of the quad and attempt to clip them against
+      // the current side of the rectangle.
       for (uint i = 0; i < quadPointCount; ++i)
       {
         // Test to see which side of the current rectangle edge the current
@@ -329,8 +328,7 @@ void GetExtremePoints(const Vec2* points, uint pointCount, uint maxPoints, uint 
   // Sweep around the centroid of the polygon searching for points most evenly
   // distributed across the polygon. Hard to explain!
 
-  // This is essentially the unit circle cut up into
-  // "maxPoints-number-of-slices"
+  // This is essentially the unit circle cut up into "maxPoints-number-of-slices"
   const real cPieceOfPi = Math::cTwoPi / real(maxPoints);
 
   real offsetFromInit;
@@ -463,9 +461,9 @@ Type ObbObbContactGeneration(Vec3Param obbOneCenter,
   ErrorIf(axisCase == 0,
           "Intersection - It seems the boxes are colliding, yet"
           " a valid axis of intersection was not found.");
-  // If any of the 9 latter OBB axes were used (those that are generated from
-  // the cross products of the OBBs' face normals), then it is an edge-edge
-  // case. Now we find the closest points of the two edges.
+  // If any of the 9 latter OBB axes were used (those that are generated from the
+  // cross products of the OBBs' face normals), then it is an edge-edge case. Now
+  // we find the closest points of the two edges.
   if (axisCase > 6)
   {
     ObbObbEdgeCase(obbOneCenter,
@@ -541,8 +539,8 @@ Type ObbObbContactGeneration(Vec3Param obbOneCenter,
     aNormal *= real(-1.0);
   }
 
-  // The largest component of the bNormal corresponds to the normal for B's
-  // face. The perpendicular components are stored as well.
+  // The largest component of the bNormal corresponds to the normal for B's face.
+  // The perpendicular components are stored as well.
   uint bAxis, bOne, bTwo;
   Vec3 bFaceCenter = *bCenter - *aCenter; // Used later (see end of scope)
   {
@@ -668,10 +666,10 @@ Type ObbObbContactGeneration(Vec3Param obbOneCenter,
   Vec2 aFaceExtents((*aHalfExtents)[aOne], (*aHalfExtents)[aTwo]);
 
   // B's face is now in A's face's reference frame. The nice thing is that now
-  // A's face can be represented by its half extents, with the center of A's
-  // face being the origin and the axes of A's face being the x-axis and y-axis
-  // (or z-axis, depending on how you view things). Now clip B's face against
-  // A's face.
+  // A's face can be represented by its half extents, with the center of A's face
+  // being the origin and the axes of A's face being the x-axis and y-axis (or
+  // z-axis, depending on how you view things). Now clip B's face against A's
+  // face.
   Vec2 bFace[8];
   uint bFacePointCount = ClipQuadWithRectangle(aFaceExtents, bFacePoints, bFace);
   if (bFacePointCount == 0)
@@ -680,8 +678,8 @@ Type ObbObbContactGeneration(Vec3Param obbOneCenter,
   }
 
   // Convert the intersection points into A's face's coordinates and compute the
-  // contact point and depth for each point. Only keep the points that lie on
-  // the inside of A's face (ie. those that are inside box A).
+  // contact point and depth for each point. Only keep the points that lie on the
+  // inside of A's face (ie. those that are inside box A).
   {
     // Determinant of the matrix that brought B's points into A's reference
     // frame.
@@ -699,11 +697,11 @@ Type ObbObbContactGeneration(Vec3Param obbOneCenter,
   real depths[8];
   for (uint i = 0; i < bFacePointCount; ++i)
   {
-    // Recreate the clipped points in the space where A's center is the origin
-    // by representing them in terms of the clipped face's center and distance
-    // along the face's x- and y-axes. This block of code is doing the
-    // "representing them in terms of the face's center and distance along the
-    // face's x- and y-axes" part.
+    // Recreate the clipped points in the space where A's center is the origin by
+    // representing them in terms of the clipped face's center and distance along
+    // the face's x- and y-axes. This block of code is doing the "representing
+    // them in terms of the face's center and distance along the face's x- and
+    // y-axes" part.
     real xChange = bFace[i].x - bFaceXY.x;
     real yChange = bFace[i].y - bFaceXY.y;
     real xExtent = bFaceAxes[1].y * xChange - bFaceAxes[1].x * yChange;
@@ -716,8 +714,8 @@ Type ObbObbContactGeneration(Vec3Param obbOneCenter,
     points[pointCount] = Math::MultiplyAdd(points[pointCount], *(bAxes[bTwo]), yExtent);
 
     // Dot the face normal with the point and compute the depth
-    // Since A's center is the origin, A's face's distance from the origin is
-    // the half extents of A along the normal
+    // Since A's center is the origin, A's face's distance from the origin is the
+    // half extents of A along the normal
     const real faceDistance = (*aHalfExtents)[aAxis];
     depths[pointCount] = Geometry::SignedDistanceToPlane(points[pointCount], aNormal, faceDistance);
 
@@ -789,8 +787,7 @@ Type ObbObbContactGeneration(Vec3Param obbOneCenter,
       }
     }
   }
-  // More points were generated than were asked for, some of them must be
-  // culled.
+  // More points were generated than were asked for, some of them must be culled.
   else
   {
     // Find the deepest point, it is always the first contact point.
@@ -939,8 +936,8 @@ Type ObbObb(Vec3Param obbOneCenter,
       }
 
       // Compute common subexpressions.* Add in an epsilon term to counteract
-      // arithmetic errors when two edges are parallel and their cross product
-      // is (near) zero.
+      // arithmetic errors when two edges are parallel and their cross product is
+      //(near) zero.
       // *We take the absolute value because to get the box's full projection
       //  onto the axis we'd have to do "abs(x) + abs(y) + abs(z)". Half extents
       //  are always positive, so the matrix's values are the only place
@@ -1204,8 +1201,8 @@ Type ObbPlane(Vec3Param obbCenter,
   real sign = Geometry::SignedDistanceToPlane(obbCenter, planeNormal, planeDistance);
   if (Math::IsNegative(sign))
   {
-    // All of the box's face points are negative, add as many as we can and
-    // early out.
+    // All of the box's face points are negative, add as many as we can and early
+    // out.
     manifold->Normal = planeNormal;
 
     PointInfoArray points;
@@ -1509,8 +1506,7 @@ Type ClipTriangleAgainstBox(Vec3Param obbCenter,
       manifold.PointAt(i).Points[0] = pointInWorld;
     }
   }
-  // More points were generated than were asked for, some of them must be
-  // culled.
+  // More points were generated than were asked for, some of them must be culled.
   else
   {
     // Create the triangle's orientation matrix as if the triangle's normal were
@@ -1685,8 +1681,7 @@ Type ClipBoxAgainstTriangle(Vec3Param obbCenter,
       manifold.PointAt(i).Points[1] = pointInWorld;
     }
   }
-  // More points were generated than were asked for, some of them must be
-  // culled.
+  // More points were generated than were asked for, some of them must be culled.
   else
   {
     // Create the box's orientation matrix as if the box's face normal was the
@@ -1744,10 +1739,10 @@ Type ObbTriangleContactGeneration(Vec3Param obbCenter,
                                   real projection,
                                   Manifold& manifold)
 {
-  // If any of the 9 latter box-triangle axes were used (those that are
-  // generated from the cross products of the box's face normals and the
-  // triangle's edge normals), then it is an edge-edge case. Now we find the
-  // closest points of the two edges.
+  // If any of the 9 latter box-triangle axes were used (those that are generated
+  // from the cross products of the box's face normals and the triangle's edge
+  // normals), then it is an edge-edge case. Now we find the closest points of
+  // the two edges.
   if (axisCase > 4)
   {
     ObbTriangleEdgeCase(obbCenter, obbHalfExtents, obbBasis, triPoints, normal, axisCase, projection, manifold);
@@ -1773,8 +1768,8 @@ Type ObbTriangleContactGeneration(Vec3Param obbCenter,
     return ClipTriangleAgainstBox(obbCenter, obbHalfExtents, obbBasis, triPoints, axisCase, normal, manifold);
   }
 
-  // If the axis case is 4, then the face on the box that is most oriented
-  // toward the triangle will be used to clip the triangle.
+  // If the axis case is 4, then the face on the box that is most oriented toward
+  // the triangle will be used to clip the triangle.
   else
   {
     return ClipBoxAgainstTriangle(obbCenter, obbHalfExtents, obbBasis, triPoints, axisCase, normal, manifold);
@@ -1917,8 +1912,7 @@ Type ObbTriangle(
 #define Max3(a, b, c) Math::Max(Math::Max((a), (b)), (c))
   for (uint i = 0; i < 3; ++i)
   {
-    // Compute the difference between box's max/tri's min and box's min/tri's
-    // max
+    // Compute the difference between box's max/tri's min and box's min/tri's max
     triProj[0] = -Min3(triPoint[0][i], triPoint[1][i], triPoint[2][i]);
     triProj[0] += obbHalfExtents[i];
 

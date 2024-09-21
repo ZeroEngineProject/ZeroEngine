@@ -72,8 +72,7 @@ Type Gjk::TestDebug(const SupportShape* shapeA, const SupportShape* shapeB, Mani
       float proj = mSupportVector.Dot(support.cso - mSimplex.mPoints[0].cso);
       if (proj <= sEpsilon)
       {
-        // Zero::gDebugDraw->Add(Zero::Debug::Sphere(support.cso,
-        // 0.02).Color(Color::Black));
+        // Zero::gDebugDraw->Add(Zero::Debug::Sphere(support.cso, 0.02).Color(Color::Black));
         return Intersection::None;
       }
     }
@@ -132,20 +131,16 @@ void Gjk::DrawDebug(uint debugFlag)
   // mSupportVector = mSimplex.GetSupportVector();
 
   // for (unsigned i = 0; i < mCSO.Size(); ++i)
-  //   Zero::gDebugDraw->Add(Zero::Debug::Sphere(mCSO[i],
-  //   0.01f).Color(Color::PapayaWhip));
+  //   Zero::gDebugDraw->Add(Zero::Debug::Sphere(mCSO[i], 0.01f).Color(Color::PapayaWhip));
 
   // for (unsigned i = 0; i < mSimplex.mCount; ++i)
   // {
-  //   Zero::gDebugDraw->Add(Zero::Debug::Sphere(mSimplex.mPoints[i].cso,
-  //   0.01f).Color(Color::Blue));
-  //   Zero::gDebugDraw->Add(Zero::Debug::Line(mSimplex.mPoints[i].cso,
-  //   mSimplex.mPoints[(i + 1) % mSimplex.mCount].cso).Color(Color::Blue)); if
-  //   (mSimplex.mCount == 4)
+  //   Zero::gDebugDraw->Add(Zero::Debug::Sphere(mSimplex.mPoints[i].cso, 0.01f).Color(Color::Blue));
+  //   Zero::gDebugDraw->Add(Zero::Debug::Line(mSimplex.mPoints[i].cso, mSimplex.mPoints[(i + 1) %
+  //   mSimplex.mCount].cso).Color(Color::Blue)); if (mSimplex.mCount == 4)
   //   {
-  //     Zero::gDebugDraw->Add(Zero::Debug::Line(mSimplex.mPoints[i].cso,
-  //     mSimplex.mPoints[(i + 2) % mSimplex.mCount].cso).Color(Color::Blue));
-  //     Zero::gDebugDraw->Add(Zero::Debug::Line(mSimplex.mPoints[i].cso,
+  //     Zero::gDebugDraw->Add(Zero::Debug::Line(mSimplex.mPoints[i].cso, mSimplex.mPoints[(i + 2) %
+  //     mSimplex.mCount].cso).Color(Color::Blue)); Zero::gDebugDraw->Add(Zero::Debug::Line(mSimplex.mPoints[i].cso,
   //     mSimplex.mPoints[(i + 3) % mSimplex.mCount].cso).Color(Color::Blue));
   //   }
   // }
@@ -155,8 +150,7 @@ void Gjk::DrawDebug(uint debugFlag)
   //   average += mSimplex.mPoints[i].cso;
   // if (mSimplex.mCount)
   //   average /= (float)mSimplex.mCount;
-  // Zero::gDebugDraw->Add(Zero::Debug::Line(average, average +
-  // mSupportVector).Color(Color::Red));
+  // Zero::gDebugDraw->Add(Zero::Debug::Line(average, average + mSupportVector).Color(Color::Red));
 }
 
 Simplex Gjk::GetSimplex(void)
@@ -195,7 +189,7 @@ void Gjk::DrawCSO(void)
 {
   Zero::Array<CSOVertex> supports;
 
-  unsigned subdivisions = 24;
+  size_t subdivisions = 24;
   float alphaLimit = Math::cPi - sEpsilon;
   float betaLimit = Math::cPi * 2 - sEpsilon;
 
@@ -238,15 +232,15 @@ void Gjk::DrawCSO(void)
   CSOVertex top = ComputeSupport(Vec3(0, 1, 0));
   CSOVertex bottom = ComputeSupport(Vec3(0, -1, 0));
 
-  unsigned collumns = subdivisions * 2;
-  for (unsigned i = 0; i < collumns; ++i)
+  size_t collumns = subdivisions * 2;
+  for (size_t i = 0; i < collumns; ++i)
   {
-    unsigned i2 = (i + 1) % (collumns);
+    size_t i2 = (i + 1) % (collumns);
     CSOVertex p0 = supports[i];
     CSOVertex p1 = supports[i2];
 
-    unsigned j = supports.Size() - (collumns - i);
-    unsigned j2 = supports.Size() - (collumns - i2);
+    size_t j = supports.Size() - (collumns - i);
+    size_t j2 = supports.Size() - (collumns - i2);
     CSOVertex p2 = supports[j];
     CSOVertex p3 = supports[j2];
 
@@ -258,8 +252,7 @@ void Gjk::DrawCSO(void)
   supports.PushBack(bottom);
 
   // for (unsigned i = 0; i < supports.Size(); ++i)
-  //   Zero::gDebugDraw->Add(Zero::Debug::Sphere(supports[i].cso,
-  //   0.01f).Color(Color::Green));
+  //   Zero::gDebugDraw->Add(Zero::Debug::Sphere(supports[i].cso, 0.01f).Color(Color::Green));
 }
 
 bool Gjk::ComputeContactData(Manifold* manifold, unsigned maxExpands, bool debug)
@@ -312,8 +305,7 @@ bool Gjk::ComputeContactData(Manifold* manifold, unsigned maxExpands, bool debug
     ++count;
   }
 
-  // If we hit max expands, we need to find the new closest face before
-  // computing contact data
+  // If we hit max expands, we need to find the new closest face before computing contact data
   if (count == maxExpands)
     mSupportVector = mEpa.GetClosestFaceNormal();
   // }
@@ -380,8 +372,7 @@ void Gjk::CompleteSimplex(void)
 
   case 3:
   {
-    // Only two directions for trying to expand a triangle, front or back face
-    // normals
+    // Only two directions for trying to expand a triangle, front or back face normals
     Vec3 p0p1 = mSimplex.mPoints[1].cso - mSimplex.mPoints[0].cso;
     Vec3 p0p2 = mSimplex.mPoints[2].cso - mSimplex.mPoints[0].cso;
     Vec3 normal = p0p1.Cross(p0p2);
@@ -391,10 +382,9 @@ void Gjk::CompleteSimplex(void)
       return;
 
     CSOVertex support = ComputeSupport(normal);
-    // It is possible that the triangle is on the surface of the cso and the
-    // normal points outward if this happens, just need to expand the opposite
-    // direction and flip two vertices to maintain the expected winding order in
-    // the simplex
+    // It is possible that the triangle is on the surface of the cso and the normal points outward
+    // if this happens, just need to expand the opposite direction and flip two vertices
+    // to maintain the expected winding order in the simplex
     if (normal.Dot(support.cso - mSimplex.mPoints[0].cso) <= sEpsilon)
     {
       normal *= -1.0f;

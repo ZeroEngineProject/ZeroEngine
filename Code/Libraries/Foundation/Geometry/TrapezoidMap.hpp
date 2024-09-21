@@ -144,8 +144,7 @@ public:
 
   NodeId MergeAbove(RegionId regionId, RegionId* parent);
 
-  // Inserts an edge into the tree/graph dividing space on either side of that
-  // edge
+  // Inserts an edge into the tree/graph dividing space on either side of that edge
   bool InsertEdge(EdgeId edgeId);
 
   // Inserts a vertex into the tree/graph dividing space vertically

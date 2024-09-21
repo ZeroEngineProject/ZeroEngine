@@ -8,8 +8,7 @@ namespace ConvexDecomposition
 {
 
 struct ConvexShape;
-/// An edge between two points in the outer contour. Used for combining meshes
-/// together.
+/// An edge between two points in the outer contour. Used for combining meshes together.
 struct Edge
 {
   uint mPoint0Index;
@@ -37,8 +36,7 @@ struct EdgeHashingPolicy
 {
   size_t operator()(const Edge* value) const
   {
-    // multiply the larger index by a large prime to help distribute the hashing
-    // function
+    // multiply the larger index by a large prime to help distribute the hashing function
     uint value0 = value->mPoint0Index;
     uint value1 = value->mPoint1Index;
     if (value0 > value1)
@@ -49,8 +47,7 @@ struct EdgeHashingPolicy
 
   inline bool Equal(const Edge* left, const Edge* right) const
   {
-    // the edges are equal if they are between the same two points (even if the
-    // order is flipped)
+    // the edges are equal if they are between the same two points (even if the order is flipped)
     return (left->mPoint0Index == right->mPoint0Index && left->mPoint1Index == right->mPoint1Index) ||
            (left->mPoint0Index == right->mPoint1Index && left->mPoint1Index == right->mPoint0Index);
   }
@@ -80,11 +77,10 @@ struct EdgeGreaterThanSorter
 
 void Combine2dConvexMeshes(const Array<Vec2>& vertices, SubShapeArray& shapes, SubShapeArray& newShapes)
 {
-  // count how many edges and shapes we have (so we can allocate all the memory
-  // we need up front)
-  uint shapeCount = shapes.Size();
+  // count how many edges and shapes we have (so we can allocate all the memory we need up front)
+  size_t shapeCount = shapes.Size();
   SubShapeArray::range subShapes = shapes.All();
-  uint edgeCount = 0;
+  size_t edgeCount = 0;
   for (; !subShapes.Empty(); subShapes.PopFront())
   {
     SubShape& subShape = subShapes.Front();
@@ -99,18 +95,15 @@ void Combine2dConvexMeshes(const Array<Vec2>& vertices, SubShapeArray& shapes, S
   // we need to store the resultant convex shapes
   typedef InList<ConvexShape> ConvexShapeList;
   ConvexShapeList convexShapes;
-  // it will only require one iteration through all internal edges to get a
-  // decomposition
+  // it will only require one iteration through all internal edges to get a decomposition
   typedef InList<Edge, &Edge::internalEdgeLink> InternalEdgeList;
   InternalEdgeList internalEdges;
-  // use a map for now to find edge pairs (any internal edge will have a pair
-  // edge)
+  // use a map for now to find edge pairs (any internal edge will have a pair edge)
   HashSet<Edge*, EdgeHashingPolicy> edgeMap;
 
-  uint vertexCount = vertices.Size();
-  // The first step is to build each shape and determine which edges are
-  // internal. During this step we'll also find the mirror edge for each
-  // internal edge.
+  size_t vertexCount = vertices.Size();
+  // The first step is to build each shape and determine which edges are internal.
+  // During this step we'll also find the mirror edge for each internal edge.
   subShapes = shapes.All();
   for (; !subShapes.Empty(); subShapes.PopFront())
   {
@@ -119,8 +112,8 @@ void Combine2dConvexMeshes(const Array<Vec2>& vertices, SubShapeArray& shapes, S
     convexShapes.PushBack(convexShape);
 
     // iterate through all the edges of this shape
-    uint indexCount = subShape.mIndices.Size();
-    for (uint i = 0; i < indexCount; ++i)
+    size_t indexCount = subShape.mIndices.Size();
+    for (size_t i = 0; i < indexCount; ++i)
     {
       // create the edge and add it to this shape
       Edge* edge = edgePool.AllocateType<Edge>();
@@ -133,16 +126,15 @@ void Combine2dConvexMeshes(const Array<Vec2>& vertices, SubShapeArray& shapes, S
       // Determine if this edge is an internal edge. If the next second
       // point on this edge is either the next or previous point in the original
       // vertex list then the point is on the outer contour.
-      uint nextVertex = (edge->mPoint0Index + 1) % vertexCount;
-      uint prevVertex = (edge->mPoint0Index + vertexCount - 1) % vertexCount;
+      size_t nextVertex = (edge->mPoint0Index + 1) % vertexCount;
+      size_t prevVertex = (edge->mPoint0Index + vertexCount - 1) % vertexCount;
       if (edge->mPoint1Index == nextVertex || edge->mPoint1Index == prevVertex)
         continue;
 
-      // Try to find the adjacent edge. If we find it we need to hook up the
-      // adjacency for each edge but we don't need to add it to the internal
-      // edges list because we handle the internal edges in pairs so we only
-      // need one of them in there. Also, there is no need to add it to the map
-      // because there is only 1 pair for an edge.
+      // Try to find the adjacent edge. If we find it we need to hook up the adjacency for
+      // each edge but we don't need to add it to the internal edges list because we handle
+      // the internal edges in pairs so we only need one of them in there. Also, there is no
+      // need to add it to the map because there is only 1 pair for an edge.
       Edge* adjacentEdge = edgeMap.FindValue(edge, nullptr);
       if (adjacentEdge != nullptr)
       {
@@ -163,23 +155,20 @@ void Combine2dConvexMeshes(const Array<Vec2>& vertices, SubShapeArray& shapes, S
   internalEdges.Sort(sorter);
 
   // Now iterate through all of the internal edges and determine whether or not
-  // it is "essential". The edge is essential if removing it will make the
-  // combined meshes concave. This can be determined locally by checking the
-  // angles of the adjacent edges.
+  // it is "essential". The edge is essential if removing it will make the combined meshes concave.
+  // This can be determined locally by checking the angles of the adjacent edges.
   while (!internalEdges.Empty())
   {
     Edge& edgeA = internalEdges.Front();
     internalEdges.PopFront();
 
-    // a safeguard, should never happen unless the passed in mesh has problems
-    // (such as duplicate vertices)
+    // a safeguard, should never happen unless the passed in mesh has problems (such as duplicate vertices)
     if (edgeA.mAdjacentEdge == nullptr)
       continue;
 
     Edge& edgeB = *edgeA.mAdjacentEdge;
 
-    // get the edges before and after the edge we're trying to remove on both
-    // shapes
+    // get the edges before and after the edge we're trying to remove on both shapes
     Edge* prevEdgeA = edgeA.mShape->mEdges.PrevWrap(&edgeA);
     Edge* nextEdgeA = edgeA.mShape->mEdges.NextWrap(&edgeA);
     Edge* prevEdgeB = edgeB.mShape->mEdges.PrevWrap(&edgeB);
@@ -235,8 +224,7 @@ void Combine2dConvexMeshes(const Array<Vec2>& vertices, SubShapeArray& shapes, S
   for (; !convexShapeRange.Empty(); convexShapeRange.PopFront())
   {
     ConvexShape& shape = convexShapeRange.Front();
-    // if this shape is empty (because we merged it with another shape) then
-    // ignore it
+    // if this shape is empty (because we merged it with another shape) then ignore it
     if (shape.mEdges.Empty())
       continue;
 

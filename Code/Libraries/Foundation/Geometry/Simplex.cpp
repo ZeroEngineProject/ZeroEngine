@@ -244,12 +244,11 @@ void Simplex::ComputeSupportVector(void)
     mSupportVector.ZeroOut();
   }
 
-  // If the result is the zero vector, then the origin is contained in our
-  // simplex In the case of a degenerate triangle it is logically invalid to say
-  // that the origin is contained and that more progress can't be made. If that
-  // happens, a false collision will be returned when failing to complete the
-  // simplex. Note: This will incorrectly return collision if it happens in a
-  // true/false only query.
+  // If the result is the zero vector, then the origin is contained in our simplex
+  // In the case of a degenerate triangle it is logically invalid to say that
+  // the origin is contained and that more progress can't be made.
+  // If that happens, a false collision will be returned when failing to complete the simplex.
+  // Note: This will incorrectly return collision if it happens in a true/false only query.
   if (mSupportVector.Length() < Gjk::sEpsilon)
     mContainsOrigin = true;
   else

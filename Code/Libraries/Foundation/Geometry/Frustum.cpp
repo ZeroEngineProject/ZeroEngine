@@ -262,8 +262,7 @@ Frustum Frustum::Transform(Mat4Param transformation) const
   // To deal with that issue (and this might be better anyways), instead of
   // trying to transform the points, we can transform the planes of the frustum.
   // This involves transforming the normal (simple) and generating a point on
-  // the plane to transform (since I have no clue if you can transform 'd'
-  // somehow).
+  // the plane to transform (since I have no clue if you can transform 'd' somehow).
 
   // to properly transform a normal you have to use the inverse transpose
   Mat4 invTransposedTransform = transformation.Inverted().Transposed();

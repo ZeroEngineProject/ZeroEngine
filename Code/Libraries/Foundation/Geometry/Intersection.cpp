@@ -41,8 +41,8 @@ Interval::Interval(real min, real max) : Min(min), Max(max)
 }
 
 // Find the complement of this interval (A) in the given interval (B), or
-// otherwise the values in B but not in A. Similar to subtracting the elements
-// of A from B.
+// otherwise the values in B but not in A. Similar to subtracting the elements of
+// A from B.
 Interval Interval::Complement(const Interval& b) const
 {
   // All comments use the "min -> max" convention.
@@ -122,9 +122,7 @@ SupportShape::SupportShape()
 }
 
 SupportShape::SupportShape(Vec3Param center, SupportFunction support, void* data) :
-    mCenter(center),
-    mSupportFunction(support),
-    mData(data)
+    mCenter(center), mSupportFunction(support), mData(data)
 {
   mDeltaPosition = Vec3::cZero;
   mDeltaRotation = Quat::cIdentity;
@@ -284,8 +282,8 @@ Type AabbAabb(Vec3Param aabbOneMinPoint,
     {
       manifold->PointAt(0).Depth = AttemptNormalize(closestPoint);
 
-      // Find the longest span between the centers of the two AABBs, that axis
-      // is the normal
+      // Find the longest span between the centers of the two AABBs, that axis is
+      // the normal
       if (Math::IsZero(manifold->PointAt(0).Depth))
       {
         // Center of AABB one
@@ -405,8 +403,8 @@ Type AabbPlane(
 
   Mat3 aabbBasis = Mat3::cIdentity;
 
-  // Might be a teeny bit slower than writing the special case for AABB-plane
-  // but it works for now.
+  // Might be a teeny bit slower than writing the special case for AABB-plane but
+  // it works for now.
   return ObbPlane(center, halfExtents, aabbBasis, planeNormal, planeDistance, manifold);
 }
 
@@ -422,8 +420,8 @@ Type AabbSphere(
   Vec3 closestPoint = sphereCenter;
   Type result = ClosestPointOnAabbToPoint(aabbMinPoint, aabbMaxPoint, &closestPoint);
 
-  // If the point was found to be outside of the AABB then the sphere's center
-  // is outside of the AABB
+  // If the point was found to be outside of the AABB then the sphere's center is
+  // outside of the AABB
   if (result != Inside)
   {
     Vec3 pointToSphere = sphereCenter - closestPoint;
@@ -480,12 +478,12 @@ Type AabbSphere(
       Vec3 pointToSphere = sphereCenter - closestPoint;
 
       // Since the sphere is contained within the AABB at this point, the
-      // penetration depth is sum of the distance between the sphere's center
-      // and the closest point on the AABB
+      // penetration depth is sum of the distance between the sphere's center and
+      // the closest point on the AABB
       real overlapAmount = Normalize(pointToSphere) + sphereRadius;
 
-      // Normal is now pointing inside the AABB, so we need to negate it in
-      // order to push the sphere outside
+      // Normal is now pointing inside the AABB, so we need to negate it in order
+      // to push the sphere outside
       Negate(&pointToSphere);
 
       manifold->Normal = pointToSphere;
@@ -870,9 +868,9 @@ Type SphereSphere(Vec3Param sphereOneCenter,
 {
   Vec3 oneToTwo = sphereTwoCenter - sphereOneCenter;
 
-  // If the distance between the two spheres is greater than their combined
-  // radii then they are not intersecting. Below, the test uses squared lengths
-  // and radii, which works out to be the same for the boolean test.
+  // If the distance between the two spheres is greater than their combined radii
+  // then they are not intersecting. Below, the test uses squared lengths and
+  // radii, which works out to be the same for the boolean test.
   real sphereRadii = sphereOneRadius + sphereTwoRadius;
   if (LengthSq(oneToTwo) > (sphereRadii * sphereRadii))
   {
@@ -983,8 +981,8 @@ Type TriangleTriangle(Vec3Param triOnePointA,
   Vec3 planeNormalOne = Geometry::GenerateNormal(triOnePointA, triOnePointB, triOnePointC);
   real planeDistanceOne = Dot(planeNormalOne, triOnePointA);
 
-  // Exit with no intersection if the vertices of triangle B are on the same
-  // side of this plane. Save these results for later usage.
+  // Exit with no intersection if the vertices of triangle B are on the same side
+  // of this plane. Save these results for later usage.
   Type pointSideOne[3] = {PointPlane(triTwoPointA, planeNormalOne, planeDistanceOne),
                           PointPlane(triTwoPointB, planeNormalOne, planeDistanceOne),
                           PointPlane(triTwoPointC, planeNormalOne, planeDistanceOne)};
@@ -998,8 +996,8 @@ Type TriangleTriangle(Vec3Param triOnePointA,
   Vec3 planeNormalTwo = Geometry::GenerateNormal(triTwoPointA, triTwoPointB, triTwoPointC);
   real planeDistanceTwo = Dot(planeNormalTwo, triTwoPointA);
 
-  // Exit with no intersection if the vertices of triangle A are on the same
-  // side of this plane. Save these results for later usage.
+  // Exit with no intersection if the vertices of triangle A are on the same side
+  // of this plane. Save these results for later usage.
   Type pointSideTwo[3] = {PointPlane(triOnePointA, planeNormalTwo, planeDistanceTwo),
                           PointPlane(triOnePointB, planeNormalTwo, planeDistanceTwo),
                           PointPlane(triOnePointC, planeNormalTwo, planeDistanceTwo)};
@@ -1018,8 +1016,8 @@ Type TriangleTriangle(Vec3Param triOnePointA,
   // intersection line L.
   uint axis = (line.x > line.y && line.x > line.z) ? 0 : (line.y > line.z ? 1 : 2);
 
-  // Compute scalar intersection intervals for each triangle with L, as
-  // projected onto this principal axis.
+  // Compute scalar intersection intervals for each triangle with L, as projected
+  // onto this principal axis.
   real projOne[2];
   projOne[0] = Math::Min(Math::Min(triOnePointA[axis], triOnePointB[axis]), triOnePointC[axis]);
   projOne[1] = Math::Max(Math::Max(triOnePointA[axis], triOnePointB[axis]), triOnePointC[axis]);

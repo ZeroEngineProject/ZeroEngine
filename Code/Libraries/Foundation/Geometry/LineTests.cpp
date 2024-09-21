@@ -34,8 +34,8 @@ Type LineAabb(
   return Unimplemented;
 }
 
-// Intersect a line with a capsule defined by its center, local axes, radius,
-// and half of the distance between the centers of the spherical endcaps.
+// Intersect a line with a capsule defined by its center, local axes, radius, and
+// half of the distance between the centers of the spherical endcaps.
 Type LineCapsule(Vec3Param linePoint,
                  Vec3Param lineDirection,
                  Vec3Param capsuleCenter,
@@ -91,8 +91,8 @@ Type LineCylinder(Vec3Param linePoint,
   return Unimplemented;
 }
 
-// Intersect a line with a cylinder defined by the points in the center of
-// either end and its radius.
+// Intersect a line with a cylinder defined by the points in the center of either
+// end and its radius.
 Type LineCylinder(Vec3Param linePoint,
                   Vec3Param lineDirection,
                   Vec3Param cylinderPointA,
@@ -112,8 +112,8 @@ Type LineCylinder(Vec3Param linePoint,
   return LineCylinder(linePoint, lineDirection, center, basis, cylinderRadius, cylinderHalfHeight, interval);
 }
 
-// Intersect a line with a cylinder defined by its center, local axes, radii,
-// and half of the distance between the cylinder's endcaps.
+// Intersect a line with a cylinder defined by its center, local axes, radii, and
+// half of the distance between the cylinder's endcaps.
 Type LineCylinder(Vec3Param linePoint,
                   Vec3Param lineDirection,
                   Vec3Param cylinderCenter,

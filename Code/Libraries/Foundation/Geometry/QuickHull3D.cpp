@@ -84,8 +84,7 @@ void QuickHull3D::QuickHullFace::RecomputeCenterAndNormal()
 bool QuickHull3D::QuickHullFace::IsConvexTo(QuickHullFace* other, real epsilon)
 {
   // A face is convex to another if its center is strictly behind the
-  // thick plane. Do this test symmetrically (a->b and b->a) for numerical
-  // reasons.
+  // thick plane. Do this test symmetrically (a->b and b->a) for numerical reasons.
   real face1Convex = Math::Dot(other->mCenter - this->mCenter, this->mNormal) < -epsilon;
   real face0Convex = Math::Dot(this->mCenter - other->mCenter, other->mNormal) < -epsilon;
   if (face0Convex && face1Convex)
@@ -116,8 +115,7 @@ bool QuickHull3D::Build(const Array<Vec3>& points, DebugDrawStack* stack)
 
   // Clear the previous data in-case this hull is being re-used
   Clear();
-  // Cache the debug drawing stack object (used to determine if we run debug
-  // drawing steps)
+  // Cache the debug drawing stack object (used to determine if we run debug drawing steps)
   mDebugDrawStack = stack;
 
   // Can't construct a hull from less than 4 points
@@ -127,14 +125,12 @@ bool QuickHull3D::Build(const Array<Vec3>& points, DebugDrawStack* stack)
   // Allocate the memory pools for this run
   AllocatePools(points);
 
-  // Turn all of the points into a working format (allocates vertices and
-  // performs vertex welding)
+  // Turn all of the points into a working format (allocates vertices and performs vertex welding)
   size_t resultPointCount;
   if (!BuildDataSet(points, resultPointCount))
     return false;
 
-  // After vertex welding we dropped to less than 4 points. We can no longer
-  // make a hull
+  // After vertex welding we dropped to less than 4 points. We can no longer make a hull
   if (resultPointCount < 4)
     return false;
 
@@ -147,8 +143,7 @@ bool QuickHull3D::Build(const Array<Vec3>& points, DebugDrawStack* stack)
   // us to efficiently check for furthest away points.
   ComputeInitialConflictLists();
 
-  // Iteratively find a vertex that is outside the hull and then add it to the
-  // hull until no vertices remain.
+  // Iteratively find a vertex that is outside the hull and then add it to the hull until no vertices remain.
   QuickHullVertex* conflictVertex = nullptr;
   QuickHullFace* conflictFace = nullptr;
   FindNextConflictVertex(conflictVertex, conflictFace);
@@ -180,8 +175,7 @@ size_t QuickHull3D::ComputeVertexCount()
 {
   size_t count = 0;
 
-  // Compute the unique set of final vertices (faster to do at the end than
-  // iteratively during the algorithm)
+  // Compute the unique set of final vertices (faster to do at the end than iteratively during the algorithm)
   HashSet<QuickHullVertex*> uniqueVertices;
   for (FaceList::range faces = mFaces.All(); !faces.Empty(); faces.PopFront())
   {
@@ -230,9 +224,8 @@ QuickHull3D::FaceList::range QuickHull3D::GetFaces()
 
 void QuickHull3D::AllocatePools(const Array<Vec3>& points)
 {
-  // Currently just used some fixed sized buffers. While this isn't as fast as
-  // allocating the max memory up-front, this helps prevent crashes when the
-  // initial vertex count is too large.
+  // Currently just used some fixed sized buffers. While this isn't as fast as allocating
+  // the max memory up-front, this helps prevent crashes when the initial vertex count is too large.
   size_t vertexPoolCount = 1024;
   size_t edgePoolCount = 1024;
   size_t facePoolCount = 1024;
@@ -243,17 +236,15 @@ void QuickHull3D::AllocatePools(const Array<Vec3>& points)
 
 void QuickHull3D::ComputeEpsilon(const Array<Vec3>& points)
 {
-  // Keep track of the largest absolute value on each axis (needed to compute a
-  // proper epsilon)
+  // Keep track of the largest absolute value on each axis (needed to compute a proper epsilon)
   Vec3 maxVals = Vec3::cZero;
   for (size_t i = 0; i < points.Size(); ++i)
   {
     Vec3 absPoint = Math::Abs(points[i]);
     maxVals = Math::Max(maxVals, absPoint);
   }
-  // Formula taken from Dirk's Quick-Hull presentation (likely from "Matrix
-  // Computations"). If we use a hard-coded epsilon then either large meshes or
-  // small meshes will work, but not both.
+  // Formula taken from Dirk's Quick-Hull presentation (likely from "Matrix Computations").
+  // If we use a hard-coded epsilon then either large meshes or small meshes will work, but not both.
   mEpsilon = 3 * (maxVals.x + maxVals.y + maxVals.z) * FLT_EPSILON;
 }
 
@@ -344,9 +335,9 @@ void QuickHull3D::BuildDataSetGrid(const Array<Vec3>& points, size_t& resultPoin
   //    }
   //  }
   //
-  //  // Find if any cell has a point in it that is within epsilon from our
-  //  current object bool isInEpsilon = false; forRange(IntVec3& testKey,
-  //  keysToTest.All())
+  //   // Find if any cell has a point in it that is within epsilon from our current object
+  //   bool isInEpsilon = false;
+  //   forRange(IntVec3& testKey, keysToTest.All())
   //  {
   //    Array<Vec3>& testCell = mGrid[testKey];
   //    isInEpsilon = IsWithinEpsilon(point, testCell, mEpsilon);
@@ -380,7 +371,7 @@ void QuickHull3D::BuildDataSetGridApproximation(const Array<Vec3>& points, size_
     Vec3 point = points[i];
     Vec3 vecKey = Math::Floor(point / gridSize);
     IntVec3 key;
-    for (size_t i = 0; i < 3; ++i)
+    for (uint i = 0; i < 3; ++i)
       key[i] = (int)vecKey[i];
 
     bool& isFilled = mGrid[key];
@@ -402,8 +393,7 @@ bool QuickHull3D::BuildInitialHull()
   QuickHullVertex *v0, *v1;
   FindInitialSpan(v0, v1);
 
-  // Degenerate initial span. Should only happen if vertex welding snapped all
-  // inputs to the same point.
+  // Degenerate initial span. Should only happen if vertex welding snapped all inputs to the same point.
   // if(v0 == v1)
   //  return false;
 
@@ -424,9 +414,8 @@ bool QuickHull3D::BuildInitialHull()
     return false;
   mVertices.Erase(v3);
 
-  // The signed volume of a tetrahedron can be computed as 1/6 the determinant
-  // of this matrix. Since we don't care about the actual volume we can ignore
-  // the 1/6 and the sign.
+  // The signed volume of a tetrahedron can be computed as 1/6 the determinant of this matrix.
+  // Since we don't care about the actual volume we can ignore the 1/6 and the sign.
   Mat3 volumeMat = Mat3();
   volumeMat.SetBasis(0, v1->mPosition - v0->mPosition);
   volumeMat.SetBasis(1, v2->mPosition - v0->mPosition);
@@ -457,8 +446,8 @@ bool QuickHull3D::BuildInitialHull()
   CreateTwinEdge(v1, v3, edge13, edge31);
   CreateTwinEdge(v2, v3, edge23, edge32);
 
-  // Depending on the direction we searched to find the last point we need to
-  // construct the initial tetrahedron differently (for winding order)
+  // Depending on the direction we searched to find the last point we need to construct
+  // the initial tetrahedron differently (for winding order)
   if (determinant > 0)
   {
     mFaces.PushBack(CreateFace(edge10, edge02, edge21));
@@ -497,7 +486,7 @@ void QuickHull3D::FindInitialSpan(QuickHullVertex*& v0, QuickHullVertex*& v1)
   for (VertexList::range vertices = mVertices.All(); !vertices.Empty(); vertices.PopFront())
   {
     QuickHullVertex* vertex = &vertices.Front();
-    for (size_t i = 0; i < 3; ++i)
+    for (uint i = 0; i < 3; ++i)
     {
       if (vertex->mPosition[i] < minVertices[i]->mPosition[i])
         minVertices[i] = vertex;
@@ -529,9 +518,8 @@ void QuickHull3D::FindInitialSpan(QuickHullVertex*& v0, QuickHullVertex*& v1)
 
 QuickHull3D::QuickHullVertex* QuickHull3D::FindVertexFurthestFrom(QuickHullVertex* v0, QuickHullVertex* v1)
 {
-  // Find the furthest furthest away point from the line. Instead of calling a
-  // helper function, we can cache a lot of common values from the line [v0, v1]
-  // and re-use them in the calculation.
+  // Find the furthest furthest away point from the line. Instead of calling a helper function,
+  // we can cache a lot of common values from the line [v0, v1] and re-use them in the calculation.
 
   // Let a = p0, b = p1, c = p
   // distance = ac^2 - Dot(ac, ab)^2 / ab^2
@@ -602,17 +590,15 @@ QuickHull3D::QuickHullVertex* QuickHull3D::FindVertexFurthestFrom(QuickHullVerte
 
 void QuickHull3D::ComputeInitialConflictLists()
 {
-  // For each vertex, find if it's inside the hull and if not what face it's the
-  // closest to.
+  // For each vertex, find if it's inside the hull and if not what face it's the closest to.
   while (!mVertices.Empty())
   {
     QuickHullVertex* vertex = &mVertices.Front();
     mVertices.PopFront();
 
-    // Find the face that this vertex is closest to on the positive side (ignore
-    // negative side) and then add this vertex to that face's conflict list. If
-    // we didn't get a face back then this vertex is inside the hull and we can
-    // ignore it (memory will be cleaned up by the pool).
+    // Find the face that this vertex is closest to on the positive side (ignore negative side)
+    // and then add this vertex to that face's conflict list. If we didn't get a face back then
+    // this vertex is inside the hull and we can ignore it (memory will be cleaned up by the pool).
     QuickHullFace* face = FindClosestFace(vertex);
     if (face != nullptr)
       face->mConflictList.PushBack(vertex);
@@ -667,10 +653,9 @@ void QuickHull3D::AddVertexToHull(QuickHullVertex* conflictVertex, QuickHullFace
   // Remove the vertex from the face since we're going to partition it
   conflictFace->mConflictList.Erase(conflictVertex);
 
-  // Find the edge horizon for the given vertex. The horizon is defined as the
-  // edge boundary between faces where this vertex is visible and not visible.
-  // This returns the counter-clockwise edge list of the horizon and a list of
-  // all faces that were visible and need to be destroyed.
+  // Find the edge horizon for the given vertex. The horizon is defined as the edge boundary
+  // between faces where this vertex is visible and not visible. This returns the counter-clockwise
+  // edge list of the horizon and a list of all faces that were visible and need to be destroyed.
   Array<QuickHullEdge*> horizon;
   Array<QuickHullFace*> internalFaces;
   IdentifyHorizon(conflictVertex, conflictFace, horizon, internalFaces);
@@ -682,11 +667,10 @@ void QuickHull3D::AddVertexToHull(QuickHullVertex* conflictVertex, QuickHullFace
     mFaces.Erase(face);
   }
 
-  // To add this new vertex we now need to add the new required faces from the
-  // horizon to this vertex, partition all vertices in these old faces to new
-  // faces, and delete the old faces. For numerical stability, we also have to
-  // find any faces that are not strictly convex and merge them into one
-  // polygonal face.
+  // To add this new vertex we now need to add the new required faces from the horizon to
+  // this vertex, partition all vertices in these old faces to new faces, and delete
+  // the old faces. For numerical stability, we also have to find any faces that are
+  // not strictly convex and merge them into one polygonal face.
   Array<QuickHullFace*> newFaces;
   CreateNewHorizonFaces(conflictVertex, horizon, newFaces);
   PartitionOldFaceConflictLists(internalFaces);
@@ -703,28 +687,26 @@ void QuickHull3D::IdentifyHorizon(QuickHullVertex* conflictVertex,
                                   Array<QuickHullEdge*>& horizonEdges,
                                   Array<QuickHullFace*>& internalFaces)
 {
-  // To identify the horizon we perform a DFS from the given face across each of
-  // its edges. If the adjacent face for a given edge hasn't been visited
-  // already and is visible to the vertex then we recurse into it. If the face
-  // isn't visible then we add the edge to the horizon and pop the recursion.
+  // To identify the horizon we perform a DFS from the given face across each of its edges.
+  // If the adjacent face for a given edge hasn't been visited already and is visible to the
+  // vertex then we recurse into it. If the face isn't visible then we add the
+  // edge to the horizon and pop the recursion.
 
   HashSet<QuickHullFace*> visitedFaces;
   Array<QuickHullSearchData> faceStack;
   visitedFaces.Insert(conflictFace);
   internalFaces.PushBack(conflictFace);
 
-  // To correctly find this horizon, we need to iterate over each edge in a face
-  // in order. This also means that when we jump over to another face from a
-  // twin that we have to start iteration from the twin. To do this a stack is
-  // maintained of the current edge-range for each face we're visiting.
+  // To correctly find this horizon, we need to iterate over each edge in a face in order.
+  // This also means that when we jump over to another face from a twin that we have to start
+  // iteration from the twin. To do this a stack is maintained of the current edge-range for each face we're visiting.
   faceStack.PushBack(QuickHullSearchData(conflictFace));
   while (!faceStack.Empty())
   {
     QuickHullSearchData& searchData = faceStack.Back();
     QuickHullFace* face = searchData.mFace;
 
-    // Make sure to grab a reference to the range so we advance it and not a
-    // copy
+    // Make sure to grab a reference to the range so we advance it and not a copy
     InListWrappedRange<EdgeList>& edgeRange = searchData.mRange;
     // We've exhausted all edges on this face. Go to the previous face
     if (edgeRange.Empty())
@@ -755,8 +737,7 @@ void QuickHull3D::IdentifyHorizon(QuickHullVertex* conflictVertex,
       continue;
     }
 
-    // Add the new face and it's edge range onto the stack (start iterating over
-    // all edges after the twin)
+    // Add the new face and it's edge range onto the stack (start iterating over all edges after the twin)
     faceStack.PushBack(QuickHullSearchData(adjacentFace, twin));
     internalFaces.PushBack(adjacentFace);
     visitedFaces.Insert(adjacentFace);
@@ -811,9 +792,9 @@ void QuickHull3D::CreateNewHorizonFaces(QuickHullVertex* conflictVertex,
     QuickHullEdge* edge = horizon[i];
     QuickHullEdge* next = horizon[(i + 1) % size];
 
-    // To get the twins we need to iterate the current edge forward to get the
-    // edge from v1 to v2 (conflict vertex). To get the twin we need to go to
-    // the next adjacent face but go backwards to get the edge from v2 to v1.
+    // To get the twins we need to iterate the current edge forward to get the edge
+    // from v1 to v2 (conflict vertex). To get the twin we need to go to the
+    // next adjacent face but go backwards to get the edge from v2 to v1.
     QuickHullEdge* edgeNext = edge->mFace->mEdges.NextWrap(edge);
     QuickHullEdge* nextPrev = next->mFace->mEdges.PrevWrap(next);
 
@@ -836,9 +817,9 @@ void QuickHull3D::PartitionOldFaceConflictLists(Array<QuickHullFace*>& faces)
       QuickHullVertex* vertex = &face->mConflictList.Front();
       face->mConflictList.PopFront();
 
-      // Find the next closest face. If we got one back then add this vertex to
-      // that face's conflict list. Otherwise this vertex is inside the hull so
-      // ignore it (memory will be cleaned up via the memory pool at the end).
+      // Find the next closest face. If we got one back then add this vertex to that
+      // face's conflict list. Otherwise this vertex is inside the hull so ignore it
+      // (memory will be cleaned up via the memory pool at the end).
       QuickHullFace* newFace = FindClosestFace(vertex);
       if (newFace != nullptr)
         AbsorbConflictVertex(newFace, vertex);
@@ -848,9 +829,8 @@ void QuickHull3D::PartitionOldFaceConflictLists(Array<QuickHullFace*>& faces)
 
 void QuickHull3D::AbsorbConflictList(QuickHullFace* face, VertexList& conflictList)
 {
-  // Absorb each vertex in the list into the given face. We don't splice the
-  // vertex in because we can sort the vertices by conflict distance to speed up
-  // finding the best conflict vertex.
+  // Absorb each vertex in the list into the given face. We don't splice the vertex in
+  // because we can sort the vertices by conflict distance to speed up finding the best conflict vertex.
   while (!conflictList.Empty())
   {
     QuickHullVertex* vertex = &conflictList.Front();
@@ -868,11 +848,10 @@ void QuickHull3D::AbsorbConflictVertex(QuickHullFace* face, QuickHullVertex* ver
 
 void QuickHull3D::RemoveOldHorizonFaces(Array<QuickHullFace*>& faces)
 {
-  // Collect all edges from the faces we're deleting. They could be deleted
-  // mid-iteration, but for debugging purposes we're collecting them all to
-  // delete afterwards. Additionally it is slightly faster to collect them in a
-  // list (less in-list pointers have to be updated if the entire list is
-  // spliced)
+  // Collect all edges from the faces we're deleting. They could be deleted mid-iteration,
+  // but for debugging purposes we're collecting them all to delete afterwards.
+  // Additionally it is slightly faster to collect them in a list
+  // (less in-list pointers have to be updated if the entire list is spliced)
   EdgeList edgesToDelete;
 
   // Remove all old edges from their faces and then delete the face
@@ -899,9 +878,8 @@ void QuickHull3D::MergeFaces(Array<QuickHullFace*>& newFaces)
   // We need to iterate over all of the new faces and test their neighbors
   // to see if a merge should happen. There's a chance that two of the new faces
   // could merge together (or be collapsed in a topological invariant fix) so we
-  // can't just iterate through the list. Instead it's easiest to convert the
-  // list to a separate inlist so we can generically unlink from the list to
-  // test if needed.
+  // can't just iterate through the list. Instead it's easiest to convert the list
+  // to a separate inlist so we can generically unlink from the list to test if needed.
   FaceList facesToTestForMerge;
   for (size_t i = 0; i < newFaces.Size(); ++i)
   {
@@ -911,14 +889,12 @@ void QuickHull3D::MergeFaces(Array<QuickHullFace*>& newFaces)
 
   while (!facesToTestForMerge.Empty())
   {
-    // Mark this face as being processed by adding it back to the final face
-    // list
+    // Mark this face as being processed by adding it back to the final face list
     QuickHullFace* face = &facesToTestForMerge.Front();
     facesToTestForMerge.PopFront();
     mFaces.PushBack(face);
 
-    // Find a face that is not convex to the current face (represented by an
-    // edge)
+    // Find a face that is not convex to the current face (represented by an edge)
     QuickHullEdge* edge = FindQuickHullMergeFace(face);
     while (edge != nullptr)
     {
@@ -929,18 +905,16 @@ void QuickHull3D::MergeFaces(Array<QuickHullFace*>& newFaces)
       // Absorb the adjacent face across the edge into the current face
       AbsorbFace(face, adjacentFace, edge, twin);
 
-      // Find a topological invariant if it exists and fix it. Iteratively do
-      // this until all invariants are gone from this face (fixing one could
-      // create another).
+      // Find a topological invariant if it exists and fix it. Iteratively do this
+      // until all invariants are gone from this face (fixing one could create another).
       bool isInvariants = true;
       while (isInvariants)
         isInvariants = FixTopologicalInvariants(face);
 
-      // Fix the face normal and center now after merging and fixing topological
-      // issues. We must fix the normal here instead of after merging all faces.
-      // This is because a non-convex face isn't unnecessarily parallel. It
-      // could be a very small face completely within the thick plane that
-      // points in the opposite direction.
+      // Fix the face normal and center now after merging and fixing topological issues.
+      // We must fix the normal here instead of after merging all faces. This is because
+      // a non-convex face isn't unnecessarily parallel. It could be a very small face
+      // completely within the thick plane that points in the opposite direction.
       face->RecomputeCenterAndNormal();
 
       // Find the next face to merge across
@@ -954,9 +928,9 @@ void QuickHull3D::MergeFaces(Array<QuickHullFace*>& newFaces)
 
 QuickHull3D::QuickHullEdge* QuickHull3D::FindQuickHullMergeFace(QuickHullFace* face)
 {
-  // Walk over all edges in this face. Test the adjacent face to see if it's
-  // strictly convex to this face. If it isn't then return the edge bordering
-  // these faces as we need to merge across this edge.
+  // Walk over all edges in this face. Test the adjacent face to see if it's strictly
+  // convex to this face. If it isn't then return the edge bordering these faces as
+  // we need to merge across this edge.
   for (EdgeList::range edges = face->mEdges.All(); !edges.Empty(); edges.PopFront())
   {
     QuickHullEdge* edge = &edges.Front();
@@ -978,13 +952,13 @@ void QuickHull3D::AbsorbFace(QuickHullFace* face,
   // Draw the two faces that aren't convex to each other
   DrawNonConvexFaces(face, adjacentFace);
 
-  // In order to absorb a face, we need to merge all edges from the adjacent
-  // face into this face. The edge order needs to be preserved between this face
-  // and the adjacent face though. To do this we need to walk all edges after
-  // the shared edge between them. The InList's dummy node needs to be skipped
-  // though. The easiest way to do this is to split the edge list we're merging
-  // into two pieces: the range from the shared edge to the end of the list and
-  // the range from the start of the list up to the shared edge.
+  // In order to absorb a face, we need to merge all edges from the adjacent face
+  // into this face. The edge order needs to be preserved between this face and the
+  // adjacent face though. To do this we need to walk all edges after the shared edge
+  // between them. The InList's dummy node needs to be skipped though. The easiest
+  // way to do this is to split the edge list we're merging into two pieces:
+  // the range from the shared edge to the end of the list and the range
+  // from the start of the list up to the shared edge.
   EdgeList::range beforeRange(adjacentFace->mEdges.Begin(), sharedTwin);
   EdgeList::range afterRange(sharedTwin, adjacentFace->mEdges.End());
   // Remove the shared twin from the range since we're deleting it
@@ -1031,8 +1005,7 @@ QuickHull3D::QuickHullEdge* QuickHull3D::InsertEdgeRangeAfter(QuickHullFace* fac
 
     it = toInsert;
   }
-  // Return where we left of inserting so that more edges could be inserted
-  // after this later
+  // Return where we left of inserting so that more edges could be inserted after this later
   return it;
 }
 
@@ -1043,16 +1016,14 @@ bool QuickHull3D::FixTopologicalInvariants(QuickHullFace* face)
   QuickHullEdge* e1 = nullptr;
   if (FindTopoligicalInvariant(face, e0, e1))
   {
-    // The way we need to fix this depends on how many edges are in the adjacent
-    // face (triangle or otherwise)
+    // The way we need to fix this depends on how many edges are in the adjacent face (triangle or otherwise)
     QuickHullFace* adjacentFace = e0->mTwin->mFace;
     size_t count = adjacentFace->CountEdges();
     if (count == 3)
       FixTriangleTopoligicalInvariant(face, e0, e1);
     else
       FixEdgeTopoligicalInvariant(face, e0, e1);
-    // Return that we found and fixed a topological issue so we aren't done
-    // (fixing one could cause another)
+    // Return that we found and fixed a topological issue so we aren't done (fixing one could cause another)
     return true;
   }
   // Return that there were no topological issues so we're done with this face
@@ -1061,9 +1032,8 @@ bool QuickHull3D::FixTopologicalInvariants(QuickHullFace* face)
 
 bool QuickHull3D::FindTopoligicalInvariant(QuickHullFace* face, QuickHullEdge*& e0, QuickHullEdge*& e1)
 {
-  // The only topological invariant we care about is two faces sharing more than
-  // one edge. We can detect this by iterating over all edges and seeing if two
-  // adjacent edge's have the same twin face.
+  // The only topological invariant we care about is two faces sharing more than one edge.
+  // We can detect this by iterating over all edges and seeing if two adjacent edge's have the same twin face.
   QuickHullEdge* prev = &face->mEdges.Back();
   for (EdgeList::range edges = face->mEdges.All(); !edges.Empty(); edges.PopFront())
   {
@@ -1081,9 +1051,8 @@ bool QuickHull3D::FindTopoligicalInvariant(QuickHullFace* face, QuickHullEdge*& 
 
 void QuickHull3D::FixTriangleTopoligicalInvariant(QuickHullFace* face, QuickHullEdge* e0, QuickHullEdge* e1)
 {
-  // When the adjacent edge is a triangle, we need to remove the two shared
-  // edges of the adjacent face, remove the internal vertex, and absorb the
-  // remaining edge into the given face.
+  // When the adjacent edge is a triangle, we need to remove the two shared edges of the adjacent face,
+  // remove the internal vertex, and absorb the remaining edge into the given face.
   QuickHullEdge* t0 = e0->mTwin;
   QuickHullEdge* t1 = e1->mTwin;
   QuickHullFace* adjacentFace = t0->mFace;
@@ -1102,8 +1071,7 @@ void QuickHull3D::FixTriangleTopoligicalInvariant(QuickHullFace* face, QuickHull
   face->mEdges.InsertBefore(e0, remainingEdge);
   remainingEdge->mFace = face;
 
-  // Partition all vertices in the conflict list of the triangle we're absorbing
-  // into this face
+  // Partition all vertices in the conflict list of the triangle we're absorbing into this face
   AbsorbConflictList(face, adjacentFace->mConflictList);
 
   // Remove the edges that we're absorbing (twins as well)
@@ -1141,8 +1109,8 @@ void QuickHull3D::FixEdgeTopoligicalInvariant(QuickHullFace* face, QuickHullEdge
   DrawTopologicalFix("Identified edge error", face, adjacentFace, e0, e1);
 
   // Remove the middle vertex.
-  // Don't have to deallocate the vertex since we'll clean it up in the memory
-  // pool QuickHullVertex* vertexToRemove = t1->mTail;
+  // Don't have to deallocate the vertex since we'll clean it up in the memory pool
+  // QuickHullVertex* vertexToRemove = t1->mTail;
 
   // Make sure to unlink t0 instead of t1 because t1 has the
   // correct tail vertex already set (we're removing the middle vertex)

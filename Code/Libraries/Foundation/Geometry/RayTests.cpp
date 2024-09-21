@@ -175,20 +175,17 @@ Type RayCapsule(Vec3Param rayStart,
       RayCylinder(rayStart, rayDirection, capsulePointA, capsulePointB, capsuleRadius, &cylinderInterval);
   if (cylinderResult == None)
     return None;
-  // If the finite cylinder wasn't intersected, then there's still a chance the
-  // sphere caps could be hit. Unlike standard interval logic which uses
-  // 'Intersection', the combination with the sphere end caps needs to use union
-  // otherwise the backside of the spheres will produce the incorrect result. To
-  // get around this when there is no cylinder intersection set the range to
-  // invalid [inf, -inf] so that union operations will work and the final
-  // 'IsValid' test will be correct.
+  // If the finite cylinder wasn't intersected, then there's still a chance the sphere caps could be hit.
+  // Unlike standard interval logic which uses 'Intersection', the combination with the sphere end caps
+  // needs to use union otherwise the backside of the spheres will produce the incorrect result.
+  // To get around this when there is no cylinder intersection set the range to invalid [inf, -inf]
+  // so that union operations will work and the final 'IsValid' test will be correct.
   if (cylinderResult == Outside)
     cylinderInterval = Interval::cInvalid;
 
   Interval sphereAInterval;
   Type sphereAResult = RaySphereAllowBehind(rayStart, rayDirection, capsulePointA, capsuleRadius, &sphereAInterval);
-  // If the ray doesn't miss the sphere (this allows negative t-values) then
-  // merge the range
+  // If the ray doesn't miss the sphere (this allows negative t-values) then merge the range
   if (sphereAResult != None)
     cylinderInterval = cylinderInterval.Union(sphereAInterval);
 
@@ -211,8 +208,8 @@ Type RayCapsule(Vec3Param rayStart,
   return Other;
 }
 
-// Intersect a ray with a cylinder defined by its center, local axes, radius,
-// and half height.
+// Intersect a ray with a cylinder defined by its center, local axes, radius, and
+// half height.
 Type RayCylinder(Vec3Param rayStart,
                  Vec3Param rayDirection,
                  Vec3Param cylinderCenter,
@@ -241,16 +238,16 @@ Type RayCylinder(Vec3Param rayStart,
   Interval cylinderInterval = Interval::cInfinite;
   Type cylinderResult =
       RayInfiniteCylinder(rayStart, rayDirection, cylinderPointA, cylinderPointB, cylinderRadius, &cylinderInterval);
-  // If the ray doesn't intersect the infinite cylinder then it can't intersect
-  // the finite cylinder. Make sure to return the same result state though as
-  // this contains extra information that other tests (RayCapsule) can use.
+  // If the ray doesn't intersect the infinite cylinder then it can't intersect the
+  // finite cylinder. Make sure to return the same result state though as this contains
+  // extra information that other tests (RayCapsule) can use.
   if (cylinderResult < 0)
     return cylinderResult;
 
-  // Compute the normal of the cylinder. This normal doesn't need to be
-  // normalized because the t-value will have this constant in the numerator and
-  // denominator so it will cancel. Additionally the early-out tests will be
-  // scaled by a positive scalar and we only care about the sign of these terms.
+  // Compute the normal of the cylinder. This normal doesn't need to be normalized
+  // because the t-value will have this constant in the numerator and denominator
+  // so it will cancel. Additionally the early-out tests will be scaled by a positive
+  // scalar and we only care about the sign of these terms.
   Vec3 n = cylinderPointB - cylinderPointA;
 
   // Compute the shared denominator for the plane normal of both end-caps
@@ -285,8 +282,8 @@ Type RayCylinder(Vec3Param rayStart,
 
   // ----------------------- Interval merge
 
-  // Compute the intersection of the infinite cylinder range and the end caps
-  // range. This is the actual intersection with the finite cylinder
+  // Compute the intersection of the infinite cylinder range and the end caps range.
+  // This is the actual intersection with the finite cylinder
   Interval finalInterval = cylinderInterval.Intersection(capsInterval);
   // If the final range isn't valid then there's no intersection
   // (we started intersecting after we stopped)
@@ -305,8 +302,8 @@ Type RayCylinder(Vec3Param rayStart,
   return Intersection::Other;
 }
 
-// Intersect a ray with an ellipsoid, the inverse scaled basis is the
-// combination of the ellipsoid's basis with its radii and then inverted.
+// Intersect a ray with an ellipsoid, the inverse scaled basis is the combination
+// of the ellipsoid's basis with its radii and then inverted.
 Type RayEllipsoid(Vec3Param rayStart,
                   Vec3Param rayDirection,
                   Vec3Param ellipsoidCenter,
@@ -372,10 +369,10 @@ Type RayPlane(Vec3Param rayStart, Vec3Param rayDirection, Vec3Param planeNormal,
   const real relativeDirection = Dot(rayDirection, planeNormal);
   const real frontOrBehind = planeDistance - Dot(rayStart, planeNormal);
 
-  // Ray's direction and plane's normal are perpendicular, ray can only
-  // intersect plane if ray lies on plane. However, I will not consider this to
-  // be considered an intersection due to the unlikelihood of the infinitely
-  // thin ray lying on the infinitely thin plane.
+  // Ray's direction and plane's normal are perpendicular, ray can only intersect
+  // plane if ray lies on plane. However, I will not consider this to be
+  // considered an intersection due to the unlikelihood of the infinitely thin
+  // ray lying on the infinitely thin plane.
   if (Math::Abs(relativeDirection) <= real(0.00001))
   {
     return None;
@@ -814,8 +811,8 @@ Type RayCylinder(Vec3Param rayStart,
       }
       return Segment;
     }
-    // Minimum point of intersection is negative, but maximum point of
-    // intersection is positive. One intersection point.
+    // Minimum point of intersection is negative, but maximum point of intersection
+    // is positive. One intersection point.
     else if (interval.Max > real(0.0))
     {
       if (intersectionPoint != nullptr)
@@ -854,8 +851,8 @@ Type RayCylinder(Vec3Param rayStart,
       }
       return Segment;
     }
-    // Minimum point of intersection is negative, but maximum point of
-    // intersection is positive. One intersection point.
+    // Minimum point of intersection is negative, but maximum point of intersection
+    // is positive. One intersection point.
     else if (interval.Max > real(0.0))
     {
       if (intersectionPoint != nullptr)
@@ -907,8 +904,8 @@ Type RayEllipsoid(Vec3Param rayStart,
   return None;
 }
 
-// Internal "test ray against a triangle mesh buffer" that is called by the
-// outer function.
+// Internal "test ray against a triangle mesh buffer" that is called by the outer
+// function.
 template <typename indexType>
 Type RayMeshBuffer(Vec3Param rayStart,
                    Vec3Param rayDirection,
@@ -1020,8 +1017,8 @@ Type RayMeshBuffer(Vec3Param rayStart,
 
 // Intersect a ray with an arbitrary collection of triangles. Base offset is the
 // number of bytes from the beginning to the first value, vertex stride is the
-// byte distance between vertices, and the size of the index refers to the
-// number of bytes used to represent the indices (generally 2 or 4 bytes).
+// byte distance between vertices, and the size of the index refers to the number
+// of bytes used to represent the indices (generally 2 or 4 bytes).
 Type RayMeshBuffer(Vec3Param rayStart,
                    Vec3Param rayDirection,
                    ::byte* vertexData,

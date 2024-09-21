@@ -31,12 +31,10 @@ bool Aabb::Valid() const
 
 void Aabb::AttemptToCorrectInvalid()
 {
-  // Average all the extents of the aabb to try and make a reasonable center,
-  // then use that (a zero sized aabb)
+  // Average all the extents of the aabb to try and make a reasonable center, then use that (a zero sized aabb)
   SetCenterAndHalfExtents(GetCenter(), Vec3::cZero);
 
-  // If the object is still not valid (could be nans, infs, etc) then just zero
-  // it out
+  // If the object is still not valid (could be nans, infs, etc) then just zero it out
   if (!Valid())
     Zero();
 }

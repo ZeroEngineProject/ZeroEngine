@@ -7,8 +7,8 @@
 namespace Geometry
 {
 
-/// Determines whether all intersection and geometry functions will utilize
-/// extra checks to prevent floating point errors.
+/// Determines whether all intersection and geometry functions will utilize extra
+/// checks to prevent floating point errors.
 const bool cGeometrySafeChecks = true;
 
 namespace
@@ -19,7 +19,7 @@ const real cCylinderEndcapThreshold = real(0.0001);
 
 // Calculate the centroid of the 2D polygon. Assumes the 2D points are ordered
 // in such a way that they describe the polygon's perimeter.
-void CalculatePolygonCentriod(const Vec2* polyPoints, uint polyPointCount, Vec2Ptr centroid)
+void CalculatePolygonCentriod(const Vec2* polyPoints, size_t polyPointCount, Vec2Ptr centroid)
 {
   ErrorIf(polyPoints == nullptr,
           "Geometry - Null pointer passed, this function "
@@ -45,7 +45,7 @@ void CalculatePolygonCentriod(const Vec2* polyPoints, uint polyPointCount, Vec2P
   real area = real(0.0);
   centroid->ZeroOut();
   real xyXY;
-  uint loopCount = polyPointCount - 1;
+  size_t loopCount = polyPointCount - 1;
 
   for (uint i = 0; i < loopCount; ++i)
   {
@@ -104,10 +104,10 @@ void GenerateAabb(const Vec2* points, uint pointCount, Vec2Ptr min, Vec2Ptr max)
 // Given an ordered set of 2D points that describe the perimeter of a polygon,
 // return whether the points are clockwise (negative) or
 // counter-clockwise (positive).
-real DetermineWindingOrder(const Vec2* polyPoints, uint polyPointCount)
+real DetermineWindingOrder(const Vec2* polyPoints, size_t polyPointCount)
 {
   real result = real(0.0);
-  for (uint i = polyPointCount - 1, j = 0; j < polyPointCount; i = j, ++j)
+  for (size_t i = polyPointCount - 1, j = 0; j < polyPointCount; i = j, ++j)
   {
     result += (polyPoints[i].x - polyPoints[j].x) * (polyPoints[i].y + polyPoints[j].y);
   }
@@ -122,7 +122,7 @@ real Signed2DTriArea(Vec2Param a, Vec2Param b, Vec2Param c)
 }
 
 // Generate an axis-aligned bounding box for the given set of 3D points.
-void GenerateAabb(const Vec3* points, uint pointCount, Vec3Ptr min, Vec3Ptr max)
+void GenerateAabb(const Vec3* points, size_t pointCount, Vec3Ptr min, Vec3Ptr max)
 {
   ErrorIf(points == nullptr,
           "Geometry - Null pointer passed, this "
@@ -136,7 +136,7 @@ void GenerateAabb(const Vec3* points, uint pointCount, Vec3Ptr min, Vec3Ptr max)
 
   *min = Vec3(Math::PositiveMax(), Math::PositiveMax(), Math::PositiveMax());
   *max = -(*min);
-  for (uint i = 0; i < pointCount; ++i)
+  for (size_t i = 0; i < pointCount; ++i)
   {
     *min = Math::Min(points[i], *min);
     *max = Math::Max(points[i], *max);
@@ -533,7 +533,7 @@ void ComputeBestFitPlane(const Vec3* polyPoints, uint polyPointCount, Vec3Ptr pl
 // Calculate the volume of a triangular mesh.
 real CalculateTriMeshVolume(const Vec3* triMeshPoints,
                             const uint* triMeshTriangles,
-                            uint triangleCount,
+                            size_t triangleCount,
                             Vec3Param scale)
 {
   ErrorIf(triMeshPoints == nullptr,
@@ -550,7 +550,7 @@ real CalculateTriMeshVolume(const Vec3* triMeshPoints,
   Mat3 triPoints;
 
   // For each triangle...
-  for (uint i = 0; i < triangleCount; ++i)
+  for (size_t i = 0; i < triangleCount; ++i)
   {
     // Grab the points of the triangle and throw them into the matrix
     uint pointIndex = triMeshTriangles[i * 3];
@@ -569,14 +569,14 @@ real CalculateTriMeshVolume(const Vec3* triMeshPoints,
 
 real CalculateTriMeshVolume(const Array<Vec3>& triMeshPoints, const Array<uint>& triMeshTriangles, Vec3Param scale)
 {
-  uint triangleCount = triMeshTriangles.Size() / 3;
+  size_t triangleCount = triMeshTriangles.Size() / 3;
   return CalculateTriMeshVolume(triMeshPoints.Data(), triMeshTriangles.Data(), triangleCount, scale);
 }
 
 // Calculate the center of mass of a triangular mesh, assuming uniform density.
 Vec3 CalculateTriMeshCenterOfMass(const Vec3* triMeshPoints,
                                   const uint* triMeshTriangles,
-                                  uint triangleCount,
+                                  size_t triangleCount,
                                   Vec3Param scale)
 {
   Vec3 centerOfMass;
@@ -589,12 +589,12 @@ Vec3 CalculateTriMeshCenterOfMass(const Array<Vec3>& triMeshPoints,
                                   const Array<uint>& triMeshTriangles,
                                   Vec3Param scale)
 {
-  uint triangleCount = triMeshTriangles.Size() / 3;
+  size_t triangleCount = triMeshTriangles.Size() / 3;
   return CalculateTriMeshCenterOfMass(triMeshPoints.Data(), triMeshTriangles.Data(), triangleCount, scale);
 }
 
 void CalculateTriMeshCenterOfMassAndVolume(
-    const Vec3* triMeshPoints, const uint* triMeshTriangles, uint triangleCount, Vec3Ref centerOfMass, real& volume)
+    const Vec3* triMeshPoints, const uint* triMeshTriangles, size_t triangleCount, Vec3Ref centerOfMass, real& volume)
 {
   ErrorIf(triMeshPoints == nullptr,
           "Geometry - Null pointer passed, this "
@@ -613,7 +613,7 @@ void CalculateTriMeshCenterOfMassAndVolume(
   volume = real(0.0);
 
   // For each triangle...
-  for (uint i = 0; i < triangleCount; ++i)
+  for (size_t i = 0; i < triangleCount; ++i)
   {
     // Grab the points of the triangle and throw them into the matrix
     uint pointIndex = triMeshTriangles[i * 3];
@@ -624,16 +624,14 @@ void CalculateTriMeshCenterOfMassAndVolume(
     triPoints.SetCross(2, triMeshPoints[pointIndex]);
 
     // Volume of the current tetrahedron. There is no point in dividing by 6
-    // since we are calculating ratios. The volume of a tetrahedron is divided
-    // by the total volume of the mesh, which gives that tetrahedron's
-    // contribution to the total mesh volume as a value between 0 and 1. If we
-    // divided by 6, both for the tetrahedral volume as well as the mesh volume,
-    // then the 6's would cancel out and we would be left with the same ratio.
-    // :P
+    // since we are calculating ratios. The volume of a tetrahedron is divided by
+    // the total volume of the mesh, which gives that tetrahedron's contribution
+    // to the total mesh volume as a value between 0 and 1. If we divided by 6,
+    // both for the tetrahedral volume as well as the mesh volume, then the 6's
+    // would cancel out and we would be left with the same ratio. :P
     real tetraVol = triPoints.Determinant();
 
-    // Tetrahedron contributes its own center of mass, but weighted by its
-    // volume
+    // Tetrahedron contributes its own center of mass, but weighted by its volume
     centerOfMass += tetraVol * (triPoints.GetCross(0) + triPoints.GetCross(1) + triPoints.GetCross(2));
     volume += tetraVol;
   }
@@ -650,7 +648,7 @@ void CalculateTriMeshCenterOfMassAndVolume(const Array<Vec3>& triMeshPoints,
                                            Vec3Ref centerOfMass,
                                            real& volume)
 {
-  uint triangleCount = triMeshTriangles.Size() / 3;
+  size_t triangleCount = triMeshTriangles.Size() / 3;
   CalculateTriMeshCenterOfMassAndVolume(
       triMeshPoints.Data(), triMeshTriangles.Data(), triangleCount, centerOfMass, volume);
 }
@@ -659,7 +657,7 @@ void CalculateTriMeshCenterOfMassAndVolume(const Array<Vec3>& triMeshPoints,
 // allows for the mass to be easily factored in later.
 void CalculateTriMeshInertiaTensor(const Vec3* triMeshPoints,
                                    const uint* triMeshTriangles,
-                                   uint triangleCount,
+                                   size_t triangleCount,
                                    Vec3Param centerOfMass,
                                    Mat3Ptr inertiaTensor,
                                    Vec3Param scale)
@@ -690,10 +688,10 @@ void CalculateTriMeshInertiaTensor(const Vec3* triMeshPoints,
   double meshVolume = double(0.0);
 
   // For each triangle...
-  for (uint i = 0; i < triangleCount; ++i)
+  for (size_t i = 0; i < triangleCount; ++i)
   {
     // Grab the points of the triangle and throw them into the array
-    uint pointIndex = triMeshTriangles[i * 3];
+    size_t pointIndex = triMeshTriangles[i * 3];
     triPoint[0] = (triMeshPoints[pointIndex] - centerOfMass) * scale; // Storage Visual
     pointIndex = triMeshTriangles[(i * 3) + 1];                       // | Ax  Ay  Az |
     triPoint[1] = (triMeshPoints[pointIndex] - centerOfMass) * scale; // | Bx  By  Bz |
@@ -701,19 +699,18 @@ void CalculateTriMeshInertiaTensor(const Vec3* triMeshPoints,
     triPoint[2] = (triMeshPoints[pointIndex] - centerOfMass) * scale;
 
     // Volume of tiny parallelepiped = d * dR * dS * dT (the 3 partials of the
-    // tetrahedral triple integral equation). Scalar triple product (a * (b x
-    // c))
+    // tetrahedral triple integral equation). Scalar triple product (a * (b x c))
     double tetraVolume = double(Dot(triPoint[0], Cross(triPoint[1], triPoint[2])));
 
-    // Add volume of current tetrahedron (Note: it could be negative - that's
-    // ok, we need that sometimes)
+    // Add volume of current tetrahedron (Note: it could be negative - that's ok,
+    // we need that sometimes)
     meshVolume += tetraVolume;
 
     // For each axis...
-    for (uint j = 0; j < 3; ++j)
+    for (size_t j = 0; j < 3; ++j)
     {
-      uint u = (j + 1) % 3;
-      uint v = (j + 2) % 3;
+      size_t u = (j + 1) % 3;
+      size_t v = (j + 2) % 3;
 
       // Diagonal inertia tensor element calculation
       diagElement[j] += double((triPoint[0][j] * triPoint[1][j] + // Aj * Bj
@@ -767,7 +764,7 @@ void CalculateTriMeshInertiaTensor(const Array<Vec3>& triMeshPoints,
                                    Mat3Ptr inertiaTensor,
                                    Vec3Param scale)
 {
-  uint triangleCount = triMeshTriangles.Size() / 3;
+  size_t triangleCount = triMeshTriangles.Size() / 3;
   CalculateTriMeshInertiaTensor(
       triMeshPoints.Data(), triMeshTriangles.Data(), triangleCount, centerOfMass, inertiaTensor, scale);
 }
@@ -1300,8 +1297,8 @@ Vec2 TextureCoordinatesFromPointOnEllipsoid(Vec3Param point,
   return uvCoords;
 }
 
-// Get the texture coordinates on an oriented bounding box at the specified
-// point on the given oriented bounding box.
+// Get the texture coordinates on an oriented bounding box at the specified point
+// on the given oriented bounding box.
 Vec2 TextureCoordinatesFromPointOnObb(Vec3Param point,
                                       Vec3Param obbCenter,
                                       Vec3Param obbHalfExtents,

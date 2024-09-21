@@ -71,7 +71,8 @@ struct IntersectionPoint
   /// corresponds to the point on the second shape.
   Vec3 Points[2];
 
-  union {
+  union
+  {
     /// Amount of overlap occurring in the direction of the normal.
     real Depth;
 
@@ -109,12 +110,12 @@ struct Interval
   Interval(real min, real max);
 
   /// Find the complement of this interval (A) in the given interval (B), or
-  /// otherwise the values in B but not in A. Similar to subtracting the
-  /// elements of A from B.
+  /// otherwise the values in B but not in A. Similar to subtracting the elements
+  /// of A from B.
   Interval Complement(const Interval& b) const;
 
-  /// Intersect the two intervals, storing the largest minimum value and
-  /// smallest maximum value.
+  /// Intersect the two intervals, storing the largest minimum value and smallest
+  /// maximum value.
   Interval Intersection(const Interval& interval) const;
 
   /// Combine the two intervals, storing the smallest minimum value and largest
@@ -203,32 +204,19 @@ Intersection::SupportShape MakeSupport(const ShapeType* object, bool supportDelt
   x = Done
   ~ = Never
 
-            | Poi | Ray | Seg | AAB | Cap | Cyl | Ell | Fru*| OBB | Pla | Sph |
-Tri |
-      Point |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
-x  |
-        Ray |  x  |  ~  |  ~  |  x  |  x  |  x  |  x  |     |  x  |  x  |  x  |
-x  |
-    Segment |  x  |  ~  |  ~  |  x  |  x  |  x  |     |     |  x  |  x  |  x  |
-x  |
-       AABB |  x  |  x  |  x  |  x  |     |     |     |  x  |  x  |  x  |  x  |
-x  |
-    Capsule |  x  |  x  |  x  |     |  x  |     |     |     |     |     |  x  |
-|
-   Cylinder |  x  |  x  |  x  |     |     |     |     |     |     |     |     |
-|
-  Ellipsoid |  x  |  x  |     |     |     |     |     |     |     |     |     |
-|
-    Frustum*|  x  |     |     |  x  |     |     |     |     |  x  |     |  x  |
-x  |
-        OBB |  x  |  x  |  x  |  x  |     |     |     |  x  |  x  |  x  |  x  |
-x  |
-      Plane |  x  |  x  |  x  |  x  |     |     |     |     |  x  |  x  |  x  |
-|
-     Sphere |  x  |  x  |  x  |  x  |  x  |     |     |  x  |  x  |  x  |  x  |
-x  |
-   Triangle |  x  |  x  |  x  |  x  |     |     |     |  x  |  x  |     |  x  |
-|
+            | Poi | Ray | Seg | AAB | Cap | Cyl | Ell | Fru*| OBB | Pla | Sph | Tri |
+      Point |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
+        Ray |  x  |  ~  |  ~  |  x  |  x  |  x  |  x  |     |  x  |  x  |  x  |  x  |
+    Segment |  x  |  ~  |  ~  |  x  |  x  |  x  |     |     |  x  |  x  |  x  |  x  |
+       AABB |  x  |  x  |  x  |  x  |     |     |     |  x  |  x  |  x  |  x  |  x  |
+    Capsule |  x  |  x  |  x  |     |  x  |     |     |     |     |     |  x  |     |
+   Cylinder |  x  |  x  |  x  |     |     |     |     |     |     |     |     |     |
+  Ellipsoid |  x  |  x  |     |     |     |     |     |     |     |     |     |     |
+    Frustum*|  x  |     |     |  x  |     |     |     |     |  x  |     |  x  |  x  |
+        OBB |  x  |  x  |  x  |  x  |     |     |     |  x  |  x  |  x  |  x  |  x  |
+      Plane |  x  |  x  |  x  |  x  |     |     |     |     |  x  |  x  |  x  |     |
+     Sphere |  x  |  x  |  x  |  x  |  x  |     |     |  x  |  x  |  x  |  x  |  x  |
+   Triangle |  x  |  x  |  x  |  x  |     |     |     |  x  |  x  |     |  x  |     |
 
 
             | Pla |
@@ -301,8 +289,8 @@ Type PointCylinder(Vec3Param point, Vec3Param cylinderPointA, Vec3Param cylinder
 /// Test to see if the given point lies on or inside the given ellipsoid.
 Type PointEllipsoid(Vec3Param point, Vec3Param ellipsoidCenter, Vec3Param ellipsoidRadii, Mat3Param ellipsoidBasis);
 
-/// Test to see if the given point lies inside the given frustum. The 6 planes
-/// of the frustum are assumed to be pointing inwards.
+/// Test to see if the given point lies inside the given frustum. The 6 planes of
+/// the frustum are assumed to be pointing inwards.
 Type PointFrustum(Vec3Param point, const Vec4 frustumPlanes[6]);
 
 /// Test to see if the given point lies on or inside the given oriented-bounding
@@ -334,16 +322,16 @@ Type PointTriangle(Vec3Param point,
                    real epsilon = real(0));
 
 /// Find the closest point on a ray to the given point. Will return "Inside" if
-/// the closest point found is in the interval of t = [0, inf], otherwise
-/// returns "Outside".
+/// the closest point found is in the interval of t = [0, inf], otherwise returns
+///"Outside".
 Type ClosestPointOnRayToPoint(Vec3Param rayStart, Vec3Param rayDirection, Vec3Ptr point);
 
 /// Find the closest point on a line segment to the given point.
 Type ClosestPointOnSegmentToPoint(Vec3Param segmentPointA, Vec3Param segmentPointB, Vec3Ptr point);
 
 /// Find the closest point on an axis aligned bounding box to the given point.
-/// The point returned will always be on the surface of the axis aligned
-/// bounding box.
+/// The point returned will always be on the surface of the axis aligned bounding
+/// box.
 Type ClosestPointOnAabbToPoint(Vec3Param aabbMinPoint, Vec3Param aabbMaxPoint, Vec3Ptr point);
 
 /// Find the closest point on a capsule to the given point. The point returned
@@ -439,8 +427,7 @@ Type LineCylinder(Vec3Param linePoint,
                   Interval* interval);
 
 /// Intersect a line with an elliptical cylinder defined by its center, local
-/// axes, major radius (x-axis), minor radius (z-axis), and half height
-/// (y-axis).
+/// axes, major radius (x-axis), minor radius (z-axis), and half height (y-axis).
 Type LineCylinder(Vec3Param linePoint,
                   Vec3Param lineDirection,
                   Vec3Param cylinderCenter,
@@ -496,8 +483,7 @@ Type RayAabb(
     Vec3Param rayStart, Vec3Param rayDirection, Vec3Param aabbMinPoint, Vec3Param aabbMaxPoint, Interval* interval);
 
 /// Intersect a ray with a cylinder. Returns None if the ray doesn't intersect
-/// the infinite cylinder anywhere. Returns Outside if the intersection with the
-/// infinite cylinder is invalid.
+/// the infinite cylinder anywhere. Returns Outside if the intersection with the infinite cylinder is invalid.
 Type RayInfiniteCylinder(Vec3Param rayStart,
                          Vec3Param rayDirection,
                          Vec3Param cylinderPointA,
@@ -505,8 +491,8 @@ Type RayInfiniteCylinder(Vec3Param rayStart,
                          real cylinderRadius,
                          Interval* interval);
 
-/// Intersect a ray with a capsule defined by its center, local axes, radius,
-/// and half of the distance between the centers of the spherical endcaps.
+/// Intersect a ray with a capsule defined by its center, local axes, radius, and
+/// half of the distance between the centers of the spherical endcaps.
 Type RayCapsule(Vec3Param rayStart,
                 Vec3Param rayDirection,
                 Vec3Param capsuleCenter,
@@ -575,9 +561,9 @@ Type RayObb(Vec3Param rayStart,
 /// Intersect a ray with a sphere.
 Type RaySphere(
     Vec3Param rayStart, Vec3Param rayDirection, Vec3Param sphereCenter, real sphereRadius, Interval* interval);
-/// Intersect a ray with a sphere. This function will not early out when the
-/// sphere is behind the ray so that the interval can be filled out. This is
-/// currently used in RayCapsule to get accurate t-values.
+/// Intersect a ray with a sphere. This function will not early out when the sphere
+/// is behind the ray so that the interval can be filled out. This is currently used
+/// in RayCapsule to get accurate t-values.
 Type RaySphereAllowBehind(
     Vec3Param rayStart, Vec3Param rayDirection, Vec3Param sphereCenter, real sphereRadius, Interval* interval);
 
@@ -599,8 +585,7 @@ Type RayTorus(Vec3Param rayStart,
               real torusTubeRadius,
               Interval* interval);
 
-/// Intersect a ray with a triangle. The epsilon is used to fatten/shrink the
-/// triangle.
+/// Intersect a ray with a triangle. The epsilon is used to fatten/shrink the triangle.
 Type RayTriangle(Vec3Param rayStart,
                  Vec3Param rayDirection,
                  Vec3Param trianglePointA,
@@ -613,9 +598,8 @@ Type RayTriangle(Vec3Param rayStart,
 Type SegmentAabb(
     Vec3Param segmentStart, Vec3Param segmentEnd, Vec3Param aabbMinPoint, Vec3Param aabbMaxPoint, Interval* interval);
 
-/// Intersect a segment with a capsule defined by its center, local axes,
-/// radius, and half of the distance between the centers of the spherical
-/// endcaps.
+/// Intersect a segment with a capsule defined by its center, local axes, radius,
+/// and half of the distance between the centers of the spherical endcaps.
 Type SegmentCapsule(Vec3Param segmentStart,
                     Vec3Param segmentEnd,
                     Vec3Param capsuleCenter,
@@ -653,8 +637,7 @@ Type SegmentCylinder(Vec3Param segmentStart,
                      Interval* interval);
 
 /// Intersect a segment with an elliptical cylinder defined by its center, local
-/// axes, major radius (x-axis), minor radius (z-axis), and half height
-/// (y-axis).
+/// axes, major radius (x-axis), minor radius (z-axis), and half height (y-axis).
 Type SegmentCylinder(Vec3Param segmentStart,
                      Vec3Param segmentEnd,
                      Vec3Param cylinderCenter,
@@ -748,9 +731,9 @@ Type RayEllipsoid(Vec3Param rayStart,
                   Mat3Param ellipsoidBasis,
                   IntersectionPoint* intersectionPoint = nullptr);
 
-/// Intersect a ray with an arbitrary collection of triangles. Base offset is
-/// the number of bytes from the beginning to the first value, vertex stride is
-/// the byte distance between vertices, and the size of the index refers to the
+/// Intersect a ray with an arbitrary collection of triangles. Base offset is the
+/// number of bytes from the beginning to the first value, vertex stride is the
+/// byte distance between vertices, and the size of the index refers to the
 /// number of bytes used to represent the indices (generally 2 or 4 bytes).
 Type RayMeshBuffer(Vec3Param rayStart,
                    Vec3Param rayDirection,
@@ -796,8 +779,7 @@ Type RayTetrahedron(Vec3Param rayStart,
                     Vec3Param tetrahedronPointD,
                     IntersectionPoint* intersectionPoint = nullptr);
 
-/// Intersect a ray with a triangle. The epsilon is used to fatten/shrink the
-/// triangle.
+/// Intersect a ray with a triangle. The epsilon is used to fatten/shrink the triangle.
 Type RayTriangle(Vec3Param rayStart,
                  Vec3Param rayDirection,
                  Vec3Param trianglePointA,
@@ -893,9 +875,8 @@ Type AabbCapsule(Vec3Param aabbMinPoint,
 
 /// Intersect an axis aligned bounding box with a frustum. The 6 planes of the
 /// frustum are assumed to be pointing inwards.
-/// This test is an approximation because it only checks the aabb points against
-/// the frustum's planes. This doesn't cover all axes necessary for a SAT test
-/// so it can return false positives.
+/// This test is an approximation because it only checks the aabb points against the frustum's planes.
+/// This doesn't cover all axes necessary for a SAT test so it can return false positives.
 Type AabbFrustumApproximation(Vec3Param aabbMinPoint,
                               Vec3Param aabbMaxPoint,
                               const Vec4 frustumPlanes[6],
@@ -982,8 +963,8 @@ Type CapsuleTriangle(Vec3Param capsulePointA,
                      Vec3Param trianglePointC,
                      Manifold* manifold = nullptr);
 
-/// Intersect a frustum with a sphere. The 6 planes of the frustum are assumed
-/// to be pointing inwards.
+/// Intersect a frustum with a sphere. The 6 planes of the frustum are assumed to
+/// be pointing inwards.
 Type FrustumSphereApproximation(const Vec4 frustumPlanes[6],
                                 Vec3Param sphereCenter,
                                 real sphereRadius,
@@ -1106,7 +1087,8 @@ struct IntersectionPoint2D
   /// corresponds to the point on the second shape.
   Vec2 Points[2];
 
-  union {
+  union
+  {
     /// Amount of overlap occurring in the direction of the normal.
     real Depth;
 

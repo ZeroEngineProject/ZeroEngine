@@ -117,8 +117,8 @@ Type FrustumPlane(const Vec4 frustumPlanes[6], Vec3Param planeNormal, real plane
   return Unimplemented;
 }
 
-/// Intersect a frustum with a sphere. The 6 planes of the frustum are assumed
-/// to be pointing inwards.
+/// Intersect a frustum with a sphere. The 6 planes of the frustum are assumed to
+/// be pointing inwards.
 Type FrustumSphereApproximation(const Vec4 frustumPlanes[6],
                                 Vec3Param sphereCenter,
                                 real sphereRadius,
@@ -201,14 +201,12 @@ Type FrustumTriangle(const Vec4 frustumPlanes[6],
     // If all three signs are the same, the absolute value of the sum will be 3.
     if (Math::Abs(result) == real(3.0))
     {
-      // If the sign of the result is negative, the triangle is outside the
-      // plane
+      // If the sign of the result is negative, the triangle is outside the plane
       if (result < real(0.0))
       {
         return Outside;
       }
-      // Otherwise the triangle is completely inside of the plane, do other
-      // tests
+      // Otherwise the triangle is completely inside of the plane, do other tests
       else
       {
         continue;

@@ -60,8 +60,7 @@ const uint cEdge[12][2] = {
 
 /// For use in determining which points are connected ("on the same edge as") to
 /// the given point. Inputs are the index of the currently known point and the
-/// axis corresponding to the edge in the box's local space (x = 0, y = 1, z =
-/// 2)
+/// axis corresponding to the edge in the box's local space (x = 0, y = 1, z = 2)
 const uint cPointPointEdge[8][3] = {
     {1, 4, 3}, {0, 5, 2}, {3, 6, 1}, {2, 7, 0}, {5, 0, 7}, {4, 1, 6}, {7, 2, 5}, {6, 3, 4}};
 
@@ -77,8 +76,8 @@ const uint cEdgePointPoint[8][8] = {{n, 0, n, 3, 4, n, n, n},    // 0
                                     {n, n, 6, n, n, 9, n, 10},   // 6
                                     {n, n, n, 7, 11, n, 10, n}}; // 7
 
-/// For use in determining the index of the major axis that the two points lie
-/// on when the box is represented in local space (axis-aligned).
+/// For use in determining the index of the major axis that the two points lie on
+/// when the box is represented in local space (axis-aligned).
 //                                     0  1  2  3  4  5  6  7
 const uint cAxisPointPoint[8][8] = {{n, 0, n, 2, 1, n, n, n},  // 0
                                     {0, n, 2, n, n, 1, n, n},  // 1

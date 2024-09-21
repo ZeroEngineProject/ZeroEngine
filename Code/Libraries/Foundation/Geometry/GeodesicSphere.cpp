@@ -295,8 +295,8 @@ void BuildIcoSphere(uint subdivisionCount,
   // Number of new faces per original face
   uint newFaceCount = subdivisionCount * subdivisionCount;
 
-  // Go through all of the faces and store their points, taking care not to
-  // store any duplicated points
+  // Go through all of the faces and store their points, taking care not to store
+  // any duplicated points
   for (uint i = 0; i < 20; ++i)
   {
     for (uint j = 0; j < newFaceCount; ++j)

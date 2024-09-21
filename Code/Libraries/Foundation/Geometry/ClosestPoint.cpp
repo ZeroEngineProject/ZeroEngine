@@ -178,8 +178,7 @@ Type ClosestPointOnCapsuleToPoint(Vec3Param capsulePointA, Vec3Param capsulePoin
   Vec3 closestPointToPoint = *point - closestPoint;
 
   // In the case where the point being checked is the same as the closest point
-  // on the segment, return the point and consider it to be "Inside" the
-  // capsule.
+  // on the segment, return the point and consider it to be "Inside" the capsule.
   if (cGeometrySafeChecks)
   {
     real distance = AttemptNormalize(closestPointToPoint);
@@ -325,9 +324,9 @@ Type ClosestPointOnSphereToPoint(Vec3Param sphereCenter, real sphereRadius, Vec3
           "Intersection - Null pointer passed, this function"
           " needs a valid pointer.");
 
-  // Closest point on the sphere to the given point is found by taking the
-  // vector from the point to the sphere, normalizing it, and then scaling it by
-  // the sphere's radius.
+  // Closest point on the sphere to the given point is found by taking the vector
+  // from the point to the sphere, normalizing it, and then scaling it by the
+  // sphere's radius.
   Vec3 sphereToPoint = *point - sphereCenter;
   real distance = Normalize(sphereToPoint);
   sphereToPoint *= sphereRadius;
@@ -384,9 +383,8 @@ Type ClosestPointOnTriangleToPoint(Vec3Param trianglePointA,
   {
     // Closest point has barycentric coordinates (1-v,v,0)
     real denom = d1 - d3;
-    // A and B are equal. Fallback to the line segment of AC. No other edge has
-    // to be checked for degeneracy as the line AC will always be valid and the
-    // vertex cases will catch anything else.
+    // A and B are equal. Fallback to the line segment of AC. No other edge has to be checked for
+    // degeneracy as the line AC will always be valid and the vertex cases will catch anything else.
     if (denom == 0)
       return ClosestPointOnSegmentToPoint(trianglePointA, trianglePointC, point);
 
@@ -573,8 +571,7 @@ Type ClosestPointsOfTwoSegments(Vec3Param segmentOnePointA,
       real denom = (oneSqLength * twoSqLength) - (oneDotTwo * oneDotTwo);
 
       // If segments not parallel, compute closest point on line one to line two
-      // and clamp to segment one. Else pick arbitrary segment one value (here
-      // 0)
+      // and clamp to segment one. Else pick arbitrary segment one value (here 0)
       if (denom != real(0.0))
       {
         segmentOneS = (oneDotTwo * twoStartToStart);

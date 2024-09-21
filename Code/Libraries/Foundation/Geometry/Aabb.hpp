@@ -61,13 +61,11 @@ struct Aabb
 
   /// Computes an aabb of this aabb after it is transform by the given values.
   Aabb TransformAabbInternal(Vec3Param worldScale, Mat3Param worldRotation, Vec3Param worldTranslation) const;
-  /// Transform's a local space aabb into world space. This transform properly
-  /// deals with
+  /// Transform's a local space aabb into world space. This transform properly deals with
   // a local-space aabb that isn't centered at the origin
   Aabb TransformAabb(Vec3Param worldScale, Mat3Param worldRotation, Vec3Param worldTranslation) const;
   /// First properly translates the aabb to the center, then transforms by the
-  /// passed in transformation, then properly translates back with the correct
-  /// offset.
+  /// passed in transformation, then properly translates back with the correct offset.
   Aabb TransformAabb(Mat4Param transformation) const;
 
   /// Transforms the Aabb into an Obb.
@@ -104,8 +102,7 @@ struct Aabb
   void SetHalfExtents(Vec3Param halfExtents);
   void SetExtents(Vec3Param extents);
   /// Sets the center and the half extents of the Aabb. It is quicker to set
-  /// both simultaneously than individually. See GetHalfExtents for an
-  /// explanation
+  /// both simultaneously than individually. See GetHalfExtents for an explanation
   // of a half extents.
   void SetCenterAndHalfExtents(Vec3Param center, Vec3Param halfExtents);
   /// Sets the mins and maxs to the passed in values.

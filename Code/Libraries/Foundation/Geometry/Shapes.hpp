@@ -132,8 +132,8 @@ struct SweptTriangle
   Vec3 ScaledDir;
 };
 
-/// An object to represent a tetrahedra. Used to simplify tetrahedra usage and
-/// to more easily deal with intersection functions.
+/// An object to represent a tetrahedra. Used to simplify tetrahedra usage and to
+/// more easily deal with intersection functions.
 struct Tetrahedron
 {
   Tetrahedron()
