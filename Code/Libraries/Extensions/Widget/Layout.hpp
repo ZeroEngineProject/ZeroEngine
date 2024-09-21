@@ -25,8 +25,7 @@ static const cstr Names[] = {"DockNone", "DockLeft", "DockTop", "DockRight", "Do
 static const uint Values[] = {DockNone, DockLeft, DockTop, DockRight, DockBottom, DockFill};
 } // namespace DockMode
 
-// DeclareEnum6(DockMode, DockNone, DockLeft, DockTop, DockRight, DockBottom,
-// DockFill);
+// DeclareEnum6(DockMode, DockNone, DockLeft, DockTop, DockRight, DockBottom, DockFill);
 
 DeclareEnum9(DockArea, Top, Bottom, Left, Right, Center, Count, TopTool, BotTool, Floating);
 

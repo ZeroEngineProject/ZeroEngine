@@ -225,8 +225,8 @@ void Slider::SetPercentage(float percentage, bool sendMessage)
   // Snap the value to the given increment
   newValue = Snap(newValue, mIncrement);
 
-  // Even with the increment clamped, 'Value' can go outside of the valid range
-  // if the increment doesn't evenly divide the total range size.
+  // Even with the increment clamped, 'Value' can go outside of the valid range if the
+  // increment doesn't evenly divide the total range size.
   newValue = Math::Clamp(newValue, mMinValue, mMaxValue);
 
   SetValue(newValue, sendMessage);

@@ -117,11 +117,7 @@ ZilchDefineType(ContextMenuEntry, builder, type)
 }
 
 ContextMenuEntry::ContextMenuEntry(StringParam name, StringParam icon, bool readOnly) :
-    mName(name),
-    mIcon(icon),
-    mEnabled(true),
-    mParent(nullptr),
-    mReadOnly(readOnly)
+    mName(name), mIcon(icon), mEnabled(true), mParent(nullptr), mReadOnly(readOnly)
 {
   ConnectThisTo(this, Events::MenuItemSelected, OnItemSelected);
   ConnectThisTo(this, Events::MenuItemHover, OnItemHover);
@@ -150,8 +146,7 @@ void ContextMenuEntry::OnItemHover(ObjectEvent* e)
 
 void ContextMenuEntry::OnChildMenuClose(ObjectEvent* e)
 {
-  // A sub menu has closed so re-enable closing the parent menu based on mouse
-  // distance
+  // A sub menu has closed so re-enable closing the parent menu based on mouse distance
   ContextMenu* menuClosed = (ContextMenu*)e->Source;
   // If the menu being closed has any children menu close them also
   if (menuClosed->mSubMenu)
@@ -281,19 +276,17 @@ void ContextMenuEntry::CreateSubMenu(ContextMenuItem* menuItem)
   // When creating a sub menu get the local offset of the item that spawned it
   menu->mSubMenuOffset = menuItem->GetTranslation();
   ConnectThisTo(menu, Events::PopUpClosed, OnChildMenuClose);
-  // Set the new sub menu and parent menu as each others parent and child menu
-  // respectively
+  // Set the new sub menu and parent menu as each others parent and child menu respectively
   parent->mSubMenu = menu;
   menu->mParentMenu = parent;
   menu->mDirty = true;
 
-  // When opening a sub menu disable the parent from closing based on mouse
-  // distance so the sub menu doesn't close when we stray too far from the
-  // parent menu
+  // When opening a sub menu disable the parent from closing based on mouse distance
+  // so the sub menu doesn't close when we stray too far from the parent menu
   parent->mCloseMode = PopUpCloseMode::DisableClose;
 
-  // After creating the sub menu update the parent immediately to properly
-  // position and display the new sub menu
+  // After creating the sub menu update the parent immediately to properly position and display
+  // the new sub menu
   parent->UpdateTransform();
 }
 
@@ -495,8 +488,7 @@ void ContextMenuItem::UpdateTransform()
     mText->SetColor(MenuUi::ItemDisabledTextColor);
     mShortcut->SetColor(MenuUi::ItemDisabledTextColor);
 
-    // If a reason was provided for why this item was disabled create a tooltip
-    // displaying it
+    // If a reason was provided for why this item was disabled create a tooltip displaying it
     if (mToolTip.IsNull() && !mEntry->mDisabledText.Empty())
     {
       ToolTip* toolTip = new ToolTip(this);
@@ -668,8 +660,7 @@ void ContextMenu::OnDestroy()
 
 void ContextMenu::RebuildUi()
 {
-  // Destroy any ContentMenuItems currently on the ContextMenu and rebuild the
-  // UI
+  // Destroy any ContentMenuItems currently on the ContextMenu and rebuild the UI
   forRange (Widget* widget, mItems.All())
   {
     widget->Destroy();
@@ -697,9 +688,9 @@ void ContextMenu::CloseContextMenu()
   FadeOut(0.05f);
 }
 
-// Similar to shift onto screen, but takes the ContextMenuItem's position and
-// the hierarchy's size and position into account to shift the menu to an
-// appropriate position if there is not enough space
+// Similar to shift onto screen, but takes the ContextMenuItem's position and the
+// hierarchy's size and position into account to shift the menu to an appropriate
+// position if there is not enough space
 void ContextMenu::FitSubMenuOnScreen(Vec3 position, Vec2 parentSize)
 {
   Vec2 screenSize = this->GetParent()->GetSize();
@@ -712,8 +703,7 @@ void ContextMenu::FitSubMenuOnScreen(Vec3 position, Vec2 parentSize)
 
   if (position.x + thisSize.x > screenSize.x)
   {
-    // Adding 1 pixel shifts the menu so the submenu doesn't overlap the parent
-    // menu
+    // Adding 1 pixel shifts the menu so the submenu doesn't overlap the parent menu
     position.x -= (parentSize.x + thisSize.x) + Pixels(1);
     // When a sub menu is placed on the left side of a parent menu
     // the drop shadow overlaps the parents so just make it clear
@@ -725,8 +715,7 @@ void ContextMenu::FitSubMenuOnScreen(Vec3 position, Vec2 parentSize)
     position.x -= Pixels(3);
   }
 
-  // This is a sub menu and needs to calculate its local position for placement
-  // relative to its parent
+  // This is a sub menu and needs to calculate its local position for placement relative to its parent
   this->SetTranslation(position);
 }
 
@@ -786,8 +775,7 @@ void ContextMenu::OnMouseDown(MouseEvent* event)
   if (!mSubMenu && !mParentMenu && !this->Contains(event->Position))
     FadeOut();
 
-  // If this menu has a child context menu they need to be taken into account
-  // for closing this menu
+  // If this menu has a child context menu they need to be taken into account for closing this menu
   if (!IsPositionInHierarchy(event->Position))
     FadeOut();
 }

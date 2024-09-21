@@ -328,8 +328,7 @@ void SearchView::ResolveVerticalToolTipOverlap()
 
   // Place the item tooltip next to its associated UI element.
   itemRect = GetToolTipRect();
-  // Resolve the vertical overlap, and also allow for a 2 pixel gap between the
-  // tooltips.
+  // Resolve the vertical overlap, and also allow for a 2 pixel gap between the tooltips.
   overlap = Math::Ceil(overlap) + 2.0f;
   itemRect.Y += overlap;
 

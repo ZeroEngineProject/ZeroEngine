@@ -28,8 +28,7 @@ public:
   String mStringUserData;
 };
 
-/// Event for the ModalButtonsAction class to send that a button with a given
-/// name was pressed.
+/// Event for the ModalButtonsAction class to send that a button with a given name was pressed.
 class ModalButtonEvent : public Event
 {
 public:
@@ -75,8 +74,7 @@ public:
   /// Dims and blocks input to everything behind the modal.
   Element* mBackground;
 
-  /// Any custom data the user wants to attach to the modal to make callbacks
-  /// easier.
+  /// Any custom data the user wants to attach to the modal to make callbacks easier.
   void* mUserData;
   String mStringUserData;
 };
@@ -154,8 +152,7 @@ public:
                      Array<String>& buttonNames,
                      StringParam extraText = String(),
                      float fadeInTime = 0.25f);
-  /// Construct with the given string as the only button (just a helper to make
-  /// construction easier)
+  /// Construct with the given string as the only button (just a helper to make construction easier)
   ModalButtonsAction(Composite* parent,
                      StringParam title,
                      StringParam buttonName,

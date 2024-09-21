@@ -33,9 +33,9 @@ DeclareEvent(NamedChanged);
 /// to the window and only highlight the window if the tab owning
 /// the property grid is selected.
 DeclareEvent(HighlightBorder);
-/// An event for tab widgets to query their owned widgets if they are modified
-/// and need to be saved It returns whether or not they need to display a CODA
-/// along with the appropriate message for the resource type being queried
+/// An event for tab widgets to query their owned widgets if they are modified and need to be saved
+/// It returns whether or not they need to display a CODA along with the appropriate message for
+/// the resource type being queried
 DeclareEvent(QueryModifiedSave);
 /// Confirmation event that tells the owned widget to save its changes
 DeclareEvent(ConfirmModifiedSave);
@@ -109,7 +109,7 @@ class QueryModifiedSaveEvent : public Event
 {
 public:
   ZilchDeclareType(QueryModifiedSaveEvent, TypeCopyMode::ReferenceType);
-  QueryModifiedSaveEvent() : Modified(false){};
+  QueryModifiedSaveEvent() : Modified(false) {};
   bool Modified;
   String Title;
   String Message;

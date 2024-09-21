@@ -127,8 +127,7 @@ void Splitter::OnLeftMouseUp(MouseEvent* event)
 
 void SetSizeFlex(Widget* widget, SizeAxis::Enum axis, Vec2 newSize)
 {
-  // ErrorIf(widget->mSizePolicy.Policy[axis] == SizePolicy::Auto, "Can not size
-  // Auto");
+  // ErrorIf(widget->mSizePolicy.Policy[axis] == SizePolicy::Auto, "Can not size Auto");
   widget->mSizePolicy.Size[axis] = newSize[axis];
   widget->mSize[axis] = newSize[axis];
 }
@@ -150,8 +149,7 @@ void Splitter::OnMouseMove(MouseEvent* event)
   if (mReverse)
     clampedMovement *= -1;
 
-  // for the current resizing axis, check and see if we're shrinking the left or
-  // right
+  // for the current resizing axis, check and see if we're shrinking the left or right
   if (clampedMovement[mAxis] < 0 && left != end)
   {
     // we're shrinking the left, so compute the new size
@@ -175,8 +173,7 @@ void Splitter::OnMouseMove(MouseEvent* event)
   if (right != end)
     SetSizeFlex(right, mAxis, mRightStartSize - clampedMovement);
 
-  // have to mark our parent as needing update, otherwise the animation will not
-  // be smooth
+  // have to mark our parent as needing update, otherwise the animation will not be smooth
   this->GetParent()->MarkAsNeedsUpdate();
 }
 

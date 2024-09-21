@@ -78,8 +78,7 @@ public:
   // Context Menu Entry Interface (for use in zilch and C++)
   /// Adds the provided entry to the this entries children
   void AddEntry(ContextMenuEntry* entry);
-  /// Adds a new entry with the provided name with an icon if one is provided to
-  /// this menu entries children
+  /// Adds a new entry with the provided name with an icon if one is provided to this menu entries children
   ContextMenuEntry* AddEntry(StringParam name = String(), bool readOnly = false);
   ContextMenuEntry* AddDivider();
   ContextMenuEntry* AddCommand(Command* command);
@@ -92,8 +91,7 @@ public:
   /// Removes all child entries
   void Clear();
 
-  /// Returns the children entry with the provided name if it exists and null
-  /// otherwise
+  /// Returns the children entry with the provided name if it exists and null otherwise
   ContextMenuEntry* GetEntry(StringParam name);
   /// Returns a range with all this menu entries children
   ContextMenuEntryChildren::range GetEntries();
@@ -117,12 +115,10 @@ public:
   ContextMenuEntry* mParent;
   ContextMenuEntryChildren mChildren;
 
-  // Used to store any specific context information for use by selecting a menu
-  // item
+  // Used to store any specific context information for use by selecting a menu item
   Context mContext;
 
-  // Used to disable a menu item from being selectable and greys out the item
-  // text
+  // Used to disable a menu item from being selectable and greys out the item text
   bool mEnabled;
   // If provided a tooltip can display the reason why the item is disabled
   String mDisabledText;
@@ -277,8 +273,7 @@ public:
   ContextMenu* mSubMenu;
   Vec3 mSubMenuOffset;
   ContextMenuEntry* mRootEntry;
-  // Flag for tracking when the context menu has been altered and needs to be
-  // rebuilt
+  // Flag for tracking when the context menu has been altered and needs to be rebuilt
   bool mDirty;
 
   // For internal use only
@@ -288,8 +283,7 @@ private:
   friend class ContextMenuItem;
 
   ContextMenu* GetRootContextMenu();
-  // These functions only check from the current menu an down through its sub
-  // menus
+  // These functions only check from the current menu an down through its sub menus
   bool IsPositionInSubMenuRecursive(Vec2Param screenPosition);
   bool IsFocusInSubMenuRecursive(Widget* focusObject);
 

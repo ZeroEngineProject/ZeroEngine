@@ -45,8 +45,7 @@ ZilchDefineType(ButtonBase, builder, type)
 }
 
 ButtonBase::ButtonBase(Composite* parent, StringParam styleClass) :
-    Composite(parent),
-    mToolTipColor(ToolTipColorScheme::Default)
+    Composite(parent), mToolTipColor(ToolTipColorScheme::Default)
 {
   mDefSet = mDefSet->GetDefinitionSet(styleClass);
 
@@ -313,8 +312,7 @@ void TextButton::UpdateTransform()
       mButtonText->SetColor(mTextColor);
   }
 
-  // If out text button is set to non-interactive grey out the displayed button
-  // and text
+  // If out text button is set to non-interactive grey out the displayed button and text
   if (!mInteractive)
   {
     mButtonText->SetColor(TextBUttonUi::ReadOnlyTextColor);

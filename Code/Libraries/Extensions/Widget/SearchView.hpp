@@ -42,8 +42,8 @@ public:
   String mSearchText;
 };
 
-// Boost priority to make differing result types appear above other result
-// types. The higher the range boost value, the higher the sort priority order.
+// Boost priority to make differing result types appear above other result types.
+// The higher the range boost value, the higher the sort priority order.
 namespace SearchViewResultPriority
 {
 
@@ -135,7 +135,7 @@ public:
     return true;
   }
   // Run auto completed command
-  virtual void RunCommand(SearchView* searchView, SearchViewResult& element){};
+  virtual void RunCommand(SearchView* searchView, SearchViewResult& element) {};
   // Create a preview widget
   virtual Composite* CreatePreview(Composite* parent, SearchViewResult& element)
   {
@@ -169,8 +169,7 @@ public:
   // Helps differentiate name-collisions on list items.
   String mProviderType;
 
-  // This allows for an extra step that filters what a search provider would
-  // normally return.
+  // This allows for an extra step that filters what a search provider would normally return.
   SearchProviderFilter* mFilter;
 };
 

@@ -315,8 +315,7 @@ void EditText::MoveCaretPrevToken()
 
 void EditText::ExtendSelection(SelectMode::Enum direction)
 {
-  // If no text is currently selected set the caret position as our selections
-  // start
+  // If no text is currently selected set the caret position as our selections start
   if (mSelectionLeftPos == 0 && mSelectionRightPos == 0)
     mSelectionStartPos = mCaretPos;
 

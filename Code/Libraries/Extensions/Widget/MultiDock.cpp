@@ -34,8 +34,8 @@ DockArea::Enum ToDockAreaDirection(DockMode::Enum dockArea)
   }
 }
 
-// Get the next docking area from the current docking area in the direction
-// provided NULL if no docking area in that direction
+// Get the next docking area from the current docking area in the direction provided
+// NULL if no docking area in that direction
 DockingArea* NextInDirection(MultiDock* multiDock, DockingArea* current, DockArea::Enum direction)
 {
   DockArea::Enum currentArea = current->Area;
@@ -139,7 +139,7 @@ public:
   // MouseManipulation Interface
   void OnMouseUpdate(MouseEvent* event) override;
   void OnMouseUp(MouseEvent* event) override;
-  void OnMouseDown(MouseEvent* event) override{};
+  void OnMouseDown(MouseEvent* event) override {};
   void OnMouseMove(MouseEvent* event) override;
   void ChangeHover(DockHover::Enum newHover);
   void CleanUp();
@@ -945,8 +945,8 @@ struct SortByDockIndex
   }
 };
 
-// Compute the layout for all widget in the docking area. Area used is removed
-// from area parameter
+// Compute the layout for all widget in the docking area. Area used is removed from
+// area parameter
 void LayoutDockingArea(MultiDock* dock,
                        DockingArea& dockArea,
                        DockArea::Enum areaIndex,
@@ -961,8 +961,7 @@ void LayoutDockingArea(MultiDock* dock,
     return;
   }
 
-  // What axis to change depend on if this area has a vertical or horizontal
-  // layout
+  // What axis to change depend on if this area has a vertical or horizontal layout
   DockArea::Enum areaDirection = areaIndex;
   uint axis0 = GetAxis(areaDirection);
   uint axis1 = !axis0;

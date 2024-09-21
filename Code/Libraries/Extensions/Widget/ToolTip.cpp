@@ -428,8 +428,7 @@ void ToolTip::SetArrowTipTranslation(
 {
   WidgetRect& rect = placement.mScreenRect;
 
-  // Attempt to place the tool tip on each side of the rect based on the
-  // priority
+  // Attempt to place the tool tip on each side of the rect based on the priority
   for (uint i = 0; i < 4; ++i)
   {
     // The current side

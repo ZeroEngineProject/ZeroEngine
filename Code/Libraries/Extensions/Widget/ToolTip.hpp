@@ -55,8 +55,7 @@ public:
   void SetContent(Widget* content);
 
   /// If the content isn't already text, create a stack of one multitext object
-  /// and set it as the content.  Else set the text on the already present
-  /// multitext object.
+  /// and set it as the content.  Else set the text on the already present multitext object.
   Text* SetText(StringParam text);
   /// If the content isn't already text, create a multitext stack.
   /// Then, add a new multitext object to the content's stack.

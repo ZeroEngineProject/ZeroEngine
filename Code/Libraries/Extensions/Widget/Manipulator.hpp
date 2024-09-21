@@ -32,25 +32,25 @@ public:
   }
 
   /// Named MouseUp Events.
-  virtual void OnLeftMouseUp(MouseEvent* event){};
-  virtual void OnRightMouseUp(MouseEvent* event){};
-  virtual void OnMiddleMouseUp(MouseEvent* event){};
+  virtual void OnLeftMouseUp(MouseEvent* event) {};
+  virtual void OnRightMouseUp(MouseEvent* event) {};
+  virtual void OnMiddleMouseUp(MouseEvent* event) {};
 
   /// Named MouseDownEvents
-  virtual void OnLeftMouseDown(MouseEvent* event){};
-  virtual void OnRightMouseDown(MouseEvent* event){};
-  virtual void OnMiddleMouseDown(MouseEvent* event){};
+  virtual void OnLeftMouseDown(MouseEvent* event) {};
+  virtual void OnRightMouseDown(MouseEvent* event) {};
+  virtual void OnMiddleMouseDown(MouseEvent* event) {};
 
-  virtual void OnMouseUpdate(MouseEvent* event){};
-  virtual void OnMouseScroll(MouseEvent* event){};
+  virtual void OnMouseUpdate(MouseEvent* event) {};
+  virtual void OnMouseScroll(MouseEvent* event) {};
 
   /// Keyboard Events.
-  virtual void OnKeyDown(KeyboardEvent* event){};
-  virtual void OnKeyUp(KeyboardEvent* event){};
-  virtual void OnKeyRepeated(KeyboardEvent* event){};
+  virtual void OnKeyDown(KeyboardEvent* event) {};
+  virtual void OnKeyUp(KeyboardEvent* event) {};
+  virtual void OnKeyRepeated(KeyboardEvent* event) {};
 
-  virtual void OnTargetDestroy(MouseEvent* event){};
-  virtual void OnUpdate(UpdateEvent* event){};
+  virtual void OnTargetDestroy(MouseEvent* event) {};
+  virtual void OnUpdate(UpdateEvent* event) {};
 
 protected:
   /// For relative positions and focus will be

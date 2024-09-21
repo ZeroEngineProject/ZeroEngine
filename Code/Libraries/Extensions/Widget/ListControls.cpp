@@ -236,8 +236,8 @@ void ListBox::UpdateTransform()
     background->SetTranslation(translation);
     background->SetSize(Vec2(boxWidth, cTextCellHeight));
 
-    // Compute the global index for this item so that the color is consistent
-    // for the same named item, otherwise the color can flip when we have an odd
+    // Compute the global index for this item so that the color is consistent for
+    // the same named item, otherwise the color can flip when we have an odd
     // number of bound items and we reach the end of the list.
     uint globalIndex = i + startingBlockIndex;
     if (globalIndex % 2)

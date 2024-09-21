@@ -45,9 +45,9 @@ class Docker
 public:
   virtual void Dock(Widget* widget, DockArea::Enum area) = 0;
   virtual DockArea::Enum GetDockArea() = 0;
-  virtual void Zoom(Widget* widget){};
-  virtual void Show(Widget* widget){};
-  virtual void WidgetDestroyed(Widget* widget){};
+  virtual void Zoom(Widget* widget) {};
+  virtual void Show(Widget* widget) {};
+  virtual void WidgetDestroyed(Widget* widget) {};
   virtual bool StartManipulation(Widget* widget, DockMode::Enum direction)
   {
     return false;
@@ -91,9 +91,7 @@ public:
   }
 
   SizePolicies(SizePolicy::Enum xpolicy, SizePolicy::Enum ypolicy) :
-      XPolicy(xpolicy),
-      YPolicy(ypolicy),
-      Size(Vec2::cZero)
+      XPolicy(xpolicy), YPolicy(ypolicy), Size(Vec2::cZero)
   {
     XPolicy = xpolicy;
     YPolicy = ypolicy;
@@ -103,7 +101,8 @@ public:
   {
   }
 
-  union {
+  union
+  {
     struct
     {
       SizePolicy::Enum XPolicy;
@@ -219,7 +218,9 @@ public:
 
   /// Dispatch an event to this widget and all ancestors
   void DispatchBubble(StringParam eventId, Event* event);
-  virtual void DispatchDown(StringParam eventId, Event* event){};
+  virtual void DispatchDown(StringParam eventId, Event* event)
+  {
+  }
 
   void DebugValidate() const;
 
@@ -241,9 +242,9 @@ public:
   void SetClipping(bool clipping);
   bool GetClipping();
 
-  // Compute a 0-based index of how many parents and siblings we are in front
-  // of. This is not used anywhere in the widget system, but can be used for
-  // placing OS windows in front and other similar z-index properties.
+  // Compute a 0-based index of how many parents and siblings we are in front of.
+  // This is not used anywhere in the widget system, but can be used
+  // for placing OS windows in front and other similar z-index properties.
   int GetZIndex();
 
   template <typename type>
@@ -350,7 +351,7 @@ public:
     mVisible = visible;
   }
 
-  virtual void Draw(DisplayRender* render, Mat4Param parentTx, ColorTransform& colorTx, DrawParams& params){};
+  virtual void Draw(DisplayRender* render, Mat4Param parentTx, ColorTransform& colorTx, DrawParams& params) {};
   virtual void DispatchAt(DispatchAtParams& params);
 
   virtual void RenderUpdate(

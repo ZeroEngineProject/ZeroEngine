@@ -80,8 +80,7 @@ public:
   }
   virtual void DoLayout();
 
-  // Shift to be visible on screen. The offset is the composite's target
-  // postition.
+  // Shift to be visible on screen. The offset is the composite's target postition.
   void ShiftOntoScreen(Vec3 offset);
 
   WidgetList mChildren;

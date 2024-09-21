@@ -11,8 +11,7 @@ ZilchDefineType(MouseManipulation, builder, type)
 const String MouseManipulationElement = "MouseManipulation";
 
 MouseManipulation::MouseManipulation(Mouse* mouse, Composite* parent) :
-    Widget(parent, AttachType::Direct) // Manipulation should not be attached to
-                                       // the client area
+    Widget(parent, AttachType::Direct) // Manipulation should not be attached to the client area
 {
   SetNotInLayout(true);
 
@@ -24,30 +23,25 @@ MouseManipulation::MouseManipulation(Mouse* mouse, Composite* parent) :
   mMouseStartPosition = mouse->GetClientPosition();
 
   // If a button triggered this MouseManipulation, determine which button.
-  //   - ie, a mouse button click isn't the only way to start a
-  //   MouseManipulation
+  //   - ie, a mouse button click isn't the only way to start a MouseManipulation
   //   - ex: MouseMove
   for (uint i = MouseButtons::Left; i < MouseButtons::Size; ++i)
   {
     MouseButtons::Enum button = MouseButtons::Enum(i);
 
-    // Only ONE button, in order of precedence, may claim this
-    // MouseManipulation.
+    // Only ONE button, in order of precedence, may claim this MouseManipulation.
     if (mouse->IsButtonDown(button))
     {
       mButton = button;
 
-      ErrorIf(mButton == MouseButtons::None,
-              "A valid MouseButton MUST trigger an instance of "
-              "'MouseManipulation'");
+      ErrorIf(mButton == MouseButtons::None, "A valid MouseButton MUST trigger an instance of 'MouseManipulation'");
 
       break;
     }
     else // No way to check if a MouseUp triggered this manipulation...
     {
-      // Could cause bugs to always assume a MouseDown triggers the
-      // manipulation. So, each class deriving from 'MouseManipulation' should
-      // handle those special cases.
+      // Could cause bugs to always assume a MouseDown triggers the manipulation. So,
+      // each class deriving from 'MouseManipulation' should handle those special cases.
       mButton = MouseButtons::None;
     }
   }

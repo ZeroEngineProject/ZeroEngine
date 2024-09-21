@@ -3,7 +3,7 @@
 
 namespace Zero
 {
-//#define WIDGET_DEBUGGING
+// #define WIDGET_DEBUGGING
 
 ZilchDefineType(SizePolicies, builder, type)
 {
@@ -621,12 +621,10 @@ void Widget::ScreenCaptureBackBuffer(Image& image)
 void Widget::ScreenCaptureBackBuffer(Image& image, WidgetRect& subRect)
 {
   DebugValidate();
-  // GraphicsViewport viewport = GenerateSubViewport(mWorldTx,
-  // subRect.TopLeft(), subRect.Size());
+  // GraphicsViewport viewport = GenerateSubViewport(mWorldTx, subRect.TopLeft(), subRect.Size());
 
   // RootWidget* root = GetRootWidget();
-  // CaptureViewport(root->GetOsWindow()->GetGraphicsContext(), &image,
-  // viewport);
+  // CaptureViewport(root->GetOsWindow()->GetGraphicsContext(), &image, viewport);
 }
 
 void Widget::SetTakeFocusMode(FocusMode::Type focusMode)
@@ -784,8 +782,7 @@ void Widget::UpdateTransformExternal()
 {
   UpdateTransform();
 
-  static String message = "Improper Widget Update. Did you forget to call your "
-                          "base UpdateTransform at the end of "
+  static String message = "Improper Widget Update. Did you forget to call your base UpdateTransform at the end of "
                           "your UpdateTransform?";
   ErrorIf(!mDestroyed && mTransformUpdateState != TransformUpdateState::Updated, message.c_str());
 }

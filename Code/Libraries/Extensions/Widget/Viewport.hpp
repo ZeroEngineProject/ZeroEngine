@@ -20,8 +20,7 @@ public:
   Camera* GetCamera();
 
   // Set the scaling mode for locked aspect ratio or fixed size.
-  // void SetScalingAndSize(ViewportScaling::Enum scalingMode, uint width, uint
-  // height);
+  // void SetScalingAndSize(ViewportScaling::Enum scalingMode, uint width, uint height);
 
   // Border when inner viewport size is reduced with Scaling mode
   // void SetMarginColor(Vec4 color);

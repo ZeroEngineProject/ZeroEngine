@@ -217,8 +217,7 @@ void MainWindow::UpdateTransform()
 
   WindowState::Type windowState = osWindow->GetState();
 
-  // Has to be set outside of resize because maximize and fullscreen could be
-  // same size.
+  // Has to be set outside of resize because maximize and fullscreen could be same size.
   mSizeGrips->SetActive(windowState == WindowState::Windowed);
   mTitleGrip->SetActive(windowState != WindowState::Fullscreen);
 
@@ -301,8 +300,7 @@ void MainWindow::UpdateTransform()
 
   RootWidget::UpdateTransform();
 
-  // First check if the window position changed, must change by at least one
-  // pixel.
+  // First check if the window position changed, must change by at least one pixel.
   float distanceSq = (position - mPreviousPosition).LengthSq();
   if (distanceSq > 1.0f)
   {

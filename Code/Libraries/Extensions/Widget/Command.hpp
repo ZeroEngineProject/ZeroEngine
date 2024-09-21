@@ -60,8 +60,7 @@ public:
   /// Run the command
   virtual void Execute(Command* command, CommandManager* manager) = 0;
 
-  /// Is the command available? If you disable a command make sure the
-  /// description describes why
+  /// Is the command available? If you disable a command make sure the description describes why
   virtual bool IsEnabled(Command* command, CommandManager* manager)
   {
     return true;
@@ -91,8 +90,7 @@ public:
   void SetActive(bool active);
   /// Is this command currently active?
   bool IsActive();
-  /// Is this command currently able to run? Checks the command's executer if it
-  /// exists.
+  /// Is this command currently able to run? Checks the command's executer if it exists.
   bool IsEnabled();
 
   StringParam GetDisplayName();
@@ -216,8 +214,7 @@ public:
 
   /// Process a command's tag field and separate each tag into a list item.
   void BuildTagList(Command* command);
-  /// After all commands are loaded, make sure their executors are setup
-  /// properly.
+  /// After all commands are loaded, make sure their executors are setup properly.
   void ValidateCommands();
 
   Context* GetContext();

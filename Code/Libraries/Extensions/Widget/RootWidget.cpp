@@ -328,8 +328,7 @@ void RootWidget::OnOsPaint(OsWindowEvent* sizeChange)
 // When events occur on sub objects like mouse enter/exit it is useful to
 // have events that are only sent when the mouse leaves the object and all
 // children (MouseExitHierarchy). This function sends the correct events to
-// the base objects and up the trees to the lowest common ancestor of the
-// object.
+// the base objects and up the trees to the lowest common ancestor of the object.
 void SendHierarchyEvents(cstr op,
                          Widget* oldObject,
                          Widget* newObject,
@@ -501,8 +500,7 @@ void RootWidget::RootCaptureMouse(Widget* widget)
 void RootWidget::RootReleaseMouseCapture(Widget* object)
 {
   // If the widget releasing capture is being destroyed then we need to use the
-  // handle id to check for equality since the handle would otherwise give a
-  // null pointer.
+  // handle id to check for equality since the handle would otherwise give a null pointer.
   if (WidgetHandleManager::HandleToId(mCaptured) == object->mId)
   {
     mCaptured = nullptr;
@@ -693,8 +691,7 @@ Widget* PreviousSibling(Widget* object, bool ignoreInactive)
 
   Widget* prev = (Widget*)WidgetList::Prev(object);
 
-  // If we're ignoring inactive objects, keep looking while the previous sibling
-  // is inactive
+  // If we're ignoring inactive objects, keep looking while the previous sibling is inactive
   while (ignoreInactive && prev != parent->mChildren.End() && !prev->mActive)
     prev = (Widget*)WidgetList::Prev(prev);
 
@@ -714,8 +711,7 @@ Widget* NextSibling(Widget* object, bool ignoreInactive)
 
   Widget* next = (Widget*)WidgetList::Next(object);
 
-  // If we're ignoring inactive objects, keep looking while the next sibling is
-  // inactive
+  // If we're ignoring inactive objects, keep looking while the next sibling is inactive
   while (ignoreInactive && next != parent->mChildren.End() && !next->mActive)
     next = (Widget*)WidgetList::Next(next);
 
@@ -771,8 +767,7 @@ Widget* GetNext(Widget* object, bool ignoreInactive)
   Composite* c = object->GetSelfAsComposite();
   if (c && !c->mChildren.Empty())
   {
-    // If not ignoring inactive objects or the first child is active, return the
-    // first child
+    // If not ignoring inactive objects or the first child is active, return the first child
     if (!ignoreInactive || c->mChildren.Front().mActive)
       return &c->mChildren.Front();
     else
@@ -847,9 +842,8 @@ void RootWidget::OnOsMouseMoved(OsMouseEvent* osMouseEvent)
     ZPrint("Mouse Moved by %f, %f \n", mouseMovement.x, mouseMovement.y);
 
   // We must update the mScreenPostion above before exiting out
-  // Normally we ignore mouse movements due to the 'mouse trapped' feature
-  // (moving to center over and over) but we need to at least update the mouse's
-  // screen position (which should have moved to the center)
+  // Normally we ignore mouse movements due to the 'mouse trapped' feature (moving to center over and over)
+  // but we need to at least update the mouse's screen position (which should have moved to the center)
   if (osMouseEvent->IsMouseAtTrapPosition)
     return;
 
@@ -1072,9 +1066,8 @@ void RootWidget::OnDebuggerPause(Event* event)
 
 void RootWidget::OnDebuggerResume(Event* event)
 {
-  // We don't immediately disable the debugger overlay because we want all Os
-  // messages to be processed by the overlay before fully resuming (prevents
-  // lots of ghost mouse clicks and weird effects)
+  // We don't immediately disable the debugger overlay because we want all Os messages
+  // to be processed by the overlay before fully resuming (prevents lots of ghost mouse clicks and weird effects)
   ActionSequence* seq = new ActionSequence(this);
   seq->Add(new ActionDelayOnce());
   seq->Add(new CallAction<RootWidget, &RootWidget::OnDebuggerResumeDelay>(this));

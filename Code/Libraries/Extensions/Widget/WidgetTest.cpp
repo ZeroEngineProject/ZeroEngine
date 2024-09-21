@@ -45,8 +45,7 @@ WidgetTest::WidgetTest(Composite* parent, StringParam name) : ColorBlock(parent)
 void WidgetTest::OnMouseEvent(MouseEvent* event)
 {
   ZPrint("%s Mouse %s\n", Name.c_str(), event->EventId.c_str());
-  // ZPrint("%s Mouse Position %g, %g\n",  Name.c_str(), event->Position.x,
-  // event->Position.y);
+  // ZPrint("%s Mouse Position %g, %g\n",  Name.c_str(), event->Position.x, event->Position.y);
 }
 
 void WidgetTest::OnKeyboardEvent(KeyboardEvent* event)

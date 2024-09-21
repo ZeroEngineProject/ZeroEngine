@@ -99,9 +99,9 @@ class HandleableEvent : public Event
 {
 public:
   ZilchDeclareType(HandleableEvent, TypeCopyMode::ReferenceType);
-  HandleableEvent() : Handled(false){};
-  /// Set to true to signify that you have responded to this event, and that
-  /// other event responders should do nothing.
+  HandleableEvent() : Handled(false) {};
+  /// Set to true to signify that you have responded to this event, and that other
+  /// event responders should do nothing.
   bool Handled;
 };
 

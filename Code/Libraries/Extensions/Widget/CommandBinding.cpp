@@ -40,8 +40,7 @@ void MetaScriptTagAttribute::PostProcess(Status& status, ReflectionObject* owner
     mTagSet.Insert(tag);
   }
 
-  // If the only token(s) found consist(s) of ' ' characters, it'll be caught
-  // here.
+  // If the only token(s) found consist(s) of ' ' characters, it'll be caught here.
   if (mTagSet.Empty())
   {
     String message = "Tags are ' ' (space) delimited. Additionally: No tags are specified.";
@@ -87,8 +86,8 @@ void MetaScriptShortcutAttribute::PostProcess(Status& status, ReflectionObject* 
   // Prep for all whitespace detection.
   mKey.Clear();
 
-  // Determine if there is more than one non-whitespace Shortcut main-key
-  // specified. Only one is allowed.
+  // Determine if there is more than one non-whitespace Shortcut main-key specified.
+  // Only one is allowed.
   for (; !tokens.Empty(); tokens.PopFront())
   {
     // Skip whitespace.
@@ -99,8 +98,7 @@ void MetaScriptShortcutAttribute::PostProcess(Status& status, ReflectionObject* 
     ++count;
     if (count > 1)
     {
-      String message = "Too many non-modifier keys specified for 'Shortcut' "
-                       "attribute. Only one key is allowed.";
+      String message = "Too many non-modifier keys specified for 'Shortcut' attribute. Only one key is allowed.";
       status.SetFailed(message);
       return;
     }
@@ -112,8 +110,8 @@ void MetaScriptShortcutAttribute::PostProcess(Status& status, ReflectionObject* 
 
   if (mKey.Empty())
   {
-    String message = "Missing 'key' parameter value. See 'Keys' for key names, "
-                     "or use the key symbol (NumPad symbols must be named).";
+    String message = "Missing 'key' parameter value. See 'Keys' for key names, or use the key symbol (NumPad symbols "
+                     "must be named).";
     status.SetFailed(message);
     return;
   }
@@ -125,8 +123,7 @@ void MetaScriptShortcutAttribute::PostProcess(Status& status, ReflectionObject* 
 
   if (mKey == "Ctrl" || mKey == "Alt" || mKey == "Shift")
   {
-    String message = " is a Shortcut modifier-key and cannot be used for the "
-                     "Shortcut main-key.";
+    String message = " is a Shortcut modifier-key and cannot be used for the Shortcut main-key.";
     status.SetFailed(BuildString("'", mKey, "'", message));
     return;
   }
@@ -143,11 +140,10 @@ void MetaScriptShortcutAttribute::PostProcess(Status& status, ReflectionObject* 
     status.SetFailed(BuildString("'", mKey, message, mKey, "' instead."));
     return;
   }
-  else if (!Keyboard::Instance->Valid(mKey)) // Valid, but reserved, keys have
-                                             // been pre-checked at this point.
+  else if (!Keyboard::Instance->Valid(mKey)) // Valid, but reserved, keys have been pre-checked at this point.
   {
-    String message = "\" for 'key' parameter. See 'Keys' for key names, or use "
-                     "the key symbol (NumPad symbols must be named).";
+    String message =
+        "\" for 'key' parameter. See 'Keys' for key names, or use the key symbol (NumPad symbols must be named).";
     status.SetFailed(BuildString("Invalid value \"", mKey, message));
     return;
   }
@@ -160,8 +156,8 @@ void MetaScriptShortcutAttribute::PostProcess(Status& status, ReflectionObject* 
     {
       BoundType* type = Type::DynamicCast<BoundType*>(owner);
 
-      // Not an error if the shortcut is already reserved by the command
-      // currently being processed.
+      // Not an error if the shortcut is already reserved by the command currently
+      // being processed.
       if (foundCommand->Name != type->Name)
       {
         String message =

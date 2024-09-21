@@ -15,9 +15,7 @@ ZilchDefineType(Viewport, builder, type)
 }
 
 Viewport::Viewport(Composite* parent, Space* space, Camera* camera) :
-    Composite(parent),
-    mTargetSpace(space),
-    mCamera(camera)
+    Composite(parent), mTargetSpace(space), mCamera(camera)
 {
   for (uint i = 0; i < 4; ++i)
   {
@@ -60,8 +58,7 @@ Camera* Viewport::GetCamera()
   return mCamera;
 }
 
-// void Viewport::SetScalingAndSize(ViewportScaling::Enum scalingMode, uint
-// width, uint height)
+// void Viewport::SetScalingAndSize(ViewportScaling::Enum scalingMode, uint width, uint height)
 //{
 //  mRenderView->mTargetSize = IntVec2(width, height);
 //  mRenderView->mScalingMode = scalingMode;
@@ -114,8 +111,7 @@ Vec3 Viewport::ViewportToWorld(Vec2Param viewportPoint)
   // Start at near plane center
   Vec3 worldPoint = transform->GetWorldTranslation() + basisZ * mCamera->mNearPlane;
   // Offset from the center to the final point
-  // Half offsets on sizePercent values are because viewport (0, 0) is top left
-  // of near plane
+  // Half offsets on sizePercent values are because viewport (0, 0) is top left of near plane
   worldPoint += (basisX * nearSize.x) * (sizePercent.x - 0.5f);
   worldPoint += (basisY * nearSize.y) * (0.5f - sizePercent.y);
 
@@ -280,8 +276,7 @@ void Viewport::SetTranslation(Vec3 baseOffset, Vec3 newOffset)
   mMargin[0]->SetTranslation(marginBase);                                                   // T
   mMargin[1]->SetTranslation(marginBase + Vec3(0.0f, mMargin[0]->mSize.y + mSize.y, 0.0f)); // B
   mMargin[2]->SetTranslation(marginBase + Vec3(0.0f, mMargin[0]->mSize.y, 0.0f));           // L
-  mMargin[3]->SetTranslation(marginBase + Vec3(mMargin[2]->mSize.x + mSize.x, mMargin[0]->mSize.y,
-                                               0.0f)); // R
+  mMargin[3]->SetTranslation(marginBase + Vec3(mMargin[2]->mSize.x + mSize.x, mMargin[0]->mSize.y, 0.0f)); // R
 }
 
 void Viewport::SetMarginColor(Vec4 color)

@@ -362,8 +362,7 @@ void TabArea::RequestCloseTab(TabWidget* tab)
   if (tab->UnLocked())
   {
     Widget* ownedWidget = tab->GetOwnedWidget();
-    // if the tabs owned widget has been modified prompt the user to save the
-    // changes
+    // if the tabs owned widget has been modified prompt the user to save the changes
     QueryModifiedSaveEvent queryEvent;
     ownedWidget->DispatchEvent(Events::QueryModifiedSave, &queryEvent);
     // ownedWidget->DispatchDown(Events::QueryModifiedSave, &queryEvent);

@@ -356,8 +356,7 @@ Vec2 StackLayout::DoLayout(Composite* widget, LayoutArea data)
       // Calculate the new remainder
       flexRemainder = (size - flooredSize) + 0.0001f;
 
-      // childSize[stackAxis] = SnapToPixels(policy.Size[stackAxis] * flexRatio)
-      // + childSize[stackAxis];
+      // childSize[stackAxis] = SnapToPixels(policy.Size[stackAxis] * flexRatio) + childSize[stackAxis];
     }
     else if (stackPolicy == SizePolicy::Fixed)
     {

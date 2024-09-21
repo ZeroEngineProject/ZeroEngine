@@ -364,8 +364,7 @@ Widget* Find(StringParam name, UiTraversal::Enum traversalType, size_t& index, W
       // Get the current child
       Widget* child = &children.Front();
 
-      // If the name of the child matches... (using whatever comparison we were
-      // given)
+      // If the name of the child matches... (using whatever comparison we were given)
       if (child->mName == name)
       {
         // If the index is zero, then we hit the one we wanted!
@@ -381,8 +380,8 @@ Widget* Find(StringParam name, UiTraversal::Enum traversalType, size_t& index, W
         }
       }
 
-      // If we got here, then we didn't find the child yet (though we may have
-      // found one of the same name, the index must be 0)
+      // If we got here, then we didn't find the child yet (though we may have found one of the same name, the index
+      // must be 0)
       if (traversalType == UiTraversal::DepthFirst)
       {
         Widget* result = Find(name, traversalType, index, child);
@@ -396,8 +395,8 @@ Widget* Find(StringParam name, UiTraversal::Enum traversalType, size_t& index, W
       children.PopFront();
     }
 
-    // If we got here, then we didn't find the child yet (though we may have
-    // found one of the same name, the index must be 0)
+    // If we got here, then we didn't find the child yet (though we may have found one of the same name, the index must
+    // be 0)
     if (traversalType == UiTraversal::BreadthFirst)
     {
       // Loop through all the children
