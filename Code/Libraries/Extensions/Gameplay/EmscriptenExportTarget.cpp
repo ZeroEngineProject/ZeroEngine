@@ -43,8 +43,8 @@ void EmscriptenExportTarget::ExportApplication()
       return;
     }
 
-    // Archive the content to create a zip file that will be the virtual file
-    // system on the web
+    // Archive the content to create a zip file that will be the virtual file system
+    // on the web
     Archive virtualFileSystem(ArchiveMode::Compressing);
     virtualFileSystem.ArchiveDirectory(status, outputDirectory);
 
@@ -55,8 +55,8 @@ void EmscriptenExportTarget::ExportApplication()
     }
 
     // TODO: Select web build version and copy out that version for export
-    // Copy the web build of Zero Engine to the the specified export folder
-    // location Update this string to your web-build location for testing.
+    // Copy the web build of Zero Engine to the the specified export folder location
+    // Update this string to your web-build location for testing.
     Cog* configCog = Z::gEngine->GetConfigCog();
     ReturnIf(!configCog, , "Unable to get the config cog");
     MainConfig* mainConfig = configCog->has(MainConfig);
@@ -81,8 +81,7 @@ void EmscriptenExportTarget::ExportApplication()
       webBuildFiles.PopFront();
     }
 
-    // ZeroEditor.data is the name that the web build expects the virtual file
-    // system to be
+    // ZeroEditor.data is the name that the web build expects the virtual file system to be
     String zipOut = FilePath::Combine(mExporter->mOutputDirectory, "ZeroEditor.data");
     if (FileExists(zipOut))
       DeleteFile(zipOut);
@@ -109,8 +108,8 @@ void EmscriptenExportTarget::ExportApplication()
     StringRange remotePackageSize = fileContent.FindFirstOf("\"remote_package_size\": ");
     StringRange packageUuid = fileContent.FindFirstOf(", \"package_uuid\":");
 
-    // Using the above saved locations of content within the ZeroEditor.js file
-    // build a js file that will load our exported content properly
+    // Using the above saved locations of content within the ZeroEditor.js file build
+    // a js file that will load our exported content properly
     StringBuilder zeroJsBuilder;
     zeroJsBuilder.Append(fileContent.SubString(fileContent.Begin(), end.End()));
     zeroJsBuilder.Append(ToString(zipSize));
@@ -138,8 +137,7 @@ void EmscriptenExportTarget::ExportApplication()
 
 void EmscriptenExportTarget::ExportContentFolders(Cog* projectCog)
 {
-  // For now when exporting web builds using the export content folder option
-  // just export the application
+  // For now when exporting web builds using the export content folder option just export the application
   ExportApplication();
 }
 
@@ -148,8 +146,8 @@ void EmscriptenExportTarget::CopyInstallerSetupFile(StringParam dest,
                                                     StringParam projectName,
                                                     Guid guid)
 {
-  // Installer setup might be changed to not be on the target if inno setup can
-  // be used to generate an installer based on the platform
+  // Installer setup might be changed to not be on the target if inno setup can be used to generate
+  // an installer based on the platform
 }
 
 } // namespace Zero

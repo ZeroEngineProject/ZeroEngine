@@ -90,8 +90,7 @@ Widget* WidgetPath::Resolve(RootWidget* root)
           foundWidget = &childWidget;
           composite = foundWidget->GetSelfAsComposite();
 
-          // If this widget isn't a composite, then we can't go any deeper into
-          // the tree
+          // If this widget isn't a composite, then we can't go any deeper into the tree
           if (composite == nullptr)
           {
             // If the path is also empty, we found the leaf widget!
@@ -263,10 +262,7 @@ ZilchDefineType(UnitTestSystem, builder, type)
 }
 
 UnitTestSystem::UnitTestSystem() :
-    mEmulatedCursor(nullptr),
-    mMode(UnitTestMode::Stopped),
-    mEventIndex(0),
-    mFilesIndex(0)
+    mEmulatedCursor(nullptr), mMode(UnitTestMode::Stopped), mEventIndex(0), mFilesIndex(0)
 {
   ConnectThisTo(this, Events::UnitTestRecordFileSelected, OnUnitTestRecordFileSelected);
   ConnectThisTo(this, Events::UnitTestPlayFileSelected, OnUnitTestPlayFileSelected);
@@ -281,9 +277,8 @@ void UnitTestSystem::Initialize(SystemInitializer& initializer)
 {
   bool unitTestSystemActive = false;
 
-  // We can't initialize here because the root widget and main window have not
-  // yet been created If the record or play modes were set, then we set a flag
-  // to initialize on the first Update
+  // We can't initialize here because the root widget and main window have not yet been created
+  // If the record or play modes were set, then we set a flag to initialize on the first Update
   Environment* environment = Environment::GetInstance();
   if (!environment->GetParsedArgument(cUnitTestRecordOption).Empty())
   {
@@ -406,8 +401,7 @@ void UnitTestSystem::RecordToZeroTestFile(StringParam zeroTestFile)
   MoveFile(newBeginProjectFilePath, oldBeginProjectFilePath);
   MoveFile(newEndProjectFilePath, oldEndProjectFilePath);
 
-  // When recording, we always make our modifications to the end project
-  // (therefore the end becomes the final result)
+  // When recording, we always make our modifications to the end project (therefore the end becomes the final result)
   info.mArguments = BuildString("-file \"", newEndProjectFilePath, "\" -safe -", cUnitTestRecordOption);
 
   Process process;
@@ -478,8 +472,7 @@ void UnitTestSystem::PlayFromZeroTestFile(StringParam zeroTestFile)
   String beginProjectPath = FilePath::Combine(directory, cProjectBegin);
   String endProjectPath = FilePath::Combine(directory, cProjectEnd);
 
-  // When playing back we always start from the beginning project (it should end
-  // up the same as the end project)
+  // When playing back we always start from the beginning project (it should end up the same as the end project)
   String projectFileName = BuildString(name, cZeroProjWithDot);
   String beginProjectFilePath = FilePath::Combine(beginProjectPath, projectFileName);
   String endProjectFilePath = FilePath::Combine(endProjectPath, projectFileName);
@@ -524,8 +517,7 @@ void UnitTestSystem::SubProcessPlay()
 
   LoadRecordedEvents();
 
-  // During playback we always play as fast as possible (but we lie about frame
-  // time)
+  // During playback we always play as fast as possible (but we lie about frame time)
   Cog* project = Z::gEngine->GetProjectSettings()->GetOwner();
   project->AddComponentByType(ZilchTypeId(FrameRateSettings));
   FrameRateSettings* frameRateSettings = project->has(FrameRateSettings);
@@ -718,8 +710,7 @@ void UnitTestSystem::HookMouseDropEvent(OsMouseDropEvent& event)
   {
     RecordFile(file);
 
-    // Store the exact file names so we have the same order when we load them
-    // back in
+    // Store the exact file names so we have the same order when we load them back in
     file = FilePath::GetFileName(file);
   }
 
@@ -764,11 +755,10 @@ void UnitTestSystem::RecordBaseMouseEvent(UnitTestBaseMouseEvent* baseEvent, OsM
 
 void UnitTestSystem::ExecuteBaseMouseEvent(UnitTestBaseMouseEvent* baseEvent, OsMouseEvent* event)
 {
-  // If we can find a widget via the widget path, then use the normalized
-  // coordinates to compute a new position from inside the widget. This helps to
-  // ensure that, even if widgets move positions, mouse events such as down/up
-  // still occur on the correct widgets. If we cannot find a widget we use the
-  // original screen position and hope that it works!
+  // If we can find a widget via the widget path, then use the normalized coordinates to compute a new
+  // position from inside the widget. This helps to ensure that, even if widgets move positions, mouse
+  // events such as down/up still occur on the correct widgets.
+  // If we cannot find a widget we use the original screen position and hope that it works!
   Widget* foundWidget = baseEvent->mWidgetPath.Resolve(GetRootWidget());
   if (foundWidget != nullptr)
   {
@@ -777,8 +767,7 @@ void UnitTestSystem::ExecuteBaseMouseEvent(UnitTestBaseMouseEvent* baseEvent, Os
     event->ClientPosition = IntVec2((int)newClientPosition.x, (int)newClientPosition.y);
   }
 
-  // Update the emulated cursor position (purely visual that cannot be
-  // interacted with)
+  // Update the emulated cursor position (purely visual that cannot be interacted with)
   mEmulatedCursor->SetTranslation(Vec3(ToVec2(event->ClientPosition), 0));
   mEmulatedCursor->SetVisible(true);
   mEmulatedCursor->SetActive(true);
@@ -815,8 +804,8 @@ void UnitTestSystem::RecordEvent(UnitTestEvent* e)
   mEvents.PushBack(e);
   ++mEventIndex;
 
-  // Save out the event to our file. We want to append so that in case of a
-  // crash, we have already saved out all input required to reproduce that crash
+  // Save out the event to our file. We want to append so that in case of a crash, we have already
+  // saved out all input required to reproduce that crash
   TextSaver saver;
   saver.OpenBuffer(DataVersion::Current, fileMode);
 

@@ -25,8 +25,7 @@ public:
 
   void OnSetup(GameEvent* event);
 
-  // If set to true StartingLevel will be overridden by the currently edited
-  // level
+  // If set to true StartingLevel will be overridden by the currently edited level
   bool mLoadEditingLevel;
 };
 

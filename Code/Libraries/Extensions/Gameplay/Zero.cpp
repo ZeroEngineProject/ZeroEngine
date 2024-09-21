@@ -29,8 +29,7 @@ void ErrorOnConnect(Function* func)
 {
   DoNotifyException("Zilch Error",
                     String::Format("Zero.Connect must take a delegate that has only one "
-                                   "parameter (a reference / class Event type). Function %s "
-                                   "has the signature: %s",
+                                   "parameter (a reference / class Event type). Function %s has the signature: %s",
                                    func->Name.c_str(),
                                    func->FunctionType->ToString().c_str()));
 }
@@ -210,11 +209,10 @@ ZilchScriptConnection::ZilchScriptConnection(EventDispatcher* dispatcher, String
 
 ZilchScriptConnection::~ZilchScriptConnection()
 {
-  // Since ZilchScriptConnections contain a handle in the delegate, it is
-  // possible for the event connection to be the only thing keeping an object
-  // alive. Cannot destruct the object during the event connection destruction
-  // because it will also invoke destruction of the event connection being
-  // destructed right now.
+  // Since ZilchScriptConnections contain a handle in the delegate, it is possible for the event
+  // connection to be the only thing keeping an object alive. Cannot destruct the object during the
+  // event connection destruction because it will also invoke destruction of the event connection
+  // being destructed right now.
   sDelayDestructDelegates.PushBack(mDelegate);
 }
 
@@ -243,18 +241,16 @@ void ZilchScriptConnection::RaiseError(StringParam message)
 
 void ZilchScriptConnection::Invoke(Event* e)
 {
-  // If the patch id matches the one on the state, then it means we disabled
-  // this event handler Once the state gets patched, the event handler will auto
-  // resume (it may throw again, and that will re-disable it)
+  // If the patch id matches the one on the state, then it means we disabled this event handler
+  // Once the state gets patched, the event handler will auto resume (it may throw again, and that will re-disable it)
   if (mStatePatchId == ExecutableState::CallingState->PatchId)
     return;
 
   ExceptionReport report;
   Call call(mDelegate);
 
-  // We have to disable debug checks because technically we are doing something
-  // unsafe here The Zilch binding will yell at us for trying to pass in an
-  // 'Event' where it takes a more derived type
+  // We have to disable debug checks because technically we are doing something unsafe here
+  // The Zilch binding will yell at us for trying to pass in an 'Event' where it takes a more derived type
   call.DisableParameterChecks();
 
   call.SetHandle(0, e);

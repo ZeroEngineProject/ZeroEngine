@@ -146,9 +146,8 @@ public:
   void PlayFromZeroTestFile();
   void PlayFromZeroTestFile(StringParam zeroTestFile);
 
-  // These should only be called while systems are NOT updating, especially not
-  // the OsShell systems Calling these during the OsShell would result in loss
-  // of inputs / missed events
+  // These should only be called while systems are NOT updating, especially not the OsShell systems
+  // Calling these during the OsShell would result in loss of inputs / missed events
   void SubProcessRecord();
   void SubProcessPlay();
   OsWindow* SubProcessSetupWindow();

@@ -34,7 +34,7 @@ void CopyFileCallback(StringParam fullPath, StringParam relativePath, StringPara
 class ExportTarget
 {
 public:
-  ExportTarget(Exporter* exporter, String targetName) : mExporter(exporter), mTargetName(targetName){};
+  ExportTarget(Exporter* exporter, String targetName) : mExporter(exporter), mTargetName(targetName) {};
 
   virtual HashSet<String>& GetAdditionalExcludedFiles()
   {
@@ -78,7 +78,7 @@ public:
 struct ExportTargetSource;
 struct ExportTargetEntry
 {
-  ExportTargetEntry(String target) : TargetName(target), Export(false){};
+  ExportTargetEntry(String target) : TargetName(target), Export(false) {};
 
   String TargetName;
   bool Export;

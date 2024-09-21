@@ -14,8 +14,7 @@ void MarchingSquares::Sample(Vec2Param startCoords, Vec2Param endCoords, Vec2Par
   ReturnIf(mDensitySampler == NULL, , "Density sampler callback must be set");
   ReturnIf(mPositionSampler == NULL, , "Position sampler callback must be set");
 
-  // a flag to mark if a cell has "fluid" (the cell has a high enough density to
-  // be full)
+  // a flag to mark if a cell has "fluid" (the cell has a high enough density to be full)
   const uint blFluid = 1 << 0;
   const uint brFluid = 1 << 1;
   const uint trFluid = 1 << 2;
@@ -167,8 +166,7 @@ void MarchingSquares::SamplePixels(Vec2Param startCoords,
   ReturnIf(mDensitySampler == NULL, , "Density sampler callback must be set");
   ReturnIf(mPositionSampler == NULL, , "Position sampler callback must be set");
 
-  // a flag to mark if a cell has "fluid" (the cell has a high enough density to
-  // be full)
+  // a flag to mark if a cell has "fluid" (the cell has a high enough density to be full)
   const uint blFluid = 1 << 0;
   const uint brFluid = 1 << 1;
   const uint trFluid = 1 << 2;
@@ -329,8 +327,7 @@ void MarchingSquares::RemoveRedundantSegments()
     Vec2 start = segment.first;
     Vec2 end = segment.second;
 
-    // check to see if any other segment is the same as this one, if so remove
-    // it
+    // check to see if any other segment is the same as this one, if so remove it
     uint j = i + 1;
     while (j < mSegments.Size())
     {
@@ -360,8 +357,7 @@ void MarchingSquares::CreateContours()
     // add the second point to the current contour
     contour->PushBack(end);
 
-    // try to find a segment that has the current segment's end point as one of
-    // it's edges
+    // try to find a segment that has the current segment's end point as one of it's edges
     uint j = 1;
     for (j = 1; j < mSegments.Size(); ++j)
     {
@@ -378,8 +374,7 @@ void MarchingSquares::CreateContours()
     if (mSegments.Size() == 1)
       j = 0;
 
-    // if we didn't find the corresponding segment then we're starting a new
-    // contour
+    // if we didn't find the corresponding segment then we're starting a new contour
     if (j == mSegments.Size())
     {
       contour = &mContours.PushBack();
@@ -387,8 +382,7 @@ void MarchingSquares::CreateContours()
       continue;
     }
 
-    // move the next edge to the beginning of the list and then remove the
-    // current edge
+    // move the next edge to the beginning of the list and then remove the current edge
     Math::Swap(mSegments[0], mSegments[j]);
     mSegments.EraseAt(j);
   }
@@ -413,8 +407,7 @@ void MarchingSquares::FixWindingOrder(Contour& contour)
     area += Math::Cross(p0, p1);
   }
 
-  // if the area is negative then the points are defined in a clockwise
-  // direction and we don't have to do anything
+  // if the area is negative then the points are defined in a clockwise direction and we don't have to do anything
   if (area < 0)
     return;
 
@@ -451,8 +444,8 @@ void MarchingSquares::SimplifyContour(Contour& contour, real simplificationThres
   contour = tempContour;
   tempContour.Clear();
 
-  // Iteratively try to remove points that form a triangle with too small of an
-  // area. This algorithm continues until no more progress is made.
+  // Iteratively try to remove points that form a triangle with too small of an area.
+  // This algorithm continues until no more progress is made.
   uint prevCount = contour.Size() + 1;
   while (prevCount != contour.Size())
   {
@@ -468,9 +461,8 @@ void MarchingSquares::SimplifyContour(Contour& contour, real simplificationThres
 
       // compute the area of the triangle
       real crossTerm = Math::Cross(dir0, dir1) * 0.5f;
-      // if the edges are clockwise then we don't remove them (because that
-      // would cut into the shape), otherwise remove the point if the triangle
-      // area is below the given threshold
+      // if the edges are clockwise then we don't remove them (because that would cut into the shape),
+      // otherwise remove the point if the triangle area is below the given threshold
       if (crossTerm >= real(0) && Math::Abs(crossTerm) < simplificationThreshold)
       {
         contour.EraseAt(i);

@@ -53,8 +53,7 @@ void CreateGame(OsWindow* mainWindow, StringParam projectFile, Cog* projectCog)
   // Make sure scripts in the project are compiled
   ZilchManager::GetInstance()->TriggerCompileExternally();
 
-  // Send after compiling since graphics uses this event to know to stop
-  // displaying the splash/loading screen
+  // Send after compiling since graphics uses this event to know to stop displaying the splash/loading screen
   ObjectEvent event(projectCog);
   Z::gEngine->DispatchEvent(Events::ProjectLoaded, &event);
 

@@ -52,8 +52,7 @@ void DefaultGameSetup::OnSetup(GameEvent* event)
   // Check to see if the starting space archetype is actually a space
   if (mStartingSpace->mStoredType != ZilchTypeId(Space))
   {
-    // Space archetype has been removed or an invalid archetype has been
-    // selected.
+    // Space archetype has been removed or an invalid archetype has been selected.
     DoNotifyError("Invalid Space Archetype",
                   "The space archetype that was"
                   " loaded is either missing or does not contain a Space.");

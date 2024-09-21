@@ -86,11 +86,10 @@ void WindowsExportTarget::ExportApplication()
     // Alright time to create the exe
     CopyFile(tempFile, FilePath::Combine(appDirectory, GetEditorExecutableFileName()));
 
-    // Embed package as resource section. This is generally more windows
-    // friendly than appending the data on the End() of the exe since opening
-    // the exe for reading is unreliable. The resource data section IDR_PACK is
-    // already in the exe and will be updated from empty to a package containing
-    // all resources.
+    // Embed package as resource section. This is generally more windows friendly than appending
+    // the data on the End() of the exe since opening the exe for reading is unreliable.
+    // The resource data section IDR_PACK is already in the exe and will be updated from empty
+    // to a package containing all resources.
 
     // Each export generates a new export id so that files do not conflict
     u64 exportId = GenerateUniqueId64();

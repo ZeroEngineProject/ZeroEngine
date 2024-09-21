@@ -53,8 +53,7 @@ void RandomContext::Serialize(Serializer& stream)
   uint Seed = mRandom.GetSeed();
   SerializeNameDefault(Seed, 0u);
 
-  // If we're loading and we don't use a random seed then set the seed we just
-  // loaded
+  // If we're loading and we don't use a random seed then set the seed we just loaded
   if (stream.GetMode() == SerializerMode::Loading && mRandomSeed == false)
     mRandom.SetSeed(Seed);
 }

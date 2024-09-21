@@ -7,8 +7,8 @@
 namespace Zero
 {
 
-/// Bound interface wrapper around quickhull3D. Allows adding points to build a
-/// mesh and then iterating over the resultant index-based half-edge-mesh.
+/// Bound interface wrapper around quickhull3D. Allows adding points to build a mesh
+/// and then iterating over the resultant index-based half-edge-mesh.
 class QuickHull3DInterface
 {
   ZilchDeclareType(QuickHull3DInterface, TypeCopyMode::ReferenceType);
@@ -25,8 +25,7 @@ class QuickHull3DInterface
   bool Build();
   /// Clear all input points and the cached mesh.
   void Clear();
-  /// Debug draw the mesh at the given index. Primarily for development
-  /// purposes.
+  /// Debug draw the mesh at the given index. Primarily for development purposes.
   void Draw();
 
   // Build the half-edge mesh from the quick-hull results.

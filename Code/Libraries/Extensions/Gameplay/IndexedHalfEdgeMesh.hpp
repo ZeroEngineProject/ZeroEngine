@@ -8,9 +8,8 @@ template <typename ArrayType>
 class BoundArrayRange;
 
 /// Base functionality for binding a pre-existing array. Currently designed as
-/// a templated base to reduce code duplication, especially while prototyping.
-/// Possibly split to individual classes (due to differences, code
-/// documentation, etc...) or make generic enough to use elsewhere later.
+/// a templated base to reduce code duplication, especially while prototyping. Possibly split to
+/// individual classes (due to differences, code documentation, etc...) or make generic enough to use elsewhere later.
 template <typename OwningType, typename DataTypeT>
 class BoundArray : public SafeId32Object
 {
@@ -65,8 +64,7 @@ public:
     return true;
   }
 
-  /// The array that this class represents. Assumes that this data cannot go
-  /// away without this class also going away.
+  /// The array that this class represents. Assumes that this data cannot go away without this class also going away.
   ArrayType* mBoundArray;
 };
 
@@ -106,8 +104,7 @@ public:
 
   FrontResult Front()
   {
-    // If the range is empty (or the range has been destroyed) then throw an
-    // exception.
+    // If the range is empty (or the range has been destroyed) then throw an exception.
     if (Empty())
     {
       DoNotifyException("Invalid Range Operation", "Cannot access an item in an empty range.");
@@ -192,14 +189,12 @@ public:
   BoundEdgeArray mBoundEdges;
 };
 
-/// An index based half-edge mesh. This is an edge-centric mesh representation
-/// that allows efficient traversal from edges to anywhere else. Each edge is
-/// broken up into two half-edges, one for each face it's a part of. Most
-/// sub-shapes contain indices back into the 'global' list (e.g. an edge
-/// contains the index of the vertex in the mesh's vertex list). This mesh
-/// format is meant for efficient traversal, but manipulation is not as easy
-/// with indices. This should be loaded into a more efficient format (such as
-/// pointers) if manipulating a mesh.
+/// An index based half-edge mesh. This is an edge-centric mesh representation that allows
+/// efficient traversal from edges to anywhere else. Each edge is broken up into two
+/// half-edges, one for each face it's a part of. Most sub-shapes contain indices back into
+/// the 'global' list (e.g. an edge contains the index of the vertex in the mesh's vertex list).
+/// This mesh format is meant for efficient traversal, but manipulation is not as easy with indices.
+/// This should be loaded into a more efficient format (such as pointers) if manipulating a mesh.
 class IndexedHalfEdgeMesh : public ReferenceCountedObject
 {
 public:
@@ -230,8 +225,7 @@ public:
   VertexArray mVertices;
   EdgeArray mEdges;
   FaceArray mFaces;
-  // The proxy arrays for binding. This allows safe referencing of the
-  // underlying primitives.
+  // The proxy arrays for binding. This allows safe referencing of the underlying primitives.
   BoundVertexArray mBoundVertices;
   BoundEdgeArray mBoundEdges;
   BoundFaceArray mBoundFaces;

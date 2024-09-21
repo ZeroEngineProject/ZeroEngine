@@ -8,8 +8,7 @@ namespace Zero
 namespace ExportUtility
 {
 
-// Files or extensions that are NOT automatically copied (may be handled
-// specially)
+// Files or extensions that are NOT automatically copied (may be handled specially)
 HashSet<String>& GetExcludedFiles()
 {
   static HashSet<String> files;
@@ -33,8 +32,7 @@ void AddFilesHelper(StringParam directory,
 {
   HashSet<String>& excludedFiles = GetExcludedFiles();
 
-  // Get the total number of files being added to calculate and show progress
-  // for the exporting screen
+  // Get the total number of files being added to calculate and show progress for the exporting screen
   float i = 0.0f;
   float totalFiles = 0.0f;
   for (FileRange fileRange(directory); !fileRange.Empty(); fileRange.PopFront())
@@ -570,8 +568,7 @@ void Exporter::ExportGameProject(Cog* projectCog)
 
 void Exporter::UpdateIcon(ProjectSettings* project, ExecutableResourceUpdater& updater)
 {
-  // Assume the icon file is located in the project direction with the name
-  // "Icon.ico"
+  // Assume the icon file is located in the project direction with the name "Icon.ico"
   String iconFile = FilePath::Combine(project->ProjectFolder, "Icon.ico");
   if (FileExists(iconFile))
   {

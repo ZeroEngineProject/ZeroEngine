@@ -106,9 +106,8 @@ public:
   /// This uses a standard deviation of 1.
   float BellCurveRange(float center, float range);
 
-  /// Samples a bell curve in the range [center - range, center + range] with
-  /// the given standard deviation. Around 68% will lie within the 1st standard
-  /// deviation
+  /// Samples a bell curve in the range [center - range, center + range] with the
+  /// given standard deviation. Around 68% will lie within the 1st standard deviation
   float BellCurveDistribution(float center, float range, float standardDeviation);
 
 private:

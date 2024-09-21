@@ -373,9 +373,9 @@ bool TileMap::Tile::operator==(const Tile& tile) const
 size_t TileMap::Tile::Hash() const
 {
   size_t hash = 0;
-  hash ^= (u64)ArchetypeResource;
-  hash ^= (u64)SpriteResource;
-  hash ^= (u64)CollisionResource;
+  hash ^= (size_t)ArchetypeResource;
+  hash ^= (size_t)SpriteResource;
+  hash ^= (size_t)CollisionResource;
   return hash;
 }
 
@@ -472,9 +472,8 @@ void TileMap::OnAllObjectsInitialized(CogInitializerEvent* event)
 {
   BuildContours();
 
-  // After building the contours in a running game mTestSpace is no longer
-  // needed so we should destroy it as it appears as a space when pressing F9 to
-  // edit running game
+  // After building the contours in a running game mTestSpace is no longer needed so we
+  // should destroy it as it appears as a space when pressing F9 to edit running game
   mTestSpace->Destroy();
   mTestSpace = nullptr;
 
@@ -545,8 +544,7 @@ void TileMap::OnAllObjectsInitialized(CogInitializerEvent* event)
 
     Transform* transform = cog->has(Transform);
 
-    // If using tilemap physics or graphics, object construction assumes
-    // relative to local origin.
+    // If using tilemap physics or graphics, object construction assumes relative to local origin.
     if (processCollision || processSprites)
       transform->SetLocalTranslation(Vec3::cZero);
     // Otherwise set the position to the center of the tile.
@@ -1025,8 +1023,7 @@ String TileMap::FormatTileError(TileStatus::Enum status, IntVec2 pos, Tile tile)
     error = "Cannot mix physics/graphics between Archetype and tile properties.";
     break;
   case TileStatus::InvalidMerge:
-    error = "Invalid to merge tiles that do not use the collider or sprite "
-            "property that's used by the TileMap.";
+    error = "Invalid to merge tiles that do not use the collider or sprite property that's used by the TileMap.";
     break;
   }
 

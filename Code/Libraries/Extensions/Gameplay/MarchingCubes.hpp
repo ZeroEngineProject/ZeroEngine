@@ -98,10 +98,9 @@ private:
 
   HashMap<Vec3, Vec3> CachedNormals;
 
-  // This table is indexed by a special bit-masked index known as the
-  // 'cube-index' It's purpose is to define which edges are being split by the
-  // iso-surface Each bit in this array of 12-bit numbers represents which edges
-  // get split (1 for split, 0 for not)
+  // This table is indexed by a special bit-masked index known as the 'cube-index'
+  // It's purpose is to define which edges are being split by the iso-surface
+  // Each bit in this array of 12-bit numbers represents which edges get split (1 for split, 0 for not)
   static u32 EdgeTable[256];
 
   static s32 TriangleTable[256][16];

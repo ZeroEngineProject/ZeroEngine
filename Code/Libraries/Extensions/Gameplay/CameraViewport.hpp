@@ -26,12 +26,11 @@ public:
   void SendSortEvent(GraphicalSortEvent* event) override;
   Cog* GetCameraCog() override;
 
-  /// Creates a frustum using the CameraViewport's settings (including aspect
-  /// ratio). If the Camera is null, then this will throw an exception.
+  /// Creates a frustum using the CameraViewport's settings (including aspect ratio).
+  /// If the Camera is null, then this will throw an exception.
   Frustum GetFrustum();
 
-  /// Find the Camera component from the CameraPath (or null if it doesn't
-  /// exist).
+  /// Find the Camera component from the CameraPath (or null if it doesn't exist).
   Camera* GetCamera();
 
   // Properties
@@ -46,27 +45,22 @@ public:
   void SetRenderInGame(bool render);
   bool mRenderInGame;
 
-  /// The order that rendering should be done relative to other CameraViewports,
-  /// lowest to highest.
+  /// The order that rendering should be done relative to other CameraViewports, lowest to highest.
   int mRenderOrder;
 
   /// Object with the Camera component to be used for rendering.
-  /// A Camera can only be used by one CameraViewport, if already used by
-  /// another usage will be stolen when assigned.
+  /// A Camera can only be used by one CameraViewport, if already used by another usage will be stolen when assigned.
   CogPath mCameraPath;
 
-  /// Object with renderer script that connects to RenderTasksUpdate that
-  /// determines what rendering will be done.
+  /// Object with renderer script that connects to RenderTasksUpdate that determines what rendering will be done.
   CogPath mRendererPath;
 
-  /// Target resolution, or the aspect ratio when used with specific viewport
-  /// scaling modes.
+  /// Target resolution, or the aspect ratio when used with specific viewport scaling modes.
   void SetResolutionOrAspect(IntVec2 resolution);
   IntVec2 GetResolutionOrAspect();
   IntVec2 mResolutionOrAspect;
 
-  /// If the rendering result in FinalTexture should also be placed on the UI
-  /// viewport.
+  /// If the rendering result in FinalTexture should also be placed on the UI viewport.
   bool GetRenderToViewport();
   void SetRenderToViewport(bool render);
   bool mRenderToViewport;
@@ -90,8 +84,7 @@ public:
   /// the Camera at the origin and the view direction as -Z.
   Mat4 GetWorldToView();
 
-  /// Transformation that defines how the view frustum is mapped to normalized
-  /// coordinates, pre W divide.
+  /// Transformation that defines how the view frustum is mapped to normalized coordinates, pre W divide.
   Mat4 GetViewToPerspective();
 
   /// Concatenation of the WorldToView and ViewToPerspective transformations.
@@ -101,12 +94,10 @@ public:
   /// Must be explicitly written to in renderer script.
   HandleOf<Texture> GetFinalTexture();
 
-  /// If the viewport created by this CameraViewport, if rendering to one, has
-  /// focus.
+  /// If the viewport created by this CameraViewport, if rendering to one, has focus.
   bool GetViewportHasFocus();
 
-  /// Returns whether or not it succeeded in taking focus. Will always fail if
-  /// RenderToViewport is false.
+  /// Returns whether or not it succeeded in taking focus. Will always fail if RenderToViewport is false.
   bool ViewportTakeFocus();
 
   /// Get the world ray starting from the mouse
@@ -155,9 +146,8 @@ public:
 
   GraphicsSpace* mGraphicsSpace;
 
-  // By default viewports are attached to the GameWidget from the space's
-  // GameSession Assign to this handle to allow attaching viewports to a
-  // different widget, i.e. EditInGame tabs
+  // By default viewports are attached to the GameWidget from the space's GameSession
+  // Assign to this handle to allow attaching viewports to a different widget, i.e. EditInGame tabs
   HandleOf<GameWidget> mGameWidgetOverride;
 
   Camera* mActiveCamera;

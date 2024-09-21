@@ -42,11 +42,9 @@ public:
 
   /// The intersection point with an object. Used with Reactive components.
   Vec3 mHitPosition;
-  /// The normal at the intersection point with an object. Used with Reactive
-  /// components.
+  /// The normal at the intersection point with an object. Used with Reactive components.
   Vec3 mHitNormal;
-  /// The uv texture coordinate at the intersection point, if applicable. Used
-  /// with Reactive components.
+  /// The uv texture coordinate at the intersection point, if applicable. Used with Reactive components.
   Vec2 mHitUv;
   /// The distance away the hit point is. Used with Reactive components.
   float mHitDistance;
@@ -88,8 +86,7 @@ public:
   /// Used to track which object the mouse was over on a down click
   void OnMouseGenericDown(MouseEvent* e);
 
-  /// Checks which object the mouse click ended on to determine whether to
-  /// forward the click event
+  /// Checks which object the mouse click ended on to determine whether to forward the click event
   void OnMouseGenericClick(MouseEvent* e);
 
   /// Updates which object the mouse is currently over.

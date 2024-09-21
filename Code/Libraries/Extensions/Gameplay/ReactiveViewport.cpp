@@ -145,8 +145,7 @@ ReactiveSpace* ReactiveViewport::GetReactiveSpace()
   if (Z::gEngine->mIsDebugging)
     return nullptr;
 
-  // Grab the reactive space component, which stores who we're hovering over per
-  // space
+  // Grab the reactive space component, which stores who we're hovering over per space
   ReactiveSpace* reactiveSpace = space->has(ReactiveSpace);
   if (reactiveSpace == nullptr)
   {
@@ -197,9 +196,8 @@ void ReactiveViewport::OnMouseExit(MouseEvent* e)
 
       EventDispatcher* dispatcher = overObject->GetDispatcher();
 
-      // Always make sure that, before we dispatch mouse exit, we release the
-      // 'over' object so that any script checking for the hover object will not
-      // think its this
+      // Always make sure that, before we dispatch mouse exit, we release the 'over' object
+      // so that any script checking for the hover object will not think its this
       mOverObject = CogId();
       dispatcher->Dispatch(Events::MouseExit, &viewportEvent);
     }
@@ -263,8 +261,7 @@ void ReactiveViewport::UpdateOverObject(MouseEvent* e)
   CastFilter filter;
   filter.Set(BaseCastFilterFlags::GetContactNormal);
 
-  // Grab the reactive space component, which stores who we're hovering over per
-  // space
+  // Grab the reactive space component, which stores who we're hovering over per space
   ReactiveSpace* reactiveSpace = GetReactiveSpace();
   if (!reactiveSpace)
     return;
@@ -273,18 +270,17 @@ void ReactiveViewport::UpdateOverObject(MouseEvent* e)
   Handle objectHit;
   Cog* oldOverObject = mOverObject.ToCog();
 
-  // As long as someone else didn't handle this mouse event (blocked by another
-  // reactive in a different viewport) We need to still update, but act as if we
-  // just lost any reactive object
+  // As long as someone else didn't handle this mouse event (blocked by another reactive in a different viewport)
+  // We need to still update, but act as if we just lost any reactive object
   if (!e->Handled)
   {
     RaycastResultList results(256);
     CastInfo info(space, mViewportInterface->GetCameraCog(), mousePosition);
     reactiveSpace->mRaycaster.RayCast(ray, info, results);
 
-    // We want to find the first object we hit, but we may hit objects without
-    // reactive components, therefore we loop over a larger set of objects from
-    // raycasting and stop when we hit the first one with a reactive component.
+    // We want to find the first object we hit, but we may hit objects without reactive
+    // components, therefore we loop over a larger set of objects from raycasting and stop
+    // when we hit the first one with a reactive component.
     for (size_t i = 0; i < results.mSize; ++i)
     {
       RayCastEntry& result = results.mEntries[i];
@@ -313,9 +309,8 @@ void ReactiveViewport::UpdateOverObject(MouseEvent* e)
         // a mouse exit to the old object
         if (oldOverObject != newCog)
         {
-          // Always make sure that, before we dispatch mouse exit, we release
-          // the 'over' object so that any script checking for the hover object
-          // will not think its this
+          // Always make sure that, before we dispatch mouse exit, we release the 'over' object
+          // so that any script checking for the hover object will not think its this
           mOverObject = newCog;
 
           // Create the event to send out what cog has been entered
@@ -339,14 +334,12 @@ void ReactiveViewport::UpdateOverObject(MouseEvent* e)
   }
 
   // If we were hitting an old object and we don't have a new object,
-  // or if the object we hit doesn't have a reactive component, or it has an
-  // inactive reactive, then send a mouse exit to the old object and clear our
-  // current hover object.
+  // or if the object we hit doesn't have a reactive component, or it has an inactive reactive,
+  // then send a mouse exit to the old object and clear our current hover object.
   if (CanClearOldReactive(objectHit))
   {
-    // Always make sure that, before we dispatch mouse exit, we release the
-    // 'over' object so that any script checking for the hover object will not
-    // think its this
+    // Always make sure that, before we dispatch mouse exit, we release the 'over' object
+    // so that any script checking for the hover object will not think its this
     mOverObject = CogId();
     reactiveSpace->mOver = mOverObject;
     if (oldOverObject != nullptr)
@@ -533,9 +526,8 @@ void GameWidget::OnKeyDown(KeyboardEvent* event)
       gameSession->EditSpaces();
   }
 
-  // This is a temporary fix for events bubbling up that don't get handled in
-  // the game In general, pressing number keys in the game should NOT change
-  // tools, or Ctrl+S should not save
+  // This is a temporary fix for events bubbling up that don't get handled in the game
+  // In general, pressing number keys in the game should NOT change tools, or Ctrl+S should not save
   Keys::Enum key = event->Key;
   if (!editorMode && key != Keys::Escape && !(key >= Keys::F5 && key <= Keys::F12) &&
       !(event->CtrlPressed && event->ShiftPressed))

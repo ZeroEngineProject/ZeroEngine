@@ -4,8 +4,7 @@
 namespace Zero
 {
 
-/// Computes edges/contours from a density field. This class could be greatly
-/// optimized!
+/// Computes edges/contours from a density field. This class could be greatly optimized!
 class MarchingSquares
 {
 public:
@@ -26,17 +25,14 @@ public:
   void SamplePixels(Vec2Param startCoords, Vec2Param endCoords, Vec2Param sampleFrequency, void* userData);
 
   /// Builds contours from the results of marching squares and simplifies them.
-  /// The threshold is used to remove a point if the area of the triangle
-  /// defined by [p_i-1, p_i, p_i+1] is below the threshold. This is most likely
-  /// the only function that you should call for simplification (as it calls the
-  /// below functions).
+  /// The threshold is used to remove a point if the area of the triangle defined by [p_i-1, p_i, p_i+1] is below the
+  /// threshold. This is most likely the only function that you should call for simplification (as it calls the below
+  /// functions).
   void BuildAndSimplifyContours(real simplificationThreshold);
 
-  /// The SamplePixels method can create duplicate segments so we first need to
-  /// strip them.
+  /// The SamplePixels method can create duplicate segments so we first need to strip them.
   void RemoveRedundantSegments();
-  /// Turn the edges into contours (by traversing edges to determine what
-  /// segments are connected).
+  /// Turn the edges into contours (by traversing edges to determine what segments are connected).
   void CreateContours();
   /// Make sure the contours are clockwise.
   void FixWindingOrder();

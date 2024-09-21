@@ -395,16 +395,15 @@ void CameraViewport::OnRenderTasksUpdateInternal(RenderTasksEvent* event)
   if (mGraphicsSpace->mActive == false || mActiveCamera == nullptr)
     return;
 
-  // Do not process rendering if game widget is not active, does not prevent
-  // visibility events. Will not have expected output if another game session is
-  // using this CameraViewport's output.
+  // Do not process rendering if game widget is not active, does not prevent visibility events.
+  // Will not have expected output if another game session is using this CameraViewport's output.
   // GameWidget* gameWidget = GetGameWidget();
   // if (gameWidget != nullptr && gameWidget->GetGlobalActive() == false)
   //  return;
 
-  // The above logic doesn't handle preview spaces correctly when the
-  // EditorViewport is not active. Temporarily just disable rendering of outputs
-  // going to the viewport, other rendering in a space will not be disabled.
+  // The above logic doesn't handle preview spaces correctly when the EditorViewport is not active.
+  // Temporarily just disable rendering of outputs going to the viewport, other rendering in a space will not be
+  // disabled.
   if (mViewport != nullptr && mViewport->GetGlobalActive() == false)
     return;
 
@@ -425,8 +424,7 @@ void CameraViewport::OnRenderTasksUpdateInternal(RenderTasksEvent* event)
   RenderTasksUpdateHelper(update);
 
   // Delete RenderTargets after every event is sent out
-  // It is invalid to use a RenderTarget outside the scope of the RenderTasks
-  // event
+  // It is invalid to use a RenderTarget outside the scope of the RenderTasks event
   Z::gEngine->has(GraphicsEngine)->ClearRenderTargets();
 
   Viewport* viewport = mViewport;
@@ -570,8 +568,7 @@ void CameraViewport::ClearSetup()
   {
     mCompleteSetup = false;
     mViewport.SafeDestroy();
-    // Setup could have only been completed if camera was valid and added to
-    // graphics space
+    // Setup could have only been completed if camera was valid and added to graphics space
     mGraphicsSpace->RemoveCamera(mActiveCamera);
     GetSpace()->GetDispatcher()->DisconnectEvent(Events::RenderTasksUpdateInternal, this);
   }
@@ -610,8 +607,7 @@ void CameraViewport::SetActiveCamera(Camera* camera)
       // CameraViewport is the only ViewportInterface
       CameraViewport* cameraViewport = (CameraViewport*)mActiveCamera->mViewportInterface;
       // Remove path from other CameraViewport to prevent retaking of camera
-      // Changing the CogPath will also make the other CameraViewport tear-down
-      // its setup
+      // Changing the CogPath will also make the other CameraViewport tear-down its setup
       cameraViewport->mCameraPath.SetPath(String());
     }
 
