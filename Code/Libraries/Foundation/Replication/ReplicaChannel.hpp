@@ -163,9 +163,9 @@ public:
   bool mChangeFlag;                        /// Manual change flag
   TimeMs mLastChangeTimestamp; /// Timestamp indicating when this replica channel was last changed (on any replica
                                /// property)
-  uint64 mLastChangeFrameId;               /// Frame ID of the last detected change
-  Authority::Enum mAuthority;              /// Change authority
-  ReplicaPropertySet mReplicaProperties;   /// Replica properties
+  uint64 mLastChangeFrameId;   /// Frame ID of the last detected change
+  Authority::Enum mAuthority;  /// Change authority
+  ReplicaPropertySet mReplicaProperties; /// Replica properties
 };
 
 /// Typedefs

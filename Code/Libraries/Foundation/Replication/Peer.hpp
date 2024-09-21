@@ -330,8 +330,8 @@ public:
   PeerPluginSet mRemovedPlugins; /// Peer plugins which were just removed, need to be uninitialized and deleted
 
   /// Configuration Settings
-  Atomic<uint32> mLinkLimit;           /// Maximum number of links this peer may have
-  Atomic<uint32> mConnectionLimit;     /// Maximum number of connected links this peer may have
+  Atomic<uint32> mLinkLimit;       /// Maximum number of links this peer may have
+  Atomic<uint32> mConnectionLimit; /// Maximum number of connected links this peer may have
   Atomic<uint32>
       mConnectResponseMode; /// Connect response policy this peer will use upon receiving an incoming connect request
 

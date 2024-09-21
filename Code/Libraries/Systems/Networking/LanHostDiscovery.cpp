@@ -167,9 +167,9 @@ void LanHostDiscovery::HandlePingTimeout(PendingHostPing& pendingHostPing)
     {
       hostRequest->FlushHostRequest(
           *mNetPeer, *this);       // dispatch events, create net hosts, clean up stale hosts. dispatch host list.
-      mOpenHostRequests.Clear();                       // Clear out hosts requests. (it is finished)
-      mRespondingHostData.Clear();                     // Clear out responding host data (we are done with it)
-      Assert(mSingleHostRequests.Size() == 0);         // shouldn't need to clean this, because it should be empty.
+      mOpenHostRequests.Clear();   // Clear out hosts requests. (it is finished)
+      mRespondingHostData.Clear(); // Clear out responding host data (we are done with it)
+      Assert(mSingleHostRequests.Size() == 0); // shouldn't need to clean this, because it should be empty.
     }
   }
   break;
@@ -261,7 +261,7 @@ void LanHostDiscovery::HandlePong(IpAddress const& theirIpAddress,
       // data struct so that it does not get dispatched again.
       hostRequest->FlushHost(
           *mNetPeer,
-                             *this,
+          *this,
           theirIpAddress); // dispatches the host in the host request. Must remove the RespondingHostData.
     }
 

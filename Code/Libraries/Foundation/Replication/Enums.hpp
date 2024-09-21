@@ -43,9 +43,9 @@ DeclareEnum9(LinkState,
              Unspecified, /// Unspecified specific link state
 
              // LinkStatus::Disconnected
-             Disconnected,                    /// Disconnected from the remote peer (default state)
+             Disconnected,             /// Disconnected from the remote peer (default state)
              SentDisconnectNotice,     /// Sent a disconnect notice, awaiting their ACK or ((RTT/2) * disconnect attempt
-                                              /// factor) timeout before being disconnected
+                                       /// factor) timeout before being disconnected
              ReceivedDisconnectNotice, /// Received a disconnect notice, waiting ((RTT/2) * disconnect attempt factor)
                                        /// for probable ACKing before being disconnected
              SentNegativeConnectResponse, /// Sent a negative connect response, awaiting their ACK or ((RTT/2) * connect
@@ -66,10 +66,10 @@ DeclareEnum9(LinkState,
 /// Link connect response
 DeclareEnum4(
     ConnectResponse,
-             Accept,       /// Connection request accepted
-             Deny,         /// Connection request denied
+    Accept,   /// Connection request accepted
+    Deny,     /// Connection request denied
     DenyFull, /// Connection request denied, remote peer connection limit has been reached (Peer::GetConnectionLimit)
-             DenyTimeout); /// Connection request timed out, remote peer did not respond
+    DenyTimeout); /// Connection request timed out, remote peer did not respond
 
 /// Link connect response range
 static const ConnectResponse::Type ConnectResponseMin = ConnectResponse::Accept;

@@ -302,8 +302,8 @@ NetProperty* NetChannel::AddNetProperty(Component* component,
     DoNotifyError(
         "NetChannel",
         String::Format("Unable to add NetProperty named '%s' - Unable to get or add NetPropertyType named '%s'",
-                                 combinedNetPropertyName.c_str(),
-                                 netPropertyTypeName.c_str()));
+                       combinedNetPropertyName.c_str(),
+                       netPropertyTypeName.c_str()));
     return nullptr;
   }
 
@@ -321,7 +321,7 @@ NetProperty* NetChannel::AddNetProperty(Component* component,
         "NetChannel",
         String::Format(
             "Unable to add NetProperty named '%s' - A NetProperty with that name already exists for this NetChannel",
-                                 combinedNetPropertyName.c_str()));
+            combinedNetPropertyName.c_str()));
     return nullptr;
   }
 
@@ -369,8 +369,8 @@ NetProperty* NetChannel::AddBasicNetProperty(const String& netPropertyName,
     DoNotifyError(
         "NetChannel",
         String::Format("Unable to add NetProperty named '%s' - Unable to get or add NetPropertyType named '%s'",
-                                 netPropertyName.c_str(),
-                                 netPropertyName.c_str()));
+                       netPropertyName.c_str(),
+                       netPropertyName.c_str()));
     return nullptr;
   }
 
@@ -385,7 +385,7 @@ NetProperty* NetChannel::AddBasicNetProperty(const String& netPropertyName,
         "NetChannel",
         String::Format(
             "Unable to add NetProperty named '%s' - A NetProperty with that name already exists for this NetChannel",
-                                 netPropertyName.c_str()));
+            netPropertyName.c_str()));
     return nullptr;
   }
 

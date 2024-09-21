@@ -525,7 +525,7 @@ void NetObject::OnRegisterCppNetProperties(RegisterCppNetProperties* event)
     DoNotifyError(
         "Unable to Add Built-In C++ NetProperties",
         String::Format("Unable to add built-in 'Name' NetProperty to the 'NetObject' channel on the NetObject '%s'",
-                                 owner->GetDescription().c_str()));
+                       owner->GetDescription().c_str()));
     return;
   }
 
@@ -541,7 +541,7 @@ void NetObject::OnRegisterCppNetProperties(RegisterCppNetProperties* event)
     DoNotifyError(
         "Unable to Add Built-In C++ NetProperties",
         String::Format("Unable to add built-in 'Parent' NetProperty to the 'NetObject' channel on the NetObject '%s'",
-                                 owner->GetDescription().c_str()));
+                       owner->GetDescription().c_str()));
     return;
   }
 
@@ -554,7 +554,7 @@ void NetObject::OnRegisterCppNetProperties(RegisterCppNetProperties* event)
         "Unable to Add Built-In C++ NetProperties",
         String::Format(
             "Unable to add built-in 'NetUserOwnerUserId' NetProperty to the 'NetObject' channel on the NetObject '%s'",
-                                 owner->GetDescription().c_str()));
+            owner->GetDescription().c_str()));
     return;
   }
 }

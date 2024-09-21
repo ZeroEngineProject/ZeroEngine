@@ -304,8 +304,8 @@ void ZilchScriptManager::OnMemoryLeak(MemoryLeakEvent* event)
   String message =
       String::Format("* A memory leak was detected with the type %s. Make sure to avoid cycles "
                      "of references, or explicitly invoke delete (typically within a destructor).\n* Memory Dump:\n%s",
-                                  typeName.c_str(),
-                                  dump.c_str());
+                     typeName.c_str(),
+                     dump.c_str());
 
   WarnIf(isTypeNative, "%s", message.c_str());
   ZPrint("%s", message.c_str());

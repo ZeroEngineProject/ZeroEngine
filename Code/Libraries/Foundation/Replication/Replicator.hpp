@@ -729,23 +729,23 @@ public:
   typedef ItemCacher<EmplaceContextId> EmplaceContextCacher;
 
   /// Data
-  Role::Enum mRole;                             /// Network role
-  ReplicatorId mReplicatorId;                   /// Our replicator ID
-  IdStore<ReplicatorId> mReplicatorIdStore;     /// [Server] Replicator ID store
-  IdStore<ReplicaId> mReplicaIdStore;           /// [Server] Replica ID store
-  EmplaceIdStores mEmplaceIdStores;             /// Emplace ID stores mapped by emplace context
-  ReplicaSet mReplicaSet;                       /// Locally known live replicas
-  CreateMap mCreateMap;                         /// Locally known created replicas mapped by create context
-  ReplicaMap mReplicaMap;                       /// Locally known live replicas mapped by replica type
-  EmplaceMap mEmplaceMap;                       /// Locally known emplaced replicas mapped by emplace context
-  CreateContextCacher mCreateContextCacher;     /// CreateContext item cacher
-  ReplicaTypeCacher mReplicaTypeCacher;         /// ReplicaType item cacher
-  EmplaceContextCacher mEmplaceContextCacher;   /// EmplaceContext item cacher
-  void* mUserData;                              /// Optional user data
+  Role::Enum mRole;                           /// Network role
+  ReplicatorId mReplicatorId;                 /// Our replicator ID
+  IdStore<ReplicatorId> mReplicatorIdStore;   /// [Server] Replicator ID store
+  IdStore<ReplicaId> mReplicaIdStore;         /// [Server] Replica ID store
+  EmplaceIdStores mEmplaceIdStores;           /// Emplace ID stores mapped by emplace context
+  ReplicaSet mReplicaSet;                     /// Locally known live replicas
+  CreateMap mCreateMap;                       /// Locally known created replicas mapped by create context
+  ReplicaMap mReplicaMap;                     /// Locally known live replicas mapped by replica type
+  EmplaceMap mEmplaceMap;                     /// Locally known emplaced replicas mapped by emplace context
+  CreateContextCacher mCreateContextCacher;   /// CreateContext item cacher
+  ReplicaTypeCacher mReplicaTypeCacher;       /// ReplicaType item cacher
+  EmplaceContextCacher mEmplaceContextCacher; /// EmplaceContext item cacher
+  void* mUserData;                            /// Optional user data
   float mFrameFillWarning; /// Controls when the user will be warned of their current frame's outgoing bandwidth
                            /// utilization ratio on any given link
   float mFrameFillSkip; /// Controls when to skip change replication for the current frame because of remaining outgoing
-                                                /// bandwidth utilization ratio on any given link
+                        /// bandwidth utilization ratio on any given link
   ReplicaChannelTypeSet mReplicaChannelTypes;   /// Replica channel type set
   ReplicaPropertyTypeSet mReplicaPropertyTypes; /// Replica property type set
 

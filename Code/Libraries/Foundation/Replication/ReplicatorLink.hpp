@@ -298,18 +298,18 @@ public:
   void OnPluginMessageReceive(MoveReference<Message> message, bool& continueProcessingCustomMessages) override;
 
   /// Data
-  Replicator* const mReplicator;                      /// Operating replicator
-  ReplicatorId mReplicatorId;                         /// Their replicator ID
-  ReplicaSet mReplicaSet;                             /// Remotely expected live replicas
-  CreateMap mCreateMap;                               /// Remotely expected live replicas mapped by create context
-  ReplicaMap mReplicaMap;                             /// Remotely expected live replicas mapped by replica type
-  MessageChannelId mCommandChannelId;                 /// Command channel ID
+  Replicator* const mReplicator;          /// Operating replicator
+  ReplicatorId mReplicatorId;             /// Their replicator ID
+  ReplicaSet mReplicaSet;                 /// Remotely expected live replicas
+  CreateMap mCreateMap;                   /// Remotely expected live replicas mapped by create context
+  ReplicaMap mReplicaMap;                 /// Remotely expected live replicas mapped by replica type
+  MessageChannelId mCommandChannelId;     /// Command channel ID
   OutReplicaChannels mOutReplicaChannels; /// Outgoing replica channel map (replica channel to message channel ID)
   InReplicaChannels mInReplicaChannels;   /// Incoming replica channel map (message channel ID to replica channel)
   InReplicaChannelsFlipped
       mInReplicaChannelsFlipped; /// Incoming replica channel map flipped (replica channel to message channel ID)
-  ConnectRequestData mLastConnectRequestData;         /// Last connect request data sent/received
-  ConnectResponseData mLastConnectResponseData;       /// Last connect response data sent/received
+  ConnectRequestData mLastConnectRequestData;   /// Last connect request data sent/received
+  ConnectResponseData mLastConnectResponseData; /// Last connect response data sent/received
   bool mShouldSkipChangeReplication;         /// Should skip change replication? (Updated at the start of every frame)
   TimeMs mLastFrameFillSkipNotificationTime; /// Last frame fill skip notification time
   TimeMs mLastFrameFillWarningNotificationTime; /// Last frame fill warning notification time

@@ -840,7 +840,9 @@ void ExecutableState::InvokePreConstructorOrRelease(Handle& handle, ExceptionRep
   }
 }
 
-void ExecutableState::UpdateCppVirtualTable(::byte* objectWithBaseVTable, BoundType* cppBaseType, BoundType* derivedType)
+void ExecutableState::UpdateCppVirtualTable(::byte* objectWithBaseVTable,
+                                            BoundType* cppBaseType,
+                                            BoundType* derivedType)
 {
   // Error checking
   ErrorIf(cppBaseType->BoundNativeVirtualCount > cppBaseType->RawNativeVirtualCount,
@@ -1265,8 +1267,10 @@ bool ExecutableState::IsInCallStack()
   return (this->StackFrames.Size() != 1);
 }
 
-Handle
-ExecutableState::AllocateStackObject(::byte* stackLocation, PerScopeData* scope, BoundType* type, ExceptionReport& report)
+Handle ExecutableState::AllocateStackObject(::byte* stackLocation,
+                                            PerScopeData* scope,
+                                            BoundType* type,
+                                            ExceptionReport& report)
 {
   // Verify that the given pointer is within our stack
   ErrorIf(stackLocation < this->Stack || stackLocation > this->Stack + this->StackSize,
@@ -1497,7 +1501,7 @@ bool ExecutableState::ThrowExceptionOnTimeout(ExceptionReport& report)
         report,
         String::Format(
             "Exceeded the allowed execution time of %d second(s). Use the timeout statement to increase allowed time",
-                                        timeout.LengthTicks / Timer::TicksPerSecond));
+            timeout.LengthTicks / Timer::TicksPerSecond));
 
     // We threw the exception and thus we return 'true', the timeout occurred
     return true;

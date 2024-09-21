@@ -39,11 +39,11 @@ WString::WString(StringParam str) : mSize(0)
   if (str.Empty())
     return;
   // first read the number of wide characters we need to allocate for our
-  // wide character buffer going from UTF8 encoded chars -> UTF16 (windows wchar) 
+  // wide character buffer going from UTF8 encoded chars -> UTF16 (windows wchar)
   // this step is necessary when using MultiByteToWideChar
   mSize = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
   wchar_t* wstr = (wchar_t*)zAllocate(mSize * sizeof(wchar_t));
-  // using the acquired information needed allocate a destination buffer and covert 
+  // using the acquired information needed allocate a destination buffer and covert
   // the utf8 encoded character string to a wide string
   MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, wstr, mSize);
   mData.SetData((::byte*)wstr, mSize * sizeof(wchar_t), true);
@@ -124,7 +124,7 @@ String Narrow(const wchar_t* wstr)
   // this step is necessary when using WideCharToMultiByte
   int size = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, NULL, 0, NULL, NULL);
   char* str = new char[size];
-  // using the acquired information needed allocate a destination buffer and covert 
+  // using the acquired information needed allocate a destination buffer and covert
   // the wide string to a utf8 encoded character string
   WideCharToMultiByte(CP_UTF8, 0, wstr, -1, str, size, NULL, NULL);
   String ret(str);
@@ -145,11 +145,11 @@ WString Widen(const char* str)
   if (!str)
     return WString();
   // first read the number of wide characters we need to allocate for our
-  // wide character buffer going from UTF8 encoded chars -> UTF16 (windows wchar) 
+  // wide character buffer going from UTF8 encoded chars -> UTF16 (windows wchar)
   // this step is necessary when using MultiByteToWideChar
   int size = MultiByteToWideChar(CP_UTF8, 0, str, -1, NULL, 0);
   wchar_t* wstr = new wchar_t[size];
-  // using the acquired information needed allocate a destination buffer and covert 
+  // using the acquired information needed allocate a destination buffer and covert
   // the utf8 encoded character string to a wide string
   MultiByteToWideChar(CP_UTF8, 0, str, -1, wstr, size);
   WString ret(wstr);

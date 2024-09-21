@@ -135,8 +135,8 @@ bool ValidateEvent(StringParam eventId, BoundType* typeSent)
       {
         String message = String::Format(
             "The event was bound as a %s but you attempted to register an event connection that takes %s",
-                                        boundEventType->Name.c_str(),
-                                        typeSent->Name.c_str());
+            boundEventType->Name.c_str(),
+            typeSent->Name.c_str());
         DoNotifyException("Events", message);
         return false;
       }

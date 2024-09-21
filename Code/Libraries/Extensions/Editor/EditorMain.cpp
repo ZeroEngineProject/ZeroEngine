@@ -645,12 +645,12 @@ DocumentEditor* EditorMain::OpenTextFileAuto(StringParam file)
 void EditorMain::OnScriptError(ScriptEvent* event)
 {
   // At the moment we always pause due to a syntax error or exception
-    // If we are live editing, we really want to continue (live edit may need to be a mode)
+  // If we are live editing, we really want to continue (live edit may need to be a mode)
   SetGamePaused(true);
 
   if (event->Script)
   {
-      // debug exception needs the full file path, so set the filename now to the full path
+    // debug exception needs the full file path, so set the filename now to the full path
     event->Location.Origin = event->Script->LoadPath;
     DocumentEditor* editor = OpenDocumentResource(event->Script);
     if (!editor)
@@ -658,7 +658,7 @@ void EditorMain::OnScriptError(ScriptEvent* event)
 
     editor->ScriptError(event);
   }
-    // If there was no valid script to display an error message on then just do-notify the warning message.
+  // If there was no valid script to display an error message on then just do-notify the warning message.
   else
   {
     DoNotifyWarning("Script Error", event->Message);

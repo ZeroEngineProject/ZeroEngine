@@ -134,7 +134,7 @@ void NetUser::OnRegisterCppNetProperties(RegisterCppNetProperties* event)
     DoNotifyError(
         "Unable to Add NetUser C++ NetProperties",
         String::Format("Unable to add built-in 'NetPeerId' NetProperty to the 'NetUser' channel on the NetUser '%s'",
-                                 owner->GetDescription().c_str()));
+                       owner->GetDescription().c_str()));
     return;
   }
 
@@ -145,7 +145,7 @@ void NetUser::OnRegisterCppNetProperties(RegisterCppNetProperties* event)
     DoNotifyError(
         "Unable to Add NetUser C++ NetProperties",
         String::Format("Unable to add built-in 'NetUserId' NetProperty to the 'NetUser' channel on the NetUser '%s'",
-                                 owner->GetDescription().c_str()));
+                       owner->GetDescription().c_str()));
     return;
   }
 }

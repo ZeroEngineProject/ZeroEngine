@@ -11,7 +11,6 @@ void UnTranslatedBoundFunction(Zilch::Call& call, Zilch::ExceptionReport& report
 // via pre-initialization when inspecting other properties.
 void DummyBoundFunction(Zilch::Call& call, Zilch::ExceptionReport& report);
 
-
 /// Helper struct to pass around groups of types for generating library translation
 struct ZilchTypeGroups
 {

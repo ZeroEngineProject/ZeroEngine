@@ -501,19 +501,19 @@ public:
 
   /// State Data
   TimeMs mLocalToRemoteTimeDifference; /// Local to remote time difference (remote time elapsed - local time elapsed)
-  TimeMs mCreationTime;                           /// Time that the link was created
+  TimeMs mCreationTime;                /// Time that the link was created
   TransmissionDirection::Enum
       mCreationDirection;             /// Direction in which the link was created (which peer initiated the connection)
-  bool mConnectRequested;                         /// Outgoing connect requested?
-  BitStream mConnectRequestExtraData;             /// Outgoing connect request data
-  bool mDisconnectRequested;                      /// Outgoing disconnect requested?
-  BitStream mDisconnectRequestExtraData;          /// Outgoing disconnect request data
-  UserConnectResponse::Enum mConnectResponded;    /// Outgoing connect responded?
-  BitStream mConnectResponseExtraData;            /// Outgoing connect response data
-  LinkState::Enum mState;                         /// Specific link state
-  TimeMs mStateTime;                              /// Specific link state set time
-  MessageReceiptId mStateACKId;                   /// Specific link state ACK ID
-  bool mSessionCompleted;                         /// Session completed?
+  bool mConnectRequested;             /// Outgoing connect requested?
+  BitStream mConnectRequestExtraData; /// Outgoing connect request data
+  bool mDisconnectRequested;          /// Outgoing disconnect requested?
+  BitStream mDisconnectRequestExtraData;       /// Outgoing disconnect request data
+  UserConnectResponse::Enum mConnectResponded; /// Outgoing connect responded?
+  BitStream mConnectResponseExtraData;         /// Outgoing connect response data
+  LinkState::Enum mState;                      /// Specific link state
+  TimeMs mStateTime;                           /// Specific link state set time
+  MessageReceiptId mStateACKId;                /// Specific link state ACK ID
+  bool mSessionCompleted;                      /// Session completed?
 
   /// Plugin Data
   LinkPluginSet mAddedPlugins;   /// Link plugins which were just added, need to be initialized

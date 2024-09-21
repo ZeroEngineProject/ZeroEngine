@@ -305,12 +305,12 @@ void ZilchPluginSource::WriteCurrentVersionFile()
   String propsFile =
       BuildString("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
                   "<Project ToolsVersion=\"4.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">\r\n"
-                                 "  <PropertyGroup>\r\n"
-                                 "    <ZeroVersion>",
-                                 revisionNumber,
-                                 "</ZeroVersion>\r\n"
-                                 "  </PropertyGroup>\r\n"
-                                 "</Project>\r\n");
+                  "  <PropertyGroup>\r\n"
+                  "    <ZeroVersion>",
+                  revisionNumber,
+                  "</ZeroVersion>\r\n"
+                  "  </PropertyGroup>\r\n"
+                  "</Project>\r\n");
 
   String codeDir = GetCodeDirectory();
   CreateDirectoryAndParents(codeDir);

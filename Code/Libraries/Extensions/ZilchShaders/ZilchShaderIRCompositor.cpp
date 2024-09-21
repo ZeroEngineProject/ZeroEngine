@@ -296,7 +296,7 @@ bool ZilchShaderIRCompositor::ValidateStages(CompositedShaderInfo& compositeInfo
         if (stageInfo->mFragmentType == FragmentType::Geometry)
           msg = String::Format(
               "Geometry fragment '%s' must have a 'Main' function of signature(InputStream, OutputStream).",
-                               zilchType->Name.c_str());
+              zilchType->Name.c_str());
         else
           msg = String::Format("Fragment '%s' must have a a function of signature 'Main()'.", zilchType->Name.c_str());
         SendTranslationError(zilchType->Location, msg);

@@ -1224,13 +1224,13 @@ void CodeGenerator::GenerateFunctionDelegateMemberAccess(MemberAccessNode*& node
   {
     this->CreateInstanceDelegateAndThisHandle(
         function,
-                                              node->AccessedFunction,
+        node->AccessedFunction,
         node->LeftOperand->ResultType, // Note that the left operand in a member access is the object ('this')
-                                              node->LeftOperand->Access,
-                                              node->Access,
-                                              (node->Operator != Grammar::NonVirtualAccess),
-                                              node->Location,
-                                              DebugOrigin::FunctionMemberAccess);
+        node->LeftOperand->Access,
+        node->Access,
+        (node->Operator != Grammar::NonVirtualAccess),
+        node->Location,
+        DebugOrigin::FunctionMemberAccess);
   }
   else
   {
@@ -1271,13 +1271,13 @@ void CodeGenerator::GeneratePropertyGetMemberAccess(MemberAccessNode*& node, Gen
     {
       this->CreateInstanceDelegateAndThisHandle(
           function,
-                                                get,
+          get,
           node->LeftOperand->ResultType, // Note that the left operand in a member access is the object ('this')
-                                                node->LeftOperand->Access,
-                                                delegateLocal,
-                                                (node->Operator != Grammar::NonVirtualAccess),
-                                                node->Location,
-                                                DebugOrigin::PropertyGetMemberAccess);
+          node->LeftOperand->Access,
+          delegateLocal,
+          (node->Operator != Grammar::NonVirtualAccess),
+          node->Location,
+          DebugOrigin::PropertyGetMemberAccess);
     }
     else
     {
@@ -1336,13 +1336,13 @@ void CodeGenerator::GeneratePropertySetMemberAccess(MemberAccessNode*& node, Gen
     {
       this->CreateInstanceDelegateAndThisHandle(
           function,
-                                                set,
+          set,
           node->LeftOperand->ResultType, // Note that the left operand in a member access is the object ('this')
-                                                node->LeftOperand->Access,
-                                                delegateLocal,
-                                                (node->Operator != Grammar::NonVirtualAccess),
-                                                node->Location,
-                                                DebugOrigin::PropertySetMemberAccess);
+          node->LeftOperand->Access,
+          delegateLocal,
+          (node->Operator != Grammar::NonVirtualAccess),
+          node->Location,
+          DebugOrigin::PropertySetMemberAccess);
     }
     else
     {

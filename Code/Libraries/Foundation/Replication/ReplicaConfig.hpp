@@ -190,9 +190,9 @@ typedef Pair<Message, TransmissionDirection::Enum> MessageDirectionPair;
 /// Network Role
 // (NOTE: Corresponding enum values MUST match up with Authority!)
 DeclareEnum5(Role,
-             Client,        /// Act as an online client, able to connect to a single server
+             Client,      /// Act as an online client, able to connect to a single server
              Server,      /// Act as an online server, able to accept connections from multiple clients
-             Unspecified,   /// Unspecified network role
+             Unspecified, /// Unspecified network role
              Offline, /// Act as an offline peer (provided as an API simulator to enable networked games to use the same
                       /// code in offline contexts)
              MasterServer); /// Act as an online master server, able to provide host lists and facilitate connections

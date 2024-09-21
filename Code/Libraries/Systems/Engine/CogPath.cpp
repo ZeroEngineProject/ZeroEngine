@@ -137,8 +137,8 @@ void DetectAmbiguity(Status& status, Cog* cog)
   {
     status.Message =
         String::Format("Two or more siblings had the name '%s' which results in an ambiguous path (see %s)",
-                                    name.c_str(),
-                                    cog->GetDescription().c_str());
+                       name.c_str(),
+                       cog->GetDescription().c_str());
   }
 }
 

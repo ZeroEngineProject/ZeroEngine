@@ -80,8 +80,8 @@ void Material::SerializeMaterialBlocks(Serializer& stream)
         String message =
             String::Format("A Fragment with the type name %s could not be proxied "
                            "because a type with that name already exists. Data will be lost where this Fragment is "
-                                        "used if the project is saved",
-                                        materialNode.TypeName.mBegin);
+                           "used if the project is saved",
+                           materialNode.TypeName.mBegin);
         DoNotifyError("Could not proxy Material Fragment", message);
         stream.EndPolymorphic();
         continue;
@@ -279,8 +279,8 @@ void Material::UpdateCompositeName()
       {
         String warning = String::Format(
             "Geometry Fragment '%s' cannot be added to Material '%s', a Geometry Fragment is already present.",
-                                        block.StoredType->Name.c_str(),
-                                        Name.c_str());
+            block.StoredType->Name.c_str(),
+            Name.c_str());
         DoNotifyWarning("Multiple Geometry Fragments", warning);
         continue;
       }

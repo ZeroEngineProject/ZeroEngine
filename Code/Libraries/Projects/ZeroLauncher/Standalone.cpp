@@ -58,7 +58,7 @@ void BuildId::Serialize(Serializer& stream, bool includePlatform)
 BuildId BuildId::GetCurrentApplicationId()
 {
   BuildId id;
-  // This major id needs to match "ZeroLauncherMajorId" on the web server in order to determine 
+  // This major id needs to match "ZeroLauncherMajorId" on the web server in order to determine
   // if a new major version is available which triggers a  re-install of the launcher.
 
   id.mApplication = GetOrganizationApplicationName(); // Application [ZeroEditor]
@@ -92,10 +92,10 @@ bool BuildId::Parse(StringParam buildName)
    */
   const Regex cBuildNameRegex("([a-zA-Z0-9_]+)\\." // Application [ZeroEditor]
                                                    //"([a-zA-Z0-9_]+)\\." // Branch [master]
-                              "([0-9]+)\\." // Major [1]
-                              "([0-9]+)\\." // Minor [5]
-                              "([0-9]+)\\." // Patch [0]
-                              "([0-9]+)\\." // Revision [1501]
+                              "([0-9]+)\\."        // Major [1]
+                              "([0-9]+)\\."        // Minor [5]
+                              "([0-9]+)\\."        // Patch [0]
+                              "([0-9]+)\\."        // Revision [1501]
                               //"([0-9a-fA-F]+)\\."  // ShortChangeset [fb02756c46a4]
                               //"([0-9]+)\\."        // MsSinceEpoch [1574702096290]
                               //"([a-zA-Z0-9_]+)\\." // TargetOs [Windows]

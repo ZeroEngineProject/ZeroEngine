@@ -1080,7 +1080,7 @@ void ZilchSpirVFrontEnd::GenerateFunctionType(Zilch::SyntaxNode* locationNode,
         {
           String msg = String::Format(
               "Type '%s' cannot be copied. This parameter must be passed through by reference (ref keyword).",
-                                      shaderParameterType->mName.c_str());
+              shaderParameterType->mName.c_str());
           SendTranslationError(locationNode->Location, msg);
         }
         functionType->mParameters.PushBack(shaderParameterType);

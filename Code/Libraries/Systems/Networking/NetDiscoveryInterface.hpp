@@ -234,14 +234,14 @@ public:
   //
   // Data
   //
-  NetDiscoveryMode::Enum mDiscoveryMode;                       ///< Some modes cancel others.
+  NetDiscoveryMode::Enum mDiscoveryMode;       ///< Some modes cancel others.
   PingManager mPingManager;                    ///< Tool for NetHostDiscovery to use to communicate with others.
-  Array<OpenHostRequestPtr> mOpenHostRequests;                 ///< Open host request list.
+  Array<OpenHostRequestPtr> mOpenHostRequests; ///< Open host request list.
   ArrayMap<IpAddress, RespondingHostData> mRespondingHostData; ///< Array of host data for those who responded. this is
                                                                ///< for both multi and single host requests to use.
   HashMap<IpAddress, SingleHostRequest*> mSingleHostRequests;  ///< Map of single host requests for easy access.
   bool mPendingCancelRefreshes; ///< Pending cancel refreshes request? (Frame delayed to avoid possible infinite
-                                                               ///< recursion)
+                                ///< recursion)
 };
 
 } // namespace Zero

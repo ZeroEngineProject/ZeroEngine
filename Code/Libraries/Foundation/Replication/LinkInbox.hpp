@@ -57,9 +57,9 @@ class LinkInbox
   PeerLink* mLink; /// Operating link
 
   /// Packet Data
-  Array<InPacket> mReceivedPackets;                   /// Received packets
-  TimeMs mLastReceiveTime;                            /// Last packet receive time
-  PacketSequence mIncomingPacketSequence;             /// Incoming packet sequence record
+  Array<InPacket> mReceivedPackets;             /// Received packets
+  TimeMs mLastReceiveTime;                      /// Last packet receive time
+  PacketSequence mIncomingPacketSequence;       /// Incoming packet sequence record
   TimeMs mLastOutPacketSequenceHistorySendTime; /// Last outgoing packet sequence history send time
   PacketSequenceId
       mLastOutPacketSequenceHistoryNESQ;             /// Last outgoing packet sequence history next expected sequence ID

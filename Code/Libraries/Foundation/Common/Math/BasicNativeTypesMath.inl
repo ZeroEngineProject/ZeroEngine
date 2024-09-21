@@ -16,19 +16,19 @@
 // ("Forward declared" by name in Common in order to be included as a named BasicNativeType::Enum value.
 //  "Fully declared" with actual type information in Math in order to define the required type trait information via
 //  template specializations.)
-DeclareBasicNativeTypeMultiPrimitive(Math::BoolVector2, BoolVector2, bool, 2) // aka Boolean2
+DeclareBasicNativeTypeMultiPrimitive(Math::BoolVector2, BoolVector2, bool, 2)     // aka Boolean2
     DeclareBasicNativeTypeMultiPrimitive(Math::BoolVector3, BoolVector3, bool, 3) // aka Boolean3
     DeclareBasicNativeTypeMultiPrimitive(Math::BoolVector4, BoolVector4, bool, 4) // aka Boolean4
-    DeclareBasicNativeTypeMultiPrimitive(Math::IntVector2, IntVector2, int, 2) // aka Integer2
-    DeclareBasicNativeTypeMultiPrimitive(Math::IntVector3, IntVector3, int, 3) // aka Integer3
-    DeclareBasicNativeTypeMultiPrimitive(Math::IntVector4, IntVector4, int, 4) // aka Integer4
-    DeclareBasicNativeTypeMultiPrimitive(Math::Vector2, Vector2, float, 2) // aka Real2
-    DeclareBasicNativeTypeMultiPrimitive(Math::Vector3, Vector3, float, 3) // aka Real3
-    DeclareBasicNativeTypeMultiPrimitive(Math::Vector4, Vector4, float, 4) // aka Real4
-    DeclareBasicNativeTypeMultiPrimitive(Math::Quaternion, Quaternion, float, 4) // aka Quaternion
-    DeclareBasicNativeTypeMultiPrimitive(Math::Matrix2, Matrix2, float, 4) // aka Real2x2
-    DeclareBasicNativeTypeMultiPrimitive(Math::Matrix3, Matrix3, float, 9) // aka Real3x3
-    DeclareBasicNativeTypeMultiPrimitive(Math::Matrix4, Matrix4, float, 16) // aka Real4x4
+    DeclareBasicNativeTypeMultiPrimitive(Math::IntVector2, IntVector2, int, 2)    // aka Integer2
+    DeclareBasicNativeTypeMultiPrimitive(Math::IntVector3, IntVector3, int, 3)    // aka Integer3
+    DeclareBasicNativeTypeMultiPrimitive(Math::IntVector4, IntVector4, int, 4)    // aka Integer4
+    DeclareBasicNativeTypeMultiPrimitive(Math::Vector2, Vector2, float, 2)        // aka Real2
+    DeclareBasicNativeTypeMultiPrimitive(Math::Vector3, Vector3, float, 3)        // aka Real3
+    DeclareBasicNativeTypeMultiPrimitive(Math::Vector4, Vector4, float, 4)        // aka Real4
+    DeclareBasicNativeTypeMultiPrimitive(Math::Quaternion, Quaternion, float, 4)  // aka Quaternion
+    DeclareBasicNativeTypeMultiPrimitive(Math::Matrix2, Matrix2, float, 4)        // aka Real2x2
+    DeclareBasicNativeTypeMultiPrimitive(Math::Matrix3, Matrix3, float, 9)        // aka Real3x3
+    DeclareBasicNativeTypeMultiPrimitive(Math::Matrix4, Matrix4, float, 16)       // aka Real4x4
 
     // ----------------------------------------------------------------------------------------------------------------------------------
     // Note: If any 'Name' macro arguments change here, they must also be updated to match in the "BasicNativeTypes.inl"

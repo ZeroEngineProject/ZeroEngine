@@ -35,7 +35,6 @@ public:
   /// internally by physics, but is exposed for manual triggering.
   void ClearCachedEdgeAdjacency();
 
-
   /// A range for returning the local-space triangles that need to have collision checked.
   /// All triangles returned intersect the passed in local space aabb. The work horse is
   /// the internal HeightMapAabbRange, this just wraps that for intersection and

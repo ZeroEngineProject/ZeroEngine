@@ -73,17 +73,17 @@ public:
   ZilchDocument(
       GetFileNameWithExtension,
       "Returns only the file portion of a path (everything past the last separator including the extension).\n"
-                "Example: ('Content\\Player.png') results in 'Player.png'\n"
-                "Example: ('Content\\Powerups\\') results in ''\n"
-                "Example: ('Content\\Powerups') results in 'Powerups'\n");
+      "Example: ('Content\\Player.png') results in 'Player.png'\n"
+      "Example: ('Content\\Powerups\\') results in ''\n"
+      "Example: ('Content\\Powerups') results in 'Powerups'\n");
   static String GetFileNameWithExtension(StringParam path);
 
   ZilchDocument(
       GetFileNameWithoutExtension,
       "Returns only the file portion of a path (everything past the last separator excluding the extension).\n"
-                "Example: ('Content\\Player.png') results in 'Player'\n"
-                "Example: ('Content\\Powerups\\') results in ''\n"
-                "Example: ('Content\\Powerups') results in 'Powerups'\n");
+      "Example: ('Content\\Player.png') results in 'Player'\n"
+      "Example: ('Content\\Powerups\\') results in ''\n"
+      "Example: ('Content\\Powerups') results in 'Powerups'\n");
   static String GetFileNameWithoutExtension(StringParam path);
 
   ZilchDocument(AddTrailingDirectorySeparator,
@@ -95,8 +95,8 @@ public:
   ZilchDocument(
       RemoveTrailingDirectorySeparator,
       "Pass in a directory path with or without the separator and this will remove it from the end (if needed).\n"
-                "Example: ('Content\\Powerups') results in 'Content\\Powerups'\n"
-                "Example: ('Content\\Powerups\\') results in 'Content\\Powerups'\n");
+      "Example: ('Content\\Powerups') results in 'Content\\Powerups'\n"
+      "Example: ('Content\\Powerups\\') results in 'Content\\Powerups'\n");
   static String RemoveTrailingDirectorySeparator(StringParam path);
 
   ZilchDocument(GetDirectoryPath,
@@ -127,7 +127,7 @@ public:
       GetCanonicalizedPathFromAbsolutePath,
       "Changes all directory separators to be the current operating system directory separator, removes duplicate "
       "separators, and removes '..' and '.' from the paths. "
-                "Canonicalized is only guaranteed to work on absolute paths. "
+      "Canonicalized is only guaranteed to work on absolute paths. "
       "This behavior is operating system dependent and may call the related OS functions.\n"
       "Example: ('C:/Sandbox//Engine/../Content/./Player.png') results in 'C:\\Sandbox\\Content\\Player.png'\n");
   static String GetCanonicalizedPathFromAbsolutePath(StringParam absolutePath);
@@ -144,11 +144,11 @@ public:
       "Returns true if a path has no root (such as a volume/hard drive specifier, or unix like systems a beginning "
       "slash). "
       "Even a beginning slash that means 'relative to the current working directory volume' is still relative. "
-                "Empty paths will return that they are relative.\n"
+      "Empty paths will return that they are relative.\n"
       "Example: ('C:\\Sandbox\\Engine\\..\\Content\\.\\Player.png') results in 'false'\n"
-                "Example: ('Sandbox') results in 'true'\n"
-                "Example: ('Content\\Powerups\\Recharge.png') results in 'true'\n"
-                "Example: ('/usr/Content/Player.png') results in 'false'\n");
+      "Example: ('Sandbox') results in 'true'\n"
+      "Example: ('Content\\Powerups\\Recharge.png') results in 'true'\n"
+      "Example: ('/usr/Content/Player.png') results in 'false'\n");
   static bool IsRelative(StringParam path);
 
   ZilchDocument(WorkingDirectory,

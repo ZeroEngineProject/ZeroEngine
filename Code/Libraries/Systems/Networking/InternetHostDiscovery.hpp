@@ -81,7 +81,7 @@ public:
   IpAddress mMasterServerConnectionIp;    ///< [Client/Server] Used to determine the master server that it did end up
                                           ///< connecting to when discovering hosts.
   float mInternetHostListTimer; ///< [Client/Server] Used to keep track of how much time has passed since internet host
-                                          ///< list request was requested.
+                                ///< list request was requested.
 };
 
 } // namespace Zero

@@ -644,7 +644,7 @@ void ResourceWeightedTableView::UpdateTransform()
     Vec2 probSize = mEntries[i].mProbability->GetMinSize();
     // to avoid warbling, compute the offset from the left edge based upon the difference in size of the two composites
     //(doing it this way avoids warbling because we're computing a fixed delta from the left edge instead of from the
-    //center)
+    // center)
     float probSizeDeltaX = Math::Min(halfBarSizeX, (probSize.x - barSize.x) * 0.5f);
     // now we can compute the position from the left edge (that won't warble)
     Vec2 probPos = Vec2(ul.x - probSizeDeltaX, ul.y - probSize.y);

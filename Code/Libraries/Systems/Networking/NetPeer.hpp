@@ -808,10 +808,10 @@ public:
   // Data
   bool mAlreadyOpening;                     ///< Peer is already opening? (Dirty flag to prevent opening while opening.)
   bool mAlreadyClosing;                     ///< Peer is already closing? (Dirty flag to prevent closing while closing.)
-  bool mIsOpenOffline;                                  ///< Is peer open in offline mode?
+  bool mIsOpenOffline;                      ///< Is peer open in offline mode?
   PendingNetUserArray mPendingUserRequests; ///< [Client] Pending outgoing network user add requests.
-  NetUserSet mAddedUsers;                               ///< Added network user objects.
-  NetUserSet mOurAddedUsers;                            ///< Added network user objects added by our peer.
+  NetUserSet mAddedUsers;                   ///< Added network user objects.
+  NetUserSet mOurAddedUsers;                ///< Added network user objects added by our peer.
   ArrayMap<NetPeerId, NetUserSet> mTheirAddedUsers;     ///< Added network user objects added by remote peers.
   IdStore<NetUserId> mNetUserIdStore;                   ///< [Server/Offline] Network user ID store.
   NetPeerReceivedUserAddRequest* mActiveUserAddRequest; ///< [Server/Offline] Active net user add request (used
@@ -835,13 +835,13 @@ public:
   float mInternetHostPublishInterval; ///< Controls how often the internet discoverable peer sends a host record message
                                       ///< to its master server subscriptions.
   Array<IpAddress> mMasterServerSubscriptions; ///< Master servers this peer has subscribed to.
-  NetHostsMap mHostLists;                               ///< Network host lists.
+  NetHostsMap mHostLists;                      ///< Network host lists.
   float mPublishElapsedTime;                   ///< [Server] how much time has elapsed since it last published a record.
   float mInternetHostListTimeout; ///< [Client/Server] Determines the amount of time the client is willing to wait to
                                   ///< get a host list from master server.
   float mBasicHostInfoTimeout;    ///< [Client/Server] Determines the amount of time the client is willing to wait for.
   float mExtraHostInfoTimeout;    ///< [Client/Server] Determines the amount of time the client will wait for extra host
-                                                        ///< info from a server.
+                                  ///< info from a server.
   float mHostPingInterval;        ///< [Client/Server] The time between (potentially) redundant pings from a net peer.
   PingManager mPingManager;       ///< [Client/Server/MtrSrv] Ping manager is capable of sending and receiving pings.
   uint mNextManagerId;            ///< Ping managers need an id to be unique. We use this to prescribe unique ids.
@@ -855,7 +855,7 @@ public:
       mProjectHostRecordMaps;      ///< A map of project to guid to host record maps. This is used to identify if Host
                                    ///< records exist, and quickly get references to them.
   HostRecordsArray mHostRecords;   ///< The structure which stores all of the HostRecords pointers.
-  bool mIsOpenMasterServer;                             ///< Is peer open in MasterServer mode?
+  bool mIsOpenMasterServer;        ///< Is peer open in MasterServer mode?
   RecieptIpMap mReceiptRecipients; ///< A Map the server uses to determine which peer links to terminate.
 
   // Host discovery

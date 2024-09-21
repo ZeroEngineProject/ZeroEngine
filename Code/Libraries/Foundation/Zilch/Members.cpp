@@ -428,8 +428,8 @@ void Property::SetValue(const Any& instance, const Any& value)
 
     String message =
         String::Format("The setter expected the type '%s' but was given '%s' (which could not be raw-converted)",
-                                    expectedType->ToString().c_str(),
-                                    argumentTypeName.c_str());
+                       expectedType->ToString().c_str(),
+                       argumentTypeName.c_str());
     return state->ThrowException(message);
   }
 

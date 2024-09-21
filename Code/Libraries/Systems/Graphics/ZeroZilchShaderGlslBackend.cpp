@@ -49,7 +49,7 @@ bool ZeroZilchShaderGlslBackend::RunTranslationPass(ShaderTranslationPassResult&
   }
 
 #ifdef ZeroTargetOsEmscripten
-  // gles output is going to flatten input/output blocks and prepend the block name to each member. 
+  // gles output is going to flatten input/output blocks and prepend the block name to each member.
   // Forcing block typenames to match.
   for (auto stageInput : resources.stage_inputs)
   {

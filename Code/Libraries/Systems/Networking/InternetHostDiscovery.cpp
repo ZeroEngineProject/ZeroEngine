@@ -216,9 +216,9 @@ void InternetHostDiscovery::HandlePingTimeout(PendingHostPing& pendingHostPing)
     {
       hostRequest->FlushHostRequest(
           *mNetPeer, *this);       // dispatch events, create net hosts, clean up stale hosts. dispatch host list.
-      mOpenHostRequests.Clear();                       // Clear out hosts requests. (it is finished)
-      mRespondingHostData.Clear();                     // Clear out responding host data (we are done with it)
-      Assert(mSingleHostRequests.Size() == 0);         // shouldn't need to clean this, because it should be empty.
+      mOpenHostRequests.Clear();   // Clear out hosts requests. (it is finished)
+      mRespondingHostData.Clear(); // Clear out responding host data (we are done with it)
+      Assert(mSingleHostRequests.Size() == 0); // shouldn't need to clean this, because it should be empty.
       mRespondingHostData.Clear();
       mDiscoveryMode = NetDiscoveryMode::Idle; // set this back to idle.
     }

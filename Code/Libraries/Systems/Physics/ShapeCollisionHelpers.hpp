@@ -101,7 +101,6 @@ void ManifoldToProxyResult(const Sphere& castShape,
                            Intersection::Manifold* manifold,
                            ProxyResult* result);
 
-
 // Unfortunately, these need a collider because of how the cylinder version works
 
 /// Templated type for shapes we don't know about (convex mesh)
@@ -118,7 +117,6 @@ Vec3 NormalFromPointOnShape(const Cylinder& cylinder, Collider* shapeCollider, V
 Vec3 NormalFromPointOnShape(const Ellipsoid& ellipsoid, Collider* shapeCollider, Vec3Param point, Vec3Param start);
 Vec3 NormalFromPointOnShape(const Capsule& capsule, Collider* shapeCollider, Vec3Param point, Vec3Param start);
 Vec3 NormalFromPointOnShape(const Triangle& triangle, Collider* shapeCollider, Vec3Param point, Vec3Param start);
-
 
 // to deal with shape types that we should be getting a normal when casting against
 //(we only get normals against segments and rays, other shapes we ignore this call on)

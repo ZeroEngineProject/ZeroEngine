@@ -148,9 +148,9 @@ public:
   Variant mLastValue;                        /// Last observed property value
   TimeMs mLastChangeTimestamp; /// Timestamp indicating when this replica property was last changed (on any primitive
                                /// member)
-  Variant mLastReceivedChangeValue;          /// Last received property change value
-  TimeMs mLastReceivedChangeTimestamp;       /// Last received property change timestamp
-  uint64 mLastReceivedChangeFrameId;         /// Last received property change frame ID
+  Variant mLastReceivedChangeValue;    /// Last received property change value
+  TimeMs mLastReceivedChangeTimestamp; /// Last received property change timestamp
+  uint64 mLastReceivedChangeFrameId;   /// Last received property change frame ID
   Math::SplineCurve mSplineCurve[4];   /// Received property change value curve (for each primitive member)
   Math::BakedCurve mBakedCurve[4];     /// Received property change value curve baked out (for each primitive member)
   ConvergenceState::Enum mConvergenceState; /// Convergence method currently being applied to this replica property

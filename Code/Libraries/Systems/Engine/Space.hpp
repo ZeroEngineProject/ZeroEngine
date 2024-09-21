@@ -99,7 +99,6 @@ public:
   /// Load the level file
   void LoadLevelFile(StringParam filePath);
 
-
   /// Do no destroy current objects, add objects from level and change loaded level.
   void LoadLevelAdditive(Level* levelName);
 

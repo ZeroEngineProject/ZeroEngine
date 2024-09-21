@@ -67,9 +67,9 @@ void ConstraintConfigBlock::SetLinearBaumgarte(real linearBaumgarte)
   {
     String msg =
         String::Format("To prevent instabilities, LinearBaumgarte must be below %g. Clamping to the range of [%g, %g]",
-                                maxValue,
-                                minValue,
-                                maxValue);
+                       maxValue,
+                       minValue,
+                       maxValue);
     DoNotifyWarning("Invalid value", msg);
     linearBaumgarte = maxValue;
   }
@@ -96,9 +96,9 @@ void ConstraintConfigBlock::SetAngularBaumgarte(real angularBaumgarte)
   {
     String msg =
         String::Format("To prevent instabilities, AngularBaumgarte must be below %g. Clamping to the range of [%g, %g]",
-                                maxValue,
-                                minValue,
-                                maxValue);
+                       maxValue,
+                       minValue,
+                       maxValue);
     DoNotifyWarning("Invalid value", msg);
     angularBaumgarte = maxValue;
   }

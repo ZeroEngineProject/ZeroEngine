@@ -527,7 +527,7 @@ void SettingsMenu::RevertConfigToDefaults()
   // Revert the config to the default serialization values
   DefaultSerializer defaultStream;
   config->Serialize(defaultStream);
-  // We can't default serialize the recent projects because then we'd lose all of 
+  // We can't default serialize the recent projects because then we'd lose all of
   // the recent projects, so for now the max recent projects default is hardcoded here as well.
   RecentProjects* recentProjects = Z::gEngine->GetConfigCog()->has(RecentProjects);
   recentProjects->mMaxRecentProjects = 20;

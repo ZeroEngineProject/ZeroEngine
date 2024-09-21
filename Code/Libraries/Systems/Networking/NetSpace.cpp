@@ -117,7 +117,7 @@ void NetSpace::ServerOnEngineUpdate(UpdateEvent* event)
       // (We clone later when replicating the entire net level state)
       if (!netPeer->EmplaceNetObjectBySpaceAndLevel(
               cog, cog->GetSpace(), netObject->GetInitializationLevelResourceIdName())) // Unable?
-        continue;                                                                                       // Skip
+        continue;                                                                       // Skip
     }
     // Was cog initialized?
     else

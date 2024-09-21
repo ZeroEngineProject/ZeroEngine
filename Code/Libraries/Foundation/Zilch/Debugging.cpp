@@ -114,7 +114,7 @@ Any Debugger::QueryExpression(StringParam expression, Array<QueryResult>& result
   if (!this->IsBreakpointed)
     return Any();
 
-  // Save away all the state callbacks (we don't want them to get called while we make calls) 
+  // Save away all the state callbacks (we don't want them to get called while we make calls)
   // Because we are swapping with an empty event handler, this also clears out all state callbacks
   ExecutableState* state = ExecutableState::CallingState;
   EventHandler savedEvents;

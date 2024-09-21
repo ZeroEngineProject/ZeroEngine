@@ -273,7 +273,7 @@ void MatrixGetVector(Call& call, ExceptionReport& report)
     call.GetState()->ThrowException(
         report,
         String::Format("The y index used to access a component of a matrix was out of range [0-%d]",
-                                                   userData.SizeY - 1));
+                       userData.SizeY - 1));
     return;
   }
 
@@ -307,7 +307,7 @@ void MatrixSetVector(Call& call, ExceptionReport& report)
     call.GetState()->ThrowException(
         report,
         String::Format("The y index used to access a component of a matrix was out of range [0-%d]",
-                                                   userData.SizeY - 1));
+                       userData.SizeY - 1));
     return;
   }
 

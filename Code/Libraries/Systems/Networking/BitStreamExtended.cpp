@@ -1087,9 +1087,9 @@ bool BitStreamExtended::ReadBoolean() const
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Boolean value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureBoolean(),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureBoolean(),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1108,9 +1108,9 @@ int BitStreamExtended::ReadInteger() const
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Integer value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureInteger(),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureInteger(),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1128,9 +1128,9 @@ s64 BitStreamExtended::ReadDoubleInteger() const
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read DoubleInteger value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureDoubleInteger(),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureDoubleInteger(),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1150,9 +1150,9 @@ Math::IntVector2 BitStreamExtended::ReadInteger2() const
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Integer2 value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureInteger2(),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureInteger2(),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1173,9 +1173,9 @@ Math::IntVector3 BitStreamExtended::ReadInteger3() const
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Integer3 value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureInteger3(),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureInteger3(),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1197,9 +1197,9 @@ Math::IntVector4 BitStreamExtended::ReadInteger4() const
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Integer4 value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureInteger4(),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureInteger4(),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1237,9 +1237,9 @@ double BitStreamExtended::ReadDoubleReal() const
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read DoubleReal value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureDoubleReal(),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureDoubleReal(),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1327,9 +1327,9 @@ Math::Quaternion BitStreamExtended::ReadQuaternion() const
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Quaternion value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureQuaternion(),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureQuaternion(),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1372,9 +1372,9 @@ float BitStreamExtended::ReadRealHalf() const
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Real half value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureRealHalf(),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureRealHalf(),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return HalfFloatConverter::ToFloat(value);
@@ -1394,9 +1394,9 @@ Math::Vector2 BitStreamExtended::ReadReal2Half() const
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Real2 half value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureReal2Half(),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureReal2Half(),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return Math::Vector2(HalfFloatConverter::ToFloat(value[0]), HalfFloatConverter::ToFloat(value[1]));
@@ -1417,9 +1417,9 @@ Math::Vector3 BitStreamExtended::ReadReal3Half() const
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Real3 half value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureReal3Half(),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureReal3Half(),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return Math::Vector3(HalfFloatConverter::ToFloat(value[0]),
@@ -1443,9 +1443,9 @@ Math::Vector4 BitStreamExtended::ReadReal4Half() const
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Real4 half value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureReal4Half(),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureReal4Half(),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return Math::Vector4(HalfFloatConverter::ToFloat(value[0]),
@@ -1475,9 +1475,9 @@ int BitStreamExtended::ReadIntegerQuantized(int minValue, int maxValue, int quan
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Integer quantized value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureIntegerQuantized(minValue, maxValue, quantum),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureIntegerQuantized(minValue, maxValue, quantum),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1501,9 +1501,9 @@ s64 BitStreamExtended::ReadDoubleIntegerQuantized(s64 minValue, s64 maxValue, s6
         "BitStream",
         String::Format(
             "Unable to read DoubleInteger quantized value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureDoubleIntegerQuantized(minValue, maxValue, quantum),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+            MeasureDoubleIntegerQuantized(minValue, maxValue, quantum),
+            BitStream::GetBitsRead(),
+            BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1531,9 +1531,9 @@ Math::IntVector2 BitStreamExtended::ReadInteger2Quantized(const Math::IntVector2
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Integer2 quantized value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureInteger2Quantized(minValue, maxValue, quantum),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureInteger2Quantized(minValue, maxValue, quantum),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1563,9 +1563,9 @@ Math::IntVector3 BitStreamExtended::ReadInteger3Quantized(const Math::IntVector3
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Integer3 quantized value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureInteger3Quantized(minValue, maxValue, quantum),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureInteger3Quantized(minValue, maxValue, quantum),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1598,9 +1598,9 @@ Math::IntVector4 BitStreamExtended::ReadInteger4Quantized(const Math::IntVector4
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Integer4 quantized value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureInteger4Quantized(minValue, maxValue, quantum),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureInteger4Quantized(minValue, maxValue, quantum),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1623,9 +1623,9 @@ float BitStreamExtended::ReadRealQuantized(float minValue, float maxValue, float
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Real quantized value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureRealQuantized(minValue, maxValue, quantum),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureRealQuantized(minValue, maxValue, quantum),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1648,9 +1648,9 @@ double BitStreamExtended::ReadDoubleRealQuantized(double minValue, double maxVal
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read DoubleReal quantized value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureDoubleRealQuantized(minValue, maxValue, quantum),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureDoubleRealQuantized(minValue, maxValue, quantum),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1677,9 +1677,9 @@ Math::Vector2 BitStreamExtended::ReadReal2Quantized(const Math::Vector2& minValu
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Real2 quantized value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureReal2Quantized(minValue, maxValue, quantum),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureReal2Quantized(minValue, maxValue, quantum),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1707,9 +1707,9 @@ Math::Vector3 BitStreamExtended::ReadReal3Quantized(const Math::Vector3& minValu
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Real3 quantized value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureReal3Quantized(minValue, maxValue, quantum),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureReal3Quantized(minValue, maxValue, quantum),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;
@@ -1738,9 +1738,9 @@ Math::Vector4 BitStreamExtended::ReadReal4Quantized(const Math::Vector4& minValu
     DoNotifyException(
         "BitStream",
         String::Format("Unable to read Real4 quantized value (%u bits) from BitStream (%u / %u bits read/written)",
-                                     MeasureReal4Quantized(minValue, maxValue, quantum),
-                                     BitStream::GetBitsRead(),
-                                     BitStream::GetBitsWritten()));
+                       MeasureReal4Quantized(minValue, maxValue, quantum),
+                       BitStream::GetBitsRead(),
+                       BitStream::GetBitsWritten()));
   }
 
   return value;

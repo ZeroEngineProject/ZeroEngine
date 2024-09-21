@@ -273,9 +273,9 @@ void Viewport::SetTranslation(Vec3 baseOffset, Vec3 newOffset)
   Composite::SetTranslation(newOffset);
 
   Vec3 marginBase = baseOffset - newOffset;
-  mMargin[0]->SetTranslation(marginBase);                                                   // T
-  mMargin[1]->SetTranslation(marginBase + Vec3(0.0f, mMargin[0]->mSize.y + mSize.y, 0.0f)); // B
-  mMargin[2]->SetTranslation(marginBase + Vec3(0.0f, mMargin[0]->mSize.y, 0.0f));           // L
+  mMargin[0]->SetTranslation(marginBase);                                                                  // T
+  mMargin[1]->SetTranslation(marginBase + Vec3(0.0f, mMargin[0]->mSize.y + mSize.y, 0.0f));                // B
+  mMargin[2]->SetTranslation(marginBase + Vec3(0.0f, mMargin[0]->mSize.y, 0.0f));                          // L
   mMargin[3]->SetTranslation(marginBase + Vec3(mMargin[2]->mSize.x + mSize.x, mMargin[0]->mSize.y, 0.0f)); // R
 }
 

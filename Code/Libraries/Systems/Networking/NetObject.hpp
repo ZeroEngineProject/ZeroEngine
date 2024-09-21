@@ -404,8 +404,8 @@ public:
   bool mIsAncestor;                ///< Is an ancestor? (Original network object archetype hierarchy root?).
   FamilyTreeId mFamilyTreeId; ///< [Client/Server] Family tree ID this net object belongs to (either as an ancestor or
                               ///< descendant).
-  bool mIsOnline;                               ///< Is online? (Between the NetObjectOnline/Offline scope?).
-  NetUserId mNetUserOwnerUserId;                ///< User ID of our net user owner.
+  bool mIsOnline;             ///< Is online? (Between the NetObjectOnline/Offline scope?).
+  NetUserId mNetUserOwnerUserId; ///< User ID of our net user owner.
   HandleOf<NetChannelConfig>
       mAutomaticChannel; ///< Automatic net channel configuration resource applied to net properties by default.
   NetPropertyInfoArray mNetPropertyInfos; ///< Net property infos added through the property grid.

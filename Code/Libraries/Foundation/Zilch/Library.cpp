@@ -963,7 +963,7 @@ void LibraryBuilder::AddNativeBoundType(BoundType* type, BoundType* base, TypeCo
     {
       String message =
           String::Format("The base type must be initialized before we initialize our type %s.\n----------------\n",
-                                      type->Name.c_str());
+                         type->Name.c_str());
       base->IsInitializedAssert(message.c_str());
     }
     type->HandleManager = base->HandleManager;

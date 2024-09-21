@@ -596,7 +596,7 @@ void RecursiveDescentParser<TokenType, StreamType, ParseHandlerType>::Parse()
     String nextTokenText = this->mNextToken.ToEscapedString();
     String message =
         String::Format("Got an unexpected token '%s' (nothing was parsed and the invalid token will be skipped)",
-                                    nextTokenText.c_str());
+                       nextTokenText.c_str());
     this->SetError(message);
     ++this->mIndex;
   }

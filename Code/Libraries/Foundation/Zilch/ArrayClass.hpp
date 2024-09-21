@@ -50,7 +50,7 @@ public:
   Integer ModifyId;
 };
 
-// These are all the specializations that are optimized to store exactly that data type 
+// These are all the specializations that are optimized to store exactly that data type
 // All values that are unknown will be stored as the 'Any' type
 #  define ZilchDeclareDefineArray(ElementType, Linkage)                                                                \
     ZilchDeclareCustomType(                                                                                            \

@@ -179,8 +179,8 @@ Any Function::Invoke(const Any& instance, ArrayClass<Any>* arguments)
   {
     String message =
         String::Format("Attempting to invoke a function with an incorrect number of arguments (got %d, expected %d)",
-                                    argumentCount,
-                                    expectedCount);
+                       argumentCount,
+                       expectedCount);
     state->ThrowException(message);
     return Any();
   }
@@ -199,9 +199,9 @@ Any Function::Invoke(const Any& instance, ArrayClass<Any>* arguments)
     {
       String message =
           String::Format("Parameter %d expected the type '%s' but was given '%s' (which could not be raw-converted)",
-                                      i,
-                                      expectedType->ToString().c_str(),
-                                      argumentType->ToString().c_str());
+                         i,
+                         expectedType->ToString().c_str(),
+                         argumentType->ToString().c_str());
       state->ThrowException(message);
       return Any();
     }

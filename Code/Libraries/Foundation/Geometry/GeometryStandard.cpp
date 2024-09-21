@@ -57,7 +57,7 @@ ZilchDefineExternalBaseType(Aabb, TypeCopyMode::ValueType, builder, type)
   ZilchFullBindMethod(builder, type, &Aabb::SetCenterAndHalfExtents, ZilchNoOverload, "Set", "center, halfExtents");
   ZilchBindMethod(SetInvalid)->Description =
       ZilchDocumentString("Sets this aabb to an invalid aabb (Real3.PositiveMax, Real3.NegativeMin)). "
-                                                                 "This also makes expansion easier.");
+                          "This also makes expansion easier.");
 
   ZilchBindGetterSetter(Extents);
   ZilchBindGetterSetter(HalfExtents);

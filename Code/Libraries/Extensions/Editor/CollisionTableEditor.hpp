@@ -57,7 +57,6 @@ public:
   static Vec2 mPadding;
 };
 
-
 /// A label for a row in the collision group. This needs to store what group it's
 /// associated with so right click context menus can know what is being affected.
 class CollisionGroupLabel : public Composite

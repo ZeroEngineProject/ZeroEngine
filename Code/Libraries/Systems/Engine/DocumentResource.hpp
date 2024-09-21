@@ -173,7 +173,7 @@ public:
   /// Toggle a breakpoint on the given line. Returns if a breakpoint was set.
   bool ToggleBreakpoint(size_t line);
 
-  /// Get the keyword right before our cursor (a keyword is [a-zA-Z][a-zA-Z0-9]*) 
+  /// Get the keyword right before our cursor (a keyword is [a-zA-Z][a-zA-Z0-9]*)
   /// This is useful for implementing 'CanStartLocalWordCompletion', to prevent completion after keywords like 'class'
   static StringRange GetPreviousKeyword(ICodeEditor* editor);
 

@@ -556,7 +556,7 @@ void NewProjectMenu::OnCreateProject(Event* e)
 
   // Make a task to create the project from the template (download the template, unzip it and rename it)
   HashSet<String> projectTags;
-  // At the moment the tags box is nothing more than a text box, for now just split based 
+  // At the moment the tags box is nothing more than a text box, for now just split based
   // upon commas until we have an actual tag chain box or something
   StringSplitRange splitRange = mTags->GetText().Split(",");
   for (; !splitRange.Empty(); splitRange.PopFront())

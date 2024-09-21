@@ -105,7 +105,7 @@ public:
 
   String GetDownloadUrl();
 
-  // If we don't already have a meta cog, then create one from the empty archetype 
+  // If we don't already have a meta cog, then create one from the empty archetype
   // and make sure it has all of the necessary components. Returns true if the meta was null.
   bool CreateMetaIfNull();
 

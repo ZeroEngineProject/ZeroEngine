@@ -346,10 +346,10 @@ SimInline SimVec DotXM(SimVecParam lhs, SimVecParam rhs)
   SimVec vTemp2 = rhs;
   SimVec vTemp = Multiply(lhs, vTemp2);
   vTemp2 = VecShuffle(vTemp2, vTemp, 1, 0, 0, 0); // Copy X to the Z position and Y to the W position
-  vTemp2 = Add(vTemp2, vTemp);                   // Add Z = X+Z; W = Y+W;
-  vTemp = VecShuffle(vTemp, vTemp2, 0, 3, 0, 0); // Copy W to the Z position
-  vTemp = Add(vTemp, vTemp2);                    // Add Z and W together
-  vTemp = VecShuffle(vTemp, vTemp, 2, 2, 2, 2);  // Splat Z and return
+  vTemp2 = Add(vTemp2, vTemp);                    // Add Z = X+Z; W = Y+W;
+  vTemp = VecShuffle(vTemp, vTemp2, 0, 3, 0, 0);  // Copy W to the Z position
+  vTemp = Add(vTemp, vTemp2);                     // Add Z and W together
+  vTemp = VecShuffle(vTemp, vTemp, 2, 2, 2, 2);   // Splat Z and return
 
   return vTemp;
 }

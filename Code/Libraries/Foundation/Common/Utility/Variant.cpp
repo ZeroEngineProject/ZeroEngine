@@ -477,8 +477,8 @@ void Variant::InternalDefaultConstructValue()
             "An accessible default constructor was not defined and could not be generated for the given type. "
             "(Note: Zero-initialized is likely not a valid state for complex types! This can result in undefined "
             "behavior!)",
-                         mNativeType->mDebugTypeName)
-              .c_str());
+            mNativeType->mDebugTypeName)
+            .c_str());
 #endif
 
     // Fallback behavior
@@ -507,8 +507,8 @@ void Variant::InternalMoveConstructValue(void* source)
         String::Format("Unable to perform move construction for variant stored type '%s'. Will perform copy "
                        "construction instead. - "
                        "An accessible move constructor was not defined and could not be generated for the given type.",
-                         mNativeType->mDebugTypeName)
-              .c_str());
+                       mNativeType->mDebugTypeName)
+            .c_str());
 #endif
 
     // Fallback behavior
@@ -530,8 +530,8 @@ bool Variant::InternalEqualToValue(const void* rhs) const
               "Unable to perform equality comparison for variant stored type '%s'. Will return false instead. - "
               "A valid ComparePolicy was not defined and could not be generated for the given type "
               "(Adding an operator== function to the given type or defining a valid ComparePolicy for the given type "
-                         "should solve this problem).",
-                         mNativeType->mDebugTypeName)
+              "should solve this problem).",
+              mNativeType->mDebugTypeName)
               .c_str());
 #endif
 

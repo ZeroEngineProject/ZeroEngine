@@ -243,11 +243,11 @@ void ReplicatorLink::UpdateEnd(TimeMs now)
             "Network Frame Fill Warning",
             String::Format("%s Exceeded the outgoing bandwidth (%.2fkbps) utilization warning threshold (%.2f) this "
                            "frame, with a current frame fill ratio of %.2f, when replicating to %s",
-                                       replicatorName.c_str(),
-                                       outgoingBandwidth,
-                                       frameFillWarning,
-                                       frameFill,
-                                       replicatorLinkName.c_str()));
+                           replicatorName.c_str(),
+                           outgoingBandwidth,
+                           frameFillWarning,
+                           frameFill,
+                           replicatorLinkName.c_str()));
 
         // Set last notification time
         mLastFrameFillWarningNotificationTime = now;

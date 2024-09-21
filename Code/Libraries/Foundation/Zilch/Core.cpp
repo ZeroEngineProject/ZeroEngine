@@ -1700,10 +1700,10 @@ void StringFormatC(Call& call, ExceptionReport& report)
                     report,
                     String::Format("When using * for %s an Integer must be provided before the argument, instead we "
                                    "found '%s' of type '%s' for the '%s' format specifier.",
-                                                     starType,
-                                                     argument.ToString().c_str(),
-                                                     argumentType->ToString().c_str(),
-                                                     formatSpecifierRange.Data()));
+                                   starType,
+                                   argument.ToString().c_str(),
+                                   argumentType->ToString().c_str(),
+                                   formatSpecifierRange.Data()));
                 return;
               }
 
@@ -1760,9 +1760,9 @@ void StringFormatC(Call& call, ExceptionReport& report)
                   report,
                   String::Format(
                       "The format specifier '%s' requires an integral or real type, instead we got '%s' of type '%s'.",
-                                                          formatSpecifierRange.Data(),
-                                                          argument.ToString().c_str(),
-                                                          argumentType->ToString().c_str()));
+                      formatSpecifierRange.Data(),
+                      argument.ToString().c_str(),
+                      argumentType->ToString().c_str()));
 
             // Print the value out and store it in the builder (this can throw an exception)
             FormatCPrint(state,
@@ -1800,9 +1800,9 @@ void StringFormatC(Call& call, ExceptionReport& report)
                   report,
                   String::Format(
                       "The format specifier '%s' requires an integral or real type, instead we got '%s' of type '%s'.",
-                                                          formatSpecifierRange.Data(),
-                                                          argument.ToString().c_str(),
-                                                          argumentType->ToString().c_str()));
+                      formatSpecifierRange.Data(),
+                      argument.ToString().c_str(),
+                      argumentType->ToString().c_str()));
 
             // Print the value out and store it in the builder (this can throw an exception)
             FormatCPrint(state,
@@ -4585,13 +4585,13 @@ void Core::SetupBindingMath(LibraryBuilder& builder)
                         "The transcendental function arc-tangent. The return type is in radians.");
     ZilchBindBasicTwoParamSplat(
         builder,
-                                math,
-                                Real,
-                                realType,
-                                "ATan2",
-                                Math::ArcTan2,
-                                boundType,
-                                TwoParameters(boundType, "y", "x"),
+        math,
+        Real,
+        realType,
+        "ATan2",
+        Math::ArcTan2,
+        boundType,
+        TwoParameters(boundType, "y", "x"),
         "Performs the arc-tangent using the signs of x and y to determine what quadrant the angle lies in. Returns a "
         "value in the range of [-pi, pi]. The return type is in radians.");
     ZilchBindBasicSplat(
@@ -4701,13 +4701,13 @@ void Core::SetupBindingMath(LibraryBuilder& builder)
 
     ZilchBindBasicTwoParamSplatWithError(
         builder,
-                                         math,
-                                         Real,
-                                         realType,
-                                         "FMod",
-                                         Math::SafeFMod,
-                                         boundType,
-                                         TwoParameters(boundType, "numerator", "denominator"),
+        math,
+        Real,
+        realType,
+        "FMod",
+        Math::SafeFMod,
+        boundType,
+        TwoParameters(boundType, "numerator", "denominator"),
         "Returns the floating-point remainder of numerator/denominator (rounded towards zero).",
         "Fmod(%s, %s) is invalid because the denominator would produce a zero division");
     ZilchBindBasicSplat(builder,
@@ -4729,8 +4729,8 @@ void Core::SetupBindingMath(LibraryBuilder& builder)
         FunctionOptions::Static);
     ZilchSetUserDataAndDescription(
         f,
-                                   boundType,
-                                   realType,
+        boundType,
+        realType,
         "Linearly interpolates from start to end by the fraction t. T of 0 is start and t of 1 is end.");
     // Add another version for lerp that is always of real type
     if (boundType != realType)
@@ -4744,8 +4744,8 @@ void Core::SetupBindingMath(LibraryBuilder& builder)
           FunctionOptions::Static);
       ZilchSetUserDataAndDescription(
           f,
-                                     boundType,
-                                     realType,
+          boundType,
+          realType,
           "Linearly interpolates from start to end by the fraction t. T of 0 is start and t of 1 is end.");
     }
 
@@ -4800,8 +4800,8 @@ void Core::SetupBindingMath(LibraryBuilder& builder)
                                  FunctionOptions::Static);
     ZilchSetUserDataAndDescription(
         f,
-                                   boundType,
-                                   realType,
+        boundType,
+        realType,
         "Returns the integer value closest to value. The place represents where in the number we want to perform "
         "rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
     f = builder.AddBoundFunction(
@@ -4813,8 +4813,8 @@ void Core::SetupBindingMath(LibraryBuilder& builder)
         FunctionOptions::Static);
     ZilchSetUserDataAndDescription(
         f,
-                                   boundType,
-                                   realType,
+        boundType,
+        realType,
         "Returns the integer value closest to value. The place represents where in the number we want to perform "
         "rounding (0 is the 1s place, 1 is the 10s place, -1 is the tenths place, etc).");
 
@@ -4873,8 +4873,8 @@ void Core::SetupBindingMath(LibraryBuilder& builder)
         FunctionOptions::Static);
     ZilchSetUserDataAndDescription(
         f,
-                                   boundType,
-                                   realType,
+        boundType,
+        realType,
         "Returns a smooth Hermite interpolation between 0 and 1 if x is in-between min and max.");
     // Add another version for smoothstep that is always of real type
     if (boundType != realType)
@@ -4888,8 +4888,8 @@ void Core::SetupBindingMath(LibraryBuilder& builder)
           FunctionOptions::Static);
       ZilchSetUserDataAndDescription(
           f,
-                                     boundType,
-                                     realType,
+          boundType,
+          realType,
           "Returns a smooth Hermite interpolation between 0 and 1 if t is in-between min and max.");
     }
 
@@ -4966,8 +4966,8 @@ void Core::SetupBindingMath(LibraryBuilder& builder)
                                  FunctionOptions::Static);
     ZilchSetUserDataAndDescription(
         f,
-                                   boundType,
-                                   realType,
+        boundType,
+        realType,
         "Rounds value towards zero. The place represents where in the number we want to perform rounding (0 is the 1s "
         "place, 1 is the 10s place, -1 is the tenths place, etc).");
     f = builder.AddBoundFunction(
@@ -4979,8 +4979,8 @@ void Core::SetupBindingMath(LibraryBuilder& builder)
         FunctionOptions::Static);
     ZilchSetUserDataAndDescription(
         f,
-                                   boundType,
-                                   realType,
+        boundType,
+        realType,
         "Rounds value towards zero. The place represents where in the number we want to perform rounding (0 is the 1s "
         "place, 1 is the 10s place, -1 is the tenths place, etc).");
 

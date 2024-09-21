@@ -35,11 +35,11 @@ DeclareEnum2(DataVersion,
 
 const cstr cPolymorphicSerializationError =
     "Polymorphic serialization not "
-                                            "supported on this serializer. When using polymorphic serialization "
-                                            "you must separate saving and loading. When saving use Start Polymorphic / "
+    "supported on this serializer. When using polymorphic serialization "
+    "you must separate saving and loading. When saving use Start Polymorphic / "
     "End Polymorphic. When reading you must use Get Polymorphic, Create the object "
     "with the type specified in the polymorphic node, serialize the object and then "
-                                            "call End Polymorphic.";
+    "call End Polymorphic.";
 
 DeclareBitField4(PolymorphicFlags,
                  // This node was inherited from another data file

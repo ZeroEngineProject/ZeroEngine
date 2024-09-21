@@ -203,13 +203,13 @@ public:
                                      bool setLastValues = true);
 
   /// Data
-  CreateContext mCreateContext;              /// Create context
-  ReplicaType mReplicaType;                  /// Replica type
-  Replicator* mReplicator;                   /// Operating replicator
-  ReplicaId mReplicaId;                      /// Replica ID
-  EmplaceContext mEmplaceContext;            /// Emplace context
-  EmplaceId mEmplaceId;                      /// Emplace ID
-  bool mIsCloned;                            /// 'Is cloned?' flag
+  CreateContext mCreateContext;    /// Create context
+  ReplicaType mReplicaType;        /// Replica type
+  Replicator* mReplicator;         /// Operating replicator
+  ReplicaId mReplicaId;            /// Replica ID
+  EmplaceContext mEmplaceContext;  /// Emplace context
+  EmplaceId mEmplaceId;            /// Emplace ID
+  bool mIsCloned;                  /// 'Is cloned?' flag
   TimeMs mInitializationTimestamp; /// Timestamp indicating when this replica was initialized
   TimeMs mLastChangeTimestamp;     /// Timestamp indicating when this replica was last changed (on any replica channel)
   TimeMs mUninitializationTimestamp;         /// Timestamp indicating when this replica was uninitialized

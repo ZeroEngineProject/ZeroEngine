@@ -1652,7 +1652,7 @@ SocketAddress QueryRemoteSocketAddress(Status& status, const Socket& socket)
   SOCKET_ADDRESS_STORAGE* sockAddrStorage = (SOCKET_ADDRESS_STORAGE*)address.mPrivateData;
   socklen_t sockAddrLength = sizeof(SOCKET_ADDRESS_STORAGE);
   if (getpeername(CAST_HANDLE_TO_SOCKET(socket.mHandle), (SOCKET_ADDRESS_TYPE*)sockAddrStorage, &sockAddrLength) ==
-                  SOCKET_ERROR) // Unable?
+      SOCKET_ERROR) // Unable?
   {
     FailOnLastError(status);
     return SocketAddress();

@@ -165,7 +165,7 @@ void SetNetObjectParentProperty(const Variant& value, Variant& propertyData)
             "Unable To Set NetObject Parent",
             String::Format(
                 "There was an error setting the parent of NetObject '%s' - Parent NetObject does not exist locally!",
-                                       owner->GetDescription().c_str()));
+                owner->GetDescription().c_str()));
       }
       return;
     }

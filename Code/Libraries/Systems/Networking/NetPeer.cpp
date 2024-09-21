@@ -721,9 +721,9 @@ bool NetPeer::Open(Role::Enum role, uint port, uint retries)
     DoNotifyWarning(
         "Error Opening NetPeer",
         String::Format("Unable to open %s NetPeer socket on port %u with %u retries - Must specify a valid role",
-                                   Role::Names[role],
-                                   port,
-                                   retries));
+                       Role::Names[role],
+                       port,
+                       retries));
 
     // Allow net peer open to get called again (we're done opening)
     mAlreadyOpening = false;
@@ -1677,9 +1677,9 @@ void NetPeer::AddUserInternal(Cog* cog)
       DoNotifyWarning(
           "Illegal NetUser Emplacement Attempted",
           String::Format("A NetUser '%s' was illegally emplaced (not spawned as part of a user add request handshake)."
-                                     " NetUser emplacement is currently unsupported."
+                         " NetUser emplacement is currently unsupported."
                          " Try requesting a NetUser by calling AddUser on your NetPeer instead.",
-                                     cog->GetDescription().c_str()));
+                         cog->GetDescription().c_str()));
 
       // Remove this net object from it's family tree (if it hasn't been removed already)
       RemoveNetObjectFromFamilyTree(this);
@@ -3027,7 +3027,7 @@ bool NetPeer::SpawnFamilyTree(FamilyTreeId familyTreeId, const Route& route)
     DoNotifyWarning(
         "Unable To Spawn NetObject Family Tree",
         String::Format("There was an error spawning the NetObject Family Tree originating from Ancestor '%s'",
-                                   familyTree->GetAncestorDisplayName().c_str()));
+                       familyTree->GetAncestorDisplayName().c_str()));
   return result;
 }
 bool NetPeer::CloneFamilyTree(FamilyTreeId familyTreeId, const Route& route)
@@ -3054,7 +3054,7 @@ bool NetPeer::CloneFamilyTree(FamilyTreeId familyTreeId, const Route& route)
     DoNotifyWarning(
         "Unable To Clone NetObject Family Tree",
         String::Format("There was an error cloning the NetObject Family Tree originating from Ancestor '%s'",
-                                   familyTree->GetAncestorDisplayName().c_str()));
+                       familyTree->GetAncestorDisplayName().c_str()));
   return result;
 }
 
@@ -3304,8 +3304,8 @@ bool NetPeer::CloneNetLevel(Space* space, bool isLevelTransition, NetPeerId netP
     DoNotifyWarning(
         "Error Cloning Level",
         String::Format("There was an error cloning one or more NetObjects in the Level '%s' in NetSpace '%s'",
-                                   levelResourceId.c_str(),
-                                   space->GetDescription().c_str()));
+                       levelResourceId.c_str(),
+                       space->GetDescription().c_str()));
   }
 
   //
@@ -4083,9 +4083,9 @@ bool NetPeer::DeserializeReplicas(const ReplicaStream& replicaStream, ReplicaArr
               String emplaceContextString = emplaceContext.GetOrError<String>();
               DoNotifyWarning(
                   "Error Deserializing Emplaced NetObject",
-                              String::Format("The EmplaceContext '%s' appears to be mismatched -"
+                  String::Format("The EmplaceContext '%s' appears to be mismatched -"
                                  " Please verify All peers emplace objects in the exact same way inside this context.",
-                                             emplaceContextString.c_str()));
+                                 emplaceContextString.c_str()));
               return false;
             }
 

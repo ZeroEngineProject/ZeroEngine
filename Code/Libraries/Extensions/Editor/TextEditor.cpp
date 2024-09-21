@@ -513,7 +513,7 @@ void TextEditor::SetLexer(uint lexer)
         "null operator out override package params partial positional private protected public "
         "readonly ref register require return sealed sends set signed sizeof stackalloc static "
         "struct switch throw true try typedef typeid typename typeof type unchecked unsafe unsigned "
-                                 "using var virtual volatile where while yield timeout scope debug";
+        "using var virtual volatile where while yield timeout scope debug";
 
     const char zilchSpecial[] = "this value event";
 
@@ -946,15 +946,15 @@ void TextEditor::SetColorScheme(ColorScheme& scheme)
   case Lexer::Console:
   case Lexer::Text:
   {
-    SetAStyle(SCE_P_DEFAULT, ToByteColor(scheme.Default), background); // Default text
+    SetAStyle(SCE_P_DEFAULT, ToByteColor(scheme.Default), background);    // Default text
     SetAStyle(SCE_P_IDENTIFIER, ToByteColor(scheme.Default), background); // Identifiers: self.Space
 
     SetAStyle(SCE_P_COMMENTBLOCK, ToByteColor(scheme.Default), background); // Block comments: /* */, """
     SetAStyle(SCE_P_COMMENTLINE, ToByteColor(scheme.Default), background);  // Line comments: #, //
     SetAStyle(SCE_P_TRIPLE, ToByteColor(scheme.Default), background);       // Triple comment
     SetAStyle(SCE_P_TRIPLEDOUBLE, ToByteColor(scheme.Default), background); // Triple comment
-    SetAStyle(SCE_P_STRINGEOL, ToByteColor(scheme.Default), background); // ?
-    SetAStyle(SCE_P_DECORATOR, ToByteColor(scheme.Default), background); // ?
+    SetAStyle(SCE_P_STRINGEOL, ToByteColor(scheme.Default), background);    // ?
+    SetAStyle(SCE_P_DECORATOR, ToByteColor(scheme.Default), background);    // ?
 
     SetAStyle(SCE_P_NUMBER, ToByteColor(scheme.Number), background);        // Number literals: 5, 3.9
     SetAStyle(SCE_P_CHARACTER, ToByteColor(scheme.Default), background);    // Character literals: 'c'
@@ -978,25 +978,25 @@ void TextEditor::SetColorScheme(ColorScheme& scheme)
 
   case Lexer::Python:
   {
-    SetAStyle(SCE_P_DEFAULT, ToByteColor(scheme.Default), background); // Default text
+    SetAStyle(SCE_P_DEFAULT, ToByteColor(scheme.Default), background);    // Default text
     SetAStyle(SCE_P_IDENTIFIER, ToByteColor(scheme.Default), background); // Identifiers: self.Space
 
     SetAStyle(SCE_P_COMMENTBLOCK, ToByteColor(scheme.Comment), background); // Block comments: /* */, """
     SetAStyle(SCE_P_COMMENTLINE, ToByteColor(scheme.Comment), background);  // Line comments: #, //
     SetAStyle(SCE_P_TRIPLE, ToByteColor(scheme.Comment), background);       // Triple comment
     SetAStyle(SCE_P_TRIPLEDOUBLE, ToByteColor(scheme.Comment), background); // Triple comment
-    SetAStyle(SCE_P_STRINGEOL, ToByteColor(scheme.Comment), background); // ?
-    SetAStyle(SCE_P_DECORATOR, ToByteColor(scheme.Comment), background); // ?
+    SetAStyle(SCE_P_STRINGEOL, ToByteColor(scheme.Comment), background);    // ?
+    SetAStyle(SCE_P_DECORATOR, ToByteColor(scheme.Comment), background);    // ?
 
-    SetAStyle(SCE_P_NUMBER, ToByteColor(scheme.Number), background); // Number literals: 5, 3.9
+    SetAStyle(SCE_P_NUMBER, ToByteColor(scheme.Number), background);           // Number literals: 5, 3.9
     SetAStyle(SCE_P_CHARACTER, ToByteColor(scheme.StringLiteral), background); // Character literals: 'c'
-    SetAStyle(SCE_P_STRING, ToByteColor(scheme.StringLiteral), background); // String literals: "hello world"
+    SetAStyle(SCE_P_STRING, ToByteColor(scheme.StringLiteral), background);    // String literals: "hello world"
 
-    SetAStyle(SCE_P_CLASSNAME, ToByteColor(scheme.ClassName), background); // Class names: RigidBody, Model
+    SetAStyle(SCE_P_CLASSNAME, ToByteColor(scheme.ClassName), background);  // Class names: RigidBody, Model
     SetAStyle(SCE_P_DEFNAME, ToByteColor(scheme.FunctionName), background); // Function names: OnLogicUpdate
-    SetAStyle(SCE_P_OPERATOR, ToByteColor(scheme.Operator), background); // Operators: () += .
+    SetAStyle(SCE_P_OPERATOR, ToByteColor(scheme.Operator), background);    // Operators: () += .
 
-    SetAStyle(SCE_P_WORD, ToByteColor(scheme.Keyword), background); // Keywords: class, if
+    SetAStyle(SCE_P_WORD, ToByteColor(scheme.Keyword), background);       // Keywords: class, if
     SetAStyle(SCE_P_WORD2, ToByteColor(scheme.SpecialWords), background); // Context keywords: self, this, value
 
     SetAStyle(SCE_ERROR, ToByteColor(scheme.Error), background); // Errors / exceptions
@@ -1019,13 +1019,13 @@ void TextEditor::SetCommonLexerStyles(ColorScheme& scheme)
 {
   uint background = ToByteColor(scheme.Background);
 
-  SetAStyle(SCE_C_DEFAULT, ToByteColor(scheme.Default), background); // Default text
+  SetAStyle(SCE_C_DEFAULT, ToByteColor(scheme.Default), background);    // Default text
   SetAStyle(SCE_C_IDENTIFIER, ToByteColor(scheme.Default), background); // Identifiers: self.Space
 
-  SetAStyle(SCE_C_COMMENT, ToByteColor(scheme.Comment), background); // Block comments: /* */, """
-  SetAStyle(SCE_C_COMMENTDOC, ToByteColor(scheme.Comment), background); // Block comments: /* */, """
-  SetAStyle(SCE_C_COMMENTLINE, ToByteColor(scheme.Comment), background); // Line comments: #, //
-  SetAStyle(SCE_C_COMMENTLINEDOC, ToByteColor(scheme.Comment), background);                                                      // Line comments: #, //
+  SetAStyle(SCE_C_COMMENT, ToByteColor(scheme.Comment), background);          // Block comments: /* */, """
+  SetAStyle(SCE_C_COMMENTDOC, ToByteColor(scheme.Comment), background);       // Block comments: /* */, """
+  SetAStyle(SCE_C_COMMENTLINE, ToByteColor(scheme.Comment), background);      // Line comments: #, //
+  SetAStyle(SCE_C_COMMENTLINEDOC, ToByteColor(scheme.Comment), background);   // Line comments: #, //
   SetAStyle(SCE_C_UUID, ToByteColor(scheme.Comment), background);             // ?
   SetAStyle(SCE_C_STRINGEOL, ToByteColor(scheme.Comment), background);        // ?
   SetAStyle(SCE_C_VERBATIM, ToByteColor(scheme.Comment), background);         // ?
@@ -1033,20 +1033,20 @@ void TextEditor::SetCommonLexerStyles(ColorScheme& scheme)
   SetAStyle(SCE_C_HASHQUOTEDSTRING, ToByteColor(scheme.Comment), background); // ?
   SetAStyle(SCE_C_REGEX, ToByteColor(scheme.Comment), background);            // ?
 
-  SetAStyle(SCE_C_NUMBER, ToByteColor(scheme.Number), background); // Number literals: 5, 3.9
+  SetAStyle(SCE_C_NUMBER, ToByteColor(scheme.Number), background);           // Number literals: 5, 3.9
   SetAStyle(SCE_C_CHARACTER, ToByteColor(scheme.StringLiteral), background); // Character literals: 'c'
-  SetAStyle(SCE_C_STRING, ToByteColor(scheme.StringLiteral), background); // String literals: "hello world"
+  SetAStyle(SCE_C_STRING, ToByteColor(scheme.StringLiteral), background);    // String literals: "hello world"
   SetAStyle(SCE_C_STRINGRAW, ToByteColor(scheme.StringLiteral), background); // String literals: "hello world"
 
   SetAStyle(SCE_C_GLOBALCLASS, ToByteColor(scheme.ClassName), background); // Class names: RigidBody, Model
-  SetAStyle(SCE_C_OPERATOR, ToByteColor(scheme.Operator), background); // Operators: () += .
+  SetAStyle(SCE_C_OPERATOR, ToByteColor(scheme.Operator), background);     // Operators: () += .
 
-  SetAStyle(SCE_C_WORD, ToByteColor(scheme.Keyword), background); // Keywords: class, if
+  SetAStyle(SCE_C_WORD, ToByteColor(scheme.Keyword), background);              // Keywords: class, if
   SetAStyle(SCE_C_COMMENTDOCKEYWORD, ToByteColor(scheme.Keyword), background); // Documentation keywords
-  SetAStyle(SCE_C_PREPROCESSOR, ToByteColor(scheme.Directive), background); // Preprocessor directives
-  SetAStyle(SCE_C_WORD2, ToByteColor(scheme.SpecialWords), background); // Context keywords: self, this, value
+  SetAStyle(SCE_C_PREPROCESSOR, ToByteColor(scheme.Directive), background);    // Preprocessor directives
+  SetAStyle(SCE_C_WORD2, ToByteColor(scheme.SpecialWords), background);        // Context keywords: self, this, value
 
-  SetAStyle(SCE_ERROR, ToByteColor(scheme.Error), background); // Errors / exceptions
+  SetAStyle(SCE_ERROR, ToByteColor(scheme.Error), background);                    // Errors / exceptions
   SetAStyle(SCE_C_COMMENTDOCKEYWORDERROR, ToByteColor(scheme.Error), background); // Documentation errors
 }
 

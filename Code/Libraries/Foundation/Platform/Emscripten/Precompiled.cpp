@@ -139,7 +139,7 @@ extern "C" EMSCRIPTEN_KEEPALIVE char* EmscriptenOnCopy(int cut)
 
 extern "C" EMSCRIPTEN_KEEPALIVE void EmscriptenFileDropHandler(char* fileBuffer)
 {
-  // We're relying on the Emscripten instance only having one window with GL setup. 
+  // We're relying on the Emscripten instance only having one window with GL setup.
   // This could be changed to get a saved id somewhere for the primary window.
   SDL_Window* sdlWindow = gSdlMainWindow;
   if (!sdlWindow)

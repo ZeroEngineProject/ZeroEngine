@@ -113,7 +113,7 @@ void ZilchPluginBuilder::Generate(ContentInitializer& initializer)
 void ZilchPluginBuilder::BuildContent(BuildOptions& buildOptions)
 {
   // This must run before the template early out so that we output the data file
-  // to the content output directory and the template plugin stops thinking it needs 
+  // to the content output directory and the template plugin stops thinking it needs
   // to build every time we run Zero.
   DataBuilder::BuildContent(buildOptions);
 

@@ -342,12 +342,12 @@ public:
   NetPeerSentConnectResponse(GameSession* gameSession);
 
   // Data
-  NetPeerId mTheirNetPeerId;                 ///< Their net peer ID (set only if accepted).
-  IpAddress mTheirIpAddress;                 ///< Their IP address (as seen from our perspective).
-  EventBundle mTheirRequestBundle;           ///< Their bundled request event data.
+  NetPeerId mTheirNetPeerId;             ///< Their net peer ID (set only if accepted).
+  IpAddress mTheirIpAddress;             ///< Their IP address (as seen from our perspective).
+  EventBundle mTheirRequestBundle;       ///< Their bundled request event data.
   uint mTheirPendingUserAddRequestCount; ///< Their pending user add requests following this connect request (within the
                                          ///< same frame).
-  IpAddress mOurIpAddress;                   ///< Our IP address (as seen from their perspective).
+  IpAddress mOurIpAddress;               ///< Our IP address (as seen from their perspective).
   ConnectResponse::Enum mOurConnectResponse; ///< Our connect response.
   EventBundle mOurResponseBundle;            ///< Our bundled response event data.
 };
@@ -366,11 +366,11 @@ public:
   NetPeerReceivedConnectResponse(GameSession* gameSession);
 
   // Data
-  IpAddress mTheirIpAddress;                   ///< Their IP address (as seen from our perspective).
-  EventBundle mOurRequestBundle;               ///< Our bundled request event data.
+  IpAddress mTheirIpAddress;           ///< Their IP address (as seen from our perspective).
+  EventBundle mOurRequestBundle;       ///< Our bundled request event data.
   uint mOurPendingUserAddRequestCount; ///< Our pending user add requests following this connect request (within the
                                        ///< same frame).
-  IpAddress mOurIpAddress;                     ///< Our IP address (as seen from their perspective).
+  IpAddress mOurIpAddress;             ///< Our IP address (as seen from their perspective).
   ConnectResponse::Enum mTheirConnectResponse; ///< Their connect response.
   EventBundle mTheirResponseBundle;            ///< Their bundled response event data.
   NetPeerId mOurNetPeerId;                     ///< Our net peer ID (set only if accepted).
