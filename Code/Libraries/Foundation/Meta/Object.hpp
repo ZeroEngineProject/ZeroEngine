@@ -15,7 +15,7 @@ public:
 
   OverloadedNew();
 
-  Object(){};
+  Object() {};
   virtual ~Object();
 
   // Events

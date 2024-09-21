@@ -11,7 +11,7 @@ class EditorPropertyExtension : public MetaAttribute
 public:
   ZilchDeclareType(EditorPropertyExtension, TypeCopyMode::ReferenceType);
 
-  virtual ~EditorPropertyExtension(){};
+  virtual ~EditorPropertyExtension() {};
 };
 
 // Indexed String Array
@@ -64,10 +64,9 @@ public:
 };
 
 // EditorRotationBasis
-/// Editor for creating a gizmo to modify a basis. The int is occasionally used
-/// to denote what "property" is being modified. Currently it's not easy to set
-/// just a property as several properties need to be sampled (see
-/// RevoluteBasisGizmo).
+/// Editor for creating a gizmo to modify a basis. The int is occasionally used to denote what
+/// "property" is being modified. Currently it's not easy to set just a property as several
+/// properties need to be sampled (see RevoluteBasisGizmo).
 class EditorRotationBasis : public EditorPropertyExtension
 {
 public:
@@ -97,9 +96,8 @@ public:
                      bool searchPreview = true);
   MetaEditorResource(SearchFilter filter);
 
-  /// Custom filter for the Resource search for this property. Return false to
-  /// not show the result. Set the status to failed to make it not selectable,
-  /// but still shown.
+  /// Custom filter for the Resource search for this property. Return false to not show the result.
+  /// Set the status to failed to make it not selectable, but still shown.
   virtual bool FilterPropertySearchResult(HandleParam object, Property* property, HandleParam result, Status& status);
 
   /// If not empty only match resources with same FilterTag
@@ -109,9 +107,8 @@ public:
   /// Are null resources allowed?
   bool AllowNone;
   bool ForceCompact;
-  /// If true, when mousing over a Resource in the search view for this
-  /// property, it will temporarily set the property to the current Resource as
-  /// to preview the outcome.
+  /// If true, when mousing over a Resource in the search view for this property, it will
+  /// temporarily set the property to the current Resource as to preview the outcome.
   bool SearchPreview;
   SearchFilter Filter;
 };
@@ -233,9 +230,8 @@ public:
   String mName;
 };
 
-// Meta Custom Ui
-/// Used for adding custom Ui to the property grid. This is currently only for
-/// the old Ui and not exposed to script.
+/// Used for adding custom Ui to the property grid. This is currently only for the old Ui and not
+/// exposed to script.
 class MetaCustomUi : public MetaAttribute
 {
 public:

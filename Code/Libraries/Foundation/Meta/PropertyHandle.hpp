@@ -11,9 +11,8 @@ DeclareEnum3(PropertyPathType, Component, Property, Index);
 
 // PropertyPath always assumed that a PropertyPathType::Property is at
 // the end of the path. This is not the case for some arrays. In the case
-// of Array<float>, PropertyPathType::Index will be at the end. This works for
-// now because all of our arrays require having a class/struct in them (in the
-// property grid).
+// of Array<float>, PropertyPathType::Index will be at the end. This works for now
+// because all of our arrays require having a class/struct in them (in the property grid).
 
 /// We used to reference properties with a MetaProperty and a handle to the
 /// object instance. The problem that came up was with properties that have
@@ -24,9 +23,9 @@ DeclareEnum3(PropertyPathType, Component, Property, Index);
 /// Not all properties can be looked up with a MetaHandle and a MetaProperty.
 ///
 /// Example:
-/// Take for example the 'Camera' CogPath property on the CameraViewport
-/// Component. The full path would be "CameraViewport.Camera.Required" given a
-/// Cog as the path starting point.
+/// Take for example the 'Camera' CogPath property on the CameraViewport Component.
+/// The full path would be "CameraViewport.Camera.Required" given a Cog as
+/// the path starting point.
 ///
 /// The reason for this is because we cannot get a safe handle to the CogPath
 /// object with the 'Required' MetaProperty. The root most object we can get
@@ -101,9 +100,7 @@ public:
     {
     }
     Entry(StringParam typeName, PropertyPathType::Enum type, uint index = uint(-1)) :
-        mName(typeName),
-        mType(type),
-        mIndex(index)
+        mName(typeName), mType(type), mIndex(index)
     {
     }
 

@@ -143,8 +143,7 @@ void MetaOperations::NotifyPropertyModified(
   Handle& leafVariant = instances.Back();
   ReturnIf(leafVariant.IsNull(), , "Instances should always be valid if in undo/redo.");
 
-  // Make sure the property path is always relative to the current object we're
-  // sending an event on
+  // Make sure the property path is always relative to the current object we're sending an event on
   PropertyPath localPath = property;
   forRange (Handle& localObject, instances.All())
   {
@@ -219,10 +218,7 @@ ZilchDefineType(PropertyEvent, builder, type)
 }
 
 PropertyEvent::PropertyEvent(HandleParam object, PropertyPathParam property, AnyParam oldValue, AnyParam newValue) :
-    mObject(object),
-    mProperty(property),
-    mOldValue(oldValue),
-    mNewValue(newValue)
+    mObject(object), mProperty(property), mOldValue(oldValue), mNewValue(newValue)
 {
 }
 
@@ -247,8 +243,7 @@ void BindEventSent(LibraryBuilder& builder, BoundType* boundType, StringParam ev
   ErrorIf(eventType == nullptr, "Event type must be provided");
 
   ErrorIf(!eventType->IsA(ZilchTypeId(Event)),
-          "Attempting to bind '%s' as an event that isn't an Event type: "
-          "BindBase(Event)",
+          "Attempting to bind '%s' as an event that isn't an Event type: BindBase(Event)",
           eventType->Name.c_str());
 
   builder.AddSendsEvent(boundType, eventName, eventType);

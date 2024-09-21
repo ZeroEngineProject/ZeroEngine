@@ -53,8 +53,7 @@ DeclareBitField3(ConnectionFlags, Invalid, DoNotDisconnect, Script);
 
 /// Makes sure a given event string matches a given event type.
 /// This should ALWAYS be called before attaching to a receiver and a dispatcher
-/// If it returns false, meaning it did not validate, it should not be attached
-/// to either!
+/// If it returns false, meaning it did not validate, it should not be attached to either!
 bool ValidateEvent(StringParam eventId, BoundType* typeSent);
 
 /// A event connection between two objects.
@@ -73,18 +72,18 @@ public:
 
   /// Invoke the event
   virtual void Invoke(Event* event) = 0;
-  virtual void DebugDraw(){};
+  virtual void DebugDraw()
+  {
+  }
 
   virtual DataBlock GetFunctionPointer() = 0;
   size_t Hash();
   bool operator==(EventConnection& lhs);
 
-  /// A helper that connects this connection to both receiver (tests for
-  /// validation too)
+  /// A helper that connects this connection to both receiver (tests for validation too)
   void ConnectToReceiverAndDispatcher(StringParam eventId, EventReceiver* receiver, EventDispatcher* dispatcher);
 
-  /// Removes this specific event connection from the dispatcher it is attached
-  /// to
+  /// Removes this specific event connection from the dispatcher it is attached to
   void DisconnectSelf();
 
   /// The ThisObject is the object listening to the event
@@ -104,8 +103,7 @@ public:
   EventDispatcher* mDispatcher;
   /// The type that the event is registered for (the parameter type)
   BoundType* EventType;
-  /// Name identifier of the event, used by receiver since its connections
-  /// aren't mapped
+  /// Name identifier of the event, used by receiver since its connections aren't mapped
   String mEventId;
 
   // Keeps handles alive until a safe time for destruction.
@@ -283,13 +281,11 @@ Connect(targetType* dispatcherObject, StringParam eventId, classType* receiver, 
     return;
   }
 
-  // For safety, we store the event's type on the connection so we can validate
-  // it
+  // For safety, we store the event's type on the connection so we can validate it
   BoundType* type = ZilchTypeId(eventType);
   connection->EventType = type;
   ErrorIf(type->IsInitialized() == false,
-          "The event type was never initialized using ZilchDeclareType / "
-          "ZilchDefineType / ZilchInitializeType");
+          "The event type was never initialized using ZilchDeclareType / ZilchDefineType / ZilchInitializeType");
 
   connection->ConnectToReceiverAndDispatcher(eventId, receiver->GetReceiver(), dispatcher);
 }

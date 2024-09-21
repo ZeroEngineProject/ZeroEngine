@@ -77,8 +77,7 @@ void MetaDatabase::AddLibrary(LibraryParam library, bool sendModifiedEvent)
     {
       String eventName = sendsEvents->Name;
 
-      // If the event already exists in the database skip it (can have duplicate
-      // sends event entries)
+      // If the event already exists in the database skip it (can have duplicate sends event entries)
       if (mEventMap.ContainsKey(eventName))
         continue;
 
@@ -127,8 +126,7 @@ void MetaDatabase::RemoveLibrary(LibraryParam library)
     {
       String eventName = sendsEvents->Name;
 
-      // Only remove events still present (can have duplicate sends event
-      // entries)
+      // Only remove events still present (can have duplicate sends event entries)
       if (mEventMap.ContainsKey(eventName))
         mEventMap.Erase(eventName);
     }

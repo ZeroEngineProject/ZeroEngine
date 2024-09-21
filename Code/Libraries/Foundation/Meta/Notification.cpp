@@ -61,8 +61,7 @@ void DefaultDoNotify(
 void IgnoreDoNotify(
     StringParam title, StringParam message, StringParam icon, NotifyType::Enum type, NotifyException::Enum exceptions)
 {
-  // We do nothing here, this is used to suppress notifications (such as when we
-  // use previews)
+  // We do nothing here, this is used to suppress notifications (such as when we use previews)
 }
 
 TemporaryDoNotifyOverride::TemporaryDoNotifyOverride(NotificationCallback callback)

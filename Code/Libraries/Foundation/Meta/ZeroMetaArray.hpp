@@ -22,7 +22,7 @@ public:
   uint Size(HandleParam instance) override
   {
     ArrayType& container = *instance.Get<ArrayType*>(GetOptions::AssertOnNull);
-    return container.Size();
+    return (uint)container.Size();
   }
 
   Any GetValue(HandleParam instance, uint index) override
@@ -40,10 +40,9 @@ public:
 
   bool EraseValue(HandleParam instance, AnyParam value) override
   {
-    // ArrayType& container =
-    // *instance.Get<ArrayType*>(GetOptions::AssertOnNull); ContainedType*
-    // element = value.Get<ContainedType*>(GetOptions::AssertOnNull); return
-    // container.EraseValue(*element);
+    // ArrayType& container = *instance.Get<ArrayType*>(GetOptions::AssertOnNull);
+    // ContainedType* element = value.Get<ContainedType*>(GetOptions::AssertOnNull);
+    // return container.EraseValue(*element);
     return false;
   }
 

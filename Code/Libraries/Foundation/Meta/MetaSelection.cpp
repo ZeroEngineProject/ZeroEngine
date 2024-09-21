@@ -17,9 +17,9 @@ ZilchDefineType(MetaSelection, builder, type)
 {
   ZilchBindMethod(Count);
   ZilchBindMethod(Empty);
-  ZilchFullBindMethod(builder, type, &MetaSelection::Clear, (void (MetaSelection::*)()), "Clear", ZilchNoNames);
+  ZilchFullBindMethod(builder, type, &MetaSelection::Clear, (void(MetaSelection::*)()), "Clear", ZilchNoNames);
   ZilchBindMethod(SelectOnly);
-  ZilchFullBindMethod(builder, type, &MetaSelection::Add, (void (MetaSelection::*)(HandleParam)), "Add", ZilchNoNames);
+  ZilchFullBindMethod(builder, type, &MetaSelection::Add, (void(MetaSelection::*)(HandleParam)), "Add", ZilchNoNames);
   ZilchBindMethod(Remove);
   ZilchBindMethod(Replace);
   ZilchBindMethod(Contains);
@@ -79,8 +79,7 @@ void MetaSelection::SetPrimary(HandleParam object)
 
 void MetaSelection::SelectOnly(HandleParam object)
 {
-  // We don't send events here because 'SetPrimaryObject' will send an event at
-  // the end
+  // We don't send events here because 'SetPrimaryObject' will send an event at the end
   Clear(SendsEvents::False);
   SetPrimary(object);
 }
@@ -171,7 +170,7 @@ void MetaSelection::Clear(SendsEvents::Enum sendsEvents)
 
 uint MetaSelection::Count()
 {
-  return mSelectedObjects.Size();
+  return (uint)mSelectedObjects.Size();
 }
 
 bool MetaSelection::Empty()

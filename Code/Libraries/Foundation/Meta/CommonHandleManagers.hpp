@@ -4,10 +4,9 @@
 namespace Zero
 {
 
-// These are commonly used handle types to fit most use cases. If your type
-// needs to derive from another type, you will have to declare meta for the
-// custom templated handle type. See below and in CommonHandleManagers.cpp for
-// examples.
+// These are commonly used handle types to fit most use cases. If your type needs to derive from
+// another type, you will have to declare meta for the custom templated handle type. See below
+// and in CommonHandleManagers.cpp for examples.
 
 // Basic handles
 typedef ReferenceCounted<EmptyClass> ReferenceCountedEmpty;

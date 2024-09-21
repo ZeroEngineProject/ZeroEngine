@@ -59,15 +59,13 @@ public:
   Array<LibraryRef> mLibraries;
   Array<LibraryRef> mNativeLibraries;
 
-  // There is a time where new libraries should be alive at the same time as old
-  // libraries that are being replaced During this time, we patch components
-  // with their new types. We must keep the old removed libraries until we're
-  // done fully patching. After we can call ClearRemovedLibraries to release the
-  // final reference count
+  // There is a time where new libraries should be alive at the same time as old libraries that are being replaced
+  // During this time, we patch components with their new types. We must keep the old removed libraries until
+  // we're done fully patching. After we can call ClearRemovedLibraries to release the final reference count
   Array<LibraryRef> mRemovedLibraries;
 
-  // Currently, this assumes all Composition types are native, therefor it's
-  // okay to store a direct pointer. Should maybe change this.
+  // Currently, this assumes all Composition types are native, therefor it's okay to store
+  // a direct pointer. Should maybe change this.
   Array<BoundType*> mCompositionTypes;
 };
 

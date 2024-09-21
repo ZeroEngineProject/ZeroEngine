@@ -14,8 +14,7 @@ void MetaLibraryExtensions::AddNativeExtensions(LibraryBuilder& builder)
 
 void MetaLibraryExtensions::AddNativeExtensions(LibraryBuilder& builder, BoundTypeMap& boundTypes)
 {
-  // Loop through any SendsEvents on every type in this library, and add to
-  // MetaDatabase
+  // Loop through any SendsEvents on every type in this library, and add to MetaDatabase
   forRange (BoundType* type, boundTypes.Values())
     ProcessComposition(builder, type);
 

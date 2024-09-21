@@ -151,8 +151,7 @@ public:
     SetRange mRange;
     type* mCurrent;
   };
-  /// Finds the first object in the selection that Contains the given component
-  /// type.
+  /// Finds the first object in the selection that Contains the given component type.
   template <typename CompositionType, typename ComponentType>
   ComponentType* FindInSelection()
   {
@@ -166,8 +165,7 @@ public:
       // If the object is valid...
       if (selected != nullptr)
       {
-        // If this object has the component type we're looking for then return
-        // it
+        // If this object has the component type we're looking for then return it
         ComponentType* component = selected->template has(ComponentType);
         if (component != nullptr)
           return component;

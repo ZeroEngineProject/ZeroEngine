@@ -47,10 +47,10 @@ Property* PropertyHandle::operator->() const
 
 Property* PropertyHandle::GetProperty() const
 {
-  // We don't want to search the base types because the owning type is the exact
-  // type that had this property. If we searched base types, the property could
-  // have been moved from our type to a base type, and it's now a different
-  // property. This Handle should not return that new property.
+  // We don't want to search the base types because the owning type is the exact type that had
+  // this property. If we searched base types, the property could have been moved from our type
+  // to a base type, and it's now a different property. This Handle should not return that new
+  // property.
   if (BoundType* owner = mOwner)
     return owner->FindProperty(mName, FindMemberOptions::DoNotIncludeBaseClasses);
   return nullptr;

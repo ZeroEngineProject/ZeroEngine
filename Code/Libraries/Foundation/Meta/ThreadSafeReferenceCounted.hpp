@@ -51,9 +51,9 @@ public:
     T::mLock.Lock();
     T* val = T::mLiveObjects.FindValue(data.mId, nullptr);
     T::mLock.Unlock();
-    // METAREFACTOR - This manager is currently expected to be used on the base
-    // class define below (ThreadSafeReferenceCounted) when getting the derived
-    // object, I do not believe this will thunk correctly if required.
+    // METAREFACTOR - This manager is currently expected to be used on the base class define below
+    // (ThreadSafeReferenceCounted) when getting the derived object, I do not believe this will thunk correctly if
+    // required.
     return (::byte*)val;
   }
 
@@ -128,9 +128,7 @@ public:
 #define ConstructThreadSafeReferenceCountedHandle()                                                                    \
   ErrorIf(ZilchVirtualTypeId(this)->HandleManager !=                                                                   \
               ZilchManagerId(ThreadSafeReferenceCountedHandleManager<ZilchSelf>),                                      \
-          "Set type->HandleManager = "                                                                                 \
-          "ZilchManagerId(ThreadSafeReferenceCountedHandleManager<ZilchSelf>; in "                                     \
-          "binding");                                                                                                  \
+          "Set type->HandleManager = ZilchManagerId(ThreadSafeReferenceCountedHandleManager<ZilchSelf>; in binding");  \
   mLock.Lock();                                                                                                        \
   mHandleId.mId = mCurrentId++;                                                                                        \
   mLiveObjects.Insert(mHandleId.mId, this);                                                                            \

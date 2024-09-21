@@ -169,10 +169,7 @@ AttributeExtension* AttributeExtensions::RegisterExtension(AttributeExtension* e
 
 // Attribute Extension
 AttributeExtension::AttributeExtension(StringParam name) :
-    mAttributeName(name),
-    mMustBeType(nullptr),
-    mAllowStatic(false),
-    mAllowMultiple(false)
+    mAttributeName(name), mMustBeType(nullptr), mAllowStatic(false), mAllowMultiple(false)
 {
 }
 
@@ -212,13 +209,12 @@ void AttributeExtension::Validate(Status& status, ReflectionObject* object, Attr
 
 void AttributeExtension::ValidateType(Status& status, ReflectionObject* object)
 {
-  // If the 'must be type' is null, this attribute can go on any class or
-  // property type
+  // If the 'must be type' is null, this attribute can go on any class or property type
   if (mMustBeType == nullptr)
     return;
 
-  // This will either be the class type or property type. It should never be
-  // null because mMustBeType should never be set for functions
+  // This will either be the class type or property type. It should never be null because
+  // mMustBeType should never be set for functions
   BoundType* boundType = Type::DynamicCast<BoundType*>(object->GetTypeOrNull());
 
   ReturnIf(boundType == nullptr, , "Type could not be validated");
@@ -301,9 +297,8 @@ Any Cast(AnyParam value, BoundType* expectedType)
   return Any();
 }
 
-// The first letter in property names must be capitalized, however attribute
-// parameters must be lower case. Convert to lower case before querying the
-// attribute for parameters
+// The first letter in property names must be capitalized, however attribute parameters must
+// be lower case. Convert to lower case before querying the attribute for parameters
 String PropertyToAttributeName(String name)
 {
   return BuildString(String(ToLower(name.Front())), name.SubString(name.Begin() + 1, name.End()));
@@ -326,8 +321,7 @@ void AppendMissingParametersError(String& currentMessage, BoundType* componentTy
   bool hitOptional = false;
   forRange (Property* expectedProperty, componentType->GetProperties())
   {
-    // Open optional parameters only once (all optional parameters are right
-    // next to each other)
+    // Open optional parameters only once (all optional parameters are right next to each other)
     if (expectedProperty->HasAttribute(PropertyAttributes::cOptional))
     {
       message.Append("[");
@@ -361,12 +355,11 @@ void AttributeExtension::ValidateParameters(Status& status, HandleParam componen
 {
   BoundType* componentType = component.StoredType;
 
-  uint parameterCount = attribute.Parameters.Size();
+  size_t parameterCount = attribute.Parameters.Size();
 
   // Attribute parameters must either all have names, or have no names
-  // We need to check how many are named so we know whether or not they're all
-  // named
-  uint namedParametersCount = 0;
+  // We need to check how many are named so we know whether or not they're all named
+  size_t namedParametersCount = 0;
   forRange (AttributeParameter& parameter, attribute.Parameters.All())
   {
     if (!parameter.Name.Empty())
@@ -380,7 +373,7 @@ void AttributeExtension::ValidateParameters(Status& status, HandleParam componen
     return;
   }
 
-  uint currentParameter = 0;
+  size_t currentParameter = 0;
   forRange (Property* property, componentType->GetProperties())
   {
     String name = PropertyToAttributeName(property->Name);
@@ -455,8 +448,7 @@ void AttributeExtension::ValidateParameters(Status& status, HandleParam componen
     }
   }
 
-  // If they specified a parameter we didn't process, they probably misspelled
-  // an optional parameter
+  // If they specified a parameter we didn't process, they probably misspelled an optional parameter
   if (currentParameter != parameterCount)
   {
     String message;

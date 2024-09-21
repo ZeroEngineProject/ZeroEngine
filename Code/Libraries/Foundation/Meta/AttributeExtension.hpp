@@ -22,12 +22,11 @@ class AttributeExtensions : public ExplicitSingleton<AttributeExtensions>
 public:
   ~AttributeExtensions();
 
-  /// Validates all attributes on the given type. If any are invalid, it will
-  /// raise an error on the given project. 'ignoreUnkownAttributes' was added
-  /// for processing attributes in fragment libraries. Fragments have a lot of
-  /// extra parameters that aren't registered here that we would otherwise throw
-  /// an unknown attribute error. If the systems were combined, we could remove
-  /// this extra flag.
+  /// Validates all attributes on the given type. If any are invalid, it will raise an error
+  /// on the given project. 'ignoreUnkownAttributes' was added for processing attributes in
+  /// fragment libraries. Fragments have a lot of extra parameters that aren't registered here that
+  /// we would otherwise throw an unknown attribute error. If the systems were combined, we could
+  /// remove this extra flag.
   void ProcessType(AttributeStatus& status, BoundType* type, bool ignoreUnkownAttributes = false);
 
   bool IsValidClassAttribute(StringParam name);
@@ -60,8 +59,7 @@ class AttributeExtension
 public:
   AttributeExtension(StringParam name);
 
-  /// Used to specify restricted class or property types that this attribute can
-  /// be on.
+  /// Used to specify restricted class or property types that this attribute can be on.
   AttributeExtension* MustBeType(BoundType* type);
   /// Disallows attributes to be on static members. Defaults to false.
   AttributeExtension* AllowStatic(bool state);

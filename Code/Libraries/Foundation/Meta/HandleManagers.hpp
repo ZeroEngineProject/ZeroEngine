@@ -8,8 +8,7 @@ namespace Zero
 // SafeId
 // ThreadSafe
 
-// This is used to avoid people copy constructing their classes and copying over
-// the Id.
+// This is used to avoid people copy constructing their classes and copying over the Id.
 template <typename IdType>
 struct HandleIdData
 {
@@ -45,12 +44,11 @@ public:
   Atomic<int> mCount;
 };
 
-// Declare
 // Call within the class definition
 #define DeclareReferenceCountedHandle() DeclareReferenceCountedHandleInternals() typedef u32 HandleIdType;
 
-// The reason for adding this internals version was so that we could avoid two
-// HandleIdType typedefs. This should never be called outside this file.
+// The reason for adding this internals version was so that we could avoid two HandleIdType
+// typedefs. This should never be called outside this file.
 #define DeclareReferenceCountedHandleInternals()                                                                       \
   ReferenceCountData mZeroHandleReferenceCount;                                                                        \
   void AddReference()                                                                                                  \
@@ -125,8 +123,8 @@ public:
   DestructSafeIdHandle();                                                                                              \
   mZeroHandleLock.Unlock();
 
-// For the last two, we don't want to call 'DestructReferenceCountedHandle'
-// because it's safe to delete the object even if it still has references
+// For the last two, we don't want to call 'DestructReferenceCountedHandle' because it's safe to
+// delete the object even if it still has references
 #define DestructReferenceCountedSafeIdHandle() DestructSafeIdHandle();
 
 #define DestructReferenceCountedThreadSafeIdHandle() DestructThreadSafeIdHandle();
@@ -168,10 +166,9 @@ public:
 
     if (IsSafeId<T>::value)
     {
-      // METAREFACTOR - If we only ever go through ZilchAllocate for objects
-      // that use this handle manager, we can assign the id here and not have to
-      // deal with the raw object issue. Is this something we should do? Or is
-      // that annoying to ZilchAllocate everything?
+      // METAREFACTOR - If we only ever go through ZilchAllocate for objects that use this handle
+      // manager, we can assign the id here and not have to deal with the raw object issue.
+      // Is this something we should do? Or is that annoying to ZilchAllocate everything?
       HandleData& data = *(HandleData*)(handleToInitialize.Data);
       data.mId = (IdType)-1;
       data.mRawObject = zAllocate(type->Size);
@@ -199,8 +196,7 @@ public:
   }
 
   // Internals
-  // Internal versions of each function were added because they need to be
-  // templated for SFINAE
+  // Internal versions of each function were added because they need to be templated for SFINAE
 
   // ObjectToHandle
   // Only reference counted
@@ -307,9 +303,8 @@ public:
     T* instance = (T*)HandleToObject(handle);
     instance->Release();
 
-    // METAREFACTOR - To get rid of Reference class below, Release has to change
-    // to not manually deleting itself. This will not call the zilch destructor
-    // on inherited types, causing leaks.
+    // METAREFACTOR - To get rid of Reference class below, Release has to change to not manually
+    // deleting itself. This will not call the zilch destructor on inherited types, causing leaks.
     return ReleaseResult::TakeNoAction;
   }
 

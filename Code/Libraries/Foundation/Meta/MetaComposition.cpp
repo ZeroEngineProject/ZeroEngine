@@ -47,17 +47,15 @@ bool CogComponentMeta::SupportsInterface(BoundType* interfaceMeta)
 
 bool CogComponentMeta::IsDependentOn(BoundType* componentType, BoundType* dependentType)
 {
-  // Each type may have its own 'CogComponentMeta', so we have to walk all base
-  // types
+  // Each type may have its own 'CogComponentMeta', so we have to walk all base types
   forRange (CogComponentMeta* metaComponent, componentType->HasAll<CogComponentMeta>())
   {
     // Walk the dependencies of the component we're checking
     forRange (BoundType* dependentComponent, metaComponent->mDependencies.All())
     {
-      // The reason we're not checking if the dependenType is a
-      // dependentComponent (dynamic cast) is because if it dependentComponent
-      // isn't an [Interface], we couldn't call 'has' on the object with
-      // dependentType and get dependentComponent.
+      // The reason we're not checking if the dependenType is a dependentComponent (dynamic cast)
+      // is because if it dependentComponent isn't an [Interface], we couldn't call
+      // 'has' on the object with dependentType and get dependentComponent.
 
       // Check the base type of the component
       if (Type::IsSame(dependentType, dependentComponent))
@@ -75,8 +73,7 @@ bool CogComponentMeta::IsDependentOn(BoundType* componentType, BoundType* depend
     }
   }
 
-  // Each type may have its own 'CogComponentMeta', so we have to walk all base
-  // types
+  // Each type may have its own 'CogComponentMeta', so we have to walk all base types
   forRange (CogComponentMeta* metaComponent, componentType->HasAll<CogComponentMeta>())
   {
     // Walk the dependencies of the component we're checking
@@ -139,9 +136,8 @@ Handle MetaComposition::GetComponentUniqueId(HandleParam owner, u64 uniqueId)
   if (uniqueId == cInvalidUniqueId.mValue)
     return Handle();
 
-  // All components are assumed to have the same MetaDataInheritance so we don't
-  // have to look it up for each component. If this is ever not the case, this
-  // function needs to be changed
+  // All components are assumed to have the same MetaDataInheritance so we don't have to
+  // look it up for each component. If this is ever not the case, this function needs to be changed
   MetaDataInheritance* inheritance = mComponentType->HasInherited<MetaDataInheritance>();
 
   ReturnIf(inheritance == nullptr, Handle(), "Cannot get component by unique id on this type.");
@@ -224,8 +220,7 @@ void MetaComposition::Enumerate(Array<String>& addTypes, EnumerateAction::Enum a
 
 bool MetaComposition::CanAddComponent(HandleParam owner, BoundType* typeToAdd, AddInfo* info)
 {
-  // If it doesn't have a bound default constructor, it cannot be created, so we
-  // cannot add it
+  // If it doesn't have a bound default constructor, it cannot be created, so we cannot add it
   if (typeToAdd->GetDefaultConstructor() == nullptr)
   {
     if (info)
@@ -249,8 +244,8 @@ bool MetaComposition::CanAddComponent(HandleParam owner, BoundType* typeToAdd, A
       return false;
     }
 
-    // METAREFACTOR Could this be done differently? There's usually either 0 or
-    // 1 in the Interfaces, so maybe it's not a big deal..?
+    // METAREFACTOR Could this be done differently? There's usually either 0 or 1 in the
+    // Interfaces, so maybe it's not a big deal..?
     forRange (CogComponentMeta* addingComponentMeta, typeToAdd->HasAll<CogComponentMeta>())
     {
       // Check each interface on the existing component
@@ -401,8 +396,7 @@ bool MetaComposition::CanRemoveComponent(HandleParam owner, BoundType* component
     return CanRemoveComponent(owner, component, reason);
   if (componentType != nullptr)
     reason = String::Format("Component %s doesn't exist on object", componentType->Name.c_str());
-  // The component type can be null (can happen when archetype editing a
-  // multi-selection)
+  // The component type can be null (can happen when archetype editing a multi-selection)
   else
     reason = String::Format("Component type doesn't exist.");
   return false;

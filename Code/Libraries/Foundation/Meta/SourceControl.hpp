@@ -22,11 +22,10 @@ public:
   }
 };
 
-/// Source Control interface for when the editor makes changes to files under
-/// source control. Not meant to be a complete source control management
-/// interface just to make the editor cleanly update state that can not be
-/// easily detected (Add/Remove/Rename). Also used to access revisions and other
-/// data for display.
+/// Source Control interface for when the editor makes changes to files under source control.
+/// Not meant to be a complete source control management interface just to make the editor
+/// cleanly update state that can not be easily detected (Add/Remove/Rename).
+/// Also used to access revisions and other data for display.
 class SourceControl : public Object
 {
 public:

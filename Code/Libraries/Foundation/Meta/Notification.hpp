@@ -75,10 +75,9 @@ void IgnoreDoNotify(
 typedef void (*NotificationCallback)(
     StringParam title, StringParam message, StringParam icon, NotifyType::Enum type, NotifyException::Enum exceptions);
 
-// Allows us to temporarily override DoNotify (will get cleaned up upon
-// destruction) If a 'nullptr' callback is passed in, this will do nothing (it
-// won't push or pop a callback) Use 'IgnoreDoNotify' to cause notifications to
-// stop
+// Allows us to temporarily override DoNotify (will get cleaned up upon destruction)
+// If a 'nullptr' callback is passed in, this will do nothing (it won't push or pop a callback)
+// Use 'IgnoreDoNotify' to cause notifications to stop
 class TemporaryDoNotifyOverride
 {
 public:

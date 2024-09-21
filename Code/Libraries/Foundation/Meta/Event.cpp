@@ -7,8 +7,7 @@ ZilchDefineType(EventObject, builder, type)
 {
 }
 
-// Right now use Direct memory allocation because events on allocated on
-// different threads.
+// Right now use Direct memory allocation because events on allocated on different threads.
 Memory::Heap* sEventHeap = new Memory::Heap("Events", Memory::GetRoot());
 
 #define UseEventMemoryPool(type)                                                                                       \
@@ -93,10 +92,7 @@ Object* ObjectEvent::GetSource()
 Array<Delegate> EventConnection::sDelayDestructDelegates;
 
 EventConnection::EventConnection(EventDispatcher* dispatcher, StringParam eventId) :
-    ThisObject(nullptr),
-    EventType(nullptr),
-    mDispatcher(dispatcher),
-    mEventId(eventId)
+    ThisObject(nullptr), EventType(nullptr), mDispatcher(dispatcher), mEventId(eventId)
 {
 }
 
@@ -119,15 +115,13 @@ bool ValidateEvent(StringParam eventId, BoundType* typeSent)
 {
   ReturnIf(typeSent == nullptr, false, "Null Event Type");
 
-  // It is possible that this event was bound to a specific type, make sure our
-  // event matches the type it sends
+  // It is possible that this event was bound to a specific type, make sure our event matches the type it sends
   BoundType* boundEventType = MetaDatabase::GetInstance()->mEventMap.FindValue(eventId, nullptr);
 
   if (CheckAllEventsBound)
   {
     ErrorIf(boundEventType == nullptr,
-            "Attempting to connect to an event that is not bound as sent. "
-            "Expected type '%s' sent with id '%s'",
+            "Attempting to connect to an event that is not bound as sent. Expected type '%s' sent with id '%s'",
             typeSent->Name.c_str(),
             eventId.c_str());
   }
@@ -139,8 +133,8 @@ bool ValidateEvent(StringParam eventId, BoundType* typeSent)
       // Validate that we are connecting to the correct event type!
       if (!boundEventType->IsA(typeSent))
       {
-        String message = String::Format("The event was bound as a %s but you attempted to "
-                                        "register an event connection that takes %s",
+        String message = String::Format(
+            "The event was bound as a %s but you attempted to register an event connection that takes %s",
                                         boundEventType->Name.c_str(),
                                         typeSent->Name.c_str());
         DoNotifyException("Events", message);
@@ -239,16 +233,13 @@ void EventDispatchList::Dispatch(Event* event)
 
   // dispatch to all connections for this event
   EventConnection* connection = &mConnections.Front();
-  // we don't want to iterate over any newly added nodes so we iterate to the
-  // last item currently in the list (not to the end since that is a sentinel
-  // node)
-  // WARNING: Caching the back technically makes the iteration less safe because
-  // that EventConnection could be deleted In the case that it is deleted, this
-  // continues walking forever until it hits th sentinel and crashes To fix this
-  // we also check against the end sentinel (similar to previous behavior, see
-  // file history) This technically means that if the back EventConnection is
-  // deleted, we will walk newly added event connections and dispatch to those
-  // too (could have undesired behavior, but at least it isn't crashing)
+  // we don't want to iterate over any newly added nodes so we iterate to the last
+  // item currently in the list (not to the end since that is a sentinel node)
+  //  WARNING: Caching the back technically makes the iteration less safe because that EventConnection could be deleted
+  //  In the case that it is deleted, this continues walking forever until it hits th sentinel and crashes
+  //  To fix this we also check against the end sentinel (similar to previous behavior, see file history)
+  //  This technically means that if the back EventConnection is deleted, we will walk newly added event connections
+  //  and dispatch to those too (could have undesired behavior, but at least it isn't crashing)
   EventConnection* back = &mConnections.Back();
   EventConnection* end = mConnections.End();
   EventConnection* current = nullptr;
@@ -256,8 +247,7 @@ void EventDispatchList::Dispatch(Event* event)
   do
   {
     // To make iteration entirely safe when 'back' gets deleted,
-    // we also check if connection hits the end (sentinel), see the warning
-    // above
+    // we also check if connection hits the end (sentinel), see the warning above
     if (connection == end)
       break;
 
@@ -265,12 +255,10 @@ void EventDispatchList::Dispatch(Event* event)
     // safe iterate
     connection = mConnections.Next(connection);
 
-    // Do not check if event is already invalid, EventType could have been
-    // deleted due to a script recompile.
+    // Do not check if event is already invalid, EventType could have been deleted due to a script recompile.
     if (CheckEventReceiveAsConnectedType && !current->Flags.IsSet(ConnectionFlags::Invalid))
     {
-      // We should only ever dispatch an event that is either more derived or
-      // the exact same as the received event type
+      // We should only ever dispatch an event that is either more derived or the exact same as the received event type
       if (!sentEventType->IsA(current->EventType))
       {
         String message = String::Format("Expected a %s, but the event type sent for event %s was %s",
@@ -280,8 +268,7 @@ void EventDispatchList::Dispatch(Event* event)
 
         current->RaiseError(message);
 
-        // If this is a script connection, we want to skip it (don't want to run
-        // invalid code)
+        // If this is a script connection, we want to skip it (don't want to run invalid code)
         if (current->Flags.IsSet(ConnectionFlags::Script))
         {
           current->Flags.SetFlag(ConnectionFlags::Invalid);
@@ -292,13 +279,13 @@ void EventDispatchList::Dispatch(Event* event)
 
     if (current->Flags.IsSet(ConnectionFlags::Invalid))
     {
-      // delete invalid events only during iteration
-      // to prevent removed connections from breaking
-      // iteration.
-
       // have the event connection disconnect itself to clear its unique
       // connection entry that is used to avoid duplicate event connections
       current->DisconnectSelf();
+
+      // delete invalid events only during iteration
+      // to prevent removed connections from breaking
+      // iteration.
       delete current;
     }
     else
@@ -436,23 +423,21 @@ void EventDispatcher::Dispatch(StringParam eventId, Event* event)
 
   BoundType* sentEventType = ZilchVirtualTypeId(event);
 
-  // Validate that, if this event is bound, we're actually sending the proper
-  // event!
+  // Validate that, if this event is bound, we're actually sending the proper event!
   BoundType* boundEventType = MetaDatabase::GetInstance()->mEventMap.FindValue(eventId, nullptr);
 
   if (CheckAllEventsBound)
   {
     // Comment this out if there are valid cases!
-    // ErrorIf(boundEventType == nullptr, "Attempting to dispatch an event that
-    // is not bound anywhere, we should bind this!");
+    // ErrorIf(boundEventType == nullptr, "Attempting to dispatch an event that is not bound anywhere, we should bind
+    // this!");
   }
 
   if (CheckEventDispatchAsBoundType)
   {
     if (boundEventType)
     {
-      // The event type that we're sending should be either more derived or the
-      // same type
+      // The event type that we're sending should be either more derived or the same type
       if (!sentEventType->IsA(boundEventType))
       {
         String message = String::Format("The event was bound as a %s but you attempted to send a %s",
@@ -502,8 +487,7 @@ void EventDispatcher::Connect(StringParam eventId, EventConnection* connection)
   }
   else
   {
-    // Event with that eventId not yet mapped. Make a new list and map the event
-    // id
+    // Event with that eventId not yet mapped. Make a new list and map the event id
     list = new EventDispatchList();
     mEvents.Insert(eventId, list);
   }

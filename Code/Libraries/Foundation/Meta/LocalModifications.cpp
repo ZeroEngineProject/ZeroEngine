@@ -161,12 +161,11 @@ void ObjectState::ClearModifications(bool retainOverrideProperties,
 {
   if (retainOverrideProperties)
   {
-    // We need the instance to get the meta properties to check if they are set
-    // to override
+    // We need the instance to get the meta properties to check if they are set to override
     ReturnIf(object.IsNull(), , "We must have an instance to retain overridden properties");
 
-    // Store all properties that are set to override so we can restore them
-    // after clearing all other modified properties
+    // Store all properties that are set to override so we can restore them after clearing
+    // all other modified properties
     ModifiedProperties& savedProperties = cachedMemory;
     forRange (PropertyPath& propertyPath, mModifiedProperties.All())
     {
@@ -359,27 +358,24 @@ void LocalModifications::ClearModifications(HandleParam object,
   if (object == nullptr)
     return;
 
-  // We don't need to check for validation of the object because if it has
-  // modifications, it has already been validated
+  // We don't need to check for validation of the object because if it has modifications,
+  // it has already been validated
   ObjectState* state = GetObjectState(object, false, false);
   if (state)
   {
-    // Clear all non-override properties if we're retaining overridden
-    // properties
+    // Clear all non-override properties if we're retaining overridden properties
     if (retainOverrideProperties)
     {
       state->ClearModifications(true, object, cachedMemory);
 
-      // If it's not modified (it didn't have overridden properties), then
-      // delete the state
+      // If it's not modified (it didn't have overridden properties), then delete the state
       if (!state->IsModified())
       {
         mObjectStates.Erase(object);
         SafeDelete(state);
       }
     }
-    // If we're not retaining overridden properties, we can delete the entire
-    // object state
+    // If we're not retaining overridden properties, we can delete the entire object state
     else
     {
       mObjectStates.Erase(object);
@@ -393,17 +389,16 @@ void LocalModifications::ClearModifications(HandleParam object,
   {
     forRange (Handle child, composition->AllComponents(object))
     {
-      // If we're not retaining override properties, recursively delete all
-      // child states as there's nothing we want to save
+      // If we're not retaining override properties, recursively delete all child
+      // states as there's nothing we want to save
       if (!retainOverrideProperties)
       {
         ClearModifications(child, true, false, cachedMemory);
       }
       else
       {
-        // If we are retaining override properties, we still don't want to
-        // retain properties on locally added children (they should be removed
-        // anyways)
+        // If we are retaining override properties, we still don't want to retain
+        // properties on locally added children (they should be removed anyways)
         BoundType* childType = child.StoredType;
 
         // Check to see if the child was locally added
@@ -413,8 +408,7 @@ void LocalModifications::ClearModifications(HandleParam object,
           String childTypeName = childType->Name;
           ObjectState::ChildId childId(childTypeName);
 
-          // If we have a guid for the child, use that. Otherwise use the type
-          // name
+          // If we have a guid for the child, use that. Otherwise use the type name
           if (MetaDataInheritance* inheritance = childType->HasInherited<MetaDataInheritance>())
             childId.mId = inheritance->GetUniqueId(child);
 
@@ -483,8 +477,7 @@ bool LocalModifications::IsObjectLocallyAdded(HandleParam object, bool recursive
     if (IsChildLocallyAdded(owner, object))
       return true;
 
-    // If we hit something that inherits from other data, we are not locally
-    // added
+    // If we hit something that inherits from other data, we are not locally added
     if (MetaDataInheritanceRoot* inheritance = owner.StoredType->HasInherited<MetaDataInheritanceRoot>())
     {
       String ownerInheritId = inheritance->GetInheritId(owner, InheritIdContext::Instance);
@@ -644,8 +637,7 @@ bool MetaDataInheritance::ShouldStoreLocalModifications(HandleParam object)
 
   Handle closestInheritedObject = modifications->GetClosestInheritedObject(object, true);
 
-  // If nothing above us inherits from other data, we don't want to store
-  // modifications
+  // If nothing above us inherits from other data, we don't want to store modifications
   if (closestInheritedObject == nullptr)
     return false;
 
