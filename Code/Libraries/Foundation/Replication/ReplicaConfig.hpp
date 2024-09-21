@@ -54,8 +54,7 @@ StaticAssertWithinRange(Range15, EMPLACE_CONTEXT_ID_BITS, 1, UINTMAX_BITS);
 #endif
 
 /// ReplicaChannelType should use a virtual destructor?
-/// Enable this if you're relying on replica channel type polymorphism for
-/// deletion
+/// Enable this if you're relying on replica channel type polymorphism for deletion
 #define REPLICA_CHANNEL_TYPE_USE_VIRTUAL_DESTRUCTOR 1
 
 #if REPLICA_CHANNEL_TYPE_USE_VIRTUAL_DESTRUCTOR
@@ -75,8 +74,7 @@ StaticAssertWithinRange(Range15, EMPLACE_CONTEXT_ID_BITS, 1, UINTMAX_BITS);
 #endif
 
 /// ReplicaPropertyType should use a virtual destructor?
-/// Enable this if you're relying on replica property type polymorphism for
-/// deletion
+/// Enable this if you're relying on replica property type polymorphism for deletion
 #define REPLICA_PROPERTY_TYPE_USE_VIRTUAL_DESTRUCTOR 1
 
 #if REPLICA_PROPERTY_TYPE_USE_VIRTUAL_DESTRUCTOR
@@ -113,10 +111,9 @@ typedef UintN<EmplaceIdBits> EmplaceId;
 
 /// Create Context
 /// Contains an application-specific replica (object) create context
-/// Used as a unique identifier to represent a created set of replicas
-/// associated with an arbitrary context For example, this might represent the
-/// conceptual "space" an object is created in This is given to the user-defined
-/// CreateReplica function and interpreted by the user
+/// Used as a unique identifier to represent a created set of replicas associated with an arbitrary context
+/// For example, this might represent the conceptual "space" an object is created in
+/// This is given to the user-defined CreateReplica function and interpreted by the user
 typedef Variant CreateContext;
 
 //                               Replica Type //
@@ -124,43 +121,37 @@ typedef Variant CreateContext;
 /// Replica Type
 /// Contains an application-specific replica (object) type identifier
 /// Used as a unique identifier to represent an arbitrary archetype
-/// For example, this usually represents the application-specific type of object
-/// (ex. "player", "ammo", "enemy", etc.) This is given to the user-defined
-/// CreateReplica function and interpreted by the user
+/// For example, this usually represents the application-specific type of object (ex. "player", "ammo", "enemy", etc.)
+/// This is given to the user-defined CreateReplica function and interpreted by the user
 typedef Variant ReplicaType;
 
 //                              Emplace Context //
 
 /// Emplace Context
 /// Contains an application-specific replica (object) emplace context
-/// Used as a unique identifier to represent an emplaced set of replicas
-/// associated with an arbitrary context For example, this would typically be a
-/// level name and all network objects loaded in would be emplaced on it by all
-/// peers This is used internally, it just needs to be unique to represent a
-/// different set of emplaced replicas
+/// Used as a unique identifier to represent an emplaced set of replicas associated with an arbitrary context
+/// For example, this would typically be a level name and all network objects loaded in would be emplaced on it by all
+/// peers This is used internally, it just needs to be unique to represent a different set of emplaced replicas
 typedef Variant EmplaceContext;
 
 //                              Create Context ID //
 
 /// Create Context ID
-/// Identifies a create context value (serialized in place of the create context
-/// to conserve bandwidth)
+/// Identifies a create context value (serialized in place of the create context to conserve bandwidth)
 static const Bits CreateContextIdBits = CREATE_CONTEXT_ID_BITS;
 typedef UintN<CreateContextIdBits> CreateContextId;
 
 //                              Replica Type ID //
 
 /// Replica Type ID
-/// Identifies a replica type value (serialized in place of the replica type to
-/// conserve bandwidth)
+/// Identifies a replica type value (serialized in place of the replica type to conserve bandwidth)
 static const Bits ReplicaTypeIdBits = REPLICA_TYPE_ID_BITS;
 typedef UintN<ReplicaTypeIdBits> ReplicaTypeId;
 
 //                             Emplace Context ID //
 
 /// Emplace Context ID
-/// Identifies an emplace context value (serialized in place of the emplace
-/// context to conserve bandwidth)
+/// Identifies an emplace context value (serialized in place of the emplace context to conserve bandwidth)
 static const Bits EmplaceContextIdBits = EMPLACE_CONTEXT_ID_BITS;
 typedef UintN<EmplaceContextIdBits> EmplaceContextId;
 
@@ -200,13 +191,11 @@ typedef Pair<Message, TransmissionDirection::Enum> MessageDirectionPair;
 // (NOTE: Corresponding enum values MUST match up with Authority!)
 DeclareEnum5(Role,
              Client,        /// Act as an online client, able to connect to a single server
-             Server,        /// Act as an online server, able to accept connections from
-                            /// multiple clients
+             Server,      /// Act as an online server, able to accept connections from multiple clients
              Unspecified,   /// Unspecified network role
-             Offline,       /// Act as an offline peer (provided as an API simulator to enable
-                            /// networked games to use the same code in offline contexts)
-             MasterServer); /// Act as an online master server, able to provide host
-                            /// lists and facilitate connections
+             Offline, /// Act as an offline peer (provided as an API simulator to enable networked games to use the same
+                      /// code in offline contexts)
+             MasterServer); /// Act as an online master server, able to provide host lists and facilitate connections
 
 /// ReplicaChannel Change Authority
 // (NOTE: Corresponding enum values MUST match up with Role!)
@@ -216,10 +205,8 @@ DeclareEnum2(Authority,
 
 /// ReplicaChannel Change Authority Mode
 DeclareEnum2(AuthorityMode,
-             Dynamic, /// Authority is dynamic and may be modified after a
-                      /// replica is made valid
-             Fixed);  /// Authority is fixed and cannot be modified after a
-                      /// replica is made valid
+             Dynamic, /// Authority is dynamic and may be modified after a replica is made valid
+             Fixed);  /// Authority is fixed and cannot be modified after a replica is made valid
 
 /// Replicator Plugin Message Types
 DeclareEnum11(ReplicatorMessageType,
@@ -252,10 +239,8 @@ enum Enum
   None,
 
   OnSpawn = (1 << 0),        /// Serialize on replica spawn
-  OnCloneEmplace = (1 << 1), /// Serialize on replica clone (if the replica was
-                             /// originally emplaced)
-  OnCloneSpawn = (1 << 2),   /// Serialize on replica clone (if the replica was
-                             /// originally spawned)
+  OnCloneEmplace = (1 << 1), /// Serialize on replica clone (if the replica was originally emplaced)
+  OnCloneSpawn = (1 << 2),   /// Serialize on replica clone (if the replica was originally spawned)
   OnForget = (1 << 3),       /// Serialize on replica forget
   OnDestroy = (1 << 4),      /// Serialize on replica destroy
   OnChange = (1 << 5),       /// Serialize on replica channel change
@@ -270,8 +255,7 @@ DeclareEnum4(DetectionMode,
              Assume,     /// Assume something has changed
              Manual,     /// Detect changes manually using change flags
              Automatic,  /// Detect changes automatically using comparisons
-             Manumatic); /// Detect changes manually using change flags and
-                         /// automatically using comparisons
+             Manumatic); /// Detect changes manually using change flags and automatically using comparisons
 
 /// ReplicaChannel Change Reliability Mode
 DeclareEnum2(ReliabilityMode,
@@ -279,11 +263,10 @@ DeclareEnum2(ReliabilityMode,
              Reliable);  /// Lost changes are retransmitted
 
 /// ReplicaChannel/Property Change Serialization Mode
-DeclareEnum2(SerializationMode,
-             All,      /// Serialize all properties/primitive-components (Always used
-                       /// internally when there is only one)
-             Changed); /// Serialize only properties/primitive-components that
-                       /// have changed (Uses an extra bit flag between them)
+DeclareEnum2(
+    SerializationMode,
+    All,      /// Serialize all properties/primitive-components (Always used internally when there is only one)
+    Changed); /// Serialize only properties/primitive-components that have changed (Uses an extra bit flag between them)
 
 /// Routing Mode
 DeclareEnum2(RouteMode,
@@ -517,10 +500,9 @@ inline Bits SerializeKnownBasicVariantArithmetic(SerializeDirection::Enum direct
   return bitStream.GetBitsSerialized(direction) - startBits;
 }
 
-/// Serializes a non-empty basic Variant (stored value type has a constant
-/// native type ID) Will not serialize the stored type ID, the deserializer must
-/// default construct the variant as the expected type before deserializing
-/// Returns the number of bits serialized if successful, else 0
+/// Serializes a non-empty basic Variant (stored value type has a constant native type ID)
+/// Will not serialize the stored type ID, the deserializer must default construct the variant as the expected type
+/// before deserializing Returns the number of bits serialized if successful, else 0
 inline Bits SerializeKnownBasicVariant(SerializeDirection::Enum direction, BitStream& bitStream, Variant& value)
 {
   Bits result = 0;
@@ -559,9 +541,8 @@ inline Bits SerializeKnownBasicVariant(SerializeDirection::Enum direction, BitSt
 }
 
 /// Serializes a basic Variant (stored value type has a constant native type ID)
-/// Will serialize the stored type ID, the deserializer does not need to know
-/// what type to expect and should pass in an empty variant when deserializing
-/// Returns the number of bits serialized if successful, else 0
+/// Will serialize the stored type ID, the deserializer does not need to know what type to expect and should pass in an
+/// empty variant when deserializing Returns the number of bits serialized if successful, else 0
 inline Bits SerializeUnknownBasicVariant(SerializeDirection::Enum direction, BitStream& bitStream, Variant& value)
 {
   // Get starting bits count
@@ -573,8 +554,7 @@ inline Bits SerializeUnknownBasicVariant(SerializeDirection::Enum direction, Bit
     // Get variant's native type ID
     NativeTypeId nativeTypeId = value.GetNativeTypeId();
 
-    // Variant has a runtime native type ID? (Variant is storing a non-basic
-    // native type?)
+    // Variant has a runtime native type ID? (Variant is storing a non-basic native type?)
     if (IsRuntimeNativeTypeId(nativeTypeId))
     {
       Error("Not a basic variant");
@@ -582,10 +562,8 @@ inline Bits SerializeUnknownBasicVariant(SerializeDirection::Enum direction, Bit
     }
 
     // Write variant's constant native type ID
-    if (!bitStream.SerializeQuantized(SerializeDirection::Write,
-                                      nativeTypeId,
-                                      cConstantNativeTypeIdMin,
-                                      cConstantNativeTypeIdMax)) // Unable?
+    if (!bitStream.SerializeQuantized(
+            SerializeDirection::Write, nativeTypeId, cConstantNativeTypeIdMin, cConstantNativeTypeIdMax)) // Unable?
     {
       Error("Serialization failed");
       return 0;
@@ -596,10 +574,8 @@ inline Bits SerializeUnknownBasicVariant(SerializeDirection::Enum direction, Bit
   {
     // Read variant's constant native type ID
     NativeTypeId nativeTypeId = 0;
-    if (!bitStream.SerializeQuantized(SerializeDirection::Read,
-                                      nativeTypeId,
-                                      cConstantNativeTypeIdMin,
-                                      cConstantNativeTypeIdMax)) // Unable?
+    if (!bitStream.SerializeQuantized(
+            SerializeDirection::Read, nativeTypeId, cConstantNativeTypeIdMin, cConstantNativeTypeIdMax)) // Unable?
     {
       Error("Serialization failed");
       return 0;

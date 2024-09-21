@@ -231,8 +231,8 @@ bool ReplicaStream::WriteIdentificationInfo(
   // Is this a clone serialization mode?
   bool isCloneSerialization = (GetReplicaStreamMode() == ReplicaStreamMode::Clone);
 
-  // (We intentionally avoid writing the 'Is Cloned?' Flag because it can easily
-  // be determined via the ReplicaStreamMode)
+  // (We intentionally avoid writing the 'Is Cloned?' Flag because it can easily be determined via the
+  // ReplicaStreamMode)
 
   // Is this a clone serialization mode?
   if (isCloneSerialization)
@@ -438,28 +438,24 @@ bool ReplicaStream::WriteChannelData(const Replica* replica)
   // Not the reverse replica channels serialization mode?
   if (GetReplicaStreamMode() != ReplicaStreamMode::ReverseReplicaChannels)
   {
-    // Is this the replication initialization phase? (We are creating an
-    // object?)
+    // Is this the replication initialization phase? (We are creating an object?)
     bool isInitializationPhase =
         (GetReplicaStreamMode() == ReplicaStreamMode::Spawn || GetReplicaStreamMode() == ReplicaStreamMode::Clone);
     if (!isInitializationPhase)
     {
-      // (If this is not the initialization phase, it should be the
-      // uninitialization phase)
+      // (If this is not the initialization phase, it should be the uninitialization phase)
       Assert(GetReplicaStreamMode() == ReplicaStreamMode::Forget ||
              GetReplicaStreamMode() == ReplicaStreamMode::Destroy);
     }
 
-    // Is this the replication initialization phase? (We are creating an
-    // object?)
+    // Is this the replication initialization phase? (We are creating an object?)
     if (isInitializationPhase)
     {
       //
       // Forward Replica-Message-Channels
       //
 
-      // Open and write forward message channels corresponding to our applicable
-      // replica channels
+      // Open and write forward message channels corresponding to our applicable replica channels
       if (!GetReplicatorLink()->OpenAndSerializeForwardReplicaChannels(replica, mBitStream)) // Unable?
       {
         // Error writing replica data
@@ -492,8 +488,7 @@ bool ReplicaStream::WriteChannelData(const Replica* replica)
 
       case ReplicaStreamMode::Clone:
       {
-        // Replica channel type not configured to serialize on
-        // clone-from-emplace/clone-from-spawn?
+        // Replica channel type not configured to serialize on clone-from-emplace/clone-from-spawn?
         if (!(replica->IsEmplaced() ? (replicaChannelType->GetSerializationFlags() & SerializationFlags::OnCloneEmplace)
                                     : (replicaChannelType->GetSerializationFlags() & SerializationFlags::OnCloneSpawn)))
           continue; // Skip channel
@@ -545,8 +540,7 @@ bool ReplicaStream::WriteChannelData(const Replica* replica)
     // (Replica should use reverse replica channels)
     Assert(replica->UsesReverseReplicaChannels());
 
-    // Open and write reverse message channels corresponding to our applicable
-    // replica channels
+    // Open and write reverse message channels corresponding to our applicable replica channels
     if (!GetReplicatorLink()->OpenAndSerializeReverseReplicaChannels(replica, mBitStream)) // Unable?
     {
       // Error writing replica data
@@ -563,28 +557,24 @@ bool ReplicaStream::ReadChannelData(Replica* replica) const
   // Not the reverse replica channels serialization mode?
   if (GetReplicaStreamMode() != ReplicaStreamMode::ReverseReplicaChannels)
   {
-    // Is this the replication initialization phase? (We are creating an
-    // object?)
+    // Is this the replication initialization phase? (We are creating an object?)
     bool isInitializationPhase =
         (GetReplicaStreamMode() == ReplicaStreamMode::Spawn || GetReplicaStreamMode() == ReplicaStreamMode::Clone);
     if (!isInitializationPhase)
     {
-      // (If this is not the initialization phase, it should be the
-      // uninitialization phase)
+      // (If this is not the initialization phase, it should be the uninitialization phase)
       Assert(GetReplicaStreamMode() == ReplicaStreamMode::Forget ||
              GetReplicaStreamMode() == ReplicaStreamMode::Destroy);
     }
 
-    // Is this the replication initialization phase? (We are creating an
-    // object?)
+    // Is this the replication initialization phase? (We are creating an object?)
     if (isInitializationPhase)
     {
       //
       // Forward Replica-Message-Channels
       //
 
-      // Read and set forward message channels corresponding to our applicable
-      // replica channels
+      // Read and set forward message channels corresponding to our applicable replica channels
       if (!GetReplicatorLink()->DeserializeAndSetForwardReplicaChannels(replica, mBitStream)) // Unable?
       {
         // Error reading replica data
@@ -617,8 +607,7 @@ bool ReplicaStream::ReadChannelData(Replica* replica) const
 
       case ReplicaStreamMode::Clone:
       {
-        // Replica channel type not configured to serialize on
-        // clone-from-emplace/clone-from-spawn?
+        // Replica channel type not configured to serialize on clone-from-emplace/clone-from-spawn?
         if (!(replica->IsEmplaced() ? (replicaChannelType->GetSerializationFlags() & SerializationFlags::OnCloneEmplace)
                                     : (replicaChannelType->GetSerializationFlags() & SerializationFlags::OnCloneSpawn)))
           continue; // Skip channel
@@ -670,8 +659,7 @@ bool ReplicaStream::ReadChannelData(Replica* replica) const
     // (Replica should use reverse replica channels)
     Assert(replica->UsesReverseReplicaChannels());
 
-    // Read and set reverse message channels corresponding to our applicable
-    // replica channels
+    // Read and set reverse message channels corresponding to our applicable replica channels
     if (!GetReplicatorLink()->DeserializeAndSetReverseReplicaChannels(replica, mBitStream)) // Unable?
     {
       // Error reading replica data

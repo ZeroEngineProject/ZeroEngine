@@ -10,8 +10,7 @@ typedef SortedArray<OutMessagePtr, PointerSortPolicy<OutMessagePtr>> OutMessages
 //                              FragmentedReceipt //
 
 /// Fragmented message receipt record
-/// Tracks ACK state for all the packets a receipted, fragmented message is
-/// split across
+/// Tracks ACK state for all the packets a receipted, fragmented message is split across
 struct FragmentedReceipt
 {
   /// Constructors
@@ -66,13 +65,12 @@ class LinkOutbox
   // Outgoing Message Channel Management
   //
 
-  /// Opens an outgoing message channel with the specified transfer mode if
-  /// there are available outgoing message channel IDs on this connected link
-  /// Returns the new outgoing message channel if successful, else nullptr
+  /// Opens an outgoing message channel with the specified transfer mode if there are available outgoing message channel
+  /// IDs on this connected link Returns the new outgoing message channel if successful, else nullptr
   OutMessageChannel* OpenOutgoingChannel(TransferMode::Enum transferMode);
 
-  /// Returns the outgoing message channel corresponding to the specified
-  /// message channel ID open on this link, else nullptr
+  /// Returns the outgoing message channel corresponding to the specified message channel ID open on this link, else
+  /// nullptr
   OutMessageChannel* GetOutgoingChannel(MessageChannelId channelId) const;
   /// Returns all outgoing message channels open on this link
   ArraySet<OutMessageChannel>::range GetOutgoingChannels() const;
@@ -94,8 +92,7 @@ class LinkOutbox
   ACKState::Enum UpdateReceiptACKState(const OutPacket& packet,
                                        ACKState::Enum packetACKState,
                                        const OutMessage& message);
-  /// Acknowledges the packet (generates receipt events for all receipted
-  /// messages accordingly)
+  /// Acknowledges the packet (generates receipt events for all receipted messages accordingly)
   void AcknowledgePacket(OutPacket& packet, ACKState::Enum packetACKState);
 
   /// ACKs a sent packet
@@ -131,8 +128,7 @@ class LinkOutbox
 
   /// Removes unreliable messages from the packet
   void RemoveUnreliableMessages(OutPacket& packet);
-  /// Removes expired messages from the packet and generates receipt events as
-  /// necessary
+  /// Removes expired messages from the packet and generates receipt events as necessary
   void RemoveExpiredMessages(OutPacket& packet);
 
   /// Receipts a message at it's intended destination
@@ -158,8 +154,7 @@ class LinkOutbox
   PacketSequenceId mNextSequenceId;                /// Next packet sequence ID
   TimeMs mLastSendTime;                            /// Last packet send time
   ArraySet<OutPacket> mSentPackets;                /// Sent packets awaiting acknowledgement
-  Array<OutPacket> mResendPackets;                 /// NAKd packets containing messages that
-                                                   /// need to be resent
+  Array<OutPacket> mResendPackets;                 /// NAKd packets containing messages that need to be resent
   ArraySet<FragmentedReceipt> mFragmentedReceipts; /// Fragmented receipt records
 
   /// Friends

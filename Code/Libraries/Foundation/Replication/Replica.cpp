@@ -59,11 +59,10 @@ Replica::Replica(const CreateContext& createContext, const ReplicaType& replicaT
 
 Replica::~Replica()
 {
-  // Deleting a valid replica is an error which will leave the replicator with a
-  // dangling replica pointer It is imperative that you first inform the
-  // replicator with commands like ForgetReplica() and DestroyReplica() This
-  // will unregister the replica from the replicator, at which time it will be
-  // safe to delete the now invalid replica
+  // Deleting a valid replica is an error which will leave the replicator with a dangling replica pointer
+  // It is imperative that you first inform the replicator with commands like ForgetReplica() and DestroyReplica()
+  // This will unregister the replica from the replicator, at which time it will be safe to delete the now invalid
+  // replica
   ErrorIf(IsValid());
 }
 
@@ -354,8 +353,7 @@ ReplicaChannel* Replica::AddReplicaChannel(ReplicaChannelPtr replicaChannel)
   if (IsValid())
   {
     // Unable to modify replica channel configuration
-    Error("Replica is already valid, unable to modify replica channel "
-          "configuration");
+    Error("Replica is already valid, unable to modify replica channel configuration");
     return nullptr;
   }
 
@@ -363,8 +361,7 @@ ReplicaChannel* Replica::AddReplicaChannel(ReplicaChannelPtr replicaChannel)
   ReplicaChannelSet::pointer_bool_pair result = mReplicaChannels.Insert(replicaChannel);
   if (!result.second) // Unable?
   {
-    Error("Replica already has a replica channel with that name, unable to add "
-          "replica channel");
+    Error("Replica already has a replica channel with that name, unable to add replica channel");
     return nullptr;
   }
 
@@ -380,8 +377,7 @@ bool Replica::RemoveReplicaChannel(const String& replicaChannelName)
   if (IsValid())
   {
     // Unable to modify replica channel configuration
-    Error("Replica is already valid, unable to modify replica channel "
-          "configuration");
+    Error("Replica is already valid, unable to modify replica channel configuration");
     return false;
   }
 
@@ -396,8 +392,7 @@ void Replica::ClearReplicaChannels()
   if (IsValid())
   {
     // Unable to modify replica channel configuration
-    Error("Replica is already valid, unable to modify replica channel "
-          "configuration");
+    Error("Replica is already valid, unable to modify replica channel configuration");
     return;
   }
 

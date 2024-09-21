@@ -136,22 +136,20 @@ public:
   {
     return mPacketsSent;
   }
-  /// Returns the total number of packets ever received (unaffected by
-  /// ResetStats)
+  /// Returns the total number of packets ever received (unaffected by ResetStats)
   uintmax GetTotalPacketsReceived() const
   {
     return mPacketsReceived;
   }
 
-  /// Returns a summary of all peer statistics as an array of pairs containing
-  /// the property name and array of minimum, average, and maximum values
+  /// Returns a summary of all peer statistics as an array of pairs containing the property name and array of minimum,
+  /// average, and maximum values
   Array<Pair<String, Array<String>>> GetStatsSummary() const
   {
     // TODO
     return Array<Pair<String, Array<String>>>();
   }
-  /// Returns a summary of all peer statistics as a single multi-line string
-  /// (intended for debugging convenience)
+  /// Returns a summary of all peer statistics as a single multi-line string (intended for debugging convenience)
   String GetStatsSummaryString() const
   {
     // TODO
@@ -159,8 +157,7 @@ public:
   }
 
 protected:
-  /// Resets all applicable bandwidth statistics to start over relative to a new
-  /// statistics period
+  /// Resets all applicable bandwidth statistics to start over relative to a new statistics period
   void ResetStats()
   {
     mOutgoingBandwidthUsageUpdated = false;

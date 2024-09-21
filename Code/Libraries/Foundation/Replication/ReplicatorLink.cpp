@@ -190,31 +190,25 @@ void ReplicatorLink::UpdateStart(TimeMs now)
     float frameFillSkip = GetReplicator()->GetFrameFillSkip();
     float frameFill = GetLink()->GetOutgoingFrameFill();
 
-    // Should skip change replication if our current frame fill ratio exceeds
-    // our configured skip threshold
+    // Should skip change replication if our current frame fill ratio exceeds our configured skip threshold
     mShouldSkipChangeReplication = (frameFill >= frameFillSkip);
 
     // // Should skip change replication?
     // if(mShouldSkipChangeReplication)
     // {
     //   // Last notified more than a second ago?
-    //   if(GetDuration(mLastFrameFillSkipNotificationTime, now) >
-    //   cOneSecondTimeMs)
+    //   if(GetDuration(mLastFrameFillSkipNotificationTime, now) > cOneSecondTimeMs)
     //   {
     //     // Get outgoing bandwidth info
-    //     String replicatorName     =
-    //     GetReplicatorDisplayName(GetReplicator()); String replicatorLinkName
-    //     = GetReplicatorDisplayName(this); Kbps   outgoingBandwidth  =
-    //     GetLink()->GetOutgoingBandwidth();
+    //     String replicatorName     = GetReplicatorDisplayName(GetReplicator());
+    //     String replicatorLinkName = GetReplicatorDisplayName(this);
+    //     Kbps   outgoingBandwidth  = GetLink()->GetOutgoingBandwidth();
     //
     //     // Warn the user about the replication frame skip
     //     DoNotifyWarning("Network Frame Fill Skipping",
-    //                     String::Format("%s Skipping change replication this
-    //                     frame to %s - Exceeded the outgoing bandwidth
-    //                     (%.2fkbps) utilization skip threshold (%.2f) in a
-    //                     previous frame, with a current frame fill ratio of
-    //                     %.2f", replicatorName.c_str(),
-    //                     replicatorLinkName.c_str(),
+    //                     String::Format("%s Skipping change replication this frame to %s - Exceeded the outgoing
+    //                     bandwidth (%.2fkbps) utilization skip threshold (%.2f) in a previous frame, with a current
+    //                     frame fill ratio of %.2f", replicatorName.c_str(), replicatorLinkName.c_str(),
     //                     outgoingBandwidth,
     //                     frameFillSkip,
     //                     frameFill));
@@ -227,8 +221,7 @@ void ReplicatorLink::UpdateStart(TimeMs now)
 }
 void ReplicatorLink::UpdateEnd(TimeMs now)
 {
-  // See if we should warn the user about their outgoing bandwidth utilization
-  // this frame
+  // See if we should warn the user about their outgoing bandwidth utilization this frame
   {
     // Get frame fill info
     float frameFillWarning = GetReplicator()->GetFrameFillWarning();
@@ -246,10 +239,10 @@ void ReplicatorLink::UpdateEnd(TimeMs now)
         Kbps outgoingBandwidth = GetLink()->GetOutgoingBandwidth();
 
         // Warn the user about their outgoing bandwidth utilization
-        DoNotifyWarning("Network Frame Fill Warning",
-                        String::Format("%s Exceeded the outgoing bandwidth (%.2fkbps) utilization "
-                                       "warning threshold (%.2f) this frame, with a current frame "
-                                       "fill ratio of %.2f, when replicating to %s",
+        DoNotifyWarning(
+            "Network Frame Fill Warning",
+            String::Format("%s Exceeded the outgoing bandwidth (%.2fkbps) utilization warning threshold (%.2f) this "
+                           "frame, with a current frame fill ratio of %.2f, when replicating to %s",
                                        replicatorName.c_str(),
                                        outgoingBandwidth,
                                        frameFillWarning,
@@ -623,8 +616,7 @@ bool ReplicatorLink::DeserializeClone(const Message& message, ReplicaArray& repl
     return false;
   }
 
-  // (All replicas should be either invalid (clone-from-spawn) or emplaced
-  // (clone-from-emplace))
+  // (All replicas should be either invalid (clone-from-spawn) or emplaced (clone-from-emplace))
   AssertReplicas(replicas, replica->IsInvalid() || replica->IsEmplaced(), "");
 
   // (All replicas should have a replica ID)
@@ -643,8 +635,7 @@ bool ReplicatorLink::HandleClone(const ReplicaArray& replicas, TransmissionDirec
   {
     Assert(GetReplicator()->GetRole() == Role::Server);
 
-    // (All replicas should not be clones - these are the originals on the
-    // server!)
+    // (All replicas should not be clones - these are the originals on the server!)
     AssertReplicas(replicas, !replica->IsCloned(), "");
 
     // *** Clone already handled locally ***
@@ -1180,8 +1171,7 @@ bool ReplicatorLink::DeserializeChange(const Message& message, TimeMs timestamp)
   // Is server?
   if (GetReplicator()->GetRole() == Role::Server)
   {
-    // They are not the change authority client for the replica whose channel
-    // they're trying to change?
+    // They are not the change authority client for the replica whose channel they're trying to change?
     if (GetReplicatorId() != replica->GetAuthorityClientReplicatorId())
     {
       // Ignore
@@ -1208,9 +1198,8 @@ bool ReplicatorLink::DeserializeChange(const Message& message, TimeMs timestamp)
   bool shouldRelay = replicaChannel->ShouldRelay();
 
   // Handle changed replica channel property values
-  // (Don't set properties last values to their current values when reacting to
-  // property changes if changes need to be relayed) (The last values will be
-  // set when relaying outgoing property changes after this call)
+  // (Don't set properties last values to their current values when reacting to property changes if changes need to be
+  // relayed) (The last values will be set when relaying outgoing property changes after this call)
   replicaChannel->ReactToPropertyChanges(
       timestamp, ReplicationPhase::Change, TransmissionDirection::Incoming, true, !shouldRelay);
 
@@ -1430,8 +1419,7 @@ void ReplicatorLink::CloseAllReplicaChannels(Replica* replica)
 
 MessageChannelId ReplicatorLink::OpenOutgoingReplicaChannel(ReplicaChannel* replicaChannel)
 {
-  // (An outgoing message channel should not already be open for this replica
-  // channel)
+  // (An outgoing message channel should not already be open for this replica channel)
   Assert(!GetOutgoingReplicaChannel(replicaChannel));
 
   // Get replica channel type
@@ -1482,8 +1470,7 @@ MessageChannelId ReplicatorLink::GetOutgoingReplicaChannel(ReplicaChannel* repli
 
 bool ReplicatorLink::SetIncomingReplicaChannel(MessageChannelId channelId, ReplicaChannel* replicaChannel)
 {
-  // (An incoming message channel should not already be set for this replica
-  // channel)
+  // (An incoming message channel should not already be set for this replica channel)
   Assert(!GetIncomingReplicaChannel(channelId));
 
   // Add incoming message channel (in regular map)

@@ -12,8 +12,7 @@
 #endif
 
 /// Should peer links disconnect via timeout?
-/// Will disconnect if (RTT/2) * timeout factor elapses without receiving any
-/// packets
+/// Will disconnect if (RTT/2) * timeout factor elapses without receiving any packets
 #ifdef ZeroDebug
 #  define PEER_LINK_ENABLE_DISCONNECT_VIA_TIMEOUT 0
 #else
@@ -21,8 +20,7 @@
 #endif
 
 /// Should peer links fail connect attempts via timeout?
-/// Will disconnect if (RTT/2) * connect attempt factor elapses during a
-/// connection attempt stage
+/// Will disconnect if (RTT/2) * connect attempt factor elapses during a connection attempt stage
 #ifdef ZeroDebug
 #  define PEER_LINK_ENABLE_FAIL_CONNECT_VIA_TIMEOUT 0
 #else
@@ -64,8 +62,7 @@ public:
 
   /// Returns the duration that the link has existed
   TimeMs GetCreationDuration() const;
-  /// Returns the direction in which the link was created (which peer initiated
-  /// the connection)
+  /// Returns the direction in which the link was created (which peer initiated the connection)
   TransmissionDirection::Enum GetCreationDirection() const;
 
   /// Returns the link's overall status
@@ -80,15 +77,14 @@ public:
   Guid GetTheirGuid() const;
 
   /// Returns the remote peer's IP address (as seen from our perspective)
-  /// For outgoing links this is the same IP address specified in our connect
-  /// call This IP address will never change for the lifetime of this link
+  /// For outgoing links this is the same IP address specified in our connect call
+  /// This IP address will never change for the lifetime of this link
   const IpAddress& GetTheirIpAddress() const;
 
-  /// Returns our peer's IP address (as seen from their perspective), else
-  /// IpAddress() For incoming links this is the same IP address specified in
-  /// their connect call (Available if the link is connected or incoming and
-  /// attempting connection) It is absolutely possible that this does not match
-  /// our local IP address
+  /// Returns our peer's IP address (as seen from their perspective), else IpAddress()
+  /// For incoming links this is the same IP address specified in their connect call
+  /// (Available if the link is connected or incoming and attempting connection)
+  /// It is absolutely possible that this does not match our local IP address
   const IpAddress& GetOurIpAddress() const;
 
   /// Returns the link's IP address protocol version
@@ -103,25 +99,20 @@ public:
   /// Returns true if a connect response was successfully initiated, else false
   bool RespondToConnectRequest(bool accept, const BitStream& extraData = BitStream());
 
-  /// Disconnects by request from the remote peer on the connected or attempting
-  /// connection link Returns true if a disconnect notice was successfully
-  /// initiated, else false
+  /// Disconnects by request from the remote peer on the connected or attempting connection link
+  /// Returns true if a disconnect notice was successfully initiated, else false
   bool Disconnect(const BitStream& extraData = BitStream());
 
   /// Sends a user message on the connected link
-  /// Enable reliable to continually resend this message every determined NAK
-  /// for the lifetime of this message Specify an outgoing message channel open
-  /// on this link to indicate this message belongs to that channel's message
-  /// sequence Include a timestamp in local time on the message to be serialized
-  /// and automatically translated to remote time once received by the remote
-  /// peer Enable receipt to be notified of this message's arrival status in a
-  /// future update call event message Give a higher message priority value to
-  /// indicate this message should be sent before other queued messages with
-  /// lower priority values Messages with equal priority are sent in
-  /// chronological order with respect to internal fragmentation preferences
-  /// Provide a message lifetime to indicate how long this message should be
-  /// kept alive in the send queue before being discarded Returns the message's
-  /// receipt ID if send queuing successful and receipt was enabled, else 0
+  /// Enable reliable to continually resend this message every determined NAK for the lifetime of this message
+  /// Specify an outgoing message channel open on this link to indicate this message belongs to that channel's message
+  /// sequence Include a timestamp in local time on the message to be serialized and automatically translated to remote
+  /// time once received by the remote peer Enable receipt to be notified of this message's arrival status in a future
+  /// update call event message Give a higher message priority value to indicate this message should be sent before
+  /// other queued messages with lower priority values Messages with equal priority are sent in chronological order with
+  /// respect to internal fragmentation preferences Provide a message lifetime to indicate how long this message should
+  /// be kept alive in the send queue before being discarded Returns the message's receipt ID if send queuing successful
+  /// and receipt was enabled, else 0
   MessageReceiptId Send(Status& status,
                         const Message& message,
                         bool reliable,
@@ -148,18 +139,15 @@ public:
   /// (Available if the link is connected or incoming and attempting connection)
   TimeMs GetRemoteTime() const;
 
-  /// Translates the local time value (relative to our local Peer) to a remote
-  /// time value (relative to their remote Peer), else does nothing (Available
-  /// if the link is connected or incoming and attempting connection)
+  /// Translates the local time value (relative to our local Peer) to a remote time value (relative to their remote
+  /// Peer), else does nothing (Available if the link is connected or incoming and attempting connection)
   TimeMs LocalToRemoteTime(TimeMs localTime) const;
-  /// Translates the remote time value (relative to their remote Peer) to a
-  /// local time value (relative to our local Peer), else does nothing
-  /// (Available if the link is connected or incoming and attempting connection)
+  /// Translates the remote time value (relative to their remote Peer) to a local time value (relative to our local
+  /// Peer), else does nothing (Available if the link is connected or incoming and attempting connection)
   TimeMs RemoteToLocalTime(TimeMs remoteTime) const;
 
-  /// Difference between our local time values and their remote time values,
-  /// else 0 (Available if the link is connected or incoming and attempting
-  /// connection)
+  /// Difference between our local time values and their remote time values, else 0
+  /// (Available if the link is connected or incoming and attempting connection)
   void SetLocalToRemoteTimeDifference(TimeMs localToRemoteTimeDifference);
   TimeMs GetLocalToRemoteTimeDifference() const;
 
@@ -177,13 +165,12 @@ public:
   // Outgoing Message Channel Management
   //
 
-  /// Opens an outgoing message channel with the specified transfer mode if
-  /// there are available outgoing message channel IDs on this connected link
-  /// Returns the new outgoing message channel if successful, else nullptr
+  /// Opens an outgoing message channel with the specified transfer mode if there are available outgoing message channel
+  /// IDs on this connected link Returns the new outgoing message channel if successful, else nullptr
   OutMessageChannel* OpenOutgoingChannel(TransferMode::Enum transferMode);
 
-  /// Returns the outgoing message channel corresponding to the specified
-  /// message channel ID open on this link, else nullptr
+  /// Returns the outgoing message channel corresponding to the specified message channel ID open on this link, else
+  /// nullptr
   OutMessageChannel* GetOutgoingChannel(MessageChannelId channelId) const;
   /// Returns all outgoing message channels open on this link
   ArraySet<OutMessageChannel>::range GetOutgoingChannels() const;
@@ -199,8 +186,8 @@ public:
   // Incoming Message Channel Management
   //
 
-  /// Returns the incoming message channel corresponding to the specified
-  /// message channel ID open on this link, else nullptr
+  /// Returns the incoming message channel corresponding to the specified message channel ID open on this link, else
+  /// nullptr
   InMessageChannel* GetIncomingChannel(MessageChannelId channelId) const;
   /// Returns all incoming message channels open on this link
   ArraySet<InMessageChannel>::range GetIncomingChannels() const;
@@ -211,12 +198,11 @@ public:
   // Link Plugin Management
   //
 
-  /// Adds a link plugin corresponding to the specified name if one is not
-  /// already active on this link Returns the added link plugin, else nullptr
+  /// Adds a link plugin corresponding to the specified name if one is not already active on this link
+  /// Returns the added link plugin, else nullptr
   LinkPlugin* AddPlugin(LinkPlugin* plugin, StringParam name);
 
-  /// Returns the link plugin corresponding to the specified name active on this
-  /// link, else nullptr
+  /// Returns the link plugin corresponding to the specified name active on this link, else nullptr
   template <typename T>
   T* GetPlugin(StringParam name) const
   {
@@ -255,8 +241,7 @@ public:
 
   /// Sets the internal pre-connection round trip time (actual RTT substitute)
   void SetPreconnectionRoundTripTime(TimeMs preconnectionRoundTripTime = 250);
-  /// Returns the internal pre-connection round trip time (actual RTT
-  /// substitute)
+  /// Returns the internal pre-connection round trip time (actual RTT substitute)
   TimeMs GetPreconnectionRoundTripTime() const;
 
   /// Sets the internal floor round trip time (internal RTT minimum)
@@ -265,68 +250,65 @@ public:
   TimeMs GetFloorRoundTripTime() const;
 
   /// TODO: Remove this after implementing AIMD, no longer necessary
-  /// Sets the packet sequence history range factor (packet sequence history
-  /// range = send rate * packet sequence history range factor)
+  /// Sets the packet sequence history range factor (packet sequence history range = send rate * packet sequence history
+  /// range factor)
   void SetPacketSequenceHistoryRangeFactor(float packetSequenceHistoryRangeFactor = 2);
-  /// Returns the packet sequence history range factor (packet sequence history
-  /// range = send rate * packet sequence history range factor)
+  /// Returns the packet sequence history range factor (packet sequence history range = send rate * packet sequence
+  /// history range factor)
   float GetPacketSequenceHistoryRangeFactor() const;
 
   /// TODO: Remove this after implementing AIMD, no longer necessary
-  /// Sets the packet sequence history rate factor [0, 1] (packet sequence
-  /// history rate = send rate * packet sequence history rate factor)
+  /// Sets the packet sequence history rate factor [0, 1] (packet sequence history rate = send rate * packet sequence
+  /// history rate factor)
   void SetPacketSequenceHistoryRateFactor(float packetSequenceHistoryRateFactor = 1);
-  /// Returns the packet sequence history rate factor [0, 1] (packet sequence
-  /// history rate = send rate * packet sequence history rate factor)
+  /// Returns the packet sequence history rate factor [0, 1] (packet sequence history rate = send rate * packet sequence
+  /// history rate factor)
   float GetPacketSequenceHistoryRateFactor() const;
 
-  /// Sets the packet NAK factor (if RTT * NAK factor elapses without a reply to
-  /// a sent packet, it is assumed to be NAKd)
+  /// Sets the packet NAK factor (if RTT * NAK factor elapses without a reply to a sent packet, it is assumed to be
+  /// NAKd)
   void SetPacketNAKFactor(float packetNAKFactor = 10);
-  /// Returns the packet NAK factor (if RTT * NAK factor elapses without a reply
-  /// to a sent packet, it is assumed to be NAKd)
+  /// Returns the packet NAK factor (if RTT * NAK factor elapses without a reply to a sent packet, it is assumed to be
+  /// NAKd)
   float GetPacketNAKFactor() const;
 
-  /// Sets the number of heartbeat packets to send per second (in the absence of
-  /// messages) in order to keep the connection alive
+  /// Sets the number of heartbeat packets to send per second (in the absence of messages) in order to keep the
+  /// connection alive
   void SetHeartbeatPacketRate(uint heartbeatPacketRate = 15);
-  /// Returns the number of heartbeat packets to send per second (in the absence
-  /// of messages) in order to keep the connection alive
+  /// Returns the number of heartbeat packets to send per second (in the absence of messages) in order to keep the
+  /// connection alive
   uint GetHeartbeatPacketRate() const;
 
-  /// Sets the link timeout factor (if (RTT/2) * timeout factor elapses without
-  /// receiving any packets, the link disconnects via timeout)
+  /// Sets the link timeout factor (if (RTT/2) * timeout factor elapses without receiving any packets, the link
+  /// disconnects via timeout)
   void SetTimeoutFactor(float timeoutFactor = 300);
-  /// Returns the link timeout factor (if (RTT/2) * timeout factor elapses
-  /// without receiving any packets, the link disconnects via timeout)
+  /// Returns the link timeout factor (if (RTT/2) * timeout factor elapses without receiving any packets, the link
+  /// disconnects via timeout)
   float GetTimeoutFactor() const;
 
-  /// Sets the link latency limit (if RTT exceeds latency limit, the link
-  /// disconnects via latency)
+  /// Sets the link latency limit (if RTT exceeds latency limit, the link disconnects via latency)
   void SetLatencyLimit(TimeMs latencyLimit = cOneSecondTimeMs * 3);
-  /// Returns the link latency limit (if RTT exceeds latency limit, the link
-  /// disconnects via latency)
+  /// Returns the link latency limit (if RTT exceeds latency limit, the link disconnects via latency)
   TimeMs GetLatencyLimit() const;
 
-  /// Sets the connect attempt factor (if (RTT/2) * connect attempt factor
-  /// elapses during a connection attempt stage, the link disconnects)
+  /// Sets the connect attempt factor (if (RTT/2) * connect attempt factor elapses during a connection attempt stage,
+  /// the link disconnects)
   void SetConnectAttemptFactor(float connectAttemptFactor = 80);
-  /// Returns the connect attempt factor (if (RTT/2) * connect attempt factor
-  /// elapses during a connection attempt stage, the link disconnects)
+  /// Returns the connect attempt factor (if (RTT/2) * connect attempt factor elapses during a connection attempt stage,
+  /// the link disconnects)
   float GetConnectAttemptFactor() const;
 
-  /// Sets the disconnect attempt factor (if (RTT/2) * disconnect attempt factor
-  /// elapses during a disconnection attempt stage, the link disconnects)
+  /// Sets the disconnect attempt factor (if (RTT/2) * disconnect attempt factor elapses during a disconnection attempt
+  /// stage, the link disconnects)
   void SetDisconnectAttemptFactor(float disconnectAttemptFactor = 2);
-  /// Returns the disconnect attempt factor (if (RTT/2) * disconnect attempt
-  /// factor elapses during a disconnection attempt stage, the link disconnects)
+  /// Returns the disconnect attempt factor (if (RTT/2) * disconnect attempt factor elapses during a disconnection
+  /// attempt stage, the link disconnects)
   float GetDisconnectAttemptFactor() const;
 
-  /// Returns a summary of all link configuration settings as an array of
-  /// key-value string pairs
+  /// Returns a summary of all link configuration settings as an array of key-value string pairs
   Array<Pair<String, String>> GetConfigSummary() const;
-  /// Returns a summary of all link configuration settings as a single
-  /// multi-line string (intended for debugging convenience)
+  /// Returns a summary of all link configuration settings as a single multi-line string (intended for debugging
+  /// convenience)
   String GetConfigSummaryString() const;
 
   //
@@ -340,21 +322,17 @@ public:
   /// Returns the maximum round trip time (RTT)
   TimeMs GetMaxRoundTripTime() const;
 
-  /// Returns the minimum internal round trip time (RTT used internally,
-  /// unaffected by ResetStats)
+  /// Returns the minimum internal round trip time (RTT used internally, unaffected by ResetStats)
   TimeMs GetMinInternalRoundTripTime() const;
-  /// Returns the average internal round trip time (RTT used internally,
-  /// unaffected by ResetStats)
+  /// Returns the average internal round trip time (RTT used internally, unaffected by ResetStats)
   TimeMs GetAvgInternalRoundTripTime() const;
-  /// Returns the maximum internal round trip time (RTT used internally,
-  /// unaffected by ResetStats)
+  /// Returns the maximum internal round trip time (RTT used internally, unaffected by ResetStats)
   TimeMs GetMaxInternalRoundTripTime() const;
 
-  /// Returns a summary of all link statistics as an array of pairs containing
-  /// the property name and array of minimum, average, and maximum values
+  /// Returns a summary of all link statistics as an array of pairs containing the property name and array of minimum,
+  /// average, and maximum values
   Array<Pair<String, Array<String>>> GetStatsSummary() const;
-  /// Returns a summary of all link statistics as a single multi-line string
-  /// (intended for debugging convenience)
+  /// Returns a summary of all link statistics as a single multi-line string (intended for debugging convenience)
   String GetStatsSummaryString() const;
 
   //
@@ -368,27 +346,22 @@ public:
 
   /// Sets the amount of outgoing bandwidth available since our last update
   void SetOutgoingFrameCapacity(Bits outgoingFrameCapacity);
-  /// Returns the amount of outgoing bandwidth available since our last update,
-  /// updated at the start of every update
+  /// Returns the amount of outgoing bandwidth available since our last update, updated at the start of every update
   Bits GetOutgoingFrameCapacity() const;
 
-  /// Returns the amount of outgoing data sent, deducted by frame capacity at
-  /// the start of every update
+  /// Returns the amount of outgoing data sent, deducted by frame capacity at the start of every update
   void SetOutgoingFrameSize(Bits outgoingFrameSize);
-  /// Returns the amount of outgoing data sent, deducted by frame capacity at
-  /// the start of every update
+  /// Returns the amount of outgoing data sent, deducted by frame capacity at the start of every update
   Bits GetOutgoingFrameSize() const;
 
-  /// Returns the outgoing bandwidth frame fill ratio (frame size / frame
-  /// capacity), may exceed 1.0
+  /// Returns the outgoing bandwidth frame fill ratio (frame size / frame capacity), may exceed 1.0
   float GetOutgoingFrameFill() const;
 
   //
   // Internal
   //
 
-  /// Resets all applicable link statistics to start over relative to a new
-  /// statistics period
+  /// Resets all applicable link statistics to start over relative to a new statistics period
   void ResetStats();
 
   /// Initializes all link statistics
@@ -407,8 +380,7 @@ public:
                                 TimeMs lifetime = cInfiniteTimeMs,
                                 bool isProtocol = true);
 
-  /// Returns true if the absolute message type is within the user's range, else
-  /// false
+  /// Returns true if the absolute message type is within the user's range, else false
   bool AbsoluteIsInRange(MessageType absoluteType) const;
   /// Returns a user relative message type from an absolute message type
   MessageType RelativeToAbsolute(MessageType relativeType) const;
@@ -432,14 +404,12 @@ public:
   /// Sends an outgoing packet now
   void SendPacket(OutPacket& outPacket);
 
-  /// Processes incoming packets, updates link state, and generates outgoing
-  /// packets
+  /// Processes incoming packets, updates link state, and generates outgoing packets
   void UpdateLinkState();
   /// Processes all received custom messages
   void ProcessReceivedCustomMessages();
   /// Processes a custom message received by the link
-  /// Returns true to continue processing custom messages on this link, else
-  /// false (will continue next update call)
+  /// Returns true to continue processing custom messages on this link, else false (will continue next update call)
   bool ProcessReceivedCustomMessage(Message& message, bool isEvent);
 
   /// Called after a connect request is sent
@@ -489,13 +459,11 @@ public:
   /// Called before an incoming channel is closed
   void PluginEventOnIncomingChannelClose(MessageChannelId channelId);
 
-  /// Attempts to receipt the message type according to the plugin it is
-  /// intended for (if there is one) Returns true if successful, else false (the
-  /// message type does not belong to any current plugin)
+  /// Attempts to receipt the message type according to the plugin it is intended for (if there is one)
+  /// Returns true if successful, else false (the message type does not belong to any current plugin)
   bool AttemptPluginMessageReceipt(MoveReference<OutMessage> message, Receipt::Enum receipt);
-  /// Attempts to receive the message type according to the plugin it is
-  /// intended for (if there is one) Returns true if successful, else false (the
-  /// message type does not belong to any current plugin)
+  /// Attempts to receive the message type according to the plugin it is intended for (if there is one)
+  /// Returns true if successful, else false (the message type does not belong to any current plugin)
   bool AttemptPluginMessageReceive(MoveReference<Message> message, bool& continueProcessingCustomMessages);
 
   /// Pushes a link connect requested user event message
@@ -532,11 +500,10 @@ public:
   void* mUserData;                   /// Optional user data
 
   /// State Data
-  TimeMs mLocalToRemoteTimeDifference;            /// Local to remote time difference (remote
-                                                  /// time elapsed - local time elapsed)
+  TimeMs mLocalToRemoteTimeDifference; /// Local to remote time difference (remote time elapsed - local time elapsed)
   TimeMs mCreationTime;                           /// Time that the link was created
-  TransmissionDirection::Enum mCreationDirection; /// Direction in which the link was created (which
-                                                  /// peer initiated the connection)
+  TransmissionDirection::Enum
+      mCreationDirection;             /// Direction in which the link was created (which peer initiated the connection)
   bool mConnectRequested;                         /// Outgoing connect requested?
   BitStream mConnectRequestExtraData;             /// Outgoing connect request data
   bool mDisconnectRequested;                      /// Outgoing disconnect requested?
@@ -549,19 +516,16 @@ public:
   bool mSessionCompleted;                         /// Session completed?
 
   /// Plugin Data
-  LinkPluginSet mAddedPlugins;   /// Link plugins which were just added, need to
-                                 /// be initialized
+  LinkPluginSet mAddedPlugins;   /// Link plugins which were just added, need to be initialized
   LinkPluginSet mPlugins;        /// Link plugins which are currently active
-  LinkPluginSet mRemovedPlugins; /// Link plugins which were just removed, need
-                                 /// to be uninitialized and deleted
+  LinkPluginSet mRemovedPlugins; /// Link plugins which were just removed, need to be uninitialized and deleted
 
   /// Configuration Settings
   uint32 mSendRate;                        /// Packet send rate
   uint32 mPacketDataBytes;                 /// Packet data bytes
   TimeMs mPreconnectionRoundTripTime;      /// Preconnection round trip time
   TimeMs mFloorRoundTripTime;              /// Floor round trip time
-  float mPacketSequenceHistoryRangeFactor; /// Packet sequence history range
-                                           /// factor
+  float mPacketSequenceHistoryRangeFactor; /// Packet sequence history range factor
   float mPacketSequenceHistoryRateFactor;  /// Packet sequence history rate factor
   float mPacketNAKFactor;                  /// Packet NAK factor
   uint32 mHeartbeatPacketRate;             /// Heartbeat packet send rate
@@ -581,12 +545,10 @@ public:
   TimeMs mInternalRoundTripTimeMax; /// Maximum round trip time
 
   /// Frame Data
-  Kbps mOutgoingBandwidth;     /// Outgoing bandwidth (data transfer rate) supported
-                               /// by this link
-  Bits mOutgoingFrameCapacity; /// Outgoing bandwidth available since our last
-                               /// update, updated at the start of every update
-  Bits mOutgoingFrameSize;     /// Outgoing data sent, deducted by frame capacity at
-                               /// the start of every update
+  Kbps mOutgoingBandwidth;     /// Outgoing bandwidth (data transfer rate) supported by this link
+  Bits mOutgoingFrameCapacity; /// Outgoing bandwidth available since our last update, updated at the start of every
+                               /// update
+  Bits mOutgoingFrameSize;     /// Outgoing data sent, deducted by frame capacity at the start of every update
 
 private:
   /// No Copy Constructor
@@ -632,17 +594,14 @@ public:
   PeerLink* GetLink() const;
 
   /// Sends a plugin message on the connected link
-  /// Enable reliable to continually resend this message every determined NAK
-  /// for the lifetime of this message Specify an outgoing message channel open
-  /// on this link to indicate this message belongs to that channel's message
-  /// sequence Enable receipt to be notified of this message's arrival status in
-  /// a future plugin event callback Give a higher message priority value to
-  /// indicate this message should be sent before other queued messages with
-  /// lower priority values Messages with equal priority are sent in
-  /// chronological order with respect to internal fragmentation preferences
-  /// Provide a message lifetime to indicate how long this message should be
-  /// kept alive in the send queue before being discarded Returns the message's
-  /// receipt ID if send queing successful and receipt was enabled, else 0
+  /// Enable reliable to continually resend this message every determined NAK for the lifetime of this message
+  /// Specify an outgoing message channel open on this link to indicate this message belongs to that channel's message
+  /// sequence Enable receipt to be notified of this message's arrival status in a future plugin event callback Give a
+  /// higher message priority value to indicate this message should be sent before other queued messages with lower
+  /// priority values Messages with equal priority are sent in chronological order with respect to internal
+  /// fragmentation preferences Provide a message lifetime to indicate how long this message should be kept alive in the
+  /// send queue before being discarded Returns the message's receipt ID if send queing successful and receipt was
+  /// enabled, else 0
   MessageReceiptId Send(Status& status,
                         const Message& message,
                         bool reliable,
@@ -791,8 +750,7 @@ private:
   /// Uninitializes the link plugin
   void Uninitialize();
 
-  /// Returns true if the absolute message type is within the plugin's range,
-  /// else false
+  /// Returns true if the absolute message type is within the plugin's range, else false
   bool AbsoluteIsInRange(MessageType absoluteType) const;
   /// Returns an absolute message type from a plugin relative message type
   MessageType RelativeToAbsolute(MessageType relativeType) const;

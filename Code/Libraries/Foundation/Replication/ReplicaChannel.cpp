@@ -201,9 +201,8 @@ bool ReplicaChannel::ObserveAndReplicateChanges(
     // Replica channel authority does not match our role?
     if (uint(GetAuthority()) != uint(replicator->GetRole()))
     {
-      // (Sanity check: We should only get here if our replica channel type's
-      // authority mode is dynamic, otherwise this replica channel should not
-      // have even been scheduled for change observation in the first place)
+      // (Sanity check: We should only get here if our replica channel type's authority mode is dynamic,
+      // otherwise this replica channel should not have even been scheduled for change observation in the first place)
       Assert(forceObservation ? true : (replicaChannelType->GetAuthorityMode() == AuthorityMode::Dynamic));
 
       // Success
@@ -226,8 +225,7 @@ bool ReplicaChannel::ObserveAndReplicateChanges(
     // OR Force replication?
     if ((replicaChannelType->GetSerializationFlags() & SerializationFlags::OnChange) || forceReplication)
     {
-      // Create change route (route changes to everyone except the change
-      // authority client)
+      // Create change route (route changes to everyone except the change authority client)
       Route changeRoute = isRelay ? Route(RouteMode::Exclude, replica->GetAuthorityClientReplicatorId()) : Route::All;
 
       // Route replica channel change
@@ -315,8 +313,8 @@ void ReplicaChannel::SetAuthority(Authority::Enum authority)
   if (IsValid() && GetReplicaChannelType()->GetAuthorityMode() == AuthorityMode::Fixed)
   {
     // Unable to modify authority
-    Error("Unable to modify Authority - Replica channel is already valid and "
-          "replica channel type is using a fixed authority mode");
+    Error("Unable to modify Authority - Replica channel is already valid and replica channel type is using a fixed "
+          "authority mode");
     return;
   }
 
@@ -360,8 +358,7 @@ ReplicaProperty* ReplicaChannel::AddReplicaProperty(ReplicaPropertyPtr replicaPr
   if (IsValid())
   {
     // Unable to modify replica property configuration
-    Error("Replica channel is already valid, unable to modify replica property "
-          "configuration");
+    Error("Replica channel is already valid, unable to modify replica property configuration");
     return nullptr;
   }
 
@@ -369,13 +366,11 @@ ReplicaProperty* ReplicaChannel::AddReplicaProperty(ReplicaPropertyPtr replicaPr
   ReplicaPropertySet::pointer_bool_pair result = mReplicaProperties.Insert(replicaProperty);
   if (!result.second) // Unable?
   {
-    Error("Replica channel already has a replica property with that name, "
-          "unable to add replica property");
+    Error("Replica channel already has a replica property with that name, unable to add replica property");
     return nullptr;
   }
 
-  // Set the replica property's operating replica channel now that it's been
-  // added to us
+  // Set the replica property's operating replica channel now that it's been added to us
   (*result.first)->SetReplicaChannel(this);
 
   // Success
@@ -387,8 +382,7 @@ bool ReplicaChannel::RemoveReplicaProperty(const String& replicaPropertyName)
   if (IsValid())
   {
     // Unable to modify replica property configuration
-    Error("Replica channel is already valid, unable to modify replica property "
-          "configuration");
+    Error("Replica channel is already valid, unable to modify replica property configuration");
     return false;
   }
 
@@ -403,8 +397,7 @@ void ReplicaChannel::ClearReplicaProperties()
   if (IsValid())
   {
     // Unable to modify replica property configuration
-    Error("Replica channel is already valid, unable to modify replica property "
-          "configuration");
+    Error("Replica channel is already valid, unable to modify replica property configuration");
     return;
   }
 
@@ -473,8 +466,8 @@ bool ReplicaChannel::Serialize(BitStream& bitStream, ReplicationPhase::Enum repl
   // Get replica channel type
   ReplicaChannelType* replicaChannelType = GetReplicaChannelType();
 
-  // (For the initialization replication phase we want to forcefully serialize
-  // all replica properties to ensure a valid initial value state)
+  // (For the initialization replication phase we want to forcefully serialize all replica properties to ensure a valid
+  // initial value state)
   bool forceAll = (replicationPhase == ReplicationPhase::Initialization);
 
   //    Serialize all replica properties?
@@ -527,8 +520,8 @@ bool ReplicaChannel::Deserialize(const BitStream& bitStream, ReplicationPhase::E
   // Get replica channel type
   ReplicaChannelType* replicaChannelType = GetReplicaChannelType();
 
-  // (For the initialization replication phase we want to forcefully deserialize
-  // all replica properties to ensure a valid initial value state)
+  // (For the initialization replication phase we want to forcefully deserialize all replica properties to ensure a
+  // valid initial value state)
   bool forceAll = (replicationPhase == ReplicationPhase::Initialization);
 
   //    Serialize all replica properties?
@@ -600,8 +593,7 @@ bool ReplicaChannelIndex::IsEmpty() const
 
 void ReplicaChannelIndex::CreateLists(uint count)
 {
-  // (Resizing the populated array can unsafely remove lists containing
-  // channels)
+  // (Resizing the populated array can unsafely remove lists containing channels)
   Assert(IsEmpty());
 
   // Create specified number of lists
@@ -653,8 +645,7 @@ void ReplicaChannelIndex::Insert(ReplicaChannel* channel)
   // Insert channel into smallest list
   (*smallestChannelList)->second.PushBack(channel);
 
-  // Store containing list size pointer on channel (used later when removing the
-  // channel)
+  // Store containing list size pointer on channel (used later when removing the channel)
   channel->mIndexListSize = &(*smallestChannelList)->first;
 
   // Update list channel count
@@ -679,8 +670,7 @@ void ReplicaChannelIndex::Remove(ReplicaChannel* channel)
   // Remove channel from containing list
   ReplicaChannelList::Unlink(channel);
 
-  // Clear containing list size pointer on channel (it is no longer stored in
-  // that list)
+  // Clear containing list size pointer on channel (it is no longer stored in that list)
   channel->mIndexListSize = nullptr;
 
   // Update total channel count
@@ -811,8 +801,8 @@ void ReplicaChannelType::ObserveAndReplicateChanges(ReplicaChannelIndex& replica
     ReplicaChannel& scheduledChannel = scheduledChannels.Front();
 
     // Advance
-    // (We do this here because observing the scheduled replica channel below
-    // may cause it's node to be removed and invalidate our list traversal)
+    // (We do this here because observing the scheduled replica channel below may cause it's node to be removed and
+    // invalidate our list traversal)
     scheduledChannels.PopFront();
 
     // Observe the scheduled replica channel
@@ -842,9 +832,8 @@ void ReplicaChannelType::ScheduleChannel(ReplicaChannel* channel)
     return;
   }
 
-  // (Note: We never schedule channel relays, so we don't consider the relay
-  // case here. Instead we replicate channel relays immediately upon receiving
-  // an incoming change)
+  // (Note: We never schedule channel relays, so we don't consider the relay case here.
+  // Instead we replicate channel relays immediately upon receiving an incoming change)
 
   //     Replica channel authority does not match our role?
   // AND This replica channel type uses a fixed authority mode?

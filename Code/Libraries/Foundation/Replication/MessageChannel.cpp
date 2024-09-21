@@ -10,8 +10,7 @@ MessageChannel::MessageChannel() : mChannelId(0), mTransferMode(TransferMode::Im
 {
 }
 MessageChannel::MessageChannel(MessageChannelId channelId, TransferMode::Enum transferMode) :
-    mChannelId(channelId),
-    mTransferMode(transferMode)
+    mChannelId(channelId), mTransferMode(transferMode)
 {
 }
 
@@ -150,13 +149,11 @@ InMessageChannel& InMessageChannel::operator=(MoveReference<InMessageChannel> rh
 
 bool InMessageChannel::IsDuplicate(const Message& message) const
 {
-  // Whole message already acknowledged? (Whether this message is whole or a
-  // fragment doesn't matter)
+  // Whole message already acknowledged? (Whether this message is whole or a fragment doesn't matter)
   if (mMessageSequence.IsDuplicate(message.GetSequenceId()))
     return true;
 
-  // Fragment message already acknowledged? (This specific fragment has already
-  // been acknowledged?)
+  // Fragment message already acknowledged? (This specific fragment has already been acknowledged?)
   if (message.IsFragment())
   {
     ArraySet<FragmentedMessage>::const_iterator iter = mFragmentedMessages.FindIterator(message.GetSequenceId());
@@ -201,8 +198,7 @@ bool InMessageChannel::Push(MoveReference<Message> message)
     }
   }
 
-  // Channel closed? (And if channel is ordered, allow any outstanding messages
-  // to proceed as normal)
+  // Channel closed? (And if channel is ordered, allow any outstanding messages to proceed as normal)
   if (mClosed && (GetTransferMode() != TransferMode::Ordered || message->GetSequenceId() > mFinalSequenceId))
     return false; // Discard message
 

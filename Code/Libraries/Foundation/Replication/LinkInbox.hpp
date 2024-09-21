@@ -21,8 +21,8 @@ class LinkInbox
   // Incoming Message Channel Management
   //
 
-  /// Returns the incoming message channel corresponding to the specified
-  /// message channel ID open on this link, else nullptr
+  /// Returns the incoming message channel corresponding to the specified message channel ID open on this link, else
+  /// nullptr
   InMessageChannel* GetIncomingChannel(MessageChannelId channelId) const;
   /// Returns all incoming message channels open on this link
   ArraySet<InMessageChannel>::range GetIncomingChannels() const;
@@ -60,17 +60,14 @@ class LinkInbox
   Array<InPacket> mReceivedPackets;                   /// Received packets
   TimeMs mLastReceiveTime;                            /// Last packet receive time
   PacketSequence mIncomingPacketSequence;             /// Incoming packet sequence record
-  TimeMs mLastOutPacketSequenceHistorySendTime;       /// Last outgoing packet
-                                                      /// sequence history send time
-  PacketSequenceId mLastOutPacketSequenceHistoryNESQ; /// Last outgoing packet sequence
-                                                      /// history next expected sequence ID
-  PacketSequenceId mLastInPacketSequenceHistoryNESQ;  /// Last incoming packet sequence
-                                                      /// history next expected sequence ID
+  TimeMs mLastOutPacketSequenceHistorySendTime; /// Last outgoing packet sequence history send time
+  PacketSequenceId
+      mLastOutPacketSequenceHistoryNESQ;             /// Last outgoing packet sequence history next expected sequence ID
+  PacketSequenceId mLastInPacketSequenceHistoryNESQ; /// Last incoming packet sequence history next expected sequence ID
 
   /// Channel Data
   InMessageChannel mCustomDefaultChannel;   /// Incoming default (zero) custom message channel
-  InMessageChannel mProtocolDefaultChannel; /// Incoming default (zero) protocol
-                                            /// message channel
+  InMessageChannel mProtocolDefaultChannel; /// Incoming default (zero) protocol message channel
   ArraySet<InMessageChannel> mChannels;     /// Incoming (non-zero) message channels
 
   /// Message Data

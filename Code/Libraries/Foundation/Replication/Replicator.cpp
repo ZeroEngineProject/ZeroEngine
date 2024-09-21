@@ -387,8 +387,8 @@ bool Replicator::EmplaceReplica(Replica* replica, const EmplaceContext& emplaceC
 bool Replicator::EmplaceReplicas(const ReplicaArray& replicas, const EmplaceContext& emplaceContext)
 {
   // (All replicas should be invalid)
-  // (Hitting an assert here usually means an incorrect assumption was made in
-  // the calling logic about a replica's state)
+  // (Hitting an assert here usually means an incorrect assumption was made in the calling logic about a replica's
+  // state)
   AssertReplicas(replicas, replica->IsInvalid(), "");
   AssertReplicas(replicas, replica->GetInitializationTimestamp() == cInvalidMessageTimestamp, "");
   AssertReplicas(replicas, replica->GetUninitializationTimestamp() == cInvalidMessageTimestamp, "");
@@ -418,8 +418,8 @@ bool Replicator::SpawnReplicas(const ReplicaArray& replicas, const Route& route)
   Assert(GetRole() == Role::Server);
 
   // (All replicas should be invalid)
-  // (Hitting an assert here usually means an incorrect assumption was made in
-  // the calling logic about a replica's state)
+  // (Hitting an assert here usually means an incorrect assumption was made in the calling logic about a replica's
+  // state)
   AssertReplicas(replicas, replica->IsInvalid(), "");
   AssertReplicas(replicas, replica->GetInitializationTimestamp() == cInvalidMessageTimestamp, "");
   AssertReplicas(replicas, replica->GetUninitializationTimestamp() == cInvalidMessageTimestamp, "");
@@ -452,8 +452,8 @@ bool Replicator::CloneReplicas(const ReplicaArray& replicas, const Route& route)
   Assert(GetRole() == Role::Server);
 
   // (All replicas should be live)
-  // (Hitting an assert here usually means an incorrect assumption was made in
-  // the calling logic about a replica's state)
+  // (Hitting an assert here usually means an incorrect assumption was made in the calling logic about a replica's
+  // state)
   AssertReplicas(replicas, replica->IsLive(), "");
   AssertReplicas(replicas, replica->GetInitializationTimestamp() != cInvalidMessageTimestamp, "");
   AssertReplicas(replicas, replica->GetUninitializationTimestamp() == cInvalidMessageTimestamp, "");
@@ -483,8 +483,8 @@ bool Replicator::ForgetReplica(Replica* replica, const Route& route)
 bool Replicator::ForgetReplicas(const ReplicaArray& replicas, const Route& route)
 {
   // (All replicas should be valid (if client) or live (if server))
-  // (Hitting an assert here usually means an incorrect assumption was made in
-  // the calling logic about a replica's state)
+  // (Hitting an assert here usually means an incorrect assumption was made in the calling logic about a replica's
+  // state)
   AssertReplicas(replicas, GetRole() == Role::Client ? replica->IsValid() : replica->IsLive(), "");
   AssertReplicas(replicas,
                  GetRole() == Role::Client ? true : replica->GetInitializationTimestamp() != cInvalidMessageTimestamp,
@@ -529,8 +529,8 @@ bool Replicator::DestroyReplicas(const ReplicaArray& replicas, const Route& rout
   Assert(GetRole() == Role::Server);
 
   // (All replicas should be live)
-  // (Hitting an assert here usually means an incorrect assumption was made in
-  // the calling logic about a replica's state)
+  // (Hitting an assert here usually means an incorrect assumption was made in the calling logic about a replica's
+  // state)
   AssertReplicas(replicas, replica->IsLive(), "");
   AssertReplicas(replicas, replica->GetInitializationTimestamp() != cInvalidMessageTimestamp, "");
   AssertReplicas(replicas, replica->GetUninitializationTimestamp() == cInvalidMessageTimestamp, "");
@@ -627,8 +627,7 @@ ReplicaChannelType* Replicator::AddReplicaChannelType(ReplicaChannelTypePtr repl
   ReplicaChannelTypeSet::pointer_bool_pair result = mReplicaChannelTypes.Insert(replicaChannelType);
   if (result.second) // Successful?
   {
-    // Make the replica channel type valid now that it's registered with our
-    // replicator
+    // Make the replica channel type valid now that it's registered with our replicator
     (*result.first)->MakeValid(this);
 
     // Success
@@ -686,8 +685,7 @@ ReplicaPropertyType* Replicator::AddReplicaPropertyType(ReplicaPropertyTypePtr r
   ReplicaPropertyTypeSet::pointer_bool_pair result = mReplicaPropertyTypes.Insert(replicaPropertyType);
   if (result.second) // Successful?
   {
-    // Make the replica property type valid now that it's registered with our
-    // replicator
+    // Make the replica property type valid now that it's registered with our replicator
     (*result.first)->MakeValid(this);
 
     // Success
@@ -731,8 +729,8 @@ void Replicator::LiveReplica(Replica* replica)
     // Schedule replica channel for change observation (as needed)
     replicaChannel->GetReplicaChannelType()->ScheduleChannel(replicaChannel);
 
-    // (Scheduling replica properties for change convergence occurs once its
-    // first change is received, so there's nothing to do here)
+    // (Scheduling replica properties for change convergence occurs once its first change is received, so there's
+    // nothing to do here)
   }
 
   // User callback
@@ -1185,8 +1183,8 @@ TimeMs Replicator::GetInitializationTimestamp(const ReplicaArray& replicas)
 #ifdef ZeroDebug
 
   // Verify all replica timestamps are the same
-  // (We only serialize a single timestamp for all replicas in the replication
-  // command, so we're assuming they're all the same!)
+  // (We only serialize a single timestamp for all replicas in the replication command, so we're assuming they're all
+  // the same!)
   forRange (Replica* replica1, replicas.All())
     forRange (Replica* replica2, replicas.All())
       if ((replica1 && replica2) && (replica1->GetInitializationTimestamp() != replica2->GetInitializationTimestamp()))
@@ -1205,8 +1203,8 @@ TimeMs Replicator::GetUninitializationTimestamp(const ReplicaArray& replicas)
 #ifdef ZeroDebug
 
   // Verify all replica timestamps are the same
-  // (We only serialize a single timestamp for all replicas in the replication
-  // command, so we're assuming they're all the same!)
+  // (We only serialize a single timestamp for all replicas in the replication command, so we're assuming they're all
+  // the same!)
   forRange (Replica* replica1, replicas.All())
     forRange (Replica* replica2, replicas.All())
       if ((replica1 && replica2) &&
@@ -1325,10 +1323,9 @@ bool Replicator::HandleEmplace(const ReplicaArray& replicas, const EmplaceContex
     }
 
     // Handle initial replica channel property values
-    // (Generate replica channel property changed notifications only if we're
-    // the server) (Because emplacements on the server make the object live
-    // immediately, but not on the client where theirs occurs on receiving an
-    // incoming clone)
+    // (Generate replica channel property changed notifications only if we're the server)
+    // (Because emplacements on the server make the object live immediately, but not on the client where theirs occurs
+    // on receiving an incoming clone)
     replica->ReactToChannelPropertyChanges(
         timestamp, ReplicationPhase::Initialization, TransmissionDirection::Outgoing, (GetRole() == Role::Server));
   }
@@ -1826,8 +1823,7 @@ bool Replicator::RouteChange(ReplicaChannel* replicaChannel, const Route& route,
 
       // Has replica remotely?
       if (replicatorLink->HasReplica(replica))
-        replicatorLink->SendChange(replicaChannel,
-                                   message); // Send replica channel change
+        replicatorLink->SendChange(replicaChannel, message); // Send replica channel change
     }
   }
 
@@ -1963,8 +1959,7 @@ void Replicator::OnUpdate()
   // For all replica channel types
   forRange (ReplicaChannelTypePtr& replicaChannelType, mReplicaChannelTypes.All())
   {
-    // Observe all scheduled replica channels of this type and replicate any
-    // changes
+    // Observe all scheduled replica channels of this type and replicate any changes
     replicaChannelType->ObserveAndReplicateChanges();
   }
 

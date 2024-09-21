@@ -91,7 +91,7 @@ ArraySet<InMessageChannel>::range LinkInbox::GetIncomingChannels() const
 }
 uint LinkInbox::GetIncomingChannelCount() const
 {
-  return mChannels.Size();
+  return (uint)mChannels.Size();
 }
 
 //
@@ -120,8 +120,7 @@ void LinkInbox::ReceivePacket(MoveReference<InPacket> packet)
     // Convert to local timestamp
     TimeMs localTimestamp = mLink->RemoteToLocalTime(remoteTimestamp);
 
-    // Set local timestamp (later logic assumes timestamps are always in local
-    // time)
+    // Set local timestamp (later logic assumes timestamps are always in local time)
     message.SetTimestamp(localTimestamp);
   }
 
@@ -292,8 +291,7 @@ void LinkInbox::Update(ACKArray& remoteACKs, NAKArray& remoteNAKs)
       // Update Channel
       //
 
-      // (Take released messages and erase the channel if it's ready to be
-      // deleted)
+      // (Take released messages and erase the channel if it's ready to be deleted)
 
       // Non-default (non-zero) channel?
       if (channelId != 0)

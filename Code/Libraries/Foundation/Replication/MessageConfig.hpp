@@ -8,13 +8,12 @@
 //                           Message Configuration //
 
 /// Minimum message fragment data size
-/// Determines the threshold at which fragmentation may be preferred and
-/// fragment index count
+/// Determines the threshold at which fragmentation may be preferred and fragment index count
 #define MESSAGE_MIN_FRAGMENT_DATA_BYTES POW2(5)
 StaticAssertWithinRange(Range1, MESSAGE_MIN_FRAGMENT_DATA_BYTES, 1, BITSTREAM_MAX_BYTES);
 
-/// Maximum message whole data size (original data size before any fragmentation
-/// occurs) Determines the maximum data size and fragment index count
+/// Maximum message whole data size (original data size before any fragmentation occurs)
+/// Determines the maximum data size and fragment index count
 #define MESSAGE_MAX_WHOLE_DATA_BYTES POW2(24)
 StaticAssertWithinRange(Range2, MESSAGE_MAX_WHOLE_DATA_BYTES, MESSAGE_MIN_FRAGMENT_DATA_BYTES, BITSTREAM_MAX_BYTES);
 
@@ -24,20 +23,17 @@ StaticAssertWithinRange(Range2, MESSAGE_MAX_WHOLE_DATA_BYTES, MESSAGE_MIN_FRAGME
 StaticAssertWithinRange(Range3, MESSAGE_TYPE_BITS, 1, UINTMAX_BITS);
 
 /// Message timestamp bits
-/// Determines the signed timestamp range (in milliseconds) that can be
-/// represented on a message
+/// Determines the signed timestamp range (in milliseconds) that can be represented on a message
 #define MESSAGE_TIMESTAMP_BITS 40
 StaticAssertWithinRange(Range16, MESSAGE_TIMESTAMP_BITS, 1, UINTMAX_BITS);
 
 /// Message channel ID bits
-/// Determines the maximum number of outgoing and incoming message channels
-/// (separately, not combined)
+/// Determines the maximum number of outgoing and incoming message channels (separately, not combined)
 #define MESSAGE_CHANNEL_ID_BITS 16
 StaticAssertWithinRange(Range4, MESSAGE_CHANNEL_ID_BITS, 1, UINTMAX_BITS);
 
 /// Message channel sequence message ID bits
-/// Determines the maximum number of sequence message IDs before wrap-around
-/// occurs
+/// Determines the maximum number of sequence message IDs before wrap-around occurs
 #define MESSAGE_SEQUENCE_ID_BITS 16
 StaticAssertWithinRange(Range5, MESSAGE_SEQUENCE_ID_BITS, 1, UINTMAX_BITS);
 
@@ -139,8 +135,8 @@ static const TimeMs cInvalidMessageTimestamp = std::numeric_limits<TimeMs>::min(
 // (Sanity check)
 static const Bits MessageTimestampBitsNeeded = BITS_NEEDED_TO_REPRESENT(MessageTimestampRange);
 static_assert(MessageTimestampBits == MessageTimestampBitsNeeded,
-              "Declared message timestamp bits do not match the actual bits "
-              "needed to represent the declared message timestamp range");
+              "Declared message timestamp bits do not match the actual bits needed to represent the declared message "
+              "timestamp range");
 
 //                            Message Fragment Index //
 

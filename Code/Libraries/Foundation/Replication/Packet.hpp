@@ -70,15 +70,13 @@ public:
   // Member Functions
   //
 
-  /// Returns true if this is a standalone packet (not sent by a link), else
-  /// false
+  /// Returns true if this is a standalone packet (not sent by a link), else false
   bool IsStandalone() const;
 
   /// Returns the packet's sequence ID
   PacketSequenceId GetSequenceId() const;
 
-  /// Returns the packet's current header bits as it currently would result in
-  /// when serialized
+  /// Returns the packet's current header bits as it currently would result in when serialized
   Bits GetHeaderBits() const;
 
   /// Source/Destination IP address
@@ -230,8 +228,7 @@ Bits Serialize<InPacket>(SerializeDirection::Enum direction, BitStream& bitStrea
 //                               Packet Constants //
 
 /// Maximum packet size (packet header size + data)
-/// Might work but it's likely the IPv4/IPv6 + UDP header will contain more
-/// options than the minimum
+/// Might work but it's likely the IPv4/IPv6 + UDP header will contain more options than the minimum
 static const Bits MaxPacketBits = BYTES_TO_BITS(EthernetMtuBytes - Ipv4MinHeaderBytes - UdpHeaderBytes);
 static const Bytes MaxPacketBytes = BITS_TO_BYTES(MaxPacketBits);
 /// Typical packet size (packet header size + data)
@@ -239,8 +236,7 @@ static const Bytes MaxPacketBytes = BITS_TO_BYTES(MaxPacketBits);
 static const Bits TypicalPacketBits = BYTES_TO_BITS(Ipv4MinMtuBytes - Ipv4MaxHeaderBytes - UdpHeaderBytes);
 static const Bytes TypicalPacketBytes = BITS_TO_BYTES(TypicalPacketBits);
 /// Minimum packet size (packet header size + data)
-/// Our peer protocol requires at least one minimum sized message fragment be
-/// able to fit into every packet
+/// Our peer protocol requires at least one minimum sized message fragment be able to fit into every packet
 static const Bits MinPacketBits = MaxPacketHeaderBits + MaxMessageHeaderBits + MinMessageFragmentDataBits;
 static const Bytes MinPacketBytes = BITS_TO_BYTES(MinPacketBits);
 

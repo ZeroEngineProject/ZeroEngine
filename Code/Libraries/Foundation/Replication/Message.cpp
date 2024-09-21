@@ -517,8 +517,7 @@ bool OutMessage::operator<(const OutMessage& rhs) const
 {
   //
   // Sorted by message type category (protocol > custom), then priority.
-  // Relative chronological ordering is expected to be maintained implicitly by
-  // the container.
+  // Relative chronological ordering is expected to be maintained implicitly by the container.
   //
 
   // Message type category: protocol vs custom?
@@ -613,8 +612,7 @@ FragmentedMessage::FragmentedMessage(MoveReference<Message> fragment) : mFragmen
 }
 
 FragmentedMessage::FragmentedMessage(MoveReference<FragmentedMessage> rhs) :
-    mFragments(ZeroMove(rhs->mFragments)),
-    mFinalFragmentIndex(rhs->mFinalFragmentIndex)
+    mFragments(ZeroMove(rhs->mFragments)), mFinalFragmentIndex(rhs->mFinalFragmentIndex)
 {
 }
 
@@ -657,8 +655,8 @@ void FragmentedMessage::Add(MoveReference<Message> fragment)
   //     Should be a fragment,
   // and Whole Message SequenceNumber should match,
   // and Should not be a duplicate fragment,
-  // and If we have a final fragment, this fragment neither claims to be the
-  // final fragment and it's index is less than the final fragment index.
+  // and If we have a final fragment, this fragment neither claims to be the final fragment and it's index is less than
+  // the final fragment index.
   Assert(fragment->IsFragment() && fragment->GetSequenceId() == mFragments.Front().GetSequenceId() &&
          !IsDuplicate(*fragment) &&
          (mFinalFragmentIndex != 0

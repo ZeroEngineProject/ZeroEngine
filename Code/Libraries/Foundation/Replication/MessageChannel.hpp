@@ -111,8 +111,7 @@ private:
   void Open();
   /// Closes the channel
   void Close(MessageSequenceId finalSequenceId);
-  /// Returns true if the channel is already closed (may not be ready for
-  /// deletion, but has been closed)
+  /// Returns true if the channel is already closed (may not be ready for deletion, but has been closed)
   bool IsClosed();
 
   /// Returns true if the channel is ready to be deleted, else false

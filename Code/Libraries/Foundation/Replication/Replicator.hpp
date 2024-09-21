@@ -33,31 +33,25 @@ public:
   /// Returns our replicator ID
   ReplicatorId GetReplicatorId() const;
 
-  /// Returns true if there is a connected replicator link with the specified IP
-  /// address, else false
+  /// Returns true if there is a connected replicator link with the specified IP address, else false
   bool HasLink(const IpAddress& ipAddress) const;
-  /// Returns true if there is a connected replicator link with the specified
-  /// replicator ID, else false
+  /// Returns true if there is a connected replicator link with the specified replicator ID, else false
   bool HasLink(ReplicatorId replicatorId) const;
-  /// Returns true if there are connected replicator links in the specified
-  /// route, else false
+  /// Returns true if there are connected replicator links in the specified route, else false
   bool HasLinks(const Route& route) const;
   /// Returns true if there are connected replicator links, else false
   bool HasLinks() const;
 
-  /// Returns the connected replicator link with the specified IP address, else
-  /// nullptr
+  /// Returns the connected replicator link with the specified IP address, else nullptr
   PeerLink* GetLink(const IpAddress& ipAddress) const;
-  /// Returns the connected replicator link with the specified replicator ID,
-  /// else nullptr
+  /// Returns the connected replicator link with the specified replicator ID, else nullptr
   PeerLink* GetLink(ReplicatorId replicatorId) const;
   /// Returns the connected replicator links in the specified route
   PeerLinkSet GetLinks(const Route& route) const;
   /// Returns all connected replicator links
   PeerLinkSet GetLinks() const;
 
-  /// Sends a reliable user message over the ordered command channel remotely
-  /// along the route
+  /// Sends a reliable user message over the ordered command channel remotely along the route
   void Send(Status& status, const Message& message, const Route& route = Route::All);
 
   /// Sets optional user data
@@ -77,17 +71,13 @@ public:
   /// Returns true if the specified live replica is known locally, else false
   bool HasReplica(ReplicaId replicaId) const;
   bool HasReplica(Replica* replica) const;
-  /// Returns true if there are any replicas in the specified create context
-  /// known locally, else false
+  /// Returns true if there are any replicas in the specified create context known locally, else false
   bool HasReplicasByCreateContext(const CreateContext& createContext) const;
-  /// Returns true if there are any live replicas of the specified replica type
-  /// known locally, else false
+  /// Returns true if there are any live replicas of the specified replica type known locally, else false
   bool HasReplicasByReplicaType(const ReplicaType& replicaType) const;
-  /// Returns true if there are any replicas in the specified emplace context
-  /// known locally, else false
+  /// Returns true if there are any replicas in the specified emplace context known locally, else false
   bool HasReplicasByEmplaceContext(const EmplaceContext& emplaceContext) const;
-  /// Returns true if the replica in the specified emplace context is known
-  /// locally, else false
+  /// Returns true if the replica in the specified emplace context is known locally, else false
   bool HasReplicaByEmplaceContext(const EmplaceContext& emplaceContext, EmplaceId emplaceId) const;
   /// Returns true if there are any live replicas known locally, else false
   bool HasReplicas() const;
@@ -101,20 +91,16 @@ public:
   ReplicaSet GetReplicasByReplicaType(const ReplicaType& replicaType) const;
   /// Returns all replicas in the specified emplace context known locally
   ReplicaSet GetReplicasByEmplaceContext(const EmplaceContext& emplaceContext) const;
-  /// Returns the replica in the specified emplace context if it is known
-  /// locally, else nullptr
+  /// Returns the replica in the specified emplace context if it is known locally, else nullptr
   Replica* GetReplicaByEmplaceContext(const EmplaceContext& emplaceContext, EmplaceId emplaceId) const;
   /// Returns all live replicas known locally
   const ReplicaSet& GetReplicas() const;
 
-  /// Returns the number of replicas in the specified create context known
-  /// locally
+  /// Returns the number of replicas in the specified create context known locally
   size_t GetReplicaCountByCreateContext(const CreateContext& createContext) const;
-  /// Returns the number of live replicas of the specified replica type known
-  /// locally
+  /// Returns the number of live replicas of the specified replica type known locally
   size_t GetReplicaCountByReplicaType(const ReplicaType& replicaType) const;
-  /// Returns the number of replicas in the specified emplace context known
-  /// locally
+  /// Returns the number of replicas in the specified emplace context known locally
   size_t GetReplicaCountByEmplaceContext(const EmplaceContext& emplaceContext) const;
   /// Returns the number of live replicas known locally
   size_t GetReplicaCount() const;
@@ -125,40 +111,35 @@ public:
 
   /// Emplaces the invalid replica in the emplace context locally
   /// [Client] This makes the replica valid
-  /// [Server] This makes the replica live, ready to be cloned to clients who
-  /// already have emplaced this replica remotely Returns true if successful,
-  /// else false
+  /// [Server] This makes the replica live, ready to be cloned to clients who already have emplaced this replica
+  /// remotely Returns true if successful, else false
   bool EmplaceReplica(Replica* replica, const EmplaceContext& emplaceContext);
   /// Emplaces the invalid replicas in the emplace context locally
   /// [Client] This makes the replicas valid
-  /// [Server] This makes the replicas live, ready to be cloned to clients who
-  /// already have emplaced these replica remotely Returns true if successful,
-  /// else false
+  /// [Server] This makes the replicas live, ready to be cloned to clients who already have emplaced these replica
+  /// remotely Returns true if successful, else false
   bool EmplaceReplicas(const ReplicaArray& replicas, const EmplaceContext& emplaceContext);
 
   /// [Server] Spawns the invalid replica locally and remotely along the route
-  /// This makes the replica live, ready to be cloned to clients who do not have
-  /// this replica remotely Returns true if successful, else false
+  /// This makes the replica live, ready to be cloned to clients who do not have this replica remotely
+  /// Returns true if successful, else false
   bool SpawnReplica(Replica* replica, const Route& route = Route::All);
   /// [Server] Spawns the invalid replicas locally and remotely along the route
-  /// This makes the replicas live, ready to be cloned to clients who do not
-  /// have these replicas remotely Returns true if successful, else false
+  /// This makes the replicas live, ready to be cloned to clients who do not have these replicas remotely
+  /// Returns true if successful, else false
   bool SpawnReplicas(const ReplicaArray& replicas, const Route& route = Route::All);
 
   /// [Server] Clones the live replica remotely along the route
-  /// If emplaced, this makes the valid replica live remotely, if spawned, this
-  /// creates the replica and makes it live remotely Returns true if successful,
-  /// else false
+  /// If emplaced, this makes the valid replica live remotely, if spawned, this creates the replica and makes it live
+  /// remotely Returns true if successful, else false
   bool CloneReplica(Replica* replica, const Route& route = Route::All);
   /// [Server] Clones the live replicas remotely along the route
-  /// If emplaced, this makes the valid replicas live remotely, if spawned, this
-  /// creates the replicas and makes them live remotely Returns true if
-  /// successful, else false
+  /// If emplaced, this makes the valid replicas live remotely, if spawned, this creates the replicas and makes them
+  /// live remotely Returns true if successful, else false
   bool CloneReplicas(const ReplicaArray& replicas, const Route& route = Route::All);
   /// [Server] Clones all live replicas remotely along the route
-  /// If emplaced, this makes the valid replicas live remotely, if spawned, this
-  /// creates the replicas and makes them live remotely Note: Behavior may not
-  /// be as expected if UseHeirarchySpawnOptimization is enabled Returns true if
+  /// If emplaced, this makes the valid replicas live remotely, if spawned, this creates the replicas and makes them
+  /// live remotely Note: Behavior may not be as expected if UseHeirarchySpawnOptimization is enabled Returns true if
   /// successful, else false
   bool CloneAllReplicas(const Route& route = Route::All);
 
@@ -179,23 +160,22 @@ public:
   bool ForgetAllReplicas(const Route& route = Route::All);
 
   /// [Server] Destroys the live replica locally and remotely along the route
-  /// Locally, this only makes the replica invalid, remotely, this makes the
-  /// replica invalid and deletes it Returns true if successful, else false
+  /// Locally, this only makes the replica invalid, remotely, this makes the replica invalid and deletes it
+  /// Returns true if successful, else false
   bool DestroyReplica(Replica* replica, const Route& route = Route::All);
   /// [Server] Destroys the live replicas locally and remotely along the route
-  /// Locally, this only makes the replicas invalid, remotely, this makes the
-  /// replicas invalid and deletes them Returns true if successful, else false
+  /// Locally, this only makes the replicas invalid, remotely, this makes the replicas invalid and deletes them
+  /// Returns true if successful, else false
   bool DestroyReplicas(const ReplicaArray& replicas, const Route& route = Route::All);
   /// [Server] Destroys all live replicas locally and remotely along the route
-  /// Locally, this only makes the replicas invalid, remotely, this makes the
-  /// replicas invalid and deletes them Returns true if successful, else false
+  /// Locally, this only makes the replicas invalid, remotely, this makes the replicas invalid and deletes them
+  /// Returns true if successful, else false
   bool DestroyAllReplicas(const Route& route = Route::All);
 
   /// [Server] Interrupts the current step remotely along the route
-  /// When received, custom message processing stops for the current step and is
-  /// resumed next step Designed to support fixed frame-delay behavior without
-  /// introducing an explicit handshake sequence Returns true if successful,
-  /// else false
+  /// When received, custom message processing stops for the current step and is resumed next step
+  /// Designed to support fixed frame-delay behavior without introducing an explicit handshake sequence
+  /// Returns true if successful, else false
   bool Interrupt(const Route& route = Route::All);
 
   //
@@ -205,13 +185,13 @@ public:
   /// Resets all configuration settings
   void ResetConfig();
 
-  /// Controls when the user will be warned of their current frame's outgoing
-  /// bandwidth utilization ratio on any given link
+  /// Controls when the user will be warned of their current frame's outgoing bandwidth utilization ratio on any given
+  /// link
   void SetFrameFillWarning(float frameFillWarning = 0.8);
   float GetFrameFillWarning() const;
 
-  /// Controls when to skip change replication for the current frame because of
-  /// remaining outgoing bandwidth utilization ratio on any given link
+  /// Controls when to skip change replication for the current frame because of remaining outgoing bandwidth utilization
+  /// ratio on any given link
   void SetFrameFillSkip(float frameFillSkip = 0.9);
   float GetFrameFillSkip() const;
 
@@ -219,8 +199,7 @@ public:
   // Replica Channel Type Management
   //
 
-  /// Returns true if the replicator has the specified replica channel type,
-  /// else false
+  /// Returns true if the replicator has the specified replica channel type, else false
   bool HasReplicaChannelType(const String& replicaChannelTypeName) const;
   /// Returns the specified replica channel type, else nullptr
   const ReplicaChannelType* GetReplicaChannelType(const String& replicaChannelTypeName) const;
@@ -230,26 +209,22 @@ public:
   ReplicaChannelTypeSet& GetReplicaChannelTypes();
 
   /// Adds the replica channel type
-  /// Returns the replica channel type if successful, else nullptr (a replica
-  /// channel type of that name already exists)
+  /// Returns the replica channel type if successful, else nullptr (a replica channel type of that name already exists)
   ReplicaChannelType* AddReplicaChannelType(ReplicaChannelTypePtr replicaChannelType);
   /// Removes the specified replica channel type
-  /// (Note: Not safe to call while the replica channel type is in use by
-  /// replica channels!) Returns true if successful, else false (a replica
-  /// channel type of that name could not be found)
+  /// (Note: Not safe to call while the replica channel type is in use by replica channels!)
+  /// Returns true if successful, else false (a replica channel type of that name could not be found)
   bool RemoveReplicaChannelType(const String& replicaChannelTypeName);
 
   /// Removes all replica channel types
-  /// (Note: Not safe to call while the replica channel types are in use by
-  /// replica channels!)
+  /// (Note: Not safe to call while the replica channel types are in use by replica channels!)
   void ClearReplicaChannelTypes();
 
   //
   // Replica Property Type Management
   //
 
-  /// Returns true if the replicator has the specified replica property type,
-  /// else false
+  /// Returns true if the replicator has the specified replica property type, else false
   bool HasReplicaPropertyType(const String& replicaPropertyTypeName) const;
   /// Returns the specified replica property type, else nullptr
   const ReplicaPropertyType* GetReplicaPropertyType(const String& replicaPropertyTypeName) const;
@@ -259,18 +234,16 @@ public:
   ReplicaPropertyTypeSet& GetReplicaPropertyTypes();
 
   /// Adds the replica property type
-  /// Returns the replica property type if successful, else nullptr (a replica
-  /// property type of that name already exists)
+  /// Returns the replica property type if successful, else nullptr (a replica property type of that name already
+  /// exists)
   ReplicaPropertyType* AddReplicaPropertyType(ReplicaPropertyTypePtr replicaPropertyType);
   /// Removes the specified replica property type
-  /// (Note: Not safe to call while the replica property type is in use by
-  /// replica properties!) Returns true if successful, else false (a replica
-  /// property type of that name could not be found)
+  /// (Note: Not safe to call while the replica property type is in use by replica properties!)
+  /// Returns true if successful, else false (a replica property type of that name could not be found)
   bool RemoveReplicaPropertyType(const String& replicaPropertyTypeName);
 
   /// Removes all replica property types
-  /// (Note: Not safe to call while the replica property types are in use by
-  /// replica properties!)
+  /// (Note: Not safe to call while the replica property types are in use by replica properties!)
   void ClearReplicaPropertyTypes();
 
   //
@@ -278,19 +251,18 @@ public:
   //
 
   /// Serializes replicas to a replica stream
-  /// Gaps may be represented as null replicas and additional data may be
-  /// serialized as needed Returns true if successful, else false
+  /// Gaps may be represented as null replicas and additional data may be serialized as needed
+  /// Returns true if successful, else false
   virtual bool SerializeReplicas(const ReplicaArray& replicas, ReplicaStream& replicaStream) = 0;
   /// Deserializes replicas from a replica stream
-  /// Creates or finds replicas as necessary depending on replica info and the
-  /// replica stream mode Gaps may be represented as null replicas and
-  /// additional data may be deserialized as needed Returns true if successful,
-  /// else false
+  /// Creates or finds replicas as necessary depending on replica info and the replica stream mode
+  /// Gaps may be represented as null replicas and additional data may be deserialized as needed
+  /// Returns true if successful, else false
   virtual bool DeserializeReplicas(const ReplicaStream& replicaStream, ReplicaArray& replicas) = 0;
 
-  /// Deletes invalid replicas (if they were originally spawned, otherwise do
-  /// nothing) Gaps may be represented as null replicas Returns true if
-  /// successful, else false
+  /// Deletes invalid replicas (if they were originally spawned, otherwise do nothing)
+  /// Gaps may be represented as null replicas
+  /// Returns true if successful, else false
   virtual bool ReleaseReplicas(const ReplicaArray& replicas) = 0;
 
   /// Called before a replica is made valid (registered with the replicator)
@@ -298,8 +270,7 @@ public:
   virtual void OnValidReplica(Replica* replica)
   {
   }
-  /// Called after a replica is made live (assigned a replica ID by the server
-  /// replicator)
+  /// Called after a replica is made live (assigned a replica ID by the server replicator)
   void LiveReplica(Replica* replica);
   virtual void OnLiveReplica(Replica* replica)
   {
@@ -310,8 +281,8 @@ public:
   {
   }
 
-  /// Called after a replica channel property has legitimately changed,
-  /// determined using comparisons, in a particular replication phase
+  /// Called after a replica channel property has legitimately changed, determined using comparisons, in a particular
+  /// replication phase
   virtual void OnReplicaChannelPropertyChange(TimeMs timestamp,
                                               ReplicationPhase::Enum replicationPhase,
                                               Replica* replica,
@@ -343,9 +314,8 @@ public:
   {
   }
   /// [Client] Called after receiving a connect response
-  /// If accepted, our replicator ID is set immediately before this and a
-  /// connect confirmation is sent after this If denied, our replicator ID is
-  /// cleared and link is destroyed immediately after this
+  /// If accepted, our replicator ID is set immediately before this and a connect confirmation is sent after this
+  /// If denied, our replicator ID is cleared and link is destroyed immediately after this
   virtual BitStream ClientOnConnectResponse(ReplicatorLink* link, ConnectResponseData& connectResponseData)
   {
     return BitStream();
@@ -370,8 +340,7 @@ public:
     return Pair<bool, BitStream>(true, BitStream());
   }
   /// [Server] Called after sending a connect response
-  /// If denied, their replicator ID is released and link is destroyed
-  /// immediately after this
+  /// If denied, their replicator ID is released and link is destroyed immediately after this
   virtual void ServerOnConnectResponse(ReplicatorLink* link, ConnectResponseData& connectResponseData)
   {
   }
@@ -380,8 +349,7 @@ public:
   {
   }
   /// [Server] Called after sending or receiving a disconnect notice
-  /// Their replicator ID is released and link is destroyed immediately after
-  /// this
+  /// Their replicator ID is released and link is destroyed immediately after this
   virtual void ServerOnDisconnectNotice(ReplicatorLink* link,
                                         DisconnectNoticeData& disconnectNoticeData,
                                         TransmissionDirection::Enum direction)
@@ -454,14 +422,13 @@ public:
   // Replication Helpers
   //
 
-  /// Returns true if the message should include an accurate local timestamp,
-  /// else false (a timestamp will be estimated by the remote peer)
+  /// Returns true if the message should include an accurate local timestamp, else false (a timestamp will be estimated
+  /// by the remote peer)
   static bool ShouldIncludeAccurateTimestampOnInitialization(const ReplicaArray& replicas);
   static bool ShouldIncludeAccurateTimestampOnUninitialization(const ReplicaArray& replicas);
   static bool ShouldIncludeAccurateTimestampOnChange(ReplicaChannel* replicaChannel);
 
-  /// Returns the first appropriate timestamp found in the replicas array, else
-  /// cInvalidMessageTimestamp
+  /// Returns the first appropriate timestamp found in the replicas array, else cInvalidMessageTimestamp
   static TimeMs GetInitializationTimestamp(const ReplicaArray& replicas);
   static TimeMs GetUninitializationTimestamp(const ReplicaArray& replicas);
 
@@ -512,8 +479,7 @@ public:
   // Peer Plugin Interface
   //
 
-  /// Return true if this peer plugin should be deleted after being removed,
-  /// else false
+  /// Return true if this peer plugin should be deleted after being removed, else false
   bool ShouldDeleteAfterRemoval() override;
 
   /// Called after the peer is opened, before the peer plugin is added
@@ -547,9 +513,7 @@ public:
   public:
     /// Constructor
     ItemCacher(Replicator* replicator, ReplicatorMessageType::Enum replicatorMessageType) :
-        ItemCache(),
-        mReplicator(replicator),
-        mReplicatorMessageType(replicatorMessageType)
+        ItemCache(), mReplicator(replicator), mReplicatorMessageType(replicatorMessageType)
     {
     }
 
@@ -608,8 +572,7 @@ public:
 
       // Map ID to item
       if (!ItemCache::MapIdOverwrite(id, item)) // Performed an overwrite?
-        Warn("Potential error when mapping ID to item - Overwrite performed "
-             "instead of an Insert");
+        Warn("Potential error when mapping ID to item - Overwrite performed instead of an Insert");
 
       Assert(IsIdMapped(id));
     }
@@ -714,8 +677,7 @@ public:
 
         // Read item
         Item item;
-        if (!SerializeUnknownBasicVariant(SerializeDirection::Read, const_cast<BitStream&>(bitStream),
-                                          item)) // Unable?
+        if (!SerializeUnknownBasicVariant(SerializeDirection::Read, const_cast<BitStream&>(bitStream), item)) // Unable?
         {
           Assert(false);
           return false;
@@ -780,11 +742,9 @@ public:
   ReplicaTypeCacher mReplicaTypeCacher;         /// ReplicaType item cacher
   EmplaceContextCacher mEmplaceContextCacher;   /// EmplaceContext item cacher
   void* mUserData;                              /// Optional user data
-  float mFrameFillWarning;                      /// Controls when the user will be warned of their
-                                                /// current frame's outgoing bandwidth utilization
-                                                /// ratio on any given link
-  float mFrameFillSkip;                         /// Controls when to skip change replication for the
-                                                /// current frame because of remaining outgoing
+  float mFrameFillWarning; /// Controls when the user will be warned of their current frame's outgoing bandwidth
+                           /// utilization ratio on any given link
+  float mFrameFillSkip; /// Controls when to skip change replication for the current frame because of remaining outgoing
                                                 /// bandwidth utilization ratio on any given link
   ReplicaChannelTypeSet mReplicaChannelTypes;   /// Replica channel type set
   ReplicaPropertyTypeSet mReplicaPropertyTypes; /// Replica property type set

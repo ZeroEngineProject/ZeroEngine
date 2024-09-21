@@ -28,8 +28,7 @@ bool IsAnyPrimitiveMemberLessThanArithmetic(const Variant& lhs, const Variant& r
       return true;
   }
 
-  // Every primitive member of lhs is greater-than or equal-to the corresponding
-  // primitive member of rhs
+  // Every primitive member of lhs is greater-than or equal-to the corresponding primitive member of rhs
   return false;
 }
 
@@ -91,8 +90,7 @@ ReplicaProperty::ReplicaProperty(const String& name,
 ReplicaProperty::~ReplicaProperty()
 {
   // (Should have been unscheduled when the operating replica was made invalid,
-  // else there is a dangling replica property held by the replica property
-  // type)
+  // else there is a dangling replica property held by the replica property type)
   Assert(!IsScheduled());
 }
 
@@ -232,8 +230,7 @@ bool HasChangedArithmetic(const ReplicaProperty* replicaProperty, const ReplicaP
       const PrimitiveType& lastValuePrimitiveMember = lastValue.GetPrimitiveMemberOrError<PropertyType>(i);
       const PrimitiveType& deltaThresholdPrimitiveMember = deltaThreshold.GetPrimitiveMemberOrError<PropertyType>(i);
 
-      // Current value and last value primitive members differ by more than the
-      // delta threshold value primitive member?
+      // Current value and last value primitive members differ by more than the delta threshold value primitive member?
       if (Math::Abs(currentValuePrimitiveMember - lastValuePrimitiveMember) > deltaThresholdPrimitiveMember)
       {
         // Has changed
@@ -374,19 +371,17 @@ void UpdateLastValueArithmetic(ReplicaProperty* replicaProperty, const ReplicaPr
       const PrimitiveType& deltaThresholdPrimitiveMember = deltaThreshold.GetPrimitiveMemberOrError<PropertyType>(i);
 
       // Has this primitive member changed?
-      // (Current value and last value primitive members differ by more than the
-      // delta threshold value primitive member?)
+      // (Current value and last value primitive members differ by more than the delta threshold value primitive
+      // member?)
       bool hasChanged =
           (Math::Abs(currentValuePrimitiveMember - lastValuePrimitiveMember) > deltaThresholdPrimitiveMember);
 
       // Has not changed?
       if (!hasChanged)
       {
-        // Reset current value's primitive member to our last value's primitive
-        // member (Our intent is to only update the new last value's primitive
-        // members to our current value's primitive members once the primitive
-        // member in question has exceeded it's delta threshold and is therefore
-        // considered changed)
+        // Reset current value's primitive member to our last value's primitive member
+        // (Our intent is to only update the new last value's primitive members to our current value's primitive members
+        // once the primitive member in question has exceeded it's delta threshold and is therefore considered changed)
         currentValuePrimitiveMember = lastValuePrimitiveMember;
       }
     }
@@ -463,8 +458,7 @@ uint64 ReplicaProperty::GetLastReceivedChangeFrameId() const
   return mLastReceivedChangeFrameId;
 }
 
-/// Point sort policy used to sort points on the received value curve by their
-/// timestamp (x value)
+/// Point sort policy used to sort points on the received value curve by their timestamp (x value)
 template <typename ValueType>
 struct PointSortPolicy : public SortPolicy<ValueType>
 {
@@ -515,8 +509,7 @@ void UpdateCurveArithmetic(ReplicaProperty* replicaProperty,
 
   // Determine min and max timestamps (in seconds)
   float minTimestamp = now - 1 /* second */;
-  // float maxTimestamp =
-  // TimeMsToFloatSeconds(replicaProperty->GetLastReceivedChangeTimestamp() +
+  // float maxTimestamp = TimeMsToFloatSeconds(replicaProperty->GetLastReceivedChangeTimestamp() +
   // replicaPropertyType->GetExtrapolationLimit());
 
   // New point timestamp is outside our current time range?
@@ -534,16 +527,14 @@ void UpdateCurveArithmetic(ReplicaProperty* replicaProperty,
     PrimitiveType& valuePrimitiveMember = value.GetPrimitiveMemberOrError<PropertyType>(i);
 
     // Get received change value curve points
-    // (We treat this as a set to keep our points sorted by their timestamp (x
-    // value))
+    // (We treat this as a set to keep our points sorted by their timestamp (x value))
     PointSet& points = reinterpret_cast<PointSet&>(replicaProperty->mSplineCurve[i].ControlPoints);
 
     //
     // Remove Extraneous Points From Set
     //
 
-    // Remove all points from the beginning forwards except for the last point
-    // less than the min timestamp
+    // Remove all points from the beginning forwards except for the last point less than the min timestamp
     while (points.Size() > 2)
     {
       // Get two points at a time
@@ -744,8 +735,7 @@ void ReplicaProperty::SnapNow()
   // Use interpolation?
   if (replicaPropertyType->GetUseInterpolation())
   {
-    // Set target value as the current sampled value from the received change
-    // value curve
+    // Set target value as the current sampled value from the received change value curve
     targetValue = GetCurrentSampledValue();
   }
   // Don't use interpolation?
@@ -779,15 +769,13 @@ inline PrimitiveType ConvergePrimitiveValue(PrimitiveType currentValue, Primitiv
 template <typename PrimitiveType, TF_ENABLE_IF(is_integral<PrimitiveType>::value)>
 inline PrimitiveType ConvergePrimitiveValue(PrimitiveType currentValue, PrimitiveType targetValue, float targetWeight)
 {
-  // Converge integral values as doubles, round to the nearest integer, then
-  // cast the result back
+  // Converge integral values as doubles, round to the nearest integer, then cast the result back
   PrimitiveType convergedValue =
       PrimitiveType(Round(ConvergePrimitiveValue<double>(double(currentValue), double(targetValue), targetWeight)));
   if (convergedValue == currentValue) // Unable to make any progress towards target value?
   {
     // Return target value as result
-    // (This solves the problem of integral values "never reaching" their target
-    // value)
+    // (This solves the problem of integral values "never reaching" their target value)
     return targetValue;
   }
 
@@ -828,8 +816,7 @@ void SetValueUsingConvergence(ReplicaProperty* replicaProperty,
         ConvergePrimitiveValue<PrimitiveType>(currentValuePrimitiveMember, targetValuePrimitiveMember, targetWeight);
 
     // Should this primitive member be snapped?
-    // (Current value and target value primitive members differ by more than the
-    // snap threshold value primitive member?)
+    // (Current value and target value primitive members differ by more than the snap threshold value primitive member?)
     bool shouldSnap =
         (Math::Abs(currentValuePrimitiveMember - targetValuePrimitiveMember) > snapThresholdPrimitiveMember);
 
@@ -875,8 +862,7 @@ void ReplicaProperty::ConvergeActiveNow()
   // Use interpolation?
   if (replicaPropertyType->GetUseInterpolation())
   {
-    // Set target value as the current sampled value from the received change
-    // value curve
+    // Set target value as the current sampled value from the received change value curve
     targetValue = GetCurrentSampledValue();
   }
   // Don't use interpolation?
@@ -1008,8 +994,7 @@ void ReplicaProperty::ReactToChanges(TimeMs timestamp,
   // Generate notification?
   if (generateNotification)
   {
-    // Determine if we should notify the user of the replica channel property
-    // change
+    // Determine if we should notify the user of the replica channel property change
     bool shouldNotify = false;
     switch (direction)
     {
@@ -1040,17 +1025,16 @@ void ReplicaProperty::ReactToChanges(TimeMs timestamp,
   if (setLastValue)
   {
     // Update last value
-    // (For the initialization replication phase we want to forcefully update
-    // all primitive-components in our last value to ensure a valid last value
-    // state)
+    // (For the initialization replication phase we want to forcefully update all primitive-components in our last value
+    // to ensure a valid last value state)
     bool forceAll = (replicationPhase == ReplicationPhase::Initialization);
     replicaProperty->UpdateLastValue(forceAll);
 
     // Set replica, channel, and property last change timestamps
-    // (Note: It's possible for this new change timestamp to be chronologically
-    // older than the current last change timestamp!
-    //        This can occur using immediate transfer modes during replication
-    //        and having some changes arrive out of order!)
+    // (Note: It's possible for this new change timestamp to be chronologically older than the current last change
+    // timestamp!
+    //        This can occur using immediate transfer modes during replication and having some changes arrive out of
+    //        order!)
     replicaProperty->SetLastChangeTimestamp(timestamp);
     replicaChannel->SetLastChangeTimestamp(timestamp);
     replica->SetLastChangeTimestamp(timestamp);
@@ -1143,8 +1127,8 @@ bool SerializeArithmetic(BitStream& bitStream,
         const PrimitiveType& deltaThresholdPrimitiveMember = deltaThreshold.GetPrimitiveMemberOrError<PropertyType>(i);
 
         // Has this primitive member changed?
-        // (Current value and last value primitive members differ by more than
-        // the delta threshold value primitive member?)
+        // (Current value and last value primitive members differ by more than the delta threshold value primitive
+        // member?)
         bool hasChanged =
             (Math::Abs(currentValuePrimitiveMember - lastValuePrimitiveMember) > deltaThresholdPrimitiveMember);
 
@@ -1305,8 +1289,8 @@ bool DeserializeArithmetic(Variant& newValue,
 
     // Set current value to the sampled value from the received value curve
     // (Since we're only given the primitive members that have changed,
-    // we want to fill in the other primitive members with the interpolated
-    // values we have from that point in time when this received value occurred)
+    // we want to fill in the other primitive members with the interpolated values
+    // we have from that point in time when this received value occurred)
     currentValue = replicaProperty->SampleCurve(timestamp);
     Assert(currentValue.IsNotEmpty());
 
@@ -1383,8 +1367,7 @@ bool SerializeQuantizedArithmetic(BitStream& bitStream,
   Assert(currentValue.IsNotEmpty());
   Assert(lastValue.IsNotEmpty());
 
-  // (Quantization should be enabled and our quantization parameters should be
-  // non-empty)
+  // (Quantization should be enabled and our quantization parameters should be non-empty)
   Assert(useQuantization && quantizationRangeMin.IsNotEmpty() && quantizationRangeMax.IsNotEmpty() &&
          quantum.IsNotEmpty());
 
@@ -1419,8 +1402,8 @@ bool SerializeQuantizedArithmetic(BitStream& bitStream,
   {
     Assert(serializationMode == SerializationMode::Changed);
 
-    // (Quantization requires using a delta threshold since it uses the
-    // specified delta threshold as a quantum interval value)
+    // (Quantization requires using a delta threshold since it uses the specified delta threshold as a quantum interval
+    // value)
     Assert(replicaPropertyType->GetUseDeltaThreshold());
 
     // Get delta threshold value for comparison
@@ -1443,8 +1426,8 @@ bool SerializeQuantizedArithmetic(BitStream& bitStream,
       const PrimitiveType& quantumPrimitiveMember = quantum.GetPrimitiveMemberOrError<PropertyType>(i);
 
       // Has this primitive member changed?
-      // (Current value and last value primitive members differ by more than the
-      // delta threshold value primitive member?)
+      // (Current value and last value primitive members differ by more than the delta threshold value primitive
+      // member?)
       bool hasChanged =
           (Math::Abs(currentValuePrimitiveMember - lastValuePrimitiveMember) > deltaThresholdPrimitiveMember);
 
@@ -1498,8 +1481,7 @@ bool DeserializeQuantizedArithmetic(Variant& newValue,
   // (Current value should be non-empty)
   Assert(currentValue.IsNotEmpty());
 
-  // (Quantization should be enabled and our quantization parameters should be
-  // non-empty)
+  // (Quantization should be enabled and our quantization parameters should be non-empty)
   Assert(useQuantization && quantizationRangeMin.IsNotEmpty() && quantizationRangeMax.IsNotEmpty() &&
          quantum.IsNotEmpty());
 
@@ -1534,14 +1516,14 @@ bool DeserializeQuantizedArithmetic(Variant& newValue,
   {
     Assert(serializationMode == SerializationMode::Changed);
 
-    // (Quantization requires using a delta threshold since it uses the
-    // specified delta threshold as a quantum interval value)
+    // (Quantization requires using a delta threshold since it uses the specified delta threshold as a quantum interval
+    // value)
     Assert(replicaPropertyType->GetUseDeltaThreshold());
 
     // Set current value to the sampled value from the received value curve
     // (Since we're only given the primitive members that have changed,
-    // we want to fill in the other primitive members with the interpolated
-    // values we have from that point in time when this received value occurred)
+    // we want to fill in the other primitive members with the interpolated values
+    // we have from that point in time when this received value occurred)
     currentValue = replicaProperty->SampleCurve(timestamp);
     Assert(currentValue.IsNotEmpty());
 
@@ -1581,8 +1563,8 @@ bool DeserializeQuantizedArithmetic(Variant& newValue,
 
 bool ReplicaProperty::Serialize(BitStream& bitStream, ReplicationPhase::Enum replicationPhase, TimeMs timestamp) const
 {
-  // (For the initialization replication phase we want to forcefully serialize
-  // all primitive-components to ensure a valid initial value state)
+  // (For the initialization replication phase we want to forcefully serialize all primitive-components to ensure a
+  // valid initial value state)
   bool forceAll = (replicationPhase == ReplicationPhase::Initialization);
 
   // Get replica property type
@@ -1643,8 +1625,8 @@ bool ReplicaProperty::Serialize(BitStream& bitStream, ReplicationPhase::Enum rep
 }
 bool ReplicaProperty::Deserialize(const BitStream& bitStream, ReplicationPhase::Enum replicationPhase, TimeMs timestamp)
 {
-  // (For the initialization replication phase we want to forcefully deserialize
-  // all primitive-components to ensure a valid initial value state)
+  // (For the initialization replication phase we want to forcefully deserialize all primitive-components to ensure a
+  // valid initial value state)
   bool forceAll = (replicationPhase == ReplicationPhase::Initialization);
 
   // Get replica property type
@@ -1680,8 +1662,7 @@ bool ReplicaProperty::Deserialize(const BitStream& bitStream, ReplicationPhase::
 
       // Perform standard serialization
       Variant currentValue = GetValue();
-      if (!serializeValueFn(SerializeDirection::Read, const_cast<BitStream&>(bitStream),
-                            currentValue)) // Unable?
+      if (!serializeValueFn(SerializeDirection::Read, const_cast<BitStream&>(bitStream), currentValue)) // Unable?
       {
         Assert(false);
         return false;
@@ -1761,8 +1742,8 @@ bool ReplicaProperty::Deserialize(const BitStream& bitStream, ReplicationPhase::
   SetLastReceivedChangeFrameId(frameId);
 
   // Is initialization phase?
-  // (For the initialization replication phase we want to immediately set the
-  // exact deserialized value to ensure a valid initial value state)
+  // (For the initialization replication phase we want to immediately set the exact deserialized value to ensure a valid
+  // initial value state)
   if (replicationPhase == ReplicationPhase::Initialization)
   {
     // Set current property value
@@ -1774,8 +1755,7 @@ bool ReplicaProperty::Deserialize(const BitStream& bitStream, ReplicationPhase::
     // Use convergence?
     if (replicaPropertyType->GetUseConvergence())
     {
-      // Converge current property value towards the received change value as
-      // configured
+      // Converge current property value towards the received change value as configured
       ConvergeActiveNow();
     }
     // Don't use convergence?
@@ -1809,8 +1789,7 @@ bool ReplicaPropertyIndex::IsEmpty() const
 
 void ReplicaPropertyIndex::CreateLists(uint count)
 {
-  // (Resizing the populated array can unsafely remove lists containing
-  // properties)
+  // (Resizing the populated array can unsafely remove lists containing properties)
   Assert(IsEmpty());
 
   // Create specified number of lists
@@ -1862,8 +1841,7 @@ void ReplicaPropertyIndex::Insert(ReplicaProperty* property)
   // Insert property into smallest list
   (*smallestPropertyList)->second.PushBack(property);
 
-  // Store containing list size pointer on property (used later when removing
-  // the property)
+  // Store containing list size pointer on property (used later when removing the property)
   property->mIndexListSize = &(*smallestPropertyList)->first;
 
   // Update list property count
@@ -1888,8 +1866,7 @@ void ReplicaPropertyIndex::Remove(ReplicaProperty* property)
   // Remove property from containing list
   ReplicaPropertyList::Unlink(property);
 
-  // Clear containing list size pointer on property (it is no longer stored in
-  // that list)
+  // Clear containing list size pointer on property (it is no longer stored in that list)
   property->mIndexListSize = nullptr;
 
   // Update total property count
@@ -2059,11 +2036,9 @@ void ReplicaPropertyType::ConvergeNow(bool active,
     // Advance
     scheduledProperties.PopFront();
 
-    // Last received change value was not received this frame? (We did not
-    // already converge this property this frame?) (Note: We add this check to
-    // avoid an "extra" convergence jitter when a change happens to be received
-    // then converged, and is also scheduled to be converged on the same frame
-    // update)
+    // Last received change value was not received this frame? (We did not already converge this property this frame?)
+    // (Note: We add this check to avoid an "extra" convergence jitter when a change happens to be received then
+    // converged, and is also scheduled to be converged on the same frame update)
     if (scheduledProperty.GetLastReceivedChangeFrameId() != frameId)
     {
       // Converge the scheduled replica property
@@ -2186,8 +2161,7 @@ void ReplicaPropertyType::SetUseDeltaThreshold(bool useDeltaThreshold)
   // Attempting to use delta threshold?
   if (useDeltaThreshold)
   {
-    // (Should only be used with arithmetic replica property primitive-component
-    // types)
+    // (Should only be used with arithmetic replica property primitive-component types)
     Assert(GetNativeType()->mIsBasicNativeTypeArithmetic);
   }
 
@@ -2268,8 +2242,7 @@ void ReplicaPropertyType::SetDeltaThreshold(const Variant& deltaThreshold)
   // Attempting to use delta threshold?
   if (deltaThreshold.IsNotEmpty())
   {
-    // (Should only be used with arithmetic replica property primitive-component
-    // types)
+    // (Should only be used with arithmetic replica property primitive-component types)
     Assert(GetNativeType()->mIsBasicNativeTypeArithmetic);
     // (Delta threshold type should match our replica property type)
     Assert(deltaThreshold.Is(GetNativeType()));
@@ -2316,8 +2289,7 @@ void ReplicaPropertyType::SetSerializationMode(SerializationMode::Enum serializa
   // Attempting to use serialization mode?
   if (serializationMode == SerializationMode::Changed)
   {
-    // (Should only be used with arithmetic replica property primitive-component
-    // types)
+    // (Should only be used with arithmetic replica property primitive-component types)
     Assert(GetNativeType()->mIsBasicNativeTypeArithmetic);
   }
 
@@ -2334,8 +2306,7 @@ void ReplicaPropertyType::SetSerializationMode(SerializationMode::Enum serializa
   {
     // Force all primitive member serialization
     // (Avoids redundant has-changed checks for the single primitive member,
-    // since we have to perform an overall has-changed check to serialize
-    // changes in the first place)
+    // since we have to perform an overall has-changed check to serialize changes in the first place)
     serializationMode = SerializationMode::All;
   }
 
@@ -2352,8 +2323,7 @@ void ReplicaPropertyType::SetUseHalfFloats(bool useHalfFloats)
   // Attempting to use half floats?
   if (useHalfFloats)
   {
-    // (Should only be used with floating-point replica property
-    // primitive-component types)
+    // (Should only be used with floating-point replica property primitive-component types)
     Assert(GetNativeType()->mIsBasicNativeTypeFloatingPoint);
   }
 
@@ -2382,8 +2352,7 @@ void ReplicaPropertyType::SetUseQuantization(bool useQuantization)
   // Attempting to use quantization?
   if (useQuantization)
   {
-    // (Should only be used with arithmetic replica property primitive-component
-    // types)
+    // (Should only be used with arithmetic replica property primitive-component types)
     Assert(GetNativeType()->mIsBasicNativeTypeArithmetic);
   }
 
@@ -2415,8 +2384,7 @@ void ReplicaPropertyType::SetQuantizationRangeMin(const Variant& quantizationRan
   // Attempting to use quantization?
   if (quantizationRangeMin.IsNotEmpty())
   {
-    // (Should only be used with arithmetic replica property primitive-component
-    // types)
+    // (Should only be used with arithmetic replica property primitive-component types)
     Assert(GetNativeType()->mIsBasicNativeTypeArithmetic);
     // (Range minimum type should match our replica property type)
     Assert(quantizationRangeMin.Is(GetNativeType()));
@@ -2447,8 +2415,7 @@ void ReplicaPropertyType::SetQuantizationRangeMax(const Variant& quantizationRan
   // Attempting to use quantization?
   if (quantizationRangeMax.IsNotEmpty())
   {
-    // (Should only be used with arithmetic replica property primitive-component
-    // types)
+    // (Should only be used with arithmetic replica property primitive-component types)
     Assert(GetNativeType()->mIsBasicNativeTypeArithmetic);
     // (Range maximum type should match our replica property type)
     Assert(quantizationRangeMax.Is(GetNativeType()));
@@ -2479,8 +2446,7 @@ void ReplicaPropertyType::SetUseInterpolation(bool useInterpolation)
   // Attempting to use interpolation?
   if (useInterpolation)
   {
-    // (Should only be used with arithmetic replica property primitive-component
-    // types)
+    // (Should only be used with arithmetic replica property primitive-component types)
     Assert(GetNativeType()->mIsBasicNativeTypeArithmetic);
   }
 
@@ -2557,8 +2523,7 @@ void ReplicaPropertyType::SetUseConvergence(bool useConvergence)
   // Attempting to use convergence?
   if (useConvergence)
   {
-    // (Should only be used with arithmetic replica property primitive-component
-    // types)
+    // (Should only be used with arithmetic replica property primitive-component types)
     Assert(GetNativeType()->mIsBasicNativeTypeArithmetic);
   }
 
@@ -2582,8 +2547,7 @@ void ReplicaPropertyType::SetNotifyOnConvergenceStateChange(bool notifyOnConverg
   // Attempting to use convergence?
   if (notifyOnConvergenceStateChange)
   {
-    // (Should only be used with arithmetic replica property primitive-component
-    // types)
+    // (Should only be used with arithmetic replica property primitive-component types)
     Assert(GetNativeType()->mIsBasicNativeTypeArithmetic);
   }
 
@@ -2675,8 +2639,7 @@ void ReplicaPropertyType::SetSnapThreshold(const Variant& snapThreshold)
   // Attempting to use convergence?
   if (snapThreshold.IsNotEmpty())
   {
-    // (Should only be used with arithmetic replica property primitive-component
-    // types)
+    // (Should only be used with arithmetic replica property primitive-component types)
     Assert(GetNativeType()->mIsBasicNativeTypeArithmetic);
     // (Snap threshold type should match our replica property type)
     Assert(snapThreshold.Is(GetNativeType()));

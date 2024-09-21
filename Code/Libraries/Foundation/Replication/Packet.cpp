@@ -11,16 +11,12 @@ RawPacket::RawPacket() : mContainsEventMessage(false), mIpAddress(), mData()
 }
 
 RawPacket::RawPacket(const RawPacket& rhs) :
-    mContainsEventMessage(rhs.mContainsEventMessage),
-    mIpAddress(rhs.mIpAddress),
-    mData(rhs.mData)
+    mContainsEventMessage(rhs.mContainsEventMessage), mIpAddress(rhs.mIpAddress), mData(rhs.mData)
 {
 }
 
 RawPacket::RawPacket(MoveReference<RawPacket> rhs) :
-    mContainsEventMessage(rhs->mContainsEventMessage),
-    mIpAddress(rhs->mIpAddress),
-    mData(ZeroMove(rhs->mData))
+    mContainsEventMessage(rhs->mContainsEventMessage), mIpAddress(rhs->mIpAddress), mData(ZeroMove(rhs->mData))
 {
 }
 
@@ -45,18 +41,14 @@ RawPacket& RawPacket::operator=(MoveReference<RawPacket> rhs)
 //                                    Packet //
 
 Packet::Packet(const IpAddress& ipAddress, bool isStandalone, PacketSequenceId sequenceId) :
-    mIpAddress(ipAddress),
-    mIsStandalone(isStandalone),
-    mSequenceId(sequenceId)
+    mIpAddress(ipAddress), mIsStandalone(isStandalone), mSequenceId(sequenceId)
 {
   if (mIsStandalone)
     Assert(mSequenceId == 0);
 }
 
 Packet::Packet(const Packet& rhs) :
-    mIpAddress(rhs.mIpAddress),
-    mIsStandalone(rhs.mIsStandalone),
-    mSequenceId(rhs.mSequenceId)
+    mIpAddress(rhs.mIpAddress), mIsStandalone(rhs.mIsStandalone), mSequenceId(rhs.mSequenceId)
 {
 }
 
@@ -125,9 +117,7 @@ bool operator<(PacketSequenceId lhs, const Packet& rhs)
 //                                  OutPacket //
 
 OutPacket::OutPacket(const IpAddress& destination, bool isStandalone, PacketSequenceId sequenceId) :
-    Packet(destination, isStandalone, sequenceId),
-    mMessages(),
-    mSendTime(0)
+    Packet(destination, isStandalone, sequenceId), mMessages(), mSendTime(0)
 {
 }
 
@@ -136,9 +126,7 @@ OutPacket::OutPacket(const OutPacket& rhs) : Packet(rhs), mMessages(rhs.mMessage
 }
 
 OutPacket::OutPacket(MoveReference<OutPacket> rhs) :
-    Packet(*rhs),
-    mMessages(ZeroMove(rhs->mMessages)),
-    mSendTime(rhs->mSendTime)
+    Packet(*rhs), mMessages(ZeroMove(rhs->mMessages)), mSendTime(rhs->mSendTime)
 {
 }
 
@@ -325,8 +313,7 @@ Bits Serialize<InPacket>(SerializeDirection::Enum direction, BitStream& bitStrea
   ProtocolId protocolId;
   ReturnIf(!bitStream.Read(protocolId), 0, "");
 
-  // (Their protocol ID should match ours, as we discard invalid packets at the
-  // raw packet receive stage)
+  // (Their protocol ID should match ours, as we discard invalid packets at the raw packet receive stage)
   Assert(protocolId == Peer::GetProtocolId());
 
   // Read 'Is standalone?' flag

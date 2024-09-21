@@ -34,21 +34,17 @@ public:
   // Replica Management
   //
 
-  /// Returns true if the specified live replica is expected remotely, else
-  /// false
+  /// Returns true if the specified live replica is expected remotely, else false
   bool HasReplica(ReplicaId replicaId) const;
   bool HasReplica(Replica* replica) const;
-  /// Returns true if there are any replicas in the specified create context
-  /// expected remotely, else false
+  /// Returns true if there are any replicas in the specified create context expected remotely, else false
   bool HasReplicasByCreateContext(const CreateContext& createContext) const;
-  /// Returns true if there are any live replicas of the specified replica type
-  /// expected remotely, else false
+  /// Returns true if there are any live replicas of the specified replica type expected remotely, else false
   bool HasReplicasByReplicaType(const ReplicaType& replicaType) const;
   /// Returns true if there are any live replicas expected remotely, else false
   bool HasReplicas() const;
 
-  /// Returns the specified live replica if it is expected remotely, else
-  /// nullptr
+  /// Returns the specified live replica if it is expected remotely, else nullptr
   Replica* GetReplica(ReplicaId replicaId) const;
   Replica* GetReplica(Replica* replica) const;
   /// Returns all replicas in the specified create context expected remotely
@@ -58,11 +54,9 @@ public:
   /// Returns all live replicas expected remotely
   const ReplicaSet& GetReplicas() const;
 
-  /// Returns the number of replicas in the specified create context expected
-  /// remotely
+  /// Returns the number of replicas in the specified create context expected remotely
   size_t GetReplicaCountByCreateContext(const CreateContext& createContext) const;
-  /// Returns the number of live replicas of the specified replica type expected
-  /// remotely
+  /// Returns the number of live replicas of the specified replica type expected remotely
   size_t GetReplicaCountByReplicaType(const ReplicaType& replicaType) const;
   /// Returns the number of live replicas expected remotely
   size_t GetReplicaCount() const;
@@ -239,50 +233,41 @@ public:
   // Channel Helpers
   //
 
-  /// [Server] Opens and serializes all forward (outgoing) message channels
-  /// corresponding to the given replica's channels Returns true if successful,
-  /// else false
+  /// [Server] Opens and serializes all forward (outgoing) message channels corresponding to the given replica's
+  /// channels Returns true if successful, else false
   bool OpenAndSerializeForwardReplicaChannels(const Replica* replica, BitStream& bitStream);
-  /// [Client] Deserializes and sets all forward (incoming) message channels
-  /// corresponding to the given replica's channels Returns true if successful,
-  /// else false
+  /// [Client] Deserializes and sets all forward (incoming) message channels corresponding to the given replica's
+  /// channels Returns true if successful, else false
   bool DeserializeAndSetForwardReplicaChannels(Replica* replica, const BitStream& bitStream);
 
-  /// [Client] Opens and serializes all reverse (outgoing) message channels
-  /// corresponding to the given replica's channels Returns true if successful,
-  /// else false
+  /// [Client] Opens and serializes all reverse (outgoing) message channels corresponding to the given replica's
+  /// channels Returns true if successful, else false
   bool OpenAndSerializeReverseReplicaChannels(const Replica* replica, BitStream& bitStream);
-  /// [Server] Deserializes and sets all reverse (incoming) message channels
-  /// corresponding to the given replica's channels Returns true if successful,
-  /// else false
+  /// [Server] Deserializes and sets all reverse (incoming) message channels corresponding to the given replica's
+  /// channels Returns true if successful, else false
   bool DeserializeAndSetReverseReplicaChannels(Replica* replica, const BitStream& bitStream);
 
   /// Returns the command channel ID
   MessageChannelId GetCommandChannelId() const;
 
-  /// Closes and clears both outgoing and incoming message channels
-  /// corresponding to every replica channel on the specified replica
-  /// respectively
+  /// Closes and clears both outgoing and incoming message channels corresponding to every replica channel on the
+  /// specified replica respectively
   void CloseAllReplicaChannels(Replica* replica);
 
-  /// Opens an outgoing message channel corresponding to the specified replica
-  /// channel Returns the outgoing message channel ID if successful, else 0
+  /// Opens an outgoing message channel corresponding to the specified replica channel
+  /// Returns the outgoing message channel ID if successful, else 0
   MessageChannelId OpenOutgoingReplicaChannel(ReplicaChannel* replicaChannel);
-  /// Closes the outgoing message channel corresponding to the specified replica
-  /// channel (if any)
+  /// Closes the outgoing message channel corresponding to the specified replica channel (if any)
   void CloseOutgoingReplicaChannel(ReplicaChannel* replicaChannel);
-  /// Returns the outgoing message channel corresponding to the specified
-  /// replica channel, else 0
+  /// Returns the outgoing message channel corresponding to the specified replica channel, else 0
   MessageChannelId GetOutgoingReplicaChannel(ReplicaChannel* replicaChannel) const;
 
-  /// Sets the corresponding incoming message channel on the specified replica
-  /// channel Returns true if successful, else false
+  /// Sets the corresponding incoming message channel on the specified replica channel
+  /// Returns true if successful, else false
   bool SetIncomingReplicaChannel(MessageChannelId channelId, ReplicaChannel* replicaChannel);
-  /// Clears the corresponding incoming message channel on the specified replica
-  /// channel (if any)
+  /// Clears the corresponding incoming message channel on the specified replica channel (if any)
   void ClearIncomingReplicaChannel(ReplicaChannel* replicaChannel);
-  /// Returns the replica channel corresponding to the specified incoming
-  /// message channel, else nullptr
+  /// Returns the replica channel corresponding to the specified incoming message channel, else nullptr
   ReplicaChannel* GetIncomingReplicaChannel(MessageChannelId channelId) const;
 
   //
@@ -319,20 +304,15 @@ public:
   CreateMap mCreateMap;                               /// Remotely expected live replicas mapped by create context
   ReplicaMap mReplicaMap;                             /// Remotely expected live replicas mapped by replica type
   MessageChannelId mCommandChannelId;                 /// Command channel ID
-  OutReplicaChannels mOutReplicaChannels;             /// Outgoing replica channel map (replica channel to
-                                                      /// message channel ID)
-  InReplicaChannels mInReplicaChannels;               /// Incoming replica channel map (message channel ID
-                                                      /// to replica channel)
-  InReplicaChannelsFlipped mInReplicaChannelsFlipped; /// Incoming replica channel map flipped
-                                                      /// (replica channel to message channel ID)
+  OutReplicaChannels mOutReplicaChannels; /// Outgoing replica channel map (replica channel to message channel ID)
+  InReplicaChannels mInReplicaChannels;   /// Incoming replica channel map (message channel ID to replica channel)
+  InReplicaChannelsFlipped
+      mInReplicaChannelsFlipped; /// Incoming replica channel map flipped (replica channel to message channel ID)
   ConnectRequestData mLastConnectRequestData;         /// Last connect request data sent/received
   ConnectResponseData mLastConnectResponseData;       /// Last connect response data sent/received
-  bool mShouldSkipChangeReplication;                  /// Should skip change replication?
-                                                      /// (Updated at the start of every frame)
-  TimeMs mLastFrameFillSkipNotificationTime;          /// Last frame fill skip
-                                                      /// notification time
-  TimeMs mLastFrameFillWarningNotificationTime;       /// Last frame fill warning
-                                                      /// notification time
+  bool mShouldSkipChangeReplication;         /// Should skip change replication? (Updated at the start of every frame)
+  TimeMs mLastFrameFillSkipNotificationTime; /// Last frame fill skip notification time
+  TimeMs mLastFrameFillWarningNotificationTime; /// Last frame fill warning notification time
 
 private:
   /// No copy constructor

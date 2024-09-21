@@ -10,16 +10,12 @@ FragmentedReceipt::FragmentedReceipt() : mReceiptId(0), mPacketRecords(), mIsCom
 {
 }
 FragmentedReceipt::FragmentedReceipt(MessageReceiptId receiptId) :
-    mReceiptId(receiptId),
-    mPacketRecords(),
-    mIsComplete(false)
+    mReceiptId(receiptId), mPacketRecords(), mIsComplete(false)
 {
 }
 
 FragmentedReceipt::FragmentedReceipt(MoveReference<FragmentedReceipt> rhs) :
-    mReceiptId(rhs->mReceiptId),
-    mPacketRecords(ZeroMove(rhs->mPacketRecords)),
-    mIsComplete(rhs->mIsComplete)
+    mReceiptId(rhs->mReceiptId), mPacketRecords(ZeroMove(rhs->mPacketRecords)), mIsComplete(rhs->mIsComplete)
 {
 }
 
@@ -167,7 +163,7 @@ ArraySet<OutMessageChannel>::range LinkOutbox::GetOutgoingChannels() const
 }
 uint LinkOutbox::GetOutgoingChannelCount() const
 {
-  return mChannels.Size();
+  return (uint)mChannels.Size();
 }
 
 void LinkOutbox::CloseOutgoingChannel(MessageChannelId channelId)
@@ -176,8 +172,7 @@ void LinkOutbox::CloseOutgoingChannel(MessageChannelId channelId)
   ArraySet<OutMessageChannel>::iterator iter = mChannels.FindIterator(channelId);
   if (iter == mChannels.End()) // Channel not found?
   {
-    Assert(false); // (Just to make sure we're not doing anything silly, not
-                   // critical to check this)
+    Assert(false); // (Just to make sure we're not doing anything silly, not critical to check this)
     return;
   }
 
@@ -230,8 +225,7 @@ void LinkOutbox::RecordFragmentReceipt(const OutPacket& packet, const OutMessage
     fragmentedReceiptIter = result.first;
   }
 
-  // Add new packet record if one does not already exist (we don't care if this
-  // Insert fails)
+  // Add new packet record if one does not already exist (we don't care if this Insert fails)
   fragmentedReceiptIter->mPacketRecords.Insert(packet.GetSequenceId(), ACKState::Undetermined);
 
   // Is this a resend message?
@@ -284,8 +278,7 @@ ACKState::Enum LinkOutbox::UpdateReceiptACKState(const OutPacket& packet,
   if (!fragmentedReceiptIter->mIsComplete)
     return ACKState::Undetermined;
 
-  // Determine overall fragmented receipt ACK state based on all contained
-  // packet records' current ACK states
+  // Determine overall fragmented receipt ACK state based on all contained packet records' current ACK states
   ACKState::Enum result = ACKState::ACKd;
   forRange (const packet_record_type& packetRecord, fragmentedReceiptIter->mPacketRecords.All())
   {
@@ -349,7 +342,7 @@ void LinkOutbox::AcknowledgePacket(OutPacket& packet, ACKState::Enum packetACKSt
       ReceiptMessage(ZeroMove(message), Receipt::NAK);
       break;
     } // (Receipt message based on ACK state)
-  }   // (For all receipted messages in the given packet)
+  } // (For all receipted messages in the given packet)
 }
 
 void LinkOutbox::ACKSentPacket(const ArraySet<OutPacket>::iterator& sentPacketIter, TimeMs ACKTime)
@@ -494,8 +487,7 @@ bool LinkOutbox::WriteMessageToPacket(OutPacket& packet, Bits& remBits, OutMessa
 {
   TimeMs now = mLink->GetLocalTime();
 
-  // Link not connected and this is a custom type, or message is not a fragment
-  // and has expired?
+  // Link not connected and this is a custom type, or message is not a fragment and has expired?
   if (mLink->GetState() != LinkState::Connected && message.IsCustomType() ||
       !message.IsFragment() && message.HasExpired(now))
   {
@@ -549,8 +541,7 @@ LinkOutbox::WriteMessage(OutPacket& packet, OutMessage& message, Bits& remBits, 
     // Whole fragment message does not fit?
     else
     {
-      // This is the first custom or protocol message being written (we should
-      // force write)?
+      // This is the first custom or protocol message being written (we should force write)?
       if (message.IsCustomType() ? !packet.HasCustomMessages() : !packet.HasProtocolMessages())
       {
         // TODO: Refactor message fragmentation to use segments,
@@ -560,8 +551,7 @@ LinkOutbox::WriteMessage(OutPacket& packet, OutMessage& message, Bits& remBits, 
 
         // Update remaining bits
         Assert(messageSize > remBits);
-        remBits = 0; // (Yes, we're exceeding remBits. This is only a temporary
-                     // solution! See note above.)
+        remBits = 0; // (Yes, we're exceeding remBits. This is only a temporary solution! See note above.)
 
         // Write fragment message
         packet.mMessages.PushBack(ZeroMove(message));
@@ -609,8 +599,7 @@ LinkOutbox::WriteMessage(OutPacket& packet, OutMessage& message, Bits& remBits, 
     // Enough space left for a fragment
     // And either:
     // This message is already a fragment,
-    // or This is the first custom or protocol message being written (we should
-    // force fragmentation)?
+    // or This is the first custom or protocol message being written (we should force fragmentation)?
     Bits messageAsFragmentHeaderSize = message.GetHeaderBits(true);
     if ((remBits >= (MinMessageFragmentDataBits + messageAsFragmentHeaderSize)) &&
         (message.IsFragment() ||
@@ -790,8 +779,7 @@ void LinkOutbox::RemoveExpiredMessages(OutPacket& packet)
   Array<OutMessage>& messages = packet.GetMessages();
   for (Array<OutMessage>::iterator iter = messages.Begin(); iter != messages.End();)
   {
-    // Link not connected and this is a custom type, or message is not a
-    // fragment and has expired?
+    // Link not connected and this is a custom type, or message is not a fragment and has expired?
     if (mLink->GetState() != LinkState::Connected && iter->IsCustomType() ||
         !iter->IsFragment() && iter->HasExpired(now))
     {
@@ -816,8 +804,7 @@ void LinkOutbox::ReceiptMessage(MoveReference<OutMessage> message, Receipt::Enum
     return;
 
   // Attempt to receipt the message as a plugin message
-  if (mLink->AttemptPluginMessageReceipt(ZeroMove(message),
-                                         receipt)) // Successful?
+  if (mLink->AttemptPluginMessageReceipt(ZeroMove(message), receipt)) // Successful?
     return;
 
   // [Link Event]

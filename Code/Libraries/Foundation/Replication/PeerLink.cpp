@@ -386,8 +386,7 @@ LinkPlugin* PeerLink::AddPlugin(LinkPlugin* plugin, StringParam name)
     MessageType available = GetUserMessageTypeCount();
     if (count > available)
     {
-      Error("Unable to add plugin - Not enough message types available to "
-            "satisfy the plugin");
+      Error("Unable to add plugin - Not enough message types available to satisfy the plugin");
       return nullptr;
     }
 
@@ -424,7 +423,7 @@ LinkPluginSet::range PeerLink::GetPlugins() const
 }
 uint PeerLink::GetPluginCount() const
 {
-  return mPlugins.Size();
+  return (uint)mPlugins.Size();
 }
 
 void PeerLink::RemovePlugin(StringParam name)
@@ -473,8 +472,8 @@ void PeerLink::SetSendRate(uint sendRate)
   mSendRate = std::max(uint(1), sendRate); // Clamp(sendRate, uint(5), uint(60)); //HACK
 
   // TODO: Update this after implementing AIMD
-  // Separate this out into OutgoingBandwidth AND OutgoingDataBandwidth (for
-  // messages) Update outgoing bandwidth
+  // Separate this out into OutgoingBandwidth AND OutgoingDataBandwidth (for messages)
+  // Update outgoing bandwidth
   SetOutgoingBandwidth((double(GetSendRate()) * double(BYTES_TO_BITS(GetPacketDataBytes()) + MaxPacketHeaderBits)) /
                        double(1000));
 }
@@ -488,8 +487,8 @@ void PeerLink::SetPacketDataBytes(Bytes packetDataBytes)
   mPacketDataBytes = Clamp(packetDataBytes, MinPacketDataBytes, MaxPacketDataBytes);
 
   // TODO: Update this after implementing AIMD
-  // Separate this out into OutgoingBandwidth AND OutgoingDataBandwidth (for
-  // messages) Update outgoing bandwidth
+  // Separate this out into OutgoingBandwidth AND OutgoingDataBandwidth (for messages)
+  // Update outgoing bandwidth
   SetOutgoingBandwidth((double(GetSendRate()) * double(BYTES_TO_BITS(GetPacketDataBytes()) + MaxPacketHeaderBits)) /
                        double(1000));
 }
@@ -690,8 +689,8 @@ void PeerLink::ResetStats()
   mRoundTripTimeMax = 0;
 
   // TODO: Update this after implementing AIMD
-  // Separate this out into OutgoingBandwidth AND OutgoingDataBandwidth (for
-  // messages) Update outgoing bandwidth
+  // Separate this out into OutgoingBandwidth AND OutgoingDataBandwidth (for messages)
+  // Update outgoing bandwidth
   SetOutgoingBandwidth((double(GetSendRate()) * double(BYTES_TO_BITS(GetPacketDataBytes()) + MaxPacketHeaderBits)) /
                        double(1000));
 }
@@ -739,8 +738,7 @@ MessageReceiptId PeerLink::SendInternal(Status& status,
   MessageReceiptId receiptId =
       mOutbox.PushMessage(status, ZeroMove(message), reliable, channelId, receipt, priority, lifetime, isProtocol);
   Assert(isProtocol ? status.Succeeded() : true); // (All protocol sends should succeed)
-  Assert(receipt ? receiptId : true);             // (All receipted messages should be given
-                                                  // a non-zero receipt ID)
+  Assert(receipt ? receiptId : true);             // (All receipted messages should be given a non-zero receipt ID)
   return receiptId;
 }
 
@@ -950,8 +948,7 @@ UpdateLinkState:
             // Set our IP address (as seen from their perspective)
             mOurIpAddress = connectRequestData.mIpAddress;
 
-            // Set difference between our local time values and their remote time
-            // values
+            // Set difference between our local time values and their remote time values
             TimeMs localNow = now;
             TimeMs remoteNow = connectRequestData.mTimestamp;
             mLocalToRemoteTimeDifference = (remoteNow - localNow);
@@ -1040,9 +1037,8 @@ UpdateLinkState:
   case LinkState::SentDisconnectNotice:
   {
     //
-    // Determine if our disconnect notice was ACKd before proceeding to the
-    // fully disconnected state This lets our user ensure their disconnects are
-    // graceful, if they don't mind waiting for a reply
+    // Determine if our disconnect notice was ACKd before proceeding to the fully disconnected state
+    // This lets our user ensure their disconnects are graceful, if they don't mind waiting for a reply
     //
     Assert(mStateACKId);
 
@@ -1092,14 +1088,12 @@ UpdateLinkState:
   case LinkState::SentNegativeConnectResponse:
   {
     //
-    // Determine if our negative connect response was ACKd before proceeding to
-    // the fully disconnected state This lets our user ensure their negative
-    // connect responses are graceful, if they don't mind waiting for a reply
+    // Determine if our negative connect response was ACKd before proceeding to the fully disconnected state
+    // This lets our user ensure their negative connect responses are graceful, if they don't mind waiting for a reply
     //
     Assert(mStateACKId);
 
-    // Received ACK receipt message for our previously sent negative connect
-    // response?
+    // Received ACK receipt message for our previously sent negative connect response?
     bool ACKd = false;
     forRange (Message& message, protocolMessages.All())
       if (message.GetType() == LinkEventMessageType::Receipt)
@@ -1129,9 +1123,8 @@ UpdateLinkState:
   case LinkState::ReceivedNegativeConnectResponse:
   {
     //
-    // Give our peer time to send out our ACK to their negative connect response
-    // message So the remote peer can proceed to the fully disconnected state
-    // gracefully
+    // Give our peer time to send out our ACK to their negative connect response message
+    // So the remote peer can proceed to the fully disconnected state gracefully
     //
 
     // (RTT/2) * ConnectAttemptFactor has elapsed?
@@ -1164,8 +1157,7 @@ UpdateLinkState:
           // Set our IP address (as seen from their perspective)
           mOurIpAddress = connectResponseData.mIpAddress;
 
-          // Set difference between our local time values and their remote time
-          // values
+          // Set difference between our local time values and their remote time values
           TimeMs localNow = now;
           TimeMs remoteNow = connectResponseData.mTimestamp;
           mLocalToRemoteTimeDifference = (remoteNow - localNow);
@@ -1241,8 +1233,7 @@ UpdateLinkState:
     // Reply to connect request or timeout
     //
 
-    // Determine the appropriate connect response with respect to our peer's
-    // desired connect response mode
+    // Determine the appropriate connect response with respect to our peer's desired connect response mode
     UserConnectResponse::Enum response = UserConnectResponse::Pending;
     BitStream extraData;
     switch (GetPeer()->GetConnectResponseMode())
@@ -1584,8 +1575,7 @@ bool PeerLink::PluginEventOnMessageReceive(Message& message)
 
 bool PeerLink::PluginEventOnPluginMessageSend(OutMessage& message)
 {
-  // Ask all plugins if this message type is intended for them and if they wish
-  // to continue
+  // Ask all plugins if this message type is intended for them and if they wish to continue
   forRange (LinkPlugin* plugin, mPlugins.All())
     if (plugin->AbsoluteIsInRange(message.GetType())) // Belongs to this plugin?
     {
@@ -1897,10 +1887,7 @@ MessageReceiptId LinkPlugin::Send(Status& status,
 }
 
 LinkPlugin::LinkPlugin(size_t messageTypeCount) :
-    mName(),
-    mLink(nullptr),
-    mMessageTypeStart(0),
-    mMessageTypeCount(MessageType(messageTypeCount))
+    mName(), mLink(nullptr), mMessageTypeStart(0), mMessageTypeCount(MessageType(messageTypeCount))
 {
 }
 

@@ -68,8 +68,7 @@ public:
   void SetTimestamp(TimeMs timestamp);
   TimeMs GetTimestamp() const;
 
-  /// Returns true if the message is a part of a message channel (has a non-zero
-  /// channel ID), else false
+  /// Returns true if the message is a part of a message channel (has a non-zero channel ID), else false
   bool IsChanneled() const;
 
   /// Message channel ID this message was sent with
@@ -77,12 +76,10 @@ public:
   /// Message channel sequence ID this message was sent with
   MessageSequenceId GetSequenceId() const;
 
-  /// Returns the message's current header bits as it currently would result in
-  /// when serialized
+  /// Returns the message's current header bits as it currently would result in when serialized
   Bits GetHeaderBits(bool asFragment = false) const;
 
-  /// Returns the total unread message bits (current header size + unread
-  /// message data)
+  /// Returns the total unread message bits (current header size + unread message data)
   Bits GetTotalBits() const;
 
 protected:
@@ -90,8 +87,7 @@ protected:
   // Internal
   //
 
-  /// Returns true if the message type belongs to the user or a plugin (not the
-  /// protocol), else false
+  /// Returns true if the message type belongs to the user or a plugin (not the protocol), else false
   bool IsCustomType() const;
 
   /// Returns true if the message is a fragment, else false
@@ -192,8 +188,7 @@ public:
   /// Returns the message channel's transfer mode
   TransferMode::Enum GetTransferMode() const;
 
-  /// Returns true if the message is receipted (a receipt was requested), else
-  /// false
+  /// Returns true if the message is receipted (a receipt was requested), else false
   bool IsReceipted() const;
 
   /// Returns the message receipt ID (0 indicates no receipt was requested)
@@ -202,8 +197,7 @@ public:
   /// Returns the message priority
   MessagePriority GetPriority() const;
 
-  /// Returns true if the message has expired (lifetime duration has elapsed),
-  /// else false
+  /// Returns true if the message has expired (lifetime duration has elapsed), else false
   bool HasExpired(TimeMs currentTime) const;
 
   /// Returns the message lifetime duration
@@ -302,8 +296,7 @@ public:
   /// Adds a fragment to the collection
   void Add(MoveReference<Message> fragment);
 
-  /// Returns true if the collection is complete (all missing fragments have
-  /// been added), else false
+  /// Returns true if the collection is complete (all missing fragments have been added), else false
   bool IsComplete() const;
 
   /// Reconstructs the collection into a whole message
