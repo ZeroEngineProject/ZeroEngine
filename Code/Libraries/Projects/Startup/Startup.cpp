@@ -101,15 +101,15 @@ StartupPhase::Enum ZeroStartup::RunIteration()
 
   return mPhase;
 
-  //if (mExit)
+  // if (mExit)
   //{
-  //  // This exact string is required to be printed because it
-  //  // is the only we know the application has exited when it
-  //  // comes to running Emscripten (tests, builds, etc.)
-  //  ZPrint("Stopping main loop\n");
-  //  StopMainLoop();
-  //  delete this;
-  //}
+  //   // This exact string is required to be printed because it
+  //   // is the only we know the application has exited when it
+  //   // comes to running Emscripten (tests, builds, etc.)
+  //   ZPrint("Stopping main loop\n");
+  //   StopMainLoop();
+  //   delete this;
+  // }
 }
 
 void ZeroStartup::MainLoopFunction(void* userData)
@@ -117,7 +117,6 @@ void ZeroStartup::MainLoopFunction(void* userData)
   ZeroStartup* self = (ZeroStartup*)userData;
   while (self->RunIteration() != StartupPhase::Terminate)
   {
-  
   }
 
   // This exact string is required to be printed because it
@@ -192,8 +191,7 @@ void ZeroStartup::Initialize()
   // Setup the core Zilch library
   mZilchSetup = new ZilchSetup(SetupFlags::DoNotShutdownMemory);
 
-  // We need the calling state to be set so we can create Handles for Meta
-  // Components
+  // We need the calling state to be set so we can create Handles for Meta Components
   Zilch::Module module;
   mState = module.Link();
 
@@ -211,8 +209,7 @@ void ZeroStartup::Initialize()
   // Initialize Zero Libraries
   PlatformLibrary::Initialize();
   GeometryLibrary::Initialize();
-  // Geometry doesn't know about the Meta Library, so it cannot add itself to
-  // the MetaDatabase
+  // Geometry doesn't know about the Meta Library, so it cannot add itself to the MetaDatabase
   MetaDatabase::GetInstance()->AddNativeLibrary(GeometryLibrary::GetLibrary());
   MetaLibrary::Initialize();
   SerializationLibrary::Initialize();
@@ -240,12 +237,12 @@ void ZeroStartup::Initialize()
 
   Tweakables::Load();
 
-  //Shortcuts::GetInstance()->Load(
-  //    FilePath::Combine(Z::gEngine->GetConfigCog()->has(MainConfig)->DataDirectory, "Shortcuts.data"));
+  // Shortcuts::GetInstance()->Load(
+  //     FilePath::Combine(Z::gEngine->GetConfigCog()->has(MainConfig)->DataDirectory, "Shortcuts.data"));
 
   //// Load documentation for all native libraries
-  //DocumentationLibrary::GetInstance()->LoadDocumentation(
-  //    FilePath::Combine(Z::gEngine->GetConfigCog()->has(MainConfig)->DataDirectory, "Documentation.data"));
+  // DocumentationLibrary::GetInstance()->LoadDocumentation(
+  //     FilePath::Combine(Z::gEngine->GetConfigCog()->has(MainConfig)->DataDirectory, "Documentation.data"));
 
   ZPrint("Os: %s\n", Os::GetVersionString().c_str());
 }
@@ -295,7 +292,7 @@ void ZeroStartup::Startup()
   if (mLoadContent)
     LoadContentConfig();
 
-  //ZPrint("Creating main window.\n");
+  // ZPrint("Creating main window.\n");
 
   OsShell* osShell = engine->has(OsShell);
 
@@ -476,7 +473,7 @@ void ZeroStartup::Shutdown()
 
     ZPrint("Terminated\n");
 
-    //mExit = true;
+    // mExit = true;
   }
 
   Profile::ProfileSystem::Shutdown();
@@ -486,7 +483,7 @@ void ZeroStartup::NextPhase()
 {
   ZPrint("Completed phase: %s\n", StartupPhase::Names[mPhase]);
   mPhase = (StartupPhase::Enum)(mPhase + 1);
-  //ZPrint("Next phase: %s\n", StartupPhase::Names[mPhase]);
+  // ZPrint("Next phase: %s\n", StartupPhase::Names[mPhase]);
 }
 
 } // namespace Zero
