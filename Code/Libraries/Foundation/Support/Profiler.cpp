@@ -191,8 +191,7 @@ void Record::EnterRecord(ProfileTime time)
   {
     mMaxTime = time;
     // if(mInstantAvg != 0.0f && 3.0f * mInstantAvg < (float)time)
-    //  DebugPrint("%s has an average of %g and spike with
-    //  %g\n",mName,mInstantAvg,(float)time);
+    //   DebugPrint("%s has an average of %g and spike with %g\n",mName,mInstantAvg,(float)time);
   }
 }
 

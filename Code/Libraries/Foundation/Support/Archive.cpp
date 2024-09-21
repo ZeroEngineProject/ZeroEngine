@@ -10,7 +10,7 @@ class Deflater
 {
 public:
   z_stream stream;
-  int written;
+  size_t written;
   Deflater(int level)
   {
     // allocate inflate state
@@ -27,12 +27,12 @@ public:
     deflateEnd(&stream);
   }
 
-  void Deflate(::byte* input, ::byte* output, int availableIn, int availableOut, int finished)
+  void Deflate(::byte* input, ::byte* output, size_t availableIn, size_t availableOut, int finished)
   {
     int flushStatus = finished ? Z_FINISH : Z_NO_FLUSH;
-    stream.avail_in = availableIn;
+    stream.avail_in = (uint)availableIn;
     stream.next_in = input;
-    stream.avail_out = availableOut;
+    stream.avail_out = (uint)availableOut;
     stream.next_out = output;
     deflate(&stream, flushStatus);
     written = availableOut - stream.avail_out;
@@ -43,7 +43,7 @@ class Inflater
 {
 public:
   z_stream stream;
-  int written;
+  size_t written;
   bool done;
 
   Inflater()
@@ -62,11 +62,11 @@ public:
     inflateEnd(&stream);
   }
 
-  void Inflate(::byte* input, ::byte* output, int availableIn, int availableOut)
+  void Inflate(::byte* input, ::byte* output, size_t availableIn, size_t availableOut)
   {
-    stream.avail_in = availableIn;
+    stream.avail_in = (uint)availableIn;
     stream.next_in = input;
-    stream.avail_out = availableOut;
+    stream.avail_out = (uint)availableOut;
     stream.next_out = output;
     int zstatus = inflate(&stream, Z_SYNC_FLUSH);
     written = availableOut - stream.avail_out;
@@ -76,14 +76,14 @@ public:
   }
 };
 
-int RawDeflate(::byte* outputData, uint outsize, ::byte* inputData, uint inSize, int level)
+size_t RawDeflate(::byte* outputData, size_t outsize, ::byte* inputData, size_t inSize, int level)
 {
   Deflater deflater(level);
   deflater.Deflate(inputData, outputData, inSize, outsize, true);
   return deflater.written;
 }
 
-int RawInflate(::byte* outputData, uint outSize, ::byte* inputData, uint inSize)
+size_t RawInflate(::byte* outputData, size_t outSize, ::byte* inputData, size_t inSize)
 {
   Inflater inflater;
   inflater.Inflate(inputData, outputData, inSize, outSize);
@@ -93,9 +93,7 @@ int RawInflate(::byte* outputData, uint outSize, ::byte* inputData, uint inSize)
 //  ------------------ Archive
 
 Archive::Archive(ArchiveMode::Enum mode, uint compressionLevel) :
-    mCompressionLevel(compressionLevel),
-    mMode(mode),
-    mFileOriginBegin(0)
+    mCompressionLevel(compressionLevel), mMode(mode), mFileOriginBegin(0)
 {
 }
 
@@ -151,11 +149,11 @@ void Archive::AddFileRelative(StringParam basePath, StringParam relativeName)
 void Archive::AddFileBlock(StringParam relativeName, DataBlock sourceBlock)
 {
   ::byte* destBuffer = 0;
-  uLong compressedSize = 0;
+  size_t compressedSize = 0;
 
   // Compute Crc
   uLong crcTemp = crc32(0L, Z_NULL, 0);
-  uLong crc = crc32(crcTemp, sourceBlock.Data, sourceBlock.Size);
+  uLong crc = crc32(crcTemp, sourceBlock.Data, static_cast<uint>(sourceBlock.Size));
 
   if (mCompressionLevel == 0)
   {
@@ -167,7 +165,7 @@ void Archive::AddFileBlock(StringParam relativeName, DataBlock sourceBlock)
   else
   {
     // Get the upper bound for the compressed data
-    uint maxCompressedSize = compressBound(sourceBlock.Size);
+    uint maxCompressedSize = compressBound((uLong)sourceBlock.Size);
 
     // Allocate the output buffer
     destBuffer = (::byte*)zAllocate(maxCompressedSize);
@@ -176,8 +174,7 @@ void Archive::AddFileBlock(StringParam relativeName, DataBlock sourceBlock)
     compressedSize = RawDeflate(destBuffer, maxCompressedSize, sourceBlock.Data, sourceBlock.Size, mCompressionLevel);
 
     // Optionally shrink the buffer to the compresses size
-    // this costs another memory copy bug the compresses size can be
-    // significantly smaller
+    // this costs another memory copy bug the compresses size can be significantly smaller
     const bool shrinkToActualCompressedSize = true;
     if (shrinkToActualCompressedSize)
     {
@@ -407,10 +404,10 @@ void FillEntry(FileInfo& info, ArchiveEntry& entry, uint compressionMethod)
   info.MinVersion = 20;
 }
 
-uint Archive::ComputeZipSize()
+size_t Archive::ComputeZipSize()
 {
-  uint sizeOfallNames = 0;
-  uint sizeOfAllData = 0;
+  size_t sizeOfallNames = 0;
+  size_t sizeOfAllData = 0;
 
   // Sum the size of all file name strings
   forRange (ArchiveEntry& entry, Entries.All())
@@ -419,15 +416,13 @@ uint Archive::ComputeZipSize()
     sizeOfAllData += entry.Compressed.Size;
   }
 
-  uint entryCount = Entries.Size();
-  uint size = 0;
+  size_t entryCount = Entries.Size();
+  size_t size = 0;
 
-  // For each entry there is a ZipLocalFileHeader followed by the name and the
-  // data
+  // For each entry there is a ZipLocalFileHeader followed by the name and the data
   size += sizeof(ZipLocalFileHeader) * entryCount + sizeOfallNames + sizeOfAllData;
 
-  // At the end of the file is the central header with an entry for each archive
-  // entry
+  // At the end of the file is the central header with an entry for each archive entry
   size += sizeof(ZipCentralFileHeader) * entryCount + sizeOfallNames;
 
   // Add in the End footer
@@ -528,9 +523,9 @@ void Archive::ReadZipFileInternal(ArchiveReadFlags::Enum readFlags, Stream& file
       ReadString(file, localFile.Info.FileNameLength, entry.Name);
       ReadString(file, localFile.Info.ExtraFieldLength, extra);
 
-      // We want archives to be consistent, so we always have them use '/' for
-      // file systems. We could choose to use the platform's file separator,
-      // however this works for all platforms and produces consistent behavior.
+      // We want archives to be consistent, so we always have them use '/' for file systems.
+      // We could choose to use the platform's file separator, however this works for all
+      // platforms and produces consistent behavior.
       entry.Name = entry.Name.Replace("\\", "/");
 
       entry.Offset = (uint)file.Tell();

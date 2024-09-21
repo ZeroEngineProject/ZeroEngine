@@ -13,8 +13,7 @@ struct Replacement
   }
 
   Replacement(StringParam matchString, StringParam replaceString) :
-      MatchString(matchString),
-      ReplaceString(replaceString)
+      MatchString(matchString), ReplaceString(replaceString)
   {
   }
 
@@ -25,7 +24,7 @@ struct Replacement
   {
     return *(MatchString.Data() + index);
   }
-  uint SizeInBytes() const
+  size_t SizeInBytes() const
   {
     return MatchString.SizeInBytes();
   };
@@ -39,8 +38,8 @@ struct Replacement
 typedef Array<Replacement> Replacements;
 typedef Replacements::range ReplaceRange;
 
-// Quickly replace any matching string with replace string in source string
-// outputting the replace text to the string builder.
+// Quickly replace any matching string with replace string in source string outputting
+// the replace text to the string builder.
 void Replace(StringBuilder& output, Replacements& replacements, StringParam source);
 // Helper for replace
 String Replace(Replacements& replacements, StringParam source);

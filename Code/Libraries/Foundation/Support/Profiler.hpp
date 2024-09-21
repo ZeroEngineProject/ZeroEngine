@@ -80,7 +80,7 @@ public:
   void SetColor(u32 newColor)
   {
     mColor = newColor;
-  };
+  }
 
   typedef InListBaseLink<Record>::range RangeType;
   RangeType GetChildren()
@@ -90,7 +90,7 @@ public:
   ProfileTime GetTotalTime()
   {
     return mTotalTime;
-  };
+  }
 
   // Running Average
   void Update();

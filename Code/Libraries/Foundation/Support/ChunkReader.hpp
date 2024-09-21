@@ -26,7 +26,7 @@ public:
   static const uint HeaderSize = sizeof(u32) * 2;
   typedef unsigned short StringLengthType;
 
-  ChunkReader(){};
+  ChunkReader() {};
 
   void Open(StringParam filename)
   {
@@ -104,14 +104,14 @@ public:
   }
 
   template <typename type>
-  void ReadArray(type* data, uint count)
+  void ReadArray(type* data, size_t count)
   {
     Status status;
     file.Read(status, (::byte*)data, sizeof(type) * count);
   }
 
   template <typename type>
-  void ReadArraySize(type* data, uint size)
+  void ReadArraySize(type* data, size_t size)
   {
     Status status;
     file.Read(status, (::byte*)data, size);

@@ -9,8 +9,7 @@ static const int cAllowAllMatch = cNoMatch + 1;
 static const int cInvalidUpperMatch = 0;
 static const int cExactMatch = 0;
 
-// Returns priority or cNoMatch if there was no match (higher priority means
-// higher up)
+// Returns priority or cNoMatch if there was no match (higher priority means higher up)
 template <typename RangeType, typename Compare>
 int PartialMatchOnly(RangeType part, RangeType full, Compare compare)
 {
@@ -61,8 +60,7 @@ int PartialMatchOnly(RangeType part, RangeType full, Compare compare)
   }
 }
 
-// Returns priority or cNoMatch if there was no match (higher priority means
-// higher up)
+// Returns priority or cNoMatch if there was no match (higher priority means higher up)
 template <typename RangeType, typename Compare>
 int PartialMatch(RangeType part, RangeType full, Compare compare)
 {
@@ -118,12 +116,10 @@ int PartialMatch(RangeType part, RangeType full, Compare compare)
       full.PopFront();
     }
 
-    // 'upperPriority' will never be negative. If 'upperPriority' is 0, it's
-    // invalid.
+    // 'upperPriority' will never be negative. If 'upperPriority' is 0, it's invalid.
     if (upperPriority > priority && upperPriority != cInvalidUpperMatch && part.Empty() == true)
     {
-      // If both 'full' and 'part' are equally empty, then they are an exact
-      // match.
+      // If both 'full' and 'part' are equally empty, then they are an exact match.
       if (full.Empty())
         priority = cExactMatch;
       else
@@ -131,8 +127,8 @@ int PartialMatch(RangeType part, RangeType full, Compare compare)
     }
   }
 
-  // 'priority' will never be positive.  If 'priority' is 0, regardless of all
-  // upper, then an exact match has been found.
+  // 'priority' will never be positive.  If 'priority' is 0, regardless of all upper,
+  // then an exact match has been found.
   return priority;
 }
 
@@ -182,8 +178,7 @@ struct PrioritizedEntry
   void ChooseHigherPriority(
       FilterMatch::Enum match, int priority, ValueType* value, size_t originalIndex, size_t filteredIndex)
   {
-    // If we got a better major match, or the match is the same and we got a
-    // better minor match, choose that
+    // If we got a better major match, or the match is the same and we got a better minor match, choose that
     if (match > mMatch || (match == mMatch && priority > mPriority))
     {
       mMatch = match;
@@ -204,8 +199,7 @@ bool MatchesAcronym(StringRangeParam text, StringRangeParam acronym);
 bool MatchesPartial(StringParam text, StringParam partial, RuneComparer compare = CaseSensitiveCompare);
 
 /// The adapter pulls out the strings that we're filtering from any container
-/// Usage: auto filtered = FilterStrings(stringArray.All(), "Hello",
-/// YourContainerAdapter);
+/// Usage: auto filtered = FilterStrings(stringArray.All(), "Hello", YourContainerAdapter);
 template <typename RangeType, typename Adapter>
 StringFilterResult<typename RangeType::value_type> FilterStrings(RangeType range,
                                                                  StringParam searchText,
@@ -230,8 +224,7 @@ StringFilterResult<typename RangeType::value_type> FilterStrings(RangeType range
     // Whether or not this current string matched anything
     bool matchedAny = false;
 
-    // We prioritize shorter strings (and higher number is higher priority,
-    // hence negative)
+    // We prioritize shorter strings (and higher number is higher priority, hence negative)
     int priority = -(int)text.SizeInBytes();
 
     if (text.StartsWith(searchText, CaseSensitiveCompare))
@@ -270,16 +263,15 @@ StringFilterResult<typename RangeType::value_type> FilterStrings(RangeType range
     ++indexCounter;
   }
 
-  // Finally, set the primary we found on the results (may be null) and return
-  // it
+  // Finally, set the primary we found on the results (may be null) and return it
   results.mPrimary = primary.mValue;
   results.mPrimaryOriginalIndex = primary.mOriginalIndex;
   results.mPrimaryFilteredIndex = primary.mFilteredIndex;
   return results;
 }
 
-/// Helper function that works for any container of strings (see FilterStrings
-/// above) Usage: auto filtered = FilterStrings(stringArray.All(), "Hello");
+/// Helper function that works for any container of strings (see FilterStrings above)
+/// Usage: auto filtered = FilterStrings(stringArray.All(), "Hello");
 template <typename RangeType>
 StringFilterResult<typename RangeType::value_type> FilterStrings(RangeType range, StringParam searchText)
 {

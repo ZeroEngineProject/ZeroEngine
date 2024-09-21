@@ -1,9 +1,9 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
-//#include "Array.hpp"
-//#include "File.hpp"
-//#include "EnumDeclaration.hpp"
-//#include "Status.hpp"
+// #include "Array.hpp"
+// #include "File.hpp"
+// #include "EnumDeclaration.hpp"
+// #include "Status.hpp"
 
 namespace Zero
 {
@@ -12,8 +12,8 @@ class ByteBuffer;
 class ByteBufferBlock;
 class FileFilter;
 
-int RawDeflate(::byte* outputData, uint outsize, ::byte* inputData, uint inSize, int level);
-int RawInflate(::byte* outputData, uint outSize, ::byte* inputData, uint inSize);
+size_t RawDeflate(::byte* outputData, size_t outsize, ::byte* inputData, size_t inSize, int level);
+size_t RawInflate(::byte* outputData, size_t outSize, ::byte* inputData, size_t inSize);
 
 struct ArchiveEntry
 {
@@ -114,12 +114,12 @@ public:
   // Write or Read to a file.
   void WriteZipFile(StringParam filename);
   void ReadZipFile(ArchiveReadFlags::Enum readFlags, StringParam filename);
-  uint ComputeZipSize();
+  size_t ComputeZipSize();
   // Entry Access
 
   // Clear all entries
   void Clear();
-  uint EntryCount()
+  size_t EntryCount()
   {
     return Entries.Size();
   }
@@ -130,8 +130,7 @@ public:
   }
 
   // By default his value is 0, but it can be set if extracting a file
-  // that's embedded within another file (set to the start of the embedded
-  // file).
+  // that's embedded within another file (set to the start of the embedded file).
   u64 mFileOriginBegin;
 
 private:

@@ -17,8 +17,7 @@ bool MatchesAcronym(StringRangeParam text, StringRangeParam acronym)
 
   StringIterator acronymCur = acronym.Begin();
 
-  // We're going to walk over all the text we're matching looking for uppercase
-  // letters
+  // We're going to walk over all the text we're matching looking for uppercase letters
   StringIterator end = text.End();
   for (StringIterator textCur = text.Begin(); textCur < end; ++textCur)
   {
@@ -68,8 +67,7 @@ bool MatchesPartial(StringParam text, StringParam partial, RuneComparer compare)
       if (partialCur == partialEnd)
         return true;
 
-      // If the partial match is going to start matching outside the original
-      // text string, then we stop
+      // If the partial match is going to start matching outside the original text string, then we stop
       if (textTemp >= textEnd)
         return false;
 

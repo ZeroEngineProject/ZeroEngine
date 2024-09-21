@@ -5,9 +5,8 @@ namespace Zero
 {
 
 // This is a central place for all our online locations.
-// The term 'User' means that the link goes to a user facing site. Ends with a
-// '/' for concatenating reasons. The term 'Api' means that it goes to an online
-// script and is typically parsed. Does NOT end with a '/'.
+// The term 'User' means that the link goes to a user facing site. Ends with a '/' for concatenating reasons.
+// The term 'Api' means that it goes to an online script and is typically parsed. Does NOT end with a '/'.
 namespace Urls
 {
 extern const cstr cUserZeroHub;

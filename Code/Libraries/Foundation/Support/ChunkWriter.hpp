@@ -12,7 +12,7 @@ public:
   static const uint HeaderSize = sizeof(u32) * 2;
   typedef unsigned short StringLengthType;
 
-  ChunkWriter(){};
+  ChunkWriter() {};
 
   void Open(StringParam filename)
   {

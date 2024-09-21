@@ -21,12 +21,10 @@ bool MoveFolderContents(StringParam dest, StringParam source, FileFilter* filter
 {
   ReturnIf(source.Empty(),
            false,
-           "Cannot copy from an empty directory/path string (working directory "
-           "as empty string not supported)");
+           "Cannot copy from an empty directory/path string (working directory as empty string not supported)");
   ReturnIf(dest.Empty(),
            false,
-           "Cannot copy to an empty directory/path string (working directory "
-           "as empty string not supported)");
+           "Cannot copy to an empty directory/path string (working directory as empty string not supported)");
 
   CreateDirectoryAndParents(dest);
 
@@ -98,8 +96,8 @@ void FindFilesRecursively(StringParam path, Array<String>& foundFiles)
     return;
   }
 
-  // Otherwise, iterate over all files and folders in the directory. The
-  // recursion will take care of adding all the files
+  // Otherwise, iterate over all files and folders in the directory. The recursion will take care of adding all the
+  // files
   FileRange fileRange(path);
   for (; !fileRange.Empty(); fileRange.PopFront())
   {
@@ -119,8 +117,8 @@ void FindFilesRecursively(StringParam path, Array<String>& foundFiles, FileFilte
     return;
   }
 
-  // Otherwise, iterate over all files and folders in the directory. The
-  // recursion will take care of adding all the files
+  // Otherwise, iterate over all files and folders in the directory. The recursion will take care of adding all the
+  // files
   FileRange fileRange(path);
   for (; !fileRange.Empty(); fileRange.PopFront())
   {
