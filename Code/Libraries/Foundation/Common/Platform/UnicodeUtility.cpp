@@ -26,7 +26,7 @@ static const int cOffsetsFromUTF8[5] = {0x00000000,  // bytes read will (should)
                                         0x000E2080,  // 0000 0000 | 0000 1110 | 0010 0000 | 1000 0000
                                         0x03C82080}; // 0011 1100 | 0000 1000 | 0010 0000 | 1000 0000
 
-u32 UnpackUtf8RuneIntoBufferInternal(Rune uft8Rune, byte (&utf8Bytes)[4]);
+u32 UnpackUtf8RuneIntoBufferInternal(Rune uft8Rune, ::byte (&utf8Bytes)[4]);
 
 bool IsLower(Rune rune)
 {
@@ -119,7 +119,7 @@ u32 Utf8ToUtf32(Rune utf8)
 }
 
 // return the total bytes read
-u32 UnpackUtf8RuneIntoBufferInternal(Rune uft8Rune, byte (&utf8Bytes)[4])
+u32 UnpackUtf8RuneIntoBufferInternal(Rune uft8Rune, ::byte (&utf8Bytes)[4])
 {
   memcpy(utf8Bytes, &uft8Rune.value, sizeof(uint));
 
@@ -133,7 +133,7 @@ u32 UnpackUtf8RuneIntoBufferInternal(Rune uft8Rune, byte (&utf8Bytes)[4])
   return 0;
 }
 
-u32 UnpackUtf8RuneIntoBuffer(Rune uft8Rune, byte (&utf8Bytes)[4])
+u32 UnpackUtf8RuneIntoBuffer(Rune uft8Rune, ::byte (&utf8Bytes)[4])
 {
   memset(utf8Bytes, 0, sizeof(uint));
   ::byte bytes[4];
@@ -164,7 +164,7 @@ Rune ReadUtf8Rune(::byte* firstByte)
 }
 
 // Only pass in the first utf8 byte to get how long the encoded codepoint is in bytes
-u8 EncodedCodepointLength(byte utf8FirstByte)
+u8 EncodedCodepointLength(::byte utf8FirstByte)
 {
   return cTotalBytesToReadUTF8[utf8FirstByte];
 }
