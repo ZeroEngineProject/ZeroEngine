@@ -19,8 +19,7 @@ public:
   void Serialize(Serializer& stream) override;
   void Initialize(CogInitializer& initializer) override;
 
-  /// Returns the minimum size that this widget needs to be based on the
-  /// children.
+  /// Returns the minimum size that this widget needs to be based on the children.
   virtual Vec2 Measure(Rectangle& rect) = 0;
 
   /// Update the translation and sizes of all children objects.

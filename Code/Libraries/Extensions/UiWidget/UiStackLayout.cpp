@@ -160,17 +160,17 @@ void UiStackLayout::DoLayout(Rectangle& rect, UiTransformUpdateEvent* e)
   float flexRatio = ComputeFlexRatio(fixedSize, totalFlex, flexMinSize, totalSize);
 
   // When all the flex objects can't be evenly distributed within the size
-  // allocated for flex objects, we need to assign them slightly "incorrect"
-  // sizes. Example: We have 300 pixels to Assign to two widgets (both with a
-  // flex ratio of 1). There is a 1 pixel spacing (now 299 pixels for the flex
-  // widgets). Both widgets will get assigned 149.5 pixels. If we were to call
-  // SnapToPixels, they would both be given 150 pixels, going over our size
-  // limit (301 total). This can also happen in the other direction (going under
-  // our size limit), which can cause a small jitter when resizing windows with
-  // stack layouts. To fix this issue, we're going to pass on the remainder of
-  // unused size to the next widget. In the case above, the first would get
-  // assigned 149 pixels, and the 0.5 would get passed on to the next, which
-  // would get 150.
+  // allocated for flex objects, we need to assign them slightly "incorrect" sizes.
+  // Example:
+  // We have 300 pixels to Assign to two widgets (both with a flex ratio of 1).
+  // There is a 1 pixel spacing (now 299 pixels for the flex widgets).
+  // Both widgets will get assigned 149.5 pixels. If we were to call SnapToPixels,
+  // they would both be given 150 pixels, going over our size limit (301 total).
+  // This can also happen in the other direction (going under our size limit),
+  // which can cause a small jitter when resizing windows with stack layouts.
+  // To fix this issue, we're going to pass on the remainder of unused size
+  // to the next widget. In the case above, the first would get assigned 149
+  // pixels, and the 0.5 would get passed on to the next, which would get 150.
   float flexRemainder = 0.0f;
 
   UiFilteredChildren secondPass = AllWidgetsInLayout();

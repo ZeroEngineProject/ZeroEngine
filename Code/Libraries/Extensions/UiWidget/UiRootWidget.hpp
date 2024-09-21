@@ -60,8 +60,7 @@ public:
   void MouseMove(ViewportMouseEvent* e);
   void MouseOver(ViewportMouseEvent* e, UiWidget* newMouseOver);
 
-  /// Finds the Widget at the given location and dispatches an event on the
-  /// Widget.
+  /// Finds the Widget at the given location and dispatches an event on the Widget.
   void DispatchAt(DispatchAtParams& dispatchParams);
 
   // Input Event Routing
@@ -78,9 +77,7 @@ public:
   /// and we'll get them again. This is used to ignore duplicate events.
   bool mIgnoreEvents;
 
-  // Rendering
-  /// Renders the Ui to the given color render target. The depth render target
-  /// must have stencil.
+  /// Renders the Ui to the given color render target. The depth render target must have stencil.
   void Render(RenderTasksEvent* e, RenderTarget* color, RenderTarget* depth, MaterialBlock* renderPass);
 
   //-------------- Internals

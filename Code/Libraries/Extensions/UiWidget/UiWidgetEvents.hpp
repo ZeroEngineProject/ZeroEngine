@@ -31,8 +31,7 @@ public:
   /// The object that is gaining focus.
   HandleOf<UiWidget> mReceivedFocus;
 
-  /// The object that has lost focus, or will lose focus (in the case of
-  /// preview).
+  /// The object that has lost focus, or will lose focus (in the case of preview).
   HandleOf<UiWidget> mLostFocus;
 
   /// On UiFocusGainedPreview, allows you to cancel the focus gain.

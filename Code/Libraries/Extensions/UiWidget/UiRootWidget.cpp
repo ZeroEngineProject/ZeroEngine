@@ -118,8 +118,7 @@ void UiRootWidget::Initialize(CogInitializer& initializer)
     ConnectThisTo(GetOwner(), Events::MouseMove, OnMouseEvent);
     ConnectThisTo(GetOwner(), Events::MouseUpdate, OnMouseUpdate);
 
-    // We want to the root widget to know when the mouse has exited the entire
-    // thing
+    // We want to the root widget to know when the mouse has exited the entire thing
     ConnectThisTo(GetOwner(), Events::MouseExit, OnMouseEvent);
 
     // Keyboard events
@@ -154,8 +153,7 @@ UiWidget* UiRootWidget::CastPoint(Vec2Param worldPoint, UiWidget* ignore, bool i
   {
     UiWidget* onTopWidget = mOnTopWidgets[i];
 
-    // Temporarily clear OnTop so that the CastPoint function properly processes
-    // this widget
+    // Temporarily clear OnTop so that the CastPoint function properly processes this widget
     onTopWidget->mFlags.ClearFlag(UiWidgetFlags::OnTop);
 
     UiWidget* hitWidget = onTopWidget->CastPoint(worldPoint, ignore, interactiveOnly);
@@ -172,8 +170,7 @@ UiWidget* UiRootWidget::CastPoint(Vec2Param worldPoint, UiWidget* ignore, bool i
 
 void UiRootWidget::UpdateMouseTimers(float dt, ViewportMouseEvent* e)
 {
-  // Widgets could have moved from under the mouse, so update what the mouse is
-  // over
+  // Widgets could have moved from under the mouse, so update what the mouse is over
   MouseMove(e);
 
   UiWidget* hoverWidget = mMouseOverWidget;
@@ -259,13 +256,12 @@ void UiRootWidget::PerformKeyboardEvent(KeyboardEvent* e)
     SendKeyboardEvent(e, focusWidget->GetOwner(), Events::KeyPreview, nullptr);
   }
 
-  // If the widget in focus doesn't handle the event, we want to send it to the
-  // widget the mouse is currently over
+  // If the widget in focus doesn't handle the event, we want to send it to the widget
+  // the mouse is currently over
   if (e->Handled || e->HandledEventScript)
     return;
 
-  // Pre-append "Hover" to each event so that the widget knows the context of
-  // the event
+  // Pre-append "Hover" to each event so that the widget knows the context of the event
   if (UiWidget* mouseOver = mMouseOverWidget)
     SendKeyboardEvent(e, mouseOver->GetOwner(), Events::HoverKeyPreview, "Hover");
 }
@@ -312,8 +308,7 @@ void UiRootWidget::PerformMouseEvent(ViewportMouseEvent* e)
     return;
   }
 
-  // If the mouse left the root widget, we need to tell the mouse over widget
-  // that it has exited
+  // If the mouse left the root widget, we need to tell the mouse over widget that it has exited
   if (e->EventId == Events::MouseExit)
     MouseOver(e, nullptr);
 
@@ -570,13 +565,12 @@ void UiRootWidget::OnKeyboardEvent(KeyboardEvent* e)
   if (mIgnoreEvents)
     return;
 
-  // We're connecting for keyboard on the global keyboard, which gets events
-  // after the event is dispatched through the old widget system. The GameWidget
-  // sets handled to true after going to the Space to ensure that editor
-  // shortcuts aren't executed while in game. So, by the time we get this, the
-  // event is handled. However, we don't want all events to be immediately
-  // handled, so we have to set it back to false. This should be removed by
-  // either not connecting to the global keyboard, or with input refactor.
+  // We're connecting for keyboard on the global keyboard, which gets events after the event
+  // is dispatched through the old widget system.
+  // The GameWidget sets handled to true after going to the Space to ensure that editor shortcuts
+  // aren't executed while in game. So, by the time we get this, the event is handled. However,
+  // we don't want all events to be immediately handled, so we have to set it back to false.
+  // This should be removed by either not connecting to the global keyboard, or with input refactor.
   e->Handled = false;
 
   mIgnoreEvents = true;
@@ -688,8 +682,7 @@ void UiRootWidget::AddGraphical(RenderTasksEvent* e,
     if (graphical->GetVisible() == false)
       return;
 
-    // If the stencil mode has changed, we need to commit all graphicals from
-    // the last group
+    // If the stencil mode has changed, we need to commit all graphicals from the last group
     if (mStencilDrawMode != stencilMode)
       FlushGraphicals(e, color, depth, renderPass);
 

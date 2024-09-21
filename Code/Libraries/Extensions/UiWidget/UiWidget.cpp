@@ -52,8 +52,7 @@ ZilchDefineType(UiWidgetCastResultsRange, builder, type)
 }
 
 UiWidgetCastResultsRange::UiWidgetCastResultsRange(const UiWidgetArray& overlappingWidgets) :
-    mOverlappingWidgets(overlappingWidgets),
-    mIndex(0)
+    mOverlappingWidgets(overlappingWidgets), mIndex(0)
 {
 }
 
@@ -246,8 +245,8 @@ void UiWidget::Initialize(CogInitializer& initializer)
   }
 
   // If we're dynamically added, we need to let our parent know that it needs
-  // to update. Unfortunately, this means that when the Ui is created, the
-  // entire tree is updated once. We could change this so this is only called if
+  // to update. Unfortunately, this means that when the Ui is created, the entire
+  // tree is updated once. We could change this so this is only called if
   // the component was added dynamically once that information is available.
   MarkAsNeedsUpdate();
 }
@@ -719,8 +718,8 @@ void UiWidget::MarkAsNeedsUpdate()
 
 void UiWidget::MarkAsNeedsUpdateInternal(bool localUpdate)
 {
-  // If we weren't already marked for modification, we need to walk up the tree
-  // and mark our parents for modification
+  // If we weren't already marked for modification, we need to walk up the tree and mark
+  // our parents for modification
   if (mTransformUpdateState == UiTransformUpdateState::Updated)
   {
     // Set the flag accordingly
@@ -910,8 +909,8 @@ bool UiWidget::GetInLayout()
 
 void UiWidget::SetInLayout(bool state)
 {
-  // If the user enables in layout, hitting undo should move the translation and
-  // scale back to their previous values
+  // If the user enables in layout, hitting undo should move the translation and scale back
+  // to their previous values
   if (OperationQueue::IsListeningForSideEffects())
   {
     OperationQueue::RegisterSideEffect(this, PropertyPath("LocalTranslation"), GetLocalTranslation());

@@ -117,8 +117,7 @@ DeclareBitField11(UiWidgetFlags,
                   // Object has focus or child has focus
                   HierarchyHasFocus);
 
-// Macros to make it easy to define setters / getters for all the flags. The
-// reason we need
+// Macros to make it easy to define setters / getters for all the flags. The reason we need
 #define DeclareWidgetFlagSetterGetter(flag)                                                                            \
   bool Get##flag()                                                                                                     \
   {                                                                                                                    \
@@ -203,8 +202,7 @@ public:
 
   Rectangle GetBodyRectangle();
 
-  /// Returns our rect relative to parent. The origin of this Rect is bottom
-  /// left.
+  /// Returns our rect relative to parent. The origin of this Rect is bottom left.
   Rectangle GetLocalRectangle();
   void SetLocalRectangle(RectangleParam rectangle);
 
@@ -227,9 +225,8 @@ public:
   /// Transforms a local point into world space.
   Vec2 TransformPoint(Vec2Param localPosition);
 
-  /// Transforms a world point into this Widget's local space. Note, this is not
-  /// the same space as LocalTranslation. LocalTranslation is in this Widget's
-  /// parent space.
+  /// Transforms a world point into this Widget's local space. Note, this is not the same space
+  /// as LocalTranslation. LocalTranslation is in this Widget's parent space.
   Vec2 TransformPointInverse(Vec2Param worldPosition);
 
   /// Size getter / setter. This acts as a shortcut to the Area Component.
@@ -388,7 +385,8 @@ public:
 private:
   friend class UiRootWidget;
 
-  union {
+  union
+  {
     UiSizePolicy::Enum mSizePolicy[Axis::Size];
     struct
     {
