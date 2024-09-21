@@ -16,10 +16,9 @@ void ResolveBinaryOp(ZilchSpirVFrontEnd* translator,
     translator->PerformBinaryOp(binaryOpNode, opType, context);
 }
 
-// Resolves a binary operator node where the lhs and rhs of the node have
-// already been resolved. This can be necessary when one of the sides in the
-// node has to undergo a transformation first (e.g vector / scalar has to first
-// promote the scalar to a vector)
+// Resolves a binary operator node where the lhs and rhs of the node have already been resolved.
+// This can be necessary when one of the sides in the node has to undergo a transformation first
+// (e.g vector / scalar has to first promote the scalar to a vector)
 void ResolveBinaryOp(ZilchSpirVFrontEnd* translator,
                      Zilch::BinaryOperatorNode* binaryOpNode,
                      OpType opType,
@@ -78,9 +77,8 @@ void ResolveDot(ZilchSpirVFrontEnd* translator,
   ResolveStaticBinaryFunctionOp(translator, functionCallNode, spv::OpDot, context);
 }
 
-// Resolves vector op vector(scalar). Needed for some operations like vector /
-// scalar which has to turn into vector / vector(scalar) since the componentized
-// operations don't exist.
+// Resolves vector op vector(scalar). Needed for some operations like vector / scalar which has to
+// turn into vector / vector(scalar) since the componentized operations don't exist.
 template <OpType opType>
 void ResolveVectorOpSplatScalar(ZilchSpirVFrontEnd* translator,
                                 Zilch::BinaryOperatorNode* binaryOpNode,
@@ -91,8 +89,7 @@ void ResolveVectorOpSplatScalar(ZilchSpirVFrontEnd* translator,
   // Get the vector operand
   IZilchShaderIR* vectorOperand = translator->WalkAndGetResult(binaryOpNode->LeftOperand, context);
 
-  // Convert the scalar operand into a vector of the same type as the left hand
-  // side
+  // Convert the scalar operand into a vector of the same type as the left hand side
   ZilchShaderIRType* vectorType = translator->FindType(binaryOpNode->LeftOperand->ResultType, binaryOpNode);
   ZilchShaderIROp* scalarOperand = translator->WalkAndGetValueTypeResult(binaryOpNode->RightOperand, context);
   ZilchShaderIROp* splattedScalarOperand =
@@ -111,8 +108,8 @@ void ResolveSimpleStaticBinaryFunctionOp(ZilchSpirVFrontEnd* translator,
   ResolveStaticBinaryFunctionOp(translator, functionCallNode, opType, context);
 }
 
-// Some binary functions are special and have to be flipped due to the column
-// vs. row major differences of zilch and spirv.
+// Some binary functions are special and have to be flipped due to the column vs. row major differences of zilch and
+// spirv.
 void ResolveFlippedStaticBinaryFunctionOp(ZilchSpirVFrontEnd* translator,
                                           Zilch::FunctionCallNode* functionCallNode,
                                           OpType opType,
@@ -161,8 +158,7 @@ void ResolveMatrixTranspose(ZilchSpirVFrontEnd* translator,
   context->PushIRStack(operationOp);
 }
 
-// Register function callbacks for the various arithmetic operators (see
-// Arithmetic Instructions in the spir-v spec).
+// Register function callbacks for the various arithmetic operators (see Arithmetic Instructions in the spir-v spec).
 void RegisterArithmeticOps(ZilchSpirVFrontEnd* translator, ZilchShaderIRLibrary* shaderLibrary, ZilchTypeGroups& types)
 {
   Zilch::Core& core = Zilch::Core::GetInstance();
@@ -215,8 +211,7 @@ void RegisterArithmeticOps(ZilchSpirVFrontEnd* translator, ZilchShaderIRLibrary*
                                               ResolveFMod);
   }
 
-  // Register ops that are only on float vector types (no scalars). Some of
-  // these are because of zilch and not spirv.
+  // Register ops that are only on float vector types (no scalars). Some of these are because of zilch and not spirv.
   for (size_t i = 1; i < types.mRealVectorTypes.Size(); ++i)
   {
     Zilch::BoundType* zilchType = types.mRealVectorTypes[i];
@@ -265,11 +260,9 @@ void RegisterArithmeticOps(ZilchSpirVFrontEnd* translator, ZilchShaderIRLibrary*
     opResolvers.RegisterUnaryOpResolver(zilchType, Zilch::Grammar::Subtract, ResolveUnaryOperator<OpType::OpSNegate>);
   }
 
-  // Register ops that are only on int vector types (no scalars). Some of these
-  // are because of zilch and not spirv.
+  // Register ops that are only on int vector types (no scalars). Some of these are because of zilch and not spirv.
   // @JoshD: SpirV doesn't have any actual vector operations on integers.
-  // Some could be supported using more complicated instructions (e.g. vector *
-  // scalar = vector * vector(scalar))
+  // Some could be supported using more complicated instructions (e.g. vector * scalar = vector * vector(scalar))
   for (size_t i = 1; i < types.mIntegerVectorTypes.Size(); ++i)
   {
     Zilch::BoundType* zilchType = types.mIntegerVectorTypes[i];
@@ -277,9 +270,8 @@ void RegisterArithmeticOps(ZilchSpirVFrontEnd* translator, ZilchShaderIRLibrary*
 
     // VectorTimesScalar is only on real types
     // ZilchTypePair vectorScalarTypePair(zilchType, intType);
-    // translator->mBinaryOpInstructions[BinaryOpTypeId(vectorScalarTypePair,
-    // Zilch::Grammar::Multiply)] = OpType::OpVectorTimesScalar;
-    // translator->mBinaryOpInstructions[BinaryOpTypeId(vectorScalarTypePair,
+    // translator->mBinaryOpInstructions[BinaryOpTypeId(vectorScalarTypePair, Zilch::Grammar::Multiply)] =
+    // OpType::OpVectorTimesScalar; translator->mBinaryOpInstructions[BinaryOpTypeId(vectorScalarTypePair,
     // Zilch::Grammar::AssignmentMultiply)] = OpType::OpVectorTimesScalar;
   }
 
@@ -300,9 +292,8 @@ void RegisterArithmeticOps(ZilchSpirVFrontEnd* translator, ZilchShaderIRLibrary*
       mathTypeResolver.RegisterFunctionResolver(
           GetStaticFunction(mathType, "Multiply", zilchTypeName, vectorType->ToString()), ResolveMatrixTimesVector);
 
-      // Iterate over all of the other matrix dimensions to make the
-      // multiplication functions (e.g. Real2x3 * real3x2, Real2x3 * Real3x3,
-      // etc...)
+      // Iterate over all of the other matrix dimensions to make the multiplication functions
+      // (e.g. Real2x3 * real3x2, Real2x3 * Real3x3, etc...)
       for (size_t z = 2; z <= 4; ++z)
       {
         Zilch::BoundType* rhsMatrixType = types.GetMatrixType(x, z);

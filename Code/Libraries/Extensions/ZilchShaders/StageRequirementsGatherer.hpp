@@ -6,8 +6,7 @@ namespace Zero
 
 class StageRequirementsGatherer;
 
-/// Context for stage requirements gathering. Used to store state needed during
-/// iteration.
+/// Context for stage requirements gathering. Used to store state needed during iteration.
 class StageRequirementsGathererContext
     : public Zilch::WalkerContext<StageRequirementsGatherer, StageRequirementsGathererContext>
 {
@@ -21,16 +20,15 @@ public:
   ZilchShaderIRLibrary* mCurrentLibrary;
   StageRequirementsData mCurrentRequirements;
 
-  /// Zilch library to shader library map. Needed during recursion to find the
-  /// shader library for a symbol to check for cached stage requirements.
+  /// Zilch library to shader library map. Needed during recursion to find the shader
+  /// library for a symbol to check for cached stage requirements.
   HashMap<Zilch::Library*, ZilchShaderIRLibrary*> mZilchLibraryToShaderLibraryMap;
 
   ShaderCompilationErrors* mErrors;
 };
 
-/// Helper zilch AST walker to find what symbols have various stage requirements
-/// and emit errors when invalid combinations are found (e.g. a vertex calling a
-/// pixel only function).
+/// Helper zilch AST walker to find what symbols have various stage requirements and emit
+/// errors when invalid combinations are found (e.g. a vertex calling a pixel only function).
 class StageRequirementsGatherer
 {
 public:

@@ -20,13 +20,11 @@ public:
   ZilchShaderIRType* GetSampledType();
   /// The dimensionality of the image. Return type is of spv::Dim.
   int GetDim();
-  /// Is this a depth image? 0 indicates no depth, 1 indicates depth, 2 is
-  /// unknown.
+  /// Is this a depth image? 0 indicates no depth, 1 indicates depth, 2 is unknown.
   int GetDepth();
   /// Is the image arrayed? 0 indicates non-arrayed, 1 indicates arrayed.
   int GetArrayed();
-  /// Is the image multi-sampled? 0 indicates single-sampled, 1 indicates
-  /// multi-sampled.
+  /// Is the image multi-sampled? 0 indicates single-sampled, 1 indicates multi-sampled.
   int GetMultiSampled();
   /// Is this image used with a sampler? 0 is unknown (only known at run time),
   /// 1 indicates this will be used with a sampler, 2 indicates this will not
@@ -35,8 +33,7 @@ public:
   /// The image format. Returns type of spv::ImageFormat.
   int GetFormat();
 
-  /// Helper to determine if this is a storage image (cannot be used with a
-  /// sampler).
+  /// Helper to determine if this is a storage image (cannot be used with a sampler).
   bool IsStorageImage();
 
   int GetIntegerConstantParameterValue(int parameterIndex);
@@ -44,8 +41,7 @@ public:
   ZilchShaderIRType* mIRType;
 };
 
-/// Simple wrapper around a runtime array type. Contains helpers to look up
-/// various underlying type data.
+/// Simple wrapper around a runtime array type. Contains helpers to look up various underlying type data.
 class ZilchShaderIRRuntimeArrayType
 {
 public:

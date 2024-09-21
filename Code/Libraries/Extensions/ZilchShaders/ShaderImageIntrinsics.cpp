@@ -9,8 +9,7 @@ using namespace Zero;
 ZilchDefineType(Sampler, builder, type)
 {
   type->AddAttribute(SpirVNameSettings::mNonCopyableAttributeName);
-  // Mark the required storage class on this type. Used in the front end
-  // translation.
+  // Mark the required storage class on this type. Used in the front end translation.
   Attribute* storageAttribute = type->AddAttribute(SpirVNameSettings::mStorageClassAttribute);
   storageAttribute->AddParameter(spv::StorageClassUniformConstant);
 }
@@ -18,8 +17,7 @@ ZilchDefineType(Sampler, builder, type)
 ZilchDefineType(Image2d, builder, type)
 {
   type->AddAttribute(SpirVNameSettings::mNonCopyableAttributeName);
-  // Mark the required storage class on this type. Used in the front end
-  // translation.
+  // Mark the required storage class on this type. Used in the front end translation.
   Attribute* storageAttribute = type->AddAttribute(SpirVNameSettings::mStorageClassAttribute);
   storageAttribute->AddParameter(spv::StorageClassUniformConstant);
 }
@@ -27,8 +25,7 @@ ZilchDefineType(Image2d, builder, type)
 ZilchDefineType(StorageImage2d, builder, type)
 {
   type->AddAttribute(SpirVNameSettings::mNonCopyableAttributeName);
-  // Mark the required storage class on this type. Used in the front end
-  // translation.
+  // Mark the required storage class on this type. Used in the front end translation.
   Attribute* storageAttribute = type->AddAttribute(SpirVNameSettings::mStorageClassAttribute);
   storageAttribute->AddParameter(spv::StorageClassUniformConstant);
 }
@@ -36,8 +33,7 @@ ZilchDefineType(StorageImage2d, builder, type)
 ZilchDefineType(DepthImage2d, builder, type)
 {
   type->AddAttribute(SpirVNameSettings::mNonCopyableAttributeName);
-  // Mark the required storage class on this type. Used in the front end
-  // translation.
+  // Mark the required storage class on this type. Used in the front end translation.
   Attribute* storageAttribute = type->AddAttribute(SpirVNameSettings::mStorageClassAttribute);
   storageAttribute->AddParameter(spv::StorageClassUniformConstant);
 }
@@ -45,8 +41,7 @@ ZilchDefineType(DepthImage2d, builder, type)
 ZilchDefineType(ImageCube, builder, type)
 {
   type->AddAttribute(SpirVNameSettings::mNonCopyableAttributeName);
-  // Mark the required storage class on this type. Used in the front end
-  // translation.
+  // Mark the required storage class on this type. Used in the front end translation.
   Attribute* storageAttribute = type->AddAttribute(SpirVNameSettings::mStorageClassAttribute);
   storageAttribute->AddParameter(spv::StorageClassUniformConstant);
 }
@@ -54,8 +49,7 @@ ZilchDefineType(ImageCube, builder, type)
 ZilchDefineType(SampledImage2d, builder, type)
 {
   type->AddAttribute(SpirVNameSettings::mNonCopyableAttributeName);
-  // Mark the required storage class on this type. Used in the front end
-  // translation.
+  // Mark the required storage class on this type. Used in the front end translation.
   Attribute* storageAttribute = type->AddAttribute(SpirVNameSettings::mStorageClassAttribute);
   storageAttribute->AddParameter(spv::StorageClassUniformConstant);
 }
@@ -63,8 +57,7 @@ ZilchDefineType(SampledImage2d, builder, type)
 ZilchDefineType(SampledDepthImage2d, builder, type)
 {
   type->AddAttribute(SpirVNameSettings::mNonCopyableAttributeName);
-  // Mark the required storage class on this type. Used in the front end
-  // translation.
+  // Mark the required storage class on this type. Used in the front end translation.
   Attribute* storageAttribute = type->AddAttribute(SpirVNameSettings::mStorageClassAttribute);
   storageAttribute->AddParameter(spv::StorageClassUniformConstant);
 }
@@ -72,8 +65,7 @@ ZilchDefineType(SampledDepthImage2d, builder, type)
 ZilchDefineType(SampledImageCube, builder, type)
 {
   type->AddAttribute(SpirVNameSettings::mNonCopyableAttributeName);
-  // Mark the required storage class on this type. Used in the front end
-  // translation.
+  // Mark the required storage class on this type. Used in the front end translation.
   Attribute* storageAttribute = type->AddAttribute(SpirVNameSettings::mStorageClassAttribute);
   storageAttribute->AddParameter(spv::StorageClassUniformConstant);
 }
@@ -164,12 +156,10 @@ void WriteImageArguments(ZilchSpirVFrontEnd* translator,
                          ImageUserData& imageData,
                          ZilchSpirVFrontEndContext* context)
 {
-  // Find out how many arguments we have to write out before optional image
-  // operands
+  // Find out how many arguments we have to write out before optional image operands
   int nonOptionalOperands = functionCallNode->Arguments.Size() - index - imageData.mOptionalOperands;
-  // Write all of the non optional operands from the start index. We might
-  // actually skip some initial operands if they were processed on the outside
-  // (e.g. combining image + sampler into SampledImage)
+  // Write all of the non optional operands from the start index. We might actually skip some initial operands
+  // if they were processed on the outside (e.g. combining image + sampler into SampledImage)
   for (int i = 0; i < nonOptionalOperands; ++i)
   {
     ZilchShaderIROp* arg = translator->WalkAndGetValueTypeResult(functionCallNode->Arguments[index], context);
@@ -177,8 +167,7 @@ void WriteImageArguments(ZilchSpirVFrontEnd* translator,
     ++index;
   }
 
-  // If we have optional operands then write out the flags and then the extra
-  // arguments
+  // If we have optional operands then write out the flags and then the extra arguments
   if (imageData.mImageOperandFlags != spv::ImageOperandsMaskNone)
   {
     ZilchShaderIRConstantLiteral* literal = translator->GetOrCreateConstantIntegerLiteral(imageData.mImageOperandFlags);
@@ -211,8 +200,8 @@ inline void ResolveCombinedSamplerFunction(ZilchSpirVFrontEnd* translator,
   context->PushIRStack(result);
 }
 
-// Resolves a function that operates on a SampledImage but is given a Sampler
-// and an Image and must combine them into a temporary.
+// Resolves a function that operates on a SampledImage but is given a Sampler and an Image and must combine them into a
+// temporary.
 template <OpType opType>
 inline void ResolveSplitImageSamplerFunction(ZilchSpirVFrontEnd* translator,
                                              Zilch::FunctionCallNode* functionCallNode,
@@ -225,8 +214,7 @@ inline void ResolveSplitImageSamplerFunction(ZilchSpirVFrontEnd* translator,
   ZilchShaderIROp* result = translator->BuildIROpNoBlockAdd(opType, resultType, context);
 
   // Combine the image and sampler together into a temporary sampled image.
-  // To make life easier combined sampled image type is provided via the complex
-  // user data.
+  // To make life easier combined sampled image type is provided via the complex user data.
   ZilchShaderIRType* sampledImageType = translator->FindType(imageData.mSampledImageType, functionCallNode);
   ZilchShaderIROp* imageValue = translator->WalkAndGetValueTypeResult(functionCallNode->Arguments[0], context);
   ZilchShaderIROp* samplerValue = translator->WalkAndGetValueTypeResult(functionCallNode->Arguments[1], context);
@@ -242,8 +230,8 @@ inline void ResolveSplitImageSamplerFunction(ZilchSpirVFrontEnd* translator,
   context->PushIRStack(result);
 }
 
-// Resolves a function that operates on an Image. If the input is a SampledImage
-// this will first grab the image from the sampler.
+// Resolves a function that operates on an Image. If the input is a SampledImage this will first grab the image from the
+// sampler.
 template <OpType opType>
 inline void ResolveImageFunction(ZilchSpirVFrontEnd* translator,
                                  Zilch::FunctionCallNode* functionCallNode,
@@ -257,8 +245,7 @@ inline void ResolveImageFunction(ZilchSpirVFrontEnd* translator,
 
   // Get the image argument
   ZilchShaderIROp* imageValue = translator->WalkAndGetValueTypeResult(functionCallNode->Arguments[0], context);
-  // First argument is actually a sampled image then grab the image from the
-  // sampled image
+  // First argument is actually a sampled image then grab the image from the sampled image
   if (imageValue->mResultType->mBaseType == ShaderIRTypeBaseType::SampledImage)
   {
     ZilchShaderIROp* sampledImageValue = imageValue;
@@ -267,8 +254,7 @@ inline void ResolveImageFunction(ZilchSpirVFrontEnd* translator,
   }
   result->mArguments.PushBack(imageValue);
 
-  // Write out the remaining image arguments, skipping the image itself (since
-  // we already processed it)
+  // Write out the remaining image arguments, skipping the image itself (since we already processed it)
   WriteImageArguments(translator, functionCallNode, result, 1, imageData, context);
 
   context->GetCurrentBlock()->AddOp(result);
@@ -764,8 +750,8 @@ void AddImageFunctions(Zilch::LibraryBuilder& builder, Zilch::BoundType* type, Z
   AddSampleExplicitLod(builder, type, sampler2dSet, real2Type, realType, real4Type);
   AddSampleExplicitLod(builder, type, samplerCubeSet, real3Type, realType, real4Type);
   // Sample Grad Explicit Lod
-  // Note: Grad functions are explicit Lod even though they cannot be mixed with
-  // an lod param because the lod is computed from the gradient values.
+  // Note: Grad functions are explicit Lod even though they cannot be mixed with an lod
+  // param because the lod is computed from the gradient values.
   AddSampleGradExplicitLod(builder, type, sampler2dSet, real2Type, real2Type, real4Type);
   AddSampleGradExplicitLod(builder, type, samplerCubeSet, real3Type, real3Type, real4Type);
   // Sample Dref Implicit Lod

@@ -20,8 +20,7 @@ public:
   /// All objects that have been processed. Prevents visiting a part of
   /// the call graph multiple times (this can happen even if no cycles exist).
   HashSet<void*> mAllProcessedObjects;
-  /// Keeps track of all objects in the current call stack (a duplicate means a
-  /// cycle was found).
+  /// Keeps track of all objects in the current call stack (a duplicate means a cycle was found).
   HashSet<void*> mProcessedObjectsStack;
   /// Used to report the call stack that creates a cycle.
   Array<Zilch::SyntaxNode*> mCallStack;

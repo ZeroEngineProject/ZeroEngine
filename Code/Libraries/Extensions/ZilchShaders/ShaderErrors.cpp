@@ -54,8 +54,7 @@ void ShaderCompilationErrors::SendTranslationError(Zilch::CodeLocation& location
                                                    StringParam shortMsg,
                                                    StringParam fullMsg)
 {
-  // Check if this is the first error being sent and if not check if we send
-  // multiple errors
+  // Check if this is the first error being sent and if not check if we send multiple errors
   if (mErrorTriggered && !mEmitMultipleErrors)
     return;
 

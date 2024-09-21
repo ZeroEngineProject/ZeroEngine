@@ -13,8 +13,7 @@ namespace Zero
 
 class TypeDependencyCollector;
 
-/// Simple class to group common data together to make it easier to pass between
-/// functions.
+/// Simple class to group common data together to make it easier to pass between functions.
 class EntryPointHelperFunctionData
 {
 public:
@@ -33,11 +32,9 @@ public:
   ZilchShaderIROp* mOutputDataInstance;
 };
 
-/// Represents a grouping of fields for entry point generation to make
-/// input/output interface generation easier. These fields could be grouped
-/// together in a struct or could be globals. These fields could be inputs or
-/// outputs. Additionally, each field and the parent struct (if it exists) can
-/// contain decoration attributes.
+/// Represents a grouping of fields for entry point generation to make input/output interface generation easier.
+/// These fields could be grouped together in a struct or could be globals. These fields could be inputs or outputs.
+/// Additionally, each field and the parent struct (if it exists) can contain decoration attributes.
 class InterfaceInfoGroup
 {
 public:
@@ -66,9 +63,8 @@ public:
   struct FieldInfo
   {
     ShaderIRFieldMeta* mFieldMeta;
-    // The metas of all of the fields that were matched against this interface
-    // field. Needed as the matching is not 1 to 1 and the names don't have to
-    // match.
+    // The metas of all of the fields that were matched against this interface field.
+    // Needed as the matching is not 1 to 1 and the names don't have to match.
     Array<ShaderIRFieldMeta*> mLinkedFields;
     Array<DecorationParam> mDecorations;
     Array<DecorationParam> mTypeDecorations;
@@ -82,11 +78,9 @@ public:
     mStorageClass = spv::StorageClassGeneric;
   }
 
-  /// Find a field descriptor based upon its key. Returns null if there is no
-  /// matching field.
+  /// Find a field descriptor based upon its key. Returns null if there is no matching field.
   FieldInfo* FindFieldInfo(const ShaderFieldKey& fieldKey);
-  /// Find a field descriptor based upon its key. Creates the descriptor if it
-  /// doesn't exist.
+  /// Find a field descriptor based upon its key. Creates the descriptor if it doesn't exist.
   FieldInfo* FindOrCreateFieldInfo(const ShaderFieldKey& fieldKey);
 
   /// The fields being grouped together
@@ -115,20 +109,17 @@ struct ShaderInterfaceField
 {
   ShaderInterfaceField();
 
-  // The index of this field within it's owning data structure. Needed to get a
-  // pointer to the actual memory address.
+  // The index of this field within it's owning data structure. Needed to get a pointer to the actual memory address.
   int mFieldIndex;
   // Name of the field to generate. Should not be used for linking purposes.
   String mFieldName;
-  // The meta (uniquely owned by this type) for the field. Stores all attributes
-  // needed for resolution.
+  // The meta (uniquely owned by this type) for the field. Stores all attributes needed for resolution.
   ShaderIRFieldMeta* mFieldMeta;
 
   // The actual type of the interface field
   ZilchShaderIRType* mFieldType;
-  // The original field type that was declared for this field. This might be
-  // different from the actual field type if the interface type had to be
-  // replaced (e.g. bool -> int)
+  // The original field type that was declared for this field. This might be different from the
+  // actual field type if the interface type had to be replaced (e.g. bool -> int)
   ZilchShaderIRType* mOriginalFieldType;
 
   Array<ShaderIRFieldMeta*> mLinkedFields;
@@ -138,7 +129,7 @@ DeclareEnum3(ShaderInterfaceKind, Struct, Globals, Array);
 
 struct ShaderInterfaceType
 {
-  virtual ~ShaderInterfaceType(){};
+  virtual ~ShaderInterfaceType() {};
 
   virtual ShaderInterfaceKind::Enum GetInterfaceKind() = 0;
 
@@ -159,33 +150,30 @@ struct ShaderInterfaceType
   virtual ShaderInterfaceField* GetFieldAtIndex(size_t index) = 0;
   // Finds a field by key. Returns null if the value is invalid.
   virtual ShaderInterfaceField* GetField(const ShaderFieldKey& fieldKey) = 0;
-  // Returns a pointer to the field at the given index. If needed, instructions
-  // will be written to the given block.
+  // Returns a pointer to the field at the given index. If needed, instructions will be written to the given block.
   virtual ZilchShaderIROp* GetFieldPointerByIndex(size_t index,
                                                   EntryPointGeneration* entryPointGeneration,
                                                   BasicBlock* block,
                                                   spv::StorageClass storageClass) = 0;
 
-  // Declare an interface struct type to contain the given interface group
-  // variables.
+  // Declare an interface struct type to contain the given interface group variables.
   virtual void DeclareInterfaceType(EntryPointGeneration* entryPointGeneration,
                                     InterfaceInfoGroup& interfaceGroup,
-                                    EntryPointInfo* entryPointInfo){};
+                                    EntryPointInfo* entryPointInfo) {};
   // Decorates the interface type and all of its sub-members.
   virtual void DecorateInterfaceType(EntryPointGeneration* entryPointGeneration,
                                      InterfaceInfoGroup& interfaceGroup,
-                                     EntryPointInfo* entryPointInfo){};
-  // Create the instance for the given interface struct. Also applies instance
-  // decorations to the newly created instance.
+                                     EntryPointInfo* entryPointInfo) {};
+  // Create the instance for the given interface struct. Also applies instance decorations to the newly created
+  // instance.
   virtual void DefineInterfaceType(EntryPointGeneration* entryPointGeneration,
                                    InterfaceInfoGroup& interfaceGroup,
-                                   EntryPointInfo* entryPointInfo){};
-  // Copies the given interface type instance to/from the copyHelper's self type
-  // (based upon the storage class).
+                                   EntryPointInfo* entryPointInfo) {};
+  // Copies the given interface type instance to/from the copyHelper's self type (based upon the storage class).
   virtual void CopyInterfaceType(EntryPointGeneration* entryPointGeneration,
                                  InterfaceInfoGroup& interfaceGroup,
                                  EntryPointInfo* entryPointInfo,
-                                 EntryPointHelperFunctionData& copyHelperData){};
+                                 EntryPointHelperFunctionData& copyHelperData) {};
 };
 
 struct ShaderInterfaceStruct : public ShaderInterfaceType
@@ -202,8 +190,7 @@ struct ShaderInterfaceStruct : public ShaderInterfaceType
                                           BasicBlock* block,
                                           spv::StorageClass storageClass) override;
 
-  // Get the field by index off of the given instance. Used internally and when
-  // this is a sub-type in an array.
+  // Get the field by index off of the given instance. Used internally and when this is a sub-type in an array.
   ZilchShaderIROp* GetFieldPointerByIndex(ZilchShaderIROp* instance,
                                           size_t index,
                                           EntryPointGeneration* entryPointGeneration,
@@ -244,8 +231,7 @@ struct ShaderInterfaceGlobals : public ShaderInterfaceType
                                           BasicBlock* block,
                                           spv::StorageClass storageClass) override;
 
-  // Declare an interface struct type to contain the given interface group
-  // variables.
+  // Declare an interface struct type to contain the given interface group variables.
   void DeclareInterfaceType(EntryPointGeneration* entryPointGeneration,
                             InterfaceInfoGroup& interfaceGroup,
                             EntryPointInfo* entryPointInfo) override;
@@ -253,13 +239,12 @@ struct ShaderInterfaceGlobals : public ShaderInterfaceType
   void DecorateInterfaceType(EntryPointGeneration* entryPointGeneration,
                              InterfaceInfoGroup& interfaceGroup,
                              EntryPointInfo* entryPointInfo) override;
-  // Create the instance for the given interface struct. Also applies instance
-  // decorations to the newly created instance.
+  // Create the instance for the given interface struct. Also applies instance decorations to the newly created
+  // instance.
   void DefineInterfaceType(EntryPointGeneration* entryPointGeneration,
                            InterfaceInfoGroup& interfaceGroup,
                            EntryPointInfo* entryPointInfo) override;
-  // Copies the given interface type instance to/from the copyHelper's self type
-  // (based upon the storage class).
+  // Copies the given interface type instance to/from the copyHelper's self type (based upon the storage class).
   void CopyInterfaceType(EntryPointGeneration* entryPointGeneration,
                          InterfaceInfoGroup& interfaceGroup,
                          EntryPointInfo* entryPointInfo,
@@ -278,8 +263,7 @@ struct ShaderInterfaceStructArray : public ShaderInterfaceStruct
 
   // Does the contained struct type have a field with the given name/type?
   bool ContainsField(const ShaderFieldKey& fieldKey);
-  // Get a pointer to a field in the sub-struct at the given index. Emits access
-  // code to the given block
+  // Get a pointer to a field in the sub-struct at the given index. Emits access code to the given block
   ZilchShaderIROp* GetPointerByIndex(IZilchShaderIR* index,
                                      ShaderFieldKey& fieldKey,
                                      EntryPointGeneration* entryPointGeneration,
@@ -360,8 +344,8 @@ public:
   friend ShaderInterfaceGlobals;
   friend ShaderInterfaceStructArray;
 
-  // Shared information for declaring a in/out interface type for a geometry
-  // shader to make passing data to functions easier
+  // Shared information for declaring a in/out interface type for a geometry shader to make passing data to functions
+  // easier
   struct GeometryInOutTypeInfo
   {
     String mInstanceName;
@@ -548,8 +532,7 @@ public:
                                  ShaderInterfaceInfo& interfaceInfo,
                                  InterfaceInfoGroup& group);
 
-  // Create a shader interface field from the interface group and the field
-  // index.
+  // Create a shader interface field from the interface group and the field index.
   void CreateShaderInterfaceField(ShaderInterfaceField& interfaceField, InterfaceInfoGroup& interfaceGroup, int index);
 
   // Some types aren't allowed in any interface declarations (uniform/in/out).
@@ -559,16 +542,14 @@ public:
   // Write the execution mode for the pixel origin for this entry point.
   void WriteExecutionModeOriginUpperLeft(EntryPointInfo* entryPointInfo);
 
-  // Finds a field from a collection of interface types. If necessary, any new
-  // op-codes will be written into the given block and the provided storage
-  // class will be used.
+  // Finds a field from a collection of interface types. If necessary, any new op-codes will
+  // be written into the given block and the provided storage class will be used.
   ZilchShaderIROp* FindField(ShaderFieldKey& fieldKey,
                              Array<ShaderInterfaceType*>& interfaces,
                              BasicBlock* block,
                              spv::StorageClass storageClass);
-  // Walks the given type meta to find an attribute with the given field meta
-  // (for name overrides). Returns the first field that fulfills the meta,
-  // otherwise null.
+  // Walks the given type meta to find an attribute with the given field meta (for name overrides).
+  // Returns the first field that fulfills the meta, otherwise null.
   ShaderIRFieldMeta* FindFieldViaAttribute(ShaderIRTypeMeta* typeMeta,
                                            StringParam attributeName,
                                            ShaderFieldKey& fieldKey);

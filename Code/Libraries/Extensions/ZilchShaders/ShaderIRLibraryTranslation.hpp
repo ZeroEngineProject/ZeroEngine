@@ -4,17 +4,15 @@
 namespace Zero
 {
 
-// Registered zilch function that doesn't have an actual implementation. No
-// function that uses this should be invoked.
+// Registered zilch function that doesn't have an actual implementation. No function that uses this should be invoked.
 void UnTranslatedBoundFunction(Zilch::Call& call, Zilch::ExceptionReport& report);
-// Registered zilch function that doesn't have an implementation but shouldn't
-// throw an error. Currently needed for things like FixedArray that can get
-// their constructor called via pre-initialization when inspecting other
-// properties.
+// Registered zilch function that doesn't have an implementation but shouldn't throw an error.
+// Currently needed for things like FixedArray that can get their constructor called
+// via pre-initialization when inspecting other properties.
 void DummyBoundFunction(Zilch::Call& call, Zilch::ExceptionReport& report);
 
-/// Helper struct to pass around groups of types for generating library
-/// translation
+
+/// Helper struct to pass around groups of types for generating library translation
 struct ZilchTypeGroups
 {
   Zilch::BoundType* mVoidType;
@@ -66,8 +64,7 @@ void ResolveSimpleFunctionFromOpType(ZilchSpirVFrontEnd* translator,
                                      OpType opType,
                                      ZilchSpirVFrontEndContext* context);
 
-// A simple helper to resolve a function (assumed to be value types) into
-// calling a basic op function.
+// A simple helper to resolve a function (assumed to be value types) into calling a basic op function.
 template <OpType opType>
 inline void ResolveSimpleFunction(ZilchSpirVFrontEnd* translator,
                                   Zilch::FunctionCallNode* functionCallNode,
@@ -274,8 +271,7 @@ inline void ResolveBinaryOperator(ZilchSpirVFrontEnd* translator,
   ResolveBinaryOp(translator, binaryOpNode, opType, context);
 }
 
-// Shader intrinsics to write backend specific code by checking the current
-// language/version
+// Shader intrinsics to write backend specific code by checking the current language/version
 void ResolveIsLanguage(ZilchSpirVFrontEnd* translator,
                        Zilch::FunctionCallNode* functionCallNode,
                        Zilch::MemberAccessNode* memberAccessNode,

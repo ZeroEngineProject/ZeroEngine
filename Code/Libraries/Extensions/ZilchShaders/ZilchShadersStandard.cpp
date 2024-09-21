@@ -17,8 +17,7 @@ BoundType* InstantiateFixedArray(LibraryBuilder& builder,
   // Bind the arraytype
   BoundType* arrayType = builder.AddBoundType(fullyQualifiedName, TypeCopyMode::ValueType, 0);
 
-  // Bind all of the array's functions and properties (stubbed out since we're
-  // only using this for translation)
+  // Bind all of the array's functions and properties (stubbed out since we're only using this for translation)
   builder.AddBoundConstructor(arrayType, Zero::DummyBoundFunction, ParameterArray());
   builder.AddBoundFunction(arrayType,
                            "Add",
@@ -58,8 +57,7 @@ BoundType* InstantiateRuntimeArray(LibraryBuilder& builder,
   storageAttribute->AddParameter(spv::StorageClassStorageBuffer);
   arrayType->AddAttribute(Zero::SpirVNameSettings::mNonCopyableAttributeName);
 
-  // Bind all of the array's functions and properties (stubbed out since we're
-  // only using this for translation)
+  // Bind all of the array's functions and properties (stubbed out since we're only using this for translation)
   builder.AddBoundFunction(arrayType,
                            "Get",
                            Zero::DummyBoundFunction,
@@ -88,8 +86,7 @@ BoundType* InstantiateGeometryInput(LibraryBuilder& builder,
   Type* templateType = templateTypes[0].TypeValue;
 
   BoundType* selfType = builder.AddBoundType(fullyQualifiedName, TypeCopyMode::ValueType, 0);
-  // Bind all of the functions and properties (stubbed out since we're only
-  // using this for translation)
+  // Bind all of the functions and properties (stubbed out since we're only using this for translation)
   builder.AddBoundConstructor(selfType, Zero::UnTranslatedBoundFunction, ParameterArray());
   builder.AddBoundFunction(selfType,
                            "Get",
@@ -107,7 +104,7 @@ BoundType* InstantiateGeometryInput(LibraryBuilder& builder,
       selfType, "Count", core.IntegerType, nullptr, Zero::UnTranslatedBoundFunction, Zilch::MemberOptions::None);
 
   Zilch::HandleOf<GeometryStreamUserData> handle = ZilchAllocate(GeometryStreamUserData);
-  handle->Set((spv::ExecutionMode)(uintptr_t)userData);
+  handle->Set((spv::ExecutionMode)(size_t)userData);
   selfType->Add(*handle);
 
   return selfType;
@@ -124,8 +121,7 @@ BoundType* InstantiateGeometryOutput(LibraryBuilder& builder,
 
   BoundType* selfType = builder.AddBoundType(fullyQualifiedName, TypeCopyMode::ValueType, 0);
   selfType->CreatableInScript = true;
-  // Bind all of the functions and properties (stubbed out since we're only
-  // using this for translation)
+  // Bind all of the functions and properties (stubbed out since we're only using this for translation)
   builder.AddBoundFunction(selfType,
                            "Append",
                            Zero::UnTranslatedBoundFunction,
@@ -140,7 +136,7 @@ BoundType* InstantiateGeometryOutput(LibraryBuilder& builder,
                            Zilch::FunctionOptions::None);
 
   Zilch::HandleOf<GeometryStreamUserData> handle = ZilchAllocate(GeometryStreamUserData);
-  handle->Set((spv::ExecutionMode)(uintptr_t)userData);
+  handle->Set((spv::ExecutionMode)(size_t)userData);
   selfType->Add(*handle);
 
   return selfType;
@@ -189,8 +185,7 @@ ZilchDefineStaticLibrary(ShaderIntrinsicsLibrary)
   ZilchInitializeType(SampledDepthImage2d);
   ZilchInitializeType(SampledImageCube);
 
-  // Bind the fixed array type instantiator (creates the different arrays when
-  // instantiated)
+  // Bind the fixed array type instantiator (creates the different arrays when instantiated)
   {
     Array<Zilch::TemplateParameter> templateTypes;
     TemplateParameter& typeParam = templateTypes.PushBack();
@@ -212,8 +207,7 @@ ZilchDefineStaticLibrary(ShaderIntrinsicsLibrary)
     Zilch::BoundType* boneTransformsType = templateData.Type;
   }
 
-  // Bind the runtime array type instantiator (creates the different arrays when
-  // instantiated)
+  // Bind the runtime array type instantiator (creates the different arrays when instantiated)
   {
     String runtimeArrayTypeName = Zero::SpirVNameSettings::mRuntimeArrayTypeName;
     Array<Zilch::TemplateParameter> templateTypes;

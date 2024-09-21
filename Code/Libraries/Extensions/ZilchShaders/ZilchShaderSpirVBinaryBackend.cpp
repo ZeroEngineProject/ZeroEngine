@@ -64,16 +64,14 @@ void ZilchShaderSpirVBinaryBackend::TranslateType(ZilchShaderIRType* type,
   context.mReflectionData = &reflectionData;
 
   TypeDependencyCollector collector(type->mShaderLibrary);
-  // Generate a dummy main if none exists for unit testing purposes (remove
-  // later?)
+  // Generate a dummy main if none exists for unit testing purposes (remove later?)
   GenerateDummyMain(type, type->mShaderLibrary, collector, &context);
   collector.Collect(type);
 
   // Walk the global initializers and generate and apply late bound functions
   GenerateGlobalsInitializerFunction(collector, &context);
 
-  // @JoshD: Late bound functions 'potentially' require each entry point to be
-  // independently generated
+  // @JoshD: Late bound functions 'potentially' require each entry point to be independently generated
   for (size_t i = 0; i < context.mEntryPoints.Size(); ++i)
   {
     EntryPointInfo* entryPoint = context.mEntryPoints[i];
@@ -114,8 +112,7 @@ void ZilchShaderSpirVBinaryBackend::TranslateLibrary(ZilchShaderIRLibrary* libra
   // Walk the global initializers and generate and apply late bound functions
   GenerateGlobalsInitializerFunction(collector, &context);
 
-  // @JoshD: Late bound functions 'potentially' require each entry point to be
-  // independently generated
+  // @JoshD: Late bound functions 'potentially' require each entry point to be independently generated
   for (size_t i = 0; i < context.mEntryPoints.Size(); ++i)
   {
     EntryPointInfo* entryPoint = context.mEntryPoints[i];
@@ -177,8 +174,7 @@ void ZilchShaderSpirVBinaryBackend::EmitSpirvBinary(TypeDependencyCollector& col
   WriteDecorations(context);
   WriteSpecializationConstantBindingDecorations(collector, context);
 
-  // Write out types, globals, and constants in one "block" based upon the order
-  // they were found.
+  // Write out types, globals, and constants in one "block" based upon the order they were found.
   WriteTypesGlobalsAndConstants(collector.mTypesConstantsAndGlobals, context);
   WriteFunctions(collector.mReferencedFunctions, context);
 }
@@ -249,16 +245,16 @@ void ZilchShaderSpirVBinaryBackend::GenerateGlobalsInitializerFunction(TypeDepen
   for (size_t i = 0; i < context->mEntryPoints.Size(); ++i)
   {
     EntryPointInfo* entryPoint = context->mEntryPoints[i];
-    // Check if this entry point has a initialization function and if the
-    // collector found any global variables to initialize
+    // Check if this entry point has a initialization function and if the collector found any global variables to
+    // initialize
     if (entryPoint->mGlobalsInitializerFunction == nullptr)
       continue;
 
     ZilchShaderIRFunction* originalFn = entryPoint->mGlobalsInitializerFunction;
 
-    // Create a new late-bound function to replace the given globals
-    // initializer. We do this just in-case this function is called more than
-    // once which would append extra data each time to the function.
+    // Create a new late-bound function to replace the given globals initializer.
+    // We do this just in-case this function is called more than once which would append extra data each time to the
+    // function.
     ZilchShaderIRFunction* lateBoundFn = new ZilchShaderIRFunction();
     lateBoundFn->mDebugResultName = lateBoundFn->mName = originalFn->mName;
     lateBoundFn->mFunctionType = originalFn->mFunctionType;
@@ -304,13 +300,11 @@ void ZilchShaderSpirVBinaryBackend::RegisterLateBoundFunctions(LateBoundFunction
     {
       // Remove the old function
       collector.mReferencedFunctions.Erase(functionToReplace);
-      // Walk the late-bound function to get all
-      // variables/types/functions/etc...
+      // Walk the late-bound function to get all variables/types/functions/etc...
       collector.Collect(replacingFunction);
 
-      // Generate the id of the function that we're replacing and then give the
-      // new function the same id. This will make them use the same id which
-      // will be given the contents of the late bound function.
+      // Generate the id of the function that we're replacing and then give the new function the same id.
+      // This will make them use the same id which will be given the contents of the late bound function.
       context->GenerateId(functionToReplace);
       int id = context->mGeneratedId[functionToReplace];
       context->mGeneratedId[replacingFunction] = id;
@@ -464,8 +458,7 @@ void ZilchShaderSpirVBinaryBackend::WriteHeader(ZilchShaderToSpirVContext* conte
   streamWriter.Write(0);
 
   // Capabilities
-  // Add all entry point capabilities to our capabilities map (so we only
-  // declare each once)
+  // Add all entry point capabilities to our capabilities map (so we only declare each once)
   for (size_t i = 0; i < context->mEntryPoints.Size(); ++i)
   {
     EntryPointInfo* entryPoint = context->mEntryPoints[i];
@@ -543,8 +536,7 @@ void ZilchShaderSpirVBinaryBackend::WriteHeader(ZilchShaderToSpirVContext* conte
   }
 
   // ExecutionMode (per entry point)
-  // Required to specify LowerLeft or UpperLeft if a pixel per the SpirV
-  // validation rules
+  // Required to specify LowerLeft or UpperLeft if a pixel per the SpirV validation rules
   for (size_t i = 0; i < context->mEntryPoints.Size(); ++i)
   {
     EntryPointInfo* entryPoint = context->mEntryPoints[i];
@@ -691,12 +683,11 @@ void ZilchShaderSpirVBinaryBackend::WriteSpecializationConstantBindingDecoration
       reflectionData.mSpecializationConstants[op->mDebugResultName] = specId;
       ++specId;
     }
-    // Composite specialization constants aren't actually assigned a decoration
-    // binding id in spir-v. Instead, each scalar leaf constituent is given an
-    // id. We guarantee that all constituents of a composite are assigned ids in
-    // order, so instead of storing the id of every constituent we can find the
-    // id of the first constituent and then the next n contiguous ids (based
-    // upon the member count) all belong to this composite.
+    // Composite specialization constants aren't actually assigned a decoration binding id in spir-v.
+    // Instead, each scalar leaf constituent is given an id. We guarantee that all constituents
+    // of a composite are assigned ids in order, so instead of storing the id of every
+    // constituent we can find the id of the first constituent and then the next
+    // n contiguous ids (based upon the member count) all belong to this composite.
     else if (op->mOpType == OpType::OpSpecConstantComposite)
     {
       ZilchShaderIROp* leafConstituent = FindSpecialiationConstantCompositeId(op);
@@ -708,8 +699,7 @@ void ZilchShaderSpirVBinaryBackend::WriteSpecializationConstantBindingDecoration
 
 ZilchShaderIROp* ZilchShaderSpirVBinaryBackend::FindSpecialiationConstantCompositeId(ZilchShaderIROp* op)
 {
-  // If we reached an OpSpecConstant then we found the leaf constituent and can
-  // terminate
+  // If we reached an OpSpecConstant then we found the leaf constituent and can terminate
   if (op->mOpType == OpType::OpSpecConstant)
     return op;
 
@@ -729,8 +719,7 @@ void ZilchShaderSpirVBinaryBackend::WriteTypesGlobalsAndConstants(IRList& typesG
     // Write types
     if (ir->mIRType == ZilchShaderIRBaseType::DataType)
       WriteType(ir->As<ZilchShaderIRType>(), context);
-    // This should never happen (there's always an ir op that points at a
-    // constant (in the constant pool)
+    // This should never happen (there's always an ir op that points at a constant (in the constant pool)
     else if (ir->mIRType == ZilchShaderIRBaseType::ConstantLiteral)
       WriteConstant(ir->As<ZilchShaderIROp>(), context);
     // Otherwise write
@@ -865,8 +854,7 @@ void ZilchShaderSpirVBinaryBackend::WriteConstant(ZilchShaderIROp* constantOp, Z
   }
   else if (constantOp->mResultType->mBaseType == ShaderIRTypeBaseType::Vector)
   {
-    // The below code is likely how this op should be translated but this hasn't
-    // been tested.
+    // The below code is likely how this op should be translated but this hasn't been tested.
     Error("Not supported");
 
     // size_t componentCount = constantOp->mResultType->mComponents;
@@ -875,8 +863,7 @@ void ZilchShaderSpirVBinaryBackend::WriteConstant(ZilchShaderIROp* constantOp, Z
     // int resultId = context->FindId(constantOp->mResultType);
     // int constantId = context->FindId(constantOp);
     // int16 size = 3 + (int16)componentCount;
-    // streamWriter.WriteInstruction(size, OpType::OpConstantComposite,
-    // resultId, constantId);
+    // streamWriter.WriteInstruction(size, OpType::OpConstantComposite, resultId, constantId);
     //
     // for(size_t i = 0; i < componentCount; ++i)
     //  streamWriter.Write(*(data + i));
@@ -892,8 +879,7 @@ void ZilchShaderSpirVBinaryBackend::WriteSpecConstant(ZilchShaderIROp* constantO
   ShaderStreamWriter& streamWriter = *context->mStreamWriter;
 
   // Handle bools. (They're currently written out as OpConstant with true/false
-  // for the value but they actually have to be written as different
-  // instructions
+  // for the value but they actually have to be written as different instructions
   if (constantOp->mResultType->mBaseType == ShaderIRTypeBaseType::Bool)
   {
     ZilchShaderIRConstantLiteral* argConstant = (ZilchShaderIRConstantLiteral*)constantOp->mArguments[0];
@@ -1098,8 +1084,7 @@ void ZilchShaderSpirVBinaryBackend::WriteIROp(BasicBlock* block,
     WriteIROpGeneric(op, context);
     break;
   }
-  // Arguments that don't have a return type so the size of the opcode is 1 +
-  // the number of arguments.
+  // Arguments that don't have a return type so the size of the opcode is 1 + the number of arguments.
   case OpType::OpImageWrite:
   {
     // Now count the arguments to get the total instruction size
@@ -1166,8 +1151,7 @@ void ZilchShaderSpirVBinaryBackend::WriteIRId(IZilchShaderIR* ir, ZilchShaderToS
   int id;
   if (ir->mIRType == ZilchShaderIRBaseType::ConstantLiteral)
   {
-    // We want the raw bytes of constant literals (limited to size of int for
-    // now)
+    // We want the raw bytes of constant literals (limited to size of int for now)
     ZilchShaderIRConstantLiteral* constantLiteral = ir->As<ZilchShaderIRConstantLiteral>();
     int* rawId = (int*)constantLiteral->mValue.GetData();
     id = *rawId;

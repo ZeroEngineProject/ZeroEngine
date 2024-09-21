@@ -67,8 +67,7 @@ void ResolveIsLanguageMinMaxVersion(ZilchSpirVFrontEnd* translator,
 
   // Get the specialization constant for the language id (is this glsl?)
   ZilchShaderIROp* languageSpecConst = GetLanguageSpecConstant(translator, context);
-  // Get the specialization constant for the language version (is this glsl 450,
-  // hlsl 100?)
+  // Get the specialization constant for the language version (is this glsl 450, hlsl 100?)
   ZilchShaderIROp* languageVersionSpecConst = GetLanguageVersionSpecConstant(translator, context);
   // Read all of the arguments
   ZilchShaderIROp* comparisonLanguageOp =

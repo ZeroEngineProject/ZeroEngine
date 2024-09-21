@@ -30,8 +30,7 @@ class CompositorCallbackData;
     a = a & b;                                                                                                         \
   }
 
-/// @JoshD: Unify later with the FragmentType enum. This needs to be a bitfield
-/// due to the buffer stage binding.
+/// @JoshD: Unify later with the FragmentType enum. This needs to be a bitfield due to the buffer stage binding.
 DeclareBitField6(ShaderStage, Vertex, PreTesselation, PostTesselation, Geometry, Pixel, Compute);
 DeclareBitFieldBitwiseOperators(ShaderStage::Enum);
 
@@ -150,11 +149,10 @@ public:
   HashMap<String, AttributeInfo> mAllowedFieldAttributes;
 };
 
-/// Describes a uniform buffer (constant buffer). A buffer is given a binding
-/// location, descriptor set, and a collection of fields. Additionally a buffer
-/// can be only bound for certain shader stages (possibly save memory +
-/// performance). Fields are only allowed in one uniform buffer per shader
-/// stage.
+/// Describes a uniform buffer (constant buffer). A buffer is given a binding location,
+/// descriptor set, and a collection of fields. Additionally a buffer can be only bound
+/// for certain shader stages (possibly save memory + performance). Fields are only
+/// allowed in one uniform buffer per shader stage.
 class UniformBufferDescription
 {
 public:
@@ -169,8 +167,7 @@ public:
   /// Set the common description terms for this uniform buffer.
   void Set(u32 bindingId, u32 descriptorSetId, ShaderStage::Enum allowedStages, StringParam debugName = String());
 
-  /// Add a field to this buffer. Fields are laid out in the order they are
-  /// added.
+  /// Add a field to this buffer. Fields are laid out in the order they are added.
   void AddField(Zilch::BoundType* type, StringParam fieldName);
 
   /// The register id that this buffer will be bound to.
@@ -184,13 +181,11 @@ public:
   /// What stages this buffer can be considered for.
   BitField<ShaderStage::Enum> mAllowedStages;
 
-  /// Helper mask that represents all stages (default value for a uniform
-  /// buffer).
+  /// Helper mask that represents all stages (default value for a uniform buffer).
   static ShaderStage::Enum mAllStagesMask;
 };
 
-/// Describes a block (might not actually be grouped in a struct) of built-in
-/// field descriptions.
+/// Describes a block (might not actually be grouped in a struct) of built-in field descriptions.
 class BuiltInBlockDescription
 {
 public:
@@ -225,15 +220,13 @@ private:
   BuiltInFieldMeta* FindField(ShaderFieldKey fieldKey);
 
   Array<BuiltInFieldMeta> mFields;
-  /// Is this block grouped together in an interface block (a struct with the
-  /// Block decoration).
+  /// Is this block grouped together in an interface block (a struct with the Block decoration).
   bool mInterfaceBlock;
 };
 
-/// Represents one shader stage's description of built-ins. Each stage consists
-/// of inputs and outputs, but additionally some of these may be required to be
-/// in an interface block while others may not. Only one interface block per
-/// in/out is allowed per stage.
+/// Represents one shader stage's description of built-ins. Each stage consists of inputs
+/// and outputs, but additionally some of these may be required to be in an interface
+/// block while others may not. Only one interface block per in/out is allowed per stage.
 class BuiltInStageDescription
 {
 public:
@@ -249,8 +242,7 @@ private:
   BuiltInBlockDescription mOutputInterfaceBlock;
   BuiltInBlockDescription mOutputGlobals;
 
-  /// Cached mappings from each field's key to the description block it came
-  /// from
+  /// Cached mappings from each field's key to the description block it came from
   FieldKeyToBlockMap mInternalInputMappings;
   FieldKeyToBlockMap mInternalOutputMappings;
 
@@ -281,23 +273,20 @@ public:
   Array<ShaderIRFieldMeta*> mFields;
 };
 
-/// Various callbacks used throughout shader translation for customization of
-/// code emission.
+/// Various callbacks used throughout shader translation for customization of code emission.
 class CallbackSettings
 {
 public:
   CallbackSettings();
 
   typedef void (*ShaderCompositeCallback)(CompositorCallbackData& callbackData, void* userData);
-  /// Set a callback that is called right before the composited shader is
-  /// emitted. Allows modifying inputs and outputs, in particular allows forced
-  /// HardwareBuiltIns like Position.
+  /// Set a callback that is called right before the composited shader is emitted.
+  /// Allows modifying inputs and outputs, in particular allows forced HardwareBuiltIns like Position.
   void SetCompositeCallback(ShaderCompositeCallback callback, void* userData);
 
   typedef void (*AppendVertexCallback)(AppendCallbackData& callbackData, void* userData);
-  /// Callback to allow custom spirv emission in the Append function for
-  /// geometry shader output streams. Allows custom handling of things like the
-  /// BuiltIn Position to account for different api transforms.
+  /// Callback to allow custom spirv emission in the Append function for geometry shader output streams.
+  /// Allows custom handling of things like the BuiltIn Position to account for different api transforms.
   void SetAppendCallback(AppendVertexCallback callback, void* userData);
 
   void* mCompositeCallbackUserData;
@@ -307,22 +296,20 @@ public:
   AppendVertexCallback mAppendCallback;
 };
 
-/// A collection of error settings. Currently, mostly for dealing with errors
-/// that only matter if the compositor is not part of the expected work-flow.
+/// A collection of error settings. Currently, mostly for dealing with errors that only
+/// matter if the compositor is not part of the expected work-flow.
 class ZilchShaderErrorSettings
 {
 public:
   ZilchShaderErrorSettings();
 
-  /// Should the front-end translator emit errors if a fragment type is missing
-  /// the 'Main' function. This is only an error if the compositor is run on the
-  /// fragment. The error can be moved to the front-end to make errors
-  /// immediately known instead of only upon compositing.
+  /// Should the front-end translator emit errors if a fragment type is missing the 'Main' function.
+  /// This is only an error if the compositor is run on the fragment. The error can be moved to the
+  /// front-end to make errors immediately known instead of only upon compositing.
   bool mFrontEndErrorOnNoMainFunction;
 };
 
-/// A collection of common settings for Zilch shader translation (current SpirV
-/// specific).
+/// A collection of common settings for Zilch shader translation (current SpirV specific).
 class ZilchShaderSpirVSettings
 {
 public:
@@ -331,8 +318,7 @@ public:
 
   /// Adds a uniform buffer description (constant buffer)
   void AddUniformBufferDescription(UniformBufferDescription& description);
-  /// Sets the default uniform buffer description to the last available binding
-  /// id (based upon number bound).
+  /// Sets the default uniform buffer description to the last available binding id (based upon number bound).
   void AutoSetDefaultUniformBufferDescription(int descriptorSetId = 0, StringParam debugName = "Material");
   /// Sets the default uniform buffer description values.
   void SetDefaultUniformBufferDescription(int bindingId, int descriptorSetId, StringParam debugName);
@@ -340,8 +326,7 @@ public:
   /// for the given fragment type. Used for attribute validation.
   bool IsValidUniform(FragmentType::Enum fragmentType, StringParam fieldType, StringParam fieldName);
 
-  /// Overrides the zilch name that is used to map to a spirv built-in variable
-  /// for all shader stages.
+  /// Overrides the zilch name that is used to map to a spirv built-in variable for all shader stages.
   void SetHardwareBuiltInName(spv::BuiltIn builtInId, StringParam name);
   bool
   IsValidHardwareBuiltIn(FragmentType::Enum fragmentType, StringParam fieldType, StringParam fieldName, bool isInput);
@@ -360,44 +345,38 @@ public:
   /// The name of the current language version's specialization variable name.
   /// Used to find the spec id to override this variable.
   static String GetLanguageVersionSpecializationName();
-  /// Internal. The unique key for finding the current language's specialization
-  /// variable.
+  /// Internal. The unique key for finding the current language's specialization variable.
   static void* GetLanguageSpecializationKey();
-  /// Internal. The unique key for finding the current language version's
-  /// specialization variable.
+  /// Internal. The unique key for finding the current language version's specialization variable.
   static void* GetLanguageVersionSpecializationKey();
 
-  /// This must be called once before being used for translation and will be
-  /// auto-called by the translator if it hasn't already been. This is used to
-  /// validate data and cache data in a more run-time friendly format.
+  /// This must be called once before being used for translation and will be auto-called by the
+  /// translator if it hasn't already been. This is used to validate data and cache data in a more run-time friendly
+  /// format.
   void Finalize();
   /// Has this already been finalized?
   bool IsFinalized() const;
 
   void Validate();
 
-  /// Should the material buffer for each shader stage use the same binding id
-  /// or not? If overlap is not allowed, then a buffer's binding id will be the
-  /// default uniform buffer's binding id plus the current stage's value
-  /// (FragmentType::Enum). This is relevant depending on if a graphics api
-  /// allows separate bindings for each shader stage or if the entire program
-  /// uses the same ids. In DirectX and Vulkan each shader stage allows separate
-  /// binding points. OpenGl shares binding points for the entire program
-  /// (without ARB_separate_shader_objects).
+  /// Should the material buffer for each shader stage use the same binding id or not?
+  /// If overlap is not allowed, then a buffer's binding id will be the default uniform buffer's
+  /// binding id plus the current stage's value (FragmentType::Enum). This is relevant depending
+  /// on if a graphics api allows separate bindings for each shader stage or if the entire program
+  /// uses the same ids. In DirectX and Vulkan each shader stage allows separate binding points.
+  /// OpenGl shares binding points for the entire program (without ARB_separate_shader_objects).
   bool mAllowUniformMaterialBufferIndexOverap;
 
   SpirVNameSettings mNameSettings;
   /// All of the uniform buffers that should be used if possible.
   Array<UniformBufferDescription> mUniformBufferDescriptions;
-  // What binding/descriptor set should be used for material blocks. No fields
-  // matter here.
+  // What binding/descriptor set should be used for material blocks. No fields matter here.
   UniformBufferDescription mDefaultUniformBufferDescription;
   /// Mappings of zilch names and spirv built-in types for each shader stage.
   BuiltInStageDescription mBuiltIns[FragmentType::Size];
   VertexDefinitionDescription mVertexDefinitions;
 
-  /// The bound render targets. Each index in the array maps to the given render
-  /// target name.
+  /// The bound render targets. Each index in the array maps to the given render target name.
   Array<String> mRenderTargetNames;
   Zilch::BoundType* mRenderTargetType;
 

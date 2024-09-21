@@ -92,8 +92,7 @@ void ZilchShaderIRCore::Parse(ZilchSpirVFrontEnd* translator)
   RegisterVectorFunctions(translator, shaderLibrary, types, types.mIntegerVectorTypes);
   RegisterVectorFunctions(translator, shaderLibrary, types, types.mBooleanVectorTypes);
 
-  // Add all static/instance functions for matrix types (only float matrices
-  // exist)
+  // Add all static/instance functions for matrix types (only float matrices exist)
   RegisterMatrixFunctions(translator, shaderLibrary, types, types.mRealMatrixTypes);
   // Also the quaternion type
   RegisterQuaternionFunctions(translator, shaderLibrary, types, types.mQuaternionType);
@@ -180,9 +179,8 @@ void ZilchShaderIRCore::MakeMathTypes(ZilchSpirVFrontEnd* translator,
   types.mBooleanVectorTypes.PushBack(bool3Type);
   types.mBooleanVectorTypes.PushBack(bool4Type);
 
-  // Make quaternion a struct type. Ideally quaternion would just be a vec4
-  // type, but it's illegal to declare multiple vec4 types. This causes a lot of
-  // complications in translating core functionality.
+  // Make quaternion a struct type. Ideally quaternion would just be a vec4 type, but it's illegal to declare
+  // multiple vec4 types. This causes a lot of complications in translating core functionality.
   Zilch::BoundType* zilchQuaternion = core.QuaternionType;
   String quaternionTypeName = zilchQuaternion->ToString();
   ZilchShaderIRType* quaternionType =
@@ -309,8 +307,7 @@ void ZilchShaderIRCore::RegisterQuaternionFunctions(ZilchSpirVFrontEnd* translat
 
   Zilch::BoundType* zilchType = quaternionType->mZilchType;
   String zilchTypeName = zilchType->ToString();
-  // While quaternion's component type is technically vec4, all operations
-  // behave as if it's real
+  // While quaternion's component type is technically vec4, all operations behave as if it's real
   ZilchShaderIRType* componentType = types.mRealVectorTypes[0];
   Zilch::BoundType* zilchComponentType = componentType->mZilchType;
   String zilchComponentTypeName = zilchComponentType->ToString();

@@ -326,8 +326,7 @@ void AddMathOps(Zilch::LibraryBuilder& builder, Zilch::BoundType* type, ZilchTyp
       AddFunction<OpType::OpMatrixTimesScalar>(builder, type, zilchType, "MatrixTimesScalar", zilchType, realType);
 
       // Ignore for now (have to figure out row/column order stuff)
-      // AddFunction<OpType::OpMatrixTimesMatrix>(builder, type, zilchType,
-      // "MatrixTimesMatrix", zilchType, zilchType);
+      // AddFunction<OpType::OpMatrixTimesMatrix>(builder, type, zilchType, "MatrixTimesMatrix", zilchType, zilchType);
     }
   }
 
@@ -382,8 +381,7 @@ ZilchDefineType(GeometryStreamUserData, builder, type)
 void GeometryStreamUserData::Set(spv::ExecutionMode executionMode)
 {
   mExecutionMode = executionMode;
-  // Use the execution mode to compute the size of this stream and the
-  // input/output mode
+  // Use the execution mode to compute the size of this stream and the input/output mode
   if (executionMode == spv::ExecutionModeInputPoints)
   {
     mInput = true;
@@ -453,7 +451,6 @@ ComputeFragmentUserData::ComputeFragmentUserData()
   mLocalSizeZ = 1;
 }
 
-//------------------------------------------------------------------------UnsignedInt
 ZilchDefineType(UnsignedInt, builder, type)
 {
   ZilchBindDefaultCopyDestructor();

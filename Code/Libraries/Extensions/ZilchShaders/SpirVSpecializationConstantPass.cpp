@@ -83,8 +83,7 @@ void SpirVSpecializationConstantPass::SetSpecializationValues(Array<String>& out
     int specConstantId = pair.first;
     String specConstantValue = pair.second;
 
-    // If the id exists, set the default value (has to be by string at the
-    // moment)
+    // If the id exists, set the default value (has to be by string at the moment)
     String flag = String::Format("--set-spec-const-default-value=%d:%s", specConstantId, specConstantValue.c_str());
     outFlags.PushBack(flag);
   }

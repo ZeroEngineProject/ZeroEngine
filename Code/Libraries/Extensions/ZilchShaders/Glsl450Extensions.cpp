@@ -118,8 +118,7 @@ void GenerateFSign(ZilchSpirVFrontEnd* translator,
 
   // Write the remaining function arguments
   WriteExtensionFunctionArguments(translator, functionCallNode, extensionOp, context);
-  // Pop the extension op off the stack and write the instruction to the current
-  // block
+  // Pop the extension op off the stack and write the instruction to the current block
   context->PopIRStack();
   currentBlock->mLines.PushBack(extensionOp);
 
@@ -299,8 +298,7 @@ void CreateFloatMatrixFunctions(SpirVExtensionLibrary* extLibrary, ZilchTypeGrou
   }
 }
 
-// Registers callback functions for all of the glsl 450 extension library
-// instructions that exist in zilch
+// Registers callback functions for all of the glsl 450 extension library instructions that exist in zilch
 void RegisterGlsl450Extensions(ZilchShaderIRLibrary* shaderLibrary,
                                SpirVExtensionLibrary* extLibrary,
                                ZilchTypeGroups& types)
@@ -319,8 +317,7 @@ void RegisterGlsl450Extensions(ZilchShaderIRLibrary* shaderLibrary,
   CreateFloatMatrixFunctions(extLibrary, types);
 }
 
-// Simple helper to look up a zich function via name and type and then map it to
-// a glsl extension instruction
+// Simple helper to look up a zich function via name and type and then map it to a glsl extension instruction
 void AddGlslIntrinsic(Zilch::LibraryBuilder& builder,
                       Zilch::BoundType* type,
                       SpirVExtensionLibrary* extLibrary,
@@ -335,8 +332,8 @@ void AddGlslIntrinsic(Zilch::LibraryBuilder& builder,
   fn->ComplexUserData.WriteObject(ExtensionLibraryUserData(glslOpId, extLibrary));
 }
 
-/// Adds all relevant glsl extension operations to the ShaderIntrinsics type,
-/// including non-supported instructions in zilch.
+/// Adds all relevant glsl extension operations to the ShaderIntrinsics type, including non-supported instructions in
+/// zilch.
 void AddGlslExtensionIntrinsicOps(Zilch::LibraryBuilder& builder,
                                   SpirVExtensionLibrary* extLibrary,
                                   Zilch::BoundType* type,
@@ -443,17 +440,14 @@ void AddGlslExtensionIntrinsicOps(Zilch::LibraryBuilder& builder,
                      zilchType);
 
     // Causes SpirV-Cross exceptions
-    // AddGlslIntrinsic(builder, type, extLibrary, GLSLstd450NMin, "NMin",
-    // TwoParameters(zilchType, zilchType), zilchType);
-    // AddGlslIntrinsic(builder, type, extLibrary, GLSLstd450NMax, "NMax",
-    // TwoParameters(zilchType, zilchType), zilchType);
-    // AddGlslIntrinsic(builder, type, extLibrary, GLSLstd450NClamp, "NClamp",
-    // ThreeParameters(zilchType, "value", zilchType, "minValue", zilchType,
-    // "maxValue"), zilchType);
+    // AddGlslIntrinsic(builder, type, extLibrary, GLSLstd450NMin, "NMin", TwoParameters(zilchType, zilchType),
+    // zilchType); AddGlslIntrinsic(builder, type, extLibrary, GLSLstd450NMax, "NMax", TwoParameters(zilchType,
+    // zilchType), zilchType); AddGlslIntrinsic(builder, type, extLibrary, GLSLstd450NClamp, "NClamp",
+    // ThreeParameters(zilchType, "value", zilchType, "minValue", zilchType, "maxValue"), zilchType);
 
     // Requires pointer types
-    // AddGlslIntrinsic(builder, type, extLibrary, GLSLstd450Modf, "Modf",
-    // TwoParameters(zilchType, "value"), zilchType);
+    // AddGlslIntrinsic(builder, type, extLibrary, GLSLstd450Modf, "Modf", TwoParameters(zilchType, "value"),
+    // zilchType);
   }
 
   // Integer

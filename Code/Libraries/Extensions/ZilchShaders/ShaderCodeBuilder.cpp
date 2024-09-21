@@ -38,9 +38,8 @@ ShaderCodeBuilder& ShaderCodeBuilder::operator<<(StringParam string)
 
 ShaderCodeBuilder& ShaderCodeBuilder::operator<<(ShaderCodeBuilder& builder)
 {
-  // If this is another builder then write its contents, otherwise just return
-  // ourself (this kind of insertion is just meant to make certain functions
-  // easier to chain)
+  // If this is another builder then write its contents, otherwise just return ourself
+  // (this kind of insertion is just meant to make certain functions easier to chain)
   if (&builder != this)
     Write(builder.ToString());
   return *this;
@@ -160,8 +159,7 @@ ShaderCodeBuilder& ShaderCodeBuilder::DeclareAttributeParams(ShaderIRAttribute& 
       builder << param.GetStringValue();
     // Otherwise write 'name' : 'value'
     else
-      builder << param.GetName() << " : "
-              << "\"" << param.GetStringValue() << "\"";
+      builder << param.GetName() << " : " << "\"" << param.GetStringValue() << "\"";
     if (i != paramCount - 1)
       builder << ", ";
   }

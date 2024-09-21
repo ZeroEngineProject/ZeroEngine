@@ -43,8 +43,7 @@ bool ZilchShaderIRProject::CompileTree(Zilch::Module& zilchDependencies,
   // Add all of the source code to the zilch project
   Zilch::Project zilchProject;
   BuildZilchProject(zilchProject);
-  // Listen for compilation errors on this zilch project (so we can forward them
-  // back up)
+  // Listen for compilation errors on this zilch project (so we can forward them back up)
   ListenForZilchErrors(zilchProject);
   ListenForTypeParsed(zilchProject);
 
@@ -79,8 +78,7 @@ ZilchShaderIRLibraryRef ZilchShaderIRProject::CompileAndTranslate(ZilchShaderIRM
   // Add all of the source code to the zilch project
   Zilch::Project zilchProject;
   BuildZilchProject(zilchProject);
-  // Listen for compilation errors on this zilch project (so we can forward them
-  // back up)
+  // Listen for compilation errors on this zilch project (so we can forward them back up)
   ListenForZilchErrors(zilchProject);
   ListenForTypeParsed(zilchProject);
 
@@ -118,16 +116,15 @@ ZilchShaderIRLibraryRef ZilchShaderIRProject::CompileAndTranslate(ZilchShaderIRM
   if (library->mTranslated == false)
     return nullptr;
 
-  // For all types in this library, collect the default values of all properties
-  // (so they can be stored in meta or wherever)
+  // For all types in this library, collect the default values of all properties (so they can be stored in meta or
+  // wherever)
   CollectLibraryDefaultValues(libraryRef, zilchDependencies);
 
   return libraryRef;
 }
 
-// ZilchShaderLibraryRef CompileAndTranslate(ZilchShaderModuleRef& dependencies,
-// BaseShaderTranslator* translator, ZilchShaderSettingsRef& settings, bool test
-// = false);
+// ZilchShaderLibraryRef CompileAndTranslate(ZilchShaderModuleRef& dependencies, BaseShaderTranslator* translator,
+// ZilchShaderSettingsRef& settings, bool test = false);
 void ZilchShaderIRProject::BuildZilchProject(Zilch::Project& zilchProject)
 {
   for (size_t i = 0; i < mCodeEntries.Size(); ++i)
@@ -148,9 +145,8 @@ void ZilchShaderIRProject::PopulateZilchModule(Zilch::Module& zilchDependencies,
   for (size_t i = 0; i < dependencies->Size(); ++i)
     dependencyStack.PushBack((*dependencies)[i]);
 
-  // Now we need to iterate over all dependencies of dependencies but in a
-  // breadth first order. This is not a "proper" dependency walker and can run
-  // into errors in diamond situations, but I'm ignoring this for now.
+  // Now we need to iterate over all dependencies of dependencies but in a breadth first order. This is not a "proper"
+  // dependency walker and can run into errors in diamond situations, but I'm ignoring this for now.
   HashSet<Zilch::Library*> visitedZilchDependencies;
   for (size_t i = 0; i < dependencyStack.Size(); ++i)
   {
@@ -183,8 +179,7 @@ void ZilchShaderIRProject::PopulateZilchModule(Zilch::Module& zilchDependencies,
       if (visitedZilchDependencies.Contains(subZilchLibrary))
         continue;
 
-      // Mark that we've now visited this zilch library and add it to the zilch
-      // module
+      // Mark that we've now visited this zilch library and add it to the zilch module
       visitedZilchDependencies.Insert(subZilchLibrary);
       dependencyStack.PushBack(subLibrary);
     }
@@ -194,8 +189,7 @@ void ZilchShaderIRProject::PopulateZilchModule(Zilch::Module& zilchDependencies,
 void ZilchShaderIRProject::CollectLibraryDefaultValues(ZilchShaderIRLibraryRef libraryRef, Zilch::Module& zilchModule)
 {
   ZilchShaderIRLibrary* library = libraryRef;
-  // Link the module together to get an executable state we can run (to find
-  // default values)
+  // Link the module together to get an executable state we can run (to find default values)
   Zilch::ExecutableState* state = zilchModule.Link();
 
   // Iterate over all the types in this library
@@ -245,13 +239,11 @@ void ZilchShaderIRProject::CollectLibraryDefaultValues(ZilchShaderIRLibraryRef l
 
       if (report.HasThrownExceptions())
       {
-        Error("Getting property default value from pre-constructed object "
-              "failed");
+        Error("Getting property default value from pre-constructed object failed");
         break;
       }
 
-      // Extract the return value of the property's Get call and store it as an
-      // Zilch::Any on our ShaderType
+      // Extract the return value of the property's Get call and store it as an Zilch::Any on our ShaderType
       fieldMeta->mDefaultValueVariant = Zilch::Any(call.GetReturnUnchecked(), zilchProperty->GetTypeOrNull());
     }
   }

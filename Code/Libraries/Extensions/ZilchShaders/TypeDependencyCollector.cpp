@@ -86,8 +86,7 @@ void TypeDependencyCollector::Collect(ZilchShaderIROp* op)
   {
     ZilchShaderIRConstantLiteral* storageClassLiteral = op->mArguments[0]->As<ZilchShaderIRConstantLiteral>();
     spv::StorageClass storageClass = (spv::StorageClass)storageClassLiteral->mValue.Get<int>();
-    // If this is a global variable the add it to the global variable list and
-    // collect all arguments as normal
+    // If this is a global variable the add it to the global variable list and collect all arguments as normal
     if (IsGlobalStorageClass(storageClass))
     {
       AddGlobalReference(op);
@@ -97,25 +96,22 @@ void TypeDependencyCollector::Collect(ZilchShaderIROp* op)
   }
 
   // Check if an op requires a capability, if so add it.
-  // @JoshD: Can an op require more than one capability? They're nested so I'm
-  // not sure (primarily with Kernel)
+  // @JoshD: Can an op require more than one capability? They're nested so I'm not sure (primarily with Kernel)
   spv::Capability* requiredCapability = mRequiredCapabilities.FindPointer(op->mOpType);
   if (requiredCapability != nullptr)
     mCapabilities.InsertOrIgnore(*requiredCapability);
 
   if (op->mOpType == OpType::OpBranchConditional)
   {
-    // Only collect on the conditional, not on the branch targets in order to
-    // avoid infinite loops
+    // Only collect on the conditional, not on the branch targets in order to avoid infinite loops
     Collect(op->mArguments[0]);
     return;
   }
 
   CollectArguments(op);
 
-  // Handle constants (have to add them to a separate map). These should be
-  // added after collecting all arguments so that composite instructions are
-  // guaranteed to have already visited their constituents.
+  // Handle constants (have to add them to a separate map). These should be added after collecting
+  // all arguments so that composite instructions are guaranteed to have already visited their constituents.
   if (op->mOpType == OpType::OpConstant || op->mOpType == OpType::OpConstantComposite ||
       op->mOpType == OpType::OpSpecConstant || op->mOpType == OpType::OpSpecConstantComposite)
   {

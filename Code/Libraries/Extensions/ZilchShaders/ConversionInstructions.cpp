@@ -80,18 +80,17 @@ void ResolveRealToBoolCast(ZilchSpirVFrontEnd* translator,
   ResolveToBoolCast(translator, node, OpType::OpFOrdNotEqual, zero, context);
 }
 
-// Register function callbacks for all conversion operations (see Conversion
-// Instructions in the spir-v spec). Some functions aren't implemented here as
-// zilch doesn't have a corresponding function. Everything else should be
-// implemented on the ShaderIntrinsics type.
+// Register function callbacks for all conversion operations (see Conversion Instructions in the spir-v spec).
+// Some functions aren't implemented here as zilch doesn't have a corresponding function.
+// Everything else should be implemented on the ShaderIntrinsics type.
 void RegisterConversionOps(ZilchSpirVFrontEnd* translator, ZilchShaderIRLibrary* shaderLibrary, ZilchTypeGroups& types)
 {
   Zilch::Core& core = Zilch::Core::GetInstance();
   OperatorResolvers& opResolvers = shaderLibrary->mOperatorResolvers;
 
   // Iterate over all dimensions of vector types (including scalar) to build
-  // all supported conversions. Note: Bool conversions are not explicit
-  // instructions in spir-v and must be generated from multiple instructions.
+  // all supported conversions. Note: Bool conversions are not explicit instructions
+  // in spir-v and must be generated from multiple instructions.
   for (size_t i = 0; i < types.mRealVectorTypes.Size(); ++i)
   {
     Zilch::BoundType* floatType = types.mRealVectorTypes[i];

@@ -4,7 +4,6 @@
 namespace Zero
 {
 
-//-------------------------------------------------------------------FragmentSharedKey
 FragmentSharedKey::FragmentSharedKey()
 {
   mStorageClass = spv::StorageClassFunction;
@@ -180,8 +179,7 @@ void StageRequirementsData::Combine(Zilch::Member* dependency,
                                     const Zilch::CodeLocation& location,
                                     ShaderStage::Enum requiredStage)
 {
-  // Only set the dependency and call location on the first non-empty stage
-  // requirement.
+  // Only set the dependency and call location on the first non-empty stage requirement.
   if (mDependency == nullptr && requiredStage != ShaderStage::None)
   {
     mDependency = dependency;
@@ -404,8 +402,7 @@ ZilchShaderIRType* ZilchShaderIRLibrary::FindType(const String& typeName, bool c
   if (type != nullptr)
     return type;
 
-  // If we failed to find the type but we don't check dependencies then return
-  // that we can't find it
+  // If we failed to find the type but we don't check dependencies then return that we can't find it
   if (!checkDependencies)
     return nullptr;
 
@@ -427,8 +424,7 @@ GlobalVariableData* ZilchShaderIRLibrary::FindGlobalVariable(Zilch::Field* zilch
   if (result != nullptr)
     return result;
 
-  // If we failed to find the type but we don't check dependencies then return
-  // that we can't find it
+  // If we failed to find the type but we don't check dependencies then return that we can't find it
   if (!checkDependencies)
     return nullptr;
 
@@ -444,8 +440,7 @@ GlobalVariableData* ZilchShaderIRLibrary::FindGlobalVariable(ZilchShaderIROp* gl
   if (result != nullptr)
     return result;
 
-  // If we failed to find the type but we don't check dependencies then return
-  // that we can't find it
+  // If we failed to find the type but we don't check dependencies then return that we can't find it
   if (!checkDependencies)
     return nullptr;
 
@@ -486,8 +481,7 @@ TemplateTypeIRResloverFn ZilchShaderIRLibrary::FindTemplateResolver(const Templa
   if (resolver != nullptr)
     return resolver;
 
-  // If we failed to find the type but we don't check dependencies then return
-  // that we can't find it
+  // If we failed to find the type but we don't check dependencies then return that we can't find it
   if (!checkDependencies)
     return nullptr;
 
@@ -505,8 +499,7 @@ void ZilchShaderIRLibrary::FlattenModuleDependents()
   {
     ZilchShaderIRLibrary* parentLibrary = (*module)[i];
 
-    // For each type in the parent library's reverse dependencies, copy all
-    // dependents into the current library
+    // For each type in the parent library's reverse dependencies, copy all dependents into the current library
     AutoDeclare(pairRange, parentLibrary->mTypeDependents.All());
     for (; !pairRange.Empty(); pairRange.PopFront())
     {
@@ -539,8 +532,7 @@ void ZilchShaderIRLibrary::GetAllDependents(ZilchShaderIRType* shaderType, HashS
     if (finalDependents.Contains(dependent))
       continue;
 
-    // Mark that we've visited this dependent and get all of its dependents
-    // recursively
+    // Mark that we've visited this dependent and get all of its dependents recursively
     finalDependents.Insert(dependent);
     GetAllDependents(dependent, finalDependents);
   }
@@ -552,8 +544,7 @@ TypeResolvers* ZilchShaderIRLibrary::FindTypeResolver(Zilch::Type* zilchType, bo
   if (result != nullptr)
     return result;
 
-  // If we failed to find the type but we don't check dependencies then return
-  // that we can't find it
+  // If we failed to find the type but we don't check dependencies then return that we can't find it
   if (!checkDependencies)
     return nullptr;
 
@@ -625,8 +616,7 @@ ZilchShaderIRFunction* ZilchShaderIRLibrary::FindFunction(Zilch::Function* zilch
   if (irFunction != nullptr)
     return irFunction;
 
-  // If we failed to find the type but we don't check dependencies then return
-  // that we can't find it
+  // If we failed to find the type but we don't check dependencies then return that we can't find it
   if (!checkDependencies)
     return nullptr;
 
@@ -643,8 +633,7 @@ SpirVExtensionInstruction* ZilchShaderIRLibrary::FindExtensionInstruction(Zilch:
   if (result != nullptr)
     return result;
 
-  // If we failed to find the type but we don't check dependencies then return
-  // that we can't find it
+  // If we failed to find the type but we don't check dependencies then return that we can't find it
   if (!checkDependencies)
     return nullptr;
 
@@ -661,8 +650,7 @@ ZilchShaderExtensionImport* ZilchShaderIRLibrary::FindExtensionLibraryImport(Spi
   if (result != nullptr)
     return result;
 
-  // If we failed to find the type but we don't check dependencies then return
-  // that we can't find it
+  // If we failed to find the type but we don't check dependencies then return that we can't find it
   if (!checkDependencies)
     return nullptr;
 
@@ -680,8 +668,7 @@ ZilchShaderIRConstantLiteral* ZilchShaderIRLibrary::FindConstantLiteral(Zilch::A
   if (result != nullptr)
     return result;
 
-  // If we failed to find the type but we don't check dependencies then return
-  // that we can't find it
+  // If we failed to find the type but we don't check dependencies then return that we can't find it
   if (!checkDependencies)
     return nullptr;
 
@@ -698,8 +685,7 @@ ZilchShaderIROp* ZilchShaderIRLibrary::FindConstantOp(ConstantOpKeyType& key, bo
   if (result != nullptr)
     return result;
 
-  // If we failed to find the type but we don't check dependencies then return
-  // that we can't find it
+  // If we failed to find the type but we don't check dependencies then return that we can't find it
   if (!checkDependencies)
     return nullptr;
 
@@ -716,8 +702,7 @@ ZilchShaderIROp* ZilchShaderIRLibrary::FindEnumConstantOp(void* key, bool checkD
   if (result != nullptr)
     return result;
 
-  // If we failed to find the type but we don't check dependencies then return
-  // that we can't find it
+  // If we failed to find the type but we don't check dependencies then return that we can't find it
   if (!checkDependencies)
     return nullptr;
 
@@ -734,8 +719,7 @@ ZilchShaderIROp* ZilchShaderIRLibrary::FindSpecializationConstantOp(void* key, b
   if (result != nullptr)
     return result;
 
-  // If we failed to find the type but we don't check dependencies then return
-  // that we can't find it
+  // If we failed to find the type but we don't check dependencies then return that we can't find it
   if (!checkDependencies)
     return nullptr;
 
@@ -752,8 +736,7 @@ OpResolverType ZilchShaderIRLibrary::FindOperatorResolverTemplate(OpIdType& opId
   if (result != nullptr)
     return result;
 
-  // If we failed to find the type but we don't check dependencies then return
-  // that we can't find it
+  // If we failed to find the type but we don't check dependencies then return that we can't find it
   if (!checkDependencies)
     return nullptr;
 

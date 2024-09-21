@@ -109,8 +109,7 @@ ZilchShaderIRType* ZilchSpirVFrontEnd::MakeTypeInternal(ZilchShaderIRLibrary* sh
   shaderType->mShaderLibrary = shaderLibrary;
   shaderType->mStorageClass = storageClass;
   shaderLibrary->AddType(shaderType->mName, shaderType);
-  // Don't set the debug name here, that's up to the callee if they want a debug
-  // name
+  // Don't set the debug name here, that's up to the callee if they want a debug name
   return shaderType;
 }
 
@@ -225,8 +224,7 @@ ShaderIRTypeMeta* ZilchSpirVFrontEnd::MakeShaderTypeMeta(ZilchShaderIRType* shad
   ShaderIRTypeMeta* typeMeta = new ShaderIRTypeMeta();
   typeMeta->mZilchName = shaderType->mName;
   typeMeta->mZilchType = zilchType;
-  // Parse attributes if possible (interface types don't have backing zilch
-  // types)
+  // Parse attributes if possible (interface types don't have backing zilch types)
   if (zilchType != nullptr)
     ParseAttributes(zilchType->Attributes, nodeAttributeList, typeMeta);
   shaderType->mMeta = typeMeta;
@@ -256,12 +254,10 @@ bool ZilchSpirVFrontEnd::Translate(Zilch::SyntaxTree& syntaxTree,
     return !mErrorTriggered;
   }
 
-  // Now that we know about all types we can generate all template types
-  // (templates have dependencies on other types)
+  // Now that we know about all types we can generate all template types (templates have dependencies on other types)
   PreWalkTemplateTypes(&context);
 
-  // Now we can walk classes again to get variable and function signatures since
-  // we have all types
+  // Now we can walk classes again to get variable and function signatures since we have all types
   TranslatorBranchWalker preWalker;
   preWalker.Register(&ZilchSpirVFrontEnd::PreWalkClassNode);
   preWalker.Register(&ZilchSpirVFrontEnd::PreWalkClassFunction);
@@ -433,20 +429,17 @@ void ZilchSpirVFrontEnd::ParseAttributes(Zilch::Array<Zilch::Attribute>& zilchAt
       ValidateNameOverrideAttribute(shaderAttribute);
       ValidateAttributeExclusions(shaderAttribute, shaderAttributes, staticExclusions);
 
-      // If this is an explicit attribute then check to see if it matches
-      // something in the uniform buffers
+      // If this is an explicit attribute then check to see if it matches something in the uniform buffers
       if (!shaderAttribute->mImplicitAttribute)
       {
         FragmentType::Enum currentFragmentType = mContext->mCurrentType->mMeta->mFragmentType;
         String fieldType = fieldMeta->mZilchType->ToString();
-        // Make sure to get the actual field name being searched for (in case of
-        // overrides)
+        // Make sure to get the actual field name being searched for (in case of overrides)
         String appBuiltInName = fieldMeta->GetFieldAttributeName(shaderAttribute);
         bool isValid = mSettings->IsValidUniform(currentFragmentType, fieldType, appBuiltInName);
         if (!isValid)
         {
-          String msg = String::Format("Field '%s : %s' does not match any "
-                                      "provided %s with fragment type '%s'.",
+          String msg = String::Format("Field '%s : %s' does not match any provided %s with fragment type '%s'.",
                                       appBuiltInName.c_str(),
                                       fieldType.c_str(),
                                       shaderAttribute->mAttributeName.c_str(),
@@ -619,8 +612,7 @@ void ZilchSpirVFrontEnd::ValidateNameOverrideAttribute(ShaderIRAttribute* shader
   // More than one parameter is a guaranteed error
   if (paramCount > 1)
   {
-    String msg = String::Format("Too many parameters to attribute '%s'. "
-                                "Signature must be '%s : String'",
+    String msg = String::Format("Too many parameters to attribute '%s'. Signature must be '%s : String'",
                                 shaderAttribute->mAttributeName.c_str(),
                                 SpirVNameSettings::mNameOverrideParam.c_str());
     SendTranslationError(shaderAttribute->GetLocation(), msg);
@@ -634,8 +626,7 @@ void ZilchSpirVFrontEnd::ValidateNameOverrideAttribute(ShaderIRAttribute* shader
     // The param type must be a string
     if (param.GetType() != Zilch::ConstantType::String)
     {
-      String msg = String::Format("Invalid parameter type to attribute '%s'. Signature "
-                                  "must be '%s : String'",
+      String msg = String::Format("Invalid parameter type to attribute '%s'. Signature must be '%s : String'",
                                   shaderAttribute->mAttributeName.c_str(),
                                   SpirVNameSettings::mNameOverrideParam.c_str());
       SendTranslationError(shaderAttribute->GetLocation(), msg);
@@ -646,16 +637,14 @@ void ZilchSpirVFrontEnd::ValidateNameOverrideAttribute(ShaderIRAttribute* shader
     String paramName = param.GetName();
     if (!paramName.Empty() && paramName != SpirVNameSettings::mNameOverrideParam)
     {
-      String msg = String::Format("Invalid parameter name to attribute '%s'. Signature "
-                                  "must be '%s : String'",
+      String msg = String::Format("Invalid parameter name to attribute '%s'. Signature must be '%s : String'",
                                   shaderAttribute->mAttributeName.c_str(),
                                   SpirVNameSettings::mNameOverrideParam.c_str());
       SendTranslationError(shaderAttribute->GetLocation(), msg);
       return;
     }
 
-    // Validate that the name parameter is a valid identifier (needed for the
-    // compositor and a few other places)
+    // Validate that the name parameter is a valid identifier (needed for the compositor and a few other places)
     String paramValue = param.GetStringValue();
     if (Zilch::LibraryBuilder::CheckUpperIdentifier(paramValue) == false)
     {
@@ -704,8 +693,7 @@ void ZilchSpirVFrontEnd::ValidateSingleParamAttribute(ShaderIRAttribute* shaderA
   Zilch::ConstantType::Enum actualParamType = param.GetType();
   if (actualParamType != expectedParamType)
   {
-    String msg = String::Format("Invalid parameter type '%s' to attribute "
-                                "'%s'. Signature must be '%s : %s'",
+    String msg = String::Format("Invalid parameter type '%s' to attribute '%s'. Signature must be '%s : %s'",
                                 Zilch::ConstantType::Names[actualParamType],
                                 shaderAttribute->mAttributeName.c_str(),
                                 expectedParamName.c_str(),
@@ -718,8 +706,7 @@ void ZilchSpirVFrontEnd::ValidateSingleParamAttribute(ShaderIRAttribute* shaderA
   String actualParamName = param.GetName();
   if ((actualParamName.Empty() && !allowEmptyName) || (actualParamName != expectedParamName))
   {
-    String msg = String::Format("Invalid parameter name '%s' to attribute "
-                                "'%s'. Signature must be '%s : %s'",
+    String msg = String::Format("Invalid parameter name '%s' to attribute '%s'. Signature must be '%s : %s'",
                                 actualParamName.c_str(),
                                 shaderAttribute->mAttributeName.c_str(),
                                 expectedParamName.c_str(),
@@ -894,20 +881,17 @@ void ZilchSpirVFrontEnd::ValidateHardwareBuiltIn(ShaderIRFieldMeta* fieldMeta,
                                                  ShaderIRAttribute* shaderAttribute,
                                                  bool isInput)
 {
-  // If this is an explicit attribute then check to see if it matches something
-  // in the uniform buffers
+  // If this is an explicit attribute then check to see if it matches something in the uniform buffers
   if (!shaderAttribute->mImplicitAttribute)
   {
     FragmentType::Enum currentFragmentType = mContext->mCurrentType->mMeta->mFragmentType;
     String fieldType = fieldMeta->mZilchType->ToString();
-    // Make sure to get the actual field name being searched for (in case of
-    // overrides)
+    // Make sure to get the actual field name being searched for (in case of overrides)
     String appBuiltInName = fieldMeta->GetFieldAttributeName(shaderAttribute);
     bool isValid = mSettings->IsValidHardwareBuiltIn(currentFragmentType, fieldType, appBuiltInName, isInput);
     if (!isValid)
     {
-      String msg = String::Format("Field '%s : %s' does not match any provided "
-                                  "%s with fragment type '%s'.",
+      String msg = String::Format("Field '%s : %s' does not match any provided %s with fragment type '%s'.",
                                   appBuiltInName.c_str(),
                                   fieldType.c_str(),
                                   shaderAttribute->mAttributeName.c_str(),
@@ -921,8 +905,7 @@ void ZilchSpirVFrontEnd::ValidateAndParseComputeAttributeParameters(ShaderIRAttr
                                                                     ShaderIRTypeMeta* typeMeta)
 {
   SpirVNameSettings& nameSettings = mSettings->mNameSettings;
-  // Create the user data for the compute fragment to store the parameters we
-  // parse from the attribute.
+  // Create the user data for the compute fragment to store the parameters we parse from the attribute.
   Zilch::HandleOf<Zilch::ComputeFragmentUserData> handle = ZilchAllocate(Zilch::ComputeFragmentUserData);
   // Default all local sizes to 1 (they're all optional)
   handle->mLocalSizeX = 1;
@@ -977,8 +960,7 @@ String ZilchSpirVFrontEnd::BuildFunctionTypeString(Zilch::Function* zilchFunctio
     // Handle adding the self parameter first if this is a member function
     if (!zilchFunction->IsStatic)
     {
-      // Get the actual 'this' type from the function (deals with extension
-      // methods)
+      // Get the actual 'this' type from the function (deals with extension methods)
       Zilch::BoundType* zilchSelfType = zilchFunction->Owner;
       functionTypeBuilder.Append(zilchSelfType->IndirectType->ToString());
       functionTypeBuilder.Append(",");
@@ -1073,8 +1055,7 @@ void ZilchSpirVFrontEnd::GenerateFunctionType(Zilch::SyntaxNode* locationNode,
     // 'this' type and make the first argument the 'this' pointer
     if (!zilchFunction->IsStatic)
     {
-      // Get the actual 'this' type from the function (deals with extension
-      // methods)
+      // Get the actual 'this' type from the function (deals with extension methods)
       Zilch::BoundType* zilchThisType = zilchFunction->Owner;
       ZilchShaderIRType* thisType = FindType(zilchThisType, locationNode);
       ZilchShaderIRType* thisPointerType = thisType->mPointerType;
@@ -1089,18 +1070,16 @@ void ZilchSpirVFrontEnd::GenerateFunctionType(Zilch::SyntaxNode* locationNode,
       ZilchShaderIRType* shaderParameterType = FindType(parameter.ParameterType, locationNode);
       ZilchShaderIRType* shaderParamPointerType = shaderParameterType->mPointerType;
 
-      // Make sure to pass through the correct shader type (pointer/value) based
-      // upon the zilch type.
+      // Make sure to pass through the correct shader type (pointer/value) based upon the zilch type.
       if (parameter.ParameterType->IsIndirectionType(parameter.ParameterType))
         functionType->mParameters.PushBack(shaderParamPointerType);
       else
       {
-        // If this is a value type parameter that can't be copied then display
-        // an error.
+        // If this is a value type parameter that can't be copied then display an error.
         if (ContainsAttribute(shaderParameterType, SpirVNameSettings::mNonCopyableAttributeName))
         {
-          String msg = String::Format("Type '%s' cannot be copied. This parameter must "
-                                      "be passed through by reference (ref keyword).",
+          String msg = String::Format(
+              "Type '%s' cannot be copied. This parameter must be passed through by reference (ref keyword).",
                                       shaderParameterType->mName.c_str());
           SendTranslationError(locationNode->Location, msg);
         }
@@ -1143,8 +1122,7 @@ void ZilchSpirVFrontEnd::GenerateFunctionType(Zilch::SyntaxNode* locationNode,
     ZilchShaderIRType* shaderParameterType = FindType(parameter, locationNode);
     ZilchShaderIRType* shaderParamPointerType = shaderParameterType->mPointerType;
 
-    // Make sure to pass through the correct shader type (pointer/value) based
-    // upon the zilch type.
+    // Make sure to pass through the correct shader type (pointer/value) based upon the zilch type.
     if (parameter->IsIndirectionType(parameter))
       functionType->mParameters.PushBack(shaderParamPointerType);
     else
@@ -1217,8 +1195,7 @@ void ZilchSpirVFrontEnd::AddImplements(Zilch::SyntaxNode* node,
   ShaderIRAttributeParameter param = extAttribute->mParameters[0];
   Zilch::BoundType* extType = Zilch::BoundType::GetBoundType(param.GetTypeValue());
 
-  // Find the function from zilch's bound type (check static or instance as
-  // appropriate)
+  // Find the function from zilch's bound type (check static or instance as appropriate)
   Zilch::FindMemberOptions::Enum findOptions = Zilch::FindMemberOptions::None;
   if (zilchFunction->IsStatic)
     findOptions = Zilch::FindMemberOptions::Static;
@@ -1246,32 +1223,30 @@ void ZilchSpirVFrontEnd::AddImplements(Zilch::SyntaxNode* node,
   else
     replacementFn = extType->FindFunction(functionName, zilchFunction->FunctionType, findOptions);
 
-  // We found a replacement function. Add a duplicate mapping for the zilch
-  // function we're replacing to the target shader function
+  // We found a replacement function. Add a duplicate mapping for the zilch function we're replacing to the target
+  // shader function
   if (replacementFn != nullptr)
   {
     mLibrary->mFunctions.InsertOrError(replacementFn, shaderFunction);
     return;
   }
 
-  // Otherwise we failed to find a function to implement (override). Now report
-  // an error to the user.
+  // Otherwise we failed to find a function to implement (override). Now report an error to the user.
 
   // By default, set the error message as we can't find a function to match to
   StringBuilder msgBuilder;
   msgBuilder << "The signature of a function with the [" << nameSettings.mImplementsAttribute
              << "] attribute must match an existing function.\n";
 
-  // For added error reporting, try to find all possible overloads of this
-  // function (check static or instance as appropriate)
+  // For added error reporting, try to find all possible overloads of this function (check static or instance as
+  // appropriate)
   const Zilch::FunctionArray* functions = nullptr;
   ShaderIRFunctionMeta* shaderFnMeta = shaderFunction->mMeta;
   if (shaderFnMeta->ContainsAttribute("Static"))
     functions = extType->GetOverloadedStaticFunctions(functionName);
   else
     functions = extType->GetOverloadedInstanceFunctions(functionName);
-  // If we find overloads of the same function name then list all possible
-  // overloads as candidates
+  // If we find overloads of the same function name then list all possible overloads as candidates
   if (functions != nullptr)
   {
     msgBuilder.Append("Possible overloads are:\n");
@@ -1444,8 +1419,7 @@ void ZilchSpirVFrontEnd::PreWalkClassVariables(Zilch::MemberVariableNode*& node,
   ShaderIRAttribute* storageClassAttribute = memberType->FindFirstAttribute(SpirVNameSettings::mStorageClassAttribute);
   if (storageClassAttribute != nullptr)
   {
-    // @JoshD: Right now I'm assuming this isn't a function storage class.
-    // Change later?
+    // @JoshD: Right now I'm assuming this isn't a function storage class. Change later?
     spv::StorageClass forcedStorageClass = (spv::StorageClass)storageClassAttribute->mParameters[0].GetIntValue();
     AddGlobalVariable(node, memberType, fieldMeta, forcedStorageClass, context);
     return;
@@ -1487,14 +1461,13 @@ void ZilchSpirVFrontEnd::AddRuntimeArray(Zilch::MemberVariableNode* node,
   ZilchShaderIRType* actualRuntimeArrayType = varType->mParameters[0]->As<ZilchShaderIRType>();
   ZilchShaderIRType* containedType = actualRuntimeArrayType->mParameters[0]->As<ZilchShaderIRType>();
 
-  // The glsl backend doesn't seem to properly support this (or it's a glsl
-  // error). If the fixed array is put in a struct this all works though. This
-  // error has to be reported here instead of during template parsing since this
-  // is the only place a location is actually known.
+  // The glsl backend doesn't seem to properly support this (or it's a glsl error).
+  // If the fixed array is put in a struct this all works though.
+  // This error has to be reported here instead of during template parsing since
+  // this is the only place a location is actually known.
   if (containedType->mBaseType == ShaderIRTypeBaseType::FixedArray)
   {
-    String msg = "Runtime array cannot directly contain a FixedArray. Please "
-                 "put the FixedArray in a struct.";
+    String msg = "Runtime array cannot directly contain a FixedArray. Please put the FixedArray in a struct.";
     SendTranslationError(node->Location, msg);
     return;
   }
@@ -1597,8 +1570,7 @@ void ZilchSpirVFrontEnd::PreWalkClassFunction(Zilch::FunctionNode*& node, ZilchS
 
 void ZilchSpirVFrontEnd::PreWalkMainFunction(Zilch::FunctionNode*& node, ZilchSpirVFrontEndContext* context)
 {
-  // If this is a geometry fragment, try and find the function Main(inputStream,
-  // outputStream)
+  // If this is a geometry fragment, try and find the function Main(inputStream, outputStream)
   ZilchShaderIRType* currentType = context->mCurrentType;
   FragmentType::Enum fragmentType = currentType->mMeta->mFragmentType;
   if (fragmentType == FragmentType::Geometry)
@@ -1620,8 +1592,7 @@ void ZilchSpirVFrontEnd::PreWalkMainFunction(Zilch::FunctionNode*& node, ZilchSp
       if (node->ReturnType != nullptr && node->ReturnType->ResolvedType != ZilchTypeId(void))
         return;
 
-      // Write out user data to the type so the compositor can know what the
-      // main function looks like.
+      // Write out user data to the type so the compositor can know what the main function looks like.
       Zilch::HandleOf<Zilch::GeometryFragmentUserData> handle = ZilchAllocate(Zilch::GeometryFragmentUserData);
       handle->mInputStreamType = inputType;
       handle->mOutputStreamType = outputType;
@@ -1650,8 +1621,7 @@ void ZilchSpirVFrontEnd::PreWalkErrorCheck(ZilchSpirVFrontEndContext* context)
     {
       if (!currentType->mHasMainFunction)
       {
-        String msg = "Geometry shader must have a 'Main' function of signature "
-                     "(InputStream, OutputStream).";
+        String msg = "Geometry shader must have a 'Main' function of signature (InputStream, OutputStream).";
         SendTranslationError(currentType->mZilchType->Location, msg);
       }
     }
@@ -1715,8 +1685,8 @@ void ZilchSpirVFrontEnd::GeneratePreConstructor(Zilch::ClassNode*& node, ZilchSp
     Zilch::VariableNode* varNode = node->Variables[i];
     String varName = varNode->Name.Token;
 
-    // If for some reason this variable isn't a member (e.g. samplers) then skip
-    // initialization. This variable was probably promoted to a global.
+    // If for some reason this variable isn't a member (e.g. samplers) then skip initialization.
+    // This variable was probably promoted to a global.
     if (currentType->mMemberNamesToIndex.ContainsKey(varName) == false)
       continue;
 
@@ -1763,8 +1733,7 @@ void ZilchSpirVFrontEnd::GenerateDefaultConstructor(Zilch::ClassNode*& node, Zil
 
   // We need to generate the type of a function (delegate type).
   // Just like other types, this needs to be generated only once but we
-  // unfortunately don't have a backing zilch function so manually generate the
-  // signature.
+  // unfortunately don't have a backing zilch function so manually generate the signature.
   Array<Zilch::Type*> signature;
   signature.PushBack(node->Type->IndirectType);
   GenerateFunctionType(node, function, ZilchTypeId(void), signature, context);
@@ -1817,8 +1786,7 @@ void ZilchSpirVFrontEnd::GenerateDummyMemberVariable(Zilch::ClassNode*& node, Zi
 void ZilchSpirVFrontEnd::GenerateStaticVariableInitializer(Zilch::MemberVariableNode*& node,
                                                            ZilchSpirVFrontEndContext* context)
 {
-  // Ignore specialization constants. They're global but they can't have an
-  // initializer function.
+  // Ignore specialization constants. They're global but they can't have an initializer function.
   if (mLibrary->FindSpecializationConstantOp(node->CreatedField) != nullptr)
     return;
 
@@ -1906,8 +1874,7 @@ void ZilchSpirVFrontEnd::DefaultConstructType(Zilch::SyntaxNode* locationNode,
     return;
   }
 
-  // If we can find a default constructor resolver for this type then call it
-  // (e.g. Real)
+  // If we can find a default constructor resolver for this type then call it (e.g. Real)
   TypeResolvers* typeResolver = mLibrary->FindTypeResolver(type->mZilchType);
   if (typeResolver != nullptr && typeResolver->mDefaultConstructorResolver != nullptr)
   {
@@ -1918,8 +1885,8 @@ void ZilchSpirVFrontEnd::DefaultConstructType(Zilch::SyntaxNode* locationNode,
     return;
   }
 
-  // Check if this type is forced to be a global type. If so then ignore the
-  // default constructor because this class doesn't actually "own" the variable.
+  // Check if this type is forced to be a global type. If so then ignore the default
+  // constructor because this class doesn't actually "own" the variable.
   if (type->IsGlobalType())
     return;
 
@@ -1939,15 +1906,12 @@ void ZilchSpirVFrontEnd::GenerateFunctionParameters(Zilch::GenericFunctionNode* 
   ErrorIf(function == nullptr, "Class function wasn't already created");
   context->mCurrentFunction = function;
 
-  // Generate a function's parameter block. This contains the declarations and
-  // ids for all input parameters
+  // Generate a function's parameter block. This contains the declarations and ids for all input parameters
 
-  // First check if this is a member function. If so then we need to declare
-  // that we take in the this pointer.
+  // First check if this is a member function. If so then we need to declare that we take in the this pointer.
   if (!zilchFunction->IsStatic)
   {
-    // Get the actual 'this' type from the function (deals with extension
-    // methods)
+    // Get the actual 'this' type from the function (deals with extension methods)
     Zilch::BoundType* zilchThisType = zilchFunction->Owner;
     ZilchShaderIRType* thisType = FindType(zilchThisType, node)->mPointerType;
     ZilchShaderIROp* op = BuildIROp(&function->mParameterBlock, OpType::OpFunctionParameter, thisType, context);
@@ -1970,11 +1934,10 @@ void ZilchSpirVFrontEnd::GenerateFunctionParameters(Zilch::GenericFunctionNode* 
       shaderParameterType = shaderParamPointerType;
 
     // @JoshD: Fix later. We should declare variables for all non-pointer
-    // types as the beginning statements so that the signature is actually
-    // correct.
+    // types as the beginning statements so that the signature is actually correct.
 
-    // We take all parameters by pointer type. This makes it significantly
-    // easier to generate code in case the user ever assigns the the input
+    // We take all parameters by pointer type. This makes it significantly easier
+    // to generate code in case the user ever assigns the the input
     ZilchShaderIROp* op =
         BuildIROp(&function->mParameterBlock, OpType::OpFunctionParameter, shaderParameterType, context);
 
@@ -2066,8 +2029,7 @@ void ZilchSpirVFrontEnd::WalkFunctionCallNode(Zilch::FunctionCallNode*& node, Zi
     return;
   }
 
-  // Check if this is a member access function call (could be a function,
-  // member, etc...)
+  // Check if this is a member access function call (could be a function, member, etc...)
   Zilch::MemberAccessNode* memberAccessNode = Zilch::Type::DynamicCast<Zilch::MemberAccessNode*>(node->LeftOperand);
   if (memberAccessNode)
   {
@@ -2095,8 +2057,7 @@ void ZilchSpirVFrontEnd::WalkConstructorCallNode(Zilch::FunctionCallNode*& node,
   ZilchShaderIRType* resultType = FindType(node->ResultType, node);
 
   ZilchShaderIRFunction* shaderConstructorFn = nullptr;
-  // Deal with auto-generated default constructors (they don't have a generated
-  // zilch function)
+  // Deal with auto-generated default constructors (they don't have a generated zilch function)
   if (constructorNode->ConstructorFunction == nullptr && resultType->mAutoDefaultConstructor != nullptr)
     shaderConstructorFn = resultType->mAutoDefaultConstructor;
   // Otherwise, look up the constructor function
@@ -2128,19 +2089,17 @@ void ZilchSpirVFrontEnd::WalkMemberAccessCallNode(Zilch::FunctionCallNode*& node
   BasicBlock* currentBlock = context->GetCurrentBlock();
 
   Zilch::Function* zilchFunction = memberAccessNode->AccessedFunction;
-  // Build the function call op but don't add it as a line in the current block
-  // yet. We have to generate a bit more code to reference the parameters
+  // Build the function call op but don't add it as a line in the current block yet. We have to generate a bit more code
+  // to reference the parameters
   ZilchShaderIRFunction* shaderFunction = mLibrary->FindFunction(zilchFunction);
   if (shaderFunction != nullptr)
   {
     WalkMemberAccessFunctionCallNode(node, memberAccessNode, shaderFunction, context);
     return;
   }
-  // Check for a member function resolver. If we find one on the 'this' type
-  // then leave translation up to it.
+  // Check for a member function resolver. If we find one on the 'this' type then leave translation up to it.
   Zilch::Type* selfType = memberAccessNode->LeftOperand->ResultType;
-  // Make sure to handle indirection types otherwise resolvers won't be found
-  // (e.g. turn 'Array ref' into 'Array')
+  // Make sure to handle indirection types otherwise resolvers won't be found (e.g. turn 'Array ref' into 'Array')
   selfType = Zilch::Type::GetBoundType(selfType);
   MemberFunctionResolverIRFn fnResolver = mLibrary->FindFunctionResolver(selfType, zilchFunction);
   if (fnResolver != nullptr)
@@ -2202,9 +2161,8 @@ void ZilchSpirVFrontEnd::WalkMemberAccessExtensionInstructionCallNode(Zilch::Fun
 
 void ZilchSpirVFrontEnd::WalkLocalVariable(Zilch::LocalVariableNode*& node, ZilchSpirVFrontEndContext* context)
 {
-  // Should this variable declaration be forwarded to another variable? (Used in
-  // expression initializers). If so, we just need to walk the variable this is
-  // referencing and return and mark that.
+  // Should this variable declaration be forwarded to another variable? (Used in expression initializers).
+  // If so, we just need to walk the variable this is referencing and return and mark that.
   if (node->ForwardLocalAccessIfPossible)
   {
     mWalker.Walk(this, node->InitialValue, context);
@@ -2218,8 +2176,7 @@ void ZilchSpirVFrontEnd::WalkLocalVariable(Zilch::LocalVariableNode*& node, Zilc
     return;
   }
 
-  // Since we're declaring a member variable we have to mark a dependency on the
-  // variable type
+  // Since we're declaring a member variable we have to mark a dependency on the variable type
   ZilchShaderIRType* resultShaderType = FindType(node->ResultType, node);
   ZilchShaderIRType* resultShaderPointerType = resultShaderType->mPointerType;
 
@@ -2230,21 +2187,18 @@ void ZilchSpirVFrontEnd::WalkLocalVariable(Zilch::LocalVariableNode*& node, Zilc
   // it later knows how to get the ir for the declaration
   context->mZilchVariableToIR[node->CreatedVariable] = variableIR;
 
-  // If there's no initial value then we're done (we've already declared the
-  // variable)
+  // If there's no initial value then we're done (we've already declared the variable)
   if (node->InitialValue == nullptr)
     return;
 
-  // Check if this type is non-copyable. If so we can't assign a default value
-  // (generate an error)
+  // Check if this type is non-copyable. If so we can't assign a default value (generate an error)
   if (CheckForNonCopyableType(resultShaderType, node, context))
     return;
 
   mWalker.Walk(this, node->InitialValue, context);
   IZilchShaderIR* intialValueIR = context->PopIRStack();
 
-  // Validate that we can assign to the type (the result could be void or
-  // something else)
+  // Validate that we can assign to the type (the result could be void or something else)
   ZilchShaderIROp* intialValueOp = intialValueIR->As<ZilchShaderIROp>();
   if (intialValueOp == nullptr || resultShaderType->mBaseType == ShaderIRTypeBaseType::Void)
     return;
@@ -2279,9 +2233,8 @@ void ZilchSpirVFrontEnd::WalkExpressionInitializerNode(Zilch::ExpressionInitiali
 
 void ZilchSpirVFrontEnd::WalkUnaryOperationNode(Zilch::UnaryOperatorNode*& node, ZilchSpirVFrontEndContext* context)
 {
-  // If this is a dereference operator then generically generate an OpLoad to
-  // turn a pointer type into a value type (should only be used in extension
-  // methods that need to pass 'this' into a function)
+  // If this is a dereference operator then generically generate an OpLoad to turn a pointer type into a
+  // value type (should only be used in extension methods that need to pass 'this' into a function)
   if (node->Operator->TokenId == Zilch::Grammar::Dereference)
   {
     IZilchShaderIR* operandResult = WalkAndGetResult(node->Operand, context);
@@ -2299,10 +2252,9 @@ void ZilchSpirVFrontEnd::WalkUnaryOperationNode(Zilch::UnaryOperatorNode*& node,
     return;
   }
 
-  // If this is an address of operator then this is almost always &variable
-  // which just returns the variable pointer itself. The only time this isn't a
-  // pointer type is on the result of an expression such as &(a + b) which I
-  // will currently always report as an error.
+  // If this is an address of operator then this is almost always &variable which just returns the variable pointer
+  // itself. The only time this isn't a pointer type is on the result of an expression such as &(a + b)
+  // which I will currently always report as an error.
   if (node->Operator->TokenId == Zilch::Grammar::AddressOf)
   {
     IZilchShaderIR* operandResult = WalkAndGetResult(node->Operand, context);
@@ -2341,8 +2293,7 @@ void ZilchSpirVFrontEnd::WalkBinaryOperationNode(Zilch::BinaryOperatorNode*& nod
   // Special case assignment (always just copy the values)
   if (node->OperatorInfo.Operator == Zilch::Grammar::Assignment)
   {
-    // Deal with setters. This requires 'promoting' the setter above the
-    // assignment op (e.g. A = B -> A.Set(B))
+    // Deal with setters. This requires 'promoting' the setter above the assignment op (e.g. A = B -> A.Set(B))
     if (ResolveSetter(node, nullptr, node->RightOperand, context))
       return;
 
@@ -2356,8 +2307,7 @@ void ZilchSpirVFrontEnd::WalkBinaryOperationNode(Zilch::BinaryOperatorNode*& nod
 
     // Validate that we can write to this op
     ValidateLValue(leftOp, node->Location);
-    // Validate that the left hand side is a pointer type otherwise we can't
-    // store to it
+    // Validate that the left hand side is a pointer type otherwise we can't store to it
     ValidateResultType(leftIR, ShaderIRTypeBaseType::Pointer, node->Location);
 
     // Generate the store
@@ -2424,8 +2374,7 @@ void ZilchSpirVFrontEnd::WalkCastNode(Zilch::TypeCastNode*& node, ZilchSpirVFron
 
 void ZilchSpirVFrontEnd::WalkValueNode(Zilch::ValueNode*& node, ZilchSpirVFrontEndContext* context)
 {
-  // @JoshD: This probably has to change later with templates (the type might
-  // not exist)
+  // @JoshD: This probably has to change later with templates (the type might not exist)
 
   // Find the result type and mark this function as relying on it
   ZilchShaderIRType* resultType = FindType(node->ResultType, node);
@@ -2483,8 +2432,7 @@ void ZilchSpirVFrontEnd::WalkMemberAccessNode(Zilch::MemberAccessNode*& node, Zi
 
         Zilch::Function* zilchGetFunction = node->AccessedGetterSetter->Get;
         ZilchShaderIRFunction* shaderFunction = mLibrary->FindFunction(zilchGetFunction);
-        // If this is an existing zilch function then we have to translate this
-        // member access into a function call
+        // If this is an existing zilch function then we have to translate this member access into a function call
         if (shaderFunction != nullptr)
         {
           Array<IZilchShaderIR*> arguments;
@@ -2499,17 +2447,15 @@ void ZilchSpirVFrontEnd::WalkMemberAccessNode(Zilch::MemberAccessNode*& node, Zi
       else
       {
         // In the syntax tree setters have to be manually deal with at a higher
-        // level (binary ops right now). If we get here then something went
-        // wrong.
+        // level (binary ops right now). If we get here then something went wrong.
         Error("Setters should always be hit via a binary op node");
         SendTranslationError(node->Location, "Translation of setters is not supported at this time.");
       }
     }
     else if (node->AccessedField != nullptr)
     {
-      // Check if this is a global variable. If so just put the variable on the
-      // stack and return (no member access chain). This happens with forced
-      // global types like samplers.
+      // Check if this is a global variable. If so just put the variable on the stack and
+      // return (no member access chain). This happens with forced global types like samplers.
       GlobalVariableData* globalVarData = mLibrary->FindGlobalVariable(node->AccessedField);
       if (globalVarData != nullptr)
       {
@@ -2518,8 +2464,7 @@ void ZilchSpirVFrontEnd::WalkMemberAccessNode(Zilch::MemberAccessNode*& node, Zi
       }
 
       // Check if this is a specialization constant.
-      // This is basically the same as a global except it requires a separate
-      // lookup.
+      // This is basically the same as a global except it requires a separate lookup.
       ZilchShaderIROp* specConstant = mLibrary->FindSpecializationConstantOp(node->AccessedField);
       if (specConstant != nullptr)
       {
@@ -2532,10 +2477,9 @@ void ZilchSpirVFrontEnd::WalkMemberAccessNode(Zilch::MemberAccessNode*& node, Zi
       SendTranslationError(node->Location, "Translation not yet supported");
     }
 
-    // If we failed to translate something more specialized up above then try to
-    // find a field resolver. We have to do this last because some types (like
-    // vectors) can have backup field resolvers. If we did this first then
-    // getters would fail to get called.
+    // If we failed to translate something more specialized up above then try to find a
+    // field resolver. We have to do this last because some types (like vectors) can have backup field resolvers.
+    // If we did this first then getters would fail to get called.
     MemberAccessResolverIRFn fieldResolver =
         mLibrary->FindFieldResolver(leftOperandType->mZilchType, node->AccessedField);
     if (fieldResolver != nullptr)
@@ -2552,9 +2496,8 @@ void ZilchSpirVFrontEnd::WalkMemberAccessNode(Zilch::MemberAccessNode*& node, Zi
     // Then use that index to get the type of the member
     ZilchShaderIRType* memberType = leftOperandType->GetSubType(memberIndex);
 
-    // Get the member variable pointer. If this is a static variable then we
-    // access the globals map, otherwise we walk the left operand and get the
-    // variable pointer to this id
+    // Get the member variable pointer. If this is a static variable then we access the globals map,
+    // otherwise we walk the left operand and get the variable pointer to this id
     IZilchShaderIR* operandResult = nullptr;
     if (!node->IsStatic)
       operandResult = WalkAndGetResult(node->LeftOperand, context);
@@ -2576,8 +2519,7 @@ void ZilchSpirVFrontEnd::WalkMemberAccessNode(Zilch::MemberAccessNode*& node, Zi
 
     if (operandResultOp->IsResultPointerType())
     {
-      // Make the constant for the sub-index of the member with respect to the
-      // base
+      // Make the constant for the sub-index of the member with respect to the base
       ZilchShaderIROp* memberIndexConstant = GetIntegerConstant(memberIndex, context);
       // Generate a member access to reference this member.
       // Note: This must have the same storage class as the left operand.
@@ -2591,8 +2533,7 @@ void ZilchSpirVFrontEnd::WalkMemberAccessNode(Zilch::MemberAccessNode*& node, Zi
       // Validate this is right (haven't made code to hit this yet)
       //__debugbreak();
 
-      // Make the constant for the sub-index of the member with respect to the
-      // base
+      // Make the constant for the sub-index of the member with respect to the base
       ZilchShaderIRConstantLiteral* memberIndexLiteral = GetOrCreateConstantLiteral(memberIndex);
 
       // Build the member access operation
@@ -2627,12 +2568,10 @@ void ZilchSpirVFrontEnd::WalkIfRootNode(Zilch::IfRootNode*& node, ZilchSpirVFron
   Array<ConditionBlockData> blockPairs;
   blockPairs.Reserve(ifParts);
 
-  // Pre-allocate the blocks for the if-statements (makes it easier to point at
-  // later blocks)
+  // Pre-allocate the blocks for the if-statements (makes it easier to point at later blocks)
   for (size_t i = 0; i < ifParts; ++i)
   {
-    // Skip any else with no condition. This is covered by the previous block's
-    // ifFalse block
+    // Skip any else with no condition. This is covered by the previous block's ifFalse block
     if (node->IfParts[i]->Condition == nullptr)
       continue;
 
@@ -2640,19 +2579,17 @@ void ZilchSpirVFrontEnd::WalkIfRootNode(Zilch::IfRootNode*& node, ZilchSpirVFron
 
     ConditionBlockData data;
 
-    // Don't add any block to the function so we can properly resolve dominance
-    // order. This is particularly important for expressions that change the
-    // block inside of the conditional (e.g. Logical Or)
+    // Don't add any block to the function so we can properly resolve dominance order.
+    // This is particularly important for expressions that change the block inside of the conditional (e.g. Logical Or)
 
     // Always make the if and merge blocks
     data.mIfTrue = BuildBlockNoStack(BuildString("ifTrue", indexStr), context);
     data.mMergePoint = BuildBlockNoStack(BuildString("ifMerge", indexStr), context);
 
-    // The ifFalse block is not always needed though. If this is the last part
-    // in the chain then this must be an if with no else (since we skipped
-    // else's with no ifs earlier). In this case do a small optimization of
-    // making the ifFalse and mergePoint be the same block. This makes code
-    // generation a little easier and makes the resultant code look cleaner.
+    // The ifFalse block is not always needed though. If this is the last part in the chain
+    // then this must be an if with no else (since we skipped else's with no ifs earlier).
+    // In this case do a small optimization of making the ifFalse and mergePoint be the same block.
+    // This makes code generation a little easier and makes the resultant code look cleaner.
     int lastIndex = ifParts - 1;
     if (i != lastIndex)
       data.mIfFalse = BuildBlockNoStack(BuildString("ifFalse", indexStr), context);
@@ -2668,8 +2605,7 @@ void ZilchSpirVFrontEnd::WalkIfRootNode(Zilch::IfRootNode*& node, ZilchSpirVFron
     Zilch::IfNode* ifNode = node->IfParts[i];
     ExtractDebugInfo(ifNode, context->mDebugInfo);
 
-    // If this part has a condition then we have to emit the appropriate
-    // conditional block and branch conditions
+    // If this part has a condition then we have to emit the appropriate conditional block and branch conditions
     if (ifNode->Condition)
     {
       ConditionBlockData blockPair = blockPairs[i];
@@ -2677,14 +2613,12 @@ void ZilchSpirVFrontEnd::WalkIfRootNode(Zilch::IfRootNode*& node, ZilchSpirVFron
       BasicBlock* ifFalseBlock = blockPairs[i].mIfFalse;
       BasicBlock* ifMerge = blockPairs[i].mMergePoint;
 
-      // Walk the conditional and then branch on this value to either the true
-      // or false block
+      // Walk the conditional and then branch on this value to either the true or false block
       IZilchShaderIR* conditionalIR = WalkAndGetValueTypeResult(ifNode->Condition, context);
 
-      // Mark the current block we're in (the header block where we write the
-      // conditionals) as a selection block and mark it's merge point. Note:
-      // This needs to be after we walk the conditional as the block can change
-      // (logical and/or expressions)
+      // Mark the current block we're in (the header block where we write the conditionals) as a selection block and
+      // mark it's merge point. Note: This needs to be after we walk the conditional as the block can change (logical
+      // and/or expressions)
       BasicBlock* headerBlock = context->GetCurrentBlock();
       headerBlock->mBlockType = BlockType::Selection;
       headerBlock->mMergePoint = ifMerge;
@@ -2692,21 +2626,19 @@ void ZilchSpirVFrontEnd::WalkIfRootNode(Zilch::IfRootNode*& node, ZilchSpirVFron
       headerBlock->mTerminatorOp = BuildIROp(
           headerBlock, OpType::OpBranchConditional, nullptr, conditionalIR, ifTrueBlock, ifFalseBlock, context);
 
-      // Start emitting the true block. First mark this as the current active
-      // block
+      // Start emitting the true block. First mark this as the current active block
       context->mCurrentBlock = ifTrueBlock;
       // Mark the if true block as the next block in dominance order
       context->mCurrentFunction->mBlocks.PushBack(ifTrueBlock);
 
       // Now walk all of the statements int he block
       mWalker.Walk(this, ifNode->Statements, context);
-      // Always emit a branch back to the merge point. If this is dead code
-      // because of another termination condition we'll clean this up after
-      // generating the entire function.
+      // Always emit a branch back to the merge point. If this is dead code because of another termination
+      // condition we'll clean this up after generating the entire function.
       ifTrueBlock->mTerminatorOp = BuildIROp(ifTrueBlock, OpType::OpBranch, nullptr, ifMerge, context);
 
-      // Nested if pushed another merge point. Add to a termination condition on
-      // the nested if merge point back to our merge point.
+      // Nested if pushed another merge point. Add to a termination condition on the nested if merge point back to our
+      // merge point.
       if (context->mCurrentBlock != ifTrueBlock)
       {
         BasicBlock* nestedBlock = context->mCurrentBlock;
@@ -2719,8 +2651,7 @@ void ZilchSpirVFrontEnd::WalkIfRootNode(Zilch::IfRootNode*& node, ZilchSpirVFron
       // (if it's not the merge block which is handled at the end)
       if (ifFalseBlock != ifMerge)
         context->mCurrentFunction->mBlocks.PushBack(ifFalseBlock);
-      // Keep track of the previous header block so if statements know where to
-      // merge back to
+      // Keep track of the previous header block so if statements know where to merge back to
       prevBlock = headerBlock;
     }
     // Otherwise this is an else with no if
@@ -2732,8 +2663,8 @@ void ZilchSpirVFrontEnd::WalkIfRootNode(Zilch::IfRootNode*& node, ZilchSpirVFron
 
       // Always emit a branch back to the previous block's merge point
       currentBlock->mTerminatorOp = BuildIROp(currentBlock, OpType::OpBranch, nullptr, prevBlock->mMergePoint, context);
-      // Nested if pushed another merge point. Add to a termination condition on
-      // the nested if merge point back to our merge point.
+      // Nested if pushed another merge point. Add to a termination condition on the nested if merge point back to our
+      // merge point.
       if (context->mCurrentBlock != currentBlock)
       {
         BasicBlock* nestedBlock = context->mCurrentBlock;
@@ -2743,24 +2674,21 @@ void ZilchSpirVFrontEnd::WalkIfRootNode(Zilch::IfRootNode*& node, ZilchSpirVFron
     }
   }
 
-  // Now write out all merge point blocks in reverse order (requirement of
-  // spir-v is that a block must appear before all blocks they dominate).
-  // Additionally, add branches for all merge points of all blocks to the
-  // previous block's merge point.
+  // Now write out all merge point blocks in reverse order (requirement of spir-v is
+  // that a block must appear before all blocks they dominate). Additionally, add branches
+  // for all merge points of all blocks to the previous block's merge point.
   for (size_t i = 0; i < blockPairs.Size(); ++i)
   {
     int blockIndex = blockPairs.Size() - i - 1;
     BasicBlock* block = blockPairs[blockIndex].mMergePoint;
-    // If this is not the first block then add a branch on the merge point to
-    // the previous block's merge point
+    // If this is not the first block then add a branch on the merge point to the previous block's merge point
     if (blockIndex != 0)
       block->mTerminatorOp =
           BuildIROp(block, OpType::OpBranch, nullptr, blockPairs[blockIndex - 1].mMergePoint, context);
     context->mCurrentFunction->mBlocks.PushBack(block);
   }
 
-  // Mark the first merge point as the new current block (everything after the
-  // if goes here).
+  // Mark the first merge point as the new current block (everything after the if goes here).
   context->mCurrentBlock = blockPairs[0].mMergePoint;
 }
 
@@ -2786,8 +2714,8 @@ void ZilchSpirVFrontEnd::WalkContinueNode(Zilch::ContinueNode*& node, ZilchSpirV
   BasicBlock* continueTarget = context->mContinueTarget;
   ErrorIf(continueTarget == nullptr, "Continue statement doesn't have a valid continue point to jump to");
 
-  // Generate a branch to the continue target of the current block. Also mark
-  // this as a terminator op so we know that no terminator must be generated.
+  // Generate a branch to the continue target of the current block. Also mark this
+  // as a terminator op so we know that no terminator must be generated.
   currentBlock->mTerminatorOp = BuildIROp(currentBlock, OpType::OpBranch, nullptr, continueTarget, context);
 }
 
@@ -2795,13 +2723,11 @@ void ZilchSpirVFrontEnd::WalkReturnNode(Zilch::ReturnNode*& node, ZilchSpirVFron
 {
   BasicBlock* currentBlock = context->GetCurrentBlock();
 
-  // We have to generate different op code depending on if this has a return
-  // value or not
+  // We have to generate different op code depending on if this has a return value or not
   if (node->ReturnValue)
   {
     // @JoshD: Fix
-    // For now, assume that all return types must be value types (deal with
-    // pointers later)
+    // For now, assume that all return types must be value types (deal with pointers later)
     IZilchShaderIR* returnResultOp = WalkAndGetResult(node->ReturnValue, context);
     ZilchShaderIROp* returnResultValueOp = GetOrGenerateValueTypeFromIR(returnResultOp, context);
     currentBlock->mTerminatorOp = BuildCurrentBlockIROp(OpType::OpReturnValue, nullptr, returnResultValueOp, context);
@@ -2818,10 +2744,9 @@ void ZilchSpirVFrontEnd::WalkWhileNode(Zilch::WhileNode*& node, ZilchSpirVFrontE
 void ZilchSpirVFrontEnd::WalkDoWhileNode(Zilch::DoWhileNode*& node, ZilchSpirVFrontEndContext* context)
 {
   // A do while looks like a header block that always jumps to a loop block.
-  // This loop block will always branch to the continue target (the condition
-  // block) unless a break happens which will branch to the merge block (after
-  // the loop). The condition block will choose to jump either back to the
-  // header block or to the merge point.
+  // This loop block will always branch to the continue target (the condition block)
+  // unless a break happens which will branch to the merge block (after the loop).
+  // The condition block will choose to jump either back to the header block or to the merge point.
   BasicBlock* headerBlock = BuildBlockNoStack("headerBlock", context);
   BasicBlock* loopTrueBlock = BuildBlockNoStack("loop-body", context);
   BasicBlock* conditionBlock = BuildBlockNoStack("conditionBlock", context);
@@ -2834,8 +2759,7 @@ void ZilchSpirVFrontEnd::WalkDoWhileNode(Zilch::DoWhileNode*& node, ZilchSpirVFr
   context->mCurrentFunction->mBlocks.PushBack(headerBlock);
   GenerateLoopHeaderBlock(headerBlock, loopTrueBlock, mergeBlock, conditionBlock, context);
 
-  // Now create the loop body which has the conditional block as its continue
-  // target
+  // Now create the loop body which has the conditional block as its continue target
   context->mCurrentFunction->mBlocks.PushBack(loopTrueBlock);
   GenerateLoopStatements(node, loopTrueBlock, mergeBlock, conditionBlock, context);
 
@@ -2876,16 +2800,15 @@ void ZilchSpirVFrontEnd::WalkGenericLoop(Zilch::SyntaxNode* initializerNode,
                                          Zilch::LoopScopeNode* loopScopeNode,
                                          ZilchSpirVFrontEndContext* context)
 {
-  // Always walk the initializer node first if it exists. The contents of this
-  // go before any loop block.
+  // Always walk the initializer node first if it exists. The contents of this go before any loop block.
   if (initializerNode != nullptr)
     mWalker.Walk(this, initializerNode, context);
 
-  // A basic while looks like a header block that always jumps to a condition
-  // block. The condition block will choose to jump either to the loop block or
-  // to the merge point. The loop block will always branch to the continue
-  // target unless a break happens which will branch to the merge block (after
-  // the loop). The continue block will always jump back to the header block.
+  // A basic while looks like a header block that always jumps to a condition block.
+  // The condition block will choose to jump either to the loop block or to the merge point.
+  // The loop block will always branch to the continue target unless a break happens which
+  // will branch to the merge block (after the loop).
+  // The continue block will always jump back to the header block.
   BasicBlock* headerBlock = BuildBlockNoStack("headerBlock", context);
   BasicBlock* conditionBlock = BuildBlockNoStack("conditionBlock", context);
   BasicBlock* loopTrueBlock = BuildBlockNoStack("loop-body", context);
@@ -2899,13 +2822,11 @@ void ZilchSpirVFrontEnd::WalkGenericLoop(Zilch::SyntaxNode* initializerNode,
   context->mCurrentFunction->mBlocks.PushBack(headerBlock);
   GenerateLoopHeaderBlock(headerBlock, conditionBlock, mergeBlock, continueBlock, context);
 
-  // The conditional will jump to either the loop body or the merge point (after
-  // the loop)
+  // The conditional will jump to either the loop body or the merge point (after the loop)
   context->mCurrentFunction->mBlocks.PushBack(conditionBlock);
   GenerateLoopConditionBlock(conditionalNode, conditionBlock, loopTrueBlock, mergeBlock, context);
 
-  // Walk all of the statements in the loop body and jump to either the merge or
-  // continue block
+  // Walk all of the statements in the loop body and jump to either the merge or continue block
   context->mCurrentFunction->mBlocks.PushBack(loopTrueBlock);
   GenerateLoopStatements(loopScopeNode, loopTrueBlock, mergeBlock, continueBlock, context);
 
@@ -2924,8 +2845,7 @@ void ZilchSpirVFrontEnd::GenerateLoopHeaderBlock(BasicBlock* headerBlock,
                                                  BasicBlock* continueBlock,
                                                  ZilchSpirVFrontEndContext* context)
 {
-  // Mark the header block as a loop block (so we emit the LoopMerge
-  // instruction)
+  // Mark the header block as a loop block (so we emit the LoopMerge instruction)
   headerBlock->mBlockType = BlockType::Loop;
   // Being a LoopMerge requires setting the merge and continue points
   headerBlock->mMergePoint = mergeBlock;
@@ -2941,8 +2861,7 @@ void ZilchSpirVFrontEnd::GenerateLoopConditionBlock(Zilch::ConditionalLoopNode* 
                                                     BasicBlock* branchFalseBlock,
                                                     ZilchSpirVFrontEndContext* context)
 {
-  // The condition builds the conditional and then jumps either to the body of
-  // the loop or to the end
+  // The condition builds the conditional and then jumps either to the body of the loop or to the end
   context->mCurrentBlock = conditionBlock;
   // If the conditional node exists
   if (conditionalNode != nullptr)
@@ -2954,8 +2873,7 @@ void ZilchSpirVFrontEnd::GenerateLoopConditionBlock(Zilch::ConditionalLoopNode* 
     BuildCurrentBlockIROp(
         OpType::OpBranchConditional, nullptr, conditional, branchTrueBlock, branchFalseBlock, context);
   }
-  // Otherwise there is no conditional (e.g. loop) so unconditionally branch to
-  // the true block
+  // Otherwise there is no conditional (e.g. loop) so unconditionally branch to the true block
   else
     BuildCurrentBlockIROp(OpType::OpBranch, nullptr, branchTrueBlock, context);
 }
@@ -2967,8 +2885,7 @@ void ZilchSpirVFrontEnd::GenerateLoopStatements(Zilch::LoopScopeNode* loopScopeN
                                                 ZilchSpirVFrontEndContext* context)
 {
   context->mCurrentBlock = loopBlock;
-  // Set the continue and merge points for this block (mainly needed for nested
-  // loops)
+  // Set the continue and merge points for this block (mainly needed for nested loops)
   loopBlock->mContinuePoint = continueBlock;
   loopBlock->mMergePoint = mergeBlock;
   context->PushMergePoints(continueBlock, mergeBlock);
@@ -2976,9 +2893,8 @@ void ZilchSpirVFrontEnd::GenerateLoopStatements(Zilch::LoopScopeNode* loopScopeN
   // Iterate over all of the statements in the loop body
   mWalker.Walk(this, loopScopeNode->Statements, context);
 
-  // Write out a jump back to the continue block of the loop. Only write this to
-  // the active block which will either be the end of the loop block or
-  // something like an after if
+  // Write out a jump back to the continue block of the loop. Only write this to the active block
+  // which will either be the end of the loop block or something like an after if
   if (context->mCurrentBlock->mTerminatorOp == nullptr)
   {
     IZilchShaderIR* currentBlockContinue = BuildCurrentBlockIROp(OpType::OpBranch, nullptr, continueBlock, context);
@@ -3018,8 +2934,7 @@ void ZilchSpirVFrontEnd::FixBlockTerminators(BasicBlock* block, ZilchSpirVFrontE
     }
   }
 
-  // First terminator is the last op in the block. This block is good and
-  // there's nothing more to do.
+  // First terminator is the last op in the block. This block is good and there's nothing more to do.
   if (firstTerminatorIndex == opCount - 1)
     return;
 
@@ -3027,10 +2942,9 @@ void ZilchSpirVFrontEnd::FixBlockTerminators(BasicBlock* block, ZilchSpirVFrontE
   if (firstTerminatorIndex >= opCount)
   {
     ZilchShaderIRType* returnType = context->mCurrentFunction->GetReturnType();
-    // If the return type isn't void then this was likely a block that was
-    // generated after a conditional that can't be reached (e.g. if + else and
-    // then after the else). These statements should be unreachable otherwise
-    // we'd have a zilch error.
+    // If the return type isn't void then this was likely a block that was generated after a conditional
+    // that can't be reached (e.g. if + else and then after the else).
+    // These statements should be unreachable otherwise we'd have a zilch error.
     if (returnType->mZilchType != ZilchTypeId(void))
       block->mTerminatorOp = BuildIROp(block, OpType::OpUnreachable, nullptr, context);
     // Otherwise just emit a return
@@ -3039,8 +2953,7 @@ void ZilchSpirVFrontEnd::FixBlockTerminators(BasicBlock* block, ZilchSpirVFrontE
     return;
   }
 
-  // There's dead instructions after the terminator. Clean up everything
-  // afterwards
+  // There's dead instructions after the terminator. Clean up everything afterwards
   size_t newSize = firstTerminatorIndex + 1;
   for (size_t i = newSize; i < block->mLines.Size(); ++i)
     delete block->mLines[i];
@@ -3082,8 +2995,7 @@ bool ZilchSpirVFrontEnd::ResolveSetter(Zilch::BinaryOperatorNode* node,
     return false;
 
   ZilchShaderIRFunction* shaderFunction = mLibrary->FindFunction(set);
-  // If this is an existing zilch function then we have to translate this member
-  // access into a function call
+  // If this is an existing zilch function then we have to translate this member access into a function call
   if (shaderFunction != nullptr)
   {
     Array<IZilchShaderIR*> arguments;
@@ -3164,8 +3076,7 @@ void ZilchSpirVFrontEnd::PerformBinaryAssignmentOp(Zilch::BinaryOperatorNode*& n
                                                    IZilchShaderIR* rhs,
                                                    ZilchSpirVFrontEndContext* context)
 {
-  // All binary operators require value types so load from pointers if we had
-  // them
+  // All binary operators require value types so load from pointers if we had them
   ZilchShaderIROp* leftValueOp = GetOrGenerateValueTypeFromIR(lhs, context);
   ZilchShaderIROp* rightValueOp = GetOrGenerateValueTypeFromIR(rhs, context);
 
@@ -3173,8 +3084,7 @@ void ZilchSpirVFrontEnd::PerformBinaryAssignmentOp(Zilch::BinaryOperatorNode*& n
   ZilchShaderIRType* resultType = FindType(node->LeftOperand->ResultType, node);
   ZilchShaderIROp* binaryOpInstruction = BuildCurrentBlockIROp(opType, resultType, leftValueOp, rightValueOp, context);
 
-  // Deal with setters. This requires 'promoting' the setter above the
-  // assignment op (e.g. A += B -> A.Set(A + B))
+  // Deal with setters. This requires 'promoting' the setter above the assignment op (e.g. A += B -> A.Set(A + B))
   if (ResolveSetter(node, binaryOpInstruction, node->RightOperand, context))
     return;
 
@@ -3222,8 +3132,7 @@ IZilchShaderIR* ZilchSpirVFrontEnd::PerformUnaryIncDecOp(Zilch::UnaryOperatorNod
   ZilchShaderIRType* resultType = FindType(node->Operand->ResultType, node->Operand);
   IZilchShaderIR* tempOp = BuildCurrentBlockIROp(opType, resultType, operandValueOp, constantOne, context);
 
-  // If the operand was a pointer type instead of a temporary then we need to
-  // store the value back into the pointer
+  // If the operand was a pointer type instead of a temporary then we need to store the value back into the pointer
   ZilchShaderIROp* op = operand->As<ZilchShaderIROp>();
   if (op != nullptr && op->IsResultPointerType())
   {
@@ -3240,8 +3149,7 @@ IZilchShaderIR* ZilchSpirVFrontEnd::PerformTypeCast(Zilch::TypeCastNode*& node,
 {
   ZilchShaderIRType* resultType = FindType(node->ResultType, node);
 
-  // Get the thing we're casting. Casts require a value type so generate a value
-  // type if necessary.
+  // Get the thing we're casting. Casts require a value type so generate a value type if necessary.
   ZilchShaderIROp* operandValueResult = WalkAndGetValueTypeResult(node->Operand, context);
 
   // Generate the cast
@@ -3309,11 +3217,9 @@ ZilchShaderIROp* ZilchSpirVFrontEnd::AddSpecializationConstant(Zilch::MemberVari
                                                                ZilchSpirVFrontEndContext* context)
 {
   ZilchShaderIRConstantLiteral* defaultLiteral = nullptr;
-  // If the initial value of the node is a value node then we can initialize
-  // this constant to the actual value. Other types are more complicated as the
-  // default value requires actually constructing the type to get value
-  // (something like var Pi : Real = Math.Pi). @JoshD: Deal with finding these
-  // constants later.
+  // If the initial value of the node is a value node then we can initialize this constant to the actual value.
+  // Other types are more complicated as the default value requires actually constructing the type
+  // to get value (something like var Pi : Real = Math.Pi). @JoshD: Deal with finding these constants later.
   Zilch::ValueNode* valueNode = Zilch::Type::DynamicCast<Zilch::ValueNode*>(node->InitialValue);
   if (valueNode != nullptr)
   {
@@ -3361,8 +3267,7 @@ ZilchShaderIROp* ZilchSpirVFrontEnd::AddSpecializationConstantRecursively(void* 
     ZilchShaderIROp* specConstantCompositeOp =
         CreateSpecializationConstant(key, OpType::OpSpecConstantComposite, varType, context);
     specConstantCompositeOp->mDebugResultName = propertyName;
-    // Create a sub-constant for each constituent. For vectors these are scalar,
-    // for matrices these are vectors.
+    // Create a sub-constant for each constituent. For vectors these are scalar, for matrices these are vectors.
     char subNames[] = {'X', 'Y', 'Z', 'W'};
     ZilchShaderIRType* componentType = GetComponentType(varType);
     for (size_t i = 0; i < varType->mComponents; ++i)
@@ -3378,9 +3283,8 @@ ZilchShaderIROp* ZilchSpirVFrontEnd::AddSpecializationConstantRecursively(void* 
     return specConstantCompositeOp;
   }
 
-  // Structs are handled almost the same as vectors/matrices, the only
-  // difference is how members are iterated over and how to create their debug
-  // names.
+  // Structs are handled almost the same as vectors/matrices, the only difference is how
+  // members are iterated over and how to create their debug names.
   if (varType->mBaseType == ShaderIRTypeBaseType::Struct)
   {
     ZilchShaderIROp* specConstantCompositeOp =
@@ -3401,8 +3305,7 @@ ZilchShaderIROp* ZilchSpirVFrontEnd::AddSpecializationConstantRecursively(void* 
 
   String errorMsg = String::Format("Type '%s' is not valid as a specialization constant.", varType->mName.c_str());
   SendTranslationError(codeLocation, errorMsg);
-  // Return a dummy constant so that we don't crash. This is not valid spir-v
-  // though.
+  // Return a dummy constant so that we don't crash. This is not valid spir-v though.
   return CreateSpecializationConstant(key, OpType::OpSpecConstantComposite, varType, context);
 }
 
@@ -3414,10 +3317,9 @@ ZilchShaderIROp* ZilchSpirVFrontEnd::CreateSpecializationConstant(void* key,
   ZilchShaderIROp* specConstantOp = BuildIROpNoBlockAdd(opType, varType, context);
   // Always add this constant to the library for memory management
   mLibrary->mOwnedSpecializationConstants.PushBack(specConstantOp);
-  // Additionally, if there's a valid key then store this in the library's
-  // lookup map. This is used to find the constant at a later point in time via
-  // the key (such as the zilch field). If the key is null then we don't
-  // have/need to lookup this constant later (e.g. a sub-member of a vector).
+  // Additionally, if there's a valid key then store this in the library's lookup map.
+  // This is used to find the constant at a later point in time via the key (such as the zilch field).
+  // If the key is null then we don't have/need to lookup this constant later (e.g. a sub-member of a vector).
   if (key != nullptr)
     mLibrary->mSpecializationConstantMap.InsertOrError(key, specConstantOp);
 
@@ -3683,9 +3585,9 @@ ZilchShaderIRConstantLiteral* ZilchSpirVFrontEnd::GetOrCreateConstantLiteral(Zil
 
 ZilchShaderIROp* ZilchSpirVFrontEnd::BuildOpVariable(ZilchShaderIRType* resultType, ZilchSpirVFrontEndContext* context)
 {
-  // All variable declarations must be at the beginning of the first block of a
-  // function. To do this we always grab the first block and add to the local
-  // variables section of this block (which is emitted first)
+  // All variable declarations must be at the beginning of the first block of a function.
+  // To do this we always grab the first block and add to the local variables section of this block (which is emitted
+  // first)
   BasicBlock* firstBlock = context->mCurrentFunction->mBlocks[0];
   BasicBlock* oldBlock = context->mCurrentBlock;
   context->mCurrentBlock = firstBlock;
@@ -3705,8 +3607,7 @@ ZilchShaderIROp* ZilchSpirVFrontEnd::BuildOpVariable(BasicBlock* block,
 {
   // Declare the constant for function storage variables
   ZilchShaderIRConstantLiteral* functionStorageConstant = GetOrCreateConstantLiteral(storageConstant);
-  // Make the variable declaration (with function storage) and add it to the
-  // local variables section of the block
+  // Make the variable declaration (with function storage) and add it to the local variables section of the block
   ZilchShaderIROp* variableOp = BuildIROpNoBlockAdd(OpType::OpVariable, resultType, context);
   variableOp->mArguments.PushBack(functionStorageConstant);
   block->mLocalVariables.PushBack(variableOp);
@@ -3733,8 +3634,7 @@ ZilchShaderIROp* ZilchSpirVFrontEnd::WalkAndGetValueTypeResult(Zilch::SyntaxNode
                                                                ZilchSpirVFrontEndContext* context)
 {
   IZilchShaderIR* nodeResult = WalkAndGetResult(node, context);
-  // The block must be fetched here as walking the node can change the current
-  // block
+  // The block must be fetched here as walking the node can change the current block
   ZilchShaderIROp* valueResult = GetOrGenerateValueTypeFromIR(context->GetCurrentBlock(), nodeResult, context);
   return valueResult;
 }
@@ -3790,14 +3690,13 @@ ZilchShaderIROp* ZilchSpirVFrontEnd::BuildStoreOp(BasicBlock* block,
                                                   bool forceLoadStore)
 {
   ZilchShaderIROp* sourceOp = source->As<ZilchShaderIROp>();
-  // Change what op we use to store depending on if the source is a value or
-  // pointer type. If the source was a pointer type we'd have to load it first
-  // before setting, but instead we can just use CopyMemory.
+  // Change what op we use to store depending on if the source is a value or pointer type.
+  // If the source was a pointer type we'd have to load it first before setting,
+  // but instead we can just use CopyMemory.
   if (sourceOp->IsResultPointerType())
   {
-    // Currently there's various issues with the spirv tool chains that don't
-    // handle OpCopyMemory well. For this reason support forcing load/store
-    // instead.
+    // Currently there's various issues with the spirv tool chains that don't handle OpCopyMemory well.
+    // For this reason support forcing load/store instead.
     if (forceLoadStore)
     {
       ZilchShaderIROp* loadOp =
@@ -3871,8 +3770,7 @@ void ZilchSpirVFrontEnd::WriteFunctionCallArgument(IZilchShaderIR* argument,
   ZilchShaderIROp* paramOp = argument->As<ZilchShaderIROp>();
 
   // If we know the function parameter's expected type is a value type while
-  // the given parameter op is a pointer then convert the pointer to a value
-  // type.
+  // the given parameter op is a pointer then convert the pointer to a value type.
   if (paramType == nullptr || !paramType->IsPointerType())
   {
     if (paramOp->IsResultPointerType())
@@ -3986,9 +3884,8 @@ ZilchShaderIROp* ZilchSpirVFrontEnd::GenerateFromBoolCast(BasicBlock* block,
                                                           IZilchShaderIR* one,
                                                           ZilchSpirVFrontEndContext* context)
 {
-  // SpirV doesn't support a bool to type cast. Instead a select op must be
-  // generated to choose between two values. This is effectively: bool ?
-  // trueResult : falseResult.
+  // SpirV doesn't support a bool to type cast. Instead a select op must be generated
+  // to choose between two values. This is effectively: bool ? trueResult : falseResult.
   IZilchShaderIR* condition = source;
   IZilchShaderIR* trueValue = one;
   IZilchShaderIR* falseValue = zero;
@@ -4031,9 +3928,8 @@ ZilchShaderIROp* ZilchSpirVFrontEnd::GenerateToBoolCast(BasicBlock* block,
                                                         IZilchShaderIR* zero,
                                                         ZilchSpirVFrontEndContext* context)
 {
-  // SpirV doesn't support a cast to a bool. Instead this must be generated from
-  // a comparison operator with the corrsponding zero vector. E.g.
-  // (Boolean2)Integer2 => Integer2 != Integer2(0)
+  // SpirV doesn't support a cast to a bool. Instead this must be generated from a comparison
+  // operator with the corrsponding zero vector. E.g. (Boolean2)Integer2 => Integer2 != Integer2(0)
   IZilchShaderIR* rhs = zero;
   ZilchShaderIROp* condition = source;
   ZilchShaderIRType* sourceType = source->mResultType;
@@ -4041,8 +3937,7 @@ ZilchShaderIROp* ZilchSpirVFrontEnd::GenerateToBoolCast(BasicBlock* block,
   // Handle vector types
   if (sourceType->mComponents != 1)
   {
-    // Construct the comparison source vector type from the individual zero
-    // scalar
+    // Construct the comparison source vector type from the individual zero scalar
     ZilchShaderIROp* zeroVec = BuildIROp(block, OpType::OpCompositeConstruct, sourceType, context);
     for (size_t i = 0; i < sourceType->mComponents; ++i)
     {
@@ -4156,8 +4051,7 @@ IZilchShaderIR* ZilchSpirVFrontEnd::GenerateDummyIR(Zilch::ExpressionNode* node,
   return BuildOpVariable(shaderResultType, context);
 }
 
-// Send a translation error with a simple message (also marks the translation as
-// having failed)
+// Send a translation error with a simple message (also marks the translation as having failed)
 void ZilchSpirVFrontEnd::SendTranslationError(Zilch::CodeLocation& codeLocation, StringParam message)
 {
   SendTranslationError(codeLocation, message, message);

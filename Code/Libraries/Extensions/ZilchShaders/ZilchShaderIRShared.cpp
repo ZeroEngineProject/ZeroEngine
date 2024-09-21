@@ -126,8 +126,7 @@ String ZilchShaderIRType::GetMemberName(size_t memberIndex)
 {
   // Currently we only store names to indices but not the other way around.
   // For now just iterate through this map to find the member index.
-  // A type shouldn't be too big and this is rarely done so this is acceptable
-  // for now.
+  // A type shouldn't be too big and this is rarely done so this is acceptable for now.
   for (auto range = mMemberNamesToIndex.All(); !range.Empty(); range.PopFront())
   {
     auto pair = range.Front();
@@ -142,8 +141,7 @@ ZilchShaderIRType* ZilchShaderIRType::GetSubType(int index) const
   bool supportsSubTypes = mBaseType == ShaderIRTypeBaseType::Struct || mBaseType == ShaderIRTypeBaseType::Function;
 
   ErrorIf(!supportsSubTypes,
-          "Type '%s' does not support sub-types. The parameters on this type "
-          "are not guaranteed to be types.",
+          "Type '%s' does not support sub-types. The parameters on this type are not guaranteed to be types.",
           mName.c_str());
 
   IZilchShaderIR* param = mParameters[index];
@@ -156,8 +154,7 @@ size_t ZilchShaderIRType::GetSubTypeCount()
   bool supportsSubTypes = mBaseType == ShaderIRTypeBaseType::Struct || mBaseType == ShaderIRTypeBaseType::Function;
 
   ErrorIf(!supportsSubTypes,
-          "Type '%s' does not support sub-types. The parameters on this type "
-          "are not guaranteed to be types.",
+          "Type '%s' does not support sub-types. The parameters on this type are not guaranteed to be types.",
           mName.c_str());
 
   return mParameters.Size();
@@ -178,9 +175,8 @@ size_t ZilchShaderIRType::GetByteSize() const
   }
   else if (mBaseType == ShaderIRTypeBaseType::FixedArray)
   {
-    // The actual size of a fixed array is the number of elements times the
-    // array stride. The array stride is the size of the contained item rounded
-    // up based upon the max alignment
+    // The actual size of a fixed array is the number of elements times the array stride.
+    // The array stride is the size of the contained item rounded up based upon the max alignment
     ZilchShaderIRType* elementType = mParameters[0]->As<ZilchShaderIRType>();
     size_t elementByteSize = elementType->GetByteSize();
     size_t alignment = GetByteAlignment();
@@ -206,8 +202,8 @@ size_t ZilchShaderIRType::GetByteSize() const
       // is required unless another element follows)
       size += memberSize;
     }
-    // Vulkan Spec: A struct has a base alignment equal to the largest base
-    // alignment of any of its memebers rounded up to a multiple of 16.
+    // Vulkan Spec: A struct has a base alignment equal to the largest base alignment
+    // of any of its memebers rounded up to a multiple of 16.
     size = GetSizeAfterAlignment(size, 16);
     return size;
   }
@@ -230,17 +226,15 @@ size_t ZilchShaderIRType::GetByteAlignment() const
   }
   else if (mBaseType == ShaderIRTypeBaseType::Matrix)
   {
-    // Via opengl/dx matrix types are treated as an array of the vector types
-    // where the vector types are padded up to vec4s. This happens for
-    // efficiency reason (at least with uniform buffers).
+    // Via opengl/dx matrix types are treated as an array of the vector types where the vector
+    // types are padded up to vec4s. This happens for efficiency reason (at least with uniform buffers).
     ZilchShaderIRType* scalarType = mComponentType->mComponentType;
     return 4 * scalarType->GetByteAlignment();
   }
   else if (mBaseType == ShaderIRTypeBaseType::FixedArray)
   {
     // Via opengl/dx array of the vector types where the vector
-    // types are padded up to vec4s. This happens for efficiency reason (at
-    // least with uniform buffers).
+    // types are padded up to vec4s. This happens for efficiency reason (at least with uniform buffers).
     ZilchShaderIRType* elementType = mParameters[0]->As<ZilchShaderIRType>();
     if (elementType->mBaseType == ShaderIRTypeBaseType::Int || elementType->mBaseType == ShaderIRTypeBaseType::Float ||
         elementType->mBaseType == ShaderIRTypeBaseType::Bool || elementType->mBaseType == ShaderIRTypeBaseType::Vector)
@@ -321,8 +315,7 @@ ZilchShaderIRType* GetComponentType(ZilchShaderIRType* compositeType)
                     compositeType->mBaseType == ShaderIRTypeBaseType::Vector ||
                     compositeType->mBaseType == ShaderIRTypeBaseType::Matrix;
   ErrorIf(!isMathType,
-          "Invalid type to find component type on. Only math types "
-          "(scalars/vectors/matrices) are allowed");
+          "Invalid type to find component type on. Only math types (scalars/vectors/matrices) are allowed");
   return compositeType->mComponentType;
 }
 

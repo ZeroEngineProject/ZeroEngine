@@ -143,16 +143,14 @@ void SimplifiedShaderReflectionData::CreateUniformReflectionData(ZilchShaderIRLi
     }
   }
 
-  // Figure out how uniform buffers changed between pipeline stages. Currently
-  // this only supports changes at the top level of a buffer (buffer renames or
-  // buffers disappearing) and doesn't support member changes (member
-  // re-orderings, buffer splits, etc...)
+  // Figure out how uniform buffers changed between pipeline stages. Currently this only supports
+  // changes at the top level of a buffer (buffer renames or buffers disappearing)
+  // and doesn't support member changes (member re-orderings, buffer splits, etc...)
   for (size_t pipelineIndex = 1; pipelineIndex < passResults.Size(); ++pipelineIndex)
   {
     ShaderStageInterfaceReflection& reflectionData = passResults[pipelineIndex]->mReflectionData;
 
-    // For each uniform buffer in the current stage, build a map of its name to
-    // index
+    // For each uniform buffer in the current stage, build a map of its name to index
     HashMap<String, size_t> indexMap;
     for (size_t i = 0; i < reflectionData.mUniforms.Size(); ++i)
     {
@@ -187,9 +185,8 @@ void SimplifiedShaderReflectionData::CreateUniformReflectionData(ZilchShaderIRLi
   }
 
   // Now we need to map fragment properties to actual uniform buffer memory.
-  // To do this we walk all fragments, mapping a property name to the first
-  // uniform buffer index. With this index we can jump to the final uniform
-  // buffer index the we pre-calculated above.
+  // To do this we walk all fragments, mapping a property name to the first uniform buffer index.
+  // With this index we can jump to the final uniform buffer index the we pre-calculated above.
   AutoDeclare(fragRange, stageDef.mFragmentDescriptions->All());
   for (; !fragRange.Empty(); fragRange.PopFront())
   {
@@ -202,22 +199,18 @@ void SimplifiedShaderReflectionData::CreateUniformReflectionData(ZilchShaderIRLi
       ZilchShaderIRCompositor::ShaderFieldDescription& fieldDesc = propRange.Front().second;
 
       // Find the remapping data for this fragment's property
-      // (make sure to use the property name which is the compositor's result
-      // name)
+      // (make sure to use the property name which is the compositor's result name)
       UniformReflectionData* memberRemappingData = memberRemappings.FindPointer(fieldDesc.mFieldPropertyName);
       if (memberRemappingData == nullptr)
         continue;
 
-      // Now we have the first pipeline stage's uniform buffer index for this
-      // property.
+      // Now we have the first pipeline stage's uniform buffer index for this property.
       size_t firstStageBufferIndex = memberRemappingData->mBufferIndex;
 
-      // We now need to trace this uniform buffer to the final stage to see
-      // where this property ends up
+      // We now need to trace this uniform buffer to the final stage to see where this property ends up
       String spirvBufferName = firstStageData.mUniforms[firstStageBufferIndex].mReflectionData.mInstanceName;
       SimpleResourceRemappingData* resourceRemapping = bufferRenames.FindPointer(spirvBufferName);
-      // The property didn't make it to a final uniform buffer (or one that's
-      // inactive)
+      // The property didn't make it to a final uniform buffer (or one that's inactive)
       if (resourceRemapping == nullptr || !resourceRemapping->mActive)
         continue;
 
@@ -229,8 +222,7 @@ void SimplifiedShaderReflectionData::CreateUniformReflectionData(ZilchShaderIRLi
     }
   }
 
-  // Store the final stage's reflection data (where we actually find member
-  // offsets from)
+  // Store the final stage's reflection data (where we actually find member offsets from)
   mReflection = *lastStageData;
 }
 
@@ -329,9 +321,8 @@ void SimplifiedShaderReflectionData::RecursivelyBuildSamplerAndImageMappings(Arr
     return;
   }
 
-  // Walk all image, sampler, and sampled image remappings recursively.
-  // Technically an image could merge into a sampled image and then split later
-  // so we have to walk everything.
+  // Walk all image, sampler, and sampled image remappings recursively. Technically an image could
+  // merge into a sampled image and then split later so we have to walk everything.
   ShaderStageInterfaceReflection& reflectionData = passResults[passIndex]->mReflectionData;
 
   typedef Array<String>::range rangeType;
@@ -379,8 +370,8 @@ void SimplifiedShaderReflectionData::BuildFinalSampledImageMappings(SampledImage
   if (resourceMappings == nullptr)
     return;
 
-  // Convert the final resource mapping names to indices based upon the given
-  // name to index maps. Do this for image, samplers, and sampled images.
+  // Convert the final resource mapping names to indices based upon the given name to index maps.
+  // Do this for image, samplers, and sampled images.
 
   for (size_t i = 0; i < resourceMappings->mImageRemappings.Size(); ++i)
   {
@@ -414,9 +405,8 @@ void SimplifiedShaderReflectionData::PopulateSamplerAndImageData(HashMap<String,
   if (remapData == nullptr)
     return;
 
-  // Copy all of the image, sampler, and sampled image ids. Technically not all
-  // of this is relevant (e.g. an image can't produce a sampler) but for code
-  // re-use this is much cleaner.
+  // Copy all of the image, sampler, and sampled image ids. Technically not all of this is relevant
+  // (e.g. an image can't produce a sampler) but for code re-use this is much cleaner.
   for (size_t i = 0; i < remapData->mImageIds.Size(); ++i)
   {
     int imageIndex = remapData->mImageIds[i];
@@ -446,8 +436,7 @@ void SimplifiedShaderReflectionData::CreateSimpleOpaqueTypeReflectionData(ZilchS
   HashMap<String, StructuredStorageBufferRemappingData> storageBufferMappings;
   HashMap<String, StorageImageRemappingData> storageImageMappings;
 
-  // Map all structured storage buffers by name to their index in the final
-  // stage
+  // Map all structured storage buffers by name to their index in the final stage
   for (size_t i = 0; i < storageBuffers.Size(); ++i)
   {
     ShaderStageResource& storageBufferResource = storageBuffers[i];
@@ -512,8 +501,7 @@ void SimplifiedShaderReflectionData::CreateSimpleOpaqueTypeReflectionData(ZilchS
 }
 
 SimpleZilchShaderIRGenerator::SimpleZilchShaderIRGenerator(FrontEndTranslatorType* frontEndTranslator) :
-    mFragmentProject("Fragments"),
-    mShaderProject("Shaders")
+    mFragmentProject("Fragments"), mShaderProject("Shaders")
 {
   SetupEventConnections();
 
@@ -526,8 +514,7 @@ SimpleZilchShaderIRGenerator::SimpleZilchShaderIRGenerator(FrontEndTranslatorTyp
 
 SimpleZilchShaderIRGenerator::SimpleZilchShaderIRGenerator(FrontEndTranslatorType* frontEndTranslator,
                                                            ZilchShaderSpirVSettings* settings) :
-    mFragmentProject("Fragments"),
-    mShaderProject("Shaders")
+    mFragmentProject("Fragments"), mShaderProject("Shaders")
 {
   SetupEventConnections();
   Initialize(frontEndTranslator, settings);
@@ -591,8 +578,7 @@ bool SimpleZilchShaderIRGenerator::CompileAndTranslateFragments()
   // Make sure that our dependencies have been built
   if (mExtensionsLibraryRef == nullptr)
   {
-    Error("Cannot compile fragments before dependency libraries are setup. "
-          "Call SetupDependencies first.");
+    Error("Cannot compile fragments before dependency libraries are setup. Call SetupDependencies first.");
     return false;
   }
 
@@ -972,8 +958,7 @@ bool SimpleZilchShaderIRGenerator::CompilePipeline(ZilchShaderIRType* shaderType
   ShaderTranslationPassResult* binaryBackendData = new ShaderTranslationPassResult();
   pipelineResults.PushBack(binaryBackendData);
 
-  // Convert from the in-memory format of spir-v to actual binary (array of
-  // words)
+  // Convert from the in-memory format of spir-v to actual binary (array of words)
   ShaderByteStreamWriter byteWriter(&binaryBackendData->mByteStream);
   ZilchShaderSpirVBinaryBackend binaryBackend;
   binaryBackend.TranslateType(shaderType, byteWriter, binaryBackendData->mReflectionData);
@@ -1013,9 +998,8 @@ bool SimpleZilchShaderIRGenerator::CompilePipeline(ZilchShaderIRType* shaderType
 
 void SimpleZilchShaderIRGenerator::RecursivelyLoadDirectory(StringParam path, ZilchShaderIRProject& project)
 {
-  // This should really use the FileExtensionManager to find files of the
-  // correct extension but we can't see that right now. These scripts are
-  // manually created as .zilchFrag so it should be fine for now.
+  // This should really use the FileExtensionManager to find files of the correct extension but we can't see that right
+  // now. These scripts are manually created as .zilchFrag so it should be fine for now.
   FileRange fileRange(path);
   for (; !fileRange.Empty(); fileRange.PopFront())
   {

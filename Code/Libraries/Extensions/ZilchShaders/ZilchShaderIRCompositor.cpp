@@ -49,7 +49,6 @@ ZilchShaderIRCompositor::ShaderDefinition::ShaderDefinition()
     mResults[i].mFragmentType = (FragmentType::Enum)i;
 }
 
-//-------------------------------------------------------------------ComputeShaderProperties
 ZilchShaderIRCompositor::ComputeShaderProperties::ComputeShaderProperties()
 {
   mLocalSizeX = mLocalSizeY = mLocalSizeZ = 1;
@@ -85,8 +84,7 @@ bool ZilchShaderIRCompositor::Composite(ShaderDefinition& shaderDef,
   if (!isValid)
     return false;
 
-  // Figure out what each stage could output. This is necessary to actually link
-  // any inputs.
+  // Figure out what each stage could output. This is necessary to actually link any inputs.
   CollectExpectedOutputs(compositeInfo);
 
   // Determine what kinds of input each fragment property is. This includes
@@ -97,17 +95,15 @@ bool ZilchShaderIRCompositor::Composite(ShaderDefinition& shaderDef,
     StageLinkingInfo* previousStage = compositeInfo.mActiveStages[i - 1];
     ResolveInputs(previousStage, currentStage);
   }
-  // The gpu stage is special as it's the only stage where we don't have
-  // fragments to walk for inputs. Instead we have to walk the possible render
-  // targets and check for stage outputs from previous stages.
+  // The gpu stage is special as it's the only stage where we don't have fragments to walk for inputs.
+  // Instead we have to walk the possible render targets and check for stage outputs from previous stages.
   ResolveGpuStage(compositeInfo);
 
-  // Fix the order of stage in/out variables so that the declaration order will
-  // match. In a simple scenario the fields will already be in the right order
-  // because they're declared when linked. When pass-through happen though the
-  // order can get mixed up. For example, a pixel's first input can trigger a
-  // pass-through which adds this to the end of the vertex stage, the geometry
-  // stage has to make sure it matches these in/outs in the right order.
+  // Fix the order of stage in/out variables so that the declaration order will match. In a simple scenario
+  // the fields will already be in the right order because they're declared when linked. When pass-through
+  // happen though the order can get mixed up. For example, a pixel's first input can trigger a pass-through
+  // which adds this to the end of the vertex stage, the geometry stage has to make sure it matches these in/outs in the
+  // right order.
   ResolveStageLinkOrder(compositeInfo);
 
   // Now generate the actual zilch composite string
@@ -147,8 +143,7 @@ bool ZilchShaderIRCompositor::CompositeCompute(ShaderDefinition& shaderDef,
   if (fragments.Empty())
     return false;
 
-  // Create 3 stages (cpu, compute, gpu). This is required for re-using a lot of
-  // functionality.
+  // Create 3 stages (cpu, compute, gpu). This is required for re-using a lot of functionality.
   StageLinkingInfo stages[3];
   // Do so basic setup on the stage linking info
   for (size_t i = 0; i < 3; ++i)
@@ -197,8 +192,7 @@ void ZilchShaderIRCompositor::CollectFragmentsPerStage(Array<ZilchShaderIRType*>
     stage.mPrimitiveLinkingInfo.mOwningStage = &stage;
   }
 
-  // Iterate over all fragments and map them to the correct compositor shader
-  // stage
+  // Iterate over all fragments and map them to the correct compositor shader stage
   for (size_t i = 0; i < inputFragments.Size(); ++i)
   {
     ZilchShaderIRType* shaderType = inputFragments[i];
@@ -206,8 +200,7 @@ void ZilchShaderIRCompositor::CollectFragmentsPerStage(Array<ZilchShaderIRType*>
     // If this is a valid fragment type
     if (fragmentMeta != nullptr && fragmentMeta->mFragmentType != FragmentType::None)
     {
-      // Add this fragment to the corresponding compositor shader stage (not to
-      // be confused with 'ShaderStage')
+      // Add this fragment to the corresponding compositor shader stage (not to be confused with 'ShaderStage')
       CompositorShaderStage::Enum compostiorStage = FragmentTypeToCompostitorShaderStage(fragmentMeta->mFragmentType);
       StageLinkingInfo& stageInfo = compositeInfo.mStages[compostiorStage];
       stageInfo.mFragmentTypes.PushBack(shaderType);
@@ -222,8 +215,7 @@ void ZilchShaderIRCompositor::CollectFragmentsPerStage(Array<ZilchShaderIRType*>
   vertexStageInfo.mOutputVertexTypes = vertexStageInfo.mInputVertexTypes;
   vertexStageInfo.SetFragmentType(FragmentType::Vertex);
 
-  // The same is true for the pixel stage (they operator on interpolated vertex
-  // data)
+  // The same is true for the pixel stage (they operator on interpolated vertex data)
   StageLinkingInfo& pixelStageInfo = compositeInfo.mStages[CompositorShaderStage::Pixel];
   pixelStageInfo.mInputVertexTypes = pixelStageInfo.mFragmentTypes;
   pixelStageInfo.mOutputVertexTypes = pixelStageInfo.mInputVertexTypes;
@@ -242,18 +234,17 @@ void ZilchShaderIRCompositor::CollectFragmentsPerStage(Array<ZilchShaderIRType*>
         geometryFragmentType->mZilchType->Has<Zilch::GeometryFragmentUserData>();
     ErrorIf(geometryUserData == nullptr, "Geometry Fragment is missing user data");
 
-    // The vertex in/outs come from the in/out stream types in the main of the
-    // geometry fragment.
+    // The vertex in/outs come from the in/out stream types in the main of the geometry fragment.
     ZilchShaderIRType* inputVertexType = geometryUserData->GetInputVertexType();
     ZilchShaderIRType* outputVertexType = geometryUserData->GetOutputVertexType();
     geometryStageInfo.mInputVertexTypes.PushBack(inputVertexType);
     geometryStageInfo.mOutputVertexTypes.PushBack(outputVertexType);
   }
 
-  // Now record what stages are actually active. A stage is active if it has any
-  // fragments. The cpu, vertex, pixel, and gpu stage are always active though.
-  // The hardware stages are always present and vertex/pixel shaders have to
-  // exist. They also must be auto-generated for pass-through to work.
+  // Now record what stages are actually active. A stage is active if it has any fragments.
+  // The cpu, vertex, pixel, and gpu stage are always active though. The hardware stages
+  // are always present and vertex/pixel shaders have to exist.
+  // They also must be auto-generated for pass-through to work.
   for (size_t i = 0; i < CompositorShaderStage::Size; ++i)
   {
     StageLinkingInfo* stageInfo = &compositeInfo.mStages[i];
@@ -262,9 +253,8 @@ void ZilchShaderIRCompositor::CollectFragmentsPerStage(Array<ZilchShaderIRType*>
       compositeInfo.mActiveStages.PushBack(stageInfo);
   }
 
-  // For each active stage, link the attachment sub-stages to their previous and
-  // next respective attachment sub-stages. This is necessary when resolving
-  // stage in/outs to facilitate pass-through.
+  // For each active stage, link the attachment sub-stages to their previous and next
+  // respective attachment sub-stages. This is necessary when resolving stage in/outs to facilitate pass-through.
   for (size_t i = 0; i < compositeInfo.mActiveStages.Size() - 1; ++i)
   {
     StageLinkingInfo* currStage = compositeInfo.mActiveStages[i];
@@ -280,8 +270,7 @@ void ZilchShaderIRCompositor::CollectFragmentsPerStage(Array<ZilchShaderIRType*>
 
 bool ZilchShaderIRCompositor::ValidateStages(CompositedShaderInfo& compositeInfo)
 {
-  // Currently only check for an active stage that our capabilities don't
-  // support.
+  // Currently only check for an active stage that our capabilities don't support.
   for (size_t i = 0; i < compositeInfo.mActiveStages.Size(); ++i)
   {
     StageLinkingInfo* stageInfo = compositeInfo.mActiveStages[i];
@@ -305,8 +294,8 @@ bool ZilchShaderIRCompositor::ValidateStages(CompositedShaderInfo& compositeInfo
 
         String msg;
         if (stageInfo->mFragmentType == FragmentType::Geometry)
-          msg = String::Format("Geometry fragment '%s' must have a 'Main' function of "
-                               "signature(InputStream, OutputStream).",
+          msg = String::Format(
+              "Geometry fragment '%s' must have a 'Main' function of signature(InputStream, OutputStream).",
                                zilchType->Name.c_str());
         else
           msg = String::Format("Fragment '%s' must have a a function of signature 'Main()'.", zilchType->Name.c_str());
@@ -349,8 +338,7 @@ void ZilchShaderIRCompositor::CollectExpectedOutputs(CompositedShaderInfo& compo
   {
     StageLinkingInfo* currentStage = compositeInfo.mActiveStages[i];
     StageLinkingInfo* previousStage = compositeInfo.mActiveStages[i - 1];
-    // Any previous stage's expected output could be the current stage's output
-    // due to pass-through
+    // Any previous stage's expected output could be the current stage's output due to pass-through
     AutoDeclare(previousVertexOuts, previousStage->mVertexLinkingInfo.mExpectedOutputs.All());
     for (; !previousVertexOuts.Empty(); previousVertexOuts.PopFront())
     {
@@ -409,9 +397,8 @@ void ZilchShaderIRCompositor::CreateCpuStage(CompositedShaderInfo& compositeInfo
 
 void ZilchShaderIRCompositor::ResolveInputs(StageLinkingInfo* previousStage, StageLinkingInfo* currentStage)
 {
-  // Link together the two stages. This requires linking the vertex to vertex
-  // and primitive to primitive. Primitive stages are mostly for
-  // geometry/tessellation.
+  // Link together the two stages. This requires linking the vertex to vertex and
+  // primitive to primitive. Primitive stages are mostly for geometry/tessellation.
   Link(previousStage->mVertexLinkingInfo,
        currentStage,
        currentStage->mInputVertexTypes,
@@ -450,10 +437,9 @@ void ZilchShaderIRCompositor::Link(StageAttachmentLinkingInfo& prevStageInfo,
     {
       ShaderIRFieldMeta* fieldMeta = fragmentTypeMeta->mFields[fieldIndex];
 
-      // Non-copyable fields (like samplers) cannot be composited as they can't
-      // be copied. These fields are instead output by the owning fragment. We
-      // do however need to generate reflection info for these fields (if
-      // they're properties)
+      // Non-copyable fields (like samplers) cannot be composited as they can't be copied.
+      // These fields are instead output by the owning fragment. We do however need to
+      // generate reflection info for these fields (if they're properties)
       if (fieldMeta->mZilchType->HasAttribute(nameSettings.mNonCopyableAttributeName))
       {
         // Walk all attributes to find the first input/output
@@ -465,11 +451,9 @@ void ZilchShaderIRCompositor::Link(StageAttachmentLinkingInfo& prevStageInfo,
               attribute->mAttributeName == nameSettings.mStageOutputAttribute)
           {
             String fieldName = GetFieldInOutName(fieldMeta, attribute);
-            // @JoshD: Temporarily use the original field name. Currently
-            // non-copyable types do not use the property variable's name
-            // override. This is reasonably ok for now as this is only a name
-            // generated during reflection and doesn't actually deal with
-            // input/output property mappings.
+            // @JoshD: Temporarily use the original field name. Currently non-copyable types do not use the
+            // property variable's name override. This is reasonably ok for now as this is only a name
+            // generated during reflection and doesn't actually deal with input/output property mappings.
             fieldName = fieldMeta->mZilchName;
 
             String propertyName = MakePropertyName(fieldName, fieldMeta->mOwner->mZilchName);
@@ -483,8 +467,7 @@ void ZilchShaderIRCompositor::Link(StageAttachmentLinkingInfo& prevStageInfo,
         continue;
       }
 
-      // Create the information about how this field was linked within this
-      // shader stage
+      // Create the information about how this field was linked within this shader stage
       ShaderFieldKey linkFieldKey = fieldMeta->MakeFieldKey();
       FieldLinkingInfo& fieldLinkInfo = fragmentLinkInfo.mFieldMap[linkFieldKey];
       fragmentLinkInfo.mFieldList.PushBack(linkFieldKey);
@@ -500,8 +483,7 @@ void ZilchShaderIRCompositor::Link(StageAttachmentLinkingInfo& prevStageInfo,
         // Check if this is a fragment input attribute
         if (attribute->mAttributeName == nameSettings.mFragmentInputAttribute)
         {
-          // If the fragment input matches a previous fragment's output then
-          // this attribute is satisfied
+          // If the fragment input matches a previous fragment's output then this attribute is satisfied
           ShaderFieldKey fieldKey = MakeFieldKey(fieldMeta, attribute);
           ShaderIRFieldMeta* fragmentOutput = fragmentOutputs.FindValue(fieldKey, nullptr);
           if (fragmentOutput != nullptr)
@@ -515,8 +497,7 @@ void ZilchShaderIRCompositor::Link(StageAttachmentLinkingInfo& prevStageInfo,
         // Check if this is a stage input (previous shader stage)
         if (attribute->mAttributeName == nameSettings.mStageInputAttribute)
         {
-          // If the stage input matches a previous stage's potential output then
-          // this attribute is satisfied
+          // If the stage input matches a previous stage's potential output then this attribute is satisfied
           ShaderFieldKey fieldKey = MakeFieldKey(fieldMeta, attribute);
           ExpectedOutputData* previousStageExpectedOutput = prevStageInfo.mExpectedOutputs.FindPointer(fieldKey);
           if (previousStageExpectedOutput != nullptr)
@@ -525,9 +506,8 @@ void ZilchShaderIRCompositor::Link(StageAttachmentLinkingInfo& prevStageInfo,
             GetStageFieldName(fieldMeta, attribute, fieldVarName, fieldAttributeName);
             fieldLinkInfo.mLinkedType = LinkedFieldType::Stage;
             fieldLinkInfo.mOutputFieldDependencyName = fieldVarName;
-            // A stage output only becomes an actual output if an input matches
-            // it. Mark this property as an input/output between the given
-            // stages (including pass-through).
+            // A stage output only becomes an actual output if an input matches it.
+            // Mark this property as an input/output between the given stages (including pass-through).
             AddStageInput(previousStageExpectedOutput, &currStageInfo, fieldVarName, fieldAttributeName);
             break;
           }
@@ -575,8 +555,7 @@ void ZilchShaderIRCompositor::Link(StageAttachmentLinkingInfo& prevStageInfo,
         // Check if this is a specialization constant input.
         if (attribute->mAttributeName == nameSettings.mSpecializationConstantInputAttribute)
         {
-          // Specialization constant inputs are treated almost the exact same as
-          // property inputs.
+          // Specialization constant inputs are treated almost the exact same as property inputs.
           fieldLinkInfo.mLinkedType = LinkedFieldType::SpecConstant;
           fieldLinkInfo.mOutputFieldDependencyName = GetFieldInOutName(fieldMeta, attribute);
           // Make the property name (mangled to prevent conflicts)
@@ -586,31 +565,27 @@ void ZilchShaderIRCompositor::Link(StageAttachmentLinkingInfo& prevStageInfo,
           String fieldType = fieldMeta->mZilchType->ToString();
           ResolvedFieldInfo* fieldInfo = currStageInfo.CreateResolvedField(fieldLinkInfo.mFieldPropertyName, fieldType);
 
-          // The main difference is the attributes we add, in particular the
-          // actual specialization constant must be declared as a static
-          // variable.
+          // The main difference is the attributes we add, in particular the actual
+          // specialization constant must be declared as a static variable.
           fieldInfo->mAttributes.AddAttribute(nameSettings.mStaticAttribute, nullptr);
           fieldInfo->mAttributes.AddAttribute(nameSettings.mSpecializationConstantAttribute, nullptr);
           break;
         }
       }
 
-      // Check for stage output attributes. We have to loop to check for
-      // multiple fulfillment (due to name overrides)
+      // Check for stage output attributes. We have to loop to check for multiple fulfillment (due to name overrides)
       for (size_t attributeIndex = 0; attributeIndex < fieldMeta->mAttributes.Size(); ++attributeIndex)
       {
         ShaderIRAttribute* attribute = fieldMeta->mAttributes.GetAtIndex(attributeIndex);
 
-        // Check if this is a fragment output, if so then park it as the last
-        // fragment to output this field
+        // Check if this is a fragment output, if so then park it as the last fragment to output this field
         if (attribute->mAttributeName == nameSettings.mFragmentOutputAttribute)
         {
           ShaderFieldKey fieldKey = MakeFieldKey(fieldMeta, attribute);
           fragmentOutputs.Insert(fieldKey, fieldMeta);
           continue;
         }
-        // Check for hardware built-in outputs (gpu built-ins). This has to
-        // match a pre-existing built-in to be valid.
+        // Check for hardware built-in outputs (gpu built-ins). This has to match a pre-existing built-in to be valid.
         if (attribute->mAttributeName == nameSettings.mHardwareBuiltInOutputAttribute)
         {
           ShaderFieldKey fieldKey = MakeFieldKey(fieldMeta, attribute);
@@ -644,8 +619,8 @@ void ZilchShaderIRCompositor::AddStageInput(ExpectedOutputData* previousStageOut
   FragmentType::Enum stageInputFragmentType = currStageAttachment->mOwningStage->mFragmentType;
 
   // Iterate from the current stage backwards until we reach the stage that the
-  // output was last declared in. For each stage, add in/outs between the
-  // current stage and the previous so that pass-through happens.
+  // output was last declared in. For each stage, add in/outs between the current
+  // stage and the previous so that pass-through happens.
   StageAttachmentLinkingInfo* prevStageAttachment = currStageAttachment->mPreviousStage;
   while (currStageAttachment->mPreviousStage != nullptr)
   {
@@ -663,9 +638,9 @@ void ZilchShaderIRCompositor::AddStageInput(ExpectedOutputData* previousStageOut
     prevStageAttachment = currStageAttachment->mPreviousStage;
   }
 
-  // Mark a resolved output field for the stage that actually emitted the
-  // output. This is only needed in this stage as this is the only stage that
-  // has to write out the last fragment to the stage variable.
+  // Mark a resolved output field for the stage that actually emitted the output.
+  // This is only needed in this stage as this is the only stage that has to write
+  // out the last fragment to the stage variable.
   String fieldType = previousStageOutputMeta->mZilchType->ToString();
   ShaderFieldKey fieldKey(fieldAttributeName, fieldType);
   ResolvedFieldOutputInfo resolvedFieldOutput(fieldVarName, previousStageOutputMeta);
@@ -748,10 +723,9 @@ void ZilchShaderIRCompositor::GetStageFieldName(ShaderIRFieldMeta* fieldMeta,
   // Get the target field name given the current attribute. This will be the
   // target name for translation (aka the attribute parameter 'name' value)
   fieldAttributeNameOut = GetFieldInOutName(fieldMeta, attribute);
-  // The actual field name needs to be mangled to avoid conflicts. To do this
-  // pre-pend with 'stage' and post-pend with the type. Type is needed to
-  // prevent conflicts between different stage variables with the same name but
-  // different types. 'Stage' is needed to prevent conflicts with BuiltIns.
+  // The actual field name needs to be mangled to avoid conflicts. To do this pre-pend with 'stage'
+  // and post-pend with the type. Type is needed to prevent conflicts between different stage variables
+  // with the same name but different types. 'Stage' is needed to prevent conflicts with BuiltIns.
   fieldVarNameOut = BuildString("Stage_", fieldAttributeNameOut, "_", fieldMeta->mZilchType->ToString());
 }
 
@@ -780,8 +754,7 @@ void ZilchShaderIRCompositor::ResolveGpuStage(CompositedShaderInfo& compositeInf
     {
       // Set the target name of the input to the render target name
       stageInAttributeParamName.SetStringValue(renderTargetName);
-      // Get the render target field's name and attribute name (the attribute
-      // name is always renderTargetName)
+      // Get the render target field's name and attribute name (the attribute name is always renderTargetName)
       String fieldVarName, fieldAttributeName;
       GetStageFieldName(
           previousStageExpectedOutput->mOutputFieldDependency, &stageInAttribute, fieldVarName, fieldAttributeName);
@@ -793,8 +766,7 @@ void ZilchShaderIRCompositor::ResolveGpuStage(CompositedShaderInfo& compositeInf
 
 void ZilchShaderIRCompositor::ResolveStageLinkOrder(CompositedShaderInfo& compositeInfo)
 {
-  // For all programmable shader stage pairings (e.g. no cpu/gpu), make sure the
-  // in/out orders match
+  // For all programmable shader stage pairings (e.g. no cpu/gpu), make sure the in/out orders match
   for (size_t i = 1; i < compositeInfo.mActiveStages.Size() - 2; ++i)
   {
     ZilchShaderIRCompositor::StageLinkingInfo* currStage = compositeInfo.mActiveStages[i];
@@ -811,8 +783,8 @@ void ZilchShaderIRCompositor::ResolveStageLinkOrder(CompositedShaderInfo& compos
       ErrorIf(!matches, "Input '%s' not found in outputs.", fieldKey.mKey.c_str());
     }
 
-    // The inputs and outputs should match at this point in contents, just not
-    // order. Simply override the output order with the inputs
+    // The inputs and outputs should match at this point in contents, just not order. Simply override the output order
+    // with the inputs
     outputs.Clear();
     AutoDeclare(range, inputs.All());
     for (; !range.Empty(); range.PopFront())
@@ -824,8 +796,7 @@ void ZilchShaderIRCompositor::GenerateZilchComposite(StageLinkingInfo* currentSt
                                                      ShaderStageDescription& stageResults,
                                                      ShaderIRAttributeList& extraAttributes)
 {
-  // Invoke the custom compositor callback if it exists. This allows forcing
-  // certain in/outs.
+  // Invoke the custom compositor callback if it exists. This allows forcing certain in/outs.
   CallbackSettings& callbackSettings = mSettings->mCallbackSettings;
   if (callbackSettings.mCompositeCallback != nullptr)
   {
@@ -865,8 +836,7 @@ void ZilchShaderIRCompositor::GenerateBasicZilchComposite(StageLinkingInfo* curr
   StageAttachmentLinkingInfo& vertexLinkingInfo = currentStage->mVertexLinkingInfo;
   ShaderCodeBuilder builder;
 
-  // Make the name for the fragment. For uniqueness, append the stage's name to
-  // the given composite name.
+  // Make the name for the fragment. For uniqueness, append the stage's name to the given composite name.
   String stageName = FragmentType::Names[currentStage->mFragmentType];
   stageResults.mClassName = BuildString(mShaderCompositeName, "_", stageName);
 
@@ -879,10 +849,9 @@ void ZilchShaderIRCompositor::GenerateBasicZilchComposite(StageLinkingInfo* curr
   builder << "struct " << stageResults.mClassName << builder.EmitLineReturn();
   builder.BeginScope();
 
-  // Write out all fields we resolve. Vertex fragments need to preserve their
-  // output order so interfaces match with all subsequent stages (vertex
-  // definition order doesn't matter). Every other stage can just match inputs
-  // first (currently only pixel).
+  // Write out all fields we resolve. Vertex fragments need to preserve their output order
+  // so interfaces match with all subsequent stages (vertex definition order doesn't matter).
+  // Every other stage can just match inputs first (currently only pixel).
   if (currentStage->mFragmentType == FragmentType::Vertex)
     DeclareFieldsInOrder(builder, vertexLinkingInfo, vertexLinkingInfo.mOutputs);
   else
@@ -911,17 +880,15 @@ void ZilchShaderIRCompositor::GenerateBasicZilchComposite(StageLinkingInfo* curr
     builder << builder.EmitLineReturn();
   }
 
-  // Copy outputs from the last fragment to output a stage output back into the
-  // composite
+  // Copy outputs from the last fragment to output a stage output back into the composite
   AutoDeclare(outputRange, vertexLinkingInfo.mResolvedOutputs.Values());
   for (; !outputRange.Empty(); outputRange.PopFront())
   {
     ResolvedFieldOutputInfo& fieldOutput = outputRange.Front();
     ShaderIRFieldMeta* fieldMeta = fieldOutput.mOutputFieldDependency;
-    // If a field meta is null then this is a pass-through variable and no copy
-    // out is required. If the owner is null then this didn't come from a
-    // fragment, it came from the composite (uniform/built-in). This requires no
-    // extra copy as the composite's input wasn't changed.
+    // If a field meta is null then this is a pass-through variable and no copy out is required.
+    // If the owner is null then this didn't come from a fragment, it came from the composite (uniform/built-in).
+    // This requires no extra copy as the composite's input wasn't changed.
     if (fieldMeta == nullptr || fieldMeta->mOwner == nullptr)
       continue;
 
@@ -960,8 +927,7 @@ void ZilchShaderIRCompositor::GenerateGeometryZilchComposite(StageLinkingInfo* c
   ShaderIRAttributeParameter* maxVerticesParam = geometryAttribute->FindFirstParameter(nameSettings.mMaxVerticesParam);
   int maxVertices = maxVerticesParam->GetIntValue();
 
-  // Make the name for the fragment. For uniqueness, append the stage's name to
-  // the given composite name.
+  // Make the name for the fragment. For uniqueness, append the stage's name to the given composite name.
   String stageName = FragmentType::Names[currentStage->mFragmentType];
   stageResults.mClassName = BuildString(mShaderCompositeName, "_", stageName);
   // Also create the input/output vertex type names
@@ -993,16 +959,15 @@ void ZilchShaderIRCompositor::GenerateGeometryZilchComposite(StageLinkingInfo* c
   builder << "struct " << stageResults.mClassName << builder.EmitLineReturn();
   builder.BeginScope();
 
-  // Declare any primitive fields. These don't have a specific order as no stage
-  // inputs exist here.
+  // Declare any primitive fields. These don't have a specific order as no stage inputs exist here.
   OrderedHashSet<ShaderFieldKey> primitiveOrderingMap;
   DeclareFieldsInOrder(builder, currentStage->mPrimitiveLinkingInfo, primitiveOrderingMap);
 
   // Generate the composite's input/output stream names
   String compositeInputStreamType = BuildString(zilchInputStreamType->TemplateBaseName, "[", inputTypeName, "]");
   String compositeOutputStreamType = BuildString(zilchOutputStreamType->TemplateBaseName, "[", outputTypeName, "]");
-  // Generate the entry points function signature: [EntryPoint] function
-  // Main(input : 'InputType', output : 'OutputType')
+  // Generate the entry points function signature: [EntryPoint] function Main(input : 'InputType', output :
+  // 'OutputType')
   builder << builder.EmitIndent();
   builder.DeclareAttribute(nameSettings.mEntryPointAttributeName);
   builder << builder.EmitLineReturn();
@@ -1023,8 +988,7 @@ void ZilchShaderIRCompositor::GenerateGeometryZilchComposite(StageLinkingInfo* c
   {
     ShaderFieldKey key = inputVertexLinkInfo.mFieldList[i];
     FieldLinkingInfo& linkInfo = inputVertexLinkInfo.mFieldMap[key];
-    // If this was linked as a stage input (should only be stage or none) then
-    // copy from the composite input data
+    // If this was linked as a stage input (should only be stage or none) then copy from the composite input data
     if (linkInfo.mLinkedType == LinkedFieldType::Stage)
     {
       builder << builder.EmitIndent() << "fragmentInput[i]." << linkInfo.mFieldMeta->mZilchName;
@@ -1072,8 +1036,7 @@ void ZilchShaderIRCompositor::GenerateComputeZilchComposite(StageLinkingInfo* cu
     localSizeZ = mComputeShaderProperties->mLocalSizeZ;
   }
 
-  // Make the name for the fragment. For uniqueness, append the stage's name to
-  // the given composite name.
+  // Make the name for the fragment. For uniqueness, append the stage's name to the given composite name.
   String stageName = FragmentType::Names[currentStage->mFragmentType];
   stageResults.mClassName = BuildString(mShaderCompositeName, "_", stageName);
   // Emit the struct declaration (attributes followed by name)
@@ -1089,8 +1052,7 @@ void ZilchShaderIRCompositor::GenerateComputeZilchComposite(StageLinkingInfo* cu
   builder << "struct " << stageResults.mClassName << builder.EmitLineReturn();
   builder.BeginScope();
 
-  // Declare the fields based upon the inputs order (shouldn't matter for
-  // compute shaders)
+  // Declare the fields based upon the inputs order (shouldn't matter for compute shaders)
   DeclareFieldsInOrder(builder, linkingInfo, linkingInfo.mInputs);
 
   // Emit the main function with the entry point attribute
@@ -1116,17 +1078,15 @@ void ZilchShaderIRCompositor::GenerateComputeZilchComposite(StageLinkingInfo* cu
     builder << builder.EmitLineReturn();
   }
 
-  // Copy outputs from the last fragment to output a stage output back into the
-  // composite
+  // Copy outputs from the last fragment to output a stage output back into the composite
   AutoDeclare(outputRange, linkingInfo.mResolvedOutputs.Values());
   for (; !outputRange.Empty(); outputRange.PopFront())
   {
     ResolvedFieldOutputInfo& fieldOutput = outputRange.Front();
     ShaderIRFieldMeta* fieldMeta = fieldOutput.mOutputFieldDependency;
-    // If a field meta is null then this is a pass-through variable and no copy
-    // out is required. If the owner is null then this didn't come from a
-    // fragment, it came from the composite (uniform/built-in). This requires no
-    // extra copy as the composite's input wasn't changed.
+    // If a field meta is null then this is a pass-through variable and no copy out is required.
+    // If the owner is null then this didn't come from a fragment, it came from the composite (uniform/built-in).
+    // This requires no extra copy as the composite's input wasn't changed.
     if (fieldMeta == nullptr || fieldMeta->mOwner == nullptr)
       continue;
 
@@ -1159,16 +1119,14 @@ void ZilchShaderIRCompositor::CreateFragmentAndCopyInputs(StageLinkingInfo* curr
   {
     FieldLinkingInfo& fieldLinkInfo = linkInfo.mFieldMap[linkInfo.mFieldList[i]];
     ShaderIRFieldMeta* fieldMeta = fieldLinkInfo.mFieldMeta;
-    // If this is a property input, then we have to copy from the mangled
-    // property input name
+    // If this is a property input, then we have to copy from the mangled property input name
     if (fieldLinkInfo.mLinkedType == LinkedFieldType::Property)
     {
       builder << builder.EmitIndent() << fragmentVarName << "." << fieldMeta->mZilchName << " = ";
       builder << "this." << fieldLinkInfo.mFieldPropertyName;
       builder << ";" << builder.EmitLineReturn();
     }
-    // If this is a fragment input, then copy from the resolved dependency
-    // fragment
+    // If this is a fragment input, then copy from the resolved dependency fragment
     else if (fieldLinkInfo.mLinkedType == LinkedFieldType::Fragment)
     {
       ShaderIRFieldMeta* outputFieldDependency = fieldLinkInfo.mOutputFieldDependency;
@@ -1177,16 +1135,14 @@ void ZilchShaderIRCompositor::CreateFragmentAndCopyInputs(StageLinkingInfo* curr
       builder << fragmentDependencyVarName << "." << outputFieldDependency->mZilchName;
       builder << ";" << builder.EmitLineReturn();
     }
-    // If this is a stage input, copy from the composite given the dependency
-    // variable's name
+    // If this is a stage input, copy from the composite given the dependency variable's name
     else if (fieldLinkInfo.mLinkedType == LinkedFieldType::Stage)
     {
       builder << builder.EmitIndent() << fragmentVarName << "." << fieldMeta->mZilchName << " = ";
       builder << "this." << fieldLinkInfo.mOutputFieldDependencyName;
       builder << ";" << builder.EmitLineReturn();
     }
-    // If this is a application built-in, copy from the composite given the
-    // dependency variable's name
+    // If this is a application built-in, copy from the composite given the dependency variable's name
     else if (fieldLinkInfo.mLinkedType == LinkedFieldType::AppBuiltIn)
     {
       ShaderIRFieldMeta* outputFieldDependency = fieldLinkInfo.mOutputFieldDependency;
@@ -1228,8 +1184,7 @@ void ZilchShaderIRCompositor::DeclareFieldsInOrder(ShaderCodeBuilder& builder,
     builder.WriteVariableDeclaration(fieldInfo.mAttributes, fieldInfo.mFieldName, fieldInfo.mFieldType);
   }
 
-  // Then declare everything else in the resolved fields. If we've already
-  // declared a field skip it.
+  // Then declare everything else in the resolved fields. If we've already declared a field skip it.
   AutoDeclare(fieldRange, linkingInfo.mResolvedFields.All());
   for (; !fieldRange.Empty(); fieldRange.PopFront())
   {
@@ -1291,8 +1246,7 @@ void ZilchShaderIRCompositor::GenerateStageDescriptions(CompositedShaderInfo& co
       if (fragInfo == nullptr)
         continue;
 
-      // Create the output description for this fragment. Copy this data from
-      // the internal linkage info
+      // Create the output description for this fragment. Copy this data from the internal linkage info
       ShaderIRTypeMeta* fragMetaType = fragType->mMeta;
       ShaderFragmentDescription* fragDesc = new ShaderFragmentDescription();
       fragDescMap->InsertOrError(fragMetaType, fragDesc);
@@ -1393,8 +1347,7 @@ void ZilchShaderIRCompositor::StageAttachmentLinkingInfo::AddResolvedStageField(
   nameParam->SetName(nameOverrideParam);
   nameParam->SetStringValue(attributeParameter);
 
-  // Record this as either an input or output. This records what order
-  // inputs/outputs must be declared in.
+  // Record this as either an input or output. This records what order inputs/outputs must be declared in.
   ShaderFieldKey fieldKey(fieldName, fieldMeta->mZilchType->ToString());
   if (attributeName == nameSettings.mStageInputAttribute)
     mInputs.InsertOrIgnore(fieldKey);

@@ -93,8 +93,7 @@ bool ZilchShaderIRRuntimeArrayType::Load(ZilchShaderIRType* type)
   if (zilchType == nullptr)
     return false;
 
-  // Only visit runtime array types (the struct that wraps the actual spirv
-  // runtime array)
+  // Only visit runtime array types (the struct that wraps the actual spirv runtime array)
   if (zilchType->TemplateBaseName != SpirVNameSettings::mRuntimeArrayTypeName)
     return false;
 

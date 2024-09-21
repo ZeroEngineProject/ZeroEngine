@@ -39,8 +39,7 @@ public:
 
   Array<CodeEntry> mCodeEntries;
   String mProjectName;
-  /// Has this project been successfully compiled into a library? (Not really
-  /// used at the moment...)
+  /// Has this project been successfully compiled into a library? (Not really used at the moment...)
   bool mCompiledSuccessfully;
 
   /// A pointer to any data the user wants to attach

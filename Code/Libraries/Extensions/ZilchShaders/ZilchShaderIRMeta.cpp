@@ -54,8 +54,7 @@ ShaderFieldKey ShaderIRFieldMeta::MakeFieldKey(ShaderIRAttribute* attribute) con
 String ShaderIRFieldMeta::GetFieldAttributeName(ShaderIRAttribute* attribute) const
 {
   String nameOverrideParam = SpirVNameSettings::mNameOverrideParam;
-  // If the field contains a name override attribute then use that to make the
-  // field key instead.
+  // If the field contains a name override attribute then use that to make the field key instead.
   ShaderIRAttributeParameter* param = attribute->FindFirstParameter(nameOverrideParam);
   if (param != nullptr)
     return param->GetStringValue();

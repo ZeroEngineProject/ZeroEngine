@@ -4,9 +4,8 @@
 namespace Zero
 {
 
-/// Represents a unique hashable identifier for a type-cast. Currently
-/// type-casts are not function calls in zilch so we can't use a function
-/// pointer to resolve them.
+/// Represents a unique hashable identifier for a type-cast. Currently type-casts
+/// are not function calls in zilch so we can't use a function pointer to resolve them.
 struct TypeCastKey
 {
   TypeCastKey();
@@ -18,9 +17,8 @@ struct TypeCastKey
   Pair<Zilch::Type*, Zilch::Type*> mPair;
 };
 
-/// Represents a unique hashable identifier for unary operators. Currently
-/// operators are not function calls in zilch so we can't use a function pointer
-/// to resolve them.
+/// Represents a unique hashable identifier for unary operators. Currently operators
+/// are not function calls in zilch so we can't use a function pointer to resolve them.
 struct UnaryOperatorKey
 {
   UnaryOperatorKey();
@@ -32,9 +30,8 @@ struct UnaryOperatorKey
   Pair<Zilch::Type*, int> mPair;
 };
 
-/// Represents a unique hashable identifier for binary operators. Currently
-/// operators are not function calls in zilch so we can't use a function pointer
-/// to resolve them.
+/// Represents a unique hashable identifier for binary operators. Currently operators
+/// are not function calls in zilch so we can't use a function pointer to resolve them.
 struct BinaryOperatorKey
 {
   BinaryOperatorKey();

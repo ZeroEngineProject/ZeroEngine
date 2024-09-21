@@ -15,8 +15,7 @@ Zilch::Function* GetFunction(Array<String>& params, const Zilch::FunctionArray* 
     Zilch::Function* fn = (*functions)[i];
     Zilch::DelegateType* d = fn->FunctionType;
 
-    // if the parameter sizes are different then this obviously can't be the
-    // same function
+    // if the parameter sizes are different then this obviously can't be the same function
     if (d->Parameters.Size() != params.Size())
       continue;
 
@@ -25,8 +24,7 @@ Zilch::Function* GetFunction(Array<String>& params, const Zilch::FunctionArray* 
     for (uint j = 0; j < d->Parameters.Size(); ++j)
     {
       const Zilch::DelegateParameter& param = d->Parameters[j];
-      // if the parameter is not the same type then this is not the same
-      // function
+      // if the parameter is not the same type then this is not the same function
       if (param.ParameterType->ToString() != params[j])
       {
         isEqual = false;
@@ -49,8 +47,7 @@ GetFunction(Zilch::Type* type, StringParam fnName, Array<String>& params, const 
 }
 
 // simple (not pretty or efficient) function to get a zilch
-// function by name and parameter types, only in the Math module for static
-// functions
+// function by name and parameter types, only in the Math module for static functions
 Zilch::Function* GetMemberOverloadedFunction(Zilch::Type* type, StringParam fnName, Array<String>& params)
 {
   // get all of the overloaded static functions by this name
@@ -133,8 +130,7 @@ Zilch::Function* GetMemberOverloadedFunction(
   return GetMemberOverloadedFunction(type, fnName, params);
 }
 
-// These are just some simple overloads, could maybe be fixed with a template
-// later or something
+// These are just some simple overloads, could maybe be fixed with a template later or something
 
 Zilch::Function* GetStaticFunction(Zilch::Type* type, StringParam fnName)
 {

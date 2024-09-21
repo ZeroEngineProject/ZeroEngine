@@ -109,8 +109,7 @@ void ResolveFixedArrayCount(ZilchSpirVFrontEnd* translator,
                             Zilch::MemberAccessNode* memberAccessNode,
                             ZilchSpirVFrontEndContext* context)
 {
-  // Return the integer constant expression as the array count (could call the
-  // intrinsic for count but why not use this)
+  // Return the integer constant expression as the array count (could call the intrinsic for count but why not use this)
   Zilch::Type* zilchArrayType = memberAccessNode->LeftOperand->ResultType;
   ZilchShaderIRType* arrayType = translator->FindType(zilchArrayType, memberAccessNode->LeftOperand);
   context->PushIRStack(arrayType->mParameters[1]);
@@ -122,8 +121,7 @@ void FixedArrayExpressionInitializerResolver(ZilchSpirVFrontEnd* translator,
 {
   ZilchShaderIRType* fixedArrayType = translator->FindType(node->ResultType, node);
 
-  // Validate that the initializer list has the exact number of expected
-  // arguments
+  // Validate that the initializer list has the exact number of expected arguments
   size_t statementCount = node->InitializerStatements.Size();
   if (fixedArrayType->mComponents != statementCount)
   {
@@ -144,9 +142,8 @@ void FixedArrayExpressionInitializerResolver(ZilchSpirVFrontEnd* translator,
     String errorMessage;
     Zilch::ExpressionNode* argumentValueNode = nullptr;
 
-    // Verify that this statement is a call to OperatorInsert (.Add). If it is
-    // then walk the argument to get the initial value we set (required to be a
-    // value type).
+    // Verify that this statement is a call to OperatorInsert (.Add). If it is then walk the
+    // argument to get the initial value we set (required to be a value type).
     Zilch::FunctionCallNode* addCallNode = Zilch::Type::DynamicCast<Zilch::FunctionCallNode*>(expNode);
     if (addCallNode != nullptr)
     {
@@ -155,17 +152,14 @@ void FixedArrayExpressionInitializerResolver(ZilchSpirVFrontEnd* translator,
       if (memberAccessNode != nullptr && memberAccessNode->Name == Zilch::OperatorInsert)
         argumentValueNode = addCallNode->Arguments[0];
       else
-        errorMessage = "Array initializer lists can only contain insertion "
-                       "operator sub-expressions";
+        errorMessage = "Array initializer lists can only contain insertion operator sub-expressions";
     }
     else
     {
-      errorMessage = "It's invalid to have a member initializer statement in "
-                     "an array initializer";
+      errorMessage = "It's invalid to have a member initializer statement in an array initializer";
     }
 
-    // If we got a valid node then translate it, otherwise send an error and
-    // generate a dummy variable
+    // If we got a valid node then translate it, otherwise send an error and generate a dummy variable
     IZilchShaderIR* argument = nullptr;
     if (argumentValueNode != nullptr)
     {
@@ -190,9 +184,8 @@ void FixedArrayExpressionInitializerResolver(ZilchSpirVFrontEnd* translator,
     return;
 
   // In this case, the initial value of the initializer node will be the
-  // target variable to copy to. If this is a function call node then the this
-  // is either the result from a function or a constructor call, both of which
-  // require no copy back.
+  // target variable to copy to. If this is a function call node then the this is
+  // either the result from a function or a constructor call, both of which require no copy back.
   Zilch::FunctionCallNode* functionCallNode =
       Zilch::Type::DynamicCast<Zilch::FunctionCallNode*>(localVariableNode->InitialValue);
   if (functionCallNode != nullptr)
@@ -208,8 +201,7 @@ void FixedArrayExpressionInitializerResolver(ZilchSpirVFrontEnd* translator,
   if (!targetOp->IsResultPointerType())
   {
     translator->SendTranslationError(node->Location,
-                                     "Invalid array initializer list. The left "
-                                     "hand side must be an l-value");
+                                     "Invalid array initializer list. The left hand side must be an l-value");
     context->PushIRStack(translator->GenerateDummyIR(node, context));
     return;
   }
@@ -265,8 +257,7 @@ void ResolveRuntimeArrayGet(ZilchSpirVFrontEnd* translator,
                             Zilch::MemberAccessNode* memberAccessNode,
                             ZilchSpirVFrontEndContext* context)
 {
-  // Get the 'this' array type and component type (from the containing struct
-  // type)
+  // Get the 'this' array type and component type (from the containing struct type)
   Zilch::Type* zilchArrayType = memberAccessNode->LeftOperand->ResultType;
   ZilchShaderIRType* structArrayType = translator->FindType(zilchArrayType, memberAccessNode->LeftOperand);
   ZilchShaderIRType* spirvArrayType = structArrayType->mParameters[0]->As<ZilchShaderIRType>();
@@ -283,8 +274,7 @@ void ResolveRuntimeArrayGet(ZilchSpirVFrontEnd* translator,
   // To get the actual data we'll do a double access chain. Argument 0 will
   // be the index to get the spirv runtime array (always index 0),
   // then argument 1 will be the index into the array.
-  // Note: We have to do a special access chain so the result type is of the
-  // correct storage class (uniform)
+  // Note: We have to do a special access chain so the result type is of the correct storage class (uniform)
   ZilchShaderIROp* selfInstance = translator->GetOrGeneratePointerTypeFromIR(leftOperand, context);
   IZilchShaderIR* accessChainOp =
       translator->BuildCurrentBlockAccessChain(elementType, selfInstance, constant0, indexOperand, context);
@@ -328,8 +318,8 @@ void ResolveRuntimeArrayCount(ZilchSpirVFrontEnd* translator,
                               ZilchSpirVFrontEndContext* context)
 {
   // The runtime array length instruction is a bit odd as it requires the struct
-  // the array is contained in as well as the member index offset into the
-  // struct for where the runtime array is actually contained.
+  // the array is contained in as well as the member index offset into the struct
+  // for where the runtime array is actually contained.
   // for where the runtime array is actually contained. Additionally, the return type
   // is required to be an unsigned int (which doesn't exist in zilch).
   // So a hack unsigned int type is returned and immediately casted to a signed int.
@@ -350,15 +340,14 @@ void ResolveRuntimeArrayCount(ZilchSpirVFrontEnd* translator,
 void RuntimeArrayResolver(ZilchSpirVFrontEnd* translator, Zilch::BoundType* zilchRuntimeArrayType)
 {
   // Runtime arrays have to be created in an odd way. Per the Vulkan spec,
-  // OpTypeRuntimeArray must only be used for the last member of an
-  // OpTypeStruct. That is, a runtime array must be declared as (glsl sample):
+  // OpTypeRuntimeArray must only be used for the last member of an OpTypeStruct.
+  // That is, a runtime array must be declared as (glsl sample):
   // buffer StructTypeName
   //{
   //  float ActualRuntimeArray[];
   //} InstanceVarName;
   // To do this the zilch runtime array is translated as the wrapper struct
-  // that contains the spirv runtime array since all op codes must go through
-  // the struct's instance variable.
+  // that contains the spirv runtime array since all op codes must go through the struct's instance variable.
 
   ZilchShaderIRLibrary* shaderLibrary = translator->mLibrary;
 
@@ -387,8 +376,7 @@ void RuntimeArrayResolver(ZilchSpirVFrontEnd* translator, Zilch::BoundType* zilc
   ZilchShaderIRType* wrapperStructType =
       translator->MakeStructType(shaderLibrary, zilchTypeName, zilchRuntimeArrayType, spv::StorageClassStorageBuffer);
   wrapperStructType->AddMember(runtimeArrayType, "Data");
-  // Always use the actual type name with "Buffer" appended for the wrapper type
-  // name
+  // Always use the actual type name with "Buffer" appended for the wrapper type name
   wrapperStructType->mDebugResultName = BuildString(zilchTypeName, "Buffer");
   translator->MakeShaderTypeMeta(wrapperStructType, nullptr);
 
@@ -481,8 +469,8 @@ void GeometryStreamOutputResolver(ZilchSpirVFrontEnd* translator, Zilch::BoundTy
   fixedArrayType->AddMember(elementType, "Output");
   translator->MakeShaderTypeMeta(fixedArrayType, nullptr);
 
-  // Create the append function. We need this to be an actual function that will
-  // be late bound later via the entry point.
+  // Create the append function. We need this to be an actual function that will be late bound later via the entry
+  // point.
   Zilch::Function* zilchAppendFn =
       GetMemberOverloadedFunction(zilchFixedArrayType, "Append", zilchElementType->ToString(), intTypeName);
   ZilchShaderIRFunction* appendFn =
@@ -494,8 +482,7 @@ void GeometryStreamOutputResolver(ZilchSpirVFrontEnd* translator, Zilch::BoundTy
       ->mDebugResultName = "outputData";
   translator->BuildIROp(&appendFn->mParameterBlock, OpType::OpFunctionParameter, intType, context)->mDebugResultName =
       "vertexId";
-  // Make this a valid function by adding the first block with a return
-  // statement
+  // Make this a valid function by adding the first block with a return statement
   BasicBlock* firstBlock = translator->BuildBlockNoStack(String(), context);
   appendFn->mBlocks.PushBack(firstBlock);
   translator->BuildIROp(firstBlock, OpType::OpReturn, nullptr, context);

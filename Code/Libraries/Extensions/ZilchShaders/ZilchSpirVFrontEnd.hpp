@@ -59,14 +59,12 @@ class ZilchSpirVFrontEnd : public BaseShaderIRTranslator
 public:
   ~ZilchSpirVFrontEnd() override;
 
-  // Tell the translator what settings to use for translation (Names, render
-  // targets, etc...)
+  // Tell the translator what settings to use for translation (Names, render targets, etc...)
   void SetSettings(ZilchShaderSpirVSettingsRef& settings) override;
   void Setup() override;
 
-  // Translate a given project (and it's syntax tree) into the passed in
-  // library. Each ShaderType in the library will contain translated pieces of
-  // the target language. These pieces can be put together into a final shader
+  // Translate a given project (and it's syntax tree) into the passed in library. Each ShaderType in the
+  // library will contain translated pieces of the target language. These pieces can be put together into a final shader
   // with "BuildFinalShader".
   bool Translate(Zilch::SyntaxTree& syntaxTree, ZilchShaderIRProject* project, ZilchShaderIRLibrary* library) override;
 
@@ -107,32 +105,30 @@ public:
 
   void ExtractZilchAsComments(Zilch::SyntaxNode*& node, ZilchSpirVFrontEndContext* context);
 
-  // Parse and validate attributes for a type. If no locations are available
-  // then the nodes will be null (e.g. native types).
+  // Parse and validate attributes for a type. If no locations are available then the nodes will be null (e.g. native
+  // types).
   void ParseAttributes(Zilch::Array<Zilch::Attribute>& zilchAttributes,
                        Zilch::NodeList<Zilch::AttributeNode>* attributeNodes,
                        ShaderIRTypeMeta* typeMeta);
-  // Parse and validate attributes for a function. If no locations are available
-  // then the nodes will be null (e.g. native types).
+  // Parse and validate attributes for a function. If no locations are available then the nodes will be null (e.g.
+  // native types).
   void ParseAttributes(Zilch::Array<Zilch::Attribute>& zilchAttributes,
                        Zilch::NodeList<Zilch::AttributeNode>* attributeNodes,
                        ShaderIRFunctionMeta* functionMeta);
-  // Parse and validate attributes for a field. If no locations are available
-  // then the nodes will be null (e.g. native types).
+  // Parse and validate attributes for a field. If no locations are available then the nodes will be null (e.g. native
+  // types).
   void ParseAttributes(Zilch::Array<Zilch::Attribute>& zilchAttributes,
                        Zilch::NodeList<Zilch::AttributeNode>* attributeNodes,
                        ShaderIRFieldMeta* fieldMeta);
   void ParseZilchAttributes(Zilch::Array<Zilch::Attribute>& zilchAttributes,
                             Zilch::NodeList<Zilch::AttributeNode>* attributeNodes,
                             ShaderIRAttributeList& shaderAttributes);
-  // Loads a zilch attribute into an IR attribute. Uses the node's location if
-  // available.
+  // Loads a zilch attribute into an IR attribute. Uses the node's location if available.
   void ParseZilchAttribute(Zilch::Attribute& zilchAttribute,
                            Zilch::AttributeNode* attributeNode,
                            ShaderIRAttributeList& shaderAttributes);
-  // Validates that the given attribute list doesn't contain any invalid
-  // attributes. Uses 'errorTypeName' to display what kind of thing (e.g.
-  // field/function) owned these attributes.
+  // Validates that the given attribute list doesn't contain any invalid attributes.
+  // Uses 'errorTypeName' to display what kind of thing (e.g. field/function) owned these attributes.
   void ValidateAllowedAttributes(ShaderIRAttributeList& shaderAttributes,
                                  HashMap<String, AttributeInfo>& allowedAttributes,
                                  StringParam errorTypeName);
@@ -152,8 +148,7 @@ public:
   void ValidateAttributeDependencies(ShaderIRAttribute* shaderAttribute,
                                      ShaderIRAttributeList& shaderAttributeList,
                                      Array<String>& dependencies);
-  // Validates that none of the given attribute names are also present. Needed
-  // to have exclusive attribute combinations.
+  // Validates that none of the given attribute names are also present. Needed to have exclusive attribute combinations.
   void ValidateAttributeExclusions(ShaderIRAttribute* shaderAttribute,
                                    ShaderIRAttributeList& shaderAttributeList,
                                    Array<String>& exclusions);
@@ -227,8 +222,7 @@ public:
                             ZilchSpirVFrontEndContext* context);
   /// Generate the function parameters for a given function node.
   void GenerateFunctionParameters(Zilch::GenericFunctionNode* node, ZilchSpirVFrontEndContext* context);
-  /// Generate the function body (statements) for a given function node. May
-  /// generate an entry point if needed.
+  /// Generate the function body (statements) for a given function node. May generate an entry point if needed.
   void GenerateFunctionBody(Zilch::GenericFunctionNode* node, ZilchSpirVFrontEndContext* context);
   void GenerateEntryPoint(Zilch::GenericFunctionNode* node,
                           ZilchShaderIRFunction* function,
@@ -297,18 +291,15 @@ public:
                                  BasicBlock* headerBlock,
                                  ZilchSpirVFrontEndContext* context);
 
-  /// Walk a block and make sure that it has exactly one termination condition.
-  /// If there's zero then a return will be added. If there's more than one then
-  /// all instructions after the first terminator will be removed.
+  /// Walk a block and make sure that it has exactly one termination condition. If there's zero then a
+  /// return will be added. If there's more than one then all instructions after the first terminator will be removed.
   void FixBlockTerminators(BasicBlock* block, ZilchSpirVFrontEndContext* context);
 
   /// Get the setter (if available) from a member access node.
   Zilch::Function* GetSetter(Zilch::MemberAccessNode* memberAccessNode);
-  /// Attempt to invert a binary op node (must be an assignment) into calling a
-  /// setter.
-  // If the given result node is null then the right hand side of the binary op
-  // node is walked but it can be manually passed in for ops with extra
-  // expressions (e.g. +=).
+  /// Attempt to invert a binary op node (must be an assignment) into calling a setter.
+  // If the given result node is null then the right hand side of the binary op node is walked
+  // but it can be manually passed in for ops with extra expressions (e.g. +=).
   bool ResolveSetter(Zilch::BinaryOperatorNode* node,
                      ZilchShaderIROp* resultValue,
                      Zilch::SyntaxNode* resultNode,
@@ -348,23 +339,21 @@ public:
   ZilchShaderIROp* AddSpecializationConstant(Zilch::MemberVariableNode* node,
                                              ZilchShaderIRType* varType,
                                              ZilchSpirVFrontEndContext* context);
-  /// Creates a specialization constant of the given type with the given unique
-  /// lookup key. If a specialization constant is not a scalar, then it must be
-  /// iteratively constructed from other specialization constants. If non-null,
-  /// the given literal value will be used to initialize the constant (only
-  /// valid for scalars).
+  /// Creates a specialization constant of the given type with the given unique lookup key.
+  /// If a specialization constant is not a scalar, then it must be iteratively constructed
+  /// from other specialization constants. If non-null, the given literal value will be used
+  /// to initialize the constant (only valid for scalars).
   ZilchShaderIROp* AddSpecializationConstantRecursively(void* key,
                                                         ZilchShaderIRType* varType,
                                                         StringParam varName,
                                                         ZilchShaderIRConstantLiteral* literalValue,
                                                         Zilch::CodeLocation& codeLocation,
                                                         ZilchSpirVFrontEndContext* context);
-  /// Create a specialization constant of a given variable type. The given key
-  /// should be a unique identifier for this variable that can be used to fetch
-  /// the specialization constant again at a later time. A null key specifies
-  /// that there is no key (this variable can't be looked up later). This is
-  /// typically used for sub-constants. The OpType should be specified to choose
-  /// between scalar and composite constants.
+  /// Create a specialization constant of a given variable type. The given key should be a
+  /// unique identifier for this variable that can be used to fetch the specialization constant again at a later time.
+  /// A null key specifies that there is no key (this variable can't be looked up later).
+  /// This is typically used for sub-constants. The OpType should be specified to choose between scalar and composite
+  /// constants.
   ZilchShaderIROp* CreateSpecializationConstant(void* key,
                                                 OpType opType,
                                                 ZilchShaderIRType* varType,
@@ -458,21 +447,20 @@ public:
                                              Zilch::SyntaxNode* node,
                                              ZilchSpirVFrontEndContext* context);
   ZilchShaderIROp* WalkAndGetValueTypeResult(Zilch::SyntaxNode* node, ZilchSpirVFrontEndContext* context);
-  // If this is an immediate then the op is returned. If the op is a pointer
-  // than a load is generated and the load is returned.
+  // If this is an immediate then the op is returned. If the op is a pointer than a load is generated and the load is
+  // returned.
   ZilchShaderIROp* GetOrGenerateValueTypeFromIR(BasicBlock* block,
                                                 IZilchShaderIR* instruction,
                                                 ZilchSpirVFrontEndContext* context);
   ZilchShaderIROp* GetOrGenerateValueTypeFromIR(IZilchShaderIR* instruction, ZilchSpirVFrontEndContext* context);
-  // If this is a pointer type (e.g. variable, parameter, etc...) then the op is
-  // returned. Otherwise a new variable is generated, the immediate is stored
-  // into it, and the variable is returned.
+  // If this is a pointer type (e.g. variable, parameter, etc...) then the op is returned.
+  // Otherwise a new variable is generated, the immediate is stored into it, and the variable is returned.
   ZilchShaderIROp* GetOrGeneratePointerTypeFromIR(BasicBlock* block,
                                                   IZilchShaderIR* instruction,
                                                   ZilchSpirVFrontEndContext* context);
   ZilchShaderIROp* GetOrGeneratePointerTypeFromIR(IZilchShaderIR* instruction, ZilchSpirVFrontEndContext* context);
-  // Build an op to store the source into the target. May generate OpStore or
-  // OpCopyMemor depending on the type of source.
+  // Build an op to store the source into the target. May generate OpStore or OpCopyMemor depending on the type of
+  // source.
   ZilchShaderIROp* BuildStoreOp(IZilchShaderIR* target,
                                 IZilchShaderIR* source,
                                 ZilchSpirVFrontEndContext* context,
@@ -526,18 +514,14 @@ public:
                                       IZilchShaderIR* zero,
                                       ZilchSpirVFrontEndContext* context);
 
-  // Get the value result type from an an op code. If this is a pointer type it
-  // will get the dereference type.
+  // Get the value result type from an an op code. If this is a pointer type it will get the dereference type.
   ZilchShaderIRType* GetResultValueType(ZilchShaderIROp* op);
-  // Get the pointer result type from an an op code. If this is a value type it
-  // will get the pointer type.
+  // Get the pointer result type from an an op code. If this is a value type it will get the pointer type.
   ZilchShaderIRType* GetPointerValueType(ZilchShaderIROp* op);
-  // Helper to check if the given type contains an attribute. If the type
-  // doesn't have meta this returns false.
+  // Helper to check if the given type contains an attribute. If the type doesn't have meta this returns false.
   bool ContainsAttribute(ZilchShaderIRType* shaderType, StringParam attributeName);
-  // Check if a type contains the non-copyable attribute (returns true if
-  // non-copyable). Throws an error if this type is non-copyable and optionally
-  // generates a dummy variable.
+  // Check if a type contains the non-copyable attribute (returns true if non-copyable).
+  // Throws an error if this type is non-copyable and optionally generates a dummy variable.
   bool CheckForNonCopyableType(ZilchShaderIRType* shaderType,
                                Zilch::ExpressionNode* node,
                                ZilchSpirVFrontEndContext* context,
@@ -545,25 +529,21 @@ public:
 
   ZilchShaderIRType* FindType(Zilch::Type* type, Zilch::SyntaxNode* syntaxNode, bool reportErrors = true);
   ZilchShaderIRType* FindType(Zilch::ExpressionNode* syntaxNode, bool reportErrors = true);
-  // Validate that the result type of the given instruction (must be an op) is
-  // of a certain type (e.g. pointer).
+  // Validate that the result type of the given instruction (must be an op) is of a certain type (e.g. pointer).
   bool ValidateResultType(IZilchShaderIR* instruction,
                           ShaderIRTypeBaseType::Enum expectedType,
                           Zilch::CodeLocation& codeLocation,
                           bool throwException = true);
-  /// Verifies that the given instruction can be written to. This includes
-  /// checking for specialization constants.
+  /// Verifies that the given instruction can be written to. This includes checking for specialization constants.
   bool ValidateLValue(ZilchShaderIROp* op, Zilch::CodeLocation& codeLocation, bool throwException = true);
 
-  // Generates a dummy instruction based upon the result type of the given node.
-  // Used to make translation not crash after errors.
+  // Generates a dummy instruction based upon the result type of the given node. Used to make translation not crash
+  // after errors.
   IZilchShaderIR* GenerateDummyIR(Zilch::ExpressionNode* node, ZilchSpirVFrontEndContext* context);
-  // Send a translation error with a simple message (also marks the translation
-  // as having failed)
+  // Send a translation error with a simple message (also marks the translation as having failed)
   void SendTranslationError(Zilch::CodeLocation& codeLocation, StringParam message);
   void SendTranslationError(Zilch::CodeLocation& codeLocation, StringParam shortMsg, StringParam fullMsg);
-  // Send a translation error. If the location is null then a dummy location is
-  // used (e.g. native types).
+  // Send a translation error. If the location is null then a dummy location is used (e.g. native types).
   void SendTranslationError(Zilch::CodeLocation* codeLocation, StringParam message);
 
   typedef Zilch::BranchWalker<ZilchSpirVFrontEnd, ZilchSpirVFrontEndContext> TranslatorBranchWalker;

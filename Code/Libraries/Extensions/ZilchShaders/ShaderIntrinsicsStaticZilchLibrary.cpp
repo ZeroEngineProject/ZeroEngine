@@ -162,8 +162,7 @@ void ShaderIntrinsicsStaticZilchLibrary::CreateStorageImage(ZilchSpirVFrontEnd* 
 void ShaderIntrinsicsStaticZilchLibrary::PopulateStageRequirementsData(ZilchShaderIRLibrary* shaderLibrary)
 {
   // Find all zilch functions that have the [RequiresPixel] attribute.
-  // These need to be processed into the stage requirements cached in the
-  // library/
+  // These need to be processed into the stage requirements cached in the library/
   Zilch::Library* zilchLibrary = shaderLibrary->mZilchLibrary;
   for (size_t i = 0; i < zilchLibrary->OwnedFunctions.Size(); ++i)
   {

@@ -16,8 +16,7 @@ typedef void (*SpirVExtensionInstructionResolverFn)(ZilchSpirVFrontEnd* translat
 
 class SpirVExtensionLibrary;
 
-/// An extension intruction for an extension library (e.g. glsl contains
-/// Matrix.Determinant).
+/// An extension intruction for an extension library (e.g. glsl contains Matrix.Determinant).
 class SpirVExtensionInstruction
 {
 public:
@@ -25,8 +24,7 @@ public:
 
   /// A callback function to implement whatever the operation is.
   SpirVExtensionInstructionResolverFn mResolverFn;
-  /// The library that owns this instruction (needed to generate the spir-v
-  /// instruction call)
+  /// The library that owns this instruction (needed to generate the spir-v instruction call)
   SpirVExtensionLibrary* mLibrary;
 };
 

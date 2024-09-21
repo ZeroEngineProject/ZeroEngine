@@ -19,8 +19,7 @@ void ValidateEntryPoint(ZilchSpirVFrontEnd* translator,
 
   ZilchShaderIRType* currentType = context->mCurrentType;
   FragmentType::Enum fragmentType = currentType->mMeta->mFragmentType;
-  // Quick validation on entry points. Entry points can't be on random helper
-  // classes.
+  // Quick validation on entry points. Entry points can't be on random helper classes.
   if (fragmentType == FragmentType::None)
   {
     translator->SendTranslationError(node->Location, "Entry point requires fragment type.");
@@ -53,8 +52,7 @@ void ValidateGeometryEntryPoint(ZilchSpirVFrontEnd* translator,
   if (node->Parameters.Size() != 2)
   {
     translator->SendTranslationError(node->Location,
-                                     "Geometry shader entry point must have a "
-                                     "signature of (inputType, outputType)");
+                                     "Geometry shader entry point must have a signature of (inputType, outputType)");
     return;
   }
 

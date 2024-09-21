@@ -6,9 +6,8 @@ namespace Zero
 
 void UnTranslatedBoundFunction(Zilch::Call& call, Zilch::ExceptionReport& report)
 {
-  // This function should never be called via zilch. This is a function that
-  // cannot (or hasn't yet) been given an actual implementation and is only used
-  // for binding purposes.
+  // This function should never be called via zilch. This is a function that cannot (or hasn't yet)
+  // been given an actual implementation and is only used for binding purposes.
   call.GetState()->ThrowException("Un-translatable function was called.");
   Error("Un-translatable function was called.");
 }
@@ -60,8 +59,7 @@ void ResolvePrimitiveGet(ZilchSpirVFrontEnd* translator,
 {
   BasicBlock* currentBlock = context->GetCurrentBlock();
 
-  // Since this isn't actually a vector, just return the left operand (ignore
-  // the index)
+  // Since this isn't actually a vector, just return the left operand (ignore the index)
   IZilchShaderIR* selfInstance = translator->WalkAndGetResult(memberAccessNode->LeftOperand, context);
 
   context->PushIRStack(selfInstance);
@@ -74,8 +72,7 @@ void ResolvePrimitiveSet(ZilchSpirVFrontEnd* translator,
 {
   BasicBlock* currentBlock = context->GetCurrentBlock();
 
-  // Since this isn't actually a vector, the "index" result is just the left
-  // operand
+  // Since this isn't actually a vector, the "index" result is just the left operand
   IZilchShaderIR* selfInstance = translator->WalkAndGetResult(memberAccessNode->LeftOperand, context);
   // Get the source value
   IZilchShaderIR* sourceIR = translator->WalkAndGetResult(functionCallNode->Arguments[1], context);
@@ -247,8 +244,7 @@ void TranslateBackupCompositeConstructor(ZilchSpirVFrontEnd* translator,
   BasicBlock* currentBlock = context->GetCurrentBlock();
   ZilchShaderIRType* resultType = translator->FindType(fnCallNode->ResultType, fnCallNode);
 
-  // Create the op for construction but don't add it to the current block yet,
-  // we need to walk all arguments first
+  // Create the op for construction but don't add it to the current block yet, we need to walk all arguments first
   ZilchShaderIROp* constructOp = translator->BuildIROpNoBlockAdd(OpType::OpCompositeConstruct, resultType, context);
 
   // Walk each argument and add it to the constructor call
@@ -278,12 +274,10 @@ void TranslateMatrixDefaultConstructor(ZilchSpirVFrontEnd* translator,
   TranslateCompositeDefaultConstructor(translator, componentType->mZilchType, context);
 
   IZilchShaderIR* constituent = context->PopIRStack();
-  // @JoshD: Leave this out for now since it can produce a glsl translation
-  // error
+  // @JoshD: Leave this out for now since it can produce a glsl translation error
   // constituent->mDebugResultName = "constituent";
 
-  // Construct the composite but delay adding it to the stack until we've added
-  // all of the arguments to it
+  // Construct the composite but delay adding it to the stack until we've added all of the arguments to it
   ZilchShaderIROp* constructOp = translator->BuildIROpNoBlockAdd(OpType::OpCompositeConstruct, resultType, context);
   for (size_t i = 0; i < resultType->mComponents; ++i)
   {
@@ -313,14 +307,12 @@ void TranslateMatrixFullConstructor(ZilchSpirVFrontEnd* translator,
   ZilchShaderIRType* matrixType = translator->FindType(fnCallNode->ResultType, nullptr);
   ZilchShaderIRType* componentType = GetComponentType(matrixType);
 
-  // Construct the matrix type but delay adding it as an instruction until all
-  // of the arguments have been created
+  // Construct the matrix type but delay adding it as an instruction until all of the arguments have been created
   ZilchShaderIROp* matrixConstructOp =
       translator->BuildIROpNoBlockAdd(OpType::OpCompositeConstruct, matrixType, context);
   for (size_t i = 0; i < matrixType->mComponents; ++i)
   {
-    // Create each vector type but delay add it for the same reason as the
-    // matrix
+    // Create each vector type but delay add it for the same reason as the matrix
     ZilchShaderIROp* componentConstructOp =
         translator->BuildIROpNoBlockAdd(spv::OpCompositeConstruct, componentType, context);
     for (size_t j = 0; j < componentType->mComponents; ++j)
@@ -330,9 +322,8 @@ void TranslateMatrixFullConstructor(ZilchSpirVFrontEnd* translator,
       IZilchShaderIR* param = translator->WalkAndGetValueTypeResult(fnCallNode->Arguments[argIndex], context);
       componentConstructOp->mArguments.PushBack(param);
     }
-    // Now that we've finished constructing the parameters for the vector,
-    // actually add it to the the current block and add it as a parameter to the
-    // matrix
+    // Now that we've finished constructing the parameters for the vector, actually add it
+    // to the the current block and add it as a parameter to the matrix
     currentBlock->mLines.PushBack(componentConstructOp);
     matrixConstructOp->mArguments.PushBack(componentConstructOp);
   }
@@ -349,8 +340,7 @@ ZilchShaderIROp* RecursivelyTranslateCompositeSplatConstructor(ZilchSpirVFrontEn
                                                                ZilchShaderIROp* splatValueOp,
                                                                ZilchSpirVFrontEndContext* context)
 {
-  // Terminate on the base case. Potentially need to handle translating the
-  // splat value op to the correct scalar type.
+  // Terminate on the base case. Potentially need to handle translating the splat value op to the correct scalar type.
   if (type->mBaseType == ShaderIRTypeBaseType::Float || type->mBaseType == ShaderIRTypeBaseType::Int ||
       type->mBaseType == ShaderIRTypeBaseType::Bool)
     return splatValueOp;
@@ -358,21 +348,18 @@ ZilchShaderIROp* RecursivelyTranslateCompositeSplatConstructor(ZilchSpirVFrontEn
   BasicBlock* currentBlock = context->GetCurrentBlock();
   ZilchShaderIRType* componentType = GetComponentType(type);
 
-  // Construct the composite but delay adding it as an instruction until all of
-  // the sub-composites are created
+  // Construct the composite but delay adding it as an instruction until all of the sub-composites are created
   ZilchShaderIROp* constructOp = translator->BuildIROpNoBlockAdd(OpType::OpCompositeConstruct, type, context);
   for (size_t i = 0; i < type->mComponents; ++i)
   {
     // Construct each constituent
     ZilchShaderIROp* constituentOp = RecursivelyTranslateCompositeSplatConstructor(
         translator, fnCallNode, staticTypeNode, componentType, splatValueOp, context);
-    // @JoshD: Leave this out for now since this produces a glsl translation
-    // error
+    // @JoshD: Leave this out for now since this produces a glsl translation error
     // constituentOp->mDebugResultName = "constituent";
     constructOp->mArguments.PushBack(constituentOp);
   }
-  // Now we can add the instruction to construct this composite since we've
-  // created all of the parameters
+  // Now we can add the instruction to construct this composite since we've created all of the parameters
   currentBlock->mLines.PushBack(constructOp);
   return constructOp;
 }
@@ -414,8 +401,7 @@ void ResolveScalarComponentAccess(ZilchSpirVFrontEnd* translator,
                                   ::byte componentName,
                                   ZilchSpirVFrontEndContext* context)
 {
-  // A scalar component access on a scalar type is just the scalar itself (e.g.
-  // a.X => a)
+  // A scalar component access on a scalar type is just the scalar itself (e.g. a.X => a)
   IZilchShaderIR* operandResult = translator->WalkAndGetResult(memberAccessNode->LeftOperand, context);
   context->PushIRStack(operandResult);
 }
@@ -432,8 +418,7 @@ void ResolveScalarSwizzle(ZilchSpirVFrontEnd* translator,
   IZilchShaderIR* operandResult = translator->WalkAndGetResult(memberAccessNode->LeftOperand, context);
   ZilchShaderIROp* operandValueOp = translator->GetOrGenerateValueTypeFromIR(operandResult, context);
 
-  // Vector swizzle doesn't exist on scalar types so just splat construct the
-  // relevant vector type
+  // Vector swizzle doesn't exist on scalar types so just splat construct the relevant vector type
   ZilchShaderIROp* constructOp = translator->BuildCurrentBlockIROp(OpType::OpCompositeConstruct, resultType, context);
   for (size_t i = 0; i < memberName.SizeInBytes(); ++i)
     constructOp->mArguments.PushBack(operandValueOp);
@@ -507,8 +492,7 @@ void ResolveVectorComponentAccess(ZilchSpirVFrontEnd* translator,
   int index = componentName - 'X';
   index = (index + 4) % 4;
 
-  // If the operand was a pointer type then we have to use an access chain to
-  // extract the sub-pointer
+  // If the operand was a pointer type then we have to use an access chain to extract the sub-pointer
   if (selfInstance->IsResultPointerType())
   {
     ZilchShaderIROp* indexOp = translator->GetIntegerConstant(index, context);
@@ -557,8 +541,7 @@ void ResolveVectorSwizzle(ZilchSpirVFrontEnd* translator,
   ZilchShaderIROp* swizzleOp =
       translator->BuildCurrentBlockIROp(OpType::OpVectorShuffle, resultType, operandValueOp, operandValueOp, context);
 
-  // For every swizzle element, figure out what index the sub-item is and add
-  // that as an argument
+  // For every swizzle element, figure out what index the sub-item is and add that as an argument
   for (size_t i = 0; i < memberName.SizeInBytes(); ++i)
   {
     ::byte memberValue = *(memberName.Data() + i);
@@ -617,22 +600,18 @@ void ResolverVectorSwizzleSetter(ZilchSpirVFrontEnd* translator,
                                  StringParam memberName,
                                  ZilchSpirVFrontEndContext* context)
 {
-  // To generate the new vector we need to perform vector shuffle which requires
-  // a value type.
+  // To generate the new vector we need to perform vector shuffle which requires a value type.
   ZilchShaderIROp* instanceValue = translator->GetOrGenerateValueTypeFromIR(selfInstance, context);
 
   // The easiest way to set via a swizzle is by constructing a brand new vector
-  // from elements of the old and new vector using the shuffle instruction
-  // (parameters set below)
+  // from elements of the old and new vector using the shuffle instruction (parameters set below)
   ZilchShaderIROp* shuffleOp =
       translator->BuildCurrentBlockIROp(OpType::OpVectorShuffle, resultType, instanceValue, resultValue, context);
 
-  // The shuffle operator picks components from the two vectors by index as if
-  // they were laid out in one contiguous block of memory. By default assume
-  // that all components will come from the same location in the original
-  // vector. To copy elements from the new vector we loop over the member access
-  // and set the relevant set index (by name) to the memory index of the new
-  // vector.
+  // The shuffle operator picks components from the two vectors by index as if they were
+  // laid out in one contiguous block of memory. By default assume that all components will
+  // come from the same location in the original vector. To copy elements from the new vector
+  // we loop over the member access and set the relevant set index (by name) to the memory index of the new vector.
 
   // Keep track of how many components this vector has
   int instanceComponentCount = instanceValue->mResultType->mComponents;
@@ -970,8 +949,7 @@ void TranslateBackupQuaternionConstructor(ZilchSpirVFrontEnd* translator,
   ZilchShaderIRType* quaternionType = translator->FindType(fnCallNode->ResultType, fnCallNode);
   ZilchShaderIRType* vec4Type = quaternionType->GetSubType(0);
 
-  // Create the op for construction but don't add it to the current block yet,
-  // we need to walk all arguments first
+  // Create the op for construction but don't add it to the current block yet, we need to walk all arguments first
   ZilchShaderIROp* vec4ConstructOp = translator->BuildIROpNoBlockAdd(OpType::OpCompositeConstruct, vec4Type, context);
 
   // Walk each argument and add it to the constructor call
@@ -1026,8 +1004,7 @@ void RegisterColorsOps(ZilchSpirVFrontEnd* translator, ZilchShaderIRLibrary* sha
       translator->MakeStructType(shaderLibrary, colors->Name, colors, spv::StorageClass::StorageClassGeneric);
   TypeResolvers& typeResolver = shaderLibrary->mTypeResolvers[colors];
 
-  // the only way to get the value for each color during translation is to
-  // compile and execute zilch.
+  // the only way to get the value for each color during translation is to compile and execute zilch.
   Zilch::Type* real4Type = ZilchTypeId(Zilch::Real4);
   forRange (Zilch::Property* zilchProperty, colors->GetProperties())
   {

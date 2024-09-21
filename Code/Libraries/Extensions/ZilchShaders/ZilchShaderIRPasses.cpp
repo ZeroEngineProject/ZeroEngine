@@ -60,8 +60,7 @@ void BaseSpirVOptimizerPass::CreateOptimizerOptions(spv_optimizer_options& optio
                                                     Array<String>& flags)
 {
   options = spvOptimizerOptionsCreate();
-  // We always assume the validator should never be run (that's a separate
-  // pass).
+  // We always assume the validator should never be run (that's a separate pass).
   spvOptimizerOptionsSetRunValidator(options, false);
   // Set the primary pass.
   options->passes_ = (spv_optimizer_passes_t)primaryPass;

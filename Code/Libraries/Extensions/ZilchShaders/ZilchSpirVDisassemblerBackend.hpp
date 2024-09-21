@@ -4,9 +4,8 @@
 namespace Zero
 {
 
-/// Backend that converts the input data to spir-v disassembly. The output
-/// data's byte stream will be string data. Mostly used for debugging and unit
-/// tests.
+/// Backend that converts the input data to spir-v disassembly. The output data's
+/// byte stream will be string data. Mostly used for debugging and unit tests.
 class ZilchSpirVDisassemblerBackend : public ZilchShaderIRBackend
 {
 public:

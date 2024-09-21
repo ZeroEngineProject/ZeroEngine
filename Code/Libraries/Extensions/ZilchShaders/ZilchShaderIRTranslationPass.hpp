@@ -25,14 +25,13 @@ public:
 class ZilchShaderIRTranslationPass : public Zilch::EventHandler
 {
 public:
-  virtual ~ZilchShaderIRTranslationPass(){};
+  virtual ~ZilchShaderIRTranslationPass() {};
 
-  /// Runs a translation pass that transforms the input data into the output
-  /// data. This pass could be something like a tool (e.g. the optimizer) or a
-  /// backend. Reflection data will be filled out that describes what
-  /// transformations took place on the input data to produce the output data.
-  /// Most tools will not change the reflection mapping (other than removing
-  /// bindings) but backends may have to do significant transformations.
+  /// Runs a translation pass that transforms the input data into the output data.
+  /// This pass could be something like a tool (e.g. the optimizer) or a backend.
+  /// Reflection data will be filled out that describes what transformations took place on the
+  /// input data to produce the output data. Most tools will not change the reflection mapping
+  /// (other than removing bindings) but backends may have to do significant transformations.
   virtual bool RunTranslationPass(ShaderTranslationPassResult& inputData, ShaderTranslationPassResult& outputData) = 0;
 
   virtual String GetErrorLog()

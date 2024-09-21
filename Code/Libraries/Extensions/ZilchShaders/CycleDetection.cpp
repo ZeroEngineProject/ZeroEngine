@@ -35,9 +35,9 @@ void CycleDetectionObjectScope::PushScope()
     return;
   }
 
-  // Otherwise if we've already processed this object but not in the current
-  // stack this means this entire sub-tree has already been processed and has no
-  // cycles (new function calling into a fully explored call graph)
+  // Otherwise if we've already processed this object but not in the current stack
+  // this means this entire sub-tree has already been processed and has no cycles
+  // (new function calling into a fully explored call graph)
   if (mContext->mAllProcessedObjects.Contains(mObject))
   {
     mAlreadyVisited = true;
@@ -51,8 +51,7 @@ void CycleDetectionObjectScope::PushScope()
 
 void CycleDetectionObjectScope::PopScope()
 {
-  // This object is no longer part of the call stack so it's not an error if we
-  // see it again
+  // This object is no longer part of the call stack so it's not an error if we see it again
   mContext->mProcessedObjectsStack.Erase(mObject);
 }
 
@@ -69,10 +68,10 @@ bool CycleDetection::Run(Zilch::SyntaxTree& syntaxTree, ZilchShaderIRLibrary* li
   context.mErrors = mErrors;
   context.mCurrentLibrary = library;
 
-  // Do a pre-walk in order to build a map of nodes to zilch objects. This is
-  // needed during that actual pass as we'll have to recurse from a function
-  // call node into a function and all of its statements. Only a function node
-  // has the actual function statements though so we have to build a map here.
+  // Do a pre-walk in order to build a map of nodes to zilch objects. This is needed during
+  // that actual pass as we'll have to recurse from a function call node into a function and
+  // all of its statements. Only a function node has the actual function statements though
+  // so we have to build a map here.
   Zilch::BranchWalker<CycleDetection, CycleDetectionContext> preWalker;
   preWalker.Register(&CycleDetection::PreWalkClassNode);
   preWalker.Register(&CycleDetection::PreWalkConstructor);
@@ -146,8 +145,7 @@ void CycleDetection::WalkClassPreconstructor(Zilch::ClassNode*& node, CycleDetec
     return;
   }
 
-  // Continue the DFS by walking all member variables (which walks their
-  // initializers)
+  // Continue the DFS by walking all member variables (which walks their initializers)
   context->Walker->Walk(this, node->Variables, context);
 }
 
@@ -173,13 +171,11 @@ void CycleDetection::WalkClassConstructor(Zilch::ConstructorNode*& node, CycleDe
     return;
   }
 
-  // Continue the DFS down the pre-construction function if it exists (instance
-  // variable initializers)
+  // Continue the DFS down the pre-construction function if it exists (instance variable initializers)
   Zilch::Function* preConstructor = zilchConstructor->Owner->PreConstructor;
   if (preConstructor != nullptr)
   {
-    // Push the constructor node onto the call stack as calling the
-    // pre-constructor
+    // Push the constructor node onto the call stack as calling the pre-constructor
     context->mCallStack.PushBack(node);
     WalkClassPreconstructor(preConstructor, context);
     context->mCallStack.PopBack();
@@ -207,8 +203,7 @@ void CycleDetection::WalkClassFunction(Zilch::FunctionNode*& node, CycleDetectio
 
 void CycleDetection::WalkClassMemberVariable(Zilch::MemberVariableNode*& node, CycleDetectionContext* context)
 {
-  // Visit the member variable. If the user requests to not continue iteration
-  // then stop
+  // Visit the member variable. If the user requests to not continue iteration then stop
   Zilch::Property* zilchProperty = node->CreatedProperty;
 
   CycleDetectionObjectScope objectScope(zilchProperty, context);
@@ -250,16 +245,15 @@ void CycleDetection::WalkMemberAccessNode(Zilch::MemberAccessNode*& node, CycleD
   // If we're calling a function (including getter/setters)
   if (zilchFunction != nullptr)
   {
-    // Deal with [Implements]. If an implements is registered we'll find a
-    // shader function with a different zilch function then the one we started
-    // with. This is the one that should actually be walked to find
-    // dependencies.
+    // Deal with [Implements]. If an implements is registered we'll find a shader function with
+    // a different zilch function then the one we started with. This is the one that should
+    // actually be walked to find dependencies.
     ZilchShaderIRFunction* shaderFunction = context->mCurrentLibrary->FindFunction(zilchFunction);
     if (shaderFunction != nullptr)
       zilchFunction = shaderFunction->mMeta->mZilchFunction;
 
-    // Recursively walk the function we're calling if it's in the current
-    // library. If it's not in the current library this will return null.
+    // Recursively walk the function we're calling if it's in the current library.
+    // If it's not in the current library this will return null.
     Zilch::FunctionNode* fnNode = context->mFunctionMap.FindValue(zilchFunction, nullptr);
     if (fnNode != nullptr)
       context->Walker->Walk(this, fnNode, context);
@@ -267,8 +261,7 @@ void CycleDetection::WalkMemberAccessNode(Zilch::MemberAccessNode*& node, CycleD
   // Otherwise, deal with member variables
   else if (zilchProperty != nullptr)
   {
-    // Recursively walk the member we're referencing if it's in the current
-    // library
+    // Recursively walk the member we're referencing if it's in the current library
     Zilch::MemberVariableNode* varNode = context->mVariableMap.FindValue(zilchProperty, nullptr);
     if (varNode != nullptr)
       context->Walker->Walk(this, varNode, context);
@@ -286,14 +279,13 @@ void CycleDetection::WalkStaticTypeNode(Zilch::StaticTypeNode*& node, CycleDetec
   if (constructor != nullptr)
   {
     // Find the node for this constructor so we can walk the statements within.
-    // If this node is null then the constructor call is from a different
-    // library
+    // If this node is null then the constructor call is from a different library
     Zilch::ConstructorNode* constructorNode = context->mConstructorMap.FindValue(constructor, nullptr);
     if (constructorNode != nullptr)
       context->Walker->Walk(this, constructorNode, context);
   }
-  // Otherwise this is a constructor call to a class with an implicit
-  // constructor. In this case we have to traverse the pre-constructor.
+  // Otherwise this is a constructor call to a class with an implicit constructor.
+  // In this case we have to traverse the pre-constructor.
   else
   {
     Zilch::Function* preConstructor = node->ReferencedType->PreConstructor;

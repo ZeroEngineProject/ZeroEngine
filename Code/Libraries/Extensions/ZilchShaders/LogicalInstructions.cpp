@@ -61,9 +61,9 @@ void ResolveAnyNonZero(ZilchSpirVFrontEnd* translator,
   ResolveAnyAllNonZero(translator, functionCallNode, OpType::OpAny, context);
 }
 
-// Resolves the logical or/and operators. This is significantly more complicated
-// then it might seem because of short-circuit evaluation. These actually don't
-// use the LogicalOr/And instructions but instead convert to a if/else chain.
+// Resolves the logical or/and operators. This is significantly more complicated then it
+// might seem because of short-circuit evaluation. These actually don't use the LogicalOr/And
+// instructions but instead convert to a if/else chain.
 void ResolveLogicalOrAnd(ZilchSpirVFrontEnd* translator,
                          Zilch::BinaryOperatorNode* binaryOpNode,
                          bool isOr,
@@ -75,9 +75,8 @@ void ResolveLogicalOrAnd(ZilchSpirVFrontEnd* translator,
   // In the current block, get the value type result of the left hand side
   ZilchShaderIROp* leftOp = translator->GetOrGenerateValueTypeFromIR(leftIR, context);
 
-  // Logical ors/ands have to generate conditionals due to short circuit
-  // evaluation. To store the temporary result we have to either generate a
-  // temporary variable or use an OpPhi instruction. For convenience generate a
+  // Logical ors/ands have to generate conditionals due to short circuit evaluation. To store the temporary
+  // result we have to either generate a temporary variable or use an OpPhi instruction. For convenience generate a
   // temporary.
   ZilchShaderIRType* boolType = translator->FindType(ZilchTypeId(bool), binaryOpNode);
   ZilchShaderIROp* temp = translator->BuildOpVariable(boolType->mPointerType, context);
@@ -96,24 +95,22 @@ void ResolveLogicalOrAnd(ZilchSpirVFrontEnd* translator,
   currentBlock->mMergePoint = mergePoint;
 
   // Branch to the true or false block depending on the value of the left op.
-  // Logical Or/And are the same except for which branch they short-circuit on
-  // so simply flip the true/false blocks to differentiate between them.
+  // Logical Or/And are the same except for which branch they short-circuit on so
+  // simply flip the true/false blocks to differentiate between them.
   if (isOr)
     translator->BuildIROp(currentBlock, OpType::OpBranchConditional, nullptr, leftOp, ifTrue, ifFalse, context);
   else
     translator->BuildIROp(currentBlock, OpType::OpBranchConditional, nullptr, leftOp, ifFalse, ifTrue, context);
 
   // In the true condition of a LogicalOr, we don't have to walk the left
-  // hand side so simply store the result into the temp variable and branch to
-  // the merge point.
+  // hand side so simply store the result into the temp variable and branch to the merge point.
   context->mCurrentBlock = ifTrue;
   context->mCurrentFunction->mBlocks.PushBack(ifTrue);
   translator->BuildStoreOp(ifTrue, temp, leftOp, context);
   translator->BuildIROp(ifTrue, OpType::OpBranch, nullptr, mergePoint, context);
 
-  // In the false block we have to evaluate the right hand side. If there are
-  // nested Ors/Ands they will each generate an if/else chain that has to be
-  // evaluated but without actually evaluating a side that needs to be short
+  // In the false block we have to evaluate the right hand side. If there are nested Ors/Ands they will each
+  // generate an if/else chain that has to be evaluated but without actually evaluating a side that needs to be short
   // circuited.
   context->mCurrentBlock = ifFalse;
   context->mCurrentFunction->mBlocks.PushBack(ifFalse);
@@ -126,8 +123,7 @@ void ResolveLogicalOrAnd(ZilchSpirVFrontEnd* translator,
   // And always branch to the merge point
   translator->BuildIROp(currentBlock, OpType::OpBranch, nullptr, mergePoint, context);
 
-  // Now continue control flow from the merge point with the result of this
-  // expression as our temporary result
+  // Now continue control flow from the merge point with the result of this expression as our temporary result
   context->mCurrentBlock = mergePoint;
   context->mCurrentFunction->mBlocks.PushBack(mergePoint);
   context->PushIRStack(temp);
@@ -147,10 +143,9 @@ void ResolveLogicalAnd(ZilchSpirVFrontEnd* translator,
   ResolveLogicalOrAnd(translator, binaryOpNode, false, context);
 }
 
-// Register function callbacks for all logical operations (see Relational and
-// Logical Instructions in the spir-v spec). Some functions aren't implemented
-// here as zilch doesn't have a corresponding function. Everything else should
-// be implemented on the ShaderIntrinsics type.
+// Register function callbacks for all logical operations (see Relational and Logical Instructions in the spir-v spec).
+// Some functions aren't implemented here as zilch doesn't have a corresponding function.
+// Everything else should be implemented on the ShaderIntrinsics type.
 void RegisterLogicalOps(ZilchSpirVFrontEnd* translator, ZilchShaderIRLibrary* shaderLibrary, ZilchTypeGroups& types)
 {
   Zilch::Core& core = Zilch::Core::GetInstance();

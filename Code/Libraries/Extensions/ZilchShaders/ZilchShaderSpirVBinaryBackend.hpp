@@ -37,8 +37,7 @@ public:
 
 private:
   // Prototype of generating one library with multiple entry points.
-  // Not currently used or tested. Also would need to be updated for multiple
-  // reflection objects.
+  // Not currently used or tested. Also would need to be updated for multiple reflection objects.
   void TranslateLibrary(ZilchShaderIRLibrary* library,
                         ShaderStreamWriter& writer,
                         ShaderStageInterfaceReflection& reflectionData);
@@ -53,8 +52,7 @@ private:
   typedef OrderedHashSet<ZilchShaderExtensionImport*> ImportList;
   typedef OrderedHashMap<ZilchShaderIRFunction*, ZilchShaderIRFunction*> LateBoundFunctionMap;
 
-  /// Helper function to emit the given entry points and their dependencies out
-  /// to spirv binary.
+  /// Helper function to emit the given entry points and their dependencies out to spirv binary.
   void EmitSpirvBinary(TypeDependencyCollector& collector, ZilchShaderToSpirVContext* context);
 
   void GenerateDummyMain(ZilchShaderIRType* type,

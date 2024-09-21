@@ -98,11 +98,10 @@ void ZilchShaderGlslBackend::FixInterfaceBlockNames(GlslBackendInternalData& int
 
   // Name all input/output interface blocks the same (so they match).
   // Note: Vertex inputs and pixel outputs are not interface blocks.
-  // Note: Also assuming there's only one block per stage (per attachment of
-  // in/out) Note: There can actually be more than one block per stage if you
-  // include built-ins (e.g. gl_Position). The only reasonable way it looks like
-  // these can be identified is that they don't contain a decoration for
-  // location.
+  // Note: Also assuming there's only one block per stage (per attachment of in/out)
+  // Note: There can actually be more than one block per stage if you include
+  // built-ins (e.g. gl_Position). The only reasonable way it looks like these can be
+  // identified is that they don't contain a decoration for location.
   spv::ExecutionModel executionMode = compiler->get_execution_model();
   if (!resources->stage_inputs.empty() && executionMode != spv::ExecutionModelVertex)
   {
@@ -316,10 +315,9 @@ void ZilchShaderGlslBackend::PopulateMemberTypeInfo(GlslBackendInternalData& int
   if (memberType.columns > 1)
     reflectionData.mStride = compiler->type_struct_member_matrix_stride(parentType, memberIndex);
 
-  // If this is an interface type then the call to type_struct_member_offset
-  // will throw an exception. Also interface types don't actually have valid
-  // offsets to be set as they're between stages and can't be interacted with
-  // from the gpu (except vertex attributes which can't be structs)
+  // If this is an interface type then the call to type_struct_member_offset will throw an exception.
+  // Also interface types don't actually have valid offsets to be set as they're between stages and
+  // can't be interacted with from the gpu (except vertex attributes which can't be structs)
   if (isInterfaceType)
     reflectionData.mOffsetInBytes = 0;
   else
@@ -334,9 +332,9 @@ void ZilchShaderGlslBackend::PopulateTypeInfo(GlslBackendInternalData& internalD
   spirv_cross::CompilerGLSL* compiler = internalData.mCompiler;
   PopulateTypeName(internalData, spirvType, reflectionData);
 
-  // If the type is an interface type then the call to get_declared_struct_size
-  // will throw an exception. Instead, approximate the size as knowing the base
-  // type's size and whether this is a matrix or vector
+  // If the type is an interface type then the call to get_declared_struct_size will
+  // throw an exception. Instead, approximate the size as knowing the base type's
+  // size and whether this is a matrix or vector
   if (isInterfaceType)
   {
     size_t baseTypeByteSize = spirvType.width / 8;
@@ -413,21 +411,18 @@ void ZilchShaderGlslBackend::ExtractResourceReflectionData(GlslBackendInternalDa
   ShaderStageInterfaceReflection& stageReflection = internalData.mOutputResult->mReflectionData;
   spirv_cross::ShaderResources* resources = internalData.mResources;
 
-  // Uniform buffers and sampled images must be extracted since the client must
-  // actually hook up bindings
+  // Uniform buffers and sampled images must be extracted since the client must actually hook up bindings
   ExtractResourcesReflection(internalData, resources->uniform_buffers, stageReflection.mUniforms, false);
   ExtractResourcesReflection(internalData, resources->sampled_images, stageReflection.mSampledImages, true);
-  // Inputs/outputs aren't really necessary (potentially vertex attributes are)
-  // but they're also extracted for completeness. Some data on these can't fully
-  // be extracted since these types aren't backed in the same way by physical
-  // memory.
+  // Inputs/outputs aren't really necessary (potentially vertex attributes are) but they're also
+  // extracted for completeness. Some data on these can't fully be extracted since these types
+  // aren't backed in the same way by physical memory.
   ExtractResourcesReflection(internalData, resources->stage_inputs, stageReflection.mStageInputs, true);
   ExtractResourcesReflection(internalData, resources->stage_outputs, stageReflection.mStageOutputs, true);
 
   // We already dealt with the Image/Sampler -> SampledImage remappings when
-  // extracting resource info. We didn't however deal with non-remapped sampled
-  // images. To do this simply walk over all un-visited sampled images and mark
-  // that they mapped to themselves.
+  // extracting resource info. We didn't however deal with non-remapped sampled images.
+  // To do this simply walk over all un-visited sampled images and mark that they mapped to themselves.
   for (size_t i = 0; i < stageReflection.mSampledImages.Size(); ++i)
   {
     String name = stageReflection.mSampledImages[i].mReflectionData.mInstanceName;

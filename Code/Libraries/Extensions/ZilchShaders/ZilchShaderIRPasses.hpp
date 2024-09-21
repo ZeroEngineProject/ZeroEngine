@@ -27,15 +27,12 @@ protected:
 
   // Helpers
 
-  /// Create the optimizer options given a primary pass and extra flags to
-  /// apply.
+  /// Create the optimizer options given a primary pass and extra flags to apply.
   void CreateOptimizerOptions(spv_optimizer_options& options, int primaryPass, Array<String>& flags);
-  /// Helper to set extra flags on the options (requires low-level c-style
-  /// work).
+  /// Helper to set extra flags on the options (requires low-level c-style work).
   void SetOptimizerOptionsFlags(spv_optimizer_options& options, Array<String>& flags);
   /// Destroys the optizer options (including the extra flags).
-  /// This could change if the optimizer ever gets proper c-api support (this is
-  /// a custom implementation).
+  /// This could change if the optimizer ever gets proper c-api support (this is a custom implementation).
   void DestroyOptimizerOptions(spv_optimizer_options& options);
 
 public:
@@ -52,9 +49,8 @@ public:
   bool RunTranslationPass(ShaderTranslationPassResult& inputData, ShaderTranslationPassResult& outputData) override;
 };
 
-/// Runs the spir-v validator tool over the given input data. The output data
-/// and the error log will be filled out with any errors emitted from the
-/// validator.
+/// Runs the spir-v validator tool over the given input data. The output data and
+/// the error log will be filled out with any errors emitted from the validator.
 class SpirVValidatorPass : public ZilchShaderIRTranslationPass
 {
 public:

@@ -32,17 +32,15 @@ public:
   // Any required extensions that need to declare OpExtension. This is of type spvtools::Extension
   OrderedHashSet<int> mRequiredExtensions;
 
-  // Keep track of the order we found types, constants, and globals. These are
-  // all grouped in one section of the module and have to be in the correct
-  // usage order (no forward references of ids)
+  // Keep track of the order we found types, constants, and globals. These are all grouped in one
+  // section of the module and have to be in the correct usage order (no forward references of ids)
   OrderedHashSet<IZilchShaderIR*> mTypesConstantsAndGlobals;
 
   // Specifies if an op requires a certain capability that must be added.
   // @JoshD: Parse from the spirv grammar file at some point?
   HashMap<OpType, spv::Capability> mRequiredCapabilities;
 
-  // All global variable initializer functions that need to be called for the
-  // given type we processed.
+  // All global variable initializer functions that need to be called for the given type we processed.
   Array<ZilchShaderIRFunction*> mGlobalInitializers;
 
   // The library of the type we're processing. Needed to find global variables.

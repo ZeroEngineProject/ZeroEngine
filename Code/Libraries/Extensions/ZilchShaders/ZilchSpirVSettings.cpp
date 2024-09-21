@@ -70,8 +70,7 @@ SpirVNameSettings::SpirVNameSettings()
   mFragmentTypeAttributes[FragmentType::Vertex] = mVertexAttribute;
   mFragmentTypeAttributes[FragmentType::Geometry] = mGeometryAttribute;
   mFragmentTypeAttributes[FragmentType::Pixel] = mPixelAttribute;
-  // Do the same for requirement attributes (currently only pixel requirements
-  // exist)
+  // Do the same for requirement attributes (currently only pixel requirements exist)
   mRequiresAttributes.Resize(FragmentType::Size);
   mRequiresAttributes[FragmentType::Pixel] = mRequiresPixelAttribute;
 
@@ -284,8 +283,7 @@ void BuiltInStageDescription::Finalize()
   mInternalInputMappings.Clear();
   mInternalOutputMappings.Clear();
 
-  // Map all of the inputs/outputs fields to their respective descriptions for
-  // quick lookup
+  // Map all of the inputs/outputs fields to their respective descriptions for quick lookup
   Finalize(mInputInterfaceBlock, mInternalInputMappings);
   Finalize(mInputGlobals, mInternalInputMappings);
   Finalize(mOutputInterfaceBlock, mInternalOutputMappings);
@@ -305,8 +303,7 @@ void BuiltInStageDescription::Finalize(BuiltInBlockDescription& block, FieldKeyT
 
 bool BuiltInStageDescription::ValidateIfHardwareBuiltIn(ShaderFieldKey& fieldKey)
 {
-  // Map all of the inputs/outputs fields to their respective descriptions for
-  // quick lookup
+  // Map all of the inputs/outputs fields to their respective descriptions for quick lookup
   bool isValid = ValidateIfHardwareBuiltIn(fieldKey, mInputInterfaceBlock);
   isValid |= ValidateIfHardwareBuiltIn(fieldKey, mInputGlobals);
   isValid |= ValidateIfHardwareBuiltIn(fieldKey, mOutputInterfaceBlock);
@@ -453,11 +450,10 @@ bool ZilchShaderSpirVSettings::IsValidHardwareBuiltIn(FragmentType::Enum fragmen
 {
   ShaderFieldKey fieldKey(fieldName, fieldType);
 
-  // @JoshD: This is technically wrong as Geometry in/out streams do have
-  // hardware built-ins but there's no way to know if this type is used in a
-  // stream or not at this point. As a fallback, if no fragment type is set then
-  // check all available stage descriptions so at least typos / wrong types
-  // could be caught.
+  // @JoshD: This is technically wrong as Geometry in/out streams do have hardware built-ins but
+  // there's no way to know if this type is used in a stream or not at this point. As a fallback,
+  // if no fragment type is set then check all available stage descriptions so at least typos / wrong types could be
+  // caught.
   if (fragmentType == FragmentType::None)
     return IsValidHardwareBuiltInAnyStage(fieldKey, isInput);
 
@@ -478,8 +474,7 @@ void ZilchShaderSpirVSettings::SetRenderTargetName(StringParam varName, size_t t
   // Make sure the user is not trying to set an invalid render target name
   if (targetIndex >= mRenderTargetNames.Size())
   {
-    Error("Render target %d is invalid. There are only %d allowed simultaneous "
-          "render targets. "
+    Error("Render target %d is invalid. There are only %d allowed simultaneous render targets. "
           "Use SetMaxSimultaneousRenderTargets to increase the limit.",
           targetIndex,
           mRenderTargetNames.Size());
@@ -578,8 +573,7 @@ void ZilchShaderSpirVSettings::ValidateUniformsDescriptions()
     if (descriptorMap.ContainsKey(descriptorPair))
     {
       UniformBufferDescription* oldDescription = descriptorMap[descriptorPair];
-      Error("Uniform block '%s' shares the descriptor set '%d' and binding "
-            "'%d' with block '%s'.",
+      Error("Uniform block '%s' shares the descriptor set '%d' and binding '%d' with block '%s'.",
             description.mDebugName.c_str(),
             descriptorPair.first,
             descriptorPair.second,
@@ -587,8 +581,7 @@ void ZilchShaderSpirVSettings::ValidateUniformsDescriptions()
     }
     descriptorMap.Insert(descriptorPair, &description);
 
-    // Validate that this field isn't registered to another block with the same
-    // shader stage
+    // Validate that this field isn't registered to another block with the same shader stage
     for (size_t fieldId = 0; fieldId < description.mFields.Size(); ++fieldId)
     {
       ShaderIRFieldMeta* fieldMeta = description.mFields[fieldId];
@@ -598,8 +591,7 @@ void ZilchShaderSpirVSettings::ValidateUniformsDescriptions()
       // If any of the same shader stages are set then report an error
       if (usedFlags.IsSet(description.mAllowedStages.U32Field))
       {
-        Error("Field '%s' on block '%s' is registered for the same stage "
-              "multiple times.",
+        Error("Field '%s' on block '%s' is registered for the same stage multiple times.",
               fieldKey.mKey.c_str(),
               description.mDebugName.c_str());
       }
@@ -653,9 +645,8 @@ void ZilchShaderSpirVSettings::ValidateAppBuiltInsAgainstHardwareBuiltIns()
       bool isHardwardBuiltIn = ValidateAgainstHardwareBuiltIns(fieldKey);
       ErrorIf(isHardwardBuiltIn,
               "AppBuiltIn '%s : %s' matches a HardwareBuiltIn. "
-              "This is currently not supported as additional name mangling "
-              "would be necessary to prevent name conflicts which would make "
-              "reflection significantly more complicated.",
+              "This is currently not supported as additional name mangling would be necessary to prevent name "
+              "conflicts which would make reflection significantly more complicated.",
               fieldMeta->mZilchName.c_str(),
               fieldMeta->mZilchType->ToString().c_str());
     }
@@ -680,8 +671,7 @@ void ZilchShaderSpirVSettings::InitializeBuiltIns()
       realType, "PointSize", spv::BuiltInPointSize, hardwareBuiltInOutput);
   // Can't add clip distance now because of array types
   // @JoshD: Fix with FixedArray later?
-  // vertexDescriptions.mOutputInterfaceBlock.AddField(real4Type,
-  // "ClipDistance", spv::BuiltInClipDistance);
+  // vertexDescriptions.mOutputInterfaceBlock.AddField(real4Type, "ClipDistance", spv::BuiltInClipDistance);
 
   vertexDescriptions.mInputGlobals.AddField(intType, "VertexId", spv::BuiltInVertexId, hardwareBuiltInInput);
   vertexDescriptions.mInputGlobals.AddField(intType, "InstanceId", spv::BuiltInInstanceId, hardwareBuiltInInput);
@@ -693,17 +683,15 @@ void ZilchShaderSpirVSettings::InitializeBuiltIns()
   geometryDescriptions.mInputGlobals.AddField(intType, "PrimitiveId", spv::BuiltInPrimitiveId, hardwareBuiltInInput);
   geometryDescriptions.mOutputGlobals.AddField(intType, "PrimitiveId", spv::BuiltInPrimitiveId, hardwareBuiltInOutput);
   // @JoshD: Requires glsl 400 to work. Deal with later!
-  // geometryDescriptions.mInputGlobals.AddField(intType, "InvocationId",
-  // spv::BuiltInInvocationId);
+  // geometryDescriptions.mInputGlobals.AddField(intType, "InvocationId", spv::BuiltInInvocationId);
 
   BuiltInStageDescription& pixelDescriptions = mBuiltIns[FragmentType::Pixel];
   pixelDescriptions.mOutputGlobals.AddField(realType, "FragDepth", spv::BuiltInFragDepth, hardwareBuiltInOutput);
   pixelDescriptions.mInputGlobals.AddField(real4Type, "FragCoord", spv::BuiltInFragCoord, hardwareBuiltInInput);
   pixelDescriptions.mInputGlobals.AddField(real2Type, "PointCoord", spv::BuiltInPointCoord, hardwareBuiltInInput);
   pixelDescriptions.mInputGlobals.AddField(boolType, "FrontFacing", spv::BuiltInFrontFacing, hardwareBuiltInInput);
-  // SpirV currently doesn't support this as a pixel input. Seems to be a bug (I
-  // filed it and am waiting). Seems to only cause problems currently in the
-  // validator.
+  // SpirV currently doesn't support this as a pixel input. Seems to be a bug (I filed it and am waiting).
+  // Seems to only cause problems currently in the validator.
   pixelDescriptions.mInputGlobals.AddField(intType, "PrimitiveId", spv::BuiltInPrimitiveId, hardwareBuiltInInput);
 
   BuiltInStageDescription& computeDescriptions = mBuiltIns[FragmentType::Compute];

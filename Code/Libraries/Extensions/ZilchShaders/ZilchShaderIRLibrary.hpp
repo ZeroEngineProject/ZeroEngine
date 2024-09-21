@@ -46,7 +46,6 @@ typedef void (*ExpressionInitializerIRResolverFn)(ZilchSpirVFrontEnd* translator
                                                   Zilch::ExpressionInitializerNode*& node,
                                                   ZilchSpirVFrontEndContext* context);
 
-//-------------------------------------------------------------------FragmentSharedKey
 /// Hash key used to lookup fields with the FragmentShared attribute. A shared field
 /// is uniquely described by its type and name (additionally include any storage
 /// class as this is technically part of the type, not sure if this is actually important).
@@ -76,11 +75,9 @@ public:
 
   /// Register a resolver for a field.
   void RegisterFieldResolver(Zilch::Field* field, MemberAccessResolverIRFn fieldResolver);
-  /// Register a resolver to use when a field-specific resolver isn't found.
-  /// Used to handle things like swizzles.
+  /// Register a resolver to use when a field-specific resolver isn't found. Used to handle things like swizzles.
   void RegisterBackupFieldResolver(MemberAccessResolverIRFn backupResolver);
-  /// Finds the resolver for the given field. Returns the backup resolver if no
-  /// match is found.
+  /// Finds the resolver for the given field. Returns the backup resolver if no match is found.
   MemberAccessResolverIRFn FindFieldResolver(Zilch::Field* field);
 
   void RegisterConstructorResolver(Zilch::Function* zilchFunction, ConstructorCallResolverIRFn resolverFn);
@@ -101,19 +98,16 @@ public:
   DefaultConstructorResolverFn mDefaultConstructorResolver;
   ConstructorCallResolverIRFn mBackupConstructorResolver;
   MemberPropertySetterResolverIRFn mBackupSetterResolver;
-  /// Library translations for constructors of a type (e.g. Real3 splat
-  /// constructor)
+  /// Library translations for constructors of a type (e.g. Real3 splat constructor)
   HashMap<Zilch::Function*, ConstructorCallResolverIRFn> mConstructorResolvers;
 
   HashMap<Zilch::Function*, MemberFunctionResolverIRFn> mFunctionResolvers;
   HashMap<Zilch::Function*, MemberPropertySetterResolverIRFn> mSetterResolvers;
-  /// Some types need to override how expression initializers work (e.g. fixed
-  /// array).
+  /// Some types need to override how expression initializers work (e.g. fixed array).
   ExpressionInitializerIRResolverFn mExpressionInitializerListResolver;
 };
 
-/// A collection of operators (unary, binary, type cast) resolvers for a
-/// specific library.
+/// A collection of operators (unary, binary, type cast) resolvers for a specific library.
 class OperatorResolvers
 {
 public:
@@ -152,22 +146,20 @@ public:
 };
 
 /// Used to store if a symbol requires a certain stage (e.g. [RequiresPixel]).
-/// If a symbol does have a requirement, this also stores the dependency that
-/// causes this requirement as well as the location that references the
-/// dependency (e.g. a the function call location).
+/// If a symbol does have a requirement, this also stores the dependency that causes this
+/// requirement as well as the location that references the dependency
+/// (e.g. a the function call location).
 struct StageRequirementsData
 {
   StageRequirementsData();
 
-  /// Merges the given dependency into this object. Only updates the dependency
-  /// and location if this is the first time a non-empty stage requirement is
-  /// being set.
+  /// Merges the given dependency into this object. Only updates the dependency and location
+  /// if this is the first time a non-empty stage requirement is being set.
   void Combine(Zilch::Member* dependency, const Zilch::CodeLocation& location, ShaderStage::Enum requiredStage);
 
   /// What stage this symbol requires.
   ShaderStage::Enum mRequiredStages;
-  /// The first symbol that causes the stage requirement. Used to generate a
-  /// call graph on error.
+  /// The first symbol that causes the stage requirement. Used to generate a call graph on error.
   Zilch::Member* mDependency;
   /// The location that the dependency is called.
   Zilch::CodeLocation mCallLocation;
@@ -184,8 +176,7 @@ public:
 
   /// Find the global variable data associate with the given zilch field.
   GlobalVariableData* FindGlobalVariable(Zilch::Field* zilchField, bool checkDependencies = true);
-  /// Find the global variable data associate with the given instance variable
-  /// op.
+  /// Find the global variable data associate with the given instance variable op.
   GlobalVariableData* FindGlobalVariable(ZilchShaderIROp* globalInstance, bool checkDependencies = true);
 
   /// Find the global variable data associated with a fragment shared variable.
@@ -219,8 +210,8 @@ private:
 };
 
 /// A library built during shader translation. Mostly an internal type that
-/// stores all necessary lookup information to build and generate a spir-v
-/// shader. Also contains what types were created during translation.
+/// stores all necessary lookup information to build and generate a spir-v shader.
+/// Also contains what types were created during translation.
 class ZilchShaderIRLibrary
 {
 public:
@@ -233,8 +224,7 @@ public:
 
   /// Find the global variable data associate with the given zilch field.
   GlobalVariableData* FindGlobalVariable(Zilch::Field* zilchField, bool checkDependencies = true);
-  /// Find the global variable data associate with the given instance variable
-  /// op.
+  /// Find the global variable data associate with the given instance variable op.
   GlobalVariableData* FindGlobalVariable(ZilchShaderIROp* globalInstance, bool checkDependencies = true);
 
   /// Find the global variable data associated with a fragment shared variable.
@@ -244,8 +234,7 @@ public:
   void RegisterTemplateResolver(const TemplateTypeKey& templateKey, TemplateTypeIRResloverFn resolver);
   TemplateTypeIRResloverFn FindTemplateResolver(const TemplateTypeKey& templateKey, bool checkDependencies = true);
 
-  /// Pulls all reverse dependencies from all the dependent modules into this
-  /// library (flattens the list)
+  /// Pulls all reverse dependencies from all the dependent modules into this library (flattens the list)
   void FlattenModuleDependents();
   /// Fills out a list of all types that depend on the given type
   void GetAllDependents(ZilchShaderIRType* shaderType, HashSet<ZilchShaderIRType*>& finalDependents);
@@ -337,8 +326,7 @@ public:
 
   bool mTranslated;
 
-  // A multi-map of all types to their dependents for this library (flattened to
-  // include all module dependency data)
+  // A multi-map of all types to their dependents for this library (flattened to include all module dependency data)
   typedef HashMap<ZilchShaderIRType*, HashSet<ZilchShaderIRType*>> TypeDependentMultiMap;
   TypeDependentMultiMap mTypeDependents;
 

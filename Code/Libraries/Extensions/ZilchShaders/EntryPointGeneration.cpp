@@ -6,9 +6,8 @@ namespace Zero
 
 InterfaceInfoGroup::FieldInfo* InterfaceInfoGroup::FindFieldInfo(const ShaderFieldKey& fieldKey)
 {
-  // @JoshD: Optimize later? This is typically small so it's easy enough to
-  // ignore for now as a structural refactor is necessary to make this work with
-  // an ordered hash-map.
+  // @JoshD: Optimize later? This is typically small so it's easy enough to ignore for now
+  // as a structural refactor is necessary to make this work with an ordered hash-map.
   for (size_t i = 0; i < mFields.Size(); ++i)
   {
     if (mFields[i].mFieldMeta->MakeFieldKey() == fieldKey)
@@ -148,15 +147,13 @@ void ShaderInterfaceStruct::DecorateInterfaceType(EntryPointGeneration* entryPoi
     InterfaceInfoGroup::FieldInfo& fieldInfo = fieldList[i];
     ZilchShaderIRType* memberInterfaceType = interfaceField.mFieldType;
 
-    // Write any decorations that belong to this member type (e.g. fixed arrays
-    // need custom decorations on the type itself and we only create the type
-    // here).
+    // Write any decorations that belong to this member type (e.g. fixed arrays need custom decorations
+    // on the type itself and we only create the type here).
     entryPointGeneration->WriteTypeDecorations(
         fieldInfo.mTypeDecorations, decorationBlock, memberInterfaceType->mDereferenceType);
   }
 
-  // Write decorations for each parameter in the block (not on the type, but the
-  // member itself)
+  // Write decorations for each parameter in the block (not on the type, but the member itself)
   for (size_t i = 0; i < fieldList.Size(); ++i)
   {
     InterfaceInfoGroup::FieldInfo& fieldInfo = fieldList[i];
@@ -236,8 +233,8 @@ void ShaderInterfaceStruct::CopyInterfaceType(EntryPointGeneration* entryPointGe
       ZilchShaderIROp* selfAccessChainOp = translator->BuildIROp(
           targetFnBlock, OpType::OpAccessChain, memberPtrType, copyHelperData.mSelfParam, selfIndexConstant, context);
 
-      // Copy the data between the block/self depending on the storage type of
-      // this class (write to outputs, otherwise read)
+      // Copy the data between the block/self depending on the storage type of this class (write to outputs, otherwise
+      // read)
       ZilchShaderIROp* source = blockAccessChainOp;
       ZilchShaderIROp* dest = selfAccessChainOp;
       if (storageClass == spv::StorageClassOutput)
@@ -296,8 +293,7 @@ void ShaderInterfaceGlobals::DeclareInterfaceType(EntryPointGeneration* entryPoi
                                                   InterfaceInfoGroup& interfaceGroup,
                                                   EntryPointInfo* entryPointInfo)
 {
-  // Declare interface variables but don't group them together into a struct
-  // (e.g. vertex inputs)
+  // Declare interface variables but don't group them together into a struct (e.g. vertex inputs)
   if (interfaceGroup.mFields.Size() == 0)
     return;
 
@@ -331,9 +327,8 @@ void ShaderInterfaceGlobals::DecorateInterfaceType(EntryPointGeneration* entryPo
     ShaderInterfaceField& interfaceField = mFields[i];
 
     ZilchShaderIRType* interfaceFieldMemberType = interfaceField.mFieldType;
-    // Write any decorations that belong to this member type (e.g. fixed arrays
-    // need custom decorations on the type itself and we only create the type
-    // here).
+    // Write any decorations that belong to this member type (e.g. fixed arrays need custom decorations
+    // on the type itself and we only create the type here).
     entryPointGeneration->WriteTypeDecorations(
         fieldList[i].mTypeDecorations, decorationBlock, interfaceFieldMemberType->mDereferenceType);
   }
@@ -343,8 +338,7 @@ void ShaderInterfaceGlobals::DefineInterfaceType(EntryPointGeneration* entryPoin
                                                  InterfaceInfoGroup& interfaceGroup,
                                                  EntryPointInfo* entryPointInfo)
 {
-  // Declare interface variables but don't group them together into a struct
-  // (e.g. vertex inputs)
+  // Declare interface variables but don't group them together into a struct (e.g. vertex inputs)
   if (interfaceGroup.mFields.Size() == 0)
     return;
 
@@ -358,9 +352,9 @@ void ShaderInterfaceGlobals::DefineInterfaceType(EntryPointGeneration* entryPoin
     InterfaceInfoGroup::FieldInfo& fieldInfo = fieldList[i];
     ShaderInterfaceField& interfaceField = mFields[i];
 
-    // Find/Create the field's member type (the storage class is part of the
-    // type). Even though we don't use this type this is needed to make sure the
-    // interface type (with storage class) is created.
+    // Find/Create the field's member type (the storage class is part of the type).
+    // Even though we don't use this type this is needed to make sure the interface type (with storage class) is
+    // created.
     ZilchShaderIRType* interfaceFieldMemberType = interfaceField.mFieldType;
 
     // Create the variable instance in the entry point
@@ -422,8 +416,8 @@ void ShaderInterfaceGlobals::CopyInterfaceType(EntryPointGeneration* entryPointG
       ZilchShaderIROp* selfAccessChainOp = translator->BuildIROp(
           targetFnBlock, OpType::OpAccessChain, memberPtrType, functionData.mSelfParam, selfIndexConstant, context);
 
-      // Copy the data between the interface var/self depending on the storage
-      // type of this class (write to outputs, otherwise read)
+      // Copy the data between the interface var/self depending on the storage type of this class (write to outputs,
+      // otherwise read)
       ZilchShaderIROp* source = mFieldInstances[i];
       ZilchShaderIROp* dest = selfAccessChainOp;
       if (storageClass == spv::StorageClassOutput)
@@ -518,8 +512,7 @@ void EntryPointGeneration::DeclareVertexInterface(ZilchSpirVFrontEnd* translator
   BuildBasicEntryPoint(node, function, copyInputsData.mFunction, copyOutputsData.mFunction);
   EntryPointInfo* entryPointInfo = currentType->mEntryPoint;
 
-  // Collect all interface parameters for this shader (inputs, outputs,
-  // uniforms, etc...)
+  // Collect all interface parameters for this shader (inputs, outputs, uniforms, etc...)
   ShaderInterfaceInfo interfaceInfo;
   CollectInterfaceVariables(function, interfaceInfo, ShaderStage::Vertex);
 
@@ -532,15 +525,13 @@ void EntryPointGeneration::DeclareVertexInterface(ZilchSpirVFrontEnd* translator
   interfaceInfo.mOutputs.mIsStruct = true;
   interfaceInfo.mOutputs.mStorageClass = spv::StorageClassOutput;
   interfaceInfo.mOutputs.mName = "Out";
-  // This also requires the location decoration so subsequent stages can match
-  // to this output
+  // This also requires the location decoration so subsequent stages can match to this output
   interfaceInfo.mOutputs.mTypeDecorations.PushBack(InterfaceInfoGroup::DecorationParam(spv::DecorationBlock));
   interfaceInfo.mOutputs.mInstanceDecorations.PushBack(InterfaceInfoGroup::DecorationParam(spv::DecorationLocation, 0));
   // Also decorate uniforms
   DecorateUniformGroups(interfaceInfo);
 
-  // Now we can generically write out all stage input/output/uniform/built-in
-  // groups
+  // Now we can generically write out all stage input/output/uniform/built-in groups
   DeclareStageBlocks(interfaceInfo, entryPointInfo, copyInputsData, copyOutputsData);
 
   // Make sure to add the terminator op for both functions
@@ -577,8 +568,7 @@ void EntryPointGeneration::DeclareGeometryInterface(ZilchSpirVFrontEnd* translat
   CreateEntryPointFunction(node, function, selfVar, currentBlock);
   EntryPointInfo* entryPointInfo = currentType->mEntryPoint;
 
-  // Write out the in/out/uniform variables as well as the input/output helper
-  // functions (no output yet)
+  // Write out the in/out/uniform variables as well as the input/output helper functions (no output yet)
   WriteGeometryStageInterface(function, stageInfo, entryPointInfo, copyInputsData, copyInputsStreamVar);
 
   // Write out the true entry point
@@ -598,8 +588,9 @@ void EntryPointGeneration::DeclareGeometryInterface(ZilchSpirVFrontEnd* translat
     entryPointArguments.PushBack(outputVar);
 
     // Create the function call to the entry point
-    translator->BuildIROp(currentBlock, OpType::OpFunctionCall, voidType, copyInputsData.mFunction, selfVar, inputVar, context);
-    
+    translator->BuildIROp(
+        currentBlock, OpType::OpFunctionCall, voidType, copyInputsData.mFunction, selfVar, inputVar, context);
+
     // Call the generated entry point function
     translator->WriteFunctionCall(entryPointArguments, function, context);
 
@@ -655,8 +646,7 @@ void EntryPointGeneration::DeclarePixelInterface(ZilchSpirVFrontEnd* translator,
   BuildBasicEntryPoint(node, function, copyInputsData.mFunction, copyOutputsData.mFunction);
   EntryPointInfo* entryPointInfo = currentType->mEntryPoint;
 
-  // Collect all interface parameters for this shader (inputs, outputs,
-  // uniforms, etc...)
+  // Collect all interface parameters for this shader (inputs, outputs, uniforms, etc...)
   ShaderInterfaceInfo interfaceInfo;
   CollectInterfaceVariables(function, interfaceInfo, ShaderStage::Pixel);
 
@@ -676,8 +666,7 @@ void EntryPointGeneration::DeclarePixelInterface(ZilchSpirVFrontEnd* translator,
   DecorateUniformGroups(interfaceInfo);
   AddFlatDecorations(interfaceInfo.mInputs);
 
-  // Now we can generically write out all stage input/output/uniform/built-in
-  // groups
+  // Now we can generically write out all stage input/output/uniform/built-in groups
   DeclareStageBlocks(interfaceInfo, entryPointInfo, copyInputsData, copyOutputsData);
 
   // Make sure to add the terminator op for both functions
@@ -712,8 +701,7 @@ void EntryPointGeneration::DeclareComputeInterface(ZilchSpirVFrontEnd* translato
   BuildBasicEntryPoint(node, function, copyInputsData.mFunction, copyOutputsData.mFunction);
   EntryPointInfo* entryPointInfo = currentType->mEntryPoint;
 
-  // Collect all interface parameters for this shader (inputs, outputs,
-  // uniforms, etc...)
+  // Collect all interface parameters for this shader (inputs, outputs, uniforms, etc...)
   ShaderInterfaceInfo interfaceInfo;
   CollectInterfaceVariables(function, interfaceInfo, ShaderStage::Compute);
 
@@ -727,17 +715,14 @@ void EntryPointGeneration::DeclareComputeInterface(ZilchSpirVFrontEnd* translato
   interfaceInfo.mOutputs.mIsStruct = true;
   interfaceInfo.mOutputs.mStorageClass = spv::StorageClassOutput;
   interfaceInfo.mOutputs.mName = "Out";
-  // By decorating the struct with a location all of the members are
-  // automatically assigned locations
+  // By decorating the struct with a location all of the members are automatically assigned locations
   interfaceInfo.mOutputs.mInstanceDecorations.PushBack(InterfaceInfoGroup::DecorationParam(spv::DecorationLocation, 0));
   // Also decorate uniforms
   DecorateUniformGroups(interfaceInfo);
   AddFlatDecorations(interfaceInfo.mInputs);
 
-  // Now we can generically write out all stage input/output/uniform/built-in
-  // groups
-  // @JoshD: There's a chance that uniforms/interface blocks aren't supported
-  // the same way in compute shaders.
+  // Now we can generically write out all stage input/output/uniform/built-in groups
+  // @JoshD: There's a chance that uniforms/interface blocks aren't supported the same way in compute shaders.
   DeclareStageBlocks(interfaceInfo, entryPointInfo, copyInputsData, copyOutputsData);
 
   // Make sure to add the terminator op for both functions
@@ -791,15 +776,13 @@ void EntryPointGeneration::CreateEntryPointFunction(Zilch::GenericFunctionNode* 
   ZilchShaderIRFunction* entryPointFn = currentType->CreateFunction(translator->mLibrary);
   context->mCurrentFunction = entryPointFn;
   entryPoint->mEntryPointFn = entryPointFn;
-  // Make the entry point funciton name unique by including the name of the
-  // current type.
+  // Make the entry point funciton name unique by including the name of the current type.
   entryPointFn->mDebugResultName = BuildString("EntryPoint_", function->mName, "_", context->mCurrentType->mName);
   entryPointFn->mName = entryPointFn->mDebugResultName;
   Array<Zilch::Type*> signature;
   translator->GenerateFunctionType(node, entryPointFn, ZilchTypeId(void), signature, context);
 
-  // Write all shared ops of the entry point. No matter what, an entry point
-  // will construct the self type.
+  // Write all shared ops of the entry point. No matter what, an entry point will construct the self type.
   entryPointBlock = translator->BuildBlock(String(), context);
 
   // Create and call a function to initialize global variables
@@ -811,8 +794,7 @@ void EntryPointGeneration::CreateEntryPointFunction(Zilch::GenericFunctionNode* 
   selfVarOp->mDebugResultName = "self";
 
   // Get the default constructor so we can initialize the entry point class.
-  // This constructor could be auto-generated or manually created by the user so
-  // check both.
+  // This constructor could be auto-generated or manually created by the user so check both.
   ZilchShaderIRFunction* defaultConstructorFn = currentType->mAutoDefaultConstructor;
   if (defaultConstructorFn == nullptr)
     defaultConstructorFn = translator->mLibrary->FindFunction(currentType->mZilchType->GetDefaultConstructor());
@@ -911,8 +893,7 @@ EntryPointHelperFunctionData EntryPointGeneration::GenerateGeometryCopyHelper(Zi
                                                                               ZilchShaderIRType* inputStreamType,
                                                                               ZilchShaderIROp*& inputStreamVar)
 {
-  // Geometry shader's copy helper is different than everything else because it
-  // has to take the stream type
+  // Geometry shader's copy helper is different than everything else because it has to take the stream type
 
   ZilchSpirVFrontEnd* translator = mTranslator;
   ZilchSpirVFrontEndContext* context = mContext;
@@ -971,8 +952,7 @@ void EntryPointGeneration::WriteGeometryStageInterface(ZilchShaderIRFunction* fu
   CollectOutputInterfaceVariables(
       function, vertexOutputInterfaceInfo, stageInfo.mOutputVertexType, ShaderStage::Geometry);
 
-  // Collect builtIn-inputs/uniforms on the composite itself (per instance run).
-  // There are no outputs available here.
+  // Collect builtIn-inputs/uniforms on the composite itself (per instance run). There are no outputs available here.
   ShaderInterfaceInfo compositeInterfaceInfo;
   CollectInputInterfaceVariables(function, compositeInterfaceInfo, stageInfo.mShaderType, ShaderStage::Geometry);
   CollectUniformInterfaceVariables(function, compositeInterfaceInfo, stageInfo.mShaderType, ShaderStage::Geometry);
@@ -1005,13 +985,12 @@ void EntryPointGeneration::WriteGeometryStageInterface(ZilchShaderIRFunction* fu
 
 void EntryPointGeneration::CollectGeometryStreamTypes(ZilchShaderIRFunction* function, GeometryStageInfo& stageInfo)
 {
-  // @JoshD: This is a bit of an odd problem as the signature of a geometry
-  // shader only specifies what stream it thinks it'll use, but when composited
-  // the shader will use a different stream than the fragment. The only way to
-  // know what streams are currently used are to iterate over all instructions
-  // in the entire dependency chain and find out all stream types. As an
-  // approximation for now, iterate over all locally declared variables in the
-  // entry point function. This will at least get the fragment's stream.
+  // @JoshD: This is a bit of an odd problem as the signature of a geometry shader only
+  // specifies what stream it thinks it'll use, but when composited the shader will use a different
+  // stream than the fragment. The only way to know what streams are currently used are to iterate over
+  // all instructions in the entire dependency chain and find out all stream types.
+  // As an approximation for now, iterate over all locally declared variables in the entry
+  // point function. This will at least get the fragment's stream.
 
   HashSet<ZilchShaderIRType*> outputStreamTypes;
   // Always start with the entry point's stream type
@@ -1065,8 +1044,7 @@ void EntryPointGeneration::DeclareGeometryVertexInputs(GeometryStageInfo& stageI
 
     GeometryInOutTypeInfo geometryInfo;
     geometryInfo.mArraySize = stageInfo.mInputStreamType->mParameters[1];
-    // Name has to be mangled if more than one geometry shader exists in a
-    // library
+    // Name has to be mangled if more than one geometry shader exists in a library
     geometryInfo.mItemTypeName = BuildString("VertexInType_", baseShaderName);
     geometryInfo.mArrayTypeName = BuildString("VertexInStreamType", baseShaderName);
     geometryInfo.mInstanceName = "In";
@@ -1082,10 +1060,9 @@ void EntryPointGeneration::DeclareGeometryVertexInputs(GeometryStageInfo& stageI
                             spv::StorageClassInput);
   }
 
-  // Declare the per-vertex built-ins (constants like position, point size,
-  // etc...). There should only ever be one value in the built-ins group here
-  // otherwise we'll have an error from declaring a duplicate type name
-  // (validate later?).
+  // Declare the per-vertex built-ins (constants like position, point size, etc...).
+  // There should only ever be one value in the built-ins group here otherwise we'll have
+  // an error from declaring a duplicate type name (validate later?).
   AutoDeclare(range, vertexInputInterfaceInfo.mBuiltInGroups.Values());
   for (; !range.Empty(); range.PopFront())
   {
@@ -1096,8 +1073,7 @@ void EntryPointGeneration::DeclareGeometryVertexInputs(GeometryStageInfo& stageI
     geometryInfo.mArraySize = stageInfo.mInputStreamType->mParameters[1];
     geometryInfo.mItemTypeName = BuildString("BuiltInVertexInType", baseShaderName);
     geometryInfo.mArrayTypeName = BuildString("BuiltInVertexInStreamType", baseShaderName);
-    // Currently the backend requires this be named "gl_in" or the translation
-    // won't work
+    // Currently the backend requires this be named "gl_in" or the translation won't work
     geometryInfo.mInstanceName = "gl_in";
 
     ShaderInterfaceStructArray* arrayInterfaceType = DeclareGeometryVertexInput(
@@ -1133,8 +1109,7 @@ EntryPointGeneration::DeclareGeometryVertexInput(InterfaceInfoGroup& interfaceGr
   // Create the array item's struct type
   ZilchShaderIRType* arrayItemType = inputVertexInterface->mType;
   arrayItemType->mDebugResultName = info.mItemTypeName;
-  // All type/member type decorations in the interface group belong to the
-  // struct, not the array itself
+  // All type/member type decorations in the interface group belong to the struct, not the array itself
   inputVertexInterface->DecorateInterfaceType(this, interfaceGroup, entryPointInfo);
 
   // Create the input stream (array) type.
@@ -1152,8 +1127,7 @@ EntryPointGeneration::DeclareGeometryVertexInput(InterfaceInfoGroup& interfaceGr
   inputStreamInterfaceTypes.PushBack(arrayInterfaceType);
   arrayInterfaceType->mType = arrayType;
   arrayInterfaceType->mStructType = inputVertexInterface;
-  // Define the type's instance which also adds instance decorations to the
-  // array (e.g. location)
+  // Define the type's instance which also adds instance decorations to the array (e.g. location)
   arrayInterfaceType->DefineInterfaceType(this, interfaceGroup, entryPointInfo);
   arrayInterfaceType->mInstance->mDebugResultName = info.mInstanceName;
   return arrayInterfaceType;
@@ -1190,8 +1164,7 @@ void EntryPointGeneration::DeclareGeometryVertexOutputs(GeometryStageInfo& stage
     WriteGeometryInterfaceOutput(interfaceGroup, entryPointInfo, outputVertexInterfaceTypes);
   }
 
-  // Generate the append functions that copy an output instance type to the
-  // stage output
+  // Generate the append functions that copy an output instance type to the stage output
   WriteGeometryAppendFunctions(stageInfo, entryPointInfo, outputVertexInterfaceTypes, inputStreamInterfaceTypes);
 
   DeleteObjectsIn(outputVertexInterfaceTypes);
@@ -1204,16 +1177,14 @@ void EntryPointGeneration::WriteGeometryInterfaceOutput(InterfaceInfoGroup& inte
   if (interfaceGroup.mFields.Empty())
     return;
 
-  // Create the interface depending on if this is a struct or a collection of
-  // globals
+  // Create the interface depending on if this is a struct or a collection of globals
   ShaderInterfaceType* interfaceType = nullptr;
   if (interfaceGroup.mIsStruct)
     interfaceType = new ShaderInterfaceStruct();
   else
     interfaceType = new ShaderInterfaceGlobals();
 
-  // Same as basic interface declarations except we don't define a copy
-  // function.
+  // Same as basic interface declarations except we don't define a copy function.
   interfaceType->DeclareInterfaceType(this, interfaceGroup, entryPointInfo);
   interfaceType->DecorateInterfaceType(this, interfaceGroup, entryPointInfo);
   interfaceType->DefineInterfaceType(this, interfaceGroup, entryPointInfo);
@@ -1239,9 +1210,8 @@ void EntryPointGeneration::WriteGeometryAppendFunctions(GeometryStageInfo& stage
   }
 
   // Copy all outputs for this append function.
-  // @JoshD: This will have to be updated later if there's ever more than a
-  // provoking vertex append as this copy logic is specific to a provoking
-  // vertex.
+  // @JoshD: This will have to be updated later if there's ever more than a provoking vertex
+  // append as this copy logic is specific to a provoking vertex.
   for (size_t i = 0; i < appendFunctions.Size(); ++i)
   {
     GeometryAppendFunctionData& appendFnData = appendFunctions[i];
@@ -1250,8 +1220,7 @@ void EntryPointGeneration::WriteGeometryAppendFunctions(GeometryStageInfo& stage
       CopyGeometryOutputInterface(
           stageInfo, entryPointInfo, appendFnData, *outputVertexInterfaceTypes[j], inputStreamInterfaceTypes);
 
-    // Invoke the append callback if it exists (allows custom api transform
-    // logic)
+    // Invoke the append callback if it exists (allows custom api transform logic)
     CallbackSettings& callbackSettings = mTranslator->mSettings->mCallbackSettings;
     if (callbackSettings.mAppendCallback != nullptr)
     {
@@ -1270,8 +1239,7 @@ void EntryPointGeneration::WriteGeometryAppendFunctions(GeometryStageInfo& stage
     translator->BuildIROp(appendFnData.mBlock, OpType::OpEmitVertex, nullptr, context);
   }
 
-  // Fix terminators for every block in all append functionsAdd a terminator to
-  // every append function
+  // Fix terminators for every block in all append functionsAdd a terminator to every append function
   for (size_t i = 0; i < appendFunctions.Size(); ++i)
   {
     GeometryAppendFunctionData& appendFnData = appendFunctions[i];
@@ -1293,8 +1261,7 @@ void EntryPointGeneration::GenerateProvokingVertexAppend(GeometryStageInfo& stag
 
   ZilchShaderIRType* outputVertexType = outputStreamType->mParameters[0]->As<ZilchShaderIRType>();
 
-  // Find the provoking vertex append function and it's corresponding shader
-  // function that we need to late bind.
+  // Find the provoking vertex append function and it's corresponding shader function that we need to late bind.
   ZilchShaderIRType* intType = translator->FindType(ZilchTypeId(int), nullptr);
   Zilch::BoundType* zilchStreamType = outputStreamType->mZilchType;
   Zilch::Function* zilchAppendFn =
@@ -1303,21 +1270,18 @@ void EntryPointGeneration::GenerateProvokingVertexAppend(GeometryStageInfo& stag
 
   // Generate the a copy of the original append function
   ZilchShaderIRFunction* lateBoundAppendFn = CloneAppendFn(originalAppendFn);
-  // Register this as a late bound function. This means the back-end will
-  // replace all references to the original function with this function when
-  // generating this entry point.
+  // Register this as a late bound function. This means the back-end will replace all references
+  // to the original function with this function when generating this entry point.
   entryPointInfo->mLateBoundFunctions.InsertOrError(originalAppendFn, lateBoundAppendFn);
 
   // Grab the first block so we can start adding instructions
   BasicBlock* firstBlock = lateBoundAppendFn->mBlocks[0];
-  // Also grab the out data's instance from the parameter block (it's always
-  // index 1 here)
+  // Also grab the out data's instance from the parameter block (it's always index 1 here)
   ZilchShaderIROp* outDataValueInstance = lateBoundAppendFn->mParameterBlock.mLines[1]->As<ZilchShaderIROp>();
 
   ZilchShaderIROp* defaultVertexIndex = lateBoundAppendFn->mParameterBlock.mLines[2]->As<ZilchShaderIROp>();
 
-  // To make copying code easier, always generate a local variable that we store
-  // the input value type into
+  // To make copying code easier, always generate a local variable that we store the input value type into
   ZilchShaderIRType* outVertexPtrType = outputVertexType->mPointerType;
   ZilchShaderIROp* outVertexInstance =
       translator->BuildOpVariable(firstBlock, outVertexPtrType, spv::StorageClassFunction, context);
@@ -1338,8 +1302,7 @@ ZilchShaderIRFunction* EntryPointGeneration::CloneAppendFn(ZilchShaderIRFunction
 
   ZilchShaderIRType* fnType = originalAppendFn->mFunctionType;
 
-  // Generate the new append function which has the same name and type as the
-  // original
+  // Generate the new append function which has the same name and type as the original
   ZilchShaderIRFunction* newAppendFn = new ZilchShaderIRFunction();
   translator->mLibrary->mOwnedFunctions.PushBack(newAppendFn);
 
@@ -1375,15 +1338,13 @@ void EntryPointGeneration::CopyGeometryOutputInterface(GeometryStageInfo& stageI
   SpirVNameSettings& nameSettings = mTranslator->mSettings->mNameSettings;
 
   // Walk the vertex output type's fields and find all stage outputs (in order).
-  // Use this to make a map of the last output name/type pair so we know who to
-  // copy from.
+  // Use this to make a map of the last output name/type pair so we know who to copy from.
   HashMap<ShaderFieldKey, String> keyMap;
   ShaderIRTypeMeta* typeMeta = appendFnData.mOutputDataInstance->mResultType->mDereferenceType->mMeta;
   for (size_t i = 0; i < typeMeta->mFields.Size(); ++i)
   {
     ShaderIRFieldMeta* fieldMeta = typeMeta->mFields[i];
-    // Walk all attributes on this field searching for stage/hardware output
-    // attributes
+    // Walk all attributes on this field searching for stage/hardware output attributes
     for (size_t j = 0; j < fieldMeta->mAttributes.Size(); ++j)
     {
       ShaderIRAttribute* attribute = fieldMeta->mAttributes.GetAtIndex(j);
@@ -1396,8 +1357,7 @@ void EntryPointGeneration::CopyGeometryOutputInterface(GeometryStageInfo& stageI
     }
   }
 
-  // Walk all of the fields in the interface type to try and copy a result into
-  // it
+  // Walk all of the fields in the interface type to try and copy a result into it
   BasicBlock* block = appendFnData.mBlock;
   size_t count = interfaceType.GetFieldCount();
   for (size_t i = 0; i < count; ++i)
@@ -1405,8 +1365,7 @@ void EntryPointGeneration::CopyGeometryOutputInterface(GeometryStageInfo& stageI
     ShaderInterfaceField* interfaceField = interfaceType.GetFieldAtIndex(i);
     ShaderIRFieldMeta* fieldMeta = interfaceField->mFieldMeta;
 
-    // Walk all attributes on this field searching for stage/hardware output
-    // attributes
+    // Walk all attributes on this field searching for stage/hardware output attributes
     for (size_t j = 0; j < fieldMeta->mAttributes.Size(); ++j)
     {
       ShaderIRAttribute* attribute = fieldMeta->mAttributes.GetAtIndex(j);
@@ -1433,18 +1392,15 @@ void EntryPointGeneration::CopyGeometryOutputInterface(GeometryStageInfo& stageI
       {
         // Get the pointer to the destination target
         ZilchShaderIROp* dest = interfaceType.GetFieldPointerByIndex(i, this, block, spv::StorageClassOutput);
-        // Walk all input stream types to try and find an input that matches
-        // this output
+        // Walk all input stream types to try and find an input that matches this output
         for (size_t j = 0; j < inputStreamInterfaceTypes.Size(); ++j)
         {
           // If this input stream contains the given input
           ShaderInterfaceStructArray* inputStreamType = inputStreamInterfaceTypes[j]->As<ShaderInterfaceStructArray>();
           if (inputStreamType->ContainsField(fieldKey))
           {
-            // Get the instance pointer to the member in the array at the given
-            // index and copy from it.
-            // @JoshD: This doesn't seem like it would ever need to deal with
-            // attribute name overrides. Is this true?
+            // Get the instance pointer to the member in the array at the given index and copy from it.
+            // @JoshD: This doesn't seem like it would ever need to deal with attribute name overrides. Is this true?
             ZilchShaderIROp* inputInstance = inputStreamType->GetPointerByIndex(
                 appendFnData.mDefaultVertexId, fieldKey, this, block, spv::StorageClassInput);
             CopyField(block, inputInstance->mResultType->mDereferenceType, inputInstance, dest);
@@ -1487,14 +1443,12 @@ void EntryPointGeneration::CollectInputInterfaceVariables(ZilchShaderIRFunction*
       // Create the field info
       ShaderFieldKey fieldKey = fieldMeta->MakeFieldKey(stageInputAttribute);
       InterfaceInfoGroup::FieldInfo* fieldInfo = interfaceInfo.mInputs.FindOrCreateFieldInfo(fieldKey);
-      // Create a new field meta for this field based upon the field we're
-      // matching to. In particular, make sure this field's name is set based
-      // upon the attribute name.
+      // Create a new field meta for this field based upon the field we're matching to.
+      // In particular, make sure this field's name is set based upon the attribute name.
       fieldInfo->mFieldMeta = fieldMeta->Clone(mTranslator->mLibrary);
       fieldInfo->mFieldMeta->mZilchName = fieldMeta->GetFieldAttributeName(stageInputAttribute);
       fieldInfo->mFieldMeta->mOwner = nullptr;
-      // Add the given field's meta as someone we need to write to (multiple can
-      // exist)
+      // Add the given field's meta as someone we need to write to (multiple can exist)
       fieldInfo->mLinkedFields.PushBack(fieldMeta);
     }
     // If this is a hardware built-in input
@@ -1502,8 +1456,7 @@ void EntryPointGeneration::CollectInputInterfaceVariables(ZilchShaderIRFunction*
         fieldMeta->mAttributes.FindFirstAttribute(nameSettings.mHardwareBuiltInInputAttribute);
     if (hardwareBuiltInAttribute != nullptr)
     {
-      // Process the built-in. This should always return the info group that the
-      // this maps to (unless an error happens)
+      // Process the built-in. This should always return the info group that the this maps to (unless an error happens)
       InterfaceInfoGroup* builtInGroup = ProcessBuiltIn(function,
                                                         interfaceInfo,
                                                         shaderStage,
@@ -1533,8 +1486,7 @@ void EntryPointGeneration::CollectOutputInterfaceVariables(ZilchShaderIRFunction
   {
     ShaderIRFieldMeta* fieldMeta = typeMeta->mFields[i];
 
-    // @JoshD: Need to update this at some point to support multiple output
-    // names by iterating on attributes
+    // @JoshD: Need to update this at some point to support multiple output names by iterating on attributes
 
     // If this is a stage output
     ShaderIRAttribute* stageOutputAttribute =
@@ -1544,14 +1496,12 @@ void EntryPointGeneration::CollectOutputInterfaceVariables(ZilchShaderIRFunction
       // Create the field info
       ShaderFieldKey fieldKey = fieldMeta->MakeFieldKey(stageOutputAttribute);
       InterfaceInfoGroup::FieldInfo* fieldInfo = interfaceInfo.mOutputs.FindOrCreateFieldInfo(fieldKey);
-      // Create a new field meta for this field based upon the field we're
-      // matching to. In particular, make sure this field's name is set based
-      // upon the attribute name.
+      // Create a new field meta for this field based upon the field we're matching to.
+      // In particular, make sure this field's name is set based upon the attribute name.
       fieldInfo->mFieldMeta = fieldMeta->Clone(mTranslator->mLibrary);
       fieldInfo->mFieldMeta->mZilchName = fieldMeta->GetFieldAttributeName(stageOutputAttribute);
       fieldInfo->mFieldMeta->mOwner = nullptr;
-      // Add the given field's meta as someone we need to read from (multiple
-      // can exist)
+      // Add the given field's meta as someone we need to read from (multiple can exist)
       fieldInfo->mLinkedFields.PushBack(fieldMeta);
     }
     // If this is a hardware built-in output
@@ -1559,8 +1509,7 @@ void EntryPointGeneration::CollectOutputInterfaceVariables(ZilchShaderIRFunction
         fieldMeta->mAttributes.FindFirstAttribute(nameSettings.mHardwareBuiltInOutputAttribute);
     if (hardwareBuiltInAttribute != nullptr)
     {
-      // Process the built-in. This should always return the info group that the
-      // this maps to (unless an error happens)
+      // Process the built-in. This should always return the info group that the this maps to (unless an error happens)
       InterfaceInfoGroup* builtInGroup = ProcessBuiltIn(function,
                                                         interfaceInfo,
                                                         shaderStage,
@@ -1598,18 +1547,15 @@ void EntryPointGeneration::CollectUniformInterfaceVariables(ZilchShaderIRFunctio
     ShaderIRFieldMeta* fieldMeta = typeMeta->mFields[i];
 
     // Walk all attributes searching for a uniform attribute.
-    // @JoshD: At some point actually deal with AppBuiltIn vs. Property
-    // differently (with compositor it doesn't matter)
+    // @JoshD: At some point actually deal with AppBuiltIn vs. Property differently (with compositor it doesn't matter)
     for (size_t j = 0; j < fieldMeta->mAttributes.Size(); ++j)
     {
       ShaderIRAttribute* attribute = fieldMeta->mAttributes.GetAtIndex(j);
       if (attribute->mAttributeName == nameSettings.mAppBuiltInInputAttribute ||
           attribute->mAttributeName == nameSettings.mPropertyInputAttribute)
       {
-        // Don't include non-copyable types in the uniform buffer (these were
-        // declared globally).
-        // @JoshD: This might need to be changed later if a non-copyable type
-        // can be put in a uniform buffer.
+        // Don't include non-copyable types in the uniform buffer (these were declared globally).
+        // @JoshD: This might need to be changed later if a non-copyable type can be put in a uniform buffer.
         if (fieldMeta->mZilchType->HasAttribute(nameSettings.mNonCopyableAttributeName))
           continue;
 
@@ -1633,14 +1579,13 @@ void EntryPointGeneration::ProcessUniformBlockSettings(ShaderStage::Enum stageTo
   ZilchSpirVFrontEndContext* context = mContext;
   ZilchShaderSpirVSettings* settings = translator->mSettings;
 
-  // Iterate over all of the user defined uniform buffer descriptions and map
-  // the field key to the block it came from. This allows efficient processing
-  // when iterating over fields later.
+  // Iterate over all of the user defined uniform buffer descriptions and map the field key
+  // to the block it came from. This allows efficient processing when iterating over fields later.
   for (size_t i = 0; i < settings->mUniformBufferDescriptions.Size(); ++i)
   {
     UniformBufferDescription& description = settings->mUniformBufferDescriptions[i];
-    // Buffer descriptions can target certain stages. This may be an
-    // optimization if certain stages bind less data (up to Nate to test)
+    // Buffer descriptions can target certain stages. This may be an optimization
+    // if certain stages bind less data (up to Nate to test)
     if (!description.mAllowedStages.IsSet(stageToProcess))
       continue;
 
@@ -1668,8 +1613,7 @@ InterfaceInfoGroup* EntryPointGeneration::ProcessBuiltIn(ZilchShaderIRFunction* 
 
   FragmentType::Enum fragmentType = ShaderStageToFragmentType(shaderStage);
 
-  // Get the built-ins map we read from depending on if this is an input or
-  // output
+  // Get the built-ins map we read from depending on if this is an input or output
   BuiltInStageDescription::FieldKeyToBlockMap* mappings = nullptr;
   BuiltInStageDescription& builtInDescriptions = settings->mBuiltIns[fragmentType];
   if (storageClass == spv::StorageClassOutput)
@@ -1677,8 +1621,8 @@ InterfaceInfoGroup* EntryPointGeneration::ProcessBuiltIn(ZilchShaderIRFunction* 
   else
     mappings = &builtInDescriptions.mInternalInputMappings;
 
-  // Get the description for this built-in. If we fail to find this then
-  // something was incorrectly marked as a built-in and cannot be satisfied.
+  // Get the description for this built-in. If we fail to find this then something
+  // was incorrectly marked as a built-in and cannot be satisfied.
   ShaderFieldKey fieldKey = fieldMeta->MakeFieldKey(attribute);
   BuiltInBlockDescription* block = mappings->FindValue(fieldKey, nullptr);
   if (block == nullptr)
@@ -1711,9 +1655,8 @@ InterfaceInfoGroup* EntryPointGeneration::ProcessBuiltIn(ZilchShaderIRFunction* 
       group.mIsBuiltIn = true;
     }
 
-    // Add all fields on the block at once. Since this is an interface block the
-    // entire thing has to be copied otherwise subsequent shader stages won't
-    // have a matching interface.
+    // Add all fields on the block at once. Since this is an interface block the entire thing has
+    // to be copied otherwise subsequent shader stages won't have a matching interface.
     for (size_t i = 0; i < block->mFields.Size(); ++i)
     {
       BuiltInBlockDescription::BuiltInFieldMeta& builtInMeta = block->mFields[i];
@@ -1737,9 +1680,8 @@ InterfaceInfoGroup* EntryPointGeneration::ProcessBuiltIn(ZilchShaderIRFunction* 
     BuiltInBlockDescription::BuiltInFieldMeta* foundBuiltInMeta = block->FindField(fieldKey);
     if (foundBuiltInMeta != nullptr)
     {
-      // Find if we've already created this field or not. There can be multiple
-      // read/writes to the same variable due to name overrides so this can get
-      // called more than once.
+      // Find if we've already created this field or not. There can be multiple read/writes
+      // to the same variable due to name overrides so this can get called more than once.
       InterfaceInfoGroup::FieldInfo* fieldInfo = group.FindFieldInfo(fieldKey);
       if (fieldInfo == nullptr)
       {
@@ -1765,18 +1707,15 @@ EntryPointGeneration::ProcessUniformBlock(ZilchShaderIRFunction* function,
   ZilchSpirVFrontEndContext* context = mContext;
   ZilchShaderSpirVSettings* settings = translator->mSettings;
 
-  // Find what uniform block description this field maps to (null means the
-  // material)
+  // Find what uniform block description this field maps to (null means the material)
   ShaderFieldKey fieldKey = fieldMeta->MakeFieldKey(attribute);
   UniformBufferDescription* uniformBlock = mapping.FindValue(fieldKey, nullptr);
 
-  // Check if we've already visited this uniform block. If so we can skip some
-  // first-time setup
+  // Check if we've already visited this uniform block. If so we can skip some first-time setup
   bool exists = interfaceInfo.mUniformGroups.ContainsKey(uniformBlock);
 
   InterfaceInfoGroup& uniformGroup = interfaceInfo.mUniformGroups[uniformBlock];
-  // Determine if this is a user defined uniform buffer or if this is the
-  // default (the material)
+  // Determine if this is a user defined uniform buffer or if this is the default (the material)
   bool isDefaultBuffer = (uniformBlock == nullptr);
 
   // If this is user defined (not default) and it already exists then
@@ -1788,8 +1727,7 @@ EntryPointGeneration::ProcessUniformBlock(ZilchShaderIRFunction* function,
   if (isDefaultBuffer)
     uniformBlock = &settings->mDefaultUniformBufferDescription;
 
-  // If this is the first time visiting this buffer then set the struct
-  // parameters (storage class, name, id, etc...)
+  // If this is the first time visiting this buffer then set the struct parameters (storage class, name, id, etc...)
   if (!exists)
   {
     uniformGroup.mName = uniformBlock->mDebugName;
@@ -1815,8 +1753,8 @@ EntryPointGeneration::ProcessUniformBlock(ZilchShaderIRFunction* function,
   // Mark that we've used this binding id
   mUsedBindingIds.Insert(uniformGroup.mReflectionData.mBinding);
 
-  // If this is a user defined buffer then the entire buffer must match all at
-  // once. This means we just copy all fields from the user defined description.
+  // If this is a user defined buffer then the entire buffer must match all at once.
+  // This means we just copy all fields from the user defined description.
   if (!isDefaultBuffer)
   {
     for (size_t i = 0; i < uniformBlock->mFields.Size(); ++i)
@@ -1847,11 +1785,9 @@ void EntryPointGeneration::DeclareStageBlocks(ShaderInterfaceInfo& interfaceInfo
   DeclareBlock(interfaceInfo.mInputs, entryPointInfo, copyInputsData, mInputs);
   DeclareBlock(interfaceInfo.mOutputs, entryPointInfo, copyOutputsData, mOutputs);
 
-  // Write out BuiltIns. These can be inputs and outputs as well as interface
-  // blocks or globals
+  // Write out BuiltIns. These can be inputs and outputs as well as interface blocks or globals
   DeclareGroupBlocks(interfaceInfo.mBuiltInGroups, entryPointInfo, copyInputsData, copyOutputsData, mBuiltIns);
-  // Also write out interface blocks for all uniform blocks. Uniform block
-  // groupings can be specified by the C++ api.
+  // Also write out interface blocks for all uniform blocks. Uniform block groupings can be specified by the C++ api.
   DeclareGroupBlocks(interfaceInfo.mUniformGroups, entryPointInfo, copyInputsData, copyOutputsData, mUniforms);
 }
 
@@ -1865,8 +1801,7 @@ void EntryPointGeneration::DeclareGroupBlocks(ShaderInterfaceInfo::InterfaceGrou
   for (; !range.Empty(); range.PopFront())
   {
     InterfaceInfoGroup& interfaceGroup = range.Front().second;
-    // Determine if this is an input/output type to choose which copy helper to
-    // use
+    // Determine if this is an input/output type to choose which copy helper to use
     if (interfaceGroup.mStorageClass == spv::StorageClassOutput)
       DeclareBlock(interfaceGroup, entryPointInfo, copyOutputsData, outArray);
     else
@@ -1926,16 +1861,14 @@ void EntryPointGeneration::CopyField(BasicBlock* targetFnBlock,
   ZilchShaderIRType* sourceValueType = source->mResultType->mDereferenceType;
   ZilchShaderIRType* destValueType = dest->mResultType->mDereferenceType;
 
-  // For fixed arrays we need to copy over each element as the array types are
-  // different (padding, stride, etc...)
+  // For fixed arrays we need to copy over each element as the array types are different (padding, stride, etc...)
   if (sourceValueType->mBaseType == ShaderIRTypeBaseType::FixedArray)
   {
     ZilchShaderIRType* sourceElementType = sourceValueType->mParameters[0]->As<ZilchShaderIRType>();
     ZilchShaderIRType* destElementType = destValueType->mParameters[0]->As<ZilchShaderIRType>();
 
-    // To make copying easier, we use CompositeExtract to get element values
-    // instead of pointers. This is so we don't have to worry about the storage
-    // class on the type.
+    // To make copying easier, we use CompositeExtract to get element values instead of pointers.
+    // This is so we don't have to worry about the storage class on the type.
     ZilchShaderIROp* sourceValue =
         translator->BuildIROp(targetFnBlock, OpType::OpLoad, sourceValueType, source, context);
     for (size_t i = 0; i < sourceValueType->mComponents; ++i)
@@ -1952,8 +1885,7 @@ void EntryPointGeneration::CopyField(BasicBlock* targetFnBlock,
       translator->BuildStoreOp(targetFnBlock, destElement, sourceElement, context);
     }
   }
-  // Everything else simply load then store (always load so we don't care about
-  // the storage class)
+  // Everything else simply load then store (always load so we don't care about the storage class)
   else
   {
     ShaderIRTypeBaseType::Enum sourceBaseType = sourceValueType->GetBasePrimitiveType();
@@ -2026,16 +1958,14 @@ void EntryPointGeneration::CopyFromInterfaceType(BasicBlock* block,
   }
   else if (sourceBaseType == ShaderIRTypeBaseType::Struct)
   {
-    // Get the struct interface so we can manually access via an instance
-    // (Hacky)
+    // Get the struct interface so we can manually access via an instance (Hacky)
     ShaderInterfaceStruct* structInterface = sourceInterface->As<ShaderInterfaceStruct>();
 
     // Walk all fields that the source has
     size_t fieldCount = sourceInterface->GetFieldCount();
     for (size_t i = 0; i < fieldCount; ++i)
     {
-      // For each field, walk all linked fields (fields to that map to this
-      // one).
+      // For each field, walk all linked fields (fields to that map to this one).
       ShaderInterfaceField* interfaceField = sourceInterface->GetFieldAtIndex(i);
       for (size_t j = 0; j < interfaceField->mLinkedFields.Size(); ++j)
       {
@@ -2044,9 +1974,8 @@ void EntryPointGeneration::CopyFromInterfaceType(BasicBlock* block,
         // Get the location to copy to.
         ZilchShaderIROp* destMemberPtr =
             GetNamedMemberInstanceFrom(block, dest, linkedFieldMeta->mZilchName, destStorageClass);
-        // Note: The source was generated from the target and should have linked
-        // fields that always match. If this name is missing then the
-        // source/dest didn't form a valid pair to copy between.
+        // Note: The source was generated from the target and should have linked fields that always match.
+        // If this name is missing then the source/dest didn't form a valid pair to copy between.
         if (destMemberPtr == nullptr)
         {
           Error("Destination field name '%s' is invalid", linkedFieldMeta->mZilchName.c_str());
@@ -2072,12 +2001,10 @@ ZilchShaderIROp* EntryPointGeneration::GetMemberInstanceFrom(BasicBlock* block,
 
   ZilchShaderIRType* sourceValueType = source->mResultType->mDereferenceType;
 
-  // Get the type of the source member. This might be different than what's on
-  // the class due to storage classes. Storage classes are only stored on the
-  // pointer type but structs contain value types so there's no way to check the
-  // member's actual type to know what it is and the member type can't be
-  // different just because it is contained in a different parent storage class
-  // type.
+  // Get the type of the source member. This might be different than what's on the class due to storage classes.
+  // Storage classes are only stored on the pointer type but structs contain value types so there's no way to check
+  // the member's actual type to know what it is and the member type can't be different just because it is
+  // contained in a different parent storage class type.
   ZilchShaderIRType* sourceMemberValueType = sourceValueType->GetSubType(sourceOffset);
   ZilchShaderIRType* sourceMemberPtrType = sourceMemberValueType->mPointerType;
   if (sourceStorageClass != spv::StorageClassFunction)
@@ -2164,8 +2091,7 @@ void EntryPointGeneration::AddOffsetDecorations(InterfaceInfoGroup& infoGroup)
     // Roughly speaking, alignment is 1 float, 2 float, and 4 float.
     size_t requiredAlignment = memberType->GetByteAlignment();
     size_t requiredSize = memberType->GetByteSize();
-    // Compute the starting byte offset so it lines up with this type's required
-    // alignment
+    // Compute the starting byte offset so it lines up with this type's required alignment
     currentByteOffset = GetSizeAfterAlignment(currentByteOffset, requiredAlignment);
 
     // Add the offset decoration
@@ -2204,8 +2130,7 @@ void EntryPointGeneration::AddMemberTypeDecorations(ZilchShaderIRType* memberTyp
   {
     ZilchShaderIRType* elementType = memberType->mParameters[0]->As<ZilchShaderIRType>();
     // @JoshD: Hardcode to matrix/vector/scalar types for now.
-    // Eventually could be bigger if structs are allowed to be bound as
-    // uniforms.
+    // Eventually could be bigger if structs are allowed to be bound as uniforms.
     int stride = GetStride(elementType, 16.0f);
     fieldInfo.mTypeDecorations.PushBack(InterfaceInfoGroup::DecorationParam(spv::DecorationArrayStride, stride));
     memberReflection.mStride = stride;
@@ -2279,8 +2204,7 @@ void EntryPointGeneration::AddPixelLocationDecorations(InterfaceInfoGroup& infoG
 
 void EntryPointGeneration::AddFlatDecorations(InterfaceInfoGroup& infoGroup)
 {
-  // Find any integer fields and decorate them to use flat interpolation
-  // (required by spirv/glsl/vulkan spec)
+  // Find any integer fields and decorate them to use flat interpolation (required by spirv/glsl/vulkan spec)
   InterfaceInfoGroup::FieldList& fieldList = infoGroup.mFields;
   for (size_t i = 0; i < fieldList.Size(); ++i)
   {
@@ -2321,8 +2245,7 @@ void EntryPointGeneration::WriteTypeDecorations(Array<InterfaceInfoGroup::Decora
     ZilchShaderIROp* decorationOp =
         translator->BuildIROp(decorationBlock, OpType::OpDecorate, nullptr, toDecorate, builtInDecoration, context);
 
-    // If the decoration has additional parameters then write them out (limit 1
-    // for now)
+    // If the decoration has additional parameters then write them out (limit 1 for now)
     if (decoration.mValue >= 0)
     {
       ZilchShaderIRConstantLiteral* builtInKindLiteral =
@@ -2352,8 +2275,7 @@ void EntryPointGeneration::WriteMemberDecorations(Array<InterfaceInfoGroup::Deco
         decorationBlock, OpType::OpMemberDecorate, nullptr, toDecorate, memberIndexLiteral, context);
     decorationOp->mArguments.PushBack(builtInDecoration);
 
-    // If the decoration has additional parameters then write them out (limit 1
-    // for now)
+    // If the decoration has additional parameters then write them out (limit 1 for now)
     if (decoration.mValue >= 0)
     {
       ZilchShaderIRConstantLiteral* builtInKindLiteral =
@@ -2365,15 +2287,12 @@ void EntryPointGeneration::WriteMemberDecorations(Array<InterfaceInfoGroup::Deco
 
 void EntryPointGeneration::FindAndDecorateGlobals(ZilchShaderIRType* currentType, EntryPointInfo* entryPointInfo)
 {
-  // SpirV spec section 14.5.2: uniform constants must have descriptor set and
-  // binding decorations specified. Unfortunately, there's currently no way in
-  // the entry point generation to know what samplers are used as they might be
-  // from related fragments which this type doesn't know about (as
-  // images/samplers are currently declared in each fragment). Temporarily to
-  // work around this, walk the entire dependency chain of this type (same as
-  // the backend) and then walk all globals which will contain all referenced
-  // variables we need. This should later be moved/cached or something to avoid
-  // building the dependency chain twice.
+  // SpirV spec section 14.5.2: uniform constants must have descriptor set and binding decorations specified.
+  // Unfortunately, there's currently no way in the entry point generation to know what samplers are used as
+  // they might be from related fragments which this type doesn't know about (as images/samplers are
+  // currently declared in each fragment). Temporarily to work around this, walk the entire dependency
+  // chain of this type (same as the backend) and then walk all globals which will contain all referenced
+  // variables we need. This should later be moved/cached or something to avoid building the dependency chain twice.
   ZilchSpirVFrontEnd* translator = mTranslator;
   ZilchSpirVFrontEndContext* context = mContext;
 
@@ -2422,9 +2341,9 @@ void EntryPointGeneration::DecorateImagesAndSamplers(TypeDependencyCollector& co
     if (baseType == ShaderIRTypeBaseType::Image)
     {
       // An image might be used with a sampler or it might be a storage image.
-      // We read the 'Sampled' parameter of the image type to determine which
-      // one it is and add the corresponding reflection data (storage images
-      // have to be bound differently so they need to be marked separately)
+      // We read the 'Sampled' parameter of the image type to determine which one
+      // it is and add the corresponding reflection data
+      // (storage images have to be bound differently so they need to be marked separately)
       ZilchShaderIRImageType imageType(opValueType);
       if (imageType.IsStorageImage())
         resourceInfo = &stageReflectionData.mStorageImages.PushBack();
@@ -2492,8 +2411,7 @@ void EntryPointGeneration::DecorateRuntimeArrays(TypeDependencyCollector& collec
     ZilchShaderIRType* opValueType = globalVarInstance->GetValueType();
     Zilch::BoundType* zilchType = opValueType->mZilchType;
 
-    // Only visit runtime array types (the struct that wraps the actual spirv
-    // runtime array)
+    // Only visit runtime array types (the struct that wraps the actual spirv runtime array)
     if (zilchType == nullptr || zilchType->TemplateBaseName != SpirVNameSettings::mRuntimeArrayTypeName)
       continue;
 
@@ -2553,8 +2471,7 @@ void EntryPointGeneration::AddRuntimeArrayDecorations(BasicBlock* decorationBloc
   switch (elementType->mBaseType)
   {
   // This is a struct, we have to recursively decorate the struct
-  // (reflection won't grab nested struct data but this will generate valid
-  // spirv)
+  // (reflection won't grab nested struct data but this will generate valid spirv)
   case ShaderIRTypeBaseType::Struct:
   {
     RecursivelyDecorateStructType(decorationBlock, elementType, stageResource);
@@ -2570,9 +2487,8 @@ void EntryPointGeneration::AddRuntimeArrayDecorations(BasicBlock* decorationBloc
     totalSize = elementType->GetByteSize();
     break;
   }
-  // Matrices are almost the same as everything else, they just need a few extra
-  // declarations. In particular a matrix needs to have column/row major
-  // specified and its stride.
+  // Matrices are almost the same as everything else, they just need a few extra declarations.
+  // In particular a matrix needs to have column/row major specified and its stride.
   case ShaderIRTypeBaseType::Matrix:
   {
     maxAlignment = elementType->GetByteAlignment();
@@ -2594,12 +2510,11 @@ void EntryPointGeneration::AddRuntimeArrayDecorations(BasicBlock* decorationBloc
     break;
   }
   }
-  // Compute the stride of this type, making sure to pad out to the correct
-  // alignment
+  // Compute the stride of this type, making sure to pad out to the correct alignment
   int stride = GetSizeAfterAlignment(totalSize, maxAlignment);
   reflectionData.mSizeInBytes = totalSize;
   reflectionData.mStride = stride;
-  
+
   // Now we can actually decorate the runtime array's stride (make sure to only decorate a type once)
   if (!mUniqueTypes.Contains(spirvRuntimeArrayType))
   {
@@ -2611,9 +2526,8 @@ void EntryPointGeneration::RecursivelyDecorateStructType(BasicBlock* decorationB
                                                          ZilchShaderIRType* structType,
                                                          ShaderStageResource& stageResource)
 {
-  // This function is nearly a copy of another one but it operates on different
-  // types. This was created to deal with runtime array, but really needs to be
-  // unified at a later point in time.
+  // This function is nearly a copy of another one but it operates on different types.
+  // This was created to deal with runtime array, but really needs to be unified at a later point in time.
 
   // Deal with non-struct types (makes recursion easier)
   if (structType->mBaseType != ShaderIRTypeBaseType::Struct)
@@ -2670,8 +2584,7 @@ void EntryPointGeneration::RecursivelyDecorateStructType(BasicBlock* decorationB
     else if (memberType->mBaseType == ShaderIRTypeBaseType::Struct)
     {
       // @JoshD: Currently stage resources don't support nested structures.
-      // This will generate valid spir-v but eventually needs to be updated to
-      // support proper reflection data.
+      // This will generate valid spir-v but eventually needs to be updated to support proper reflection data.
       ShaderStageResource subData;
       RecursivelyDecorateStructType(decorationBlock, memberType, subData);
       fieldReflectionData.mStride = subData.mReflectionData.mStride;
@@ -2699,8 +2612,7 @@ void EntryPointGeneration::RecursivelyDecorateStructType(BasicBlock* decorationB
   }
   size_t totalSize = currentByteOffset;
 
-  // Compute the stride of this type, making sure to pad out the the correct
-  // alignment.
+  // Compute the stride of this type, making sure to pad out the the correct alignment.
   int stride = GetSizeAfterAlignment(totalSize, maxAlignment);
   reflectionData.mSizeInBytes = totalSize;
   reflectionData.mStride = stride;
@@ -2788,8 +2700,7 @@ void EntryPointGeneration::CreateShaderInterfaceField(ShaderInterfaceField& inte
                                                       InterfaceInfoGroup& interfaceGroup,
                                                       int index)
 {
-  // @JoshD: Potentially make the interface group store shader interface fields
-  // at some point?
+  // @JoshD: Potentially make the interface group store shader interface fields at some point?
 
   ZilchSpirVFrontEnd* translator = mTranslator;
   ZilchSpirVFrontEndContext* context = mContext;
@@ -2802,16 +2713,15 @@ void EntryPointGeneration::CreateShaderInterfaceField(ShaderInterfaceField& inte
   // Clone the field meta so this is a unique instance
   interfaceField.mFieldMeta = fieldMeta->Clone(translator->mLibrary);
 
-  // Get the actual field type to use for creating the shader instance (e.g.
-  // bool -> int). If this is a built-in keep the original type.
+  // Get the actual field type to use for creating the shader instance (e.g. bool -> int).
+  // If this is a built-in keep the original type.
   Zilch::BoundType* originalZilchType = fieldMeta->mZilchType;
 
   Zilch::BoundType* actualZilchType = originalZilchType;
   if (!interfaceGroup.mIsBuiltIn)
     actualZilchType = ConvertInterfaceType(fieldMeta->mZilchType);
 
-  // If the field type changed, append the name with the original type (prevents
-  // name conflicts)
+  // If the field type changed, append the name with the original type (prevents name conflicts)
   interfaceField.mFieldName = fieldMeta->mZilchName;
   if (actualZilchType != fieldMeta->mZilchType)
     interfaceField.mFieldName = BuildString(interfaceField.mFieldName, "_", fieldMeta->mZilchType->ToString());
@@ -2820,14 +2730,13 @@ void EntryPointGeneration::CreateShaderInterfaceField(ShaderInterfaceField& inte
   interfaceField.mFieldIndex = index;
   interfaceField.mLinkedFields = groupField.mLinkedFields;
 
-  // Mark the actual type of this field and create its interface type (interface
-  // types require unique storage class)
+  // Mark the actual type of this field and create its interface type (interface types require unique storage class)
   interfaceField.mFieldType =
       translator->FindOrCreateInterfaceType(library, actualZilchType, ShaderIRTypeBaseType::Pointer, storageClass);
   interfaceField.mFieldType->mDereferenceType = translator->FindType(actualZilchType, nullptr, true);
 
-  // Also mark the original zilch type in case this changes due to interfaces
-  // (needed to know how to map things like bool to int)
+  // Also mark the original zilch type in case this changes due to interfaces (needed to know how to map things like
+  // bool to int)
   interfaceField.mOriginalFieldType =
       translator->FindOrCreateInterfaceType(library, originalZilchType, ShaderIRTypeBaseType::Pointer, storageClass);
   interfaceField.mOriginalFieldType->mDereferenceType = translator->FindType(originalZilchType, nullptr, true);
@@ -2868,8 +2777,7 @@ ZilchShaderIROp* EntryPointGeneration::FindField(ShaderFieldKey& fieldKey,
     size_t count = interface->GetFieldCount();
     for (size_t j = 0; j < count; ++j)
     {
-      // If the interface field matches the field key then return the op code
-      // that points at the memory of the field
+      // If the interface field matches the field key then return the op code that points at the memory of the field
       ShaderInterfaceField* field = interface->GetFieldAtIndex(j);
       if (field->mFieldMeta->MakeFieldKey() == fieldKey)
       {
@@ -2911,8 +2819,7 @@ void EntryPointGeneration::PerspectiveTransformAppendVertexCallback(AppendCallba
   String real4x4TypeName = ZilchTypeId(Zilch::Real4x4)->Name;
 
   // Find the perspective position field meta on the output vertex type.
-  // This has to search all available stage output attributes to deal with name
-  // overrides.
+  // This has to search all available stage output attributes to deal with name overrides.
   ShaderFieldKey perspectivePositionKey("PerspectivePosition", real4TypeName);
   ZilchShaderIRType* appendVertexDataType = outDataInstance->mResultType->mDereferenceType;
   ShaderIRFieldMeta* perspectivePositionFieldMeta = self->FindFieldViaAttribute(
@@ -2923,14 +2830,13 @@ void EntryPointGeneration::PerspectiveTransformAppendVertexCallback(AppendCallba
   // Find the perspective position field pointer on the output vertex type
   int* index = appendVertexDataType->mMemberKeysToIndex.FindPointer(perspectivePositionFieldMeta->MakeFieldKey());
 
-  // Find the api perspective position field pointer from the output interface
-  // types (should find the hardware built-in interface block)
+  // Find the api perspective position field pointer from the output interface types
+  // (should find the hardware built-in interface block)
   ShaderFieldKey apiPerspectivePositionKey(nameSettings.mApiPerspectivePositionName, real4TypeName);
   ZilchShaderIROp* apiPerspectivePosition = self->FindField(
       apiPerspectivePositionKey, *callbackData.mOutputVertexInterfaceTypes, block, spv::StorageClassOutput);
 
-  // Find the api perspective transform matrix from all of the uniform buffers
-  // available
+  // Find the api perspective transform matrix from all of the uniform buffers available
   ShaderFieldKey perspectiveTransformKey(nameSettings.mPerspectiveToApiPerspectiveName, real4x4TypeName);
   ZilchShaderIROp* transformMatrixOp =
       self->FindField(perspectiveTransformKey, self->mUniforms, block, spv::StorageClassUniform);
@@ -2941,8 +2847,7 @@ void EntryPointGeneration::PerspectiveTransformAppendVertexCallback(AppendCallba
     // Get the instance pointer to perspective position
     ZilchShaderIROp* source = self->GetMemberInstanceFrom(block, outDataInstance, *index, spv::StorageClassFunction);
 
-    // Matrix multiplication needs value types not pointers, so make sure to
-    // dereference if necessary
+    // Matrix multiplication needs value types not pointers, so make sure to dereference if necessary
     ZilchShaderIROp* valueMatrix =
         self->mTranslator->GetOrGenerateValueTypeFromIR(block, transformMatrixOp, self->mContext);
     ZilchShaderIROp* valueVector = self->mTranslator->GetOrGenerateValueTypeFromIR(block, source, self->mContext);

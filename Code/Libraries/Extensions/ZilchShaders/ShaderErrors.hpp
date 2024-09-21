@@ -22,9 +22,8 @@ public:
   Zilch::CodeLocation mLocation;
 };
 
-/// An error even dispatched during validation. Mostly the same as a translation
-/// error event, but this also contains a call stack to trace where an error
-/// occurred.
+/// An error even dispatched during validation. Mostly the same as a translation error
+/// event, but this also contains a call stack to trace where an error occurred.
 class ValidationErrorEvent : public Zilch::EventData
 {
   ZilchDeclareType(ValidationErrorEvent, Zilch::TypeCopyMode::ReferenceType);
@@ -37,8 +36,7 @@ class ValidationErrorEvent : public Zilch::EventData
   Array<Zilch::CodeLocation> mCallStack;
 };
 
-/// Event handler for sending shader compilation errors as well as translation
-/// errors.
+/// Event handler for sending shader compilation errors as well as translation errors.
 class ShaderCompilationErrors : public Zilch::EventHandler
 {
 public:
@@ -52,8 +50,7 @@ public:
   void ForwardErrorEvent(Zilch::ErrorEvent* e);
   void ForwardGenericEvent(Zilch::EventData* e);
 
-  /// Was an error triggered during compilation (either from translation or
-  /// zilch)
+  /// Was an error triggered during compilation (either from translation or zilch)
   bool mErrorTriggered;
   bool mEmitMultipleErrors;
 };

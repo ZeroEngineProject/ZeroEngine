@@ -8,7 +8,7 @@ namespace Zero
 class ShaderStreamWriter
 {
 public:
-  virtual ~ShaderStreamWriter(){};
+  virtual ~ShaderStreamWriter() {};
   virtual void WriteWord(uint32 word) = 0;
 
   void Write(uint32 word);

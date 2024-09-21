@@ -11,8 +11,7 @@ String ZilchShaderIRTranslationPass::SpirvDiagnosticToString(spv_diagnostic& dia
   if (diagnostic == nullptr)
     return String();
 
-  // Note: This is basically a copy of the internal spirv diagnostic printf
-  // function.
+  // Note: This is basically a copy of the internal spirv diagnostic printf function.
 
   StringBuilder builder;
   if (diagnostic->isTextSource)

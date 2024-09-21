@@ -45,8 +45,7 @@ class SampledImageCube
   ZilchDeclareType(SampledImageCube, TypeCopyMode::ValueType);
 };
 
-// User data written to ZilchFunctions to make image/sampler functions easier to
-// translate
+// User data written to ZilchFunctions to make image/sampler functions easier to translate
 struct ImageUserData
 {
   ImageUserData(int optionalOperands, int flags, Zilch::BoundType* sampledImageType = nullptr)
@@ -60,8 +59,8 @@ struct ImageUserData
   // Flags that have to come before the before the optional
   // operands that specify what the extra operands are.
   int mImageOperandFlags;
-  // The combined SampledImage type that some functions use. Added here to make
-  // it easier to not have to look up the type of the SampledImage when needed.
+  // The combined SampledImage type that some functions use. Added here to make it
+  // easier to not have to look up the type of the SampledImage when needed.
   Zilch::BoundType* mSampledImageType;
 };
 

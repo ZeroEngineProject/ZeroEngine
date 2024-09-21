@@ -30,8 +30,7 @@ public:
   Zilch::CodeLocation* GetLocation();
   void SetLocationNode(Zilch::SyntaxNode* node);
 
-  // Return the internal zilch attribute parameter. Mostly exposed for ease of
-  // binding.
+  // Return the internal zilch attribute parameter. Mostly exposed for ease of binding.
   Zilch::AttributeParameter& GetZilchAttributeParameter();
 
 private:
@@ -52,9 +51,8 @@ public:
   Array<ShaderIRAttributeParameter> mParameters;
   Zilch::SyntaxNode* mNode;
 
-  // Was this attribute created from another (e.g. [Input] implies
-  // [AppBuiltInInput]). Some errors are only valid if the attribute was
-  // explicitly declared.
+  // Was this attribute created from another (e.g. [Input] implies [AppBuiltInInput]).
+  // Some errors are only valid if the attribute was explicitly declared.
   bool mImplicitAttribute;
 };
 

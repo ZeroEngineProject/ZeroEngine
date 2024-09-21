@@ -5,8 +5,8 @@ namespace Zero
 {
 
 /// The zilch shader library wrapper around Zilch's ShaderIntrinsics library.
-/// This needs to be built and have the Parse function called once before all
-/// shader translation. Contains the image/sampler types.
+/// This needs to be built and have the Parse function called once before all shader translation.
+/// Contains the image/sampler types.
 class ShaderIntrinsicsStaticZilchLibrary
 {
 public:
