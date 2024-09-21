@@ -23,8 +23,7 @@ bool AreGamepadsEnabled()
   int activeGamepads = SDL_NumJoysticks();
   for (int i = 0; i < activeGamepads; ++i)
   {
-    // Returns true given device at the index is supported by the SDL game
-    // controller interface
+    // Returns true given device at the index is supported by the SDL game controller interface
     if (SDL_IsGameController(i))
       return true;
   }
@@ -94,8 +93,8 @@ bool GetGamepadState(size_t gamepadIndex, GamepadState* stateOut)
   s16 thumbRX = SDL_GameControllerGetAxis(gamepad, SDL_CONTROLLER_AXIS_RIGHTX);
   s16 thumbRY = SDL_GameControllerGetAxis(gamepad, SDL_CONTROLLER_AXIS_RIGHTY);
 
-  // Get the state of the triggers. The function returns an s16, but triggers
-  // will only ever return a value 0 to 32767.
+  // Get the state of the triggers. The function returns an s16, but triggers will only ever
+  // return a value 0 to 32767.
   stateOut->mLTrigger = (u8)SDL_GameControllerGetAxis(gamepad, SDL_CONTROLLER_AXIS_TRIGGERLEFT);
   stateOut->mRTrigger = (u8)SDL_GameControllerGetAxis(gamepad, SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
 

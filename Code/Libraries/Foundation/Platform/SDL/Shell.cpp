@@ -23,8 +23,7 @@ struct ShellPrivateData
 static const char* cShellWindow = "ShellWindow";
 SDL_Window* gSdlMainWindow = nullptr;
 
-// In SDL 'global' is synonymous with 'monitor' space and 'relative' means
-// 'client' space.
+// In SDL 'global' is synonymous with 'monitor' space and 'relative' means 'client' space.
 
 Keys::Enum SDLScancodeToKey(SDL_Scancode code)
 {
@@ -341,8 +340,7 @@ bool SDLGetClipboardText(String* out)
 bool Shell::GetPrimaryMonitorImage(Image* image)
 {
   // SDL cannot take a screen-shot of the entire monitor.
-  // We could attempt to grab the renderer and just take a screenshot of the
-  // engine, but not the monitor...
+  // We could attempt to grab the renderer and just take a screenshot of the engine, but not the monitor...
   return false;
 }
 #endif
@@ -423,8 +421,7 @@ void Shell::Update()
   ShellWindow* mainWindow = mMainWindow;
 
   // Some platforms don't sent all resize events, so handle that here.
-  // For example, if you resize the window while loading in Emscripten, it
-  // misses the resize.
+  // For example, if you resize the window while loading in Emscripten, it misses the resize.
   if (mainWindow)
     UpdateResize(mainWindow, mainWindow->GetClientSize());
 
@@ -495,8 +492,7 @@ void Shell::Update()
         info.mDropFiles.PushBack(e.drop.file);
       }
 
-      // If this is a drop file without a begin, or it's a drop complete and
-      // we're ending a drop...
+      // If this is a drop file without a begin, or it's a drop complete and we're ending a drop...
       if (window && window->mOnMouseDropFiles && !info.mBeganDropFiles)
       {
         IntVec2 clientPosition = IntVec2::cZero;
@@ -600,9 +596,8 @@ void Shell::Update()
       ShellWindow* window = GetShellWindowFromSDLId(e.wheel.windowID);
       if (window)
       {
-        // Currently we are using the sign of the scroll delta because the value
-        // is mostly undefined per platform. We should probably refactor all
-        // scroll wheel deltas to be in pixels scrolled.
+        // Currently we are using the sign of the scroll delta because the value is mostly undefined per platform. 
+        // We should probably refactor all scroll wheel deltas to be in pixels scrolled.
         if (e.wheel.x && window->mOnMouseScrollX)
           window->mOnMouseScrollX(clientPosition, (float)Math::Sign(e.wheel.x), window);
         if (e.wheel.y && window->mOnMouseScrollY)

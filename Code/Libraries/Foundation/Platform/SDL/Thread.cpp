@@ -65,8 +65,8 @@ bool Thread::IsValid()
   return self->mHandle != nullptr;
 }
 
-// Detaches the thread and it runs until it is finished. The thread cleans
-// itself up. Do not call close on a thread that has called WaitForCompletion()
+// Detaches the thread and it runs until it is finished. The thread cleans itself up.
+// Do not call close on a thread that has called WaitForCompletion()
 void Thread::Close()
 {
   ZeroGetPrivateData(ThreadPrivateData);

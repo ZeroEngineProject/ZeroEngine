@@ -70,16 +70,15 @@ inline void SetupStandardHandle(Status& status, StackHandle& writeHandle, StackH
 
 void SetUpStartInfo(ProcessStartInfo& info)
 {
-  // The application name always has to be the first argument, even if it's
-  // passed in as the application name. Because of this the application name (if
-  // it exists) is always quoted as the first argument.
+  // The application name always has to be the first argument, even if it's passed
+  // in as the application name. Because of this the application name (if it exists)
+  // is always quoted as the first argument.
   if (info.mApplicationName.Empty() != true)
     info.mArguments = String::Format("\"%s\" %s", info.mApplicationName.c_str(), info.mArguments.c_str());
 
-  // In order for process to search for the application, the passed in
-  // application name needs to be null. In this case we've already set the
-  // application as the first argument so we can just clear out the application
-  // name.
+  // In order for process to search for the application, the passed in application
+  // name needs to be null. In this case we've already set the application as the
+  // first argument so we can just clear out the application name.
   if (info.mSearchPath == true)
     info.mApplicationName.Clear();
 }
@@ -120,8 +119,7 @@ void Process::Start(Status& status, ProcessStartInfo& info)
   DuplicateAndClose(status, currentProcess, standardInWrite);
   WinReturnIfStatus(status);
 
-  // Set up the struct containing the possibly redirected IO for our child
-  // process.
+  // Set up the struct containing the possibly redirected IO for our child process.
   STARTUPINFO startUpInfo;
   ZeroMemory(&startUpInfo, sizeof(STARTUPINFO));
   startUpInfo.cb = sizeof(STARTUPINFO);
@@ -144,8 +142,7 @@ void Process::Start(Status& status, ProcessStartInfo& info)
     return;
   }
 
-  // arguments MUST be a copy of the buffer, because CreateProcess will add null
-  // terminators to the string
+  // arguments MUST be a copy of the buffer, because CreateProcess will add null terminators to the string
   SetLastError(0);
   BOOL result = CreateProcess((LPCWSTR)applicationName.Data(),
                               (LPWSTR)arguments.Data(),
@@ -171,8 +168,7 @@ void Process::Start(Status& status, ProcessStartInfo& info)
     }
   }
 
-  // Store the process so we can query the return value later (and wait on it
-  // closing)
+  // Store the process so we can query the return value later (and wait on it closing)
   self->mProcess = processInfo.hProcess;
   self->mProcessThread = processInfo.hThread;
 
@@ -293,9 +289,8 @@ inline void GetProcessNameAndId(DWORD processID, String& processName, String& pr
     // Gets a handle for each module in the process
     if (EnumProcessModules(hProcess, &moduleHandle, sizeof(moduleHandle), &resultsBytesNeeded))
     {
-      // According to the exhumation's of GetModuleBaseName it is preferable
-      // (and faster) to use GetModuleFileName (which gets the full path) and
-      // the parse the text to get the process name
+      // According to the exhumation's of GetModuleBaseName it is preferable (and faster) to use
+      // GetModuleFileName (which gets the full path) and the parse the text to get the process name
       GetModuleFileNameEx(hProcess, moduleHandle, szProcessPath, sizeof(szProcessPath) / sizeof(TCHAR));
 
       processPath = Narrow(szProcessPath);

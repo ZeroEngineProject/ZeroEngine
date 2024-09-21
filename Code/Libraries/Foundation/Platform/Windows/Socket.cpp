@@ -90,20 +90,18 @@ public:
   {
   }
 
-  /// Returns true if the platform's underlying socket library is initialized
-  /// (reference count greater than zero), else false
+  /// Returns true if the platform's underlying socket library is initialized (reference count greater than zero), else
+  /// false
   bool IsInitialized()
   {
     return mReferenceCount > 0;
   }
 
-  /// Initializes the platform's underlying socket library (acquiring the
-  /// resources needed to provide socket functionality) Safe to call multiple
-  /// times (even without matching Uninitialize calls), internally reference
-  /// counted If already initialized (reference count greater than zero), only
-  /// increments the reference count If not yet initialized (reference count of
-  /// zero), initializes the socket library and if successful, increments the
-  /// reference count
+  /// Initializes the platform's underlying socket library (acquiring the resources needed to provide socket
+  /// functionality) Safe to call multiple times (even without matching Uninitialize calls), internally reference
+  /// counted If already initialized (reference count greater than zero), only increments the reference count If not yet
+  /// initialized (reference count of zero), initializes the socket library and if successful, increments the reference
+  /// count
   void Initialize(Status& status)
   {
     // Already initialized?
@@ -138,13 +136,11 @@ public:
     Assert(IsInitialized());
   }
 
-  /// Uninitializes the platform's underlying socket library (releasing the
-  /// resources needed to provide socket functionality) Safe to call multiple
-  /// times (even without matching Initialize calls), internally reference
-  /// counted If not initialized (reference count of zero), does nothing If
-  /// initialized more than once (reference count greater than one), decrements
-  /// the reference count If initialized once (reference count of one),
-  /// decrements the reference count and uninitializes the socket library
+  /// Uninitializes the platform's underlying socket library (releasing the resources needed to provide socket
+  /// functionality) Safe to call multiple times (even without matching Initialize calls), internally reference counted
+  /// If not initialized (reference count of zero), does nothing
+  /// If initialized more than once (reference count greater than one), decrements the reference count
+  /// If initialized once (reference count of one), decrements the reference count and uninitializes the socket library
   void Uninitialize(Status& status)
   {
     // Not initialized?
@@ -359,8 +355,7 @@ void SocketAddress::Clear()
 
 Bits Serialize(SerializeDirection::Enum direction, BitStream& bitStream, SocketAddress& socketAddress)
 {
-  // Note: Currently only supports IP address serialization (InternetworkV4 and
-  // InternetworkV6 socket addresses)
+  // Note: Currently only supports IP address serialization (InternetworkV4 and InternetworkV6 socket addresses)
 
   // Write operation?
   if (direction == SerializeDirection::Write)
@@ -532,8 +527,7 @@ SocketAddress ResolveSocketAddress(Status& status,
   hints.ai_socktype = type;
   hints.ai_flags = addressResolutionFlags;
 
-  // This allows us to bind to the loopback by providing an empty host and NOT
-  // specifying AnyAddress
+  // This allows us to bind to the loopback by providing an empty host and NOT specifying AnyAddress
   const char* hostName = host.c_str();
   if (host.Empty())
     hostName = nullptr;
@@ -746,8 +740,7 @@ String SocketAddressToString(Status& status, SocketAddressFamily::Enum addressFa
   // Convert socket address to string
   char result[Ipv6StringLength] = {};
   SOCKET_ADDRESS_STORAGE* sockAddrStorage = (SOCKET_ADDRESS_STORAGE*)address.mPrivateData;
-  if (!inet_ntop(addressFamily, &((SOCKET_ADDRESS_IPV4*)sockAddrStorage)->sin_addr, result,
-                 sizeof(result))) // Unable?
+  if (!inet_ntop(addressFamily, &((SOCKET_ADDRESS_IPV4*)sockAddrStorage)->sin_addr, result, sizeof(result))) // Unable?
   {
     FailOnLastError(status);
     return String();
@@ -772,8 +765,7 @@ SocketAddress StringToSocketAddress(Status& status, SocketAddressFamily::Enum ad
   // Convert string to socket address
   SocketAddress result;
   SOCKET_ADDRESS_STORAGE* sockAddrStorage = (SOCKET_ADDRESS_STORAGE*)result.mPrivateData;
-  if (inet_pton(addressFamily, address.c_str(),
-                &((SOCKET_ADDRESS_IPV4*)sockAddrStorage)->sin_addr) != 1) // Unable?
+  if (inet_pton(addressFamily, address.c_str(), &((SOCKET_ADDRESS_IPV4*)sockAddrStorage)->sin_addr) != 1) // Unable?
   {
     FailOnLastError(status);
     return SocketAddress();
@@ -1148,9 +1140,8 @@ void Socket::Bind(Status& status, const SocketAddress& localAddress)
   // Bind socket to specified local address
   SOCKET_ADDRESS_STORAGE* sockAddrStorage = (SOCKET_ADDRESS_STORAGE*)localAddress.mPrivateData;
   socklen_t sockAddrLength = sizeof(SOCKET_ADDRESS_STORAGE);
-  if (bind(CAST_HANDLE_TO_SOCKET(mHandle),
-           (SOCKET_ADDRESS_TYPE*)sockAddrStorage,
-           sockAddrLength) == SOCKET_ERROR) // Unable?
+  if (bind(CAST_HANDLE_TO_SOCKET(mHandle), (SOCKET_ADDRESS_TYPE*)sockAddrStorage, sockAddrLength) ==
+      SOCKET_ERROR) // Unable?
     return FailOnLastError(status);
 }
 
@@ -1208,9 +1199,8 @@ void Socket::Connect(Status& status, const SocketAddress& remoteAddress)
   // Connect socket to specified remote address
   SOCKET_ADDRESS_STORAGE* sockAddrStorage = (SOCKET_ADDRESS_STORAGE*)remoteAddress.mPrivateData;
   socklen_t sockAddrLength = sizeof(SOCKET_ADDRESS_STORAGE);
-  if (connect(CAST_HANDLE_TO_SOCKET(mHandle),
-              (SOCKET_ADDRESS_TYPE*)sockAddrStorage,
-              sockAddrLength) == SOCKET_ERROR) // Unable?
+  if (connect(CAST_HANDLE_TO_SOCKET(mHandle), (SOCKET_ADDRESS_TYPE*)sockAddrStorage, sockAddrLength) ==
+      SOCKET_ERROR) // Unable?
     return FailOnLastError(status);
 }
 
@@ -1370,11 +1360,8 @@ void Socket::GetSocketOption(Status& status, SocketOption::Enum option, void* va
   TRANSLATE_TO_PLATFORM_ENUM_OR_RETURN_FAILURE(option);
 
   // Get socket option
-  if (getsockopt(CAST_HANDLE_TO_SOCKET(mHandle),
-                 SOL_SOCKET,
-                 (int)option,
-                 (char*)value,
-                 (socklen_t*)valueLength) == SOCKET_ERROR) // Unable?
+  if (getsockopt(CAST_HANDLE_TO_SOCKET(mHandle), SOL_SOCKET, (int)option, (char*)value, (socklen_t*)valueLength) ==
+      SOCKET_ERROR) // Unable?
     return FailOnLastError(status);
 }
 void Socket::GetSocketOption(Status& status, SocketIpv4Option::Enum option, void* value, size_t* valueLength) const
@@ -1389,11 +1376,8 @@ void Socket::GetSocketOption(Status& status, SocketIpv4Option::Enum option, void
   TRANSLATE_TO_PLATFORM_ENUM_OR_RETURN_FAILURE(option);
 
   // Get socket option
-  if (getsockopt(CAST_HANDLE_TO_SOCKET(mHandle),
-                 IPPROTO_IP,
-                 (int)option,
-                 (char*)value,
-                 (socklen_t*)valueLength) == SOCKET_ERROR) // Unable?
+  if (getsockopt(CAST_HANDLE_TO_SOCKET(mHandle), IPPROTO_IP, (int)option, (char*)value, (socklen_t*)valueLength) ==
+      SOCKET_ERROR) // Unable?
     return FailOnLastError(status);
 }
 void Socket::GetSocketOption(Status& status, SocketIpv6Option::Enum option, void* value, size_t* valueLength) const
@@ -1408,11 +1392,8 @@ void Socket::GetSocketOption(Status& status, SocketIpv6Option::Enum option, void
   TRANSLATE_TO_PLATFORM_ENUM_OR_RETURN_FAILURE(option);
 
   // Get socket option
-  if (getsockopt(CAST_HANDLE_TO_SOCKET(mHandle),
-                 IPPROTO_IPV6,
-                 (int)option,
-                 (char*)value,
-                 (socklen_t*)valueLength) == SOCKET_ERROR) // Unable?
+  if (getsockopt(CAST_HANDLE_TO_SOCKET(mHandle), IPPROTO_IPV6, (int)option, (char*)value, (socklen_t*)valueLength) ==
+      SOCKET_ERROR) // Unable?
     return FailOnLastError(status);
 }
 void Socket::GetSocketOption(Status& status, SocketTcpOption::Enum option, void* value, size_t* valueLength) const
@@ -1427,11 +1408,8 @@ void Socket::GetSocketOption(Status& status, SocketTcpOption::Enum option, void*
   TRANSLATE_TO_PLATFORM_ENUM_OR_RETURN_FAILURE(option);
 
   // Get socket option
-  if (getsockopt(CAST_HANDLE_TO_SOCKET(mHandle),
-                 IPPROTO_TCP,
-                 (int)option,
-                 (char*)value,
-                 (socklen_t*)valueLength) == SOCKET_ERROR) // Unable?
+  if (getsockopt(CAST_HANDLE_TO_SOCKET(mHandle), IPPROTO_TCP, (int)option, (char*)value, (socklen_t*)valueLength) ==
+      SOCKET_ERROR) // Unable?
     return FailOnLastError(status);
 }
 void Socket::GetSocketOption(Status& status, SocketUdpOption::Enum option, void* value, size_t* valueLength) const
@@ -1446,11 +1424,8 @@ void Socket::GetSocketOption(Status& status, SocketUdpOption::Enum option, void*
   TRANSLATE_TO_PLATFORM_ENUM_OR_RETURN_FAILURE(option);
 
   // Get socket option
-  if (getsockopt(CAST_HANDLE_TO_SOCKET(mHandle),
-                 IPPROTO_UDP,
-                 (int)option,
-                 (char*)value,
-                 (socklen_t*)valueLength) == SOCKET_ERROR) // Unable?
+  if (getsockopt(CAST_HANDLE_TO_SOCKET(mHandle), IPPROTO_UDP, (int)option, (char*)value, (socklen_t*)valueLength) ==
+      SOCKET_ERROR) // Unable?
     return FailOnLastError(status);
 }
 
@@ -1462,11 +1437,8 @@ void Socket::SetSocketOption(Status& status, SocketOption::Enum option, const vo
   TRANSLATE_TO_PLATFORM_ENUM_OR_RETURN_FAILURE(option);
 
   // Set socket option
-  if (setsockopt(CAST_HANDLE_TO_SOCKET(mHandle),
-                 SOL_SOCKET,
-                 (int)option,
-                 (const char*)value,
-                 (int)valueLength) == SOCKET_ERROR) // Unable?
+  if (setsockopt(CAST_HANDLE_TO_SOCKET(mHandle), SOL_SOCKET, (int)option, (const char*)value, (int)valueLength) ==
+      SOCKET_ERROR) // Unable?
     return FailOnLastError(status);
 }
 void Socket::SetSocketOption(Status& status, SocketIpv4Option::Enum option, const void* value, size_t valueLength)
@@ -1481,11 +1453,8 @@ void Socket::SetSocketOption(Status& status, SocketIpv4Option::Enum option, cons
   TRANSLATE_TO_PLATFORM_ENUM_OR_RETURN_FAILURE(option);
 
   // Set socket option
-  if (setsockopt(CAST_HANDLE_TO_SOCKET(mHandle),
-                 IPPROTO_IP,
-                 (int)option,
-                 (const char*)value,
-                 (int)valueLength) == SOCKET_ERROR) // Unable?
+  if (setsockopt(CAST_HANDLE_TO_SOCKET(mHandle), IPPROTO_IP, (int)option, (const char*)value, (int)valueLength) ==
+      SOCKET_ERROR) // Unable?
     return FailOnLastError(status);
 }
 void Socket::SetSocketOption(Status& status, SocketIpv6Option::Enum option, const void* value, size_t valueLength)
@@ -1500,11 +1469,8 @@ void Socket::SetSocketOption(Status& status, SocketIpv6Option::Enum option, cons
   TRANSLATE_TO_PLATFORM_ENUM_OR_RETURN_FAILURE(option);
 
   // Set socket option
-  if (setsockopt(CAST_HANDLE_TO_SOCKET(mHandle),
-                 IPPROTO_IPV6,
-                 (int)option,
-                 (const char*)value,
-                 (int)valueLength) == SOCKET_ERROR) // Unable?
+  if (setsockopt(CAST_HANDLE_TO_SOCKET(mHandle), IPPROTO_IPV6, (int)option, (const char*)value, (int)valueLength) ==
+      SOCKET_ERROR) // Unable?
     return FailOnLastError(status);
 }
 void Socket::SetSocketOption(Status& status, SocketTcpOption::Enum option, const void* value, size_t valueLength)
@@ -1519,11 +1485,8 @@ void Socket::SetSocketOption(Status& status, SocketTcpOption::Enum option, const
   TRANSLATE_TO_PLATFORM_ENUM_OR_RETURN_FAILURE(option);
 
   // Set socket option
-  if (setsockopt(CAST_HANDLE_TO_SOCKET(mHandle),
-                 IPPROTO_TCP,
-                 (int)option,
-                 (const char*)value,
-                 (int)valueLength) == SOCKET_ERROR) // Unable?
+  if (setsockopt(CAST_HANDLE_TO_SOCKET(mHandle), IPPROTO_TCP, (int)option, (const char*)value, (int)valueLength) ==
+      SOCKET_ERROR) // Unable?
     return FailOnLastError(status);
 }
 void Socket::SetSocketOption(Status& status, SocketUdpOption::Enum option, const void* value, size_t valueLength)
@@ -1538,11 +1501,8 @@ void Socket::SetSocketOption(Status& status, SocketUdpOption::Enum option, const
   TRANSLATE_TO_PLATFORM_ENUM_OR_RETURN_FAILURE(option);
 
   // Set socket option
-  if (setsockopt(CAST_HANDLE_TO_SOCKET(mHandle),
-                 IPPROTO_UDP,
-                 (int)option,
-                 (const char*)value,
-                 (int)valueLength) == SOCKET_ERROR) // Unable?
+  if (setsockopt(CAST_HANDLE_TO_SOCKET(mHandle), IPPROTO_UDP, (int)option, (const char*)value, (int)valueLength) ==
+      SOCKET_ERROR) // Unable?
     return FailOnLastError(status);
 }
 
@@ -1552,9 +1512,8 @@ SocketAddress QueryLocalSocketAddress(Status& status, const Socket& socket)
   SocketAddress address;
   SOCKET_ADDRESS_STORAGE* sockAddrStorage = (SOCKET_ADDRESS_STORAGE*)address.mPrivateData;
   socklen_t sockAddrLength = sizeof(SOCKET_ADDRESS_STORAGE);
-  if (getsockname(CAST_HANDLE_TO_SOCKET(socket.mHandle),
-                  (SOCKET_ADDRESS_TYPE*)sockAddrStorage,
-                  &sockAddrLength) == SOCKET_ERROR) // Unable?
+  if (getsockname(CAST_HANDLE_TO_SOCKET(socket.mHandle), (SOCKET_ADDRESS_TYPE*)sockAddrStorage, &sockAddrLength) ==
+      SOCKET_ERROR) // Unable?
   {
     FailOnLastError(status);
     return SocketAddress();
@@ -1570,9 +1529,8 @@ SocketAddress QueryRemoteSocketAddress(Status& status, const Socket& socket)
   SocketAddress address;
   SOCKET_ADDRESS_STORAGE* sockAddrStorage = (SOCKET_ADDRESS_STORAGE*)address.mPrivateData;
   socklen_t sockAddrLength = sizeof(SOCKET_ADDRESS_STORAGE);
-  if (getpeername(CAST_HANDLE_TO_SOCKET(socket.mHandle),
-                  (SOCKET_ADDRESS_TYPE*)sockAddrStorage,
-                  &sockAddrLength) == SOCKET_ERROR) // Unable?
+  if (getpeername(CAST_HANDLE_TO_SOCKET(socket.mHandle), (SOCKET_ADDRESS_TYPE*)sockAddrStorage, &sockAddrLength) ==
+      SOCKET_ERROR) // Unable?
   {
     FailOnLastError(status);
     return SocketAddress();

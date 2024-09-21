@@ -50,8 +50,7 @@ static size_t OnWebRequestHeaderReceived(char* data, size_t size, size_t nitems,
   // Split the headers by the standard HTTP \r\n.
   String strData(data, totalSize);
 
-  // Ignore the HTTP line in the headers (it's a header, but not a Name:Value
-  // header).
+  // Ignore the HTTP line in the headers (it's a header, but not a Name:Value header).
   if (strData.StartsWith("HTTP/"))
     return totalSize;
 
@@ -194,8 +193,7 @@ OsInt WebRequestThread(void* userData)
   errorBuffer[0] = '\0';
   curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBuffer);
 
-  // Perform the request and grab the return code (callbacks occur at this
-  // time).
+  // Perform the request and grab the return code (callbacks occur at this time).
   CURLcode result = curl_easy_perform(curl);
   if (result != CURLE_OK)
   {
@@ -224,10 +222,7 @@ OsInt WebRequestThread(void* userData)
 }
 
 WebRequest::WebRequest() :
-    mOnHeadersReceived(nullptr),
-    mOnDataReceived(nullptr),
-    mOnComplete(nullptr),
-    mUserData(nullptr)
+    mOnHeadersReceived(nullptr), mOnDataReceived(nullptr), mOnComplete(nullptr), mUserData(nullptr)
 {
   ZeroConstructPrivateData(WebRequestPrivateData);
 }

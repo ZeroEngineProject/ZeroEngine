@@ -76,8 +76,7 @@ OsInt DirectoryWatcher::RunThreadEntryPoint()
       if (fileEntries.Contains(fileEntry))
       {
         TrackedFile& existingEntry = *fileEntries.FindPointer(fileEntry);
-        // If the file already exists mark it as visited to identify removed
-        // files
+        // If the file already exists mark it as visited to identify removed files
         existingEntry.mVisited = true;
         if (existingEntry != fileEntry)
         {

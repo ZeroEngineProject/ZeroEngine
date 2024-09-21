@@ -4,8 +4,8 @@
 namespace Zero
 {
 
-// TODO PLATFORM find and define the max path through SDL, if not possible move
-// this variable to where it will be possible for other platforms
+// TODO PLATFORM find and define the max path through SDL, if not possible move this variable to where it will be
+// possible for other platforms
 const int File::PlatformMaxPath = 1024;
 
 struct FilePrivateData
@@ -125,8 +125,7 @@ void File::Close()
     SDL_RWclose(self->mFileData);
     self->mFileData = nullptr;
 
-    // Must come after closing the file because it may need access to the
-    // modified date.
+    // Must come after closing the file because it may need access to the modified date.
     if (mFileMode != FileMode::Read)
       FileModifiedState::EndFileModified(mFilePath);
   }
@@ -214,8 +213,7 @@ void File::Duplicate(Status& status, File& destinationFile)
 
   if (!self->IsValidFile() || !other->IsValidFile())
   {
-    status.SetFailed("File is not valid. Open a valid file before attempting "
-                     "file operations.");
+    status.SetFailed("File is not valid. Open a valid file before attempting file operations.");
     return;
   }
 

@@ -38,8 +38,7 @@ LPSTR StripQuotes(LPSTR input);
 LPCSTR* CommandLineToArgvA(LPCSTR CmdLine, int* _argc);
 PWCHAR* CommandLineToArgvW(PWCHAR CmdLine, int* _argc);
 
-// Create a bitmap buffer (a device independent bitmap in memory) from a Image
-// Buffer
+// Create a bitmap buffer (a device independent bitmap in memory) from a Image Buffer
 void CreateBitmapBuffer(Image* image, ::byte*& outputBuffer, uint& outSize);
 
 } // namespace Zero

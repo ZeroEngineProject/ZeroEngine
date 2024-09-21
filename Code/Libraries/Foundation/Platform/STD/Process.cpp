@@ -2,9 +2,8 @@
 
 #include "Precompiled.hpp"
 
-// For platforms where we haven't ported the executables over, but they have an
-// emulator, we can fill this string out (must have a trailing space, e.g. "wine
-// ");
+// For platforms where we haven't ported the executables over, but they have an emulator,
+// we can fill this string out (must have a trailing space, e.g. "wine ");
 const char* gProcessEmulator = "";
 
 namespace Zero

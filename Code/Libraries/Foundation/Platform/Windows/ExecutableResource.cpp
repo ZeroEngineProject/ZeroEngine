@@ -42,7 +42,7 @@ void ExecutableResourceUpdater::Update(const char* name, const char* type, const
                                Widen(name).c_str(),
                                MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL),
                                (void*)data,
-                               size);
+                               (DWORD)size);
   ErrorIf(!result, "UpdateResource should never fail unless a parameter was invalid/null");
 }
 
@@ -145,8 +145,8 @@ void ExecutableResourceUpdater::UpdateIcon(const ::byte* buffer, size_t size)
   }
 
   // Update the resource
-  // Note: If explorer is looking at the exe when this happens it can fail
-  // and/or have cached the old icons.
+  // Note: If explorer is looking at the exe when this happens it can fail and/or have
+  // cached the old icons.
   BOOL result = UpdateResource(
       mHandle, RT_GROUP_ICON, L"MAINICON", MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT), &groupIcon, groupIconSize);
 

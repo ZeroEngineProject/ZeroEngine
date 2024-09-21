@@ -4,9 +4,8 @@
 namespace Zero
 {
 
-// Some code I found to manually create an EXCEPTIONS_POINTERS struct. This is
-// used only when we manually invoke a FatalError (since there's no exception
-// there was no exception information generated automatically)
+// Some code I found to manually create an EXCEPTIONS_POINTERS struct. This is used only when we
+// manually invoke a FatalError (since there's no exception there was no exception information generated automatically)
 // http://www.codeproject.com/Articles/207464/Exception-Handling-in-Visual-Cplusplus
 
 #ifndef _AddressOfReturnAddress
@@ -164,8 +163,7 @@ BOOL CALLBACK TestZeroMiniDumpCallback(PVOID pParam,
       if (info->mStripModules == true && !IsDataSectionNeeded(pInput->Module.FullPath, info))
       {
         // This print seems to sometimes break the mini dump...
-        // printf(L"Excluding module data sections: %s \n",
-        // pInput->Module.FullPath);
+        // printf(L"Excluding module data sections: %s \n", pInput->Module.FullPath);
 
         pOutput->ModuleWriteFlags &= (~ModuleWriteDataSeg);
         // pOutput->ModuleWriteFlags = 0;
@@ -185,8 +183,7 @@ BOOL CALLBACK TestZeroMiniDumpCallback(PVOID pParam,
   }
   case MemoryCallback:
   {
-    // If we don't have a custom memory callback then return that there's
-    // nothing to add
+    // If we don't have a custom memory callback then return that there's nothing to add
     if (CrashHandler::mCustomMemoryCallback == NULL)
       return FALSE;
 
@@ -194,9 +191,8 @@ BOOL CALLBACK TestZeroMiniDumpCallback(PVOID pParam,
     memset(&memRange, 0, sizeof(memRange));
     memRange.Begin = NULL;
     bool shouldContinue = true;
-    // If null is returned windows interprets this as stopping even though we
-    // return that we should continue. In this case continue looping until they
-    // give us valid memory or they say we should stop.
+    // If null is returned windows interprets this as stopping even though we return that we should continue.
+    // In this case continue looping until they give us valid memory or they say we should stop.
     while (memRange.Begin == NULL && shouldContinue == true)
       shouldContinue = InvokeCustomMemoryCallback(memRange);
 
@@ -219,8 +215,7 @@ LONG WINAPI ExceptionFilter(EXCEPTION_POINTERS* pException)
 {
   CrashHandler::mRunCrashHandlerCallback(pException, true, CrashHandler::mRunCrashHandlerUserData);
 
-  // Tell the exception handler that it should continue (we've done our work
-  // here!)
+  // Tell the exception handler that it should continue (we've done our work here!)
   return EXCEPTION_CONTINUE_SEARCH;
 }
 
@@ -256,8 +251,7 @@ String CrashHandlerParameters::GetParameterString()
   return mParameters.ToString();
 }
 
-// Courtesy of Bruce Dawson
-// (https://randomascii.wordpress.com/2012/07/05/when-even-crashing-doesnt-work/).
+// Courtesy of Bruce Dawson (https://randomascii.wordpress.com/2012/07/05/when-even-crashing-doesnt-work/).
 // Deals with exceptions being swallowed across kernel boundaries.
 void EnableCrashingOnCrashes()
 {
@@ -479,9 +473,9 @@ void CrashHandler::InvokeSendCrashReport(CrashHandlerParameters& params)
 
 void CrashHandler::FatalError(int errorCode)
 {
-  // capture the current context so the stack walker will show whatever called
-  // this at the root (it seems like the stack walker skips knows to skip one
-  // level or something so the call stack doesn't show this function)
+  // capture the current context so the stack walker will show whatever called this at the root
+  //(it seems like the stack walker skips knows to skip one level or
+  // something so the call stack doesn't show this function)
   EXCEPTION_POINTERS* exceptions = NULL;
   GetExceptionPointers(errorCode, &exceptions);
 
@@ -497,9 +491,8 @@ void CrashHandler::DefaultRunCrashHandlerCallback(void* crashData, bool doRescue
   CrashInfo info;
   CrashHandler::InvokeCrashStartCallback(info);
 
-  // Auto restart is used for programs out in the wild that want to immediately
-  // restart if something goes wrong. For instance, this was used for the
-  // pacific science center projects.
+  // Auto restart is used for programs out in the wild that want to immediately restart if something goes wrong.
+  // For instance, this was used for the pacific science center projects.
   if (CrashHandler::mAutoRestart)
   {
     String appExe = GetApplication();
@@ -521,8 +514,7 @@ void CrashHandler::DefaultRunCrashHandlerCallback(void* crashData, bool doRescue
   // Send the crash data
   CrashHandler::InvokeSendCrashReport(params);
 
-  // Finally, do the application defined rescue call (such as saving a level,
-  // etc)
+  // Finally, do the application defined rescue call (such as saving a level, etc)
   if (doRescueCall)
     CrashHandler::InvokeRescueCallback();
 }

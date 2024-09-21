@@ -6,7 +6,7 @@ namespace Zero
 
 LPSTR StripQuotes(LPSTR input)
 {
-  int length = strlen(input);
+  size_t length = strlen(input);
   if (length > 2)
   {
     char* last = input + (length - 1);
@@ -25,10 +25,10 @@ LPCSTR* CommandLineToArgvA(LPCSTR CmdLine, int* _argc)
 {
   LPCSTR* argv;
   PCHAR _argv;
-  ULONG len;
-  ULONG argc;
+  size_t len;
+  size_t argc;
   CHAR a;
-  ULONG i, j;
+  size_t i, j;
 
   BOOLEAN in_QM;
   BOOLEAN in_TEXT;
@@ -107,7 +107,7 @@ LPCSTR* CommandLineToArgvA(LPCSTR CmdLine, int* _argc)
   _argv[j] = '\0';
   argv[argc] = NULL;
 
-  (*_argc) = argc;
+  (*_argc) = static_cast<int>(argc);
   return argv;
 }
 
@@ -115,10 +115,10 @@ PWCHAR* CommandLineToArgvW(PWCHAR CmdLine, int* _argc)
 {
   PWCHAR* argv;
   PWCHAR _argv;
-  ULONG len;
-  ULONG argc;
+  size_t len;
+  size_t argc;
   WCHAR a;
-  ULONG i, j;
+  size_t i, j;
 
   BOOLEAN in_QM;
   BOOLEAN in_TEXT;
@@ -197,7 +197,7 @@ PWCHAR* CommandLineToArgvW(PWCHAR CmdLine, int* _argc)
   _argv[j] = '\0';
   argv[argc] = NULL;
 
-  (*_argc) = argc;
+  (*_argc) = static_cast<int>(argc);
   return argv;
 }
 

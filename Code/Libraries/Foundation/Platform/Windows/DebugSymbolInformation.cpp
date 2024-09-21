@@ -64,8 +64,7 @@ void GetSymbolInfo(void* processHandle, SymbolInfo& symbolInfo)
   if (line.FileName != nullptr)
     symbolInfo.mFileName = line.FileName;
 
-  // Get the symbol name by splitting the path (find last '\' and last '.' and
-  // take what's in-between)
+  // Get the symbol name by splitting the path (find last '\' and last '.' and take what's in-between)
   symbolInfo.mModulePath = Narrow(modulePath);
   StringRange found = symbolInfo.mModulePath.FindLastOf('\\');
   if (!found.Empty())
@@ -78,7 +77,8 @@ void GetSymbolInfo(void* processHandle, SymbolInfo& symbolInfo)
 
 size_t GetStackAddresses(CallStackAddresses& callStack, size_t stacksToCapture, size_t framesToSkip)
 {
-  callStack.mCaptureFrameCount = CaptureStackBackTrace(framesToSkip, stacksToCapture, callStack.mAddresses, 0);
+  callStack.mCaptureFrameCount =
+      CaptureStackBackTrace((DWORD)framesToSkip, (DWORD)stacksToCapture, callStack.mAddresses, 0);
   return callStack.mCaptureFrameCount;
 }
 
@@ -120,9 +120,9 @@ void SimpleStackWalker::ShowCallstack(void* context, StringParam extraSymbolPath
       AddSymbolInformation(symbolInfo);
     }
   }
-  // We had a context (most likely from a crash). Unfortunately, there's no
-  // super easy way to use CaptureStackBackTrace which is a much nicer function
-  // than StalkWalk64. This is a bit hacky but oh-well...
+  // We had a context (most likely from a crash). Unfortunately, there's no super easy way to use
+  // CaptureStackBackTrace which is a much nicer function than StalkWalk64.
+  // This is a bit hacky but oh-well...
   else
   {
     PCONTEXT pcontext = (PCONTEXT)context;
@@ -154,8 +154,7 @@ void SimpleStackWalker::ShowCallstack(void* context, StringParam extraSymbolPath
     while (1)
     {
       int i = 0;
-      // Use stackwalk64 to iterate through frames. This modifies
-      // stackFrame.AddrPC.Offset each time.
+      // Use stackwalk64 to iterate through frames. This modifies stackFrame.AddrPC.Offset each time.
       if (StackWalk64(imageType,
                       process,
                       GetCurrentThread(),

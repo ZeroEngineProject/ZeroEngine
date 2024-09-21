@@ -202,12 +202,8 @@ bool ErrorProcessHandler(ErrorSignaler::ErrorData& errorData)
 
 bool SystemOpenFile(Status& status, cstr file, cwstr verb, cstr parameters = nullptr, cstr workingDirectory = nullptr)
 {
-  HINSTANCE success = ShellExecute(NULL,
-                                   verb,
-                                   Widen(file).c_str(),
-                                   Widen(parameters).c_str(),
-                                   Widen(workingDirectory).c_str(),
-                                   TRUE);
+  HINSTANCE success =
+      ShellExecute(NULL, verb, Widen(file).c_str(), Widen(parameters).c_str(), Widen(workingDirectory).c_str(), TRUE);
 
   const HINSTANCE shellSucceed = (HINSTANCE)32;
   if (success > shellSucceed)
@@ -245,7 +241,8 @@ bool ShellEditFile(StringParam file)
 bool ShellOpenApplication(StringParam file, StringParam parameters, StringParam workingDirectory)
 {
   Status status;
-  SystemOpenFile(status, file.c_str(), NULL, parameters.c_str(), !workingDirectory.Empty() ? workingDirectory.c_str() : nullptr);
+  SystemOpenFile(
+      status, file.c_str(), NULL, parameters.c_str(), !workingDirectory.Empty() ? workingDirectory.c_str() : nullptr);
   return status.Succeeded();
 }
 
@@ -326,8 +323,8 @@ String GetVersionString()
 
   osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
 
-  // The function 'GetVersionEx' still works on Windows 8.1 but is deprecated,
-  // so if the build is made on windows 8.1 this can often cause errors
+  // The function 'GetVersionEx' still works on Windows 8.1 but is deprecated, so if the build
+  // is made on windows 8.1 this can often cause errors
 #pragma warning(push)
 #pragma warning(disable : 4996)
   BOOL bOsVersionInfoEx = GetVersionEx((OSVERSIONINFO*)&osvi);

@@ -61,8 +61,7 @@ void FileDialog(FileDialogInfo& config, bool opening)
   WString defaultFileName = Widen(config.DefaultFileName);
   ZeroStrCpyW(fileName, cFileBufferSize, defaultFileName.c_str());
 
-  // Object containing the data is needed to properly keep it alive while the
-  // dialog is open
+  // Object containing the data is needed to properly keep it alive while the dialog is open
   WString title = Widen(config.Title);
   WString startingDirectory = Widen(config.StartingDirectory);
 
@@ -136,10 +135,9 @@ void FileDialog(FileDialogInfo& config, bool opening)
     }
   }
 
-  // We assume that the first item is the path if we were multi selecting, but
-  // if the user types in a random string then we can get something that looks
-  // like a path (no extension) and then get no files. So if we didn't get any
-  // files for some reason then mark that we actually failed.
+  // We assume that the first item is the path if we were multi selecting, but if the user
+  // types in a random string then we can get something that looks like a path (no extension)
+  // and then get no files. So if we didn't get any files for some reason then mark that we actually failed.
   if (config.mCallback)
     config.mCallback(config.mFiles, config.mUserData);
 }
@@ -331,13 +329,11 @@ DWORD Win32StyleFromWindowStyle(WindowStyleFlags::Enum styleFlags)
   if (styleFlags & WindowStyleFlags::Resizable)
     win32Style |= WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
   // WS_SYSMENU shows buttons on titlebar, don't use when in client only.
-  // The buttons interfere with input on some drivers, even when border is
-  // disabled.
+  // The buttons interfere with input on some drivers, even when border is disabled.
   if (styleFlags & WindowStyleFlags::Close && !(styleFlags & WindowStyleFlags::ClientOnly))
     win32Style |= WS_SYSMENU | WS_MINIMIZEBOX;
-  // Removing the caption flag causes a border flicker sometimes when the
-  // application gains focus. However, not removing it causes an incorrect
-  // window size sometimes when toggling between windowed/maximized.
+  // Removing the caption flag causes a border flicker sometimes when the application gains focus.
+  // However, not removing it causes an incorrect window size sometimes when toggling between windowed/maximized.
   if (styleFlags & WindowStyleFlags::ClientOnly)
     win32Style &= ~WS_CAPTION;
   return win32Style;
@@ -351,9 +347,8 @@ DWORD GetWin32ExStyle(WindowStyleFlags::Enum styleFlags)
     return WS_EX_TOOLWINDOW;
 }
 
-// This function is intentionally used idenitically in the below two functions
-// since it is used for documentation purposes to denote which LPARAMs have
-// client vs monitor positions.
+// This function is intentionally used idenitically in the below two functions since it is used
+// for documentation purposes to denote which LPARAMs have client vs monitor positions.
 IntVec2 GenericPositionFromLParam(LPARAM lParam)
 {
   // Systems with multiple monitors can have negative x and y coordinates
@@ -370,8 +365,7 @@ IntVec2 MonitorPositionFromLParam(LPARAM lParam)
   return GenericPositionFromLParam(lParam);
 }
 
-// From 'The Old New Thing' blog:
-// https://blogs.msdn.microsoft.com/oldnewthing/20131017-00/?p=2903
+// From 'The Old New Thing' blog: https://blogs.msdn.microsoft.com/oldnewthing/20131017-00/?p=2903
 BOOL UnadjustWindowRect(LPRECT prc, DWORD dwStyle, BOOL fMenu)
 {
   RECT rc;
@@ -576,9 +570,8 @@ void ScanDevice(Array<PlatformInputDevice>& devices, HANDLE deviceHandle, RID_DE
     device.mName = deviceName;
     device.mDeviceHandle = deviceHandle;
 
-    // Basically though we don't get a caps per button, we actually do have
-    // 'button sets' and thus we can have more than one set of caps per button
-    // set
+    // Basically though we don't get a caps per button, we actually do have 'button sets'
+    // and thus we can have more than one set of caps per button set
     uint buttonIndex = 0;
     for (uint i = 0; i < caps.NumberInputButtonCaps; i++)
     {
@@ -716,9 +709,8 @@ void RawInputMessage(ShellWindow* window, WPARAM wParam, LPARAM lParam)
                    ,
                    "Unable to get button capabilities");
 
-          // Basically though we don't get a caps per button, we actually do
-          // have 'button sets' and thus we can have more than one set of caps
-          // per button set
+          // Basically though we don't get a caps per button, we actually do have 'button sets'
+          // and thus we can have more than one set of caps per button set
           INT numberOfButtons = 0;
           for (uint i = 0; i < Caps.NumberInputButtonCaps; i++)
           {
@@ -762,8 +754,8 @@ void RawInputMessage(ShellWindow* window, WPARAM wParam, LPARAM lParam)
           {
             if (i >= inputDevice.mAxes.Size())
             {
-              Error("Got an axis index that was outside our mapped platform "
-                    "indices (need to call QueryInputDevices again?)");
+              Error("Got an axis index that was outside our mapped platform indices (need to call QueryInputDevices "
+                    "again?)");
               break;
             }
 
@@ -783,13 +775,11 @@ void RawInputMessage(ShellWindow* window, WPARAM wParam, LPARAM lParam)
                      "Unable to get input value");
 
             axes.PushBack(value);
-            // ZPrint("Axis with usage %x is %d\n",
-            // pValueCaps[i].Range.UsageMin, value);
+            // ZPrint("Axis with usage %x is %d\n", pValueCaps[i].Range.UsageMin, value);
           }
         }
 
-        // Send the raw buffer to the joystick to be interpreted by the custom
-        // mapping
+        // Send the raw buffer to the joystick to be interpreted by the custom mapping
         ::byte* bytes = (::byte*)rawInput->data.hid.bRawData;
 
         window->mOnInputDeviceChanged(inputDevice, buttons, axes, DataBlock(bytes, bufferSize), window);
@@ -970,8 +960,7 @@ LRESULT CALLBACK ShellWindowWndProc(ShellWindow* window, HWND hwnd, UINT msg, WP
   // Start resizing
   case WM_ENTERSIZEMOVE:
   {
-    // We need to keep getting updated while we're moving. Note that this could
-    // re-enter the WndProc.
+    // We need to keep getting updated while we're moving. Note that this could re-enter the WndProc.
     SetTimer(hwnd, 1, 0, nullptr);
     return MessageHandled;
   }
@@ -1020,8 +1009,7 @@ LRESULT CALLBACK ShellWindowWndProc(ShellWindow* window, HWND hwnd, UINT msg, WP
         RECT* rect = (RECT*)lParam;
 
         // Get the nearest monitor.
-        // Cannot call MonitorFromWindow because it returns the wrong monitor
-        // from minimized state.
+        // Cannot call MonitorFromWindow because it returns the wrong monitor from minimized state.
         HMONITOR appMonitor = MonitorFromRect(rect, MONITOR_DEFAULTTONEAREST);
 
         // Get the monitor information.
@@ -1184,10 +1172,10 @@ LRESULT CALLBACK ShellWindowWndProc(ShellWindow* window, HWND hwnd, UINT msg, WP
   {
     IntVec2 clientPosition = ClientPositionFromLParam(lParam);
 
-    // WM_MOUSEMOVE can be sent as a side effect of many other windows messages
-    // and OS operations even if the mouse has not moved. Check against the
-    // previous position and only process the event if the mouse has moved since
-    // the last time this message was recieved
+    // WM_MOUSEMOVE can be sent as a side effect of many other windows messages and
+    // OS operations even if the mouse has not moved. Check against the previous position
+    // and only process the event if the mouse has moved since the last time this
+    // message was recieved
     if (window->mClientMousePosition == clientPosition)
       return MessageHandled;
 
@@ -1667,8 +1655,7 @@ void ShellWindow::SetMonitorClientRectangle(const IntRect& monitorRectangle)
 {
   RECT rect = ToRECT(monitorRectangle);
 
-  // Add the border if ClientOnly is not set since SetWindowPos expects the
-  // border
+  // Add the border if ClientOnly is not set since SetWindowPos expects the border
   if (!mStyle.IsSet(WindowStyleFlags::ClientOnly))
     AdjustWindowRect(&rect, Win32StyleFromWindowStyle(mStyle.Field), FALSE);
 
@@ -1813,8 +1800,7 @@ WindowState::Enum ShellWindow::GetState()
 
     RECT rect = placement.rcNormalPosition;
 
-    // Fullscreen is done in windowed mode, check if window size is the same as
-    // the monitor.
+    // Fullscreen is done in windowed mode, check if window size is the same as the monitor.
     if (rect.left == monitorRect.left && rect.top == monitorRect.top && rect.right == monitorRect.right &&
         rect.bottom == monitorRect.bottom)
       return WindowState::Fullscreen;
@@ -1836,8 +1822,7 @@ void ShellWindow::SetState(WindowState::Enum windowState)
   {
   case WindowState::Minimized:
   {
-    // Intel crashes if minimizing from our fullscreen state, so revert to
-    // windowed first.
+    // Intel crashes if minimizing from our fullscreen state, so revert to windowed first.
     if (gIntelGraphics && GetState() == WindowState::Fullscreen)
     {
       SetStyle(self->mRestoreStyle);
@@ -1851,8 +1836,7 @@ void ShellWindow::SetState(WindowState::Enum windowState)
   case WindowState::Windowed:
   {
     // Switching back to windowed mode is the only way to leave fullscreen.
-    // This is the only location that style and placement should need to be
-    // reset (except intel bug above).
+    // This is the only location that style and placement should need to be reset (except intel bug above).
     if (GetState() == WindowState::Fullscreen)
     {
       SetStyle(self->mRestoreStyle);
@@ -1883,8 +1867,7 @@ void ShellWindow::SetState(WindowState::Enum windowState)
     SendMessage((HWND)mHandle, WM_SYSCOMMAND, SC_RESTORE, 0);
     GetWindowPlacement((HWND)mHandle, &self->mPlacement);
 
-    // Remove border and disable window's aero so it can't manipulate the window
-    // without us knowing.
+    // Remove border and disable window's aero so it can't manipulate the window without us knowing.
     self->mRestoreStyle = mStyle.Field;
     mStyle.SetFlag(WindowStyleFlags::ClientOnly);
     mStyle.ClearFlag(WindowStyleFlags::Resizable);
@@ -1932,8 +1915,7 @@ void ShellWindow::TakeFocus()
   // Force the window to be un-minimized
   SetState(WindowState::Restore);
 
-  // Sometimes windows won't actually take focus...just make it
-  // happen...hopefully...
+  // Sometimes windows won't actually take focus...just make it happen...hopefully...
   for (size_t i = 0; i < 5; ++i)
   {
     SetForegroundWindow((HWND)mHandle);

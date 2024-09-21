@@ -19,11 +19,10 @@ inline void SetThreadDebugName(DWORD dwThreadID, LPCSTR szThreadName)
   info.dwThreadID = dwThreadID;
   info.dwFlags = 0;
 
-  // Windows API never exposed a way to set the name of a thread, so instead
-  // they posted this bit of specialized code that exposes internal details
-  // about how they set thread names This trick uses the above defined
-  // structure, as well as raising an exception to set the name The exception is
-  // caught by Windows/Visual Studio which then sets the thread name
+  // Windows API never exposed a way to set the name of a thread, so instead they posted
+  // this bit of specialized code that exposes internal details about how they set thread names
+  // This trick uses the above defined structure, as well as raising an exception to set the name
+  // The exception is caught by Windows/Visual Studio which then sets the thread name
   __try
   {
     // If you hit a breakpoint/exception here, CONTINUE past it

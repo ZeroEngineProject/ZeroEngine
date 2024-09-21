@@ -89,8 +89,7 @@ bool FileExists(StringParam filePath)
 bool FileWritable(StringParam filePath)
 {
   // Not the greatest way to check for writable...
-  // We can use permissions, but we still don't know if we have the ability to
-  // write to a file.
+  // We can use permissions, but we still don't know if we have the ability to write to a file.
   FILE* file = fopen(filePath.c_str(), "a");
   if (file)
   {
@@ -195,8 +194,8 @@ FileRange::FileRange(StringParam filePath)
   mPath = filePath;
   if (mPath.Empty())
   {
-    Error("Cannot create a file range from an empty directory/path string "
-          "(working directory as empty string not supported)");
+    Error("Cannot create a file range from an empty directory/path string (working directory as empty string not "
+          "supported)");
     return;
   }
 

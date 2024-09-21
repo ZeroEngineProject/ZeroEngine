@@ -29,10 +29,9 @@ Zero::String ToErrorString(uint errorCode)
   LocalFree(messageBuffer);
 
   // When formatting a message, some of them include context (inserts)
-  // We don't always have the context, and we don't want the '%1' inserts
-  // showing up in the message For the most part, removing them works and the
-  // message is still decently valid This also replaces the leading and trailing
-  // space for the '%1' Insert
+  // We don't always have the context, and we don't want the '%1' inserts showing up in the message
+  // For the most part, removing them works and the message is still decently valid
+  // This also replaces the leading and trailing space for the '%1' Insert
   static Zero::Regex regex(" \\%[0-9]+|\\%[0-9]+ ");
   static Zero::String cEmpty;
   string = regex.Replace(string, cEmpty);
@@ -102,8 +101,7 @@ uint CheckWindowsErrorCode(uint success, cstr format, ...)
 
 cstr GetWindowsExceptionCode(int exceptionCode)
 {
-  // take from Bruce Dawson's article
-  // http://www.altdevblogaday.com/2012/04/20/exceptional-floating-point/
+  // take from Bruce Dawson's article http://www.altdevblogaday.com/2012/04/20/exceptional-floating-point/
   switch ((DWORD)exceptionCode)
   {
   case STATUS_FLOAT_INVALID_OPERATION:

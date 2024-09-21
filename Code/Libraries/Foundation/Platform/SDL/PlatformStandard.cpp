@@ -24,8 +24,7 @@ void PlatformLibrary::Initialize()
     CrashHandler::FatalError(1);
   }
 
-  // We don't want the back buffer to be multi-sampled because we can't blit a
-  // frame buffer to it.
+  // We don't want the back buffer to be multi-sampled because we can't blit a frame buffer to it.
   SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
   SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
 

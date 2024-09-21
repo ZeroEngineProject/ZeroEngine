@@ -65,8 +65,8 @@ SystemEntry::~SystemEntry()
 
 SystemEntry* SystemEntry::FindChild(StringParam name)
 {
-  // If we have double slashes with nothing in between, or the starting root /
-  // then there will be an empty entry before it (just return itself always).
+  // If we have double slashes with nothing in between, or the starting root / then
+  // there will be an empty entry before it (just return itself always).
   if (name.Empty())
     return this;
 
@@ -81,8 +81,8 @@ SystemEntry* SystemEntry::FindChild(StringParam name)
 
 SystemEntry* SystemEntry::FindOrAddChild(StringParam name, EntryType::Enum type)
 {
-  // If we have double slashes with nothing in between, or the starting root /
-  // then there will be an empty entry before it (just return itself always).
+  // If we have double slashes with nothing in between, or the starting root / then
+  // there will be an empty entry before it (just return itself always).
   if (name.Empty())
     return this;
 
@@ -272,9 +272,8 @@ void AddVirtualFileSystemEntry(StringParam absolutePath, DataBlock* stealData, T
 
 bool PersistFiles()
 {
-  // The VFS has no way of perminantly persisting files, as they actual file
-  // system itself may be non-existant. In the future for platforms we could
-  // create a zip here and save it back out (or call a callback).
+  // The VFS has no way of perminantly persisting files, as they actual file system itself may be non-existant.
+  // In the future for platforms we could create a zip here and save it back out (or call a callback).
   return false;
 }
 
@@ -551,8 +550,7 @@ void File::Open(OsHandle handle, FileMode::Enum mode)
 void File::Open(Status& status, FILE* file, FileMode::Enum mode)
 {
   ZeroGetPrivateData(FilePrivateData);
-  // We could support this by offering a dual interface where we also store a
-  // FILE*
+  // We could support this by offering a dual interface where we also store a FILE*
   Error("Memory File does not support opening files via FILE");
 }
 
@@ -664,8 +662,7 @@ void File::Duplicate(Status& status, File& destinationFile)
 
   if (!self->mEntry || !other->mEntry)
   {
-    status.SetFailed("File is not valid. Open a valid file before attempting "
-                     "file operations.");
+    status.SetFailed("File is not valid. Open a valid file before attempting file operations.");
     return;
   }
 

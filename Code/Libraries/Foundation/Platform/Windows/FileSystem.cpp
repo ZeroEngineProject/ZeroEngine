@@ -41,18 +41,16 @@ void SetWorkingDirectory(StringParam path)
 String GetUserLocalDirectory()
 {
   wchar_t temp[MAX_PATH + 1];
-  // Consider making an option to set which path is returned for people who want
-  // to use networked drives with proper permissions setup such that they work,
-  // same for the GetUserDocumentsDirectory function
+  // Consider making an option to set which path is returned for people who want to use networked drives with
+  // proper permissions setup such that they work, same for the GetUserDocumentsDirectory function
 
   // SHGFP_TYPE_DEFAULT - Returns the default path for the requested folder
   // SHGFP_TYPE_CURRENT - Returns the redirect path for the requested folder
   SHGFP_TYPE pathType = SHGFP_TYPE_DEFAULT;
 
   // By calling get folder path with SHGFP_TYPE_DEFAULT it will return the path
-  // %USERPROFILE%\AppData\Local even if the user has redirected it to a network
-  // drive this avoids user permission errors caused by one drive or other
-  // networked drives
+  // %USERPROFILE%\AppData\Local even if the user has redirected it to a network drive
+  // this avoids user permission errors caused by one drive or other networked drives
   SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, pathType, temp);
   return Narrow(temp);
 }
@@ -65,9 +63,8 @@ String GetUserDocumentsDirectory()
   SHGFP_TYPE pathType = SHGFP_TYPE_DEFAULT;
 
   // By calling get folder path with SHGFP_TYPE_DEFAULT it will return the path
-  // %USERPROFILE%\Documents even if the user has redirected it to a network
-  // drive this avoids user permission errors caused by one drive or other
-  // networked drives
+  // %USERPROFILE%\Documents even if the user has redirected it to a network drive
+  // this avoids user permission errors caused by one drive or other networked drives
   SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, pathType, temp);
   return Narrow(temp);
 }
@@ -138,9 +135,9 @@ void CreateDirectoryAndParents(StringParam directory)
 {
   char directoryPath[MAX_PATH];
   ZeroStrCpy(directoryPath, MAX_PATH, directory.c_str());
-  uint size = directory.SizeInBytes();
+  size_t size = directory.SizeInBytes();
 
-  for (uint c = 0; c < size; ++c)
+  for (size_t c = 0; c < size; ++c)
   {
     // When there is a directory separator
     if (directoryPath[c] == cDirectorySeparatorRune.value)
@@ -187,8 +184,7 @@ bool DeleteDirectory(StringParam directory)
   if (!DirectoryExists(directory))
     return false;
 
-  // RemoveDirectoryW requires the directory to be empty, so we must delete
-  // everything in it
+  // RemoveDirectoryW requires the directory to be empty, so we must delete everything in it
   DeleteDirectoryContents(directory);
 
   // this is the only part that needs to be updated platform specific
@@ -273,8 +269,8 @@ FileRange::FileRange(StringParam filePath)
   mPath = filePath;
   if (mPath.Empty())
   {
-    Error("Cannot create a file range from an empty directory/path string "
-          "(working directory as empty string not supported)");
+    Error("Cannot create a file range from an empty directory/path string (working directory as empty string not "
+          "supported)");
     self->mHandle = NULL;
     return;
   }

@@ -139,9 +139,8 @@ extern "C" EMSCRIPTEN_KEEPALIVE char* EmscriptenOnCopy(int cut)
 
 extern "C" EMSCRIPTEN_KEEPALIVE void EmscriptenFileDropHandler(char* fileBuffer)
 {
-  // We're relying on the Emscripten instance only having one window with GL
-  // setup. This could be changed to get a saved id somewhere for the primary
-  // window.
+  // We're relying on the Emscripten instance only having one window with GL setup. 
+  // This could be changed to get a saved id somewhere for the primary window.
   SDL_Window* sdlWindow = gSdlMainWindow;
   if (!sdlWindow)
     sdlWindow = SDL_GetGrabbedWindow();
@@ -180,8 +179,7 @@ extern "C" EMSCRIPTEN_KEEPALIVE void EmscriptenFileDropHandler(char* fileBuffer)
   dropEvent.file = nullptr;
   SDL_PushEvent((SDL_Event*)&dropEvent);
 
-  // The filebuffer was allocated on the heap javascript side and we need to
-  // free it
+  // The filebuffer was allocated on the heap javascript side and we need to free it
   free(fileBuffer);
 }
 
@@ -195,8 +193,7 @@ extern "C" EMSCRIPTEN_KEEPALIVE void EmscriptenShellOpenFileEnd(char* fileBuffer
 {
   FileDialogInfo& config = *(FileDialogInfo*)configPointer;
 
-  // Note the the 'fileBuffer' can be null if we cancelled, so we check it
-  // before iterating.
+  // Note the the 'fileBuffer' can be null if we cancelled, so we check it before iterating.
   if (fileBuffer)
   {
     // Loop through all the files and add them to the config.
@@ -222,8 +219,7 @@ namespace Zero
 
 void Shell::OpenFile(FileDialogInfo& config)
 {
-  // We have no way of selecting a folder, so for now we just enable
-  // multi-select.
+  // We have no way of selecting a folder, so for now we just enable multi-select.
   bool multiple = config.Flags & FileDialogFlags::MultiSelect || config.Flags & FileDialogFlags::Folder;
 
   StringBuilder acceptExtensions;

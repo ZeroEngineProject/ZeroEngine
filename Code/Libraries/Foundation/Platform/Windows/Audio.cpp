@@ -541,8 +541,7 @@ bool WasapiDevice::WasapiEventHandling()
     Reset();
     return true;
   }
-  // If we timed out waiting for WASAPI, try to reset (will use fallback if it
-  // fails)
+  // If we timed out waiting for WASAPI, try to reset (will use fallback if it fails)
   else if (waitResult == WAIT_TIMEOUT)
   {
     Reset();

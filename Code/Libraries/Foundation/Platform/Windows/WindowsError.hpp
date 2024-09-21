@@ -12,8 +12,7 @@ uint CheckWindowsErrorCode(uint success, ::cstr format = 0, ...);
 // Get string from exception code. Unknown will return NULL.
 cstr GetWindowsExceptionCode(int exceptionCode);
 
-// Windows Error Macros (always output, even in release, so we get error
-// messages in logs).
+// Windows Error Macros (always output, even in release, so we get error messages in logs).
 #define VerifyWin(expression, ...)                                                                                     \
   do                                                                                                                   \
   {                                                                                                                    \
@@ -28,7 +27,7 @@ cstr GetWindowsExceptionCode(int exceptionCode);
     if (!success)                                                                                                      \
     {                                                                                                                  \
       VerifyWin(success, ##__VA_ARGS__);                                                                               \
-      return (uint)-1;                                                                                                 \
+      return (uint) - 1;                                                                                               \
     }                                                                                                                  \
   }
 

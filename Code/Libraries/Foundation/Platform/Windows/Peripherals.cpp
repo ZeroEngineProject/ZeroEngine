@@ -30,8 +30,7 @@ void InitializeGamepad()
 }
 
 static_assert(sizeof(XINPUT_STATE) == sizeof(GamepadState),
-              "The size of the state in Platform.hpp must match the size of "
-              "XINPUT_STATE");
+              "The size of the state in Platform.hpp must match the size of XINPUT_STATE");
 
 bool AreGamepadsEnabled()
 {
@@ -43,7 +42,7 @@ bool GetGamepadState(size_t gamepadIndex, GamepadState* stateOut)
   if (!XInputModule || gamepadIndex >= cMaxGamepads)
     return false;
 
-  bool result = (*XInputGetState_P)(gamepadIndex, (XINPUT_STATE*)stateOut) == ERROR_SUCCESS;
+  bool result = (*XInputGetState_P)(static_cast<u32>(gamepadIndex), (XINPUT_STATE*)stateOut) == ERROR_SUCCESS;
 
   if (!result)
     return false;
@@ -77,7 +76,7 @@ bool SetGamepadVibration(size_t gamepadIndex, float leftSpeed, float rightSpeed)
   XINPUT_VIBRATION zerovibration;
   zerovibration.wLeftMotorSpeed = (WORD)(leftSpeed * MaxRumble);
   zerovibration.wRightMotorSpeed = (WORD)(rightSpeed * MaxRumble);
-  return (*XInputSetState_P)(gamepadIndex, &zerovibration) == ERROR_SUCCESS;
+  return (*XInputSetState_P)(static_cast<u32>(gamepadIndex), &zerovibration) == ERROR_SUCCESS;
 }
 
 } // namespace Zero

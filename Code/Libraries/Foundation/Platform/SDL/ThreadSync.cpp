@@ -195,16 +195,15 @@ void InterprocessMutex::Initialize(Status& status, const char* mutexName, bool f
 {
   ZeroGetPrivateData(InterprocessMutexPrivateData)
 
-      // This approach is a bit silly, but instead of using an actual inter
-      // process mutex we open a common file for write access. We use the temp
-      // directory because we know it will be shared between all running
-      // instances and it is guaranteed writable. We also keep the file open for
-      // write until the InterprocessMutex is destructed.
+      // This approach is a bit silly, but instead of using an actual inter process mutex we
+      // open a common file for write access. We use the temp directory because we know it will
+      // be shared between all running instances and it is guaranteed writable.
+      // We also keep the file open for write until the InterprocessMutex is destructed.
       if (!failIfAlreadyExists) return;
 
-  // Sanitize the mutex name for files. We guarantee uniqueness because we don't
-  // allow the '-' character even though it is legal in file names, and any
-  // illegal character we find we replace with -XX where XX is the hex code.
+  // Sanitize the mutex name for files. We guarantee uniqueness because we don't allow the '-' character
+  // even though it is legal in file names, and any illegal character we find we replace with -XX where XX is the hex
+  // code.
   StringBuilder builder;
   while (*mutexName != '\0')
   {

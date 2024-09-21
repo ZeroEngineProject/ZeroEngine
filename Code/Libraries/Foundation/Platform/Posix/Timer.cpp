@@ -14,8 +14,7 @@ u64 GetTimeNanosecond()
 #ifdef __APPLE__
   // https://developer.apple.com/library/mac/qa/qa1398/_index.html
   uint64_t time = mach_absolute_time();
-  // 'AbsoluteTime' is guaranteed to be a 64 bit wide value, however it's a
-  // struct, not a primitive 64 bit value
+  // 'AbsoluteTime' is guaranteed to be a 64 bit wide value, however it's a struct, not a primitive 64 bit value
   Nanoseconds nanoseconds = AbsoluteToNanoseconds(*(AbsoluteTime*)&time);
   return *(uint64_t*)&nanoseconds;
 #else

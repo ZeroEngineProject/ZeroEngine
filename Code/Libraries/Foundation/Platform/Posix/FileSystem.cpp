@@ -55,21 +55,18 @@ void AddVirtualFileSystemEntry(StringParam absolutePath, DataBlock* stealData, T
   }
   else
   {
-    // Make sure the directory exists before we try and open a file inside of
-    // it.
+    // Make sure the directory exists before we try and open a file inside of it.
     String directory = FilePath::GetDirectoryPath(absolutePath);
     CreateDirectoryAndParents(directory);
 
-    // The file may already exist if it was persisted. If so, don't write over
-    // it!
+    // The file may already exist if it was persisted. If so, don't write over it!
     if (!FileExists(absolutePath))
     {
       FILE* file = fopen(absolutePath.c_str(), "wb");
 
       ReturnIf(!file,
                ,
-               "Could not open file '%s', was the parent directory '%s' "
-               "created? (dir exists: %d, file exists: %d)",
+               "Could not open file '%s', was the parent directory '%s' created? (dir exists: %d, file exists: %d)",
                absolutePath.c_str(),
                directory.c_str(),
                (int)DirectoryExists(directory),
@@ -194,19 +191,17 @@ void CreateDirectoryAndParents(StringParam directory)
   // This also ensures we don't have a trailing separator.
   String path = FilePath::Normalize(directory);
 
-  // Copy the string (including null) to the temp buffer since we're going to
-  // modify it by adding nulls.
+  // Copy the string (including null) to the temp buffer since we're going to modify it by adding nulls.
   char* temp = (char*)alloca(directory.SizeInBytes() + 1);
   memcpy(temp, directory.c_str(), directory.SizeInBytes() + 1);
 
   // We don't want to attempt to create the root in case the path is rooted
-  // however, we always know we can at least skip the first character even if it
-  // isn't rooted because we know a directory name will have at least one
-  // character.
+  // however, we always know we can at least skip the first character even if it isn't
+  // rooted because we know a directory name will have at least one character.
   for (char* it = temp + 1; *it != 0; ++it)
   {
-    // If we hit the directory separator, temporarily substitute a null
-    // character and call make directory, then put it back and continue walking.
+    // If we hit the directory separator, temporarily substitute a null character
+    // and call make directory, then put it back and continue walking.
     if (*it == '/')
     {
       *it = 0;

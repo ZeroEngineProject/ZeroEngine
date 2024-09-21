@@ -8,8 +8,7 @@ extern "C"
   char __cdecl _InterlockedExchange8(char volatile* target, char value);
   short __cdecl _InterlockedExchange16(short volatile* target, short value);
   long __cdecl _InterlockedExchange(long volatile* target, long value);
-  //__int64 __cdecl _InterlockedExchange64     (__int64 volatile* target,
-  //__int64 value);
+  //__int64 __cdecl _InterlockedExchange64     (__int64 volatile* target, __int64 value);
   void* __cdecl _InterlockedExchangePointer(void* volatile* target, void* value);
 
   // InterlockedCompareExchange
@@ -23,8 +22,7 @@ extern "C"
   char __cdecl _InterlockedExchangeAdd8(char volatile* target, char value);
   short __cdecl _InterlockedExchangeAdd16(short volatile* target, short value);
   long __cdecl _InterlockedExchangeAdd(long volatile* target, long value);
-  //__int64 __cdecl _InterlockedExchangeAdd64(__int64 volatile* target, __int64
-  // value);
+  //__int64 __cdecl _InterlockedExchangeAdd64(__int64 volatile* target, __int64 value);
 
   // InterlockedIncrement
   // char    __cdecl _InterlockedIncrement8 (char volatile*    target);
@@ -48,7 +46,7 @@ extern "C"
 #pragma intrinsic(_InterlockedExchange8)
 #pragma intrinsic(_InterlockedExchange16)
 #pragma intrinsic(_InterlockedExchange)
-//#pragma intrinsic (_InterlockedExchange64     )
+// #pragma intrinsic (_InterlockedExchange64     )
 #pragma intrinsic(_InterlockedExchangePointer)
 
 // InterlockedCompareExchange
@@ -62,19 +60,19 @@ extern "C"
 #pragma intrinsic(_InterlockedExchangeAdd8)
 #pragma intrinsic(_InterlockedExchangeAdd16)
 #pragma intrinsic(_InterlockedExchangeAdd)
-//#pragma intrinsic (_InterlockedExchangeAdd64)
+// #pragma intrinsic (_InterlockedExchangeAdd64)
 
 // InterlockedIncrement
-//#pragma intrinsic (_InterlockedIncrement8 )
+// #pragma intrinsic (_InterlockedIncrement8 )
 #pragma intrinsic(_InterlockedIncrement16)
 #pragma intrinsic(_InterlockedIncrement)
-//#pragma intrinsic (_InterlockedIncrement64)
+// #pragma intrinsic (_InterlockedIncrement64)
 
 // InterlockedDecrement
-//#pragma intrinsic (_InterlockedDecrement8 )
+// #pragma intrinsic (_InterlockedDecrement8 )
 #pragma intrinsic(_InterlockedDecrement16)
 #pragma intrinsic(_InterlockedDecrement)
-//#pragma intrinsic (_InterlockedDecrement64)
+// #pragma intrinsic (_InterlockedDecrement64)
 
 namespace Zero
 {
@@ -143,8 +141,7 @@ s32 AtomicExchange(volatile s32* target, s32 value)
 }
 s64 AtomicExchange(volatile s64* target, s64 value)
 {
-  return (s64)::InterlockedExchange64((__int64 volatile*)target,
-                                      (__int64)value); // _InterlockedExchange64 Unavailable
+  return (s64)::InterlockedExchange64((__int64 volatile*)target, (__int64)value); // _InterlockedExchange64 Unavailable
 }
 void* AtomicExchange(void* volatile* target, void* value)
 {
