@@ -75,28 +75,24 @@ private:
       if (item.T > mItems[mCount - 1].T)
         return;
     }
-    // if we still have capacity, then we have to increment the number of
-    // objects we have
+    // if we still have capacity, then we have to increment the number of objects we have
     else
       ++mCount;
 
-    // in an attempt to be more efficient, instead of inserting the new item and
-    // shuffling it down, we shuffle up the items that happen after the new item
-    // then put the new item in. This will reduce the copies by about half since
-    // we only copy the new item once.
+    // in an attempt to be more efficient, instead of inserting the new item and shuffling it down,
+    // we shuffle up the items that happen after the new item then put the new item in.
+    // This will reduce the copies by about half since we only copy the new item once.
 
-    // we know that the last item happens after us, so we want to check all of
-    // the items before that
+    // we know that the last item happens after us, so we want to check all of the items before that
     uint index = mCount - 2;
     while (index > 0)
     {
-      // if the current item happened before the new item, then we have found
-      // our insertion point which is one after this item
+      // if the current item happened before the new item, then we have found our insertion point which is one after
+      // this item
       if (mItems[index].T <= item.T)
         break;
 
-      // otherwise, this item happened after the new item so push the old one
-      // back a slot
+      // otherwise, this item happened after the new item so push the old one back a slot
       mItems[index + 1] = mItems[index];
       --index;
     }
@@ -104,12 +100,10 @@ private:
     // have to deal with the zero case specially because of unsigned integers
     if (index == 0)
     {
-      // if the first item is sooner than the new item, Insert the new item
-      // after the first one
+      // if the first item is sooner than the new item, Insert the new item after the first one
       if (mItems[index].T <= item.T)
         mItems[index + 1] = item;
-      // otherwise we have to shuffle the first item back one and put the new
-      // one at the first slot
+      // otherwise we have to shuffle the first item back one and put the new one at the first slot
       else
       {
         mItems[index + 1] = mItems[index];

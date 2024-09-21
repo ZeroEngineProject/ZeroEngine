@@ -83,8 +83,8 @@ public:
   /// Casts an Aabb into the broad phases.  Returns all objects intersecting the
   /// bounding box.
   virtual void CastAabb(const Aabb& aabb, ProxyCastResults& results);
-  /// Casts a Sphere into the broad phases.  Returns all objects intersecting
-  /// the bounding sphere.
+  /// Casts a Sphere into the broad phases.  Returns all objects intersecting the
+  /// bounding sphere.
   virtual void CastSphere(const Sphere& sphere, ProxyCastResults& results);
   /// Casts a Frustum into the broad phases.  Returns all objects intersecting
   /// the frustum.

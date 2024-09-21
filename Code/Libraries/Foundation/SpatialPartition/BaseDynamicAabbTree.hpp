@@ -112,8 +112,7 @@ public:
   /// function called Overlap. Most implementations should just call Query
   /// which uses the policy BroadPhasePolicy<QueryType,Aabb>. A scratch buffer
   /// array must also be provided for handling allocations. In general, one
-  /// should use the forRangeBroadphaseTreePolicy macro instead of calling this
-  /// directly.
+  /// should use the forRangeBroadphaseTreePolicy macro instead of calling this directly.
   template <typename QueryType, typename ArrayType, typename Policy>
   BaseTreeRange<QueryType, ArrayType, Policy> QueryWithPolicy(const QueryType& queryObj,
                                                               ArrayType& scratchBuffer,

@@ -19,8 +19,7 @@ public:
 
   void Serialize(Serializer& stream);
 
-  /// Inserts the given data and fills out the proxy for future operations on
-  /// data.
+  /// Inserts the given data and fills out the proxy for future operations on data.
   void CreateProxy(BroadPhaseProxy& proxy, DataType& data);
   /// Removes the object that the given proxy points to.
   void RemoveProxy(BroadPhaseProxy& proxy);

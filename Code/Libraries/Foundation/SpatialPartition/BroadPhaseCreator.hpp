@@ -65,8 +65,7 @@ extern BroadPhaseLibrary* gBroadPhaseLibrary;
   Z::gBroadPhaseLibrary->RegisterBroadPhaseCreator(ZilchTypeId(type), new BroadPhaseCreatorType<type>(), canBeUsedAs);
 
 /// A property editor for enumerating broadphase types
-/// (BroadPhaseType is used to distinguish between Static and Dynamic
-/// Broadphases)
+/// (BroadPhaseType is used to distinguish between Static and Dynamic Broadphases)
 template <uint BroadphaseType>
 class BroadphasePropertyExtension : public EditorIndexedStringArray
 {

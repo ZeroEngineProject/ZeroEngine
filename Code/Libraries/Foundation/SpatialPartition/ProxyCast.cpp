@@ -234,9 +234,7 @@ void ProxyResult::Set(void* proxy, Vec3 points[2], Vec3Param contactNormal, real
 }
 
 ProxyCastResults::ProxyCastResults(ProxyCastResultArray& array, BaseCastFilter& filter) :
-    CurrSize(0),
-    Filter(filter),
-    Results(array)
+    CurrSize(0), Filter(filter), Results(array)
 {
 }
 
@@ -288,8 +286,7 @@ bool ProxyCastResults::Insert(void* mObjectHit, Vec3 points[2], Vec3Param normal
     // Swap the two in place.
     if (Results[i].mTime < Results[i - 1].mTime)
       Swap(Results[i], Results[i - 1]);
-    // Break out if the current collision was later (objects are in the correct
-    // order).
+    // Break out if the current collision was later (objects are in the correct order).
     else
       break;
   }

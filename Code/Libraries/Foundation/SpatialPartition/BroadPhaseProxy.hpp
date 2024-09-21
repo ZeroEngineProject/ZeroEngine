@@ -34,7 +34,8 @@ struct BroadPhaseProxy
 
 private:
   /// Any type that is useful to a BroadPhase should be in this union.
-  union {
+  union
+  {
     void* mProxy;
     u32 mIntProxy;
   };
@@ -86,7 +87,7 @@ template <typename ClientDataType>
 struct BaseBroadPhaseObject
 {
   typedef BaseBroadPhaseData<ClientDataType> DataType;
-  BaseBroadPhaseObject(){};
+  BaseBroadPhaseObject() {};
 
   BaseBroadPhaseObject(BroadPhaseProxy* proxy, DataType& data) : mProxy(proxy), mData(data)
   {

@@ -34,8 +34,8 @@ public:
   virtual void CastSphere(CastDataParam data, ProxyCastResults& results);
   virtual void CastFrustum(CastDataParam data, ProxyCastResults& results);
 
-  virtual void RegisterCollisions(){};
-  virtual void Cleanup(){};
+  virtual void RegisterCollisions() {};
+  virtual void Cleanup() {};
 
 private:
   typedef StaticAabbTreeDefault TreeType;

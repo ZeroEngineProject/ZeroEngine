@@ -4,10 +4,10 @@
 namespace Zero
 {
 
-/// A range for iterating through the cast results of the BoundingSphere
-/// BroadPhase. This range is templated to check the Spheres against the
-/// provided QueryType using the provided policy. This range becomes invalidated
-/// when the BroadPhase is changed.
+/// A range for iterating through the cast results of the BoundingSphere BroadPhase.
+/// This range is templated to check the Spheres against the provided QueryType
+/// using the provided policy.
+/// This range becomes invalidated when the BroadPhase is changed.
 template <typename ClientDataType, typename QueryType, typename PolicyType = BroadPhasePolicy<QueryType, Sphere>>
 struct BoundingSphereRange : public BroadPhaseArrayRange<ClientDataType,
                                                          QueryType,
@@ -30,8 +30,8 @@ struct BoundingSphereRange : public BroadPhaseArrayRange<ClientDataType,
   }
 };
 
-/// A range for iterating through the self pairs of the BoundingSphere
-/// BroadPhase. This range becomes invalidated when the BroadPhase is changed.
+/// A range for iterating through the self pairs of the BoundingSphere BroadPhase.
+/// This range becomes invalidated when the BroadPhase is changed.
 template <typename ClientDataType>
 struct BoundingSpherePairRange : public BroadPhaseArrayPairRange<ClientDataType, SphereQueryPairCheck<ClientDataType>>
 {
@@ -53,8 +53,8 @@ public:
 
   using BaseType::mData;
 
-  BoundingSphere(){};
-  ~BoundingSphere(){};
+  BoundingSphere() {};
+  ~BoundingSphere() {};
 
   /// Returns a range to iterate through any cast on this BroadPhase. The policy
   /// determines if the queryObj and a Sphere overlap through a function called
@@ -66,8 +66,8 @@ public:
   }
 
   /// Returns a range to iterate through any cast on this BroadPhase. The policy
-  /// is defaulted to BroadPhasePolicy<QueryType, Sphere>. This assumes that
-  /// there is a Overlap function in the extended intersection for this test.
+  /// is defaulted to BroadPhasePolicy<QueryType, Sphere>. This assumes that there
+  /// is a Overlap function in the extended intersection for this test.
   template <typename QueryType>
   BoundingSphereRange<ClientDataType, QueryType> Query(const QueryType& queryObj)
   {

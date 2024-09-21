@@ -120,8 +120,7 @@ struct BroadPhaseArrayRange : public QueryCheck
   }
 
   BroadPhaseArrayRange(ObjectArray* data, const QueryType& queryObj, Policy policy) :
-      QueryCheck(queryObj, policy),
-      mData(data)
+      QueryCheck(queryObj, policy), mData(data)
   {
     mIndex = 0;
     mIndex = SkipDead();
@@ -165,7 +164,7 @@ struct BroadPhaseArrayRange : public QueryCheck
 
       return i;
     }
-    return mData->Size();
+    return (uint)mData->Size();
   }
 
   uint mIndex;
@@ -190,8 +189,7 @@ struct BroadPhaseTreeRange
                       NodeType* root,
                       const QueryType& queryObj,
                       PolicyType policy) :
-      mQueryObj(queryObj),
-      mPolicy(policy)
+      mQueryObj(queryObj), mPolicy(policy)
   {
     mScratchSpace = scratchBuffer;
     mScratchSpace->Clear();
@@ -213,7 +211,7 @@ struct BroadPhaseTreeRange
 
   ClientDataType& Front()
   {
-    uint size = mScratchSpace->Size();
+    size_t size = mScratchSpace->Size();
     ErrorIf(size == 0, "Cannot pop an empty range.");
     return (*mScratchSpace)[size - 1]->mClientData;
   }
@@ -311,8 +309,8 @@ struct BroadPhaseArrayPairRange : public QueryCheck
     // This has to check for the mValid for false due to how we
     // hand out proxies. We can't shrink the array otherwise
     // the old proxies will be invalid.
-    uint size = data.Size();
-    for (uint i = index1; i < size; ++i)
+    size_t size = data.Size();
+    for (size_t i = index1; i < size; ++i)
     {
       ArrayObjectType& firstObj = data[i];
       if (firstObj.mValid == false)
@@ -322,7 +320,7 @@ struct BroadPhaseArrayPairRange : public QueryCheck
         continue;
       }
 
-      for (uint j = index2; j < size; ++j)
+      for (size_t j = index2; j < size; ++j)
       {
         ArrayObjectType& secondObj = data[j];
         if (secondObj.mValid == false)

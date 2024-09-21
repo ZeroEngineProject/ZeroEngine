@@ -7,8 +7,7 @@ template <typename TreeType>
 BaseDynamicAabbTreeBroadPhase<TreeType>::BaseDynamicAabbTreeBroadPhase()
 {
   HeapAllocator allocator(mHeap);
-  // Temporarily Disabled: Leaks in the editor because nothing cleans up
-  // mNodesToQuery
+  // Temporarily Disabled: Leaks in the editor because nothing cleans up mNodesToQuery
   // mNodesToQuery.SetAllocator(allocator);
   mPairs.SetAllocator(allocator);
 
@@ -40,8 +39,7 @@ void BaseDynamicAabbTreeBroadPhase<TreeType>::CreateProxy(BroadPhaseProxy& proxy
   mTree.CreateProxy(proxy, data);
   NodeType* node = static_cast<NodeType*>(proxy.ToVoidPointer());
 
-  // Temporarily Disabled: Leaks in the editor because nothing cleans up
-  // mNodesToQuery
+  // Temporarily Disabled: Leaks in the editor because nothing cleans up mNodesToQuery
   // mNodesToQuery.PushBack(node);
 }
 
@@ -62,8 +60,7 @@ void BaseDynamicAabbTreeBroadPhase<TreeType>::RemoveProxy(BroadPhaseProxy& proxy
   // remove from the tree
   mTree.RemoveProxy(proxy);
 
-  // Temporarily Disabled: Leaks in the editor because nothing cleans up
-  // mNodesToQuery
+  // Temporarily Disabled: Leaks in the editor because nothing cleans up mNodesToQuery
 
   // also have to see if the item was on our query array, if so
   // we have to remove it
@@ -90,8 +87,7 @@ template <typename TreeType>
 void BaseDynamicAabbTreeBroadPhase<TreeType>::UpdateProxy(BroadPhaseProxy& proxy, BroadPhaseData& data)
 {
   mTree.UpdateProxy(proxy, data);
-  // Temporarily Disabled: Leaks in the editor because nothing cleans up
-  // mNodesToQuery
+  // Temporarily Disabled: Leaks in the editor because nothing cleans up mNodesToQuery
   // mNodesToQuery.PushBack(static_cast<NodeType*>(proxy.ToVoidPointer()));
 }
 
@@ -177,8 +173,7 @@ void BaseDynamicAabbTreeBroadPhase<TreeType>::RegisterCollisions()
 
   FullTreeQuery();
 
-  // Temporarily Disabled: Leaks in the editor because nothing cleans up
-  // mNodesToQuery
+  // Temporarily Disabled: Leaks in the editor because nothing cleans up mNodesToQuery
 
   // if(mSelfQueryPolicy == BaseDAabbTreeSelfQuery::SingleObject)
   //  SingleObjectQuery();
@@ -215,8 +210,7 @@ void BaseDynamicAabbTreeBroadPhase<TreeType>::QueryCallback(void* thisProxy, voi
 template <typename TreeType>
 void BaseDynamicAabbTreeBroadPhase<TreeType>::SingleObjectQuery()
 {
-  // Temporarily Disabled: Leaks in the editor because nothing cleans up
-  // mNodesToQuery
+  // Temporarily Disabled: Leaks in the editor because nothing cleans up mNodesToQuery
 
   // typename Array<NodeType*>::range range = mNodesToQuery.All();
   // for(; !range.Empty(); range.PopFront())
@@ -230,8 +224,7 @@ void BaseDynamicAabbTreeBroadPhase<TreeType>::SingleObjectQuery()
 template <typename TreeType>
 void BaseDynamicAabbTreeBroadPhase<TreeType>::PartialTreeQuery()
 {
-  // Temporarily Disabled: Leaks in the editor because nothing cleans up
-  // mNodesToQuery
+  // Temporarily Disabled: Leaks in the editor because nothing cleans up mNodesToQuery
 
   // Querying a tree against a tree is far quicker than
   // performing hundreds of individual queries. However, using ourself

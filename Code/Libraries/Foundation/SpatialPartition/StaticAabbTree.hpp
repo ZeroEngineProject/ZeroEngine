@@ -36,8 +36,7 @@ struct StaticTreeRange
 /// An AabbTree specialized for static objects. This tree is preferable in the
 /// case where objects are not moving over the DynamicAabbTree because more time
 /// is spent in building the tree. This allows the tree to build itself more
-/// optimally. Adds, updates and removes will not take effect until construct is
-/// called.
+/// optimally. Adds, updates and removes will not take effect until construct is called.
 template <typename ClientDataType>
 class StaticAabbTree
 {
@@ -99,8 +98,7 @@ public:
   /// function called Overlap. Most implementations should just call Query
   /// which uses the policy BroadPhasePolicy<QueryType,Aabb>. A scratch buffer
   /// array must also be provided for handling allocations. In general, one
-  /// should use the forRangeBroadphaseTreePolicy macro instead of calling this
-  /// directly.
+  /// should use the forRangeBroadphaseTreePolicy macro instead of calling this directly.
   template <typename QueryType, typename ArrayType, typename Policy>
   StaticTreeRange<ClientDataType, QueryType, ArrayType, Policy> QueryWithPolicy(const QueryType& queryObj,
                                                                                 ArrayType& scratchBuffer,
@@ -130,7 +128,7 @@ private:
   template <typename ClientDataTypeOther>
   friend void SerializeAabbTree(Serializer& stream, StaticAabbTree<ClientDataTypeOther>& tree);
 
-  typedef uint (*PartitionNodeMethodPtr)(NodeArray&);
+  typedef size_t (*PartitionNodeMethodPtr)(NodeArray&);
   PartitionNodeMethodPtr CurrPartitionMethod;
 
   /// Draw the tree at a given level.

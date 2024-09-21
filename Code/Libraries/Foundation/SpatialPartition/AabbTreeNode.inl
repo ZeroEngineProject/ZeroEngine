@@ -51,8 +51,7 @@ void SerializeNode(Serializer& stream, AabbNode<ClientDataType>& node)
 
 // SerializeNode is a function and cannot specialize on a pointer type
 // template <typename ClientDataType>
-// void SerializeNode<ClientDataType*>(Serializer& stream,
-// AabbNode<ClientDataType*>& node)
+// void SerializeNode<ClientDataType*>(Serializer& stream, AabbNode<ClientDataType*>& node)
 //{
 //  ErrorIf(true, "Cannot Serialize a Static Aabb-Tree with client data "
 //                "of pointer type.");

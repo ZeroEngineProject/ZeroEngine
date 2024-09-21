@@ -124,8 +124,7 @@ typename DynamicTreePolicy<ClientDataType>::NodeType* DynamicTreePolicy<ClientDa
     grandParent->mAabb = grandParent->mAabb.Combined(grandParent->mChild2->mAabb);
 
     // if our old Aabb and our new Aabb are of the same size, then there
-    // is no point in continuing up the tree since none of our parent's will
-    // grow
+    // is no point in continuing up the tree since none of our parent's will grow
     int result = memcmp(&oldAabb, &(grandParent->mAabb), sizeof(Aabb));
     if (result == 0)
       return grandParent;

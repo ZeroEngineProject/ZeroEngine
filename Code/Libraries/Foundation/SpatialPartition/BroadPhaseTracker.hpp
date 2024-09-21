@@ -24,14 +24,14 @@ public:
   uint mType;
 
   /// The amount of pairs of objects returned to be checked by the narrow phase.
-  uint mPossibleCollisionsReturned;
+  size_t mPossibleCollisionsReturned;
   /// The amount of pairs returned that actually collided.
-  uint mActualCollisions;
+  size_t mActualCollisions;
   /// The amount of collisions missed.
-  uint mCollisionsMissed;
+  size_t mCollisionsMissed;
 
   /// Iterations
-  uint mIterations;
+  size_t mIterations;
 
   /// Points to each record for easier access.
   Array<Profile::Record*> mRecords;
@@ -44,16 +44,16 @@ public:
   IBroadPhase* mBroadPhase;
   Statistics mStats;
 
-  BroadPhaseProxy& GetProxy(uint index);
-  void InvalidateProxy(uint index);
+  BroadPhaseProxy& GetProxy(size_t index);
+  void InvalidateProxy(size_t index);
   void ExpandProxies();
-  uint GetProxyCount();
+  size_t GetProxyCount();
 
 private:
   Array<BroadPhaseProxy> mProxies;
 };
 
-typedef uint BroadPhaseId;
+typedef size_t BroadPhaseId;
 
 /// Records data from all broad phases and checks for discrepancies.
 class BroadPhaseTracker : public BroadPhasePackage
@@ -72,7 +72,7 @@ public:
   /// Registers a broad phase to be updated.
   virtual void AddBroadPhase(uint type, IBroadPhase* broadphase);
 
-  Statistics* GetStatistics(uint type, uint index);
+  Statistics* GetStatistics(uint type, size_t index);
 
   /// The results of collision detection should be reported through
   /// this function.  Each index represents the lexicographical id of the
@@ -108,8 +108,7 @@ public:
   /// Used to determine intersection of objects in this broadphase with other
   /// objects in the same broadphase. Mainly a physics things.
   void SelfQuery(ClientPairArray& results) override;
-  /// Internal function or query. Finds all overlaps in the broadphase of the
-  /// given type.
+  /// Internal function or query. Finds all overlaps in the broadphase of the given type.
   void Query(BroadPhaseData& data, ClientPairArray& results, uint broadphaseType);
   /// Finds everything that is in contact with the data.
   void Query(BroadPhaseData& data, ClientPairArray& results) override;
@@ -132,9 +131,12 @@ private:
   virtual void
   CastIntoBroadphase(uint broadPhaseType, CastDataParam data, ProxyCastResults& results, CastFunction func);
 
-  uint GetNewProxyIndex(uint type);
+  u32 GetNewProxyIndex(uint type);
 
-  void RegisterCollisions(uint type, uint broadPhaseId, ClientPairArray& currentResults, ClientPairArray& finalResults);
+  void RegisterCollisions(uint type,
+                          BroadPhaseId broadPhaseId,
+                          ClientPairArray& currentResults,
+                          ClientPairArray& finalResults);
 
   /// Tells the tracker that there was a pair of objects sent to be
   /// checked for collision.  Returns whether or not the object was added.
@@ -160,7 +162,7 @@ private:
   /// All the broad phases currently being tracked.
   BroadPhaseVec mBroadPhases[BroadPhase::Size];
 
-  typedef Array<uint> IndexArray;
+  typedef Array<u32> IndexArray;
   IndexArray mProxyFreeIndices[BroadPhase::Size];
 };
 

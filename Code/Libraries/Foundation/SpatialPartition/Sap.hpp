@@ -80,21 +80,18 @@ private:
   void RemoveEndPoints(uint boxNum);
   void InsertPair(uint box1Index, uint box2Index);
   void RemovePair(uint box1Index, uint box2Index);
-  /// Adds a pair between boxIndex and everything in the set if the other axes
-  /// overlap.
+  /// Adds a pair between boxIndex and everything in the set if the other axes overlap.
   template <uint Axis>
   void InsertWithSet(BoxSet& boxSet, uint boxIndex);
-  /// Removes a pair between boxIndex and everything in the set if the other
-  /// axes overlap.
+  /// Removes a pair between boxIndex and everything in the set if the other axes overlap.
   template <uint Axis>
   void RemoveWithSet(BoxSet& boxSet, uint boxIndex);
   /// Sorts the new endpoints into the old endpoints. Does not add pairs.
-  /// Returns the last position that was iterated to for sorting. Call for each
-  /// axis.
+  /// Returns the last position that was iterated to for sorting. Call for each axis.
   template <uint Axis>
   uint BatchSort(EndPointArray& newEndpoints);
-  /// On one axis only, from a given start index, adds all of the pairs that
-  /// were just generated from the batch sort phase.
+  /// On one axis only, from a given start index, adds all of the pairs that were
+  /// just generated from the batch sort phase.
   template <uint Axis>
   void BatchPairAdd(uint startIndex);
   /// On one axis only, removes the pairs that involve objects
@@ -112,23 +109,20 @@ private:
   // and Insert them on the provided axis.
   template <uint Axis>
   void InsertEndpoint(BoxType& box, uint index);
-  // Inserts an endpoint onto a given axis but only checks for overlaps if this
-  // is the final axis.
+  // Inserts an endpoint onto a given axis but only checks for overlaps if this is
+  // the final axis.
   template <uint Axis>
   void InsertEndpointOnAxis(const EndPointType& endpoint, bool finalAxis);
   // Updates the endpoint values and then shifts them to the correct spot.
   template <uint Axis>
   void UpdateEndpoint(uint index, DataType& data, bool finalAxis);
-  // Shifts an endpoint to the left or right until it is in the correct
-  // position.
+  // Shifts an endpoint to the left or right until it is in the correct position.
   template <uint Axis>
   void UpdateEndpointOnAxis(uint index, bool finalAxis);
-  // Shifts an endpoint to the left and inserts/removes pairs if this is the
-  // final axis.
+  // Shifts an endpoint to the left and inserts/removes pairs if this is the final axis.
   template <uint Axis>
   void ShiftLeft(uint index, bool finalAxis);
-  // Shifts an endpoint to the right and inserts/removes pairs if this is the
-  // final axis.
+  // Shifts an endpoint to the right and inserts/removes pairs if this is the final axis.
   template <uint Axis>
   void ShiftRight(uint index, bool finalAxis);
   // Checks to see if there is overlap on an axis for two given boxes.

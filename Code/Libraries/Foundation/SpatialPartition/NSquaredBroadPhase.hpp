@@ -29,7 +29,7 @@ public:
   virtual void Query(BroadPhaseData& data, ClientPairArray& results);
   virtual void BatchQuery(BroadPhaseDataArray& data, ClientPairArray& results);
 
-  virtual void Construct(){};
+  virtual void Construct() {};
 
   virtual void CastRay(CastDataParam data, ProxyCastResults& results);
   virtual void CastSegment(CastDataParam data, ProxyCastResults& results);
@@ -39,7 +39,7 @@ public:
 
   virtual void RegisterCollisions();
 
-  virtual void Cleanup(){};
+  virtual void Cleanup() {};
 
 private:
   void GetCollisions(BroadPhaseData& data, ClientPairArray& results);

@@ -4,8 +4,7 @@
 namespace Zero
 {
 
-// Callback is expected to have a method called QueryCallback (world space
-// trees)
+// Callback is expected to have a method called QueryCallback (world space trees)
 template <typename CallbackType, typename NodeType>
 void TreeSelfQuery(CallbackType* callback, NodeType* root)
 {
@@ -94,8 +93,7 @@ void QueryTreeVsTree(CallbackType* callback, NodeType* rootA, NodeType* rootB)
     // 3. else, both nodes are internal, split the largest node
     // the reasoning for splitting the largest node is to most quickly reduce
     // the total volume being tested (taken from Gino Van Den Bergen's
-    // Efficient Collision Detection of Complex Deformable Models using AABB
-    // Trees)
+    // Efficient Collision Detection of Complex Deformable Models using AABB Trees)
 
     if (nodeA->IsLeaf())
     {

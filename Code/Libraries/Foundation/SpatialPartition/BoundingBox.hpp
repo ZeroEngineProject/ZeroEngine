@@ -4,10 +4,10 @@
 namespace Zero
 {
 
-/// A range for iterating through the cast results of the BoundingBox
-/// BroadPhase. This range is templated to check the Aabbs against the provided
-/// QueryType using the provided policy. This range becomes invalidated when the
-/// BroadPhase is changed.
+/// A range for iterating through the cast results of the BoundingBox BroadPhase.
+/// This range is templated to check the Aabbs against the provided QueryType
+/// using the provided policy.
+/// This range becomes invalidated when the BroadPhase is changed.
 template <typename ClientDataType, typename QueryType, typename PolicyType = BroadPhasePolicy<QueryType, Aabb>>
 struct BoundingBoxRange : public BroadPhaseArrayRange<ClientDataType,
                                                       QueryType,

@@ -10,10 +10,10 @@ DeclareBitField8(BaseCastFilterFlags,
                  IgnoreKinematic,
                  IgnoreGhost,
                  IgnoreChildren,
-                 /// Determines whether or not to refine the cast. If this is
-                 /// false, it will use an approximation (using AABB's or
-                 /// bounding spheres). If it is true, it will check the actual
-                 /// geometry of the object. This is initially set.
+                 /// Determines whether or not to refine the cast. If this is false,
+                 /// it will use an approximation (using AABB's or bounding spheres).
+                 /// If it is true, it will check the actual geometry of the object.
+                 /// This is initially set.
                  Refine,
                  /// Fills out the contact normal in the cast result if set.
                  GetContactNormal,
@@ -38,16 +38,14 @@ struct BaseCastFilter
   /// Should Colliders with RigidBodies marked Dynamic be ignored during casts?
   bool GetIgnoreDynamic();
   void SetIgnoreDynamic(bool state);
-  /// Should Colliders with RigidBodies marked Kinematic be ignored during
-  /// casts?
+  /// Should Colliders with RigidBodies marked Kinematic be ignored during casts?
   bool GetIgnoreKinematic();
   void SetIgnoreKinematic(bool state);
   /// Should Colliders marked Ghost be ignored during casts?
   bool GetIgnoreGhost();
   void SetIgnoreGhost(bool state);
   /// This flag is currently only used for SweepCollider tests on PhysicsSpace.
-  /// This is used to ignore all objects that are a child of the Collider that
-  /// is being swept.
+  /// This is used to ignore all objects that are a child of the Collider that is being swept.
   bool GetIgnoreChildren();
   void SetIgnoreChildren(bool state);
 
@@ -135,7 +133,8 @@ struct ProxyResult
   Vec3 mPoints[2];
   Vec3 mContactNormal;
 
-  union {
+  union
+  {
     /// Time of collision for a ray cast.
     real mTime;
 
@@ -160,8 +159,7 @@ struct ProxyCastResults
   ProxyCastResults(ProxyCastResultArray& array, BaseCastFilter& filter);
 
   /// Attempts to Insert a proxy.  It is inserted in order by shortest time.
-  /// If the array is already filled, it will either replace one already or
-  /// reject the insertion.
+  /// If the array is already filled, it will either replace one already or reject the insertion.
   bool Insert(ProxyResult& proxyResult);
   /// Note: time is either time or distance.
   bool Insert(void* mObjectHit, Vec3 points[2], Vec3Param normal, real time);
@@ -171,7 +169,7 @@ struct ProxyCastResults
   /// Returns the total amount of proxies to be returned for the ray cast.
   uint GetProxyCount()
   {
-    return Results.Size();
+    return (uint)Results.Size();
   }
   /// Returns the current amount of proxies that the cast has collided with.
   uint GetCurrentSize() const
@@ -183,7 +181,7 @@ struct ProxyCastResults
   /// it (if it's time is too long), or replace one with it.
   uint GetRemainingSize()
   {
-    return Results.Size() - CurrSize;
+    return (uint)Results.Size() - CurrSize;
   }
 
   /// Merges two sets of results.  Used for combining separate casts into

@@ -19,15 +19,15 @@ public:
 
   typedef typename PairMap::range range;
 
-  SapPairManager(){};
-  ~SapPairManager(){};
+  SapPairManager() {};
+  ~SapPairManager() {};
 
   void AddPair(DataType& data1, DataType& data2)
   {
     // get the id's of the two client data's
     HashPolicy<ClientDataType> hasher;
-    uint id1 = hasher(data1.mClientData);
-    uint id2 = hasher(data2.mClientData);
+    uint id1 = (uint)hasher(data1.mClientData);
+    uint id2 = (uint)hasher(data2.mClientData);
     // make sure the aren't the same
     if (id1 == id2)
       return;
@@ -57,8 +57,8 @@ public:
   {
     // get the id's of the two client data's
     HashPolicy<ClientDataType> hasher;
-    uint id1 = hasher(data1.mClientData);
-    uint id2 = hasher(data2.mClientData);
+    uint id1 = (uint)hasher(data1.mClientData);
+    uint id2 = (uint)hasher(data2.mClientData);
     // get the lexicographic index of this pair
     PairId index = GetLexicographicId(id1, id2);
 
@@ -264,7 +264,7 @@ struct SapRange
   {
     // we have to loop over all of the boxes because we can't otherwise
     // deal with a box that completely Contains the query aabb
-    uint end = mBoxes->Size();
+    uint end = (uint)mBoxes->Size();
     for (; mIndex < end; ++mIndex)
     {
       BoxType& box = (*mBoxes)[mIndex];
@@ -324,7 +324,7 @@ struct SapPairRange
 
   uint Length()
   {
-    return mRange.Size();
+    return (uint)mRange.Size();
   }
 
   typename PairManagerType::range mRange;

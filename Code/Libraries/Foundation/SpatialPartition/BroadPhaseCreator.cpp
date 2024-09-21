@@ -103,8 +103,7 @@ BroadPhaseCreator* BroadPhaseLibrary::GetCreatorBy(StringParam name)
 
 IBroadPhase* BroadPhaseLibrary::CreateBroadPhase(StringParam name)
 {
-  // if the name of the broadphase is missing the "BroadPhase" text at the end
-  // then Append it
+  // if the name of the broadphase is missing the "BroadPhase" text at the end then Append it
   String trueName = name;
   StringRange range = trueName.FindFirstOf("BroadPhase");
   if (range.Empty())
