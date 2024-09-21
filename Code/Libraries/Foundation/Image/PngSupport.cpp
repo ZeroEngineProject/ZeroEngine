@@ -107,8 +107,7 @@ void LoadPng(Status& status,
     return;
   }
 
-  // Init pointer value so memory can be cleaned up if an error occurs after
-  // allocation
+  // Init pointer value so memory can be cleaned up if an error occurs after allocation
   ::byte* imageData = nullptr;
 
   // Create and initialize the png_struct with the desired error handler
@@ -146,14 +145,12 @@ void LoadPng(Status& status,
     return;
   }
 
-  // If you are using replacement read functions, instead of calling
-  // png_init_io()
+  // If you are using replacement read functions, instead of calling png_init_io()
   png_set_read_fn(pngPtr, (png_voidp)stream, StreamReadData);
 
   // The call to png_read_info() gives us all of the information from the
   // PNG file before the first IDAT (image data chunk).  REQUIRED
-  // This reads the header, and if it fails it will jump back to the setjmp
-  // point.
+  // This reads the header, and if it fails it will jump back to the setjmp point.
   png_read_info(pngPtr, infoPtr);
 
   png_uint_32 readWidth, readHeight;

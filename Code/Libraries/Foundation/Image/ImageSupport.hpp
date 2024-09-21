@@ -13,8 +13,7 @@ struct ImageInfo
   ImageFormat::Enum Format;
 };
 
-// Supported formats are: R8, RGB8, RGBA8, R16, RGB16, RGBA16, R32f, RGB32f,
-// RGBA32f
+// Supported formats are: R8, RGB8, RGBA8, R16, RGB16, RGBA16, R32f, RGB32f, RGBA32f
 
 // Checks if the format is a valid load format (always returns true for None).
 bool IsImageLoadFormat(ImageFormat::Enum format);
@@ -24,14 +23,12 @@ bool IsImageSaveFormat(ImageFormat::Enum format);
 
 DeclareEnum4(ImageBitDepth, None, I8, I16, F32);
 
-// Returns a valid image load format from the number of components and the bit
-// depth. If the components or bit-depth (or combination) are unsupported, it
-// will return TextureFormat::None.
+// Returns a valid image load format from the number of components and the bit depth.
+// If the components or bit-depth (or combination) are unsupported, it will return TextureFormat::None.
 ImageFormat::Enum ToImageFormat(int components, ImageBitDepth::Enum depth);
 
 // Gets the number of components and image bit depth from a given format.
-// If the format is not valid, then the components will be 0 and depth will be
-// None.
+// If the format is not valid, then the components will be 0 and depth will be None.
 void FromImageFormat(ImageFormat::Enum format, int* components, ImageBitDepth::Enum* depth);
 
 // Returns a list of all the supported extensions, e.g. "png".
@@ -40,8 +37,7 @@ const Array<String>& GetSupportedImageLoadExtensions();
 // Returns if the given extension is a valid iamge load extension.
 bool IsSupportedImageLoadExtension(StringParam extension);
 
-// When reading, file positions must be at the beginning (0) and may be left in
-// any position after a call.
+// When reading, file positions must be at the beginning (0) and may be left in any position after a call.
 
 // We can load files Png, Bmp, Psd, Tga, Gif, Hdr, Pic, Jpg, and Pnm
 bool ReadImageInfo(Stream* stream, ImageInfo& info);
@@ -49,8 +45,7 @@ bool ReadImageInfo(File& file, ImageInfo& info);
 bool ReadImageInfo(StringParam filename, ImageInfo& info);
 bool ReadImageInfo(::byte* encoded, size_t size, ImageInfo& info);
 
-// You may set 'requireFormat' to 'None' if you want to load the texture in
-// whatever format it's stored in.
+// You may set 'requireFormat' to 'None' if you want to load the texture in whatever format it's stored in.
 void LoadImage(Status& status,
                Stream* stream,
                ::byte** output,
@@ -117,7 +112,6 @@ void SaveImage(Status& status,
                ImageSaveFormat::Enum imageType = ImageSaveFormat::Png);
 
 // To save a file to memory, create your own ByteBufferMemoryStream,
-// ArrayByteMemoryStream, or FixedMemoryStream with a computed size from
-// ReadImageInfo.
+// ArrayByteMemoryStream, or FixedMemoryStream with a computed size from ReadImageInfo.
 
 } // namespace Zero

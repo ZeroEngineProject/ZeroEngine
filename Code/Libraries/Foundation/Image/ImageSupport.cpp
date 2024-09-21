@@ -1,8 +1,7 @@
 // MIT Licensed (see LICENSE.md).
 #include "Precompiled.hpp"
 
-// We privately include this file because it includes the full implementation
-// (as if it were a .c file)
+// We privately include this file because it includes the full implementation (as if it were a .c file)
 #define STBI_FAILURE_USERMSG
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -17,7 +16,7 @@ namespace Zero
 static int StbRead(void* userData, char* data, int size)
 {
   Stream* stream = (Stream*)userData;
-  return stream->Read((::byte*)data, size);
+  return (int)stream->Read((::byte*)data, size);
 }
 
 static void StbSkip(void* userData, int bytes)
@@ -231,8 +230,7 @@ bool ReadImageInfo(Stream* stream, ImageInfo& info)
 
   stream->Seek(0);
 
-  // We don't actually care about how many components because we always
-  // up-convert to 4
+  // We don't actually care about how many components because we always up-convert to 4
   int components = 0;
   bool result = stbi_info_from_callbacks(&callbacks, stream, (int*)&info.Width, (int*)&info.Height, &components) != 0;
 
@@ -281,8 +279,7 @@ void LoadImage(Status& status,
 
   if (!IsImageLoadFormat(requireFormat))
   {
-    status.SetFailed("Image only supports the formats R8, RGB8, RGBA8, R16, "
-                     "RGB16, RGBA16, R32f, RGB32f, and RGBA32f");
+    status.SetFailed("Image only supports the formats R8, RGB8, RGBA8, R16, RGB16, RGBA16, R32f, RGB32f, and RGBA32f");
     return;
   }
 
@@ -305,8 +302,7 @@ void LoadImage(Status& status,
     stream->Seek(0);
   }
 
-  // We don't know how many components there are until we actually load the
-  // image.
+  // We don't know how many components there are until we actually load the image.
   int componentsOut = 0;
 
   switch (requireDepth)
@@ -327,18 +323,15 @@ void LoadImage(Status& status,
     break;
   }
 
-  // If we have required components, then the original number of components in
-  // the file isn't useful.
+  // If we have required components, then the original number of components in the file isn't useful.
   if (requireComponents != 0)
     componentsOut = requireComponents;
 
-  // Check to see if the file might be a gif file (unfortunately STB does not
-  // treat gifs the same)
+  // Check to see if the file might be a gif file (unfortunately STB does not treat gifs the same)
   if (!*output)
   {
     // Check if this is a valid GIF before even attempting to read it,
-    // because the STB gif implementation requries it to be all read into
-    // memory.
+    // because the STB gif implementation requries it to be all read into memory.
     stream->Seek(0);
     static const String cGifHeader("GIF");
     static const size_t cGifBytes = 3;
@@ -352,11 +345,10 @@ void LoadImage(Status& status,
       if (status.Failed())
         return;
 
-      // Note that when a gif loads, it will be much larger in memory because of
-      // the extra frames.
+      // Note that when a gif loads, it will be much larger in memory because of the extra frames.
       int frames = 0;
       stbi_uc* allFrames = stbi_load_gif_from_memory(block.GetBegin(),
-                                                     block.Size(),
+                                                     (int)block.Size(),
                                                      nullptr,
                                                      (int*)width,
                                                      (int*)height,
@@ -364,15 +356,13 @@ void LoadImage(Status& status,
                                                      &componentsOut,
                                                      requireComponents);
 
-      // If we have required components, then the original number of components
-      // in the file isn't useful.
+      // If we have required components, then the original number of components in the file isn't useful.
       if (requireComponents != 0)
         componentsOut = requireComponents;
 
       if (allFrames != nullptr && frames > 0)
       {
-        // Copy a single frame to the output (we don't care about multiple
-        // frames)
+        // Copy a single frame to the output (we don't care about multiple frames)
         size_t singleFrameSize = *width * *height * componentsOut;
         *output = (::byte*)zAllocate(singleFrameSize);
         memcpy(*output, allFrames, singleFrameSize);
@@ -383,8 +373,7 @@ void LoadImage(Status& status,
   }
 
   // Warning: This is not thread safe! At least we're guaranteed this will
-  // fail, but may return a random message if this is called by different
-  // threads.
+  // fail, but may return a random message if this is called by different threads.
   if (!*output)
   {
     status.SetFailed(stbi_failure_reason());
@@ -498,8 +487,8 @@ void SaveImage(Status& status,
 
   if (!IsImageSaveFormat(format))
   {
-    status.SetFailed("Image only supports the formats R8, RG8, RGB8, RGBA8, R16, RG16, "
-                     "RGB16, RGBA16, R32f, RG32f, RGB32f, and RGBA32f");
+    status.SetFailed("Image only supports the formats R8, RG8, RGB8, RGBA8, R16, RG16, RGB16, RGBA16, R32f, RG32f, "
+                     "RGB32f, and RGBA32f");
     return;
   }
 
@@ -507,12 +496,11 @@ void SaveImage(Status& status,
   ImageBitDepth::Enum depth = ImageBitDepth::None;
   FromImageFormat(format, &components, &depth);
 
-  // In the future we should remove the F32 and I8 restrictions below by
-  // automatically converting to the expected format.
+  // In the future we should remove the F32 and I8 restrictions below by automatically converting to the expected
+  // format.
   if (imageType == ImageSaveFormat::Hdr && depth != ImageBitDepth::F32)
   {
-    status.SetFailed("Writing HDR images requires a 32-bit floating point "
-                     "format (R32f, RG32f, RGB32f, or RGBA32f)");
+    status.SetFailed("Writing HDR images requires a 32-bit floating point format (R32f, RG32f, RGB32f, or RGBA32f)");
     return;
   }
 

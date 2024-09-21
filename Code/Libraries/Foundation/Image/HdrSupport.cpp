@@ -292,8 +292,8 @@ bool DecodeHdrScanline(::byte*& imageData, const ::byte* endData, uint imageWidt
 
   uint scanWidth = (uint)byte2 << 8 | byte3;
 
-  // If first two bytes are of value 2 and next two are the high and low bytes
-  // of the scanline width then scanline is adaptive run length encoded
+  // If first two bytes are of value 2 and next two are the high and low bytes of the scanline width
+  // then scanline is adaptive run length encoded
   if (byte0 == 2 && byte1 == 2 && scanWidth == imageWidth)
   {
     // All four channels (R, G, B, E) are stored separately in this encoding
@@ -304,9 +304,8 @@ bool DecodeHdrScanline(::byte*& imageData, const ::byte* endData, uint imageWidt
       {
         ValidateRead(imageData, endData, index + 2);
 
-        // A value greater than 128 means a run of the same value (and actual
-        // count is without the high bit), less than 128 means a run of
-        // different values, equal to 128 means nothing and is invalid
+        // A value greater than 128 means a run of the same value (and actual count is without the high bit),
+        // less than 128 means a run of different values, equal to 128 means nothing and is invalid
         uint count = imageData[index++];
         if (count > 128)
         {
@@ -390,8 +389,8 @@ void LoadHdr(Status& status,
   if (status.Failed())
     return;
 
-  // At this point, the stream will be just after the header (where the data
-  // starts). Subtract header size
+  // At this point, the stream will be just after the header (where the data starts).
+  // Subtract header size
   size_t size = (size_t)(stream->Size() - stream->Tell());
   ByteBufferBlock block;
   stream->ReadMemoryBlock(status, block, size);
@@ -475,7 +474,7 @@ void SaveHdr(Status& status, Stream* stream, const ::byte* image, uint width, ui
   header.Append(String::Format("-Y %d +X %d\n", height, width));
 
   // Write header
-  uint headerSize = header.GetSize();
+  size_t headerSize = header.GetSize();
   ::byte* headerData = new ::byte[headerSize];
   header.ExtractInto(headerData, headerSize);
   stream->Write(headerData, headerSize);

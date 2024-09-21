@@ -11,8 +11,7 @@ namespace Zero
 // Queries only if the file is valid (puts the stream back to 0).
 bool IsHdr(Stream* stream);
 
-// Queries if the file is a valid Png and if so, what its dimensions are (puts
-// the stream back to 0).
+// Queries if the file is a valid Png and if so, what its dimensions are (puts the stream back to 0).
 bool ReadHdrInfo(Stream* stream, ImageInfo& info);
 
 // Checks if the format is a valid load format (always returns true for None).
@@ -21,8 +20,7 @@ bool IsHdrLoadFormat(ImageFormat::Enum format);
 // Checks if the format is a valid save format (always returns false for None).
 bool IsHdrSaveFormat(ImageFormat::Enum format);
 
-// Both Load/Save will leave the stream at the end, or wherever they failed.
-// Supported texture formats: RGB32f
+// Both Load/Save will leave the stream at the end, or wherever they failed. Supported texture formats: RGB32f
 void LoadHdr(Status& status,
              Stream* stream,
              ::byte** output,

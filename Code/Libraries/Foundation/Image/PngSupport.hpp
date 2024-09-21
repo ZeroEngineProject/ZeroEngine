@@ -11,8 +11,7 @@ namespace Zero
 // Queries only if the file is valid (puts the stream back to 0).
 bool IsPng(Stream* stream);
 
-// Queries if the file is a valid Png and if so, what its dimensions are (puts
-// the stream back to 0).
+// Queries if the file is a valid Png and if so, what its dimensions are (puts the stream back to 0).
 bool ReadPngInfo(Stream* stream, ImageInfo& info);
 
 // Checks if the format is a valid load format (always returns true for None).
@@ -21,8 +20,7 @@ bool IsPngLoadFormat(ImageFormat::Enum format);
 // Checks if the format is a valid save format (always returns false for None).
 bool IsPngSaveFormat(ImageFormat::Enum format);
 
-// Both Load/Save will leave the stream at the end, or wherever they failed.
-// Supported texture formats: RGBA8, RGBA16
+// Both Load/Save will leave the stream at the end, or wherever they failed. Supported texture formats: RGBA8, RGBA16
 void LoadPng(Status& status,
              Stream* stream,
              ::byte** output,
