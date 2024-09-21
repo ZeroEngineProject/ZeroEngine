@@ -36,7 +36,7 @@ Any::Any(Type* type)
   size_t copyableSize = type->GetCopyableSize();
 
   // Allocate room to store this type (may store locally and not actually allocate)
-  byte* destination = this->AllocateData(copyableSize);
+  ::byte* destination = this->AllocateData(copyableSize);
 
   // Store the type and default construct the data into us
   this->StoredType = type;
