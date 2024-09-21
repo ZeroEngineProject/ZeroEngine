@@ -490,7 +490,7 @@ void ActiveProjectMenu::OnBackupProject(Event* e)
   String projectName = mCachedProject->GetProjectName();
 
   // Build the backup's file path based upon the project name and the current time date stamp.
-  String backupDirectory = FilePath::Combine(GetUserDocumentsDirectory(), "ZeroProjects", "Backups");
+  String backupDirectory = FilePath::Combine(GetUserDocumentsApplicationDirectory(), "Backups");
   String timeStamp = GetTimeAndDateStamp();
   String backupName = BuildString(projectName, timeStamp);
   String backupFilePath = FilePath::CombineWithExtension(backupDirectory, backupName, ".zip");
