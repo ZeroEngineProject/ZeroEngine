@@ -404,8 +404,7 @@ public:
     mScrub = scrubber;
   }
 
-  // void Draw(DisplayRender* render, Mat4Param parentTx, ColorTransform&
-  // colorTx,
+  // void Draw(DisplayRender* render, Mat4Param parentTx, ColorTransform& colorTx,
   //          DrawParams& params) override
   //{
   //  DrawVerticalLines(render);
@@ -731,8 +730,7 @@ void AnimationGraphEditor::FocusOnSelectedCurves(IntVec2Param axes)
   // If there is an area to zoom in on, zoom
   if (validAabb)
   {
-    // If it's a straight horizontal line, expand the aabb a little by a set
-    // amount
+    // If it's a straight horizontal line, expand the aabb a little by a set amount
     if (max.y - min.y == 0.0f)
     {
       max.y += 1.0f;

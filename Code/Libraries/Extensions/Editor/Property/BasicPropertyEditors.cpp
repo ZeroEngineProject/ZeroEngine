@@ -235,8 +235,7 @@ void DirectProperty::OnRightMouseUpLabel(MouseEvent* event)
 
 void DirectProperty::Refresh()
 {
-  // The property can be null when scripts re-compile before the property grid
-  // is torn down
+  // The property can be null when scripts re-compile before the property grid is torn down
   if (!mProperty || mDestroyed)
     return;
 
@@ -245,8 +244,7 @@ void DirectProperty::Refresh()
 
   mLabel->SetColor(Vec4(1));
 
-  // This should only display serialized properties, but that's on hold until
-  // the meta refactor
+  // This should only display serialized properties, but that's on hold until the meta refactor
   if (IsModified()) // && mProperty->Flags.IsSet(PropertyFlags::Serialized))
     mLabel->SetColor(PropertyViewUi::ModifiedTextColor);
 
@@ -360,9 +358,8 @@ public:
   typedef PropertyEditorEnum ZilchSelf;
   ComboBox* mSelectBox;
   SelectorButton* mSelectorButton;
-  // Storing a pointer to this is safe because when meta is changed, the entire
-  // property grid is torn down and rebuilt. This should never point at a
-  // destroyed type.
+  // Storing a pointer to this is safe because when meta is changed, the entire property grid
+  // is torn down and rebuilt. This should never point at a destroyed type.
   BoundType* mEnumType;
   EnumSource mEnums;
 
@@ -383,9 +380,8 @@ public:
     {
       Property* prop = allProperties[i];
       String enumString = prop->Name;
-      // This should be a static property (all enum values are) so pass in null
-      // for an instance and then convert the any to an integer (not unsigned
-      // since negative enum values are valid)
+      // This should be a static property (all enum values are) so pass in null for an
+      // instance and then convert the any to an integer (not unsigned since negative enum values are valid)
       int enumValue = prop->GetValue(nullptr).Get<int>();
       mEnumIndexToListIndex[enumValue] = i;
       mEnumIndexes.PushBack(enumValue);
@@ -476,8 +472,7 @@ public:
 
     PlaceWithLayout(nameLayout, mLabel);
 
-    // Show the buttons if we have enough room to fit the min size of the
-    // buttons
+    // Show the buttons if we have enough room to fit the min size of the buttons
     bool showButtons = (mSelectorButton->GetMinSize().x <= contentLayout.Size.x);
     mSelectorButton->SetActive(showButtons);
     mSelectBox->SetActive(!showButtons);
@@ -723,9 +718,8 @@ public:
   Composite* mOwner;
   Vec2 mLocalMouseStart;
   float mCurrentAngle;
-  // Storing a pointer to this is safe because when meta is changed, the entire
-  // property grid is torn down and rebuilt. This should never point at a
-  // destroyed type.
+  // Storing a pointer to this is safe because when meta is changed, the entire property grid
+  // is torn down and rebuilt. This should never point at a destroyed type.
   BoundType* mType;
   float mIncrement;
 
@@ -1360,8 +1354,7 @@ public:
 
     for (size_t i = 0; i < objects.Size(); ++i)
     {
-      // Each item seems to either be a cog or component depending on if this
-      // was multi-selection or not
+      // Each item seems to either be a cog or component depending on if this was multi-selection or not
       Cog* cog = objects[i].Get<Cog*>();
       if (cog != nullptr)
       {
@@ -1497,9 +1490,8 @@ public:
   Element* mBackground;
   IconButton* mEyeDropper;
   ColorDisplay* mColorDisplay;
-  // Storing a pointer to this is safe because when meta is changed, the entire
-  // property grid is torn down and rebuilt. This should never point at a
-  // destroyed type.
+  // Storing a pointer to this is safe because when meta is changed, the entire property grid
+  // is torn down and rebuilt. This should never point at a destroyed type.
   BoundType* mPropertyType;
   ColorPicker* mColorPicker;
 
@@ -1533,8 +1525,8 @@ public:
 
   ~PropertyEditColor()
   {
-    // this closes the color picker when changing the selection so it doesn't
-    // just stop edit the previously selected object
+    // this closes the color picker when changing the selection so it doesn't just
+    // stop edit the previously selected object
     if (mColorPicker)
     {
       if (!mColorPicker->IsColorPicked())

@@ -89,8 +89,7 @@ HeightMapImporter::HeightMapImporter(Composite* parent, Editor* editor) : Compos
   mImageBackground->SetTexture(TextureManager::Find("AlphaBackground"));
   mSourceDisplay = new TextureView(mScrollArea);
   mSourceDisplay->SetSize(Pixels(400, 200));
-  // We may not need the PatchGridArea to be a composite, we will see moving
-  // forward
+  // We may not need the PatchGridArea to be a composite, we will see moving forward
   mPatchGrid = new PatchGridArea(mScrollArea, this);
   ConnectThisTo(mSourceDisplay, Events::LeftMouseDown, OnMouseDown);
 
@@ -157,8 +156,8 @@ void HeightMapImporter::RefreshTexture()
   }
   else if (mImportMode == ImportMode::FitToPatches)
   {
-    // look at numbers of patches and their current size in relation to the
-    // "maintain aspect ratio" and stretch the image to fix the grid
+    // look at numbers of patches and their current size in relation to the "maintain aspect ratio"
+    // and stretch the image to fix the grid
     mPreviewSize = ScaleGridSizeToArea();
     mPatchGrid->SetGridSize(mPreviewSize);
     mScrollArea->SetClientSize(mPreviewSize);
@@ -172,8 +171,8 @@ void HeightMapImporter::RefreshTexture()
 
 Vec2 HeightMapImporter::ScaleGridSizeToImage()
 {
-  // find the x and y ratios between the image and the height map patches for
-  // proper scaling to maintain aspect ratio
+  // find the x and y ratios between the image and the height map patches for proper scaling
+  // to maintain aspect ratio
   Vec2 gridSize;
   float xRatio = mPreviewSize.x / mPatchColumns;
   float yRatio = mPreviewSize.y / mPatchRows;
@@ -256,8 +255,7 @@ void HeightMapImporter::GenerateHeightMap(Event* e)
   mPixelsPerColumnPatch = mHeightMap.Width / mPatchColumns;
   mPixelsPerRowPatch = mHeightMap.Height / mPatchRows;
   // in the case where we are maintaining the aspect ratio we need the pixels
-  // per patch to be uniform and not stretched to match the user defined patch
-  // width and height
+  // per patch to be uniform and not stretched to match the user defined patch width and height
   if (mImportMode == ImportMode::MaintainAspectRatio)
   {
     if (patchScaledToX)
@@ -304,10 +302,8 @@ float HeightMapImporter::CalculateAveragePixelHeight(uint column, uint row, uint
       curColor += ToFloatColor(mHeightMap.GetPixel(x, y)).x;
 
   curColor /= (float)count;
-  // new_value = ( (old_value - old_min) / (old_max - old_min) ) * (new_max -
-  // new_min) + new_min
-  //               curColor - 0              1 - 0               heightMax -
-  //               heightMin + heightMin
+  // new_value = ( (old_value - old_min) / (old_max - old_min) ) * (new_max - new_min) + new_min
+  //                curColor - 0              1 - 0               heightMax - heightMin + heightMin
   return (curColor / 1.f) * mHeightRange + mMinHeightRange;
 }
 
@@ -358,9 +354,8 @@ void HeightMapImporter::ScalePreviewArea(float scale)
 {
   Vec2 newPrev = mPreviewArea * scale;
   // make sure we never scale the area so small that we lose it forever
-  // if you scale it very small while viewing a scroll area outside the view of
-  // its smaller version since the scroll area matches the image when you go to
-  // scroll to it "disappears" and is lost
+  // if you scale it very small while viewing a scroll area outside the view of its smaller version
+  // since the scroll area matches the image when you go to scroll to it "disappears" and is lost
   if (newPrev.x < 100.f || newPrev.y < 100.f)
     return;
 

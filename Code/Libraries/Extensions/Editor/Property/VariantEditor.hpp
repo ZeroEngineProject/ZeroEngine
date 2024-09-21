@@ -15,7 +15,7 @@ class TextUpdatedEvent : public Event
 public:
   ZilchDeclareType(TextUpdatedEvent, TypeCopyMode::ReferenceType);
 
-  TextUpdatedEvent(Object* source) : mSource(source), mChangeAccepted(false){};
+  TextUpdatedEvent(Object* source) : mSource(source), mChangeAccepted(false) {};
 
   Object* GetSource();
 
@@ -49,7 +49,7 @@ public:
 class ValueEditor : public Composite
 {
 public:
-  ValueEditor(Composite* parent, bool editable = false) : Composite(parent), Editable(editable){};
+  ValueEditor(Composite* parent, bool editable = false) : Composite(parent), Editable(editable) {};
 
   virtual void Edit()
   {

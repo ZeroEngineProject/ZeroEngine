@@ -7,8 +7,7 @@ namespace Zero
 Material* CreateMaterialFromGraphMaterial(SceneGraphMaterial* sceneMaterial)
 {
   String graphMaterialName = ConvertToValidName(sceneMaterial->Name);
-  // String diffuseTexture =
-  // sceneMaterial->Attributes.FindValue("DiffuseTexture", String());
+  // String diffuseTexture =  sceneMaterial->Attributes.FindValue("DiffuseTexture", String());
 
   Material* material = (Material*)MaterialManager::FindOrNull(graphMaterialName);
 
@@ -19,16 +18,14 @@ Material* CreateMaterialFromGraphMaterial(SceneGraphMaterial* sceneMaterial)
   //  return material;
   //}
 
-  // String shader = sceneMaterial->Attributes.FindValue("ShaderModel",
-  // "Lambert"); if(shader == "Phong")
+  // String shader = sceneMaterial->Attributes.FindValue("ShaderModel", "Lambert");
+  // if(shader == "Phong")
   //{
   //  float SpecularExponent  = 16.0f;
   //  float SpecularScalar = 0.25f;
-  //  //ToValue(sceneMaterial->Attributes.FindValue("SpecularExponent", "40"),
-  //  SpecularExponent);
-  //  //ToValue(sceneMaterial->Attributes.FindValue("SpecularScalar", "1"),
-  //  SpecularScalar); material = MakeNewPhongMaterial(SpecularScalar,
-  //  SpecularExponent);
+  //   //ToValue(sceneMaterial->Attributes.FindValue("SpecularExponent", "40"), SpecularExponent);
+  //   //ToValue(sceneMaterial->Attributes.FindValue("SpecularScalar", "1"), SpecularScalar);
+  //   material = MakeNewPhongMaterial(SpecularScalar, SpecularExponent);
   //}
   // else
   //  material = MakeNewMaterial();
@@ -37,10 +34,9 @@ Material* CreateMaterialFromGraphMaterial(SceneGraphMaterial* sceneMaterial)
   // if(!AddTextureBlock(material, BlockType::Diffuse, diffuseTexture))
   //  AddTextureBlock(material, BlockType::Diffuse, "DefaultTexture");
 
-  // AddTextureBlock(material, BlockType::Normal,
-  // sceneMaterial->Attributes.FindValue("NormalMapTexture", String()));
-  // AddTextureBlock(material, BlockType::Specular,
-  // sceneMaterial->Attributes.FindValue("SpecularMapTexture", String()));
+  // AddTextureBlock(material, BlockType::Normal, sceneMaterial->Attributes.FindValue("NormalMapTexture", String()));
+  // AddTextureBlock(material, BlockType::Specular, sceneMaterial->Attributes.FindValue("SpecularMapTexture",
+  // String()));
 
   // material->Initialize();
 
@@ -108,11 +104,9 @@ MeshType* GetNodeMesh(StringParam sourceName, StringParam meshNodeName)
   if (!meshNodeName.Empty())
   {
     String fullMeshName = BuildString(sourceName, "_", meshNodeName);
-    // Check for a name that's generated when there are multiple meshes from a
-    // scene file.
+    // Check for a name that's generated when there are multiple meshes from a scene file.
     mesh = ManagerType::FindOrNull(fullMeshName);
-    // If that name isn't found, just check for the scene name (when there is
-    // only one mesh).
+    // If that name isn't found, just check for the scene name (when there is only one mesh).
     if (mesh == nullptr)
       mesh = ManagerType::FindOrNull(sourceName);
   }
@@ -353,9 +347,7 @@ void UpdateToContent(Cog* object, UpdateFlags::Type flags)
         DoEditorSideGeometryImporting(
             Type::DynamicCast<GeometryContent*>(item), object, flags, res->mResourceLibrary->Location);
       else
-        ErrorIf(true,
-                "Resource Library not present, location of ContentItem's "
-                "generated resource location unknown\n");
+        ErrorIf(true, "Resource Library not present, location of ContentItem's generated resource location unknown\n");
     }
   }
 }
@@ -400,8 +392,7 @@ void BuildSoundCues(ResourcePackage* package, AudioOptions* options)
     resourceAdd.Name = options->mGroupCueName;
     AddNewResource(SoundCueManager::GetInstance(), resourceAdd);
 
-    // If it was successful, add each sound that was loaded as an entry in the
-    // cue
+    // If it was successful, add each sound that was loaded as an entry in the cue
     if (resourceAdd.WasSuccessful())
     {
       SoundCue* cue = (SoundCue*)(resourceAdd.SourceResource);
@@ -454,8 +445,7 @@ void DoEditorSideImporting(ResourcePackage* package, ImportOptions* options)
     GeneratedArchetype* genArchetype = item->has(GeneratedArchetype);
     if (genArchetype)
     {
-      // Find the archetype associated with this content item may not be
-      // generated yet
+      // Find the archetype associated with this content item may not be generated yet
       Archetype* archetype =
           (Archetype*)ArchetypeManager::GetInstance()->ResourceIdMap.FindValue(genArchetype->mResourceId, NULL);
 

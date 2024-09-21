@@ -166,8 +166,7 @@ Resource* AddNewResource(ResourceManager* resourceManager, ResourceAdd& resource
     resourceAdd.SourceResource =
         LoadResourceFromNewContentItem(resourceManager, newContentItem, resourceAdd.SourceResource);
 
-    // Notify the resource system and the relevant resource manage that a new
-    // resource was created
+    // Notify the resource system and the relevant resource manage that a new resource was created
     ResourceEvent toSend(resourceManager, resourceAdd.SourceResource);
     Z::gResources->DispatchEvent(Events::ResourceNewlyCreated, &toSend);
     resourceManager->DispatchEvent(Events::ResourceNewlyCreated, &toSend);
@@ -215,9 +214,8 @@ Resource* DuplicateResource(Resource* resource, StringParam expectedNewName)
     }
   }
 
-  // Since resources are copied from file, call save so that duplicate will have
-  // any modifications made. Note: Modifications attempted to be made to non
-  // writable resources will not get copied over.
+  // Since resources are copied from file, call save so that duplicate will have any modifications made.
+  // Note: Modifications attempted to be made to non writable resources will not get copied over.
   if (resource->IsWritable() && contentItem != nullptr)
     contentItem->SaveContent();
 
@@ -345,8 +343,7 @@ bool InPackage(Resource* resource, ResourcePackage* package)
   return false;
 }
 
-// Unload all resources that where not loaded when the content item was built.
-// Used for content reloading.
+// Unload all resources that where not loaded when the content item was built. Used for content reloading.
 void UnloadInactive(ContentItem* contentItem, ResourceLibrary* resourceLibrary, ResourcePackage* package)
 {
   if (Z::gEngine->IsReadOnly())
@@ -357,9 +354,8 @@ void UnloadInactive(ContentItem* contentItem, ResourceLibrary* resourceLibrary, 
 
   Array<Resource*> resourcesToDelete;
 
-  // Gather all resources from the same content item that are not loaded in the
-  // new package Do not remove in place since this will modify the loaded
-  // resources on the resource library
+  // Gather all resources from the same content item that are not loaded in the new package
+  // Do not remove in place since this will modify the loaded resources on the resource library
   forRange (HandleOf<Resource> resourceHandle, resourceLibrary->Resources.All())
   {
     Resource* resource = resourceHandle;
@@ -556,9 +552,7 @@ Resource* LoadResourceFromNewContentItem(ResourceManager* resourceManager,
       DoNotifyStatus(status);
 
       // RESOURCEREFACTOR Why was this doing what it was doing...????
-      // resource =
-      // Z::gResources->ResourceIdMap.FindValue(resourceLibrary->Resources.Back().Id,
-      // NULL);
+      // resource = Z::gResources->ResourceIdMap.FindValue(resourceLibrary->Resources.Back().Id, NULL);
       resource = resourceLibrary->Resources.Back();
     }
 
@@ -609,12 +603,9 @@ String GetEditorTrash()
 //
 // 1. No resource, modified
 // 2. Has resource, not saving to archetype, owned by an archetype, modified
-// 3. Has resource, not saving to archetype, not owned by an archetype, owned by
-// different level
-// 4. Has resource, not saving to archetype, not owned by an archetype, owned by
-// level, modified, not only instance
-// 5. Has resource, saving to archetype, not owned by an archetype, modified,
-// not only instance
+// 3. Has resource, not saving to archetype, not owned by an archetype, owned by different level
+// 4. Has resource, not saving to archetype, not owned by an archetype, owned by level, modified, not only instance
+// 5. Has resource, saving to archetype, not owned by an archetype, modified, not only instance
 // 6. Has resource, saving to archetype, owned by different archetype
 
 // Code paths for new   1 2 3 4 5 6
@@ -627,12 +618,10 @@ String GetEditorTrash()
 // Multiple instances  | | | |O|O| |
 
 // 1. Create new object, modify it
-// 2. Create one or more copies of an object, use one of them to upload to an
-// archetype, modify the non-archetype
+// 2. Create one or more copies of an object, use one of them to upload to an archetype, modify the non-archetype
 // 3. Copy an object and paste it in a different level
 // 4. Create one or more copies of an object, modify one of them
-// 5. Create one or more copies of an object, upload a modification of one of
-// them to an archetype
+// 5. Create one or more copies of an object, upload a modification of one of them to an archetype
 // 6. Upload to an archetype, use archetype to upload to a different archetype
 Resource* NewResourceOnWrite(ResourceManager* resourceManager,
                              BoundType* resourceType,
@@ -667,8 +656,7 @@ Resource* NewResourceOnWrite(ResourceManager* resourceManager,
   if (!activeLevel)
     return resource;
 
-  // Only check for copy if a current resource exists, otherwise go straight to
-  // creation
+  // Only check for copy if a current resource exists, otherwise go straight to creation
   if (resource)
   {
     // Find number of objects in the level using this resource
@@ -703,8 +691,8 @@ Resource* NewResourceOnWrite(ResourceManager* resourceManager,
       if (archetypeOwner == archetype)
         return resource;
 
-      // If resource does not belong to an archetype, and is not a modification
-      // of multiple instances, then this archetype will take ownership
+      // If resource does not belong to an archetype, and is not a modification of multiple instances,
+      // then this archetype will take ownership
       if (!archetypeOwner && (!modified || instanceCount < 2))
       {
         resource->GetBuilder()->SetResourceOwner(archetype->ResourceIdName);
@@ -714,8 +702,7 @@ Resource* NewResourceOnWrite(ResourceManager* resourceManager,
         return resource;
       }
     }
-    // When a non-archetype modifies a resource owned by an archetype then it
-    // should copy and not check the level
+    // When a non-archetype modifies a resource owned by an archetype then it should copy and not check the level
     else if (!archetypeOwner)
     {
       // Get the level that this resource may belong to from meta data

@@ -17,9 +17,8 @@ Handle GetActingObject(HandleParam componentOrSelection, HandleParam object)
   MetaComposition* composition = object.StoredType->HasInherited<MetaComposition>();
   ReturnIf(composition == nullptr,
            Handle(),
-           "The object that was selected had no Composition. Currently this is "
-           "only ever be called with a MetaSelection because it's only used in "
-           "MultiPropertyInterface.");
+           "The object that was selected had no Composition. Currently this is only ever be called with a "
+           "MetaSelection because it's only used in MultiPropertyInterface.");
   return composition->GetComponent(object, objectType);
 }
 
@@ -321,8 +320,7 @@ void MultiPropertyInterface::InvokeFunction(HandleParam object, Function* functi
 
 HandleOf<MetaComposition> MultiPropertyInterface::GetMetaComposition(BoundType* objectType)
 {
-  // If the object itself doesn't have a meta composition, we don't want to
-  // return our custom one
+  // If the object itself doesn't have a meta composition, we don't want to return our custom one
   if (MetaComposition* objectComposition = objectType->HasInherited<MetaComposition>())
     return new MultiMetaComposition(this, objectType, mOperationQueue);
   return nullptr;
@@ -347,8 +345,7 @@ ObjectPropertyNode* MultiPropertyInterface::BuildObjectTree(ObjectPropertyNode* 
   node->mComposition = GetMetaComposition(targetType);
   node->mMetaArray = GetMetaArray(targetType);
 
-  // Check for displayed attribute as well as Property attribute (Property
-  // implies displayed)
+  // Check for displayed attribute as well as Property attribute (Property implies displayed)
   forRange (Property* property, targetType->GetProperties())
   {
     if (property->HasAttribute(PropertyAttributes::cProperty) || property->HasAttribute(PropertyAttributes::cDisplay) ||
@@ -478,8 +475,8 @@ Handle MultiMetaComposition::GetComponentAt(HandleParam object, uint index)
 
   Handle component = mContainedComposition->GetComponent(primary, componentType);
 
-  // If the shared component is an interface type, we want the handle to be that
-  // exact type, not the more derived type returned from GetComponent
+  // If the shared component is an interface type, we want the handle to be that exact type,
+  // not the more derived type returned from GetComponent
   component.StoredType = componentType;
 
   return component;
@@ -635,9 +632,8 @@ void MultiMetaComposition::GetSharedComponents(MetaSelection* selection, Array<B
     }
   }
 
-  // Walk the components of the first object (we're using the order of the
-  // primary object's components) and check to see if all objects had the
-  // component
+  // Walk the components of the first object (we're using the order of the primary object's components)
+  // and check to see if all objects had the component
   uint componentCount = mContainedComposition->GetComponentCount(primary);
   for (uint i = 0; i < componentCount; ++i)
   {
@@ -654,8 +650,7 @@ void MultiMetaComposition::GetSharedComponents(MetaSelection* selection, Array<B
     }
     else
     {
-      // If not all objects had this component, walk the interfaces to find a
-      // common interface
+      // If not all objects had this component, walk the interfaces to find a common interface
       BoundType* interface = FindCommonInterface(sharedComponentMap, selection->Count(), componentType);
       if (interface)
         sharedComponents.PushBack(interface);

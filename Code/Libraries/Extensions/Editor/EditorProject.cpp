@@ -46,8 +46,7 @@ void LoadProject(Editor* editor, Cog* projectCog, StringParam path, StringParam 
       String libraryName = libraryRef.mContentLibraryName;
       String contentFolder = FilePath::Combine(projectFolder, libraryName);
       Status loadStatus;
-      ContentLibrary* contentLibrary =
-          Z::gContentSystem->LibraryFromDirectory(loadStatus, libraryName, contentFolder);
+      ContentLibrary* contentLibrary = Z::gContentSystem->LibraryFromDirectory(loadStatus, libraryName, contentFolder);
       if (contentLibrary)
       {
         Status status;
@@ -144,13 +143,14 @@ bool OpenProjectFile(StringParam filename)
   // Prevent components from being added or removed from the project cog
   projectCog->mFlags.SetFlag(CogFlags::ScriptComponentsLocked);
 
-  //ProjectSettings* project = projectCog->has(ProjectSettings);
-  //if (project == nullptr)
-  //  return false;
+  // ProjectSettings* project = projectCog->has(ProjectSettings);
+  // if (project == nullptr)
+  //   return false;
   ProjectSettings* project = HasOrAdd<ProjectSettings>(projectCog);
 
   String newProjectName = Environment::GetValue<String>("SetProjectName");
-  if (!newProjectName.Empty()) {
+  if (!newProjectName.Empty())
+  {
     project->ProjectName = newProjectName;
   }
 
@@ -290,8 +290,7 @@ void LauncherOpenProjectComposite::CommunicateWithLauncher()
 
 void LauncherOpenProjectComposite::OnConnectionCompleted(Event* e)
 {
-  // send a message to the launcher telling it to show the new or recent
-  // projects ui
+  // send a message to the launcher telling it to show the new or recent projects ui
   LauncherCommunicationEvent toSend;
   if (Os::IsDebuggerAttached())
     toSend.mExtraData = LauncherStartupArguments::Names[LauncherStartupArguments::DebuggerMode];
@@ -327,8 +326,7 @@ void LauncherOpenProjectComposite::OnConnectionFailed(Event* e)
     if (!launcherPath.Empty() && RunLauncherExe(launcherPath))
       return;
 
-    // otherwise the launcher doesn't seem to exist so run the old open/new
-    // dialog
+    // otherwise the launcher doesn't seem to exist so run the old open/new dialog
     FailedToOpenLauncher();
   }
 
@@ -361,9 +359,8 @@ LauncherSingletonCommunication::LauncherSingletonCommunication()
   // immediately closing it should be safe to disable compilation.
   ZilchManager::GetInstance()->mShouldAttemptCompile = false;
 
-  // This happens before the engine even exists and the tcp socket only updates
-  // during EngineUpdate so manually pump the engine a set number of times until
-  // we succeed or fail to connect
+  // This happens before the engine even exists and the tcp socket only updates during EngineUpdate
+  // so manually pump the engine a set number of times until we succeed or fail to connect
   while (mTimesTryingToConnect < 100)
     Z::gEngine->Update();
 }
@@ -382,8 +379,7 @@ void LauncherSingletonCommunication::OnConnectionCompleted(Event* e)
   LauncherCommunicationEvent myEvent;
   myEvent.LoadFromCommandArguments(Environment::GetInstance()->mParsedCommandLineArguments);
 
-  // If no arguments were provided then just tell the open launcher to display
-  // recent projects
+  // If no arguments were provided then just tell the open launcher to display recent projects
   if (myEvent.EventId.Empty())
     myEvent.EventId = Events::LauncherOpenRecentProjects;
   mSocket->SendToAll(myEvent.EventId, &myEvent);

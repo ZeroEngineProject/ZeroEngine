@@ -162,8 +162,7 @@ void ErrorList::ClearErrors()
 void ErrorList::OnScriptError(Event* event)
 {
   ScriptError* error = new ScriptError();
-  // This was originally python specific, this should be remade to be more
-  // generic
+  // This was originally python specific, this should be remade to be more generic
   // error->Description = event->Message;
   // error->File = FilePath::GetFileName(event->Location.FileName);
   // error->Line = event->Location.LineNumber;

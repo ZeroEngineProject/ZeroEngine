@@ -64,14 +64,12 @@ private:
   // Occurs when we change the character mode
   void CharacterModeChanged(ObjectEvent* event);
 
-  // This function tracks if we press enter/return in either the find/replace
-  // text boxes
+  // This function tracks if we press enter/return in either the find/replace text boxes
   void SubmitTextBox(KeyboardEvent* event, TextBox* textBox);
   void SubmitSearchOnFindReturn(KeyboardEvent* event);
   void SubmitSearchOnReplaceReturn(KeyboardEvent* event);
 
-  // when the find textbox is changed, this is called and will check for invalid
-  // symbols
+  // when the find textbox is changed, this is called and will check for invalid symbols
   void CheckForInvalidInput(ObjectEvent* event);
 
   // Occurs when we click the go button
@@ -135,8 +133,7 @@ private:
   // Perform the actual searching, and fill in the context with the results
   void DoSearchAndGetContext();
 
-  // Get the find regex (this may be different than the find text, due to
-  // options)
+  // Get the find regex (this may be different than the find text, due to options)
   String GetFindRegex();
 
   // Advance an input string to the end of a line
@@ -213,8 +210,7 @@ private:
     Regex FindRegex;
   };
 
-  // Store the context (null if the context was ever cleared and needs to be
-  // rebuilt)
+  // Store the context (null if the context was ever cleared and needs to be rebuilt)
   Context* mContext;
 
   // Are we in all mode?
@@ -240,8 +236,7 @@ private:
   // Do the action
   TextButton* mGo;
 
-  // What search mode are we in? (find next, find all, replace next, replace
-  // all...)
+  // What search mode are we in? (find next, find all, replace next, replace all...)
   ComboBox* mSearchMode;
   CStrSourceSpaced mSearchModeSource;
 
@@ -256,16 +251,14 @@ private:
   ComboBox* mDirection;
   CStrSourceStd mDirectionSource;
 
-  // Whether we're normally searching, searching with extended characters, or
-  // using regular expressions
+  // Whether we're normally searching, searching with extended characters, or using regular expressions
   ComboBox* mCharacterMode;
   StringSource mCharacterModeArray;
 
   // Store the regex-flavor label
   Label* mRegexFlavorLabel;
 
-  // The flavor of regular expression that we're using (only available when
-  // char-mode is regex)
+  // The flavor of regular expression that we're using (only available when char-mode is regex)
   ComboBox* mRegexFlavor;
   CStrSourceStd mRegexFlavorSource;
 

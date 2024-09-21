@@ -16,7 +16,7 @@ DeclareEnum3(PreviewImportance,
 
 struct PreviewWidgetInitializer
 {
-  PreviewWidgetInitializer() : Area(nullptr), Interactive(false){};
+  PreviewWidgetInitializer() : Area(nullptr), Interactive(false) {};
   Composite* Area;
   String Name;
   Handle Object;
@@ -90,8 +90,7 @@ struct PreviewWidgetCreator
   {
   }
   PreviewWidgetCreator(PreviewImportance::Enum importance, CreatePreviewWidget creator) :
-      Importance(importance),
-      Creator(creator)
+      Importance(importance), Creator(creator)
   {
   }
   PreviewImportance::Enum Importance;

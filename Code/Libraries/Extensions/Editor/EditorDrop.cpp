@@ -28,15 +28,13 @@ bool DropOnObject(MetaDropEvent* event, Cog* droppedOn)
       // Check each property on the component
       forRange (Property* property, component.StoredType->GetProperties())
       {
-        // if the object type being dropped matches the property of a component
-        // on the cog set that property to be the dropped item as long as the
-        // property has a setter
+        // if the object type being dropped matches the property of a component on the cog
+        // set that property to be the dropped item as long as the property has a setter
         if (property->PropertyType == metaObjectDrop && property->Set != nullptr)
         {
           if (event->Testing)
           {
-            // display function is used over ToString to avoid showing the
-            // resoureceId
+            // display function is used over ToString to avoid showing the resoureceId
             String displayString;
             if (MetaDisplay* display = metaObjectDrop->HasInherited<MetaDisplay>())
               displayString = display->GetName(instance);
@@ -174,8 +172,7 @@ bool DropOnObjectViewport(MetaDropEvent* event, Viewport* viewport, Space* space
     return true;
   }
 
-  // when dragging something from the library view show what you are dragging
-  // around
+  // when dragging something from the library view show what you are dragging around
   if (MetaDisplay* display = metaObjectDrop->HasInherited<MetaDisplay>())
     event->Result = display->GetName(instance);
 
@@ -186,9 +183,8 @@ bool EditorDrop(MetaDropEvent* event, Viewport* viewport, Space* space, Cog* dro
 {
   BoundType* droppedType = event->Instance.StoredType;
 
-  // It's useful to have dropping a Mesh or Sprite act like dropping an
-  // Archetype. Create the object, but use Shift to set a property like most
-  // other Resources
+  // It's useful to have dropping a Mesh or Sprite act like dropping an Archetype. Create the
+  // object, but use Shift to set a property like most other Resources
   if (droppedType->IsA(ZilchTypeId(Mesh)) || droppedType->IsA(ZilchTypeId(SpriteSource)))
   {
     if (Keyboard::Instance->KeyIsDown(Keys::Shift) == false)

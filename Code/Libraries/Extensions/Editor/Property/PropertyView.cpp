@@ -8,10 +8,8 @@ namespace PropertyViewUi
 {
 const cstr cLocation = "EditorUi/PropertyView";
 Tweakable(float, ObjectSize, Pixels(24), cLocation); // Size of objects
-Tweakable(float, PropertySize, Pixels(20),
-          cLocation); // Size of each property widget
-Tweakable(float, PropertySpacing, Pixels(2),
-          cLocation);                                // Pixels in between each property
+Tweakable(float, PropertySize, Pixels(20), cLocation);   // Size of each property widget
+Tweakable(float, PropertySpacing, Pixels(2), cLocation); // Pixels in between each property
 Tweakable(float, IndentSize, Pixels(10), cLocation); // Indent per level
 } // namespace PropertyViewUi
 

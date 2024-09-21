@@ -87,8 +87,7 @@ void NetPropertyIcon::UpdateTransform()
   String propertyName = mProperty->Name;
 
   //    Has net property attribute?
-  // OR Net object has this net property info added? (Property is enabled for
-  // network replication?)
+  // OR Net object has this net property info added? (Property is enabled for network replication?)
   if (mProperty->HasAttribute(PropertyAttributes::cNetProperty) ||
       netObject->HasNetPropertyInfo(componentType, propertyName))
     color = NetPropertyUi::EnabledNetPropertyIcon; // Use enabled color
@@ -119,14 +118,13 @@ void NetPropertyIcon::OnMouseEnter(Event* event)
 
   // Has net property attribute?
   if (mProperty->HasAttribute(PropertyAttributes::cNetProperty))
-    toolTip->SetText("This property will always be replicated over the network. Specified "
-                     "in script via the [NetProperty] attribute.");
+    toolTip->SetText("This property will always be replicated over the network. Specified in script via the "
+                     "[NetProperty] attribute.");
   else
   {
     // Property is enabled for network replication?
     if (IsEnabled())
-      toolTip->SetText("This property will be replicated over the network. "
-                       "Right click to choose a channel.");
+      toolTip->SetText("This property will be replicated over the network. Right click to choose a channel.");
     // Property is not enabled for network replication?
     else
       toolTip->SetText("Left click to replicate this property over the network.");
@@ -200,8 +198,7 @@ void NetPropertyIcon::OnLeftClick(Event* event)
   // Does not have net property attribute?
   if (!mProperty->HasAttribute(PropertyAttributes::cNetProperty))
   {
-    // Net object has this net property info added? (Property is enabled for
-    // network replication?)
+    // Net object has this net property info added? (Property is enabled for network replication?)
     if (netObject->HasNetPropertyInfo(componentType, propertyName))
     {
       // (Operation) Remove net property info
@@ -337,8 +334,7 @@ bool ShouldDisplayNetPropertyIcon(HandleParam selectedObject)
 
   // Disabled until we have the new property interface changes
 
-  // else if(MetaSelection* selection =
-  // selectedObject.As<MetaSelection>(nullptr))
+  // else if(MetaSelection* selection = selectedObject.As<MetaSelection>(nullptr))
   //{
   //  // To display the icon for multi-select, all objects in the selection
   //  // must be Cogs with the NetObject Component
@@ -363,8 +359,8 @@ Widget* CreateNetPropertyIcon(Composite* parent, HandleParam object, Property* m
   {
     // To Do:
     // We need to determine if we're representing a single object or multiple.
-    // We can do this by searching up the object tree that was used to create
-    // the property grid.
+    // We can do this by searching up the object tree that was used to create the
+    // property grid.
 
     // Create net property icon
     return new NetPropertyIcon(parent, object, metaProperty);

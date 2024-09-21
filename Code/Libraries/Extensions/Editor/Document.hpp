@@ -17,8 +17,7 @@ class DocumentEditor;
 class ResourceEvent;
 class ICodeInspector;
 
-/// Document interface for managing the editing of text, script, and other
-/// files.
+/// Document interface for managing the editing of text, script, and other files.
 class Document : public EventObject
 {
 public:
@@ -59,8 +58,7 @@ public:
   /// This will signal a refresh on any open text editors.
   void ReloadEditor();
 
-  /// Gets a code inspector which is used for code completion and other code
-  /// editing features
+  /// Gets a code inspector which is used for code completion and other code editing features
   virtual ICodeInspector* GetCodeInspector()
   {
     return nullptr;

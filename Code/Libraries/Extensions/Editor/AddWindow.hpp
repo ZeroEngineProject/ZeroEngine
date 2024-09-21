@@ -20,8 +20,7 @@ class ResourceTemplateDisplay;
 class ResourceTemplateDataSource;
 class ImportButton;
 
-// After we create a new Resource, it will be assigned to the object and
-// property defined here.
+// After we create a new Resource, it will be assigned to the object and property defined here.
 struct PostAddOp
 {
   Array<Handle> mObjects;
@@ -112,8 +111,7 @@ private:
   void OnKeyDown(KeyboardEvent* e);
   void OnSearchKeyPreview(KeyboardEvent* e);
 
-  /// When they hit 'Enter' on a selected Resource type, we want to notify a
-  /// type was selected.
+  /// When they hit 'Enter' on a selected Resource type, we want to notify a type was selected.
   void OnEnter(Event*);
 
   void OnResourceTypeSelected(Event*);

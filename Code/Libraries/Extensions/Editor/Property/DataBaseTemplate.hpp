@@ -126,8 +126,7 @@ struct ValuePolicy
 
 // AutoDataBaseSource
 
-/// This class provides a tree container that implements the DataBaseSource
-/// interface.
+/// This class provides a tree container that implements the DataBaseSource interface.
 template <typename Policy>
 class PolicyDataSource : public DataSource
 {

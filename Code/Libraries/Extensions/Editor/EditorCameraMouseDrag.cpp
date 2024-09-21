@@ -77,8 +77,7 @@ void EditorCameraMouseDrag::OnMouseUp(MouseEvent* event)
 
 void EditorCameraMouseDrag::OnMouseDown(MouseEvent* event)
 {
-  // EditorCamera mouse drag/capture should have total authority and claim all
-  // events.
+  // EditorCamera mouse drag/capture should have total authority and claim all events.
   event->Handled = true;
 }
 

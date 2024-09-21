@@ -56,8 +56,8 @@ void GraphWidget::RenderUpdate(
   Vec3 lowerLeft = upperLeft + Vec3(0, mSize.y, 0);
   Vec3 lowerRight = lowerLeft + Vec3(mSize.x, 0, 0);
 
-  // Offsets to deal with rendering issues? Would investigate further, but old
-  // UI should be removed somewhat soon
+  // Offsets to deal with rendering issues? Would investigate further, but old UI should be
+  // removed somewhat soon
   upperLeft += Vec3(0.5f, 0, 0);
   lowerLeft += Vec3(0.5f, -0.5f, 0);
   lowerRight += Vec3(0, -0.5f, 0);
@@ -359,8 +359,7 @@ float GraphWidget::GetIntervalSize(float range, float space)
   uint hashCount;
   float dist;
 
-  // This is a temporary fix, because the below function can infinite loop in
-  // certain cases
+  // This is a temporary fix, because the below function can infinite loop in certain cases
   int count = 0;
   const int cMaxCount = 100;
 

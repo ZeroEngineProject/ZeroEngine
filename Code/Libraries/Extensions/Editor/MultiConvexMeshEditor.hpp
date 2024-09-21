@@ -37,8 +37,7 @@ public:
   MultiConvexMeshEditor* mEditor;
 };
 
-/// A point in the MultiConvexMesh ui. This allows selection/movement/deletion
-/// of this point.
+/// A point in the MultiConvexMesh ui. This allows selection/movement/deletion of this point.
 class MultiConvexMeshPoint : public Widget
 {
 public:
@@ -108,16 +107,14 @@ public:
 DeclareEnum3(MultiConvexMeshDrawMode, None, Edges, Filled);
 /// How should mesh points be snapped.
 /// <param name="None">Don't auto-snap mesh points</param>
-/// <param name="IfClose">Only snap a point if it's within some threshold of the
-/// grid</param> <param name="Always">Always snap a point to the grid</param>
+/// <param name="IfClose">Only snap a point if it's within some threshold of the grid</param>
+/// <param name="Always">Always snap a point to the grid</param>
 DeclareEnum3(MultiConvexMeshSnappingMode, None, IfClose, Always);
-/// How should auto-computation of a mesh build boundaries? Should pixel
-/// boundaries be respected (corners are preserved) or should marching squares
-/// be used?
+/// How should auto-computation of a mesh build boundaries? Should pixel boundaries be
+/// respected (corners are preserved) or should marching squares be used?
 DeclareEnum2(MultiConvexMeshAutoComputeMethod, Pixels, MarchingSquares);
-/// How an image should be sampled for auto-computation. Should the boundary
-/// lines between empty/solid cells be computed from a pixel's alpha value or
-/// from it's intensity value?
+/// How an image should be sampled for auto-computation. Should the boundary lines between
+/// empty/solid cells be computed from a pixel's alpha value or from it's intensity value?
 DeclareEnum2(MultiConvexMeshAutoComputeMode, Alpha, Intensity);
 
 /// Structure bound to the property view for the main editor.
@@ -140,9 +137,8 @@ struct MultiConvexMeshPropertyViewInfo : public EventObject
   /// The color to draw edges with
   Vec4 GetOuterContourColor();
   void SetOuterContourColor(Vec4Param color);
-  /// The sprite source used as a reference for drawing the mesh. Note: this is
-  /// not always what's visible as the user can drag in archetypes to view as
-  /// well.
+  /// The sprite source used as a reference for drawing the mesh. Note: this is not always
+  /// what's visible as the user can drag in archetypes to view as well.
   SpriteSource* GetSpriteSource();
   void SetSpriteSource(SpriteSource* source);
   /// Resets the points of the mesh to an approximation for the current sprite.
@@ -173,8 +169,7 @@ struct MultiConvexMeshPropertyViewInfo : public EventObject
   MultiConvexMeshEditor* mEditor;
 };
 
-/// The main editor for drawing a contour to be decomposed into several convex
-/// meshes.
+/// The main editor for drawing a contour to be decomposed into several convex meshes.
 class MultiConvexMeshEditor : public Composite
 {
 public:
@@ -188,9 +183,8 @@ public:
   void CreateToolbar(Composite* toolbarParent);
 
   MultiConvexMeshPoint* FindPointAtScreenPosition(Vec2Param screenPosition);
-  /// Adds a point from the given screen position. Figures out what edge (if
-  /// any) is the closest to this point and replaces it with two edges
-  /// connecting to the new point.
+  /// Adds a point from the given screen position. Figures out what edge (if any)
+  /// is the closest to this point and replaces it with two edges connecting to the new point.
   void AddPointAtScreenPosition(Vec2Param screenPosition);
   /// Adds a point at a given index. By default queues an undo operation.
   MultiConvexMeshPoint* AddPointAt(uint index, Vec3Param worldPosition, bool queueUndo = true, bool testMesh = true);
@@ -271,15 +265,13 @@ public:
   /// What is the spacing (in world space) between the grid cells.
   real GetGridCellSize();
   void SetGridCellSize(real cellSize);
-  /// Sets the grid cell size to based upon the pixels per unit of the current
-  /// sprite source.
+  /// Sets the grid cell size to based upon the pixels per unit of the current sprite source.
   void SetGridSizeToPixels();
 
   void UpdateGridDrawing();
   /// Mark that we've modified our resource.
   void MarkMeshModified();
-  /// Tries to build convex meshes and if it fails it'll undo the last op (that
-  /// likely caused the bad mesh)
+  /// Tries to build convex meshes and if it fails it'll undo the last op (that likely caused the bad mesh)
   void TestConvexMeshes();
   /// Rebuild the convex mesh decomposition of the current contour.
   bool BuildConvexMeshes();
@@ -312,8 +304,7 @@ public:
   /// Used to store where a right click menu was created so we
   /// can create a point at the location.
   Vec2 mCachedMousePosition;
-  /// What points are currently selected. Used for displaying the current x and
-  /// y values.
+  /// What points are currently selected. Used for displaying the current x and y values.
   typedef HashSet<MultiConvexMeshPoint*> SelectionSet;
   SelectionSet mSelection;
 
@@ -326,8 +317,7 @@ public:
   uint mSelectedEdge;
   /// This is only saved for debug drawing some information
   ClosestEdgeInfo mClosestEdgeInfo;
-  /// Used to auto-compute the collision mesh (stored for debug drawing
-  /// purposes)
+  /// Used to auto-compute the collision mesh (stored for debug drawing purposes)
   MarchingSquares mMarchingSquares;
 
   /// We have our own operation queue for undo/redo

@@ -20,16 +20,14 @@ struct ObjectPropertyNode
   /// Destructor.
   ~ObjectPropertyNode();
 
-  /// When scripts are compiled, all old types are going to become garbage. We
-  /// invalidate the property grid by destroying the whole tree, but the problem
-  /// is that widgets are delay destructed. So we need to release all handles
-  /// immediately, before the types are freed.
+  /// When scripts are compiled, all old types are going to become garbage. We invalidate the
+  /// property grid by destroying the whole tree, but the problem is that widgets are delay
+  /// destructed. So we need to release all handles immediately, before the types are freed.
   void ReleaseHandles();
 
   bool IsPropertyGroup();
 
-  /// Get how far this object node is down in the hierarchy (0 if it has no
-  /// parent).
+  /// Get how far this object node is down in the hierarchy (0 if it has no parent).
   size_t GetDepth();
 
   ObjectPropertyNode* FindChildGroup(StringRange groupName);
@@ -39,18 +37,17 @@ struct ObjectPropertyNode
   /// This object. This will be null for property nodes.
   Handle mObject;
 
-  /// Used to group up properties on an object into a dropdown for
-  /// organizational purposes.
+  /// Used to group up properties on an object into a dropdown for organizational purposes.
   String mPropertyGroupName;
 
-  /// The meta composition of the current object. The property interface may
-  /// override the composition of the object, so that's why we use this instead
-  /// of querying the object itself for a meta composition.
+  /// The meta composition of the current object. The property interface may override the
+  /// composition of the object, so that's why we use this instead of querying the object
+  /// itself for a meta composition.
   HandleOf<MetaComposition> mComposition;
   HandleOf<MetaArray> mMetaArray;
 
-  // METAREFACTOR When we want to support Arrays of values (e.g. Array<float>),
-  // this needs to be changed to a property path.
+  // METAREFACTOR When we want to support Arrays of values (e.g. Array<float>), this needs to
+  // be changed to a property path.
   Property* mProperty;
 
   /// This objects properties and methods.
@@ -134,7 +131,7 @@ class PropertyInterface
 public:
   /// Constructor.
   PropertyInterface();
-  virtual ~PropertyInterface(){};
+  virtual ~PropertyInterface() {};
 
   /// Changes the given property on the given object. This is considered the
   /// final commit of the property (not intermediate), and should
@@ -153,9 +150,8 @@ public:
   /// Invokes the given method on the given object(s).
   virtual void InvokeFunction(HandleParam object, Zilch::Function* method);
 
-  /// The reason we have a custom MetaComposition and MetaArray is because we
-  /// want to add events for some modifications, undo/redo for some, and support
-  /// for multi-select operations.
+  /// The reason we have a custom MetaComposition and MetaArray is because we want to add events for some modifications,
+  /// undo/redo for some, and support for multi-select operations.
   virtual HandleOf<MetaComposition> GetMetaComposition(BoundType* objectType);
   virtual HandleOf<MetaArray> GetMetaArray(BoundType* objectType);
 

@@ -312,8 +312,7 @@ void SpriteSheetImporter::FinishLoad()
   float xZoom = displaySize.x / SourceSizeX;
   float yZoom = displaySize.y / SourceSizeY;
 
-  // use the axis that requires the most zoomed out to fit within the area
-  // without scrollbars
+  // use the axis that requires the most zoomed out to fit within the area without scrollbars
   if (xZoom <= yZoom)
     SetZoom(xZoom);
   else

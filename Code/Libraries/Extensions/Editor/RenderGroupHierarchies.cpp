@@ -41,8 +41,7 @@ DataEntry* RenderGroupSource::Parent(DataEntry* dataEntry)
   if (dataEntry == this)
     return nullptr;
 
-  // This class acts as the parent for all root RenderGroups for the tree
-  // interface.
+  // This class acts as the parent for all root RenderGroups for the tree interface.
   RenderGroup* renderGroup = (RenderGroup*)dataEntry;
   if (renderGroup->mParentInternal != nullptr)
     return renderGroup->mParentInternal;
@@ -132,8 +131,8 @@ void RenderGroupSource::CanMove(Status& status, DataEntry* source, DataEntry* de
 
   RenderGroup* moving = (RenderGroup*)source;
 
-  // If destination is this data source object then the operation is removing
-  // the assigned parent. Do nothing if no parent to remove.
+  // If destination is this data source object then the operation is removing the assigned parent.
+  // Do nothing if no parent to remove.
   if (destination == this && moving->mParentInternal == nullptr)
   {
     status.Context = InsertError::NotSupported;
@@ -220,8 +219,7 @@ bool RenderGroupSource::Move(DataEntry* destinationEntry, DataEntry* movingEntry
   {
     RenderGroup* dest = (RenderGroup*)destinationEntry;
 
-    // If the moving RenderGroup is writable then use the parent property to
-    // assign relationship.
+    // If the moving RenderGroup is writable then use the parent property to assign relationship.
     if (moving->IsWritable())
     {
       mOperationQueue->BeginBatch("RenderGroup_Move");

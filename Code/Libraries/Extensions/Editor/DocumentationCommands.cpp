@@ -12,12 +12,10 @@ String GetDocumentationLocation()
   return documentationLocation;
 }
 
-/// This exists just in case you want to get all unbound meta types with the
-/// documentation tool
+/// This exists just in case you want to get all unbound meta types with the documentation tool
 void SaveNonZilchMetaDocumentation()
 {
-  // obviously, this command is only meant to be ran by developers since this
-  // saves in source directory
+  // obviously, this command is only meant to be ran by developers since this saves in source directory
   String documentationLocation = GetDocumentationLocation();
 
   String fileName = FilePath::Combine(documentationLocation.All(), "UnboundMetaTypesDocumentationSkeleton.data");
@@ -166,8 +164,7 @@ void SaveUserAttributeListToFile()
   attribDocumentation.SaveToFile(fileName);
 }
 
-/// saves all bound classes(with methods + properties) to file, then does same
-/// for commands and events
+/// saves all bound classes(with methods + properties) to file, then does same for commands and events
 void SaveDocumentation()
 {
   String sourceDir = Z::gEngine->GetConfigCog()->has(MainConfig)->SourceDirectory;
@@ -188,8 +185,7 @@ void SaveDocumentation()
   Z::gEngine->Terminate();
 }
 
-/// binds all of the documentation commands as dev only as they all require
-/// source directory
+/// binds all of the documentation commands as dev only as they all require source directory
 void BindDocumentationCommands(Cog* config, CommandManager* commands)
 {
   if (Z::gEngine->GetConfigCog()->has(Zero::DeveloperConfig))

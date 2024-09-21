@@ -309,10 +309,7 @@ ZilchDefineType(StressTestDialog, builder, type)
 
 // Constructor
 StressTestDialog::StressTestDialog(Composite* parent) :
-    Composite(parent),
-    mTestIterationCount(0),
-    mTestFrame(0),
-    mRandom(0)
+    Composite(parent), mTestIterationCount(0), mTestFrame(0), mRandom(0)
 {
   SetLayout(CreateStackLayout());
   SetMinSize(Vec2(300, 300));
@@ -602,8 +599,7 @@ void StressTestDialog::TestOnce()
           else
             newVariant = RandomVariantOfType(Type::GetBoundType(property->PropertyType), targetSpace);
 
-          Log("Set Property '%s' on '%s' (old value %s, new value %s) on Cog "
-              "%s",
+          Log("Set Property '%s' on '%s' (old value %s, new value %s) on Cog %s",
               property->Name.c_str(),
               ZilchVirtualTypeId(component)->Name.c_str(),
               oldVariant.ToString().c_str(),
@@ -837,8 +833,8 @@ void StressTestDialog::TestOnce()
       for (; !children.Empty(); children.PopFront())
       {
         Widget& child = children.Front();
-        // unfortunately the meta of the window is null now, I should fix this
-        // but I'm lazy and I'll just check for the name window right now...
+        // unfortunately the meta of the window is null now, I should fix this but
+        // I'm lazy and I'll just check for the name window right now...
         if (ZilchVirtualTypeId(&child)->IsA(ZilchTypeId(Window)) || child.GetName() == "Window")
         {
           Window* window = static_cast<Window*>(&child);
@@ -870,8 +866,7 @@ void StressTestDialog::TestOnce()
           //          event.Movement = Vec2::cZero;
           //          event.Position = pos;
           //         event.ScrollMovement = Vec2::cZero;
-          //          event.State[MouseButtons::Left] =
-          //          true;//OsMouseButtonState::Pressed;
+          //          event.State[MouseButtons::Left] = true;//OsMouseButtonState::Pressed;
 
           // send a down event
           OsShell* shell = Z::gEngine->has(OsShell);
@@ -904,20 +899,17 @@ void StressTestDialog::TestOnce()
             // now send a move to the new spot
             //            event.Movement = newPos - pos;
             //            event.Position = newPos;
-            //            event.State[MouseButtons::Left] =
-            //            true;//OsMouseButtonState::Held;
+            //             event.State[MouseButtons::Left] = true;//OsMouseButtonState::Held;
             //            shell->DispatchEvent(Events::OsMouseMove, &event);
-            // a move has to be sent twice (at least on the same frame)
-            // otherwise it doesn't work right now, I guess it's a bug in ui
-            // that needs to be fixed
+            // a move has to be sent twice (at least on the same frame) otherwise it
+            // doesn't work right now, I guess it's a bug in ui that needs to be fixed
             //            event.Movement = Vec2::cZero;
             //            shell->DispatchEvent(Events::OsMouseMove, &event);
           }
 
           // now send the corresponding up wherever we left off at
           //          event.Movement = Vec2::cZero;
-          //          event.State[MouseButtons::Left] =
-          //          OsMouseButtonState::Released;
+          //           event.State[MouseButtons::Left] = OsMouseButtonState::Released;
           shell->DispatchEvent(Events::OsMouseUp, &event);
         }
       }
@@ -1010,8 +1002,8 @@ Component* StressTestDialog::GetRandomComponent(Space* targetSpace)
 Property* StressTestDialog::GetRandomSetProperty(BoundType* boundType)
 {
   PropertyArray properties;
-  // In order to get base type properties in an array (so we can randomly
-  // access) we have to create a new array and copy all properties over.
+  // In order to get base type properties in an array (so we can randomly access)
+  // we have to create a new array and copy all properties over.
   auto range = boundType->GetProperties(Zilch::Members::All);
   for (; !range.Empty(); range.PopFront())
     properties.PushBack(range.Front());
@@ -1086,8 +1078,7 @@ Any StressTestDialog::GetVariantForRangeExtension(StressRandom& random, Property
   //{
   //  if(random.Chance(0.9f))
   //    return Variant((uint)random.RandomInt());
-  //  return
-  //  Variant((uint)random.RandomIntRange((uint)editorRange->MinValue,(uint)editorRange->MaxValue));
+  //  return Variant((uint)random.RandomIntRange((uint)editorRange->MinValue,(uint)editorRange->MaxValue));
   //}
   else if (propertyType == ZilchTypeId(int))
   {

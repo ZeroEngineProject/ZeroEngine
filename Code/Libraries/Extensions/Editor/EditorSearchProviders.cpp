@@ -7,10 +7,7 @@ namespace Zero
 static const String cResourcesTag = "Resources";
 
 ResourceSearchProvider::ResourceSearchProvider(ResourceLibrary* library, bool showHidden, ResourceLibrary* defaultLib) :
-    SearchProvider("Resource"),
-    mDefaultLibrary(defaultLib),
-    mResourceLibrary(library),
-    mShowHidden(showHidden)
+    SearchProvider("Resource"), mDefaultLibrary(defaultLib), mResourceLibrary(library), mShowHidden(showHidden)
 {
 }
 
@@ -311,15 +308,13 @@ void ObjectSearchProvider::Search(SearchData& search)
 
 Composite* ObjectSearchProvider::CreatePreview(Composite* parent, SearchViewResult& element)
 {
-  // Commented out for the time being as creating a preview for cogs in the
-  // scene when using general search moves the object and creates a new camera
-  // in the scene that is visibly seen coming into and out of existence in both
-  // the scene and object view - Dane Curbow
+  // Commented out for the time being as creating a preview for cogs in the scene
+  // when using general search moves the object and creates a new camera in the scene
+  // that is visibly seen coming into and out of existence in both the scene and object view - Dane Curbow
 
   // Use camera preview
   //     if (Cog* cog = element.ObjectHandle.Get<Cog*>())
-  //       return ResourcePreview::CreatePreviewWidget(parent, cog->GetName(),
-  //       cog);
+  //       return ResourcePreview::CreatePreviewWidget(parent, cog->GetName(), cog);
   //     else
   return nullptr;
 }
@@ -331,9 +326,7 @@ String ObjectSearchProvider::GetElementType(SearchViewResult& element)
 }
 
 ComponentSearchProvider::ComponentSearchProvider(HandleParam object, HandleOf<MetaComposition>& composition) :
-    SearchProvider("Component"),
-    mObject(object),
-    mComposition(composition)
+    SearchProvider("Component"), mObject(object), mComposition(composition)
 {
   mResultsContainExactMatch = false;
 }
@@ -404,8 +397,7 @@ Composite* ComponentSearchProvider::CreatePreview(Composite* parent, SearchViewR
 
       if ((text = (MultiLineText*)CreateTextPreview(group, description)))
       {
-        // Gray-scale with less alpha to inherit some of the parent's display
-        // color.
+        // Gray-scale with less alpha to inherit some of the parent's display color.
         text->mTextField->SetColor(Vec4(1, 1, 1, 0.35f));
         // Defer border-display to the parent's border.
         text->mBorder->SetVisible(false);

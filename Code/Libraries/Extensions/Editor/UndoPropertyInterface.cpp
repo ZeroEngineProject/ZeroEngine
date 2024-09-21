@@ -58,8 +58,7 @@ void PropertyToUndo::InvokeFunction(HandleParam object, Function* function)
 
 HandleOf<MetaComposition> PropertyToUndo::GetMetaComposition(BoundType* objectType)
 {
-  // If the object itself doesn't have a meta composition, we don't want to
-  // return our custom one
+  // If the object itself doesn't have a meta composition, we don't want to return our custom one
   if (MetaComposition* objectComposition = objectType->HasInherited<MetaComposition>())
     return new UndoMetaComposition(this, objectType, mOperationQueue);
   return nullptr;
@@ -79,8 +78,7 @@ void PropertyToUndo::Redo()
 UndoMetaComposition::UndoMetaComposition(PropertyInterface* propertyInterface,
                                          BoundType* objectType,
                                          OperationQueue* opQueue) :
-    EventMetaComposition(propertyInterface, objectType),
-    mOperationQueue(opQueue)
+    EventMetaComposition(propertyInterface, objectType), mOperationQueue(opQueue)
 {
 }
 

@@ -35,8 +35,7 @@ public:
   /// Update the visual display of the item.
   void UpdateDisplay();
 
-  /// The table that is editing us. Used to get the current resource and modify
-  /// it.
+  /// The table that is editing us. Used to get the current resource and modify it.
   CollisionTableEditor* mTableEditor;
   /// The filter we represent. May be null if there is no filter.
   CollisionFilter* mFilter;
@@ -50,18 +49,17 @@ public:
   /// Text to display the current state of the filter. Might replace
   /// with a icon later, don't have a good icon to use at the moment.
   Text* mTextLabel;
-  /// Icon to display the current state of the filter. This is currently set
-  /// invisible, but all the logic is there so this will be easy to experiment
-  /// with later.
+  /// Icon to display the current state of the filter. This is currently set invisible,
+  /// but all the logic is there so this will be easy to experiment with later.
   Element* mIcon;
 
   /// The padding used to offset items from the border.
   static Vec2 mPadding;
 };
 
-/// A label for a row in the collision group. This needs to store what group
-/// it's associated with so right click context menus can know what is being
-/// affected.
+
+/// A label for a row in the collision group. This needs to store what group it's
+/// associated with so right click context menus can know what is being affected.
 class CollisionGroupLabel : public Composite
 {
 public:
@@ -124,8 +122,7 @@ public:
 
   /// The editor for us. Used to get the resource that is being edited.
   CollisionTableEditor* mTableEditor;
-  /// The data source for the combobox that stores what groups are available to
-  /// be added.
+  /// The data source for the combobox that stores what groups are available to be added.
   StringSource mAvailableGroups;
   /// Allows the user to register new groups to the table.
   ComboBox* mAddableGroupSelector;
@@ -139,8 +136,7 @@ public:
 };
 
 /// The main editor for collision tables. This has two main ui pieces: the
-/// collision table matrix and the property grid for editing items in the
-/// matrix.
+/// collision table matrix and the property grid for editing items in the matrix.
 class CollisionTableEditor : public Composite
 {
 public:
@@ -149,8 +145,7 @@ public:
 
   /// Sets what filter to display in the property grid.
   void SetEditingFilter(CollisionFilter* filter);
-  /// Helper to add a new filter to the current table for the given resource
-  /// types.
+  /// Helper to add a new filter to the current table for the given resource types.
   CollisionFilter* AddFilter(ResourceId id1, ResourceId id2);
   /// Listen for when the property grid is changed.
   void OnPropertyChanged(PropertyEvent* propEvent);
@@ -163,8 +158,7 @@ public:
   /// Updates the scrollable area for the matrix to be the min required size.
   void UpdateScrollArea();
 
-  /// Just a quick helper. Marks the current collision table resource as
-  /// modified.
+  /// Just a quick helper. Marks the current collision table resource as modified.
   void MarkModified();
 
   // Callbacks to know if collision groups were changed in any way

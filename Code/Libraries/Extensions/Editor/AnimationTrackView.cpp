@@ -465,8 +465,7 @@ void AnimationTrackView::UpdateToolTip()
   if (toolTip == nullptr)
   {
     toolTip = new ToolTip(GetRootWidget());
-    toolTip->SetText("Press the key icon next to a property in the property "
-                     "grid to create a key frame.");
+    toolTip->SetText("Press the key icon next to a property in the property grid to create a key frame.");
     mToolTip = toolTip;
   }
 

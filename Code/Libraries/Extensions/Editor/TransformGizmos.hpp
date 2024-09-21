@@ -83,15 +83,13 @@ public:
 
 /// Set the pivot point when a gizmo affects translation during manipulation.
 /// <param name="Primary">
-///   Set the pivot point as the position of the primary object in the
-///   selection.
+///   Set the pivot point as the position of the primary object in the selection.
 /// </param>
 /// <param name="Center">
 ///   Set the pivot point to be at the spacial center of the selection.
 /// </param>
 /// <param name="Average">
-///   Set the pivot point to be at the average position of all objects in the
-///   selection.
+///   Set the pivot point to be at the average position of all objects in the selection.
 /// </param>
 DeclareEnum3(GizmoPivot, Primary, Center, Average);
 
@@ -208,12 +206,10 @@ public:
   void OnGizmoModified(ScaleGizmoUpdateEvent* event);
 
   /// With multiple objects selected, allow their spacial-offest to be affected
-  /// about the chosen pivot point, while being locally scaled with
-  /// 'mAffectScale'.
+  /// about the chosen pivot point, while being locally scaled with 'mAffectScale'.
   bool mAffectTranslation;
   /// With multiple objects selected, allow their local scale to be affected
-  /// while being spacially-offset (with 'AffectTranslation') about the chosen
-  /// pivot point.
+  /// while being spacially-offset (with 'AffectTranslation') about the chosen pivot point.
   bool mAffectScale;
 
   /// Used when dragging on the view axis to determine which direction
@@ -236,12 +232,10 @@ public:
   void OnGizmoModified(RotateGizmoUpdateEvent* event);
 
   /// With multiple objects selected, allow their spacial-offest to be rotated
-  /// about the chosen pivot point, while being locally rotated with
-  /// 'mAffectRotation'.
+  /// about the chosen pivot point, while being locally rotated with 'mAffectRotation'.
   bool mAffectTranslation;
   /// With multiple objects selected, allow their local rotation to be affected
-  /// while being spacially-rotated (with 'AffectTranslation') about the chosen
-  /// pivot point.
+  /// while being spacially-rotated (with 'AffectTranslation') about the chosen pivot point.
   bool mAffectRotation;
 };
 

@@ -31,7 +31,7 @@ OrientationGizmoViewport::OrientationGizmoViewport(EditorViewport* editorViewpor
   cameraViewport->mRenderOrder = Math::IntegerPositiveMax();
   cameraViewport->SetRenderToViewport(true);
 
-  mViewport = cameraViewport->mViewport;
+  mViewport = (Viewport*)cameraViewport->mViewport;
 
   Cog* viewCube = mViewCubeSpace->CreateAt(CoreArchetypes::ViewCube, Vec3::cZero);
   viewCube->ClearArchetype();

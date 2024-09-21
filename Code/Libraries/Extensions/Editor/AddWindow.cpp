@@ -18,8 +18,7 @@ ZilchDefineType(PostAddResourceEvent, builder, type)
 }
 
 PostAddResourceEvent::PostAddResourceEvent(PostAddOp& postAdd, ResourceAdd* resource) :
-    mPostAdd(postAdd),
-    mResourceAdd(resource)
+    mPostAdd(postAdd), mResourceAdd(resource)
 {
 }
 
@@ -473,9 +472,7 @@ ZilchDefineType(ResourceTemplateSearch, builder, type)
 }
 
 ResourceTemplateSearch::ResourceTemplateSearch(Composite* parent) :
-    ColoredComposite(parent, Vec4(0.22f, 0.22f, 0.22f, 1.0f)),
-    mTemplateCount(0),
-    mManager(nullptr)
+    ColoredComposite(parent, Vec4(0.22f, 0.22f, 0.22f, 1.0f)), mTemplateCount(0), mManager(nullptr)
 {
   SetLayout(CreateStackLayout());
 
@@ -689,9 +686,7 @@ ZilchDefineType(ResourceTemplateDisplay, builder, type)
 }
 
 ResourceTemplateDisplay::ResourceTemplateDisplay(Composite* parent, PostAddOp& postAdd) :
-    ColoredComposite(parent, Vec4(0.27f, 0.27f, 0.27f, 1.0f)),
-    mPostAdd(postAdd),
-    mPreviewWidget(nullptr)
+    ColoredComposite(parent, Vec4(0.27f, 0.27f, 0.27f, 1.0f)), mPostAdd(postAdd), mPreviewWidget(nullptr)
 {
   SetLayout(CreateStackLayout(LayoutDirection::TopToBottom, Pixels(0, 0), Thickness::cZero));
 
@@ -1051,8 +1046,8 @@ bool ResourceTemplateDisplay::ValidateName(bool finalValidation)
     return false;
   }
 
-  // Check to make sure it doesn't contain any invalid characters and meets our
-  // resource name requirements
+  // Check to make sure it doesn't contain any invalid characters and meets our resource name
+  // requirements
   if (!IsValidFilename(resourceName, status))
   {
     CreateNameToolTip(status.Message);
@@ -1083,8 +1078,7 @@ bool ResourceTemplateDisplay::ValidateTags()
   tagString = tagString.Replace(",", "");
   tagString = tagString.Replace(" ", "");
 
-  // check to see if the tag string changed after being sanitized, if so it was
-  // invalid
+  // check to see if the tag string changed after being sanitized, if so it was invalid
   String santiziedTags = Cog::SanitizeName(tagString);
   if (tagString != santiziedTags)
   {
@@ -1162,8 +1156,8 @@ void ResourceTemplateDisplay::OnCreate(Event*)
     // Set all the collected tags on the newly created resource
     resourceAdd.SourceResource->mContentItem->SetTags(tags);
 
-    // Dispatch an event that the resource has been modified on the resource
-    // itself and on the resource system
+    // Dispatch an event that the resource has been modified on the resource itself
+    // and on the resource system
     ResourceEvent e;
     e.Manager = resourceTemplate->GetManager();
     e.EventResource = resourceTemplate;
@@ -1188,8 +1182,7 @@ void ResourceTemplateDisplay::OnTagsFocusGained(Event*)
 
 void ResourceTemplateDisplay::OnTagsFocusLost(Event*)
 {
-  // if the tags are invalid do not remove the tooltip just because the user
-  // deselected it
+  // if the tags are invalid do not remove the tooltip just because the user deselected it
   if (ValidateTags() == true)
     RemoveTagToolTip();
 }

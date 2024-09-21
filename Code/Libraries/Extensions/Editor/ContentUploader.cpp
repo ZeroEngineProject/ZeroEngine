@@ -114,8 +114,7 @@ ContentExportTile::ContentExportTile(Composite* parent,
 
 void ContentExportTile::UpdateTransform()
 {
-  // If there are missing dependencies place the text for it below the tiles
-  // title bar
+  // If there are missing dependencies place the text for it below the tiles title bar
   if (mMissingDependencies)
   {
     Vec2 backgroundSize = Vec2(mSize.x, cTileViewNameOffset);
@@ -180,8 +179,7 @@ void ContentExportTile::GetMissingDependencies(HashSet<ContentItem*>& missingDep
       toRemove.Insert(item);
   }
 
-  // Remove core resources from the dependencies list as they don't need to be
-  // exported
+  // Remove core resources from the dependencies list as they don't need to be exported
   forRange (ContentItem* item, toRemove)
   {
     missingDependencies.Erase(item);
@@ -305,8 +303,7 @@ ContentPackageExporter::ContentPackageExporter(Composite* parent) : Composite(pa
   mTileView->SetSizing(SizeAxis::X, SizePolicy::Flex, 1);
   mSource = new ContentUploadSource(mContentItems);
   mTileView->SetDataSource(mSource);
-  // This is the smallest size that makes the entire missing dependency text
-  // visible
+  // This is the smallest size that makes the entire missing dependency text visible
   mTileView->SetItemSize(118.f);
 
   Splitter* splitter = new Splitter(this);

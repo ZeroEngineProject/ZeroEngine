@@ -43,8 +43,7 @@ public:
   Cog* GetGizmo();
   ViewportMouseEvent* GetViewportMouseEvent();
 
-  /// OperationQueue is valid only when 'Finished' returns true. Expect null
-  /// otherwise.
+  /// OperationQueue is valid only when 'Finished' returns true. Expect null otherwise.
   OperationQueue* GetOperationQueue();
   bool GetFinished();
 

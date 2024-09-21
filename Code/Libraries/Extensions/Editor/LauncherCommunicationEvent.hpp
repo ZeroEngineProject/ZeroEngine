@@ -1,7 +1,7 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
 
-//#include "Networking/SendableEvent.hpp"
+// #include "Networking/SendableEvent.hpp"
 
 namespace Zero
 {
@@ -19,10 +19,10 @@ DeclareEvent(LauncherInstallProject);
 DeclareEvent(LauncherOpenBuild);
 } // namespace Events
 
-/// Event used for the engine to communicate with the launcher (to tell it to
-/// open recent projects and so on). Also used for the launcher to communicate
-/// with itself as the launcher is a singleton application but needs to send any
-/// command-line arguments to the current running instance.
+/// Event used for the engine to communicate with the launcher (to tell it to open
+/// recent projects and so on). Also used for the launcher to communicate with itself
+/// as the launcher is a singleton application but needs to send any command-line arguments
+/// to the current running instance.
 class LauncherCommunicationEvent : public SendableEvent
 {
 public:

@@ -133,8 +133,7 @@ void SortAndPrintMetaTypeList(StringBuilder& builder, Array<String>& names, cstr
   builder.Append("\n");
 }
 
-// Special class to delay dispatching the unit test command until scripts have
-// been compiled
+// Special class to delay dispatching the unit test command until scripts have been compiled
 class UnitTestDelayRunner : public Composite
 {
 public:
@@ -143,13 +142,11 @@ public:
   void OnScriptsCompiled(Event* e)
   {
     ActionSequence* seq = new ActionSequence(Z::gEditor, ActionExecuteMode::FrameUpdate);
-    // wait a little bit so we the scripts will be finished compiling (and
-    // hooked up)
+    // wait a little bit so we the scripts will be finished compiling (and hooked up)
     seq->Add(new ActionDelay(0.1f));
     seq->Add(new ActionEvent(Z::gEngine, "RunUnitTests", new Event()));
 
-    // when the game plays the scripts will be compiled again so don't dispatch
-    // this event
+    // when the game plays the scripts will be compiled again so don't dispatch this event
     DisconnectAll(Z::gEngine, this);
     this->Destroy();
   }

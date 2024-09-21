@@ -45,13 +45,12 @@ void DuplicateSelection(Editor* editor, Space* space)
 {
   MetaSelection* selection = editor->GetSelection();
 
-  // Get all cogs in the current selection filtering out protected objects and
-  // objects who's parents are already selected
+  // Get all cogs in the current selection filtering out protected objects and objects who's parents are already
+  // selected
   Array<Cog*> cogs;
   FilterChildrenAndProtected(cogs, selection);
 
-  // Begin an operation queue batch to undo/redo all the duplications as one
-  // action
+  // Begin an operation queue batch to undo/redo all the duplications as one action
   OperationQueue* opQueue = editor->GetOperationQueue();
   opQueue->BeginBatch();
 
@@ -67,8 +66,7 @@ void DuplicateSelection(Editor* editor, Space* space)
   // End the batch operation
   opQueue->EndBatch();
 
-  // If any cogs were successfully duplicated select the duplicates over the
-  // originals
+  // If any cogs were successfully duplicated select the duplicates over the originals
   if (!duplicateCogs.Empty())
   {
     selection->Clear(SendsEvents::False);
@@ -101,8 +99,7 @@ void DeleteSelectedObjects(Editor* editor, Space* space)
   if (builder.GetSize() > 0)
   {
     DoNotifyWarning("Cannot Delete Object",
-                    String::Format("Cannot delete the following objects "
-                                   "because they are protected: %s",
+                    String::Format("Cannot delete the following objects because they are protected: %s",
                                    builder.ToString().c_str()));
   }
 
@@ -271,8 +268,7 @@ void LoadObjectFromClipboard(ClipboardEvent* event, Space* space)
           // This object was created
           ObjectCreated(queue, object);
 
-          // Only move the index if it was copied from the same space it's being
-          // pasted into
+          // Only move the index if it was copied from the same space it's being pasted into
           if (editor->mPasteHierarchyIndex != uint(-1) && editor->mLastSpaceCopiedFrom == space->GetId())
             MoveObjectIndex(queue, object, editor->mPasteHierarchyIndex);
 
@@ -445,9 +441,8 @@ void GroupSelected(Editor* editor, Space* space)
       ++transformCount;
     }
 
-    // Only take into account objects under the shared parent. If there was no
-    // shared parent, it will only get root objects (which is where the grouped
-    // object will go)
+    // Only take into account objects under the shared parent. If there was no shared parent,
+    // it will only get root objects (which is where the grouped object will go)
     if (object->GetParent() == sharedParent)
     {
       uint hierarchyIndex = object->GetHierarchyIndex();
@@ -780,16 +775,14 @@ void CameraFocusSpace(Space* space, Cog* cameraObject, EditFocusMode::Enum focus
       transformObjects.Add(selection);
   }
 
-  // if there are no objects with transform we don't want to focus on the origin
-  // of the level
+  // if there are no objects with transform we don't want to focus on the origin of the level
   if (transformObjects.Empty())
     return;
 
   Aabb aabb = GetAabb(&transformObjects);
 
-  // Impose a minimum size for the aabb so that when focusing on a point, it
-  // doesn't zoom all the way inside the point. This way we can still see the
-  // point
+  // Impose a minimum size for the aabb so that when focusing on a point, it doesn't zoom all the
+  // way inside the point. This way we can still see the point
   const Vec3 cMinFocusHalfSize(0.025f);
   Vec3 halfExtents = aabb.GetHalfExtents();
   halfExtents = Math::Max(cMinFocusHalfSize, halfExtents);
@@ -1037,8 +1030,8 @@ void ResetCamera(Editor* editor)
       {
         if (Camera* cam = editorCamera->has(Camera))
         {
-          // In the future when the ability to set/load default values from data
-          // values is available this value should be set from that interface
+          // In the future when the ability to set/load default values from data values is available
+          // this value should be set from that interface
           float size = 20.f;
           cam->SetSize(size);
         }
@@ -1146,11 +1139,9 @@ void GoToDefinition(Editor* editor)
     ZilchDocumentResource* docResource = Type::DynamicCast<ZilchDocumentResource*>(docEditor->GetResource());
     if (docResource != nullptr && ZilchVirtualTypeId(docResource) == ZilchVirtualTypeId(resource))
     {
-      // Saves the current text from the document editor to the Document (which
-      // may just set a resource or other thing underlying) This should only
-      // ever upload the value in memory, but not actually access the disk (we
-      // could call docEditor->Save()) This also should not mark any resources
-      // as modified or send any events
+      // Saves the current text from the document editor to the Document (which may just set a resource or other thing
+      // underlying) This should only ever upload the value in memory, but not actually access the disk (we could call
+      // docEditor->Save()) This also should not mark any resources as modified or send any events
       docResource->mText = docEditor->GetAllText();
     }
   }
@@ -1231,8 +1222,7 @@ void DumpMemoryDebuggerStats()
 
 void EditInGame(Editor* editor)
 {
-  // command needs a game to be running to work so start the game if none are
-  // running
+  // command needs a game to be running to work so start the game if none are running
   if (!editor->AreGamesRunning())
   {
     editor->PlaySingleGame();

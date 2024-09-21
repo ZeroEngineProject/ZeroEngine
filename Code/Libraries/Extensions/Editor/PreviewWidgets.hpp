@@ -16,37 +16,37 @@ public:
 class ScriptPreview : public IconPreview
 {
 public:
-  ScriptPreview(PreviewWidgetInitializer& initializer) : IconPreview(initializer, "ScriptIcon"){};
+  ScriptPreview(PreviewWidgetInitializer& initializer) : IconPreview(initializer, "ScriptIcon") {};
 };
 
 class RenderGroupPreview : public IconPreview
 {
 public:
-  RenderGroupPreview(PreviewWidgetInitializer& initializer) : IconPreview(initializer, "RenderGroupIcon"){};
+  RenderGroupPreview(PreviewWidgetInitializer& initializer) : IconPreview(initializer, "RenderGroupIcon") {};
 };
 
 class SoundPreview : public IconPreview
 {
 public:
-  SoundPreview(PreviewWidgetInitializer& initializer) : IconPreview(initializer, "SoundIcon"){};
+  SoundPreview(PreviewWidgetInitializer& initializer) : IconPreview(initializer, "SoundIcon") {};
 };
 
 class NetworkingPreview : public IconPreview
 {
 public:
-  NetworkingPreview(PreviewWidgetInitializer& initializer) : IconPreview(initializer, "NetworkingIcon"){};
+  NetworkingPreview(PreviewWidgetInitializer& initializer) : IconPreview(initializer, "NetworkingIcon") {};
 };
 
 class PhysicsPreview : public IconPreview
 {
 public:
-  PhysicsPreview(PreviewWidgetInitializer& initializer) : IconPreview(initializer, "PhysicsIcon"){};
+  PhysicsPreview(PreviewWidgetInitializer& initializer) : IconPreview(initializer, "PhysicsIcon") {};
 };
 
 class LevelPreview : public IconPreview
 {
 public:
-  LevelPreview(PreviewWidgetInitializer& initializer) : IconPreview(initializer, "LevelIcon"){};
+  LevelPreview(PreviewWidgetInitializer& initializer) : IconPreview(initializer, "LevelIcon") {};
 };
 
 class SoundCuePreview : public IconPreview
@@ -61,7 +61,7 @@ public:
 class PhysicsMaterialPreview : public IconPreview
 {
 public:
-  PhysicsMaterialPreview(PreviewWidgetInitializer& initializer) : IconPreview(initializer, "PhysicsMaterial"){};
+  PhysicsMaterialPreview(PreviewWidgetInitializer& initializer) : IconPreview(initializer, "PhysicsMaterial") {};
 };
 
 class EmptyPreview : public IconPreview

@@ -779,8 +779,7 @@ void ListRow::Refresh()
       // Place the text based on final size.
       content->UpdateTransform();
 
-      // Commented out because the y-axis isn't reset to 0.0f on ListView
-      // rebuild.
+      // Commented out because the y-axis isn't reset to 0.0f on ListView rebuild.
       //  // Feed back the final size to the formatting.
       // formatting.Columns[i].CurrSize.y += height;
     }

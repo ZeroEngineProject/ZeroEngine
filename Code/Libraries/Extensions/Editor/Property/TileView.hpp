@@ -49,7 +49,7 @@ public:
   void UpdateTransform() override;
 
   // TileViewWidget Interface
-  virtual void Refresh(){};
+  virtual void Refresh() {};
   virtual void OnRightUp(MouseEvent* event);
   virtual void OnDoubleClick(MouseEvent* event);
   virtual void AnimatePreview(PreviewAnimate::Enum value)

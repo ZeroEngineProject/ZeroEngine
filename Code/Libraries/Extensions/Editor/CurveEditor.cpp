@@ -42,8 +42,7 @@ public:
   Vec2 mDragStartGraph;
 
   MultiSelectManipulation(MouseDragEvent* dragEvent, CurveEditor* editor) :
-      MouseManipulation(dragEvent->GetMouse(), editor->GetRootWidget()),
-      mEditor(editor)
+      MouseManipulation(dragEvent->GetMouse(), editor->GetRootWidget()), mEditor(editor)
   {
     Vec2 localPixels = mEditor->ToLocal(dragEvent->StartPosition);
     mDragStartGraph = mEditor->ToGraphPosition(localPixels);
@@ -821,8 +820,7 @@ void CurveEditor::OnLinearTangentsPressed(ObjectEvent* e)
       // It must be a tangent if not a control point
       Tangent* tangent = (Tangent*)draggable;
 
-      // Only do it if the control point isn't selected (control point takes
-      // priority)
+      // Only do it if the control point isn't selected (control point takes priority)
       if (!mSelection.Contains(tangent->mControlPoint))
         tangent->OnLinearPressed(e);
     }
@@ -844,8 +842,7 @@ void CurveEditor::OnSplitTangentsPressed(ObjectEvent* e)
       // It must be a tangent if not a control point
       Tangent* tangent = (Tangent*)draggable;
 
-      // Only do it if the control point isn't selected (control point takes
-      // priority)
+      // Only do it if the control point isn't selected (control point takes priority)
       if (!mSelection.Contains(tangent->mControlPoint))
         tangent->mControlPoint->OnSplitTangents(e);
     }
@@ -867,8 +864,7 @@ void CurveEditor::OnWeightedTangentsPressed(ObjectEvent* e)
       // It must be a tangent if not a control point
       Tangent* tangent = (Tangent*)draggable;
 
-      // Only do it if the control point isn't selected (control point takes
-      // priority)
+      // Only do it if the control point isn't selected (control point takes priority)
       if (!mSelection.Contains(tangent->mControlPoint))
         tangent->OnWeightedPressed(e);
     }
@@ -1181,8 +1177,7 @@ ZilchDefineType(ControlPoint, builder, type)
 }
 
 ControlPoint::ControlPoint(CurveObject* curve, Vec2Param pos, Vec2Param tanIn, Vec2Param tanOut, uint editorFlags) :
-    Draggable(curve),
-    mEditorFlags(editorFlags)
+    Draggable(curve), mEditorFlags(editorFlags)
 {
   mClientData = nullptr;
 

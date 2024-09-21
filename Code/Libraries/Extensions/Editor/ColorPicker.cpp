@@ -226,8 +226,7 @@ ColorPicker::ColorPicker(Composite* parent) : Composite(parent)
   mFinalColorDisplay->SetTranslation(Pixels(239, 1, 0));
   mFinalColorDisplay->SetSize(Pixels(70, 20));
 
-  // Parent composite for the color block area to allow for proper widget
-  // clipping
+  // Parent composite for the color block area to allow for proper widget clipping
   mColorBlockArea = new Composite(this);
   mColorBlockArea->SetTranslation(Pixels(0, 0, 0));
   mColorBlockArea->SetSize(Pixels(200, 200));

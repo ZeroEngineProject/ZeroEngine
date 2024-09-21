@@ -24,8 +24,7 @@ DeclareEvent(SelectTool);
 DeclareEvent(ShortcutInfoEnter);
 } // namespace Events
 
-/// Allows Ui customization for Tools. This will be sent on the Tool every time
-/// it is activated.
+/// Allows Ui customization for Tools. This will be sent on the Tool every time it is activated.
 class ToolUiEvent : public Event
 {
 public:
@@ -44,8 +43,7 @@ public:
   bool mNeedsPropertyGrid;
   Composite* mParent;
   Composite* mCustomUi;
-  /// Easy access to the Select Tool. It's commonly used in other Tools (such as
-  /// ray casting).
+  /// Easy access to the Select Tool. It's commonly used in other Tools (such as ray casting).
   Cog* mSelectTool;
 };
 
@@ -152,8 +150,7 @@ private:
   /// Change the tool when selected in the dropdown.
   void OnToolPulldownSelect(ObjectEvent*);
 
-  /// We want to forward keyboard input to the last viewport to execute
-  /// shortcuts.
+  /// We want to forward keyboard input to the last viewport to execute shortcuts.
   void OnKeyDown(KeyboardEvent* e);
 
   /// When scripts are compiled, re-select the active tool to refresh any

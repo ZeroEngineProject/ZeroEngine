@@ -4,26 +4,28 @@
 // Defines
 #define inifinite_loop for (;;)
 
-// A big note to anyone who reads this file:
-//
-// The search context is something that could use refactoring, since it
-// no longer needs to be a member variable (or allocated for that matter)
-// and instead should be something that's on the stack and passed through
-// to all the functions. This is because we no longer maintain the context
-// through searches, but rather we let the cursor position in the open
-// document tell us where next to search.
-//
-// This also means that all ClearContext cases can be taken out, even the
-// ones used where we check for modified documents.
-//
-// On that same note, after considering that context should be a stack
-// variable, I then thought that pushing CharEnd and CharBegin forward
-// after a replace was no longer necessary. This is not true since
-// ReplaceAll still relies on that behavior. (note to self)
-//
-// Yet another consideration, we might actually want to keep context
-// around since search in selection may rely on it to work. Search in
-// selection is currently disabled for this exact reason.
+/*
+  *- A big note to anyone who reads this file: -*
+
+  The search context is something that could use refactoring, since it
+  no longer needs to be a member variable (or allocated for that matter)
+  and instead should be something that's on the stack and passed through
+  to all the functions. This is because we no longer maintain the context
+  through searches, but rather we let the cursor position in the open
+  document tell us where next to search.
+
+  This also means that all ClearContext cases can be taken out, even the
+  ones used where we check for modified documents.
+
+  On that same note, after considering that context should be a stack
+  variable, I then thought that pushing CharEnd and CharBegin forward
+  after a replace was no longer necessary. This is not true since
+  ReplaceAll still relies on that behavior. (note to self)
+
+  Yet another consideration, we might actually want to keep context
+  around since search in selection may rely on it to work. Search in
+  selection is currently disabled for this exact reason.
+*/
 
 namespace Zero
 {
@@ -37,8 +39,7 @@ static const size_t ReplaceBit = 2;
 // These enums correspond with combo box options on the find dialog
 DeclareEnum4(SearchMode, FindNext, FindAll, ReplaceNext, ReplaceAll);
 DeclareEnum3(CharacterMode, Normal, Extended, Regex);
-// DeclareEnum4(LookIn, CurrentDocument, AllOpenDocuments, EntireProject,
-// SelectedText);
+// DeclareEnum4(LookIn, CurrentDocument, AllOpenDocuments, EntireProject, SelectedText);
 DeclareEnum4(LookIn, CurrentDocument, AllOpenDocuments, EntireProject, CurrentScope);
 
 // Constructor
@@ -361,10 +362,9 @@ void FindTextDialog::SplitActiveCursorRegion()
 
       // In down mode, we know that the process order is from front to back
       // In up mode, we know that the process order is from back to front
-      // Therefore, if we want to search the bottom first in down mode, then we
-      // should push it in the array before the top, and likewise, if we want to
-      // search the top first in up mode, it should come after the bottom This
-      // supports wrap-around mode
+      // Therefore, if we want to search the bottom first in down mode, then we should push it in the array before
+      // the top, and likewise, if we want to search the top first in up mode, it should come after the bottom
+      // This supports wrap-around mode
       mContext->Regions.InsertBefore(topRegion, bottomRegion);
 
       // If we're in wrap around mode...

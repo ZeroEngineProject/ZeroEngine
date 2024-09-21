@@ -140,8 +140,7 @@ void EditMultiConvexMesh(Editor* editor, Resource* resource)
 
   MultiConvexMeshEditor* meshEditor = new MultiConvexMeshEditor(editor, mesh);
 
-  // clamp the mesh editor's size to the main editor's size (so the window isn't
-  // off screen)
+  // clamp the mesh editor's size to the main editor's size (so the window isn't off screen)
   Vec2 size = Pixels(1000, 800);
   size = Math::Min(editor->GetSize(), size);
   meshEditor->SetSize(size);

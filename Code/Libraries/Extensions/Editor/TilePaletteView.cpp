@@ -171,9 +171,7 @@ ZilchDefineType(TilePaletteView, builder, type)
 }
 
 TilePaletteView::TilePaletteView(Composite* parent, TileEditor2D* editor) :
-    Composite(parent),
-    mEditor(editor),
-    mShowCollision(true)
+    Composite(parent), mEditor(editor), mShowCollision(true)
 {
   mTileSize = 64;
   mSelectionStart = IntVec2(0, 0);
@@ -332,14 +330,11 @@ void TilePaletteView::LoadPalette()
       // Use defaults if a resource was removed
       if (entry.tile.GetArchetypeResource() == nullptr)
         entry.tile.ArchetypeResource = ArchetypeManager::Find(DefaultTileArchetype)->mResourceId;
-      /* METAREFACTOR - The handle has "valid" data, but cannot be resolved
-      (resource was removed) if
-      (entry.tile.CollisionResource.IsNotNullAndCantResolve())
-        entry.tile.CollisionResource =
-      PhysicsMeshManager::Find(DefaultTilePhysicsMesh);
+      /* METAREFACTOR - The handle has "valid" data, but cannot be resolved (resource was removed)
+      if (entry.tile.CollisionResource.IsNotNullAndCantResolve())
+        entry.tile.CollisionResource = PhysicsMeshManager::Find(DefaultTilePhysicsMesh);
       if(entry.tile.SpriteResource.IsNotNullAndCantResolve())
-        entry.tile.SpriteResource =
-      SpriteSourceManager::Find(DefaultTileSpriteSource);
+        entry.tile.SpriteResource = SpriteSourceManager::Find(DefaultTileSpriteSource);
       */
       mPaletteTiles.Insert(pair.first, entry);
     }

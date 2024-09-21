@@ -44,12 +44,10 @@ public:
   // Icon Interface
   //
 
-  /// Returns true if the property is enabled for network replication, else
-  /// false
+  /// Returns true if the property is enabled for network replication, else false
   bool IsEnabled();
 
-  /// Returns the net property info associated with the property (if enabled),
-  /// else nullptr
+  /// Returns the net property info associated with the property (if enabled), else nullptr
   NetPropertyInfo* GetNetPropertyInfo();
 
   //
@@ -70,8 +68,8 @@ public:
   HandleOf<ToolTip> mTooltip;
 };
 
-/// Returns true if the selected object(s) should display net property icons
-/// next to all supported properties in the property grid
+/// Returns true if the selected object(s) should display net property icons next to all supported properties in the
+/// property grid
 bool ShouldDisplayNetPropertyIcon(HandleParam selection);
 
 /// Callback for adding custom icons to the property grid

@@ -808,8 +808,7 @@ void AnimationScrubber::OnKeyFrameModified(KeyFrameEvent* event)
           ErrorIf(destination->mKeyFrames.Contains(movedKeyFrame), "Key frame already added");
           destination->mKeyFrames.PushBack(movedKeyFrame);
 
-          // If the icon it came from doesn't have any more key frames, delete
-          // it
+          // If the icon it came from doesn't have any more key frames, delete it
           if (keyFrameIcon->mKeyFrames.Empty())
           {
             mKeyFrames.EraseEqualValues(keyFrameIcon);

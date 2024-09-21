@@ -50,7 +50,7 @@ class CurveEvent : public Event
 {
 public:
   ZilchDeclareType(CurveEvent, TypeCopyMode::ReferenceType);
-  CurveEvent() : mControlPoint(NULL){};
+  CurveEvent() : mControlPoint(NULL) {};
 
   /// The curve that was modified.
   CurveObject* mCurve;
@@ -178,8 +178,7 @@ public:
   /// Returns the first curve that the mouse is over.
   CurveObject* GetMouseOverCurve();
 
-  /// Adds the given draggable to the selection. Clears the selection if
-  /// specified
+  /// Adds the given draggable to the selection. Clears the selection if specified
   void SelectDraggable(Draggable* draggable, bool singleSelect = true);
   bool IsSelected(Draggable* draggable);
   void DeSelect(Draggable* draggable);

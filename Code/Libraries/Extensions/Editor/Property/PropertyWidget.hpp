@@ -91,8 +91,7 @@ typedef PropertyWidget* (*MakePropertyWidget)(PropertyWidgetInitializer& initial
 // This meta component is expected to be found in two places:
 //   1. On a property type (e.g. float, String, Resource, etc...)
 //   2. On a EditorPropertyExtension
-//     - These have priority over the property type, because it's on a per
-//     property basis
+//     - These have priority over the property type, because it's on a per property basis
 class MetaPropertyEditor : public ReferenceCountedEventObject
 {
 public:

@@ -154,7 +154,7 @@ public:
   {
     return false;
   }
-  virtual void MouseDragUpdate(Viewport* viewport, Vec2Param mouseStart, Vec2Param newPosition){};
+  virtual void MouseDragUpdate(Viewport* viewport, Vec2Param mouseStart, Vec2Param newPosition) {};
   virtual void EndDrag(Viewport* viewport)
   {
   }

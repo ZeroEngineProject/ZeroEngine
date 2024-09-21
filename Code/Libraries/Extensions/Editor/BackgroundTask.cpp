@@ -105,10 +105,9 @@ BackgroundTask::~BackgroundTask()
 
 void BackgroundTask::Execute()
 {
-  // Because sometimes people connect to the background task right after this
-  // call we don't want to start the job yet. This would be better fixed by
-  // letting the outside callers add the job themselves, however for now this
-  // prevents the race condition.
+  // Because sometimes people connect to the background task right after this call
+  // we don't want to start the job yet. This would be better fixed by letting the outside callers
+  // add the job themselves, however for now this prevents the race condition.
   ConnectThisTo(Z::gEngine, Events::EngineUpdate, OnEngineUpdate);
 
   mStartTime = Time::Clock();
@@ -187,9 +186,8 @@ BackgroundTasks::BackgroundTasks()
 
 BackgroundTasks::~BackgroundTasks()
 {
-  // This is not a great fix, but for now we null out background tasks before we
-  // get completely deleted so that nobody can use it on other threads since
-  // it's only used to form a handle.
+  // This is not a great fix, but for now we null out background tasks before we get completely deleted
+  // so that nobody can use it on other threads since it's only used to form a handle.
   Z::gBackgroundTasks = nullptr;
 
   DeleteObjectsInContainer(mActiveTasks);
@@ -214,8 +212,7 @@ BackgroundTask* BackgroundTasks::CreateTask(BackgroundTaskJob* job)
 void BackgroundTasks::OnTaskUpdated(BackgroundTaskEvent* e)
 {
   BackgroundTask* task = e->mTask;
-  // this is most likely for a job being called on a main thread so a task was
-  // never created
+  // this is most likely for a job being called on a main thread so a task was never created
   if (task == nullptr)
     return;
 

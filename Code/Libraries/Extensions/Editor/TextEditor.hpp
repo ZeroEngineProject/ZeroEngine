@@ -126,8 +126,7 @@ public:
   int GetTabWidth();
   void SetTabWidth(int width);
 
-  // Returns a string that is either a tab character, or the number of spaces
-  // based on tab width
+  // Returns a string that is either a tab character, or the number of spaces based on tab width
   String GetTabStyleAsString();
 
   // Get the start/end position of a word within the given position
@@ -261,8 +260,7 @@ public:
 
   void OnUpdate(UpdateEvent* event);
 
-  // Update text body highlights and scroll well indicators for cursors &
-  // highlights.
+  // Update text body highlights and scroll well indicators for cursors & highlights.
   void UpdateTextMatchHighlighting();
 
   // Create/Populate scroll-well indicators associated with this TextEditor.
@@ -287,7 +285,7 @@ public:
 
   // Scroll Area Functions
   Vec2 GetClientSize() override;
-  void SetClientSize(Vec2 newSize) override{};
+  void SetClientSize(Vec2 newSize) override {};
 
   void GetText(int start, int end, char* buffer, int bufferSize);
   String GetText(int start, int end);
@@ -356,7 +354,7 @@ protected:
   virtual void OnFocusIn()
   {
   }
-  virtual void OnFocusOut(){};
+  virtual void OnFocusOut() {};
   virtual void OnKeyDown(KeyboardEvent* event);
 };
 

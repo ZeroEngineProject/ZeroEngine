@@ -27,10 +27,9 @@ void OpenProject();
 void UnloadProject(Editor* editor, Cog* projectCog);
 void LoadProject(Editor* editor, Cog* projectCog, StringParam path, StringParam projectFile);
 
-/// This composite takes care of communicating with the launcher for the
-/// purposes of the open/new projects dialog. Since this takes place via a tcp
-/// connection this can take some time for a response which this composite helps
-/// to deal with.
+/// This composite takes care of communicating with the launcher for the purposes of the
+/// open/new projects dialog. Since this takes place via a tcp connection this can take
+/// some time for a response which this composite helps to deal with.
 class LauncherOpenProjectComposite : public Composite
 {
 public:
@@ -54,10 +53,9 @@ public:
   String mEventType;
 };
 
-/// Class that takes care of communicate from one launcher to another during
-/// startup. As the launcher behaves as a singleton, command-line arguments need
-/// to be passed from the newly opened launcher to the currently running
-/// launcher.
+/// Class that takes care of communicate from one launcher to another during startup.
+/// As the launcher behaves as a singleton, command-line arguments need to be passed
+/// from the newly opened launcher to the currently running launcher.
 class LauncherSingletonCommunication : public EventObject
 {
 public:
@@ -75,10 +73,9 @@ public:
   Status mStatus;
 };
 
-// A simple class to send an event from the launcher to the editor to tell it to
-// open a project. The tcp socket needs to exist for a bit (and we need callback
-// functions) so this is created to send an event after a connection is
-// established.
+// A simple class to send an event from the launcher to the editor to tell it to open a project.
+// The tcp socket needs to exist for a bit (and we need callback functions) so this is
+// created to send an event after a connection is established.
 class LauncherDebuggerCommunication : public EventObject
 {
 public:
@@ -97,9 +94,8 @@ public:
   String mProjectFile;
 };
 
-// A simple class to open a tcp socket and listen for any communication from the
-// launcher (so we can have the launcher tell us to open a file while we have
-// the debugger attached)
+// A simple class to open a tcp socket and listen for any communication from the launcher
+// (so we can have the launcher tell us to open a file while we have the debugger attached)
 class SimpleDebuggerListener : public EventObject
 {
 public:

@@ -104,8 +104,7 @@ void ObjectHotspot::OnClick(Matches& matches)
       selection->SelectOnly(cog);
       selection->FinalSelectionChanged();
       Space* space = cog->GetSpace();
-      // the space could be null if we were selecting the game or something not
-      // in a space
+      // the space could be null if we were selecting the game or something not in a space
       if (space != NULL)
       {
         Cog* editorCamera = space->FindObjectByName(SpecialCogNames::EditorCamera);
@@ -135,8 +134,7 @@ void FileHotspot::OnClick(Matches& matches)
     int line;
     ToValue(matches[2], line);
 
-    // Subtract 1 since line numbers are actually zero based, and the printed
-    // form is 1 based
+    // Subtract 1 since line numbers are actually zero based, and the printed form is 1 based
     --line;
 
     // Navigate to the script/line

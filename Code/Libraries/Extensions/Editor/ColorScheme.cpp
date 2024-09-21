@@ -32,9 +32,8 @@ ZilchDefineType(ColorScheme, builder, type)
   ZilchBindFieldProperty(Number);
   ZilchBindFieldProperty(Keyword);
   ZilchBindFieldProperty(Operator);
-  // until we have a zilch lexer setup that colors the class/function names
-  // these fields should not be exposed as a property since they currently have
-  // no effect
+  // until we have a zilch lexer setup that colors the class/function names these fields should not be exposed as a
+  // property since they currently have no effect
   ZilchBindField(ClassName);
   ZilchBindField(FunctionName);
   ZilchBindFieldProperty(SpecialWords);
@@ -199,8 +198,7 @@ void ColorScheme::Save()
 
   UpdateConfig();
 
-  // After saving a color scheme we need enumerate and add the new user color
-  // schemes
+  // After saving a color scheme we need enumerate and add the new user color schemes
   Enumerate(userSchemeDirectory);
   // Set our active scheme to the new saved scheme
   SetActiveScheme(mSaveName);
@@ -238,8 +236,7 @@ void ColorScheme::LoadSchemes()
   String userColorSchemeDirectory = FilePath::Combine(GetUserDocumentsApplicationDirectory(), "ColorSchemes");
   Enumerate(userColorSchemeDirectory);
 
-  // Default color schemes are loaded second to overwrite user schemes using the
-  // same name
+  // Default color schemes are loaded second to overwrite user schemes using the same name
   String defaultColorSchemeDirectory = FilePath::Combine(mainConfig->DataDirectory, "ColorSchemes");
   Enumerate(defaultColorSchemeDirectory);
 

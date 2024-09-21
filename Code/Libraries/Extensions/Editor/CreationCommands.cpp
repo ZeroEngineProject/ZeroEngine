@@ -49,8 +49,7 @@ void EditorCreateObjectCommand::Execute(Command* command, CommandManager* manage
   if (cog == nullptr)
     return;
 
-  // We don't want it to be associated with the Archetype as they're all core
-  // Resources
+  // We don't want it to be associated with the Archetype as they're all core Resources
   cog->ClearArchetype();
   cog->SetName(ArchetypeName);
 

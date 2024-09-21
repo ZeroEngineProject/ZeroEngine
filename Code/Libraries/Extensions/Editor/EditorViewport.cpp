@@ -22,8 +22,7 @@ ZilchDefineType(EditorViewport, builder, type)
 }
 
 EditorViewport::EditorViewport(Composite* parent, OwnerShip::Enum ownership) :
-    Composite(parent),
-    mIgnoreSpaceModifications(false)
+    Composite(parent), mIgnoreSpaceModifications(false)
 {
   mTools = Z::gEditor->Tools;
   mOwnerShip = ownership;
@@ -527,8 +526,7 @@ void EditorViewport::OnLeftMouseDown(MouseEvent* e)
   mMouseDownScreenPosition = e->Position;
 
   // Unlike the other mouse events left mouse specifically has an override to
-  // allow the camera a first-chance response before the active tool has a
-  // chance.
+  // allow the camera a first-chance response before the active tool has a chance.
   EditorCameraController* controller = mEditorCamera.has(EditorCameraController);
   if (controller)
   {
@@ -578,8 +576,7 @@ void EditorViewport::OnLeftMouseDrag(MouseEvent* e)
   mMouseOperation = MouseMode::Default;
 
   // Unlike the other mouse events left mouse specifically has an override to
-  // allow the camera a first-chance response before the active tool has a
-  // chance.
+  // allow the camera a first-chance response before the active tool has a chance.
   EditorCameraController* controller = mEditorCamera.has(EditorCameraController);
   if (controller)
   {
@@ -611,8 +608,7 @@ void EditorViewport::OnMouseUpdate(MouseEvent* e)
   if (ForwardEventToGizmos(e))
     return;
 
-  // If the tool didn't handle the event, forward it so that reactive objects
-  // get updated
+  // If the tool didn't handle the event, forward it so that reactive objects get updated
   if (ReactiveViewport* viewport = GetReactiveViewport())
     viewport->OnMouseUpdate(e);
 }
@@ -797,9 +793,8 @@ void EditorViewport::OnKeyDown(KeyboardEvent* e)
   {
     // if(e->Key == Keys::F12)
     //{
-    //  String fileName = BuildString("ZeroScreenShot-", GetTimeAndDateStamp(),
-    //  ".png"); String filePath =
-    //  FilePath::Combine(GetUserDocumentsDirectory(), fileName);
+    //   String fileName = BuildString("ZeroScreenShot-", GetTimeAndDateStamp(), ".png");
+    //   String filePath = FilePath::Combine(GetUserDocumentsDirectory(), fileName);
     //  this->ScreenCapture(filePath);
 
     //  //Print to console only

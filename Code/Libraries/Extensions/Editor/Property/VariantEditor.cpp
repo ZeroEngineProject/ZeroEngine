@@ -148,8 +148,7 @@ void InPlaceTextEditor::SetVariant(AnyParam variant)
     mText->SetText(text);
     mAdditionalText->SetActive(false);
   }
-  // No matter which text is set we need to size the text itself to the text it
-  // contains
+  // No matter which text is set we need to size the text itself to the text it contains
   mText->SizeToContents();
 }
 
@@ -173,8 +172,7 @@ void InPlaceTextEditor::GetEditTextVariant(Any& variant)
 
 void InPlaceTextEditor::SizeAllText()
 {
-  // check if we have width left after just the text to display additional
-  // information
+  // check if we have width left after just the text to display additional information
   float remainingWidth = mSize.x - mText->GetMinSize().x;
   if (remainingWidth > 0)
   {

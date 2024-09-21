@@ -99,8 +99,7 @@ void NotificationPopup::AddNotifyEvent(NotifyEvent* event)
 
   // sort errors to take priority over warnings over general,
   // but if we are already on the same type don't change our index
-  // also, if the mouse is not over the window, new items of the same priority
-  // will take over
+  // also, if the mouse is not over the window, new items of the same priority will take over
   if (newErrType == NotifyType::Error)
   {
     if (currErrType != NotifyType::Error || mMouseOver == false)

@@ -42,8 +42,7 @@ void SoundCuePreview::OnLeftClick(MouseEvent* event)
 }
 
 CameraViewportDrawer::CameraViewportDrawer(Composite* parent, Cog* cameraObject) :
-    Widget(parent),
-    mCameraObject(cameraObject)
+    Widget(parent), mCameraObject(cameraObject)
 {
 }
 
@@ -82,8 +81,7 @@ void CameraViewportDrawer::RenderUpdate(
 }
 
 SpacePreviewMouseDrag::SpacePreviewMouseDrag(Mouse* mouse, SpacePreview* preview) :
-    MouseManipulation(mouse, preview),
-    mPreview(preview)
+    MouseManipulation(mouse, preview), mPreview(preview)
 {
 }
 
@@ -162,8 +160,8 @@ SpacePreview::SpacePreview(PreviewWidgetInitializer& initializer, StringParam ob
       objectToView = space->CreateAt(objectArchetype, Vec3(0, 0, 0));
       if (objectToView != nullptr)
       {
-        // This is being used in the preview space, apply its modifications so
-        // that they can be modified in the Archetypes context
+        // This is being used in the preview space, apply its modifications so that they can
+        // be modified in the Archetypes context
         Archetype* archetype = objectToView->GetArchetype();
         archetype->GetLocalCachedModifications().ApplyModificationsToObject(objectToView);
       }
@@ -427,8 +425,7 @@ MultiConvexMeshPreview::MultiConvexMeshPreview(PreviewWidgetInitializer& initial
   // We want to be called for update every frame so we debug draw
   AnimatePreview(PreviewAnimate::Always);
 
-  // To make it easier to see the debug drawing, change to orthographic and zoom
-  // in
+  // To make it easier to see the debug drawing, change to orthographic and zoom in
   Camera* camera = mCamera.has(Camera);
   if (camera != nullptr)
   {

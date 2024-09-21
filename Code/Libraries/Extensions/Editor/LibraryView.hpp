@@ -113,8 +113,8 @@ private:
   void OnEditTags(ObjectEvent* event);
   void OnMessageBox(MessageBoxEvent* event);
   void OnDuplicate(Event* event);
-  /// Extra context menus for zilch fragment translation. These should
-  /// eventually be moved to some external registration once it is possible.
+  /// Extra context menus for zilch fragment translation. These should eventually
+  /// be moved to some external registration once it is possible.
   void OnComposeZilchMaterial(Event* event);
   void OnTranslateZilchPixelMaterial(Event* event);
   void OnTranslateZilchGeometryMaterial(Event* event);

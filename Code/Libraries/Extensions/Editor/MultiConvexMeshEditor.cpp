@@ -55,8 +55,7 @@ void MultiConvexMeshDrawer::DrawOuterContour(ViewBlock& viewBlock, FrameBlock& f
 
   uint size = mEditor->mPoints.Size();
 
-  // get the color of the edges (if the mesh is invalid use the invalid color
-  // instead)
+  // get the color of the edges (if the mesh is invalid use the invalid color instead)
   Vec4 contourColor = mEditor->mPropertyViewInfo.GetOuterContourColor();
   Vec4 highlightColor = ConvexMeshEditorUi::OuterContourHighlightColor;
   if (mEditor->mIsValid == false)
@@ -116,8 +115,7 @@ void MultiConvexMeshDrawer::DrawPoints(ViewBlock& viewBlock, FrameBlock& frameBl
 
     Vec3 viewportPoint = point->mViewportPoint;
 
-    // determine which color to use (based upon if the point is
-    // highlighted/selected)
+    // determine which color to use (based upon if the point is highlighted/selected)
     Vec4 color = ConvexMeshEditorUi::ControlPointColor;
 
     if (mEditor->mSelection.Contains(point))
@@ -136,8 +134,7 @@ void MultiConvexMeshDrawer::DrawPoints(ViewBlock& viewBlock, FrameBlock& frameBl
 
 void MultiConvexMeshDrawer::DrawClosestPointOnEdge(ViewBlock& viewBlock, FrameBlock& frameBlock, WidgetRect clipRect)
 {
-  // debug! shows the closest point on the closest edge (where just adding a new
-  // point will go to)
+  // debug! shows the closest point on the closest edge (where just adding a new point will go to)
   Keyboard* keyboard = Keyboard::GetInstance();
   if (mEditor->mClosestEdgeInfo.mClosestEdge <= mEditor->mPoints.Size() && keyboard->KeyIsDown(Keys::Control))
   {
@@ -206,8 +203,7 @@ void MultiConvexMeshDrawer::DrawAutoComputedContours(ViewBlock& viewBlock, Frame
 class MultiConvexMeshDragManipulator : public MouseManipulation
 {
 public:
-  /// Stores the initial relative conditions of all the selected points from the
-  /// drag position.
+  /// Stores the initial relative conditions of all the selected points from the drag position.
   struct PointData
   {
     PointData()
@@ -254,8 +250,8 @@ public:
 
   void UpdatePosition(Vec2Param screenPosition)
   {
-    // mark that no edge is currently selected (because the order of events
-    // might mean that a capture happens before our parents gets the exit)
+    // mark that no edge is currently selected (because the order of events might
+    // mean that a capture happens before our parents gets the exit)
     mEditor->ClearSelectedEdge();
 
     // snap the world point
@@ -329,8 +325,7 @@ void MultiConvexMeshPoint::Setup(MultiConvexMeshEditor* editor, Vec3Param worldP
   // recompute our desired viewport position from the set world point
   UpdateViewportPosition();
 
-  // so that the editor doesn't clear the selection by thinking we clicked empty
-  // space
+  // so that the editor doesn't clear the selection by thinking we clicked empty space
   ConnectThisTo(this, Events::LeftMouseDown, OnHandleMouseEvent);
   ConnectThisTo(this, Events::LeftClick, OnLeftClick);
   // so another point isn't created by us double clicking on a point
@@ -352,9 +347,8 @@ void MultiConvexMeshPoint::OnLeftClick(MouseEvent* e)
 {
   e->Handled = true;
 
-  // a click happened that didn't result in a drag operation and shift wasn't
-  // pressed, the user is trying to select one point only so clear the old
-  // selection
+  // a click happened that didn't result in a drag operation and shift wasn't pressed,
+  // the user is trying to select one point only so clear the old selection
   if (!e->ShiftPressed)
     mEditor->ClearSelection();
 
@@ -427,8 +421,8 @@ void MultiConvexMeshPoint::UpdateViewportPosition()
   Vec2 size(ConvexMeshEditorUi::ControlPointSize);
   SetSize(size);
 
-  // figure out our correct position (since the viewport point is our center but
-  // we're upper left positioned) and make sure to snap that to pixel boundaries
+  // figure out our correct position (since the viewport point is our center but we're
+  // upper left positioned) and make sure to snap that to pixel boundaries
   Vec3 actualPos = mViewportPoint - Vec3(size) * 0.5f;
   SnapToPixels(actualPos);
   SetTranslation(actualPos);
@@ -443,9 +437,8 @@ void MultiConvexMeshPoint::StartDrag(Mouse* mouse)
 PointMovementOp::PointMovementOp(MultiConvexMeshPoint* point, Vec3Param startPosition)
 {
   mName = "MultiConvexMeshPoint Movement";
-  // String display(netObject->GetMeta( )->Display(netObject->GetMeta( ),
-  // netObject, true)); mName = BuildString("Set net property \"", propertyName,
-  // "\" on \"", display, "\"");
+  // String display(netObject->GetMeta( )->Display(netObject->GetMeta( ), netObject, true));
+  // mName = BuildString("Set net property \"", propertyName, "\" on \"", display, "\"");
 
   mEditor = point->mEditor;
   mIndex = mEditor->mPoints.FindIndex(point);
@@ -529,8 +522,7 @@ public:
   {
     Aabb aabb;
     aabb.SetInvalid();
-    // make the aabb fat on the z axis to guarantee we'll get a point if we
-    // should
+    // make the aabb fat on the z axis to guarantee we'll get a point if we should
     aabb.Expand(Vec3(p0, -0.5));
     aabb.Expand(Vec3(p1, 0.5));
 
@@ -552,8 +544,8 @@ public:
     Vec2 startPosition = mEditor->ToLocal(viewport->ViewportToScreen(mViewportStartPosition));
     Vec2 currPosition = mEditor->ToLocal(screenEndPosition);
 
-    // the start point might be the max or the min, same for the current
-    // position so construct the proper rect by getting the min and max corners
+    // the start point might be the max or the min, same for the current position
+    // so construct the proper rect by getting the min and max corners
     Vec2 min = Math::Min(startPosition, currPosition);
     Vec2 max = Math::Max(startPosition, currPosition);
     return WidgetRect::MinAndMax(min, max);
@@ -724,8 +716,8 @@ MultiConvexMeshEditor::MultiConvexMeshEditor(Composite* parent, MultiConvexMesh*
   // update the preview cog to be the default sprite
   UpdatePreview(NULL);
 
-  // most events should be connected on the viewport because we care about when
-  // mouse events, etc, happen on the viewport only, not on the property view
+  // most events should be connected on the viewport because we care about when mouse
+  // events, etc, happen on the viewport only, not on the property view
   ConnectThisTo(mViewport, Events::LeftMouseDown, OnLeftMouseDown);
   ConnectThisTo(mViewport, Events::DoubleClick, OnDoubleClick);
   ConnectThisTo(mViewport, Events::RightMouseDown, OnRightMouseDown);
@@ -863,28 +855,24 @@ void MultiConvexMeshEditor::CreateToolbar(Composite* toolbarParent)
   spacer = new Spacer(topToolbar);
   spacer->SetSizing(SizeAxis::X, SizePolicy::Fixed, 5);
 
-  // create a button to auto-compute the grid cell size from the pixels per unit
-  // of the sprite source
+  // create a button to auto-compute the grid cell size from the pixels per unit of the sprite source
   TextButton* setGridSizeToPixelsButton = new TextButton(topToolbar);
   setGridSizeToPixelsButton->SetSizing(SizeAxis::X, SizePolicy::Fixed, 180);
   setGridSizeToPixelsButton->SetText("SetGridSizeToPixels");
-  setGridSizeToPixelsButton->SetToolTip("Sets the size of the grid to be the same as the pixels of the current "
-                                        "sprite");
+  setGridSizeToPixelsButton->SetToolTip("Sets the size of the grid to be the same as the pixels of the current sprite");
   ConnectThisTo(setGridSizeToPixelsButton, Events::ButtonPressed, OnSetGridSizeToPixels);
 
   spacer = new Spacer(topToolbar);
   spacer->SetSizing(SizeAxis::X, SizePolicy::Fixed, 14);
 
-  // there's no good way to create a centered icon element so it requires a bit
-  // of composite trickery...
+  // there's no good way to create a centered icon element so it requires a bit of composite trickery...
   Composite* snappingDummy = new Composite(topToolbar);
   snappingDummy->SetLayout(CreateStackLayout());
   snappingDummy->SetSizing(SizeAxis::X, SizePolicy::Fixed, 16);
   // create some padding at the top to help center the icon
   Composite* padding = new Composite(snappingDummy);
   padding->SetSizing(SizeAxis::Y, SizePolicy::Fixed, 2);
-  // to make the icon line up nicely (and not stretch) create another composite
-  // to attach the element to
+  // to make the icon line up nicely (and not stretch) create another composite to attach the element to
   Composite* iconComposite = new Composite(snappingDummy);
   Element* element = iconComposite->CreateAttached<Element>("AnimatorSnappingDisabled");
 
@@ -919,8 +907,7 @@ void MultiConvexMeshEditor::AddPointAtScreenPosition(Vec2Param screenPosition)
   // get our world point (which is snapped if necessary)
   Vec3 worldPoint = ScreenPointToSnappedWorldPoint(screenPosition);
 
-  // if there's 0 or 1 points then just add the point where it is (there's no
-  // edges to check)
+  // if there's 0 or 1 points then just add the point where it is (there's no edges to check)
   if (mPoints.Size() <= 1)
   {
     MultiConvexMeshPoint* newPoint = AddPointAt(mPoints.Size(), worldPoint);
@@ -934,8 +921,7 @@ void MultiConvexMeshEditor::AddPointAtScreenPosition(Vec2Param screenPosition)
   // if there is a closest edge (should pretty much always happen)
   if (closestEdgeInfo.mClosestEdge <= mPoints.Size())
   {
-    // if we were close to an edge then choose the point on the edge instead of
-    // where we clicked
+    // if we were close to an edge then choose the point on the edge instead of where we clicked
     if (closestEdgeInfo.mClosestDistance < ConvexMeshEditorUi::OuterContourWidth)
     {
       Vec2 screenPoint = mViewport->ViewportToScreen(Math::ToVector2(closestEdgeInfo.mClosestViewportPoint));
@@ -946,8 +932,7 @@ void MultiConvexMeshEditor::AddPointAtScreenPosition(Vec2Param screenPosition)
   else
     closestEdgeInfo.mClosestEdge = mPoints.Size() - 1;
 
-  // have to Insert at edge index + 1 (since edge 0 means we want to be after
-  // the current point 0)
+  // have to Insert at edge index + 1 (since edge 0 means we want to be after the current point 0)
   MultiConvexMeshPoint* newPoint = AddPointAt(closestEdgeInfo.mClosestEdge + 1, worldPoint);
   AddToSelection(newPoint);
 
@@ -1022,9 +1007,8 @@ void MultiConvexMeshEditor::ClearPoints(bool queueUndo)
 void MultiConvexMeshEditor::AutoCompute()
 {
   Sprite* sprite = mPreviewCog->has(Sprite);
-  // if the preview cog doesn't have a sprite (archetype mode) then don't auto
-  // compute (could technically combine the sprites of all children but that's
-  // more work than it's worth)
+  // if the preview cog doesn't have a sprite (archetype mode) then don't auto compute
+  //(could technically combine the sprites of all children but that's more work than it's worth)
   if (sprite == NULL)
     return;
 
@@ -1062,8 +1046,7 @@ void MultiConvexMeshEditor::AutoCompute()
   }
   else
   {
-    // sample with the center of a pixel's position plus the regular marching
-    // cubes method
+    // sample with the center of a pixel's position plus the regular marching cubes method
     mMarchingSquares.mPositionSampler = &MultiConvexMeshEditor::SamplePixelWorldPositionAtCenter;
     mMarchingSquares.Sample(Vec2(-1, -1), size + Vec2(2, 2), sampleFrequency, &sourceData);
   }
@@ -1104,11 +1087,9 @@ Vec3 MultiConvexMeshEditor::ScreenPointToSnappedWorldPoint(Vec2Param screenPosit
   if (mSnappingMode == MultiConvexMeshSnappingMode::Always)
     return gridPoint;
 
-  // now we are in a snap-if-close mode, we want to do this based upon a screen
-  // size
+  // now we are in a snap-if-close mode, we want to do this based upon a screen size
   Vec2 viewportPoint = mViewport->ScreenToViewport(screenPosition);
-  // compute the corner of a control point with our snapping size and bring that
-  // to world space
+  // compute the corner of a control point with our snapping size and bring that to world space
   Vec2 selectionCorner = viewportPoint + Vec2(ConvexMeshEditorUi::ControlPointSnappingSize * 0.5f);
   Vec2 cornerScreen = mViewport->ViewportToScreen(selectionCorner);
   Vec3 cornerWorld = mViewport->ScreenToWorldZPlane(cornerScreen, 0.0f);
@@ -1118,8 +1099,7 @@ Vec3 MultiConvexMeshEditor::ScreenPointToSnappedWorldPoint(Vec2Param screenPosit
   // also radius of our snapping point
   float cornerDistance = Math::Length(cornerWorld - worldPoint);
 
-  // if the distance to the grid point is less than our radius then snap the
-  // grid point
+  // if the distance to the grid point is less than our radius then snap the grid point
   if (distance < cornerDistance)
   {
     worldPoint = gridPoint;
@@ -1170,8 +1150,7 @@ void MultiConvexMeshEditor::OnAddPoint(ObjectEvent* e)
   AddPointAtScreenPosition(mCachedMousePosition);
 
   // the right click menu takes focus away from the editor which is bad because
-  // undo and redo will fall back to the main viewport so force focus back to
-  // use
+  // undo and redo will fall back to the main viewport so force focus back to use
   HardTakeFocus();
 }
 
@@ -1184,8 +1163,7 @@ void MultiConvexMeshEditor::OnRemovePoint(ObjectEvent* e)
   }
 
   // the right click menu takes focus away from the editor which is bad because
-  // undo and redo will fall back to the main viewport so force focus back to
-  // use
+  // undo and redo will fall back to the main viewport so force focus back to use
   HardTakeFocus();
 }
 
@@ -1225,8 +1203,7 @@ void MultiConvexMeshEditor::OnMouseUpdate(MouseEvent* e)
   if (e->Handled)
     return;
 
-  // we're checking for the closest edge, so if there aren't any edges then
-  // don't do anything
+  // we're checking for the closest edge, so if there aren't any edges then don't do anything
   uint size = mPoints.Size();
   if (size <= 1)
     return;
@@ -1320,8 +1297,8 @@ void MultiConvexMeshEditor::OnMetaDrop(MetaDropEvent* e)
   //{
   //  if(e->Testing)
   //  {
-  //    e->Result = String::Format("Edit MultiConvexMesh: %s",
-  //    multiConvexMesh->Name.c_str()); return;
+  //     e->Result = String::Format("Edit MultiConvexMesh: %s", multiConvexMesh->Name.c_str());
+  //     return;
   //  }
   //
   //  SetMultiConvexMesh(multiConvexMesh);
@@ -1406,8 +1383,7 @@ void MultiConvexMeshEditor::FindClosestEdge(Vec2Param testScreenPoint, ClosestEd
 
     // find the point on the segment closest to our screen point
     Intersection::ClosestPointOnSegmentToPoint(p0, p1, &result);
-    // if that point is closer than our best result then select it as the
-    // closest
+    // if that point is closer than our best result then select it as the closest
     real distance = Math::Length(result - testPoint);
     if (distance < info.mClosestDistance)
     {
@@ -1482,16 +1458,14 @@ void MultiConvexMeshEditor::UpdateSelectedPointText()
     bool yIsSame = true;
 
     HashSet<MultiConvexMeshPoint*>::range range = mSelection.All();
-    // grab the first point (if any other point is different then there's a
-    // conflict)
+    // grab the first point (if any other point is different then there's a conflict)
     MultiConvexMeshPoint* firstPoint = range.Front();
     range.PopFront();
     // check all other points
     for (; !range.Empty(); range.PopFront())
     {
       MultiConvexMeshPoint* point = range.Front();
-      // if either the x or y is different from the first point then mark a
-      // conflict on that axis
+      // if either the x or y is different from the first point then mark a conflict on that axis
       if (point->mViewportPoint.x != firstPoint->mViewportPoint.x)
         xIsSame = false;
       if (point->mViewportPoint.y != firstPoint->mViewportPoint.y)
@@ -1703,8 +1677,7 @@ void MultiConvexMeshEditor::UpdateGridDrawing()
     float xCells = Math::Ceil(Math::Abs(worldSize.x) / GetGridCellSize());
     float yCells = Math::Ceil(Math::Abs(worldSize.y) / GetGridCellSize());
     mGridDraw->mLines = (uint)Math::Max(xCells, yCells) * 2 + 2;
-    // and just double the number of lines to prevent frame behind issues when
-    // the camera moves/resizes
+    // and just double the number of lines to prevent frame behind issues when the camera moves/resizes
     mGridDraw->mLines *= 2;
 
     mGridDraw->mAxis = AxisDirection::Z;
@@ -1725,13 +1698,11 @@ void MultiConvexMeshEditor::TestConvexMeshes()
   if (BuildConvexMeshes() == false)
   {
     mQueue.Undo();
-    // remove the last action from the redo list (so the user can't redo to a
-    // bad state)
+    // remove the last action from the redo list (so the user can't redo to a bad state)
     mQueue.mRedoCommands.PopBack();
 
     DoNotifyWarning("Invalid Mesh",
-                    "The mesh resulting from the last operation is invalid. "
-                    "The last operation will be undone.");
+                    "The mesh resulting from the last operation is invalid. The last operation will be undone.");
   }
 }
 
@@ -1774,8 +1745,7 @@ bool MultiConvexMeshEditor::BuildConvexMeshes()
     ConvexDecomposition::SubShape::IndexArray& subIndices = meshes[i].mIndices;
 
     uint indexCount = subIndices.Size();
-    // like with the vertices, there's twice as many indices because of the back
-    // face
+    // like with the vertices, there's twice as many indices because of the back face
     subMesh.mIndices.Resize(indexCount * 2);
     for (uint j = 0; j < indexCount; ++j)
     {
@@ -1794,8 +1764,7 @@ bool MultiConvexMeshEditor::BuildConvexMeshes()
       subMesh.mTriangleIndices.PushBack(subIndices[0]);
       subMesh.mTriangleIndices.PushBack(subIndices[i]);
       subMesh.mTriangleIndices.PushBack(subIndices[i + 1]);
-      // back face (make sure to flip the order of two vertices to have the
-      // correct winding order)
+      // back face (make sure to flip the order of two vertices to have the correct winding order)
       subMesh.mTriangleIndices.PushBack(subIndices[0] + vertexCount);
       subMesh.mTriangleIndices.PushBack(subIndices[i + 1] + vertexCount);
       subMesh.mTriangleIndices.PushBack(subIndices[i] + vertexCount);
@@ -1832,8 +1801,7 @@ void MultiConvexMeshEditor::DrawMesh()
 {
   MultiConvexMesh* mesh = mMesh;
 
-  // push on the space id of our preview space so we only debug draw in that
-  // space
+  // push on the space id of our preview space so we only debug draw in that space
   Debug::ActiveDrawSpace drawSpace(mPreviewSpace->GetRuntimeId());
 
   if (mPreviewMesh != NULL)
@@ -1841,8 +1809,7 @@ void MultiConvexMeshEditor::DrawMesh()
     Transform* transform = mPreviewMesh->GetOwner()->has(Transform);
     Mat4 worldMat = transform->GetWorldMatrix();
 
-    // depending on our draw mode draw the mesh filled, edges only or just don't
-    // draw it
+    // depending on our draw mode draw the mesh filled, edges only or just don't draw it
     if (mPropertyViewInfo.mDrawMode == MultiConvexMeshDrawMode::Edges)
       mesh->Draw(worldMat, true, false);
     else if (mPropertyViewInfo.mDrawMode == MultiConvexMeshDrawMode::Filled)

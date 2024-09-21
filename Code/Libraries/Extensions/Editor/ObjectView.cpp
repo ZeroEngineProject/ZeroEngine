@@ -227,8 +227,7 @@ public:
 
           Resource* resource = var.Get<Resource*>();
 
-          // safeguard (seems to happen during project changes if the editor
-          // doesn't restart)
+          // safeguard (seems to happen during project changes if the editor doesn't restart)
           if (resource == nullptr)
             continue;
 
@@ -597,8 +596,7 @@ public:
   {
     Object* parentObject = (Object*)dataEntry;
 
-    // Removed entries will never have children, so this should only ever be
-    // called for Cogs.
+    // Removed entries will never have children, so this should only ever be called for Cogs.
     ReturnIf(Type::DynamicCast<Cog*>(parentObject) == nullptr, nullptr, "This should always be a Cog");
 
     if (dataEntry == mSpace)
@@ -630,8 +628,7 @@ public:
         if (RemovedEntry* removedEntry = GetFirstRemovedEntry(parentCog))
           return removedEntry;
 
-        Error("Should not get here - There should be a valid child if this "
-              "function is called.");
+        Error("Should not get here - There should be a valid child if this function is called.");
       }
       else
       {
@@ -648,8 +645,7 @@ public:
           if (RemovedEntry* removedEntry = GetFirstRemovedEntry(parentCog))
             return removedEntry;
 
-          Error("Should not get here - There should be a valid child if this "
-                "function is called.");
+          Error("Should not get here - There should be a valid child if this function is called.");
         }
 
         LocalModifications* modifications = LocalModifications::GetInstance();
@@ -729,16 +725,16 @@ public:
         if (modifications->IsObjectLocallyAdded(cog, false))
         {
           formatting.mCustomIcons.PushBack("ObjectLocallyAdded");
-          // formatting.mTextColor = ObjectViewUi::LocallyAddedColor;// Vec4(1,
-          // 1, 1, 1); formatting.mCustomIcon = "ObjectLocallyAdded";
+          // formatting.mTextColor = ObjectViewUi::LocallyAddedColor;// Vec4(1, 1, 1, 1);
+          // formatting.mCustomIcon = "ObjectLocallyAdded";
         }
 
         // Add icon for child order modified
         if (modifications->IsChildOrderModified(cog->has(Hierarchy)))
         {
           formatting.mCustomIcons.PushBack("ChildOrderOverride");
-          // formatting.mTextColor = ObjectViewUi::LocallyAddedColor;// Vec4(1,
-          // 1, 1, 1); formatting.mCustomIcon = "ObjectLocallyAdded";
+          // formatting.mTextColor = ObjectViewUi::LocallyAddedColor;// Vec4(1, 1, 1, 1);
+          // formatting.mCustomIcon = "ObjectLocallyAdded";
         }
 
         // If it has an Archetype, add the Archetype name at the end
@@ -779,8 +775,7 @@ public:
           removedName = "(Unnamed)";
         FormattedInPlaceText formatting;
         formatting.mText = removedName;
-        // formatting.mTextColor = ObjectViewUi::LocallyRemovedColor; //Vec4(1,
-        // 1, 1, 0.4f);
+        // formatting.mTextColor = ObjectViewUi::LocallyRemovedColor; //Vec4(1, 1, 1, 0.4f);
         formatting.mTextColor = Vec4(1, 1, 1, 0.4f);
         formatting.mCustomIcons.PushBack("ObjectLocallyRemoved");
         // formatting.mCustomIcon = "ObjectLocallyRemoved";
@@ -883,8 +878,7 @@ public:
 
       if (sourceHasTransform && !destinationHasTransform)
       {
-        String message = String::Format("Cannot parent an object with a Transform to an "
-                                        "object without a Transform");
+        String message = String::Format("Cannot parent an object with a Transform to an object without a Transform");
         status.SetFailed(message, InsertError::Invalid);
         return;
       }
@@ -971,8 +965,7 @@ public:
     OperationQueue* queue = Z::gEditor->GetOperationQueue();
     Cog* dest = (Cog*)destinationEntry;
 
-    // We want all objects to be sorted by their hierarchy index so they stay in
-    // the current order
+    // We want all objects to be sorted by their hierarchy index so they stay in the current order
     Array<Cog*> sortedCogs;
     forRange (DataIndex& index, indicesToMove.All())
       sortedCogs.PushBack((Cog*)ToEntry(index));
@@ -1027,8 +1020,8 @@ public:
       // We want this operation to be able to be un-done
       OperationQueue* queue = Z::gEditor->GetOperationQueue();
 
-      // The object will be created, parented, and potentially moved. All those
-      // operations should be batched as the user made one operation
+      // The object will be created, parented, and potentially moved. All those operations should
+      // be batched as the user made one operation
       queue->BeginBatch();
       queue->SetActiveBatchName("ObjectView_OnMetaDrop");
 
@@ -1443,8 +1436,7 @@ void ObjectView::OnMouseEnterRow(TreeEvent* e)
     else if (LocalModifications::GetInstance()->IsChildOrderModified(cog->has(Hierarchy)))
     {
       toolTipMessage = "Child order is locally modified.\n\n"
-                       "This objects children will ignore the order specified "
-                       "in the Archetype.\n\n"
+                       "This objects children will ignore the order specified in the Archetype.\n\n"
                        "Right click to revert order.";
 
       toolTipColor = ToolTipColorScheme::Yellow;
@@ -1488,8 +1480,8 @@ void ObjectView::OnTreeRightClick(TreeEvent* event)
   Object* object = (Object*)mSource->ToEntry(mCommandIndex);
   if (Cog* cog = Type::DynamicCast<Cog*>(object))
   {
-    // Set the parent Cog as a context so that all commands can use it (e.g.
-    // creation commands will attach to this cog)
+    // Set the parent Cog as a context so that all commands can use it (e.g. creation commands
+    // will attach to this cog)
     menu->mRootEntry->mContext.Add(cog);
 
     ConnectMenu(menu, "Rename", OnRename, false);
@@ -1502,8 +1494,7 @@ void ObjectView::OnTreeRightClick(TreeEvent* event)
     ContextMenuEntry* createSubMenu = menu->AddEntry("Create");
     createSubMenu->AddEntry(new ContextMenuEntryMenu("Create"));
 
-    // Send out the ContextMenuEntry tree root to potentially alter the context
-    // menus structure/items
+    // Send out the ContextMenuEntry tree root to potentially alter the context menus structure/items
     ContextMenuEvent event(menu->GetRootEntry());
     cog->DispatchEvent(Events::ContextMenuCreated, &event);
     cog->DispatchUp(Events::ContextMenuCreated, &event);

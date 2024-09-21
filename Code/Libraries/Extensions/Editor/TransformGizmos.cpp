@@ -341,8 +341,7 @@ void ObjectTransformGizmo::OnMouseDragEnd(ViewportMouseEvent* event)
 
       ObjectCreated(queue, cog);
 
-      // single duplicated object proper hierarchy, emulates ctrl+c, ctrl+v
-      // behavior
+      // single duplicated object proper hierarchy, emulates ctrl+c, ctrl+v behavior
       if (mObjectStates.Size() == 1 && mDuplicateCorrectIndex != unsigned(-1))
       {
         MoveObjectIndex(queue, cog, mDuplicateCorrectIndex);
@@ -373,8 +372,7 @@ void ObjectTransformGizmo::OnMouseDragEnd(ViewportMouseEvent* event)
     // Send the final GizmoFinish transform update
     uint flag = 0;
 
-    // When scaling or rotating multiple objects translation may changed so just
-    // check
+    // When scaling or rotating multiple objects translation may changed so just check
     Vec3 deltaT = objectState.StartTranslation - objectState.EndTranslation;
     if (deltaT.LengthSq() > Math::Epsilon())
     {
@@ -685,8 +683,7 @@ void ObjectTranslateGizmo::OnGizmoModified(TranslateGizmoUpdateEvent* event)
 
     Vec3 localMovement = Math::TransformNormal(inverseMatrix, movement);
 
-    // If snapping multiple objects then snap them one at a time in their local
-    // space.
+    // If snapping multiple objects then snap them one at a time in their local space.
     if (multiTransform)
     {
       objectState.EndTranslation = baseGizmo->TranslateFromDrag(
@@ -1009,8 +1006,7 @@ void ObjectRotateGizmo::OnGizmoModified(RotateGizmoUpdateEvent* event)
     float finalDelta = event->mGizmoRotation;
     Vec3 finalAxis = event->mGizmoWorldRotationAxis;
 
-    // Save the old transform so that deltas can be properly applied to in-world
-    // objects
+    // Save the old transform so that deltas can be properly applied to in-world objects
     Mat4 oldMat = transform.GetParentWorldMatrix();
     Mat4 inverseMatrix(Mat4::cIdentity);
     inverseMatrix = oldMat.Inverted();

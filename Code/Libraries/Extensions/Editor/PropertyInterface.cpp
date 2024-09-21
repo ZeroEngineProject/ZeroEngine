@@ -5,16 +5,12 @@ namespace Zero
 {
 
 ObjectPropertyNode::ObjectPropertyNode(ObjectPropertyNode* parent, HandleParam object, Property* objectProperty) :
-    mParent(parent),
-    mObject(object),
-    mProperty(objectProperty)
+    mParent(parent), mObject(object), mProperty(objectProperty)
 {
 }
 
 ObjectPropertyNode::ObjectPropertyNode(ObjectPropertyNode* parent, Property* property) :
-    mParent(parent),
-    mObject(nullptr),
-    mProperty(property)
+    mParent(parent), mObject(nullptr), mProperty(property)
 {
 }
 
@@ -107,8 +103,8 @@ void PropertyInterface::ChangeProperty(HandleParam object,
 
   propertyPath.SetValue(object, state.Value);
 
-  // Specific types of objects need to do extra logic when properties are
-  // modified (e.g. modifications to Cogs need to mark the Space as modified.
+  // Specific types of objects need to do extra logic when properties are modified (e.g. modifications
+  // to Cogs need to mark the Space as modified.
   bool intermediate = (action == PropertyAction::Preview);
   MetaOperations::NotifyPropertyModified(object, propertyPath, oldValue, state.Value, intermediate);
 
@@ -143,8 +139,7 @@ void PropertyInterface::InvokeFunction(HandleParam object, Function* method)
 
 HandleOf<MetaComposition> PropertyInterface::GetMetaComposition(BoundType* objectType)
 {
-  // If the object itself doesn't have a meta composition, we don't want to
-  // return our custom one
+  // If the object itself doesn't have a meta composition, we don't want to return our custom one
   if (objectType->HasInherited<MetaComposition>())
     return new EventMetaComposition(this, objectType);
   return nullptr;
@@ -152,8 +147,7 @@ HandleOf<MetaComposition> PropertyInterface::GetMetaComposition(BoundType* objec
 
 HandleOf<MetaArray> PropertyInterface::GetMetaArray(BoundType* objectType)
 {
-  // If the object itself doesn't have an array composition, we don't want to
-  // return our custom one
+  // If the object itself doesn't have an array composition, we don't want to return our custom one
   if (objectType->HasInherited<MetaArray>())
     return new EventMetaArray(objectType, this);
 
@@ -226,8 +220,7 @@ ObjectPropertyNode* PropertyInterface::BuildObjectTree(ObjectPropertyNode* paren
     if (BoundType* boundType = Type::GetBoundType(property->PropertyType))
       ErrorIf(boundType->Name.Empty(), "Forget to bind an enum?");
 
-    // Check for Editable attribute as well as Property attribute (Property
-    // implies Editable)
+    // Check for Editable attribute as well as Property attribute (Property implies Editable)
     if (property->HasAttribute(PropertyAttributes::cProperty) || property->HasAttribute(PropertyAttributes::cDisplay) ||
         property->HasAttribute(PropertyAttributes::cDeprecatedEditable))
     {
@@ -280,8 +273,8 @@ ObjectPropertyNode* PropertyInterface::BuildObjectTree(ObjectPropertyNode* paren
   {
     forRange (Any arrayValue, metaArray->All(object))
     {
-      // METAREFACTOR - for now, we only support objects that can be handles in
-      // MetaArray. This will need to change once that is no longer true
+      // METAREFACTOR - for now, we only support objects that can be handles in MetaArray. This will need
+      // to change once that is no longer true
       Handle arrayObject = arrayValue.ToHandle();
 
       // Create a new node for this sub object
@@ -344,8 +337,7 @@ void PropertyInterface::SendComponentsModifiedOnGrid(HandleParam object)
 
 // Event Meta Composition
 EventMetaComposition::EventMetaComposition(PropertyInterface* propertyInterface, BoundType* typeToWrap) :
-    MetaCompositionWrapper(typeToWrap),
-    mPropertyInterface(propertyInterface)
+    MetaCompositionWrapper(typeToWrap), mPropertyInterface(propertyInterface)
 {
 }
 
@@ -382,8 +374,7 @@ void EventMetaComposition::MoveComponent(HandleParam owner, HandleParam componen
 
 // Event Meta Array
 EventMetaArray::EventMetaArray(BoundType* containedType, PropertyInterface* propertyInterface) :
-    MetaArrayWrapper(containedType),
-    mPropertyInterface(propertyInterface)
+    MetaArrayWrapper(containedType), mPropertyInterface(propertyInterface)
 {
 }
 

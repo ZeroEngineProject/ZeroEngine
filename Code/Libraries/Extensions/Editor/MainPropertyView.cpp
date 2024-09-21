@@ -253,8 +253,7 @@ void MainPropertyView::EditResource(HandleParam object)
     // Edit the archetype object in the preview
     mPropertyView->SetObject(editObject, mUndoInterface);
   }
-  // for some reason the resource is occasionally null, for now just guard
-  // against it
+  // for some reason the resource is occasionally null, for now just guard against it
   else if (resource != nullptr)
   {
     // The object we're editing should either be the resource itself,
@@ -312,8 +311,7 @@ void MainPropertyView::EditResources(MetaSelection* selection)
 
     ++count;
 
-    // If it was an archetype, the special object was already added to the
-    // selection
+    // If it was an archetype, the special object was already added to the selection
     if (!addedSpecialEdit)
     {
       // Get the object we should be editing from the content item

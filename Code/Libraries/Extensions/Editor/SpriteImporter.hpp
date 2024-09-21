@@ -104,23 +104,19 @@ public:
 
   // Getter/Setters
 
-  /// The width of each sprite frame in pixels located on the sprite sheet
-  /// (Updates FramesPerRow)
+  /// The width of each sprite frame in pixels located on the sprite sheet (Updates FramesPerRow)
   int GetFrameWidth();
   void SetFrameWidth(int frameSizeX);
 
-  /// The height of each sprite frame in pixels located on the sprite sheet
-  /// (Updates NumberOfRows)
+  /// The height of each sprite frame in pixels located on the sprite sheet (Updates NumberOfRows)
   int GetFrameHeight();
   void SetFrameHeight(int frameSizeY);
 
-  /// The total number of frames on the horizontal axis of the sprite sheet
-  /// (Updates FrameWidth)
+  /// The total number of frames on the horizontal axis of the sprite sheet (Updates FrameWidth)
   int GetFramesPerRow();
   void SetFramesPerRow(int framesX);
 
-  /// The total number of frames on the vertical axis of the sprite sheet
-  /// (Updates FrameHeight)
+  /// The total number of frames on the vertical axis of the sprite sheet (Updates FrameHeight)
   int GetNumberOfRows();
   void SetNumberOfRows(int framesY);
 
@@ -196,8 +192,7 @@ public:
   int OffsetY;
   int SpacingX;
   int SpacingY;
-  /// The number of pixels that occupy one unit of distance in the engine's
-  /// world space
+  /// The number of pixels that occupy one unit of distance in the engine's world space
   int PixelsPerUnit;
   SpriteSampling::Enum Sampling;
   /// Create a TilePaletteSource from all the selected sprite frames

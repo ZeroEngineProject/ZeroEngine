@@ -208,8 +208,7 @@ void RotationBasisGizmo::OnGizmoDragStart(Event* e)
 
 void RotationBasisGizmo::OnRingGizmoModified(RingGizmoEvent* e)
 {
-  // Compute the final world rotation from the ring gizmo's delta rotation
-  // (that's what world rotation is here)
+  // Compute the final world rotation from the ring gizmo's delta rotation (that's what world rotation is here)
   mFinalWorldRotation = e->mWorldRotation * mStartingWorldRotation;
   mFinalWorldRotation.Normalize();
   // Update the gizmo's rotation
@@ -232,9 +231,8 @@ void RotationBasisGizmo::OnSelectionChanged(Event* e)
 
 void RotationBasisGizmo::OnFrameUpdate(Event* e)
 {
-  // Some hard-coded offsets and rotations for the text. Needed for now because
-  // debug drawing is the only way to have view-scaled text. Otherwise the text
-  // should probably just be SpriteText components.
+  // Some hard-coded offsets and rotations for the text. Needed for now because debug drawing is the
+  // only way to have view-scaled text. Otherwise the text should probably just be SpriteText components.
   Quat xRotation = Quat::cIdentity;
   Quat yRotation = Math::ToQuaternion(Vec3(0, 0, 1), Math::cPi * 0.5f);
   Quat zRotation = Math::ToQuaternion(Vec3(0, 1, 0), 3 * Math::cPi * 0.5f);
@@ -275,13 +273,11 @@ void OrientationBasisGizmo::Initialize(CogInitializer& initializer)
 
 void OrientationBasisGizmo::OnAddRotationBasisGizmoObject(RotationBasisGizmoInitializationEvent* e)
 {
-  // Create the property that we store for this object (will contain a cached
-  // rotation later)
+  // Create the property that we store for this object (will contain a cached rotation later)
   OrientationBasisProperty prop;
   prop.mCogId = (Cog*)e->GetSource();
 
-  // If this is the first cog added then use it's rotation as the gizmo's
-  // initial rotation
+  // If this is the first cog added then use it's rotation as the gizmo's initial rotation
   if (mCogs.Empty())
   {
     Quat worldBasis = GetWorldRotation(prop);
@@ -316,13 +312,11 @@ void OrientationBasisGizmo::OnRotationBasisGizmoModified(Event* e)
 
 void OrientationBasisGizmo::OnRotationBasisGizmoEnd(Event* e)
 {
-  // If listening for side effects is false then we're in the middle of an
-  // undo/redo
+  // If listening for side effects is false then we're in the middle of an undo/redo
   if (mCogs.Empty() || !OperationQueue::IsListeningForSideEffects())
     return;
 
-  // Revert all cogs back to their initial rotation so we can properly queue
-  // undos
+  // Revert all cogs back to their initial rotation so we can properly queue undos
   for (size_t i = 0; i < mCogs.Size(); ++i)
     RevertRotation(mCogs[i]);
 
@@ -505,13 +499,11 @@ void PhysicsCarWheelBasisGizmo::Initialize(CogInitializer& initializer)
 
 void PhysicsCarWheelBasisGizmo::OnAddRotationBasisGizmoObject(RotationBasisGizmoInitializationEvent* e)
 {
-  // Create the property that we store for this object (will contain a cached
-  // rotation later)
+  // Create the property that we store for this object (will contain a cached rotation later)
   SimpleBasisProperty prop;
   prop.mCogId = (Cog*)e->GetSource();
 
-  // If this is the first cog added then use it's rotation as the gizmo's
-  // initial rotation
+  // If this is the first cog added then use it's rotation as the gizmo's initial rotation
   if (mCogs.Empty())
   {
     Quat worldBasis = GetWorldRotation(prop);
@@ -546,13 +538,11 @@ void PhysicsCarWheelBasisGizmo::OnRotationBasisGizmoModified(Event* e)
 
 void PhysicsCarWheelBasisGizmo::OnRotationBasisGizmoEnd(Event* e)
 {
-  // If listening for side effects is false then we're in the middle of an
-  // undo/redo
+  // If listening for side effects is false then we're in the middle of an undo/redo
   if (mCogs.Empty() || !OperationQueue::IsListeningForSideEffects())
     return;
 
-  // Revert all cogs back to their initial rotation so we can properly queue
-  // undos
+  // Revert all cogs back to their initial rotation so we can properly queue undos
   for (size_t i = 0; i < mCogs.Size(); ++i)
     RevertRotation(mCogs[i]);
 
@@ -689,13 +679,11 @@ void RevoluteBasisGizmo::Initialize(CogInitializer& initializer)
 
 void RevoluteBasisGizmo::OnAddRotationBasisGizmoObject(RotationBasisGizmoInitializationEvent* e)
 {
-  // Create the property that we store for this object (will contain a cached
-  // rotation later)
+  // Create the property that we store for this object (will contain a cached rotation later)
   RevoluteJointBasisProperty prop;
   prop.mCogId = (Cog*)e->GetSource();
 
-  // If this is the first cog added then use it's rotation as the gizmo's
-  // initial rotation
+  // If this is the first cog added then use it's rotation as the gizmo's initial rotation
   if (mCogs.Empty())
   {
     mBasisType = e->mIntData;
@@ -731,13 +719,11 @@ void RevoluteBasisGizmo::OnRotationBasisGizmoModified(Event* e)
 
 void RevoluteBasisGizmo::OnRotationBasisGizmoEnd(Event* e)
 {
-  // If listening for side effects is false then we're in the middle of an
-  // undo/redo
+  // If listening for side effects is false then we're in the middle of an undo/redo
   if (mCogs.Empty() || !OperationQueue::IsListeningForSideEffects())
     return;
 
-  // Revert all cogs back to their initial rotation so we can properly queue
-  // undos
+  // Revert all cogs back to their initial rotation so we can properly queue undos
   for (size_t i = 0; i < mCogs.Size(); ++i)
     RevertRotation(mCogs[i]);
 
@@ -835,9 +821,8 @@ void RevoluteBasisGizmo::QueueRotationsWithUndo(OperationQueue* queue,
   if (joint == nullptr)
     return;
 
-  // Compute the local basis for each basis we care about and then queue up the
-  // property change. Note: these have to be set independently otherwise the
-  // they won't revert to their individual values
+  // Compute the local basis for each basis we care about and then queue up the property change.
+  // Note: these have to be set independently otherwise the they won't revert to their individual values
   if (mBasisType & 0b01)
   {
     Quat worldRotation = GetColliderWorldRotation(joint, 0);
@@ -858,8 +843,7 @@ Vec3 RevoluteBasisGizmo::GetWorldTranslation(RevoluteJointBasisProperty& prop)
   if (joint == nullptr)
     return Vec3::cZero;
 
-  // Check if we care about just basis A, or just B, or both. Note: this doesn't
-  // perform a bit masking operation
+  // Check if we care about just basis A, or just B, or both. Note: this doesn't perform a bit masking operation
   if (mBasisType == 0b01)
     return joint->GetWorldPointA();
   if (mBasisType == 0b10)
@@ -913,9 +897,9 @@ Quat RevoluteBasisGizmo::GetColliderWorldRotation(RevoluteJoint* joint, uint col
 
 Quat RevoluteBasisGizmo::GetWorldBasis(RevoluteJoint* joint, uint colliderIndex)
 {
-  // The joint has a local basis for each collider. Get that collider's
-  // local-to-world transformation to bring the basis to world space. We do this
-  // because visually the user wants to see a world-space basis.
+  // The joint has a local basis for each collider. Get that collider's local-to-world
+  // transformation to bring the basis to world space. We do this because visually the
+  // user wants to see a world-space basis.
   Quat worldRotation = GetColliderWorldRotation(joint, colliderIndex);
   Quat localBasis;
   if (colliderIndex == 0)
@@ -925,8 +909,7 @@ Quat RevoluteBasisGizmo::GetWorldBasis(RevoluteJoint* joint, uint colliderIndex)
 
 void RevoluteBasisGizmo::SetWorldBasis(RevoluteJoint* joint, uint colliderIndex, QuatParam worldBasis)
 {
-  // Bring the provided world-space basis into the correct collider's local
-  // space and to set the joint's field.
+  // Bring the provided world-space basis into the correct collider's local space and to set the joint's field.
   if (colliderIndex == 0)
   {
     Quat worldRotation = GetColliderWorldRotation(joint, colliderIndex);

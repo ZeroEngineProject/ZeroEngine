@@ -115,8 +115,7 @@ public:
 
   /// Get the project of current game.
   Cog* GetProjectCog();
-  /// Simple helper to get the path of the current project. Returns an empty
-  /// string if no project is loaded.
+  /// Simple helper to get the path of the current project. Returns an empty string if no project is loaded.
   String GetProjectPath();
 
   /// Current game session being edited
@@ -232,8 +231,7 @@ public:
   // Internals
   void OnSaveCheck(SavingEvent* event);
   RuntimeEditorImpl* mRuntimeEditorImpl;
-  /// This function is marked for removal from Zero.Editor, use
-  /// Zero.Editor.Selection's functionality instead.
+  /// This function is marked for removal from Zero.Editor, use Zero.Editor.Selection's functionality instead.
   void SelectPrimary(HandleParam object);
   virtual void OnEngineUpdate(UpdateEvent* event);
   void OnResourcesUnloaded(ResourceEvent* event);

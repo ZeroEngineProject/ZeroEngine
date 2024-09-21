@@ -35,8 +35,7 @@ public:
 
   Rectangle mStartWorldRectangle;
   /// If marking the event as HandledEventScript == false, then modifications
-  /// to 'EndWorldRectangle' (in script) will be applied internally by the
-  /// ManipulatorTool.
+  /// to 'EndWorldRectangle' (in script) will be applied internally by the ManipulatorTool.
   Rectangle mEndWorldRectangle;
 };
 

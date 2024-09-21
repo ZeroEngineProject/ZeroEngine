@@ -54,8 +54,7 @@ struct ColumnFormat
   /// Fixed size of the Column.
   Vec2 FixedSize;
 
-  /// Various flags that are different for each control (for instance, does a
-  /// text box accept double click for edit).
+  /// Various flags that are different for each control (for instance, does a text box accept double click for edit).
   u32 Flags;
 
   /// A relative weight of size (relative to other flex columns).

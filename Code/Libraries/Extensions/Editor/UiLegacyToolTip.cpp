@@ -123,8 +123,7 @@ void UiLegacyToolTip::AddText(StringParam text, Vec4Param color)
   ToolTip* toolTip = mToolTip;
   toolTip->AddText(text, color);
 
-  // Must redo placement, as the tooltip size probably changed when adding a
-  // line.
+  // Must redo placement, as the tooltip size probably changed when adding a line.
   ToolTipPlacement placement;
   placement.SetScreenRect(mPlacementRect);
   placement.SetPriority(mPriority[0], mPriority[1], mPriority[2], mPriority[2]);

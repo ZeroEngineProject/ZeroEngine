@@ -79,8 +79,7 @@ public:
       }
 
       DoNotifyError("Resource Id Conflict. ",
-                    "Id conflict, resources fail to load. See console for "
-                    "details or contact zero support team.");
+                    "Id conflict, resources fail to load. See console for details or contact zero support team.");
     }
   }
 
@@ -120,8 +119,7 @@ public:
     // Set GameSession handle to null to GameWidget does not quit game
     editorViewport->mGameWidget->mGame = nullptr;
     editorViewport->SetTargetSpace(space);
-    // Level is already loaded so call this manually, event is not used so just
-    // pass null
+    // Level is already loaded so call this manually, event is not used so just pass null
     editorViewport->OnSpaceLevelLoaded(nullptr);
     editorViewport->SetName(BuildString("Space: ", space->GetName()));
 
@@ -424,8 +422,8 @@ GameSession* Editor::CreateDefaultGameSession()
     return nullptr;
 
   ProjectSettings* project = projectCog->has(ProjectSettings);
-  // METAREFACTOR - Improper GameSession creation - wait, why does this comment
-  // exist, maybe because we removed MetaCreateContext...
+  // METAREFACTOR - Improper GameSession creation - wait, why does this comment exist, maybe because we removed
+  // MetaCreateContext...
   GameSession* game = new GameSession();
   game->SetInEditor(true);
   DefaultGameSetup* gameSetup = new DefaultGameSetup();
@@ -452,8 +450,8 @@ GameSession* Editor::EditorCreateGameSession(uint flags)
     game = (GameSession*)Z::gFactory->CreateCheckedType(
         ZilchTypeId(GameSession), nullptr, CoreArchetypes::Game, flags, nullptr);
 
-    // For some reason we failed to actually create a game session. Maybe the
-    // archetype contained the wrong expected type?
+    // For some reason we failed to actually create a game session. Maybe the archetype contained the wrong expected
+    // type?
     if (game == nullptr)
       game = CreateDefaultGameSession();
     game->SetInEditor(true);
@@ -502,10 +500,10 @@ void Editor::ProjectLoaded()
 
   LoadDefaultLevel();
 
-  // Run any command-line arguments. This has to happen here because otherwise
-  // we have no guarantee that their project file and their scripts have been
-  // loaded otherwise. There is a chance that if they open a new project these
-  // commands could re-run, but this is something left for a later refactor.
+  // Run any command-line arguments. This has to happen here because otherwise we have no
+  // guarantee that their project file and their scripts have been loaded otherwise. There
+  // is a chance that if they open a new project these commands could re-run, but this is
+  // something left for a later refactor.
   CommandManager* commandManager = CommandManager::GetInstance();
   commandManager->RunParsedCommandsDelayed();
 }
@@ -620,8 +618,7 @@ class SpaceViewport : public Composite
 {
 public:
   SpaceViewport(Composite* parent, CameraViewport* cameraViewport, bool destroySpaceOnClose) :
-      Composite(parent),
-      mDestroySpaceOnClose(destroySpaceOnClose)
+      Composite(parent), mDestroySpaceOnClose(destroySpaceOnClose)
   {
     // Fill the game widget
     SetLayout(CreateFillLayout());
@@ -664,8 +661,7 @@ void Editor::SetEditMode(EditorMode::Enum mode)
   if (editSpace == nullptr)
     return;
 
-  // With the camera controller mode tied to the level any changes need to mark
-  // the active space as modified
+  // With the camera controller mode tied to the level any changes need to mark the active space as modified
   editSpace->MarkModified();
   Cog* editorCameraCog = editSpace->FindObjectByName(SpecialCogNames::EditorCamera);
   Camera* editorCamera = editorCameraCog->has(Camera);
@@ -910,7 +906,8 @@ Status Editor::SaveAll(bool showNotify)
   // Scripts need to be fully compiling before we run
   ZilchManager* zilchManager = ZilchManager::GetInstance();
   zilchManager->TriggerCompileExternally();
-  if (zilchManager->mLastCompileResult == CompileResult::CompilationFailed) {
+  if (zilchManager->mLastCompileResult == CompileResult::CompilationFailed)
+  {
     Z::gEngine->LoadingFinish();
     return Status(StatusState::Failure, "Failed to compile Zilch Scripts");
   }
@@ -923,8 +920,7 @@ Status Editor::SaveAll(bool showNotify)
   if (showNotify)
     DoNotify("Saved", "Project and all scripts saved.", "Disk");
 
-  // On some platforms, to make files persist between runs we need to call this
-  // function.
+  // On some platforms, to make files persist between runs we need to call this function.
   PersistFiles();
 
   Z::gEngine->LoadingFinish();
@@ -991,10 +987,9 @@ void ReInitializeScriptsOnObject(Cog* cog, OperationQueue& queue, HashSet<Resour
     Component* component = r.Back();
     BoundType* componentType = ZilchVirtualTypeId(component);
 
-    // NOTE: We could attempt to optimize this by only removing the components
-    // that were modified however we have to be very careful because any
-    // non-modified component could possibly get a handle to a modified
-    // component e.g. via GetComponentByName then the handle will become garbage
+    // NOTE: We could attempt to optimize this by only removing the components that were modified
+    // however we have to be very careful because any non-modified component could possibly get a handle
+    // to a modified component e.g. via GetComponentByName then the handle will become garbage
 
     // Remove proxies in case they were replaced by the actual script type
     bool isProxy = componentType->HasAttribute(ObjectAttributes::cProxy);
@@ -1017,8 +1012,7 @@ void ReInitializeScriptsOnGame(GameSession* game,
                                HashMap<Space*, bool>& spaceModifiedStates,
                                HashSet<ResourceLibrary*>& modifiedLibraries)
 {
-  // Game can be null if they failed to open a project (for instance, a project
-  // created in a new version)
+  // Game can be null if they failed to open a project (for instance, a project created in a new version)
   if (game == nullptr)
     return;
 
@@ -1042,8 +1036,7 @@ void ReInitializeScriptsOnGame(GameSession* game,
 
 void RevertSpaceModifiedState(GameSession* game, HashMap<Space*, bool>& spaceModifiedStates)
 {
-  // Game can be null if they failed to open a project (for instance, a project
-  // created in a new version)
+  // Game can be null if they failed to open a project (for instance, a project created in a new version)
   if (game == nullptr)
     return;
 
@@ -1095,8 +1088,7 @@ void Editor::OnScriptsCompiledPatch(ZilchCompileEvent* e)
 {
   // ZilchScriptManager* zilchManager = ZilchScriptManager::GetInstance();
   //
-  //// Patch anything that was not reinitialized if the compilation was
-  /// successful
+  //// Patch anything that was not reinitialized if the compilation was successful
   // if(e->mLibrary != nullptr)
   //  zilchManager->PatchLibraryIfNeeded(e->mLibrary);
 
@@ -1196,8 +1188,8 @@ void Editor::Update()
   //  config.SpaceId(space->GetId().Id);
   //}
 
-  // Debug Draw the active tool (rare cases it could've been null (old tile
-  // editor), just safe guard in case it ever gets set to null again)
+  // Debug Draw the active tool (rare cases it could've been null (old tile editor),
+  // just safe guard in case it ever gets set to null again)
   if (Cog* toolCog = Tools->GetActiveCog())
   {
     Event e;
@@ -1220,8 +1212,7 @@ void Editor::Update()
 
   mRuntimeEditorImpl->VisualizePending();
 
-  // If there's an un-ended operation batch, someone in script forgot to end the
-  // batch
+  // If there's an un-ended operation batch, someone in script forgot to end the batch
   OperationQueue* opQueue = GetOperationQueue();
   if (opQueue->ActiveBatch != nullptr)
   {
@@ -1384,9 +1375,9 @@ GameSession* Editor::PlayGame(PlayGameOptions::Enum options, bool takeFocus, boo
   mGamePending = false;
 
   // Attempt to save the game, and if it fails do not play
-  // Note: This should definitely come down here, before we close out of the
-  // first game The reason is that if anything is 'in use' while the game is
-  // running (eg the Zilch library) then it cannot be updated by saving
+  // Note: This should definitely come down here, before we close out of the first game
+  // The reason is that if anything is 'in use' while the game is running (eg the Zilch library)
+  // then it cannot be updated by saving
   Status status = SaveAll(false);
   if (status.Failed())
   {
@@ -1498,8 +1489,7 @@ void Editor::StopGame()
   ZilchManager::GetInstance()->mDebugger.Resume();
 
   // Wait until after system updates to stop game.
-  // This prevents events such as LogicUpdate from happening in an unexpected
-  // state.
+  // This prevents events such as LogicUpdate from happening in an unexpected state.
   if (GetGames().Empty() == false)
     mStopGame = true;
 }
@@ -1525,8 +1515,7 @@ void Editor::ToggleGamePaused()
 
 void Editor::SetGamePaused(bool state)
 {
-  // Set the new pause state on all currently running game sessions in the
-  // editor
+  // Set the new pause state on all currently running game sessions in the editor
   forRange (GameSession* game, GetGames())
     game->mPaused = state;
 
@@ -1545,8 +1534,8 @@ void Editor::AddResource()
 
 void Editor::AddResourceType(BoundType* resourceType, ContentLibrary* library, StringParam resourceName)
 {
-  // We don't need a project as long as another ContentLibrary is specified to
-  // add the new Resource to
+  // We don't need a project as long as another ContentLibrary is specified to add the new
+  // Resource to
   if (library == nullptr && !mProject)
   {
     DoNotifyError("No project to add resources", "Need a project to add resources");

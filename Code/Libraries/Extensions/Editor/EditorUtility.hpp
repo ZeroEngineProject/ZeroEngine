@@ -30,8 +30,7 @@ void ExpandAabb(HandleParam metaObject,
                 bool world = true,
                 bool toParent = false,
                 bool expandTransform = false);
-// Expand the aabb by this object's childrens' sizes only, but not the object's
-// size itself.
+// Expand the aabb by this object's childrens' sizes only, but not the object's size itself.
 void ExpandAabbChildrenOnly(HandleParam instance, Aabb& aabb, bool world = true, bool expandTransform = false);
 
 // Get distance needed to full view an Aabb

@@ -15,8 +15,7 @@ const float MinRadius = 0.001f;
 
 ZilchDefineType(HeightMapSubTool, builder, type)
 {
-  // These options are referred to directly by pointer on the import options
-  // (unsafe for script)
+  // These options are referred to directly by pointer on the import options (unsafe for script)
   type->HandleManager = ZilchManagerId(PointerManager);
   type->Add(new TypeNameDisplay());
 
@@ -296,20 +295,17 @@ void SmoothSharpenTool::Refresh(HeightMap* map)
 
 void SmoothSharpenTool::DetermineSamples(HeightMap* map)
 {
-  // Using the radius of the tool and the patch size, determine a base number of
-  // samples
+  // Using the radius of the tool and the patch size, determine a base number of samples
   const int samples = int((mRadius / map->GetUnitsPerPatch()) * 0.1f * HeightPatch::Size);
 
   // We only start the random samples when our sample size reaches 3
   mRandomSamples = Math::Max(samples - 3, 0);
 
-  // Our uniform samples go up with standard samples, but then go down when
-  // random samples are introduced We also always want at least 1 uniform
-  // sample, and at max 4
+  // Our uniform samples go up with standard samples, but then go down when random samples are introduced
+  // We also always want at least 1 uniform sample, and at max 4
   mUniformSamples = Math::Max(Math::Min(samples, 4) - mRandomSamples, 1);
 
-  // If we have more than 4 random samples, we have to increase uniform sampling
-  // to get rid of noise
+  // If we have more than 4 random samples, we have to increase uniform sampling to get rid of noise
   if (mRandomSamples > 0)
     mUniformSamples = Math::Max(mUniformSamples, 2);
 
@@ -1105,8 +1101,7 @@ void HeightMapTool::OnSelectionFinal(SelectionChangedEvent* event)
 
   if (cog && cog->has(HeightMap))
   {
-    // This behavior currently relies on MainPropertyView connecting to this
-    // event first
+    // This behavior currently relies on MainPropertyView connecting to this event first
     Z::gEditor->ShowWindow("Tools");
   }
   else

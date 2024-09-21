@@ -52,10 +52,9 @@ void LauncherCommunicationEvent::LoadFromCommandArguments(StringMap& arguments)
       eventName = Events::LauncherInstallProject;
   }
 
-  // This path needs to be turned into the full file path so since the project
-  // file could be specified relative to the current working directory (it's
-  // just the command line arguments). To do this, if the path is relative then
-  // we then we need to pre-pend the working directory.
+  // This path needs to be turned into the full file path so since the project file
+  // could be specified relative to the current working directory (it's just the command line arguments).
+  // To do this, if the path is relative then we then we need to pre-pend the working directory.
   if (!mProjectFile.Empty() && !PathIsRooted(mProjectFile))
     mProjectFile = FilePath::Combine(GetWorkingDirectory(), mProjectFile);
 

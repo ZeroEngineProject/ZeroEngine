@@ -157,9 +157,8 @@ public:
     {
       Cog* hitCog = results.mEntries[i].HitCog;
 
-      // if we have something selected and mSmartGroupSelect is enabled or ctrl
-      // pressed only selects direct children of the currently selected
-      // archetype
+      // if we have something selected and mSmartGroupSelect is enabled or ctrl pressed
+      // only selects direct children of the currently selected archetype
       if (!mCurrentSelection.Empty() && (mTool->mSmartGroupSelect || event->CtrlPressed))
       {
         Cog* currentHitParent = hitCog->FindNearestParentArchetype();
@@ -173,8 +172,7 @@ public:
         // if we have a root archetype just add it
         if (rootArchetype)
         {
-          // we don't want to add the parent of multiple hit children more than
-          // once
+          // we don't want to add the parent of multiple hit children more than once
           if (!selection->Contains(rootArchetype))
             selection->Add(rootArchetype, SendsEvents::False);
         }
@@ -385,8 +383,8 @@ Cog* SelectTool::WalkRayCast(Cog* toSelect, RaycastResultList& result, CogSelect
 Cog* SelectTool::ArchetypeSelect(MetaSelection* selection, Cog* toSelect)
 {
   Cog* nearestArchetype = toSelect->FindNearestArchetype();
-  // current is used to check the context of the selection in relation to the
-  // root of a hierarchy during single selection operation
+  // current is used to check the context of the selection in relation to the root of a hierarchy during single
+  // selection operation
   Cog* lastHitArchetype = nullptr;
   Cog* current = selection->GetPrimaryAs<Cog>();
   if (current != nullptr)
@@ -396,15 +394,14 @@ Cog* SelectTool::ArchetypeSelect(MetaSelection* selection, Cog* toSelect)
   if (nearestArchetype == nullptr)
     return nullptr;
 
-  // if the object we are attempting to select any sibling of the current
-  // nearest archetype select it
+  // if the object we are attempting to select any sibling of the current nearest archetype select it
   if (current && current->FindNearestArchetype() == toSelect->FindNearestArchetype())
   {
     return toSelect;
   }
 
-  // check if we are attempting to selected an object within the context of the
-  // last selected archetype
+  // check if we are attempting to selected an object within the context of the last
+  // selected archetype
   if (nearestArchetype->IsDescendant(lastHitArchetype) || selection->Contains(nearestArchetype))
   {
     return toSelect;
@@ -417,8 +414,8 @@ Cog* SelectTool::ArchetypeSelect(MetaSelection* selection, Cog* toSelect)
 Cog* SelectTool::SmartSelect(MetaSelection* selection, Cog* toSelect, bool rootSelect, bool archetypeSelect)
 {
   Cog* root = toSelect->FindRoot();
-  // current is used to check the context of the selection in relation to the
-  // root of a hierarchy during single selection operation
+  // current is used to check the context of the selection in relation to the root of a hierarchy during single
+  // selection operation
   Cog* current = selection->GetPrimaryAs<Cog>();
   Cog* finalSelect = nullptr;
 
@@ -444,8 +441,7 @@ Cog* SelectTool::SmartSelect(MetaSelection* selection, Cog* toSelect, bool rootS
   if (finalSelect)
     return finalSelect;
 
-  // We were selecting an object that is not an archetype and root select is not
-  // enabled
+  // We were selecting an object that is not an archetype and root select is not enabled
   return toSelect;
 }
 
@@ -473,8 +469,7 @@ void SelectTool::Select(ViewportMouseEvent* e)
         selection->Add(toSelect, SendsEvents::False);
       }
     }
-    // archetype and root select are not enabled so just select the object the
-    // user clicked on
+    // archetype and root select are not enabled so just select the object the user clicked on
     else if (!mArchetypeSelect && !mRootSelect)
     {
       selection->SelectOnly(toSelect);

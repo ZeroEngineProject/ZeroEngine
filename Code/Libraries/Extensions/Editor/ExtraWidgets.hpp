@@ -49,8 +49,7 @@ public:
   Vec3 mGraphSize;
 };
 
-/// Displays bar-graphs of current memory usage. Should eventually be
-/// refactored.
+/// Displays bar-graphs of current memory usage. Should eventually be refactored.
 class MemoryGraphWidget : public Widget
 {
 public:

@@ -109,7 +109,7 @@ class DragSizeManipulator : public MouseManipulation
 {
 public:
   DragSizeManipulator(Mouse* mouse, Composite* relative, HeightMapImporter* importer);
-  ~DragSizeManipulator(){};
+  ~DragSizeManipulator() {};
 
   void OnMouseUpdate(MouseEvent* event);
   void OnMouseUp(MouseEvent* event);

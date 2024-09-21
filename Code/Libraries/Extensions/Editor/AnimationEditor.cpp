@@ -66,8 +66,7 @@ PropertyKeyIcon::PropertyKeyIcon(Composite* parent,
                                  HandleParam object,
                                  Property* metaProperty,
                                  AnimationEditor* editor) :
-    Composite(parent),
-    mEditor(editor)
+    Composite(parent), mEditor(editor)
 {
   mComponentHandle = object;
   mProperty = metaProperty;
@@ -203,11 +202,9 @@ AnimationEditor::AnimationEditor(Composite* parent) : Composite(parent), mGraphD
     // Create the controls
     mControls = new AnimationControls(bottomArea, this);
     mControls->SetSizing(SizeAxis::X, SizePolicy::Fixed, AnimEditorUi::ControlsWidth);
-    // ConnectThisTo(mControls->mButtonSettings, Events::LeftClick,
-    // OnSettingsPressed);
+    // ConnectThisTo(mControls->mButtonSettings, Events::LeftClick, OnSettingsPressed);
 
-    // Create and connect to the scrubber (we want to know when play head has
-    // changed)
+    // Create and connect to the scrubber (we want to know when play head has changed)
     mScrubber = new AnimationScrubber(bottomArea, this, &mGraphData);
     mScrubber->SetSizing(SizeAxis::X, SizePolicy::Flex, 1);
     ConnectThisTo(mScrubber, Events::PlayHeadModified, OnPlayHeadModified);
@@ -891,8 +888,7 @@ void AnimationEditor::OnKeyDown(KeyboardEvent* e)
     // Only zoom on the x-axis is the mouse is over the scrubber
     if (mScrubber->IsMouseOver())
       axes.y = 0;
-    // Only zoom on the y-axis if the mouse is over the negative area in the
-    // graph
+    // Only zoom on the y-axis if the mouse is over the negative area in the graph
     else if (mGraph->mNegativeArea->IsMouseOver())
       axes.x = 0;
 
@@ -972,8 +968,7 @@ void AnimationEditor::OnMouseEnterErrorText(MouseEvent* event)
   if (mErrorState == ErrorState::NoObject)
     toolTip->SetText("Select an object in the level to add or edit an animation");
   else if (mErrorState == ErrorState::NoAnimGraph)
-    toolTip->SetText("The AnimationGraph component is responsible for running "
-                     "Animations on objects.");
+    toolTip->SetText("The AnimationGraph component is responsible for running Animations on objects.");
   else if (mErrorState == ErrorState::ReadOnly)
     toolTip->SetText("Click to create a new Rich Animation");
   else if (mErrorState == ErrorState::ReadOnly)
@@ -1165,8 +1160,7 @@ Archetype* GetAnimationPreviewArchetype(Animation* animation)
 
   //   if(AnimationBuilder* builder = contentItem->has(AnimationBuilder))
   //     previewArchetypeName = builder->mPreviewArchetype;
-  //   else if(RichAnimationBuilder* builder =
-  //   contentItem->has(RichAnimationBuilder))
+  //   else if(RichAnimationBuilder* builder = contentItem->has(RichAnimationBuilder))
   //     previewArchetypeName = builder->mPreviewArchetype;
 
   // Look up the archetype

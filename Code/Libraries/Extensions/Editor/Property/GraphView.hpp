@@ -32,8 +32,8 @@ public:
   typedef DataSampler ZilchSelf;
 
   virtual float Sample() = 0;
-  virtual void Setup(RangeData& data, EntryLabel& label){};
-  virtual ~DataSampler(){};
+  virtual void Setup(RangeData& data, EntryLabel& label) {};
+  virtual ~DataSampler() {};
 };
 
 class MetaObjectSample : public DataSampler

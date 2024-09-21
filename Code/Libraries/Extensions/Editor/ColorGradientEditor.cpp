@@ -400,8 +400,7 @@ void DrawColorGradient(ColorGradient* gradient, PixelBuffer* buffer)
     return;
   }
 
-  // Only render a second gradient for alpha if any of the keys have different
-  // alpha
+  // Only render a second gradient for alpha if any of the keys have different alpha
   bool differentAlpha = false;
   bool differentColor = false;
 
@@ -428,8 +427,7 @@ void DrawColorGradient(ColorGradient* gradient, PixelBuffer* buffer)
       break;
   }
 
-  // No need to draw the checkers if we're just overwriting it with a solid
-  // color
+  // No need to draw the checkers if we're just overwriting it with a solid color
   if (differentAlpha)
     DrawCheckers2(buffer, 5);
 

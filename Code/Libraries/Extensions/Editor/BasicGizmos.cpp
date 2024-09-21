@@ -16,8 +16,7 @@ namespace Zero
 //
 //  Vec3 viewDirection = Math::TransformNormal(rotation, Vec3::cZAxis);
 //
-//  return Debug::GetViewScale(location,
-//  camera->mTransform->GetWorldTranslation( ), viewDirection, camera->mSize,
+//   return Debug::GetViewScale(location, camera->mTransform->GetWorldTranslation( ), viewDirection, camera->mSize,
 //  camera->mPerspectiveMode == PerspectiveMode::Orthographic);
 //}
 
@@ -220,8 +219,8 @@ Vec3 GetSnappedPosition(Vec3Param currentPosition,
     {
       bool snapOnAxis = (Math::Abs(movement[i]) > GizmoHelpers::sGizmoEpsilon);
 
-      // If 'snapOnAxis * snapDistance' is 0, then 'currentPosition[i]' will be
-      // the final result. [ie, don't snap on that axis]
+      // If 'snapOnAxis * snapDistance' is 0, then 'currentPosition[i]' will be the final result.
+      // [ie, don't snap on that axis]
       newPosition[i] = Snap(currentPosition[i] + movement[i], snapOnAxis * snapDistance);
     }
 
@@ -229,8 +228,7 @@ Vec3 GetSnappedPosition(Vec3Param currentPosition,
   }
   else if (snapMode == GizmoSnapMode::WorldGrid)
   {
-    // Apply the movement, then snap to world-grid with units defined by
-    // 'snapDistance'
+    // Apply the movement, then snap to world-grid with units defined by 'snapDistance'
     Vec3 worldGridPosition = Snap(currentPosition + movement, snapDistance);
     return worldGridPosition;
   }
@@ -272,8 +270,8 @@ Vec3 GetSnappedScale(Vec3Param startPosition,
     {
       bool snapOnAxis = (Math::Abs(worldMovement[i]) > GizmoHelpers::sGizmoEpsilon);
 
-      // If 'snapOnAxis * snapDistance' is 0, then 'startPosition[i]' will be
-      // the final result. [ie, don't snap on that axis]
+      // If 'snapOnAxis * snapDistance' is 0, then 'startPosition[i]' will be the final result.
+      // [ie, don't snap on that axis]
       newScale[i] = Snap(startPosition[i] + worldMovement[i], snapOnAxis * snapDistance);
     }
 
@@ -281,8 +279,7 @@ Vec3 GetSnappedScale(Vec3Param startPosition,
   }
   else if (snapMode == GizmoSnapMode::WorldGrid)
   {
-    // Apply the movement, then snap to world-grid with units defined by
-    // 'snapDistance'
+    // Apply the movement, then snap to world-grid with units defined by 'snapDistance'
     Vec3 worldGridPosition = Snap(startPosition + worldMovement, snapDistance);
     return worldGridPosition;
   }
@@ -1058,8 +1055,7 @@ void ScaleGizmo::OnGizmoModified(GizmoUpdateEvent* e)
   DispatchEvent(Events::ScaleGizmoModified, &eventToSend);
 }
 
-// Generate a new scale based on drag-type [ie: viewplane, gizmo-basis-plane,
-// gizmo-axis].
+// Generate a new scale based on drag-type [ie: viewplane, gizmo-basis-plane, gizmo-axis].
 Vec3 ScaleGizmo::ScaleFromDrag(GizmoBasis::Enum basis,
                                GizmoDrag* gizmoDrag,
                                float distance,
@@ -1116,8 +1112,7 @@ Vec3 ScaleGizmo::ScaleFromDrag(GizmoBasis::Enum basis,
       // 'movement' is expected to be in world, so bring it into local space.
       // Doing so aligns the movement vector along the proper local-space plane.
       //
-      // Directional information cannot be used until the movement is
-      // axis-aligned.
+      // Directional information cannot be used until the movement is axis-aligned.
       if (basis == GizmoBasis::Local)
       {
         localMovement = GizmoHelpers::MovementToUniformSignedLocalScale(mDirection, localMovement, worldToLocal);
@@ -1125,23 +1120,21 @@ Vec3 ScaleGizmo::ScaleFromDrag(GizmoBasis::Enum basis,
       else // basis ==  GizmoBasis::World
       {
         // Final movement result must be put together piecewise as single
-        // axis-aligned drag value information will be destroyed after
-        // transformation.
+        // axis-aligned drag value information will be destroyed after transformation.
         localMovement = Vec3::cZero;
         for (int axis = 0; axis < 3; ++axis)
         {
-          // Don't do anything if there is no movement on the current world
-          // 'axis'.
+          // Don't do anything if there is no movement on the current world 'axis'.
           if (mDirection[axis] == 0.0f)
             continue;
 
           Vec3 v = Vec3::cZero;
           v[axis] = movement[axis];
 
-          // Directional information is preserved before axis-aligned world
-          // movement is lost. Single axis-aligned movement will no longer be
-          // axis-aligned after transformation, yet needs to remain
-          // singularly/uniformly directed after transformation.
+          // Directional information is preserved before axis-aligned world movement
+          // is lost. Single axis-aligned movement will no longer be axis-aligned
+          // after transformation, yet needs to remain singularly/uniformly
+          // directed after transformation.
           v = GizmoHelpers::MovementToUniformSignedLocalScale(mDirection[axis], v, worldToLocal);
 
           localMovement += v;
@@ -1149,8 +1142,7 @@ Vec3 ScaleGizmo::ScaleFromDrag(GizmoBasis::Enum basis,
       }
     }
 
-    // Finally, scale the drag-movement with respect to grab distance from gizmo
-    // pivot.
+    // Finally, scale the drag-movement with respect to grab distance from gizmo pivot.
     newScale = GizmoHelpers::ScaleVector(localMovement, distance, startScale);
   }
 

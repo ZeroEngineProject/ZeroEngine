@@ -11,26 +11,25 @@ class SpringTools;
 
 DeclareEnum5(SpringSubTools, Anchoring, PointSelector, SpringSelector, SpringCreator, RopeCreator);
 
-/// A sub-tool for spring systems. Is notified of basic mouse events as they
-/// happen.
+/// A sub-tool for spring systems. Is notified of basic mouse events as they happen.
 class SpringSubTool : public Object
 {
 public:
   ZilchDeclareType(SpringSubTool, TypeCopyMode::ReferenceType);
 
-  virtual ~SpringSubTool(){};
+  virtual ~SpringSubTool() {};
 
   // Dragging
-  virtual void OnMouseDragStart(ViewportMouseEvent* e){};
-  virtual void OnMouseDragMove(ViewportMouseEvent* e){};
-  virtual void OnMouseEndDrag(Event* e){};
+  virtual void OnMouseDragStart(ViewportMouseEvent* e) {};
+  virtual void OnMouseDragMove(ViewportMouseEvent* e) {};
+  virtual void OnMouseEndDrag(Event* e) {};
 
-  virtual void Draw(){};
+  virtual void Draw() {};
 
   // Mouse down/up
-  virtual void OnLeftMouseDown(ViewportMouseEvent* e){};
-  virtual void OnLeftMouseUp(ViewportMouseEvent* e){};
-  virtual void OnKeyDown(KeyboardEvent* e){};
+  virtual void OnLeftMouseDown(ViewportMouseEvent* e) {};
+  virtual void OnLeftMouseUp(ViewportMouseEvent* e) {};
+  virtual void OnKeyDown(KeyboardEvent* e) {};
 
   // Get the current selected spring system (can be null)
   SpringSystem* GetSystem();
@@ -55,9 +54,8 @@ public:
 
   DragSelectSubTool();
 
-  // New interface function that tells you a frustum is being dragged with these
-  // screen coordinates.
-  virtual void MouseDragFrustum(Viewport* viewport, Vec2Param upperLeftScreen, Vec2Param lowerRightScreen){};
+  // New interface function that tells you a frustum is being dragged with these screen coordinates.
+  virtual void MouseDragFrustum(Viewport* viewport, Vec2Param upperLeftScreen, Vec2Param lowerRightScreen) {};
 
   void OnMouseDragStart(ViewportMouseEvent* e) override;
   void OnMouseDragMove(ViewportMouseEvent* e) override;
@@ -76,9 +74,8 @@ public:
   SelectorSpringSubTool();
 
   // New interface function that casts a frustum against something.
-  // This expects mCurrentSelection to have points added to it if something hits
-  // the frustum.
-  virtual void CastFrustum(const Frustum& frustum){};
+  // This expects mCurrentSelection to have points added to it if something hits the frustum.
+  virtual void CastFrustum(const Frustum& frustum) {};
 
   void OnMouseDragStart(ViewportMouseEvent* e) override;
   void OnMouseDragMove(ViewportMouseEvent* e) override;
@@ -91,8 +88,7 @@ public:
   /// The indices we are currently selecting (during this drag).
   /// This list is constantly updating and being cleared as the mouse moves.
   PointMap mCurrentSelection;
-  /// The indices that we selected from our previous drag (since we can
-  /// multi-drag select).
+  /// The indices that we selected from our previous drag (since we can multi-drag select).
   PointMap mPreviousSelection;
 };
 
@@ -120,8 +116,7 @@ public:
 
   void Draw() override;
 
-  /// Do we draw all points that are anchored (even though they aren't
-  /// selected).
+  /// Do we draw all points that are anchored (even though they aren't selected).
   bool mDrawAnchoredPoints;
   Vec4 mAnchoredPointMassColor;
 };
@@ -229,8 +224,7 @@ public:
   AnchoringSubTool* mAnchorTool;
 };
 // Special property class to redirect get properties on an object to a function
-// that can return a property state (which is 3 states instead of 2: true,
-// false, conflicted)
+// that can return a property state (which is 3 states instead of 2: true, false, conflicted)
 class SpringPointProxyProperty : public PropertyInterface
 {
 public:
@@ -245,8 +239,7 @@ public:
 ///   <command name = "AddToSelection">
 ///     <shortcut> Shift + Drag </shortcut>
 ///     <description>
-///       SelectorSpringSubTool:\Add the current drag selection to the already
-///       selected items.
+///       SelectorSpringSubTool:\Add the current drag selection to the already selected items.
 ///     </description>
 ///   </command>
 ///   <command name = "DeselectSpring">

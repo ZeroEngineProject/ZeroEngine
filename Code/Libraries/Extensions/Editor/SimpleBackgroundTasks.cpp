@@ -41,8 +41,8 @@ void DirectorySizeJob::ComputeSizeRecursive(StringParam dir)
     if (mUpdateCounter >= mUpdateFrequency)
     {
       mUpdateCounter = 0;
-      // There's not really a good way to know how many files there is so I
-      // can't give an actual progress percent (only the current size)
+      // There's not really a good way to know how many files there is so I can't
+      // give an actual progress percent (only the current size)
       UpdateProgress(GetName(), 0, HumanReadableFileSize(mCurrentSize));
     }
   }

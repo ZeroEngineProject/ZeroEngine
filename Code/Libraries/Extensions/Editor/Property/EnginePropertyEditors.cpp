@@ -3,12 +3,10 @@
 
 namespace Zero
 {
-// Because CogPath is a shared reference counted object, it doesn't actually
-// matter if the user marks it as read only because it can still be modified by
-// setting values on the path object itself (the actual cog path object can't be
-// replaced with another though) However, if a reference property is read only,
-// even if it is modified currently the property view will not mark the level as
-// modified (issue)
+// Because CogPath is a shared reference counted object, it doesn't actually matter if the user marks it as read only
+// because it can still be modified by setting values on the path object itself (the actual cog path object can't be
+// replaced with another though) However, if a reference property is read only, even if it is modified currently the
+// property view will not mark the level as modified (issue)
 static bool cCogPathIgnoreReadOnly = false;
 
 namespace ComponentUi
@@ -130,8 +128,8 @@ public:
     Cog* cog = GetCog();
     OperationQueue* opQueue = Z::gEditor->GetOperationQueue();
 
-    // Consider empty archetype text on UploadInherited to be the same as
-    // pressing enter after emptying out the text.
+    // Consider empty archetype text on UploadInherited to be the same as pressing
+    // enter after emptying out the text.
     if (archetypeName.Empty())
     {
       if (cog->GetArchetype())
@@ -145,8 +143,7 @@ public:
       UploadToArchetype(opQueue, cog, archetypeName, oldArchetype);
     }
 
-    // If the object had a locally removed Component, we need to rebuild the
-    // property grid
+    // If the object had a locally removed Component, we need to rebuild the property grid
     mGrid->Invalidate();
   }
 
@@ -224,8 +221,7 @@ public:
       UploadToArchetype(opQueue, cog);
     }
 
-    // If the object had a locally removed Component, we need to rebuild the
-    // property grid
+    // If the object had a locally removed Component, we need to rebuild the property grid
     mGrid->Invalidate();
   }
 
@@ -374,8 +370,7 @@ public:
 
       if (commonArchetypeContextCog)
       {
-        toolTip = String::Format("Revert to the definition as specified by the parent '%s' "
-                                 "Archetype",
+        toolTip = String::Format("Revert to the definition as specified by the parent '%s' Archetype",
                                  commonArchetypeContextCog->GetArchetype()->Name.c_str());
       }
       else if (archetypes.Empty())
@@ -421,17 +416,15 @@ public:
       if (oldArchetype && oldArchetype->Name == newValue)
         return;
 
-      // bool preExistingArchetype =
-      // (ArchetypeManager::GetInstance()->FindOrNull(newValue) != NULL);
+      // bool preExistingArchetype = (ArchetypeManager::GetInstance()->FindOrNull(newValue) != NULL);
 
       // MakeNewArchetypeWith will Assign the archetype to the cog
       Archetype* newArchetype = UploadToArchetype(opQueue, GetCog(), newValue);
       if (newArchetype == NULL)
         mEditText->SetText(String());
 
-      // It is common to create a similarly purposed archetype by modifying a
-      // current one If you don't want the tags copied over, you can clear the
-      // archetype field before making a new one
+      // It is common to create a similarly purposed archetype by modifying a current one
+      // If you don't want the tags copied over, you can clear the archetype field before making a new one
       // else if (oldArchetype && !preExistingArchetype)
       //{
       //  // Copy over tags
@@ -867,10 +860,7 @@ public:
     if (state.IsValid())
     {
       CogPath* path = state.Value.Get<CogPath*>();
-      ReturnIf(!path,
-               ,
-               "The value in the property grid was not a path (or it was not "
-               "valid)");
+      ReturnIf(!path, , "The value in the property grid was not a path (or it was not valid)");
 
       // Any changes to the actual CogPath in the variant we want to know about
       mValue = *path;
@@ -926,8 +916,7 @@ public:
 
   void OnPropertyChanged(PropertyEvent* event)
   {
-    // If the property that is being changed belongs to our temporary cog path
-    // object...
+    // If the property that is being changed belongs to our temporary cog path object...
     RefreshIfSameObject(Handle(event->mObject));
   }
 
@@ -1610,9 +1599,8 @@ public:
   MetaEditorResource* mMetaEdit;
   ResourceManager* mResourceManager;
   ResourceEditor* mEditor;
-  // Storing a pointer to this is safe because when meta is changed, the entire
-  // property grid is torn down and rebuilt. This should never point at a
-  // destroyed type.
+  // Storing a pointer to this is safe because when meta is changed, the entire property grid
+  // is torn down and rebuilt. This should never point at a destroyed type.
   BoundType* mResourceType;
   HandleOf<FloatingSearchView> mActiveSearch;
   HandleOf<ToolTip> mTooltip;
@@ -2328,8 +2316,7 @@ public:
       result.Interface = this;
       result.Name = resource->Name;
       result.Priority = priority;
-      // Grey out resources options in the search view that cannot be added to
-      // the object
+      // Grey out resources options in the search view that cannot be added to the object
       mResourceList->CheckForAddition(result.mStatus, resource);
     }
   }
@@ -2362,8 +2349,8 @@ public:
 // void AddResource(StringParam resourceIdName, uint index);
 // void RemoveResource(StringParam resourceIdName);
 // Array<String>::range GetIdNames();
-// typedef void (*ListItemCallback)(GraphicsResourceList* resourceList, String
-// entryIdName, Status& status); ListItemCallback mListItemCallback;
+// typedef void (*ListItemCallback)(GraphicsResourceList* resourceList, String entryIdName, Status& status);
+// ListItemCallback mListItemCallback;
 template <typename ResourceList>
 class ResourceListEditor : public PropertyWidget
 {
@@ -2545,8 +2532,7 @@ void RegisterEngineEditors()
   ZilchTypeId(CogPath)->Add(new MetaPropertyEditor(&CreateProperty<PropertyEditorCogPath>));
 
   // METAREFACTOR Was this ever used?
-  // PropEditors->PropertyEditorMap["Cog"] = new
-  // PropertyGridTypeData(&CreateProperty<PropertyEditorCogRef>);
+  // PropEditors->PropertyEditorMap["Cog"] = new PropertyGridTypeData(&CreateProperty<PropertyEditorCogRef>);
 
   ZilchTypeId(Resource)->Add(new MetaPropertyEditor(&CreateProperty<PropertyEditorResource>));
   ZilchTypeId(MetaEditorResource)->Add(new MetaPropertyEditor(&CreateProperty<PropertyEditorResource>));

@@ -30,9 +30,7 @@ class BindingConflictEvent : public Event
 {
 public:
   BindingConflictEvent(CommandEntry* newCommand, CommandEntry* existingComnnad, HotKeyBinding* newBinding) :
-      mNewCommand(newCommand),
-      mExistingCommad(existingComnnad),
-      mNewBinding(newBinding)
+      mNewCommand(newCommand), mExistingCommad(existingComnnad), mNewBinding(newBinding)
   {
   }
 
@@ -139,14 +137,11 @@ public:
 
   void OnKeyDown(KeyboardEvent* event)
   {
-    // if(mainKey == Keys::Unknown && event->Key >= Keys::A && event->Key <=
-    // Keys::Backslash)
+    // if(mainKey == Keys::Unknown && event->Key >= Keys::A && event->Key <= Keys::Backslash)
     //  mainKey = event->Key;
-    // if(modifier1 == Keys::Unknown && event->Key >= Keys::Up && event->Key <=
-    // Keys::Decimal)
+    // if(modifier1 == Keys::Unknown && event->Key >= Keys::Up && event->Key <= Keys::Decimal)
     //  modifier1 = event->Key;
-    // if(modifier2 == Keys::Unknown && event->Key >= Keys::Up && event->Key <=
-    // Keys::Decimal)
+    // if(modifier2 == Keys::Unknown && event->Key >= Keys::Up && event->Key <= Keys::Decimal)
     //  modifier2 = event->Key;
 
     if (!mEdit || mEdit->mEditTextField->mTakeFocusMode != FocusMode::Hard)
@@ -258,9 +253,8 @@ public:
     // edit->SetEditable(true);
     // edit->TakeFocus();
 
-    // ConnectThisTo(edit->mEditTextField, Events::TextBoxChanged,
-    // OnTextBoxChanged); ConnectThisTo(edit->mEditTextField, Events::FocusLost,
-    // OnTextLostFocus);
+    // ConnectThisTo(edit->mEditTextField, Events::TextBoxChanged, OnTextBoxChanged);
+    // ConnectThisTo(edit->mEditTextField, Events::FocusLost, OnTextLostFocus);
 
     // mEdit = edit;
   }
@@ -841,9 +835,7 @@ ZilchDefineType(HotKeyEditor, builder, type)
 HashMap<unsigned, String> HotKeyEditor::sKeyMap;
 
 HotKeyEditor::HotKeyEditor(Composite* parent) :
-    Composite(parent),
-    mCogCommandSortToggle(true),
-    mCurrentSort(CommandCompare::None)
+    Composite(parent), mCogCommandSortToggle(true), mCurrentSort(CommandCompare::None)
 {
   mHotKeys = HotKeyCommands::GetInstance();
 
@@ -853,8 +845,7 @@ HotKeyEditor::HotKeyEditor(Composite* parent) :
 
     if (!FileExists(userHotKeyFile))
     {
-      String coreHotKeyFile; // =
-                             // HotKeyManager::GetDefault()->mContentItem->GetFullPath();
+      String coreHotKeyFile; // = HotKeyManager::GetDefault()->mContentItem->GetFullPath();
 
       CopyFileInternal(userHotKeyFile, coreHotKeyFile);
     }
@@ -1399,8 +1390,7 @@ void HotKeyEditor::OnTreeViewHeaderAdded(TreeViewHeaderAddedEvent* event)
 {
   uint index = event->mHeaderIndex;
 
-  // Left to right - headers beyond the tags header do not have sorting
-  // capability.
+  // Left to right - headers beyond the tags header do not have sorting capability.
   if (index > Tags)
     return;
 
@@ -1491,8 +1481,7 @@ void HotKeyEditor::OnCommandSetSelected(ObjectEvent* event)
   mTreeView->mRowMap.Clear();
   mTreeView->Refresh();
 
-  // mHotKeys->mSet = (HotKeyDataSet
-  // *)mHotKeyManager->GetResource(mSetNames.Strings[index],
+  // mHotKeys->mSet = (HotKeyDataSet *)mHotKeyManager->GetResource(mSetNames.Strings[index],
   // ResourceNotFound::ReturnNull);
   mTreeView->SetDataSource(mHotKeys);
 }

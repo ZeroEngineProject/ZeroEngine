@@ -12,8 +12,7 @@ ZilchDefineType(HeightMapBrushStroke, builder, type)
 }
 
 HeightMapBrushStroke::HeightMapBrushStroke(float radius, float featherRadius) :
-    mRadius(radius),
-    mFeatherRadius(featherRadius)
+    mRadius(radius), mFeatherRadius(featherRadius)
 {
 }
 
@@ -24,8 +23,7 @@ void HeightMapBrushStroke::AddPoint(Vec2Param point)
 
 // Should move this to Undo/Redo?
 // Operation should know the Tool [ie, brush], HeightMap, and maybe keyframe
-// void HeightMapBrushStroke::Apply(HeightManipulationTool* tool, PatchMapCopy&
-// patchMap)
+// void HeightMapBrushStroke::Apply(HeightManipulationTool* tool, PatchMapCopy& patchMap)
 //{
 //  forRange(Vec2& position, mPoints.All( ))
 //  {
@@ -66,8 +64,7 @@ void HeightMapStateManager::StartBrushStroke(float radius, float featherRadius)
   }
   else if (mCurrentFrame->mBrushStrokes.Size() == mFramesBetweenKeys)
   {
-    // memory optimization: only store diff of HeightMap state now vs prev
-    // keyframe
+    // memory optimization: only store diff of HeightMap state now vs prev keyframe
     //   - note: currently copying out entire HeightMap state
     InitializeHeightMapState();
   }

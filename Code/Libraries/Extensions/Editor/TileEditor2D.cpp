@@ -173,9 +173,7 @@ ZilchDefineType(TileEditor2DSubTool, builder, type)
 }
 
 TileEditor2DSubTool::TileEditor2DSubTool(TileEditor2D* owner) :
-    mOwner(owner),
-    mPrimaryActive(false),
-    mSecondaryActive(false)
+    mOwner(owner), mPrimaryActive(false), mSecondaryActive(false)
 {
 }
 
@@ -392,8 +390,7 @@ void TileEditor2DDrawTool::ApplyChanges(TileMap* map, Array<TileMapChange>& chan
     map->SetTile(changes[i].GridPos, changes[i].NewTile);
 }
 
-// ----------------------------------------------------------------
-// TileEditor2DSelectTool
+// ---------------------------------------------------------------- TileEditor2DSelectTool
 ZilchDefineType(TileEditor2DSelectTool, builder, type)
 {
 }
@@ -595,8 +592,7 @@ void TileEditor2D::OnSelectionFinal(SelectionChangedEvent* event)
 
   if (cog && cog->has(TileMap))
   {
-    // This behavior currently relies on MainPropertyView connecting to this
-    // event first
+    // This behavior currently relies on MainPropertyView connecting to this event first
     Z::gEditor->ShowWindow("Tools");
     TilePaletteSourceManager* manager = (TilePaletteSourceManager*)TilePaletteSourceManager::GetInstance();
     TilePaletteSource* palette =

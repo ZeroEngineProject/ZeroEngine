@@ -44,8 +44,7 @@ public:
   void SetHeightMax(float max);
   void SetHeightRange(float min, float max);
 
-  /// Determines if the x axis (horizontal) hash lines and labels should be
-  /// drawn.
+  /// Determines if the x axis (horizontal) hash lines and labels should be drawn.
   bool GetDrawAxisX();
   void SetDrawAxisX(bool state);
   /// Determines if the y axis (vertical) hash lines and labels should be drawn.

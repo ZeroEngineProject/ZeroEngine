@@ -53,8 +53,7 @@ void GridDraw::Initialize(CogInitializer& initializer)
 // Occurs when the frame is updated on the space
 void GridDraw::OnFrameUpdate(UpdateEvent* e)
 {
-  // If we want to draw this in editor mode, and we're currently in editor
-  // mode...
+  // If we want to draw this in editor mode, and we're currently in editor mode...
   if (this->GetSpace()->IsEditorMode())
   {
     if (this->mAlwaysDrawInEditor)
@@ -149,9 +148,8 @@ void GridDraw::Draw()
     translation -= splatCells * 0.5f;
   }
 
-  // The offset is used in multiple ways, but primarily it is the distance out
-  // that the lines are drawn along two different axes that aren't the current
-  // axes
+  // The offset is used in multiple ways, but primarily it is the distance out that the lines are
+  // drawn along two different axes that aren't the current axes
   Vec3 size = splatCells * intervalCount * 0.5f;
 
   // Loop through all the axes
@@ -162,8 +160,7 @@ void GridDraw::Draw()
     for (size_t currentLine = 0; currentLine < lineToDraw; ++currentLine)
     {
       Vec3 offset = size;
-      // For the current axis, the offset is the distance along it where we want
-      // to draw the lines
+      // For the current axis, the offset is the distance along it where we want to draw the lines
       offset[currentAxis] = (currentLine - intervalCount * 0.5f) * mCellSize;
 
       // Loop through all the other axes
@@ -173,8 +170,7 @@ void GridDraw::Draw()
         if (otherAxis == currentAxis)
           continue;
 
-        // Compute which face we're doing (essentially the plane made by the
-        // current axis as a normal)
+        // Compute which face we're doing (essentially the plane made by the current axis as a normal)
         size_t facePlaneIndex = NumAxes - (otherAxis ^ currentAxis);
         if (!(facePlaneIndex == mAxis))
           continue;
@@ -191,8 +187,7 @@ void GridDraw::Draw()
         start[currentAxis] += offset[currentAxis];
         end[currentAxis] += offset[currentAxis];
 
-        // Offset the start and end so that, on the other axes, they are from
-        // positive to negative
+        // Offset the start and end so that, on the other axes, they are from positive to negative
         start[otherAxis] += offset[otherAxis];
         end[otherAxis] -= offset[otherAxis];
 

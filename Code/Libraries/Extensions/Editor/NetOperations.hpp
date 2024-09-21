@@ -15,15 +15,13 @@ namespace Zero
 // NetPropertyInfo Operations
 //
 
-/// Adds a net property info (specified by component type and property name) to
-/// the given net object
+/// Adds a net property info (specified by component type and property name) to the given net object
 void AddNetPropertyInfo(OperationQueue* queue,
                         NetObject* netObject,
                         BoundType* componentType,
                         StringParam propertyName);
 
-/// Removes a net property info (specified by component type and property name)
-/// from the given net object
+/// Removes a net property info (specified by component type and property name) from the given net object
 void RemoveNetPropertyInfo(OperationQueue* queue,
                            NetObject* netObject,
                            BoundType* componentType,

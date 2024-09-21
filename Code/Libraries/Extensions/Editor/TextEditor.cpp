@@ -149,8 +149,7 @@ void ScintillaWidget::RenderUpdate(
   mSurface.mColor = colorTx.ColorMultiply;
   mSurface.mBaseRect = clipRect;
 
-  // Setting clip rect here because scintilla is not getting the correct client
-  // rect
+  // Setting clip rect here because scintilla is not getting the correct client rect
   mSurface.mClipRect = WidgetRect::PointAndSize(Vec2(parentTx.m30, parentTx.m31), mSize);
 
   Scintilla::PRectangle rcPaint = mScintilla->GetClientRectangle();
@@ -351,91 +350,65 @@ void TextEditor::SetLexer(uint lexer)
     for (size_t i = 0; i < opCodeNames.Size(); ++i)
     {
       String opName = opCodeNames[i];
-      // OpCode names don't include the "Op" in the beginning to manually add
-      // it.
+      // OpCode names don't include the "Op" in the beginning to manually add it.
       opCodesBuilder.AppendFormat("Op%s ", opName.c_str());
     }
     String opCodes = opCodesBuilder.ToString();
 
     // Hardcoded as there's not clean tools right now to parse this from spirv.
-    // In the interest of time this was manually grabbed from the header but
-    // should eventually be updated.
+    // In the interest of time this was manually grabbed from the header but should eventually be updated.
     const char languages[] = "Unknown ESSL GLSL OpenCL_C OpenCL_CPP HLSL";
-    const char executionModels[] = "Vertex TessellationControl TessellationEvaluation Geometry Fragment "
-                                   "GLCompute Kernel";
+    const char executionModels[] =
+        "Vertex TessellationControl TessellationEvaluation Geometry Fragment GLCompute Kernel";
     const char addressingModels[] = "Logical Physical32 Physical64";
-    const char storageClasses[] = "UniformConstant Input Uniform Output Workgroup CrossWorkgroup Private "
-                                  "Function Generic PushConstant AtomicCounter Image StorageBuffer";
-    const char decorations[] = "RelaxedPrecision SpecId Block BufferBlock RowMajor ColMajor "
-                               "ArrayStride MatrixStride GLSLShared GLSLPacked CPacked BuiltIn "
-                               "NoPerspective Flat Patch Centroid Sample Invariant Restrict Aliased "
-                               "Volatile Constant Coherent NonWritable NonReadable Uniform "
-                               "SaturatedConversion Stream Location Component Index Binding "
-                               "DescriptorSet Offset XfbBuffer XfbStride FuncParamAttr FPRoundingMode "
-                               "FPFastMathMode LinkageAttributes NoContraction InputAttachmentIndex "
-                               "Alignment MaxByteOffset AlignmentId MaxByteOffsetId ExplicitInterpAMD "
-                               "OverrideCoverageNV PassthroughNV ViewportRelativeNV "
-                               "SecondaryViewportRelativeNV NonUniformEXT HlslCounterBufferGOOGLE "
-                               "HlslSemanticGOOGLE";
-    const char builtIns[] = "Position PointSize ClipDistance CullDistance VertexId InstanceId "
-                            "PrimitiveId InvocationId Layer ViewportIndex TessLevelOuter "
-                            "TessLevelInner TessCoord PatchVertices FragCoord PointCoord "
-                            "FrontFacing SampleId SamplePosition SampleMask FragDepth "
-                            "HelperInvocation NumWorkgroups WorkgroupSize WorkgroupId "
-                            "LocalInvocationId GlobalInvocationId LocalInvocationIndex WorkDim "
-                            "GlobalSize EnqueuedWorkgroupSize GlobalOffset GlobalLinearId "
-                            "SubgroupSize SubgroupMaxSize NumSubgroups NumEnqueuedSubgroups "
-                            "SubgroupId SubgroupLocalInvocationId VertexIndex InstanceIndex "
-                            "SubgroupEqMask SubgroupEqMaskKHR SubgroupGeMask SubgroupGeMaskKHR "
-                            "SubgroupGtMask SubgroupGtMaskKHR SubgroupLeMask SubgroupLeMaskKHR "
-                            "SubgroupLtMask SubgroupLtMaskKHR BaseVertex BaseInstance DrawIndex "
-                            "DeviceIndex ViewIndex BaryCoordNoPerspAMD BaryCoordNoPerspCentroidAMD "
-                            "BaryCoordNoPerspSampleAMD BaryCoordSmoothAMD "
-                            "BaryCoordSmoothCentroidAMD BaryCoordSmoothSampleAMD "
-                            "BaryCoordPullModelAMD FragStencilRefEXT ViewportMaskNV "
-                            "SecondaryPositionNV SecondaryViewportMaskNV PositionPerViewNV "
-                            "ViewportMaskPerViewNV FullyCoveredEXT";
-    const char capabilities[] = "Matrix Shader Geometry Tessellation Addresses Linkage Kernel Vector16 "
-                                "Float16Buffer Float16 Float64 Int64 Int64Atomics ImageBasic "
-                                "ImageReadWrite ImageMipmap Pipes Groups DeviceEnqueue LiteralSampler "
-                                "AtomicStorage Int16 TessellationPointSize GeometryPointSize "
-                                "ImageGatherExtended StorageImageMultisample "
-                                "UniformBufferArrayDynamicIndexing SampledImageArrayDynamicIndexing "
-                                "StorageBufferArrayDynamicIndexing StorageImageArrayDynamicIndexing "
-                                "ClipDistance CullDistance ImageCubeArray SampleRateShading ImageRect "
-                                "SampledRect GenericPointer Int8 InputAttachment SparseResidency "
-                                "MinLod Sampled1D Image1D SampledCubeArray SampledBuffer ImageBuffer "
-                                "ImageMSArray StorageImageExtendedFormats ImageQuery DerivativeControl "
-                                "InterpolationFunction TransformFeedback GeometryStreams "
-                                "StorageImageReadWithoutFormat StorageImageWriteWithoutFormat "
-                                "MultiViewport SubgroupDispatch NamedBarrier PipeStorage "
-                                "GroupNonUniform GroupNonUniformVote GroupNonUniformArithmetic "
-                                "GroupNonUniformBallot GroupNonUniformShuffle "
-                                "GroupNonUniformShuffleRelative GroupNonUniformClustered "
-                                "GroupNonUniformQuad SubgroupBallotKHR DrawParameters SubgroupVoteKHR "
-                                "StorageBuffer16BitAccess StorageUniformBufferBlock16 StorageUniform16 "
-                                "UniformAndStorageBuffer16BitAccess StoragePushConstant16 "
-                                "StorageInputOutput16 DeviceGroup MultiView "
-                                "VariablePointersStorageBuffer VariablePointers AtomicStorageOps "
-                                "SampleMaskPostDepthCoverage StorageBuffer8BitAccess "
-                                "UniformAndStorageBuffer8BitAccess StoragePushConstant8 "
-                                "Float16ImageAMD ImageGatherBiasLodAMD FragmentMaskAMD "
-                                "StencilExportEXT ImageReadWriteLodAMD SampleMaskOverrideCoverageNV "
-                                "GeometryShaderPassthroughNV ShaderViewportIndexLayerEXT "
-                                "ShaderViewportIndexLayerNV ShaderViewportMaskNV ShaderStereoViewNV "
-                                "PerViewAttributesNV FragmentFullyCoveredEXT "
-                                "GroupNonUniformPartitionedNV ShaderNonUniformEXT "
-                                "RuntimeDescriptorArrayEXT InputAttachmentArrayDynamicIndexingEXT "
-                                "UniformTexelBufferArrayDynamicIndexingEXT "
-                                "StorageTexelBufferArrayDynamicIndexingEXT "
-                                "UniformBufferArrayNonUniformIndexingEXT "
-                                "SampledImageArrayNonUniformIndexingEXT "
-                                "StorageBufferArrayNonUniformIndexingEXT "
-                                "StorageImageArrayNonUniformIndexingEXT "
-                                "InputAttachmentArrayNonUniformIndexingEXT "
-                                "UniformTexelBufferArrayNonUniformIndexingEXT "
-                                "StorageTexelBufferArrayNonUniformIndexingEXT SubgroupShuffleINTEL "
-                                "SubgroupBufferBlockIOINTEL SubgroupImageBlockIOINTEL";
+    const char storageClasses[] = "UniformConstant Input Uniform Output Workgroup CrossWorkgroup Private Function "
+                                  "Generic PushConstant AtomicCounter Image StorageBuffer";
+    const char decorations[] =
+        "RelaxedPrecision SpecId Block BufferBlock RowMajor ColMajor ArrayStride MatrixStride GLSLShared GLSLPacked "
+        "CPacked BuiltIn NoPerspective Flat Patch Centroid Sample Invariant Restrict Aliased Volatile Constant "
+        "Coherent NonWritable NonReadable Uniform SaturatedConversion Stream Location Component Index Binding "
+        "DescriptorSet Offset XfbBuffer XfbStride FuncParamAttr FPRoundingMode FPFastMathMode LinkageAttributes "
+        "NoContraction InputAttachmentIndex Alignment MaxByteOffset AlignmentId MaxByteOffsetId ExplicitInterpAMD "
+        "OverrideCoverageNV PassthroughNV ViewportRelativeNV SecondaryViewportRelativeNV NonUniformEXT "
+        "HlslCounterBufferGOOGLE HlslSemanticGOOGLE";
+    const char builtIns[] =
+        "Position PointSize ClipDistance CullDistance VertexId InstanceId PrimitiveId InvocationId Layer ViewportIndex "
+        "TessLevelOuter TessLevelInner TessCoord PatchVertices FragCoord PointCoord FrontFacing SampleId "
+        "SamplePosition SampleMask FragDepth HelperInvocation NumWorkgroups WorkgroupSize WorkgroupId "
+        "LocalInvocationId GlobalInvocationId LocalInvocationIndex WorkDim GlobalSize EnqueuedWorkgroupSize "
+        "GlobalOffset GlobalLinearId SubgroupSize SubgroupMaxSize NumSubgroups NumEnqueuedSubgroups SubgroupId "
+        "SubgroupLocalInvocationId VertexIndex InstanceIndex SubgroupEqMask SubgroupEqMaskKHR SubgroupGeMask "
+        "SubgroupGeMaskKHR SubgroupGtMask SubgroupGtMaskKHR SubgroupLeMask SubgroupLeMaskKHR SubgroupLtMask "
+        "SubgroupLtMaskKHR BaseVertex BaseInstance DrawIndex DeviceIndex ViewIndex BaryCoordNoPerspAMD "
+        "BaryCoordNoPerspCentroidAMD BaryCoordNoPerspSampleAMD BaryCoordSmoothAMD BaryCoordSmoothCentroidAMD "
+        "BaryCoordSmoothSampleAMD BaryCoordPullModelAMD FragStencilRefEXT ViewportMaskNV SecondaryPositionNV "
+        "SecondaryViewportMaskNV PositionPerViewNV ViewportMaskPerViewNV FullyCoveredEXT";
+    const char capabilities[] =
+        "Matrix Shader Geometry Tessellation Addresses Linkage Kernel Vector16 Float16Buffer Float16 Float64 Int64 "
+        "Int64Atomics ImageBasic ImageReadWrite ImageMipmap Pipes Groups DeviceEnqueue LiteralSampler AtomicStorage "
+        "Int16 TessellationPointSize GeometryPointSize ImageGatherExtended StorageImageMultisample "
+        "UniformBufferArrayDynamicIndexing SampledImageArrayDynamicIndexing StorageBufferArrayDynamicIndexing "
+        "StorageImageArrayDynamicIndexing ClipDistance CullDistance ImageCubeArray SampleRateShading ImageRect "
+        "SampledRect GenericPointer Int8 InputAttachment SparseResidency MinLod Sampled1D Image1D SampledCubeArray "
+        "SampledBuffer ImageBuffer ImageMSArray StorageImageExtendedFormats ImageQuery DerivativeControl "
+        "InterpolationFunction TransformFeedback GeometryStreams StorageImageReadWithoutFormat "
+        "StorageImageWriteWithoutFormat MultiViewport SubgroupDispatch NamedBarrier PipeStorage GroupNonUniform "
+        "GroupNonUniformVote GroupNonUniformArithmetic GroupNonUniformBallot GroupNonUniformShuffle "
+        "GroupNonUniformShuffleRelative GroupNonUniformClustered GroupNonUniformQuad SubgroupBallotKHR DrawParameters "
+        "SubgroupVoteKHR StorageBuffer16BitAccess StorageUniformBufferBlock16 StorageUniform16 "
+        "UniformAndStorageBuffer16BitAccess StoragePushConstant16 StorageInputOutput16 DeviceGroup MultiView "
+        "VariablePointersStorageBuffer VariablePointers AtomicStorageOps SampleMaskPostDepthCoverage "
+        "StorageBuffer8BitAccess UniformAndStorageBuffer8BitAccess StoragePushConstant8 Float16ImageAMD "
+        "ImageGatherBiasLodAMD FragmentMaskAMD StencilExportEXT ImageReadWriteLodAMD SampleMaskOverrideCoverageNV "
+        "GeometryShaderPassthroughNV ShaderViewportIndexLayerEXT ShaderViewportIndexLayerNV ShaderViewportMaskNV "
+        "ShaderStereoViewNV PerViewAttributesNV FragmentFullyCoveredEXT GroupNonUniformPartitionedNV "
+        "ShaderNonUniformEXT RuntimeDescriptorArrayEXT InputAttachmentArrayDynamicIndexingEXT "
+        "UniformTexelBufferArrayDynamicIndexingEXT StorageTexelBufferArrayDynamicIndexingEXT "
+        "UniformBufferArrayNonUniformIndexingEXT SampledImageArrayNonUniformIndexingEXT "
+        "StorageBufferArrayNonUniformIndexingEXT StorageImageArrayNonUniformIndexingEXT "
+        "InputAttachmentArrayNonUniformIndexingEXT UniformTexelBufferArrayNonUniformIndexingEXT "
+        "StorageTexelBufferArrayNonUniformIndexingEXT SubgroupShuffleINTEL SubgroupBufferBlockIOINTEL "
+        "SubgroupImageBlockIOINTEL";
 
     StringBuilder specialBuilder;
     specialBuilder.Append(languages);
@@ -531,22 +504,15 @@ void TextEditor::SetLexer(uint lexer)
 
   case Lexer::Zilch:
   {
-    const char zilchKeywords[] = "abstract alias alignof as assert Assign auto base break case catch "
-                                 "checked "
-                                 "class compare const constructor continue copy decrement default "
-                                 "delegate delete "
-                                 "destructor do dynamic else enum explicit export extern false finally "
-                                 "fixed "
-                                 "flags for foreach friend function get global goto if immutable "
-                                 "implicit import in include "
-                                 "increment inline interface internal is local lock loop module mutable "
-                                 "namespace new "
-                                 "null operator out override package params partial positional private "
-                                 "protected public "
-                                 "readonly ref register require return sealed sends set signed sizeof "
-                                 "stackalloc static "
-                                 "struct switch throw true try typedef typeid typename typeof type "
-                                 "unchecked unsafe unsigned "
+    const char zilchKeywords[] =
+        "abstract alias alignof as assert Assign auto base break case catch checked "
+        "class compare const constructor continue copy decrement default delegate delete "
+        "destructor do dynamic else enum explicit export extern false finally fixed "
+        "flags for foreach friend function get global goto if immutable implicit import in include "
+        "increment inline interface internal is local lock loop module mutable namespace new "
+        "null operator out override package params partial positional private protected public "
+        "readonly ref register require return sealed sends set signed sizeof stackalloc static "
+        "struct switch throw true try typedef typeid typename typeof type unchecked unsafe unsigned "
                                  "using var virtual volatile where while yield timeout scope debug";
 
     const char zilchSpecial[] = "this value event";
@@ -749,8 +715,8 @@ void TextEditor::OnConfigChanged(PropertyEvent* event)
 void TextEditor::OnConfigPropertyChanged(PropertyEvent* event)
 {
   // All text editors use text match highlighting settings.  If the the text
-  // editor needs to use ALL TextEditorConfig properties, then
-  // 'UseTextEditorConfig' should be called after text editor init/construction.
+  // editor needs to use ALL TextEditorConfig properties, then 'UseTextEditorConfig'
+  // should be called after text editor init/construction.
   String name = event->mProperty.GetLeafPropertyName();
   if (name != "TextMatchHighlighting" && name != "HighlightPartialTextMatch")
     return;
@@ -945,8 +911,7 @@ void TextEditor::SetColorScheme(ColorScheme& scheme)
   // Set style for Line number / gutter
   SetAStyle(STYLE_LINENUMBER, ToByteColor(scheme.GutterText), ToByteColor(scheme.Gutter));
 
-  // Set the color of any whitespace identifiers (the . where spaces are, and ->
-  // where tabs are)
+  // Set the color of any whitespace identifiers (the . where spaces are, and -> where tabs are)
   SendEditor(SCI_SETWHITESPACEFORE, true, ToByteColor(scheme.Whitespace));
 
   // Set the color when we select text
@@ -967,8 +932,7 @@ void TextEditor::SetColorScheme(ColorScheme& scheme)
   {
     SetCommonLexerStyles(scheme);
 
-    SetAStyle(SCE_C_CHARACTER, ToByteColor(scheme.Default),
-              background); // Character literals: 'c'
+    SetAStyle(SCE_C_CHARACTER, ToByteColor(scheme.Default), background); // Character literals: 'c'
     break;
   }
   case Lexer::Shader:
@@ -983,41 +947,27 @@ void TextEditor::SetColorScheme(ColorScheme& scheme)
   case Lexer::Text:
   {
     SetAStyle(SCE_P_DEFAULT, ToByteColor(scheme.Default), background); // Default text
-    SetAStyle(SCE_P_IDENTIFIER, ToByteColor(scheme.Default),
-              background); // Identifiers: self.Space
+    SetAStyle(SCE_P_IDENTIFIER, ToByteColor(scheme.Default), background); // Identifiers: self.Space
 
-    SetAStyle(SCE_P_COMMENTBLOCK, ToByteColor(scheme.Default),
-              background); // Block comments: /* */, """
-    SetAStyle(SCE_P_COMMENTLINE, ToByteColor(scheme.Default),
-              background); // Line comments: #, //
-    SetAStyle(SCE_P_TRIPLE, ToByteColor(scheme.Default),
-              background); // Triple comment
-    SetAStyle(SCE_P_TRIPLEDOUBLE, ToByteColor(scheme.Default),
-              background);                                               // Triple comment
+    SetAStyle(SCE_P_COMMENTBLOCK, ToByteColor(scheme.Default), background); // Block comments: /* */, """
+    SetAStyle(SCE_P_COMMENTLINE, ToByteColor(scheme.Default), background);  // Line comments: #, //
+    SetAStyle(SCE_P_TRIPLE, ToByteColor(scheme.Default), background);       // Triple comment
+    SetAStyle(SCE_P_TRIPLEDOUBLE, ToByteColor(scheme.Default), background); // Triple comment
     SetAStyle(SCE_P_STRINGEOL, ToByteColor(scheme.Default), background); // ?
     SetAStyle(SCE_P_DECORATOR, ToByteColor(scheme.Default), background); // ?
 
-    SetAStyle(SCE_P_NUMBER, ToByteColor(scheme.Number),
-              background); // Number literals: 5, 3.9
-    SetAStyle(SCE_P_CHARACTER, ToByteColor(scheme.Default),
-              background); // Character literals: 'c'
-    SetAStyle(SCE_P_STRING, ToByteColor(scheme.StringLiteral),
-              background); // String literals: "hello world"
+    SetAStyle(SCE_P_NUMBER, ToByteColor(scheme.Number), background);        // Number literals: 5, 3.9
+    SetAStyle(SCE_P_CHARACTER, ToByteColor(scheme.Default), background);    // Character literals: 'c'
+    SetAStyle(SCE_P_STRING, ToByteColor(scheme.StringLiteral), background); // String literals: "hello world"
 
-    SetAStyle(SCE_P_CLASSNAME, ToByteColor(scheme.Default),
-              background); // Class names: RigidBody, Model
-    SetAStyle(SCE_P_DEFNAME, ToByteColor(scheme.Default),
-              background); // Function names: OnLogicUpdate
-    SetAStyle(SCE_P_OPERATOR, ToByteColor(scheme.Default),
-              background); // Operators: () += .
+    SetAStyle(SCE_P_CLASSNAME, ToByteColor(scheme.Default), background); // Class names: RigidBody, Model
+    SetAStyle(SCE_P_DEFNAME, ToByteColor(scheme.Default), background);   // Function names: OnLogicUpdate
+    SetAStyle(SCE_P_OPERATOR, ToByteColor(scheme.Default), background);  // Operators: () += .
 
-    SetAStyle(SCE_P_WORD, ToByteColor(scheme.Default),
-              background); // Keywords: class, if
-    SetAStyle(SCE_P_WORD2, ToByteColor(scheme.Default),
-              background); // Context keywords: self, this, value
+    SetAStyle(SCE_P_WORD, ToByteColor(scheme.Default), background);  // Keywords: class, if
+    SetAStyle(SCE_P_WORD2, ToByteColor(scheme.Default), background); // Context keywords: self, this, value
 
-    SetAStyle(SCE_ERROR, ToByteColor(scheme.Error),
-              background); // Errors / exceptions
+    SetAStyle(SCE_ERROR, ToByteColor(scheme.Error), background); // Errors / exceptions
 
     SetAStyle(SCE_LINK, ToByteColor(scheme.Link), background); // Link text
 
@@ -1029,41 +979,27 @@ void TextEditor::SetColorScheme(ColorScheme& scheme)
   case Lexer::Python:
   {
     SetAStyle(SCE_P_DEFAULT, ToByteColor(scheme.Default), background); // Default text
-    SetAStyle(SCE_P_IDENTIFIER, ToByteColor(scheme.Default),
-              background); // Identifiers: self.Space
+    SetAStyle(SCE_P_IDENTIFIER, ToByteColor(scheme.Default), background); // Identifiers: self.Space
 
-    SetAStyle(SCE_P_COMMENTBLOCK, ToByteColor(scheme.Comment),
-              background); // Block comments: /* */, """
-    SetAStyle(SCE_P_COMMENTLINE, ToByteColor(scheme.Comment),
-              background); // Line comments: #, //
-    SetAStyle(SCE_P_TRIPLE, ToByteColor(scheme.Comment),
-              background); // Triple comment
-    SetAStyle(SCE_P_TRIPLEDOUBLE, ToByteColor(scheme.Comment),
-              background);                                               // Triple comment
+    SetAStyle(SCE_P_COMMENTBLOCK, ToByteColor(scheme.Comment), background); // Block comments: /* */, """
+    SetAStyle(SCE_P_COMMENTLINE, ToByteColor(scheme.Comment), background);  // Line comments: #, //
+    SetAStyle(SCE_P_TRIPLE, ToByteColor(scheme.Comment), background);       // Triple comment
+    SetAStyle(SCE_P_TRIPLEDOUBLE, ToByteColor(scheme.Comment), background); // Triple comment
     SetAStyle(SCE_P_STRINGEOL, ToByteColor(scheme.Comment), background); // ?
     SetAStyle(SCE_P_DECORATOR, ToByteColor(scheme.Comment), background); // ?
 
-    SetAStyle(SCE_P_NUMBER, ToByteColor(scheme.Number),
-              background); // Number literals: 5, 3.9
-    SetAStyle(SCE_P_CHARACTER, ToByteColor(scheme.StringLiteral),
-              background); // Character literals: 'c'
-    SetAStyle(SCE_P_STRING, ToByteColor(scheme.StringLiteral),
-              background); // String literals: "hello world"
+    SetAStyle(SCE_P_NUMBER, ToByteColor(scheme.Number), background); // Number literals: 5, 3.9
+    SetAStyle(SCE_P_CHARACTER, ToByteColor(scheme.StringLiteral), background); // Character literals: 'c'
+    SetAStyle(SCE_P_STRING, ToByteColor(scheme.StringLiteral), background); // String literals: "hello world"
 
-    SetAStyle(SCE_P_CLASSNAME, ToByteColor(scheme.ClassName),
-              background); // Class names: RigidBody, Model
-    SetAStyle(SCE_P_DEFNAME, ToByteColor(scheme.FunctionName),
-              background); // Function names: OnLogicUpdate
-    SetAStyle(SCE_P_OPERATOR, ToByteColor(scheme.Operator),
-              background); // Operators: () += .
+    SetAStyle(SCE_P_CLASSNAME, ToByteColor(scheme.ClassName), background); // Class names: RigidBody, Model
+    SetAStyle(SCE_P_DEFNAME, ToByteColor(scheme.FunctionName), background); // Function names: OnLogicUpdate
+    SetAStyle(SCE_P_OPERATOR, ToByteColor(scheme.Operator), background); // Operators: () += .
 
-    SetAStyle(SCE_P_WORD, ToByteColor(scheme.Keyword),
-              background); // Keywords: class, if
-    SetAStyle(SCE_P_WORD2, ToByteColor(scheme.SpecialWords),
-              background); // Context keywords: self, this, value
+    SetAStyle(SCE_P_WORD, ToByteColor(scheme.Keyword), background); // Keywords: class, if
+    SetAStyle(SCE_P_WORD2, ToByteColor(scheme.SpecialWords), background); // Context keywords: self, this, value
 
-    SetAStyle(SCE_ERROR, ToByteColor(scheme.Error),
-              background); // Errors / exceptions
+    SetAStyle(SCE_ERROR, ToByteColor(scheme.Error), background); // Errors / exceptions
 
     SetAStyle(SCE_LINK, ToByteColor(scheme.Link), background); // Link text
 
@@ -1084,17 +1020,12 @@ void TextEditor::SetCommonLexerStyles(ColorScheme& scheme)
   uint background = ToByteColor(scheme.Background);
 
   SetAStyle(SCE_C_DEFAULT, ToByteColor(scheme.Default), background); // Default text
-  SetAStyle(SCE_C_IDENTIFIER, ToByteColor(scheme.Default),
-            background); // Identifiers: self.Space
+  SetAStyle(SCE_C_IDENTIFIER, ToByteColor(scheme.Default), background); // Identifiers: self.Space
 
-  SetAStyle(SCE_C_COMMENT, ToByteColor(scheme.Comment),
-            background); // Block comments: /* */, """
-  SetAStyle(SCE_C_COMMENTDOC, ToByteColor(scheme.Comment),
-            background); // Block comments: /* */, """
-  SetAStyle(SCE_C_COMMENTLINE, ToByteColor(scheme.Comment),
-            background); // Line comments: #, //
-  SetAStyle(SCE_C_COMMENTLINEDOC, ToByteColor(scheme.Comment),
-            background);                                                      // Line comments: #, //
+  SetAStyle(SCE_C_COMMENT, ToByteColor(scheme.Comment), background); // Block comments: /* */, """
+  SetAStyle(SCE_C_COMMENTDOC, ToByteColor(scheme.Comment), background); // Block comments: /* */, """
+  SetAStyle(SCE_C_COMMENTLINE, ToByteColor(scheme.Comment), background); // Line comments: #, //
+  SetAStyle(SCE_C_COMMENTLINEDOC, ToByteColor(scheme.Comment), background);                                                      // Line comments: #, //
   SetAStyle(SCE_C_UUID, ToByteColor(scheme.Comment), background);             // ?
   SetAStyle(SCE_C_STRINGEOL, ToByteColor(scheme.Comment), background);        // ?
   SetAStyle(SCE_C_VERBATIM, ToByteColor(scheme.Comment), background);         // ?
@@ -1102,32 +1033,21 @@ void TextEditor::SetCommonLexerStyles(ColorScheme& scheme)
   SetAStyle(SCE_C_HASHQUOTEDSTRING, ToByteColor(scheme.Comment), background); // ?
   SetAStyle(SCE_C_REGEX, ToByteColor(scheme.Comment), background);            // ?
 
-  SetAStyle(SCE_C_NUMBER, ToByteColor(scheme.Number),
-            background); // Number literals: 5, 3.9
-  SetAStyle(SCE_C_CHARACTER, ToByteColor(scheme.StringLiteral),
-            background); // Character literals: 'c'
-  SetAStyle(SCE_C_STRING, ToByteColor(scheme.StringLiteral),
-            background); // String literals: "hello world"
-  SetAStyle(SCE_C_STRINGRAW, ToByteColor(scheme.StringLiteral),
-            background); // String literals: "hello world"
+  SetAStyle(SCE_C_NUMBER, ToByteColor(scheme.Number), background); // Number literals: 5, 3.9
+  SetAStyle(SCE_C_CHARACTER, ToByteColor(scheme.StringLiteral), background); // Character literals: 'c'
+  SetAStyle(SCE_C_STRING, ToByteColor(scheme.StringLiteral), background); // String literals: "hello world"
+  SetAStyle(SCE_C_STRINGRAW, ToByteColor(scheme.StringLiteral), background); // String literals: "hello world"
 
-  SetAStyle(SCE_C_GLOBALCLASS, ToByteColor(scheme.ClassName),
-            background); // Class names: RigidBody, Model
-  SetAStyle(SCE_C_OPERATOR, ToByteColor(scheme.Operator),
-            background); // Operators: () += .
+  SetAStyle(SCE_C_GLOBALCLASS, ToByteColor(scheme.ClassName), background); // Class names: RigidBody, Model
+  SetAStyle(SCE_C_OPERATOR, ToByteColor(scheme.Operator), background); // Operators: () += .
 
-  SetAStyle(SCE_C_WORD, ToByteColor(scheme.Keyword),
-            background); // Keywords: class, if
-  SetAStyle(SCE_C_COMMENTDOCKEYWORD, ToByteColor(scheme.Keyword),
-            background); // Documentation keywords
-  SetAStyle(SCE_C_PREPROCESSOR, ToByteColor(scheme.Directive),
-            background); // Preprocessor directives
-  SetAStyle(SCE_C_WORD2, ToByteColor(scheme.SpecialWords),
-            background); // Context keywords: self, this, value
+  SetAStyle(SCE_C_WORD, ToByteColor(scheme.Keyword), background); // Keywords: class, if
+  SetAStyle(SCE_C_COMMENTDOCKEYWORD, ToByteColor(scheme.Keyword), background); // Documentation keywords
+  SetAStyle(SCE_C_PREPROCESSOR, ToByteColor(scheme.Directive), background); // Preprocessor directives
+  SetAStyle(SCE_C_WORD2, ToByteColor(scheme.SpecialWords), background); // Context keywords: self, this, value
 
   SetAStyle(SCE_ERROR, ToByteColor(scheme.Error), background); // Errors / exceptions
-  SetAStyle(SCE_C_COMMENTDOCKEYWORDERROR, ToByteColor(scheme.Error),
-            background); // Documentation errors
+  SetAStyle(SCE_C_COMMENTDOCKEYWORDERROR, ToByteColor(scheme.Error), background); // Documentation errors
 }
 
 void TextEditor::OnKeyDown(KeyboardEvent* event)
@@ -1178,9 +1098,8 @@ void TextEditor::OnKeyDown(KeyboardEvent* event)
       // The reason I found this fix for the change in behavior is that while
       // ctrl+plus and ctrl+minus didn't work consistently and scrollwheel did,
       // which is calling SetColorScheme after SetFontSize.
-      // I suspect it has something to do with us responding to windows message
-      // pump events and then scintilla settings being set using the windows
-      // message pump also - Dane Curbow
+      // I suspect it has something to do with us responding to windows message pump events
+      // and then scintilla settings being set using the windows message pump also - Dane Curbow
       UpdateColorScheme();
     }
     if (event->Key == Keys::Equal)
@@ -1600,8 +1519,7 @@ void TextEditor::UpdateIndicators(Array<Rectangle>& indicators,
 
     Rectangle& rect = indicators.PushBack();
     rect.Min = Vec2(indicatorOffsetX, top);
-    rect.Max = Vec2(indicatorOffsetX + size.x,
-                    top + size.y - 1.0f); // - 1 to make it zero-indexed
+    rect.Max = Vec2(indicatorOffsetX + size.x, top + size.y - 1.0f); // - 1 to make it zero-indexed
 
     mIndicators->FillRect(rect.Min, rect.Max, ToByteColor(indicatorColor));
   }
@@ -1637,16 +1555,14 @@ bool TextEditor::IsModified()
 void TextEditor::GoToPosition(int position)
 {
   SendEditor(SCI_GOTOPOS, position);
-  // When updating the position in a document change the corresponding scroll
-  // position
+  // When updating the position in a document change the corresponding scroll position
   MakePositionVisible(position);
 }
 
 void TextEditor::GoToLine(int lineNumber)
 {
   SendEditor(SCI_GOTOLINE, lineNumber);
-  // When updating the position in a document change the corresponding scroll
-  // position
+  // When updating the position in a document change the corresponding scroll position
   MakeLineVisible(lineNumber);
 }
 
@@ -1695,8 +1611,7 @@ LinePosition::Enum TextEditor::GetLinePositionInfo()
   int currentLine = GetCurrentLine();
   int lineLength = GetLineLength(currentLine);
 
-  // Read the current line into a buffer, and get the cursor position
-  // (lineOffset) into that line
+  // Read the current line into a buffer, and get the cursor position (lineOffset) into that line
   const int BufferSize = 8192;
   char buffer[BufferSize];
   int lineOffset = GetCurrentLineText(buffer, BufferSize);
@@ -1704,8 +1619,7 @@ LinePosition::Enum TextEditor::GetLinePositionInfo()
   // Default the position to be in the middle
   LinePosition::Enum position = LinePosition::Middle;
 
-  // Assume that everything after the cursor is whitespace (until the end of the
-  // line)...
+  // Assume that everything after the cursor is whitespace (until the end of the line)...
   bool isAllSpaceAfterCursor = true;
 
   // Loop from the cursor position to the end of the line
@@ -1720,13 +1634,11 @@ LinePosition::Enum TextEditor::GetLinePositionInfo()
     }
   }
 
-  // Basically, if everything after the cursor was empty (then we are really at
-  // the end)
+  // Basically, if everything after the cursor was empty (then we are really at the end)
   if (isAllSpaceAfterCursor)
     position = LinePosition::End;
 
-  // Assume that everything before the cursor is whitespace (until the end of
-  // the line)...
+  // Assume that everything before the cursor is whitespace (until the end of the line)...
   bool isAllSpaceBeforeCursor = true;
 
   // Loop from the beginning of the line to the cursor position
@@ -1741,9 +1653,8 @@ LinePosition::Enum TextEditor::GetLinePositionInfo()
     }
   }
 
-  // Basically, if everything before the cursor was empty (then we are really at
-  // the beginning) Note that it can be both at the beginning and end (if the
-  // line is empty), but beginning takes precedence
+  // Basically, if everything before the cursor was empty (then we are really at the beginning)
+  // Note that it can be both at the beginning and end (if the line is empty), but beginning takes precedence
   if (isAllSpaceBeforeCursor)
     position = LinePosition::Beginning;
 
@@ -1823,8 +1734,7 @@ int TextEditor::GetClientLineCount()
   int lineCount = GetLineCount();
   // Current height of text.
   int textHeight = SendEditor(SCI_TEXTHEIGHT);
-  // If enabled, additional line count that would fit in the over-scroll client
-  // area.
+  // If enabled, additional line count that would fit in the over-scroll client area.
   lineCount += !mScintilla->endAtLastLine * mVisibleSize.y / textHeight;
 
   return lineCount;
@@ -1913,7 +1823,6 @@ bool TextEditor::MarkerExists(int line, int type)
 int TextEditor::GetMarkerMask(int line)
 {
   return SendEditor(SCI_MARKERGET, line);
-  ;
 }
 
 Vec3 TextEditor::GetScreenPositionOfCursor()
@@ -1943,8 +1852,7 @@ void TextEditor::SetAnnotation(int lineNumber, StringParam errorMessage, bool go
 {
   String wrappedMessage = WordWrap(errorMessage, 80);
 
-  // Don't set annotations on this line if we already have one there with the
-  // same text
+  // Don't set annotations on this line if we already have one there with the same text
   String& existingMessage = AnnotationLines[lineNumber];
   if (existingMessage != wrappedMessage)
   {
@@ -2132,10 +2040,9 @@ void TextEditor::OnNotify(Scintilla::SCNotification& notify)
 
     if (shouldSendEvent)
     {
-      // We have to get the line from the current caret position because some
-      // Scintilla on notify messages do not fill out the position/line modified
-      // causing incorrect behavior when attempting to scroll off screen
-      // modification into view
+      // We have to get the line from the current caret position because some Scintilla
+      // on notify messages do not fill out the position/line modified causing incorrect
+      // behavior when attempting to scroll off screen modification into view
       MakeLineVisible(GetLineFromPosition(mScintilla->SelectionStart().Position()));
 
       Event event;
@@ -2711,13 +2618,10 @@ void ScintillaZero::ClearHighlightRanges()
   // Select the custom indicator.
   SendEditor(SCI_SETINDICATORCURRENT, indicator);
 
-  // SCI_INDICATORCLEARRANGE, reset the value over the entire document body to
-  // 0.
-  //   - Note1: A rangeValue == 0, regardless of lexer type, is the default
-  //   value for
+  // SCI_INDICATORCLEARRANGE, reset the value over the entire document body to 0.
+  //   - Note1: A rangeValue == 0, regardless of lexer type, is the default value for
   //           the entire document.
-  //   - Note2: Filling a range that is the entire document body, doesn't
-  //   actually
+  //   - Note2: Filling a range that is the entire document body, doesn't actually
   //           walk the entire document's text.  Rather, all non-zero style
   //           ranges [ie, previous highlight indicators] are set to a style of
   //           0.  Then they are all collapsed to a single range as they are
@@ -2855,8 +2759,7 @@ void ScintillaZero::ProcessTextMatch(char*& text, int* begin, int* end)
   // 3) Is end whitespace or alpha numeric?
   bool opEndValid = stop < pdoc->Length() && (UTF8::IsWhiteSpace(b) || UTF8::IsAlphaNumeric(b));
 
-  // Check for chained operator chars surrounded by either whitespace or alpha
-  // numerics.
+  // Check for chained operator chars surrounded by either whitespace or alpha numerics.
   if (isOperator && (beginValid || opBeginValid) && (endValid || opEndValid))
   {
     pdoc->GetCharRange(text, start, size);
@@ -2955,8 +2858,7 @@ void ScintillaZero::HighlightAllTextInstances(int begin, int end, const char* te
       int anchor = std::min(pos, pos + lengthFound);
       int caret = std::max(pos, pos + lengthFound);
 
-      // Adhere to partial vs whole match, 'FindText' returns only partial
-      // matches.
+      // Adhere to partial vs whole match, 'FindText' returns only partial matches.
       char* candidate = match;
       ProcessTextMatch(candidate, &anchor, &caret);
       if (candidate == nullptr)
@@ -2976,8 +2878,7 @@ void ScintillaZero::HighlightAllTextInstances(int begin, int end, const char* te
         // Assign a value to this instance of 'text'.  Useful if needed
         // to recall/find this instance later.
         SendEditor(SCI_SETINDICATORVALUE, rangeValue++);
-        // Decorate the the instance of the text range with the current,
-        // internal, indicator style.
+        // Decorate the the instance of the text range with the current, internal, indicator style.
         SendEditor(SCI_INDICATORFILLRANGE, anchor, lengthFound);
 
         mHighlightRanges.push_back(range);
@@ -3077,8 +2978,7 @@ sptr_t ScintillaZero::DefWndProc(unsigned int iMessage, uptr_t wParam, sptr_t lP
 
   case SCI_GETCURRENTPOS:
   {
-    // Easiest way to make the current auto complete logic work without being
-    // refactored
+    // Easiest way to make the current auto complete logic work without being refactored
     std::vector<Scintilla::SelectionRange>& ranges = sel.GetRanges();
     std::sort(ranges.begin(), ranges.end());
     return ranges.front().Start().Position();

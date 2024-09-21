@@ -96,8 +96,7 @@ MessageBox::MessageBox(Composite* parent, StringParam caption, StringParam text,
   // Hide the exit button
   mCloseButton->SetActive(false);
 
-  // Size to the contents of the message box taking our minimums into account vs
-  // the content
+  // Size to the contents of the message box taking our minimums into account vs the content
   Vec2 size = GetMinSize();
   size.x = size.x < cMinMessageBoxWidth ? cMinMessageBoxWidth : size.x;
   size.y = size.y < cMinMessageBoxHeight ? cMinMessageBoxHeight : size.y;
@@ -150,8 +149,7 @@ MessageBox::MessageBox(Composite* parent, StringParam caption, StringParam text,
   // Hide the exit button
   mCloseButton->SetActive(false);
 
-  // Size to the contents of the message box taking our minimums into account vs
-  // the content
+  // Size to the contents of the message box taking our minimums into account vs the content
   Vec2 size = GetMinSize();
   size.x = size.x < cMinMessageBoxWidth ? cMinMessageBoxWidth : size.x;
   size.y = size.y < cMinMessageBoxHeight ? cMinMessageBoxHeight : size.y;

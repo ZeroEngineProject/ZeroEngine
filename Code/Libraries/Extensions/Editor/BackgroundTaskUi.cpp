@@ -191,8 +191,7 @@ BackgroundTaskItem::BackgroundTaskItem(Composite* parent, BackgroundTask* task) 
   SetLayout(CreateStackLayout());
 
   Composite* infoArea = new Composite(this);
-  // infoArea->SetLayout(CreateStackLayout(LayoutDirection::LeftToRight,
-  // Pixels(5,0), Thickness::cZero));
+  // infoArea->SetLayout(CreateStackLayout(LayoutDirection::LeftToRight, Pixels(5,0), Thickness::cZero));
   infoArea->SetSizing(SizeAxis::Y, SizePolicy::Flex, Pixels(1));
   {
     mIcon = infoArea->CreateAttached<Element>(task->mIconName);

@@ -19,8 +19,7 @@ public:
 
   String mDirectory;
   u64 mCurrentSize;
-  /// What frequency we should send out progress (every n files send out
-  /// progress)
+  /// What frequency we should send out progress (every n files send out progress)
   u32 mUpdateFrequency;
   u32 mUpdateCounter;
 };

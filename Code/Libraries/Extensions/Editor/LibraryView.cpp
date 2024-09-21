@@ -212,15 +212,13 @@ public:
     tagTranslation.x += overflow;
     mTagIcon->SetTranslation(tagTranslation);
 
-    // Push the text to the right to account for the tag being stuck too far on
-    // the left
+    // Push the text to the right to account for the tag being stuck too far on the left
     mEditableText->mTranslation.x += overflow;
 
     // Make sure the size isn't too large
     mEditableText->mSize.x = Math::Min(mEditableText->mSize.x, mSize.x - tagWidth - Pixels(2));
 
-    // We need to update our children again to let the ellipses (...) on mText
-    // process
+    // We need to update our children again to let the ellipses (...) on mText process
     Composite::UpdateTransform();
   }
 
@@ -385,10 +383,9 @@ void LibraryView::View(ContentLibrary* contentLibrary, ResourceLibrary* resource
   ConnectThisTo(resourceLibrary, Events::ResourceAdded, OnResourcesModified);
 
   mSearch->ClearSearchProviders();
-  // We want to show all hidden resources in this resource library. The reason
-  // hidden exists is because we don't want them to show up when setting
-  // resource properties, but we do want them to show up when viewing the
-  // resource library
+  // We want to show all hidden resources in this resource library. The reason hidden exists is
+  // because we don't want them to show up when setting resource properties, but we do want them
+  // to show up when viewing the resource library
   mSearch->SearchProviders.PushBack(GetResourceSearchProvider(mResourceLibrary, true));
 
   // Refresh the search with the new library
@@ -615,8 +612,7 @@ void LibraryView::OnPackageBuilt(ContentSystemEvent* e)
   if (mContentLibraries->GetCount() > 1)
     mLibrariesRow->SetActive(true);
 
-  // If nothing is selected, attempt to select the library that was initially
-  // viewed
+  // If nothing is selected, attempt to select the library that was initially viewed
   int selected = mContentLibraries->GetSelectedItem();
   if (selected == cNoItemSelected && mContentLibrary)
   {
@@ -721,8 +717,8 @@ void LibraryView::OnRightClickObject(Composite* objectToAttachTo, DataIndex inde
   }
   else
   {
-    // When right clicking on a resource tag show an "Add 'resourceType'" option
-    // if the user can add this type of resource
+    // When right clicking on a resource tag show an "Add 'resourceType'" option if the user can add this type of
+    // resource
     if (AddResourceOptionsToMenu(menu, entry->mTag))
       menu->AddDivider();
     ConnectMenu(menu, "Add Tag To Search", OnAddTagToSearch, true);
@@ -740,8 +736,7 @@ void LibraryView::OnRightMouseUp(MouseEvent* event)
   ContextMenu* menu = new ContextMenu(this);
   menu->mRootEntry->mContext.Add(mContentLibrary);
 
-  // When in the context of a specific resource search show an "Add
-  // 'resourceType'" option
+  // When in the context of a specific resource search show an "Add 'resourceType'" option
   forRange (String& tag, mSearchBox->mSearch.ActiveTags.All())
   {
     if (AddResourceOptionsToMenu(menu, tag))
@@ -1090,8 +1085,7 @@ void LibraryView::OnMessageBox(MessageBoxEvent* event)
       LibDataEntry* treeNode = (LibDataEntry*)mSource->ToEntry(currIndex);
       if (Resource* resource = treeNode->mResource)
       {
-        // only delete 1 resource for a content item as removing one removes all
-        // associated resources
+        // only delete 1 resource for a content item as removing one removes all associated resources
         if (!contentItems.Contains(resource->mContentItem))
         {
           resourcesToRemove.PushBack(resource);
@@ -1195,8 +1189,7 @@ bool LibraryView::AddResourceOptionsToMenu(ContextMenu* menu, StringParam resouc
 {
   BoundType* boundType = MetaDatabase::GetInstance()->FindType(resouceTypeName);
 
-  // Attempt to get bound type for the tag and if we have a type is it a
-  // resource
+  // Attempt to get bound type for the tag and if we have a type is it a resource
   if (boundType && boundType->IsA(ZilchTypeId(Resource)))
   {
     ResourceManager* manager = Z::gResources->GetResourceManager(boundType);
@@ -1205,8 +1198,7 @@ bool LibraryView::AddResourceOptionsToMenu(ContextMenu* menu, StringParam resouc
       if (addDivider)
         menu->AddDivider();
 
-      // We have a resource so add the option to create a new resource of the
-      // viewed type
+      // We have a resource so add the option to create a new resource of the viewed type
       StringBuilder buttonTitle;
       buttonTitle.Append("Add ");
       buttonTitle.Append(boundType->Name);
@@ -1233,8 +1225,8 @@ void LibraryView::OnAddResource(ObjectEvent* event)
     resourceWindow->SelectResourceType(resourceType);
 
     TagList tags = mSearch->ActiveTags;
-    // The library view has an implicit "Resources" tag and we don't want to add
-    // this to all the newly created resources as a custom tag
+    // The library view has an implicit "Resources" tag and we don't want to add this to
+    // all the newly created resources as a custom tag
     tags.Erase("Resources");
     resourceWindow->AddTags(tags);
   }

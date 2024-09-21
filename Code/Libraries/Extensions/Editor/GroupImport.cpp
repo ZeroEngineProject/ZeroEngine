@@ -4,12 +4,11 @@
 namespace Zero
 {
 
-// When importing Zero Engine resource files we strip the resource extension
-// from the filename to get the original resource name from the project it was
-// imported from if we do not do this then the file
-// ZeroEngineResource.ResourceType.data becomes
-// ZeroEngineResourceResourceType.ResourceType.data instead of
-// ZeroEngineResource.ResourceType.data
+// When importing Zero Engine resource files we strip the resource extension from the filename
+// to get the original resource name from the project it was imported from
+// if we do not do this then the file ZeroEngineResource.ResourceType.data
+// becomes    ZeroEngineResourceResourceType.ResourceType.data
+// instead of ZeroEngineResource.ResourceType.data
 String StripResourceExtension(StringParam filename)
 {
   // Count the periods in the filename
@@ -19,8 +18,8 @@ String StripResourceExtension(StringParam filename)
     if (rune == '.')
       ++periodCount;
   }
-  // If it contains more than 2 periods this is not one of Zero Engine's data
-  // files as at most a file would be named ZeroEngineResource.ResourceType.data
+  // If it contains more than 2 periods this is not one of Zero Engine's data files
+  // as at most a file would be named ZeroEngineResource.ResourceType.data
   // so anymore than 2 is a way of identifying a user named external file
   // and not accidentally turning a user file like User.Custom.Font.ttf
   // into UserCustom as a font instead of UserCustomFont
@@ -32,8 +31,7 @@ String StripResourceExtension(StringParam filename)
   StringRange resourceExtensionEnd = filename.FindLastOf('.');
   if (resourceExtensionStart.Begin() != resourceExtensionEnd.Begin())
   {
-    // Get the resource extension without including the beginning and end
-    // periods
+    // Get the resource extension without including the beginning and end periods
     String resourceExtension = filename.SubString(resourceExtensionStart.End(), resourceExtensionEnd.Begin());
     // Check if the included middle extension is a Zero Engine resource
     MetaDatabase* metaDatabase = MetaDatabase::GetInstance();
@@ -41,9 +39,8 @@ String StripResourceExtension(StringParam filename)
     // If it is a Zero Engine resource strip it from the filename
     if (type && type->IsA(ZilchTypeId(Resource)))
     {
-      // Replace the .ResourceType with nothing and return that filename to
-      // import Zero Engine created resources files from another project and get
-      // the same name
+      // Replace the .ResourceType with nothing and return that filename to import
+      // Zero Engine created resources files from another project and get the same name
       return filename.Replace(BuildString(".", resourceExtension), "");
     }
   }
@@ -87,7 +84,7 @@ void RunGroupImport(ImportOptions& options)
         JsonValue* buffers = gltf->GetMember("buffers", JsonErrorMode::DefaultValue);
         if (buffers != nullptr)
         {
-          forRange (JsonValue*  buffer, buffers->ArrayElements)
+          forRange (JsonValue* buffer, buffers->ArrayElements)
           {
             JsonValue* uri = buffer->GetMember("uri", JsonErrorMode::DefaultValue);
             if (uri == nullptr)
@@ -98,7 +95,8 @@ void RunGroupImport(ImportOptions& options)
             {
               String outputFileName = FilePath::GetFileNameWithoutExtension(binFilePath);
               String outputFileExt = FilePath::GetFileName(binFilePath).Replace(outputFileName, "");
-              String outputFilePath = FilePath::CombineWithExtension(library->SourcePath, outputFileName, outputFileExt);
+              String outputFilePath =
+                  FilePath::CombineWithExtension(library->SourcePath, outputFileName, outputFileExt);
               CopyFile(outputFilePath, binFilePath);
             }
           }
@@ -219,9 +217,8 @@ void LoadDroppedFiles(Array<HandleOfString>& files)
     return;
   }
 
-  // The user could've dragged a file in. Recursively find all files in the
-  // given path. Might need to be updated later to deal with multiple files of
-  // the same name in different directories...
+  // The user could've dragged a file in. Recursively find all files in the given path.
+  // Might need to be updated later to deal with multiple files of the same name in different directories...
   Array<String> allFiles;
   for (size_t i = 0; i < files.Size(); ++i)
     FindFilesRecursively(files[i], allFiles);
@@ -286,8 +283,8 @@ float GroupImportWindow::GetPropertyGridHeight()
 {
   uint propertyCount = 0;
 
-  // METAREFACTOR - Confirm AllProperties.Size() will have the same results as
-  // the old Properties array Adding 1 to each for the
+  // METAREFACTOR - Confirm AllProperties.Size() will have the same results as the old Properties array
+  // Adding 1 to each for the
   if (mOptions->mImageOptions)
     propertyCount += ZilchVirtualTypeId(mOptions->mImageOptions)->AllProperties.Size() + 1;
   if (mOptions->mGeometryOptions)

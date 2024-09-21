@@ -27,8 +27,7 @@ uint GetClosestTrianglePoint(const Triangle& tri, Vec3Param pointOnTriangle)
 
 ZilchDefineType(SpringSubTool, builder, type)
 {
-  // These options are referred to directly by pointer on the import options
-  // (unsafe for script)
+  // These options are referred to directly by pointer on the import options (unsafe for script)
   type->HandleManager = ZilchManagerId(PointerManager);
   type->Add(new TypeNameDisplay());
   ZeroBindExpanded();
@@ -90,8 +89,7 @@ bool SpringSubTool::RayCastCog(ViewportMouseEvent* e, CogId& hitCog, Vec3& hitPo
     // check where the ray hits this spring system
     Ray ray = viewport->ScreenToWorldRay(e->Position);
     bool hitSystem = RayCastSpringSystem(ray, system, hitPoint, hitIndex);
-    // if we hit the object but not a triangle on the spring system then don't
-    // count it as hit
+    // if we hit the object but not a triangle on the spring system then don't count it as hit
     if (hitSystem == false)
       return false;
   }
@@ -146,8 +144,7 @@ void DragSelectSubTool::OnMouseDragMove(ViewportMouseEvent* e)
   // can't cast a frustum of zero size
   if (upperLeftScreen.x != lowerRightScreen.x && upperLeftScreen.y != lowerRightScreen.y)
   {
-    // call the virtual function of frustum casting to let an individual tool do
-    // something
+    // call the virtual function of frustum casting to let an individual tool do something
     MouseDragFrustum(viewport, upperLeftScreen, lowerRightScreen);
   }
 
@@ -183,12 +180,10 @@ SelectorSpringSubTool::SelectorSpringSubTool()
 
 void SelectorSpringSubTool::OnMouseDragStart(ViewportMouseEvent* e)
 {
-  // do the default drag selection logic (to start drawing the drag select
-  // element)
+  // do the default drag selection logic (to start drawing the drag select element)
   DragSelectSubTool::OnMouseDragStart(e);
 
-  // if shift is down then take all of current selection and add them to the
-  // previous selection
+  // if shift is down then take all of current selection and add them to the previous selection
   Keyboard* keyboard = Keyboard::GetInstance();
   if (keyboard->KeyIsDown(Keys::Shift))
   {
@@ -415,8 +410,7 @@ void SpringSelectorSubTool::CastFrustum(const Frustum& frustum)
     Vec3 p0 = system->mPointMasses[edge.mIndex0].mPosition;
     Vec3 p1 = system->mPointMasses[edge.mIndex1].mPosition;
 
-    // currently don't have a segment vs. frustum check, so just check each
-    // vertex for now
+    // currently don't have a segment vs. frustum check, so just check each vertex for now
     if (Overlap(frustum, p0) && Overlap(frustum, p1))
       mCurrentSelection.Insert(i);
   }
@@ -539,8 +533,7 @@ void RopeCreatorSubTool::OnMouseEndDrag(Event* e)
   // only create the rope if we were connecting to valid objects
   if (startCog != nullptr && endCog != nullptr && startCog != endCog)
   {
-    // create a cog with the rope (and do simple error checking on everything
-    // being valid)
+    // create a cog with the rope (and do simple error checking on everything being valid)
     Space* space = startCog->GetSpace();
     if (space == nullptr)
       return;
@@ -572,12 +565,10 @@ void RopeCreatorSubTool::OnMouseEndDrag(Event* e)
     if (tB != nullptr)
       rope->mLocalPointB = tB->TransformPointInverse(mEndPos);
 
-    // now that we can add the component since we've given it the correct values
-    // to initialize
+    // now that we can add the component since we've given it the correct values to initialize
     cog->AddComponent(rope);
 
-    // make sure to mark the space modified otherwise the level won't think it
-    // needs to save
+    // make sure to mark the space modified otherwise the level won't think it needs to save
     space->MarkModified();
   }
 
@@ -627,8 +618,8 @@ void SetGroupProperty(AnchoringSubTool* anchorTool, ValueType& value, CallbackTy
     setPropertyFn(system, index, value);
   }
 
-  // make sure to mark the space as modified (since we change objects in the
-  // level, without this the level won't know it needs to save)
+  // make sure to mark the space as modified (since we change objects in the level,
+  // without this the level won't know it needs to save)
   system->GetSpace()->MarkModified();
 }
 
@@ -643,8 +634,7 @@ PropertyState GetGroupState(AnchoringSubTool* anchorTool, CallbackType getProper
   HashSet<uint> indices;
   anchorTool->GetSelection(indices);
 
-  // if we have no indices then return the empty property set (which means
-  // conflicted)
+  // if we have no indices then return the empty property set (which means conflicted)
   if (indices.Empty())
     return PropertyState();
 
@@ -852,8 +842,7 @@ void SpringTools::OnToolDraw(Event* e)
 
 void SpringTools::OnLeftMouseDown(ViewportMouseEvent* e)
 {
-  // if we don't already have a spring system selected then fallback to the
-  // selection tool (return false)
+  // if we don't already have a spring system selected then fallback to the selection tool (return false)
   SpringSystem* system = GetSpringSystem();
   if (system == nullptr)
     return;
@@ -862,8 +851,7 @@ void SpringTools::OnLeftMouseDown(ViewportMouseEvent* e)
   // we can try to detect drag logic only while the mouse is down
   mMouseIsDown = true;
   // also keep track of where the mouse started down since we determine
-  // when to start a drag based upon how far we've moved from the initial down
-  // click
+  // when to start a drag based upon how far we've moved from the initial down click
   mMouseDownScreenPosition = e->Position;
 
   // let the sub-tool do whatever it wants for mouse down
@@ -902,8 +890,8 @@ void SpringTools::OnMouseMove(ViewportMouseEvent* e)
       mouseCapture->Capture(e);
       e->Handled = true;
     }
-    // start the manipulation (now StartDrag, MouseMovementDrag, and EndDrag
-    // will be called and MouseUp won't) BeginDrag(e);
+    // start the manipulation (now StartDrag, MouseMovementDrag, and EndDrag will be called and MouseUp won't)
+    // BeginDrag(e);
   }
 }
 
@@ -929,8 +917,7 @@ void SpringTools::OnMouseDragMove(ViewportMouseEvent* e)
 
 void SpringTools::OnMouseEndDrag(Event* e)
 {
-  // since mouse up won't get called we have to make sure to mark the mouse as
-  // not being down
+  // since mouse up won't get called we have to make sure to mark the mouse as not being down
   mMouseIsDown = false;
   mCurrentSubTool->OnMouseEndDrag(e);
 }
@@ -993,8 +980,7 @@ void SpringTools::SetCurrentSubToolType(SpringSubTools::Enum toolType)
   // also tell it what system to operate on
   mCurrentSubTool->mSelectedSystem = mSelectedSystem;
 
-  // test currently to only show a property view if we are using the anchoring
-  // tool
+  // test currently to only show a property view if we are using the anchoring tool
   if (mCurrentSubToolType == SpringSubTools::Anchoring)
   {
     mPropertyView->SetObject(&mProxy, &mPointProxyPropertyInterface);

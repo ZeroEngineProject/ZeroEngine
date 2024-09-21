@@ -287,9 +287,9 @@ void SpriteTileViewWidget::OnMouseHover(MouseEvent* event)
   // do nothing, we don't want the popup
 }
 
-// We do not currently support multi-select actions in the sprite editor and
-// this event handler intercepts and overrides the default tile view widget
-// behavior until the actions support multi-select
+// We do not currently support multi-select actions in the sprite editor and this
+// event handler intercepts and overrides the default tile view widget behavior until
+// the actions support multi-select
 void SpriteTileViewWidget::OnMouseClick(MouseEvent* event)
 {
   if (event->Handled)
@@ -345,8 +345,8 @@ void SpriteFrameTileView::OnMouseScroll(MouseEvent* event)
 
 void SpriteFrameTileView::OnLeftMouseDrag(MouseDragEvent* e)
 {
-  // do nothing, in the sprite editor we do not currently support frame
-  // operations for multiple selected frames
+  // do nothing, in the sprite editor we do not currently support frame operations
+  // for multiple selected frames
 }
 
 // Sprite Data Source
@@ -616,8 +616,7 @@ SpriteSourceEditor::SpriteSourceEditor(Composite* parent) : Composite(parent)
   ConnectThisTo(this, Events::KeyDown, OnKeyDown);
   ConnectThisTo(this, Events::KeyRepeated, OnKeyDown);
 
-  // listen for when a sprite source is removed in case it's the one we're
-  // editing
+  // listen for when a sprite source is removed in case it's the one we're editing
   SpriteSourceManager* spriteManager = SpriteSourceManager::GetInstance();
   ConnectThisTo(spriteManager, Events::ResourceRemoved, OnSpriteSourceRemoved);
 
@@ -759,8 +758,7 @@ void SpriteSourceEditor::RemoveSelectedFrame()
     // select the last index we were on or the end if we removed the last frame
     DataEntry* entry = mSpriteData.GetSpriteFrame(lastSelectedIndex);
     SetTileSelection(mSpriteData.ToIndex(entry));
-    // update the animation preview so we are no longer referencing a freed
-    // pointer (the sprite frame)
+    // update the animation preview so we are no longer referencing a freed pointer (the sprite frame)
     UpdatePreview();
   }
 }
@@ -894,9 +892,8 @@ void SpriteSourceEditor::OnExportAllFrames(Event* event)
 
 void SpriteSourceEditor::OnSpriteSourceRemoved(ResourceEvent* event)
 {
-  // if the sprite source that was removed is the one we're editing then close
-  // this window (set active to false so we don't get 1 extra frame of logic
-  // running)
+  // if the sprite source that was removed is the one we're editing then close this window
+  //(set active to false so we don't get 1 extra frame of logic running)
   if (event->EventResource == mSpriteSource)
   {
     SetActive(false);

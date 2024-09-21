@@ -23,8 +23,7 @@ Vec3 GetObjectTextPosition(Cog* cog)
     //  Aabb aabb = model->GetAabb();
 
     //  // Use it's upper position as the offset
-    //  return aabb.GetCenter() + Vec3(0.0f, aabb.GetHalfExtents().y, 0.0f) +
-    //  OffsetUp;
+    //  return aabb.GetCenter() + Vec3(0.0f, aabb.GetHalfExtents().y, 0.0f) + OffsetUp;
     //}
 
     // Does the object have a collider?
@@ -72,8 +71,7 @@ void DisplayCodeDefinition(CodeDefinition& definition)
   Editor* editor = Z::gEditor;
 
   // If we have a resource but it's not a document, then select it and early out
-  // This allows us to 'Go To Definition' on extension properties such as
-  // Mesh.Cube
+  // This allows us to 'Go To Definition' on extension properties such as Mesh.Cube
   if (resource != nullptr && documentResource == nullptr)
   {
     MetaSelection* selection = editor->GetSelection();
@@ -97,8 +95,7 @@ void DisplayCodeDefinition(CodeDefinition& definition)
 
   if (definitionDocument)
   {
-    // Center the entire function, class, or element into view, then select just
-    // the name
+    // Center the entire function, class, or element into view, then select just the name
     definitionDocument->GoToPosition(definition.ElementLocation.EndPosition);
     definitionDocument->GoToPosition(definition.ElementLocation.StartPosition);
     definitionDocument->GotoAndSelect(definition.NameLocation.StartPosition, definition.NameLocation.EndPosition);

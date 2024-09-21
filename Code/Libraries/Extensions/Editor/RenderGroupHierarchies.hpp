@@ -26,8 +26,7 @@ public:
   bool Move(DataEntry* destinationEntry, DataEntry* movingEntry, InsertMode::Type insertMode) override;
   void EndBatchMove() override;
 
-  // Checks if given RenderGroup has a parent and if that relationship is
-  // established by its child list.
+  // Checks if given RenderGroup has a parent and if that relationship is established by its child list.
   bool InParentsChildList(RenderGroup* renderGroup);
   // Helper to remove entries from a RenderGroup's child list.
   void RemoveFromParent(RenderGroup* renderGroup);

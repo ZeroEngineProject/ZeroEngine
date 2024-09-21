@@ -32,9 +32,8 @@ public:
   Transform* mTransform;
 };
 
-/// Helper class to debug iterating over all triangles within an aabb. Uses the
-/// aabb of the current object to test against the height-map specified by the
-/// given cogpath property.
+/// Helper class to debug iterating over all triangles within an aabb. Uses the aabb of
+/// the current object to test against the height-map specified by the given cogpath property.
 class HeightMapAabbChecker : public Component
 {
 public:

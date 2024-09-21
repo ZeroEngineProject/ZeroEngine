@@ -81,8 +81,7 @@ void EditorMain::OnEngineUpdate(UpdateEvent* event)
   mTimeSinceEscape += event->RealDt;
   Update();
 
-  // We should only ever set the pending flag if we previously tried to create a
-  // single instance
+  // We should only ever set the pending flag if we previously tried to create a single instance
   if (mGamePending)
     PlayGame(PlayGameOptions::SingleInstance);
 }
@@ -162,9 +161,9 @@ void EditorMain::OnKeyDown(KeyboardEvent* keyEvent)
 
     case Keys::Space:
     {
-      // Moved this to using Ctrl+Shift because shift represents anything to do
-      // with selection, Ctrl + Space should bring up auto-complete, and Shift +
-      // Space is really easy to accidentally type.
+      // Moved this to using Ctrl+Shift because shift represents anything to do with selection,
+      // Ctrl + Space should bring up auto-complete, and Shift + Space is really easy
+      // to accidentally type.
       OpenSearchWindow(nullptr);
       break;
     }
@@ -443,14 +442,12 @@ void EditorMain::OnNameActivated(TypeEvent* event)
   // If this is a native location, we need to generate stub code
   if (boundType->NameLocation.IsNative)
   {
-    // Generate stub code for the library (if its already generated, this will
-    // do nothing)
+    // Generate stub code for the library (if its already generated, this will do nothing)
     Library* library = boundType->GetOwningLibrary();
     library->GenerateDefinitionStubCode();
   }
 
-  // Copy out the needed information to the code definition (this looks like all
-  // that's needed)
+  // Copy out the needed information to the code definition (this looks like all that's needed)
   definition.NameLocation = boundType->NameLocation;
   definition.Name = boundType->Name;
   definition.ElementLocation = boundType->Location;
@@ -562,9 +559,8 @@ DocumentEditor* EditorMain::OpenTextString(StringParam name, StringParam text, S
 
   AttachDocumentEditor(document->mName, editor);
   // After the document is attached we need to re-layout the editor so that the
-  // document's size is correctly updated before any further operations. This
-  // was specifically added for text editors as the scintilla will get the wrong
-  // size otherwise.
+  // document's size is correctly updated before any further operations. This was
+  // specifically added for text editors as the scintilla will get the wrong size otherwise.
   this->UpdateTransform();
 
   return editor;
@@ -649,14 +645,12 @@ DocumentEditor* EditorMain::OpenTextFileAuto(StringParam file)
 void EditorMain::OnScriptError(ScriptEvent* event)
 {
   // At the moment we always pause due to a syntax error or exception
-  // If we are live editing, we really want to continue (live edit may need to
-  // be a mode)
+    // If we are live editing, we really want to continue (live edit may need to be a mode)
   SetGamePaused(true);
 
   if (event->Script)
   {
-    // debug exception needs the full file path, so set the filename now to the
-    // full path
+      // debug exception needs the full file path, so set the filename now to the full path
     event->Location.Origin = event->Script->LoadPath;
     DocumentEditor* editor = OpenDocumentResource(event->Script);
     if (!editor)
@@ -664,8 +658,7 @@ void EditorMain::OnScriptError(ScriptEvent* event)
 
     editor->ScriptError(event);
   }
-  // If there was no valid script to display an error message on then just
-  // do-notify the warning message.
+    // If there was no valid script to display an error message on then just do-notify the warning message.
   else
   {
     DoNotifyWarning("Script Error", event->Message);
@@ -759,8 +752,7 @@ void OnExportTypeList(Editor* editor)
   baseTypesToFind.PushBack(ZilchTypeId(ContentComponent));
 
   typedef OrderedHashMap<BoundType*, HashSet<String>> MapType;
-  // Build a map of base type we're searching for to a set of all names that
-  // derive from that type
+  // Build a map of base type we're searching for to a set of all names that derive from that type
   MapType namesPerBaseType;
   for (size_t i = 0; i < baseTypesToFind.Size(); ++i)
   {
@@ -777,8 +769,7 @@ void OnExportTypeList(Editor* editor)
     forRange (BoundType* boundType, library->BoundTypes.Values())
     {
       BoundType* foundBaseType = nullptr;
-      // Check all of our potential base types. If we don't find one then resort
-      // to null (backup)
+      // Check all of our potential base types. If we don't find one then resort to null (backup)
       for (size_t typeIndex = 0; typeIndex < baseTypesToFind.Size(); ++typeIndex)
       {
         BoundType* baseType = baseTypesToFind[typeIndex];
@@ -950,8 +941,7 @@ void CreateEditor(OsWindow* mainWindow, StringParam projectFile, StringParam new
   BindProjectCommands(config, commands);
   BindContentCommands(config, commands);
 
-  // Listen to the resource system if any unhandled exception or syntax error
-  // occurs
+  // Listen to the resource system if any unhandled exception or syntax error occurs
   Connect(Z::gResources, Events::UnhandledException, editorMain, &EditorMain::OnScriptError);
   Connect(Z::gResources, Events::SyntaxError, editorMain, &EditorMain::OnScriptError);
   Connect(Z::gResources, Events::DebuggerPaused, editorMain, &EditorMain::OnDebuggerPaused);
@@ -971,9 +961,8 @@ void CreateEditor(OsWindow* mainWindow, StringParam projectFile, StringParam new
   Connect(manager, Events::Paste, editorMain, &EditorMain::OnCutCopyPaste);
 
   {
-    // Create a persistent Library instance so that the rest of the engine can
-    // manipulate it regardless of how many instances there are existing (See
-    // ContentPackageImporter)
+    // Create a persistent Library instance so that the rest of the engine can manipulate it
+    // regardless of how many instances there are existing (See ContentPackageImporter)
     editorMain->mLibrary = editorMain->CreateLibraryView(true, false);
     editorMain->mLibrary->SetHideOnClose(true);
     editorMain->AddManagedWidget(editorMain->mLibrary, DockArea::Right, true);
@@ -1220,14 +1209,12 @@ void CreateEditor(OsWindow* mainWindow, StringParam projectFile, StringParam new
     bool projectSuccessfullyLoaded = false;
     // Open cached project in user config
     String startingProject = HasOrAdd<EditorConfig>(Z::gEditor->mConfig)->EditingProject;
-    // if the user has requested to create a new project then don't open the
-    // last edited project
+    // if the user has requested to create a new project then don't open the last edited project
     if (newProjectName.Empty() && FileExists(startingProject))
       projectSuccessfullyLoaded = OpenProjectFile(startingProject);
 
-    // If loading failed for some reason (either it didn't exist, the project
-    // was corrupted, etc...) then send out the failure event so we stop
-    // blocking and shell out to the launcher.
+    // If loading failed for some reason (either it didn't exist, the project was corrupted, etc...)
+    // then send out the failure event so we stop blocking and shell out to the launcher.
     if (!projectSuccessfullyLoaded)
     {
       Event event;

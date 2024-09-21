@@ -164,8 +164,7 @@ void AutoCompletePopUp::PartialTextChanged(StringParam partial)
       mSearchFailed = false;
       mList->SetSelectionColor(Vec4(1.0f));
     }
-    // This MUST come after 'SetSelectedItem' above, because in the selection
-    // event we set it to true
+    // This MUST come after 'SetSelectedItem' above, because in the selection event we set it to true
     mManualSelection = false;
   }
 }
@@ -1034,9 +1033,8 @@ bool ScriptEditor::AttemptFinishAutoComplete(UserCompletion::Enum mode)
       return false;
     }
 
-    // If the completion is NOT confident, and the partial text they typed in is
-    // LONGER than the current completion selection, then just let the text they
-    // typed be there
+    // If the completion is NOT confident, and the partial text they typed in is LONGER than the
+    // current completion selection, then just let the text they typed be there
     String& partialText = autoComplete->mSource.mPartialText;
     if (!partialText.Empty() && autoComplete->mConfidence == CompletionConfidence::Unsure)
     {
@@ -1060,8 +1058,7 @@ bool ScriptEditor::AttemptFinishAutoComplete(UserCompletion::Enum mode)
     this->InsertAutoCompleteText(text.c_str(), text.SizeInBytes(), position - mAutoCompleteStart, added);
     // this->RemoveRange(mAutoCompleteStart, position - mAutoCompleteStart);
     // this->InsertText(mAutoCompleteStart, text.c_str());
-    // this->SetSelectionStartAndLength(mAutoCompleteStart + text.Size() +
-    // added, 0);
+    // this->SetSelectionStartAndLength(mAutoCompleteStart + text.Size() + added, 0);
 
     this->HideAutoComplete();
     return true;
@@ -1197,8 +1194,8 @@ void ScriptEditor::Unindent(size_t line)
   this->RemoveRange(linePosition, tabWidth);
 }
 
-// Gets the name of the document we're editing. Often times this can be used in
-// place of a class name for dynamic languages
+// Gets the name of the document we're editing. Often times this can be used in place of a class name for dynamic
+// languages
 String ScriptEditor::GetDocumentDisplayName()
 {
   if (mDocument)
@@ -1301,13 +1298,11 @@ void ScriptEditor::CheckPopups()
     size_t currentLine = GetCurrentLine();
 
     bool hideAutoComplete;
-    // the cursor must be before the auto complete start to hide the box during
-    // perfect confidence
+    // the cursor must be before the auto complete start to hide the box during perfect confidence
     if (autoComplete->mConfidence == CompletionConfidence::Perfect)
       hideAutoComplete = (int)cursorPosition < mAutoCompleteStart;
-    // not perfect completion should be cleared when returning to the start
-    // otherwise starting letter changes won't pop up a properly populated local
-    // auto complete
+    // not perfect completion should be cleared when returning to the start otherwise starting letter
+    // changes won't pop up a properly populated local auto complete
     else
       hideAutoComplete = (int)cursorPosition <= mAutoCompleteStart;
 
@@ -1455,8 +1450,7 @@ void ScriptEditor::OnCharacterAdded(TextEditorEvent* event)
   Rune addedRune = Rune(event->Added);
   if (autoComplete && !IsAlphaNumeric(addedRune) && doNotCompleteCharacters.FindFirstOf(addedRune).Empty())
   {
-    // If we allow confident completion on other symbols, and we have a
-    // confident auto-complete
+    // If we allow confident completion on other symbols, and we have a confident auto-complete
     bool shouldFinish =
         GetConfig()->ConfidentAutoCompleteOnSymbols && autoComplete->mConfidence == CompletionConfidence::Perfect;
 
@@ -1549,8 +1543,7 @@ void ScriptEditor::OnCharacterAdded(TextEditorEvent* event)
         AttemptAddLocalWordCompletions(completions);
         AttemptAddKeywordAndTypeCompletions(completions);
 
-        // Show the auto-complete, but since the character was just added we
-        // need to backup by one
+        // Show the auto-complete, but since the character was just added we need to backup by one
         this->ShowAutoComplete(completions, startPos - curPos, CompletionConfidence::Unsure);
       }
     }

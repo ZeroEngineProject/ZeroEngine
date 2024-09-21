@@ -75,12 +75,10 @@ static const float cToolEpsilon = 0.001f;
 
 // Due to 'sMinimumBoundingSize' in Graphical.cpp, the size epsilon here must
 // be the same magnitude. This is the size considered to be equal to zero.
-// Addtionally: add in the standard tool epsilon to capture float-rounding
-// errors.
+// Addtionally: add in the standard tool epsilon to capture float-rounding errors.
 //
 // This size epsilon will be used for detecting a zero size object. If an object
-// is zero size then it's scale change needs to be special-cased. [ie, cannot
-// scale 0].
+// is zero size then it's scale change needs to be special-cased. [ie, cannot scale 0].
 static const float cSizeEpsilon = cMinimumBoundingSize + cToolEpsilon;
 
 ZilchDefineType(ManipulatorTool, builder, type)
@@ -251,8 +249,7 @@ bool ManipulatorTool::PrioritizeUiWidget(Array<Handle>::range& range)
 bool ManipulatorTool::CheckAlignment(Array<Handle>::range& range, Vec3Param toolNormal)
 {
   // If the tool normal is close enough to z-axis alignment, then
-  // return false so that a WorldSpace rect is computed [ie, no tool
-  // orientation].
+  // return false so that a WorldSpace rect is computed [ie, no tool orientation].
   if (Math::Abs(1 - toolNormal.Dot(Vec3::cZAxis)) < cToolEpsilon)
     return false;
 
@@ -514,9 +511,7 @@ void ManipulatorTool::UpdateRectAndBasis()
   Array<Handle>::range range = metaObjects.All();
   ExtractPrimary(range, primary);
 
-  ErrorIf(primary.IsNull(),
-          "ManipulationTool requires at least one object in the selection to "
-          "have a Trasform");
+  ErrorIf(primary.IsNull(), "ManipulationTool requires at least one object in the selection to have a Trasform");
 
   MetaTransform* metaTransform = primary.StoredType->HasInherited<MetaTransform>();
   MetaTransformInstance transform = metaTransform->GetInstance(primary);
@@ -535,8 +530,7 @@ void ManipulatorTool::UpdateRectAndBasis()
   objects = range;
   if (CheckAlignment(objects, toolNormal) == false)
   {
-    // Object rotations aren't aligned, so compute a world axes aligned
-    // tool-aabb.
+    // Object rotations aren't aligned, so compute a world axes aligned tool-aabb.
     objects = metaObjects.All();
     ComputeWorldToolRect(objects, pp, mIncludeMode == IncludeMode::Children);
     return;
@@ -564,9 +558,7 @@ void ManipulatorTool::UpdateRectAndBasis()
     objects = children.All();
     ExtractPrimary(objects, primary);
 
-    ErrorIf(primary.IsNull(),
-            "ManipulationTool requires at least one object in the selection to "
-            "have a Trasform");
+    ErrorIf(primary.IsNull(), "ManipulationTool requires at least one object in the selection to have a Trasform");
 
     metaTransform = primary.StoredType->HasInherited<MetaTransform>();
     transform = metaTransform->GetInstance(primary);
@@ -578,8 +570,7 @@ void ManipulatorTool::UpdateRectAndBasis()
 
     if (CheckAlignment(objects, toolNormal) == false)
     {
-      // Children rotations aren't aligned, so compute a world axes aligned
-      // tool-aabb.
+      // Children rotations aren't aligned, so compute a world axes aligned tool-aabb.
       objects = children.All();
       ComputeWorldToolRect(objects, pp, false, true);
       return;
@@ -1101,12 +1092,10 @@ void ManipulatorTool::OnMouseDragMove(ViewportMouseEvent* event)
         // Recover from zero size if the start size was zero.
         //
         // NOTE:
-        //   (startSize.x < cSizeEpsilon) == 0 --> 0 * returnedSize + EndSize =
-        //   EndSize (startSize.x < cSizeEpsilon) == 1 --> 1 * returnedSize + ~0
-        //   = returnedSize
-        // target.EndSize.x = (startSize.x <= cSizeEpsilon) * returnedSize.x +
-        // target.EndSize.x; target.EndSize.y = (startSize.y <= cSizeEpsilon) *
-        // returnedSize.y + target.EndSize.y;
+        //   (startSize.x < cSizeEpsilon) == 0 --> 0 * returnedSize + EndSize = EndSize
+        //   (startSize.x < cSizeEpsilon) == 1 --> 1 * returnedSize +      ~0 = returnedSize
+        // target.EndSize.x = (startSize.x <= cSizeEpsilon) * returnedSize.x + target.EndSize.x;
+        // target.EndSize.y = (startSize.y <= cSizeEpsilon) * returnedSize.y + target.EndSize.y;
 
         area->SetSize(target.EndSize);
 
@@ -1222,8 +1211,7 @@ void ManipulatorTool::OnMouseDragEnd(ViewportMouseEvent* event)
 
       ObjectCreated(queue, cog);
 
-      // Single duplicated object proper hierarchy, emulates ctrl+c, ctrl+v
-      // behavior.
+      // Single duplicated object proper hierarchy, emulates ctrl+c, ctrl+v behavior.
       if (mTransformingObjects.Size() == 1 && mDuplicateCorrectIndex != unsigned(-1))
       {
         MoveObjectIndex(queue, cog, mDuplicateCorrectIndex);

@@ -61,8 +61,10 @@ void ConsoleUi::AddLine(StringParam line)
      String text = this->GetLineText(lastLine);
      int length = this->GetLineLength(lastLine);
      this->RemoveRange(GetPositionFromLine(lastLine), length);
-     String dupString = String::Format("(%d) %s", mRepeatCount,
-   mLastLine.c_str()); this->Append(dupString); SetReadOnly(true); return;
+     String dupString = String::Format("(%d) %s", mRepeatCount, mLastLine.c_str());
+     this->Append(dupString);
+     SetReadOnly(true);
+     return;
    }
    */
 

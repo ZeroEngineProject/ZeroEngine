@@ -26,8 +26,7 @@ public:
   GizmoUpdateEvent(Cog* gizmoCog, ViewportMouseEvent* e);
   GizmoUpdateEvent(GizmoUpdateEvent* rhs);
 
-  /// Movement of the mouse (in world space) constrained to the gizmo's
-  /// drag-mode.
+  /// Movement of the mouse (in world space) constrained to the gizmo's drag-mode.
   Vec3 mConstrainedWorldMovement;
 
   /// Difference of the mouse position (in world space, constrained to the

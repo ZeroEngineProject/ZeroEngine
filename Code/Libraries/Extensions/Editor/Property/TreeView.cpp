@@ -63,8 +63,7 @@ ZilchDefineType(TreeViewHeaderAddedEvent, builder, type)
 }
 
 TreeViewHeaderAddedEvent::TreeViewHeaderAddedEvent(uint headerIndex, ColumnHeader* newHeader) :
-    mHeaderIndex(headerIndex),
-    mNewHeader(newHeader)
+    mHeaderIndex(headerIndex), mNewHeader(newHeader)
 {
 }
 
@@ -668,9 +667,8 @@ void TreeRow::Select(bool singleSelect)
   if (singleSelect)
     mTree->mSelection->SelectNone(false);
 
-  // Select this row. To avoid sending multiple selection events, we don't want
-  // to send one here because we're calling `SelectFinal` below which will send
-  // out the event for us.
+  // Select this row. To avoid sending multiple selection events, we don't want to send one here
+  // because we're calling `SelectFinal` below which will send out the event for us.
   mTree->mSelection->Select(mIndex, false);
 
   // Only send the event if this was not already selected.
@@ -1101,8 +1099,7 @@ void TreeRow::OnMetaDrop(MetaDropEvent* event)
   }
   else
   {
-    // Get the insert mode based on where the mouse is relative to the mouse
-    // over row
+    // Get the insert mode based on where the mouse is relative to the mouse over row
     InsertMode::Enum insertMode = GetInsertPosition(entry, event->Position);
 
     // Create a custom placement for the tooltip
@@ -1230,8 +1227,8 @@ void ColumnHeader::UpdateTransform()
     mLabel->SetTranslation(Pixels(0, 0, 0));
     //     Thickness borderThickness = mBackground->GetBorderThickness();
     //
-    //     LayoutResult lr = RemoveThickness(borderThickness, mSize,
-    //     Pixels(0,-1,0)); mLabel->SetTranslation(lr.Translation);
+    //     LayoutResult lr = RemoveThickness(borderThickness, mSize, Pixels(0,-1,0));
+    //     mLabel->SetTranslation(lr.Translation);
     mLabel->SizeToContents();
 
     mLabel->SetColor(Vec4(1, 1, 1, 0.33f));
@@ -1532,8 +1529,7 @@ void TreeView::ShowRow(DataIndex& index)
       {
         row->Expand();
 
-        // Expanding the row will require building rows for each child in the
-        // row
+        // Expanding the row will require building rows for each child in the row
         needRefresh = true;
       }
 
@@ -1662,8 +1658,7 @@ void TreeView::OnKeyRepeated(KeyboardEvent* event)
 
 void TreeView::HandleKeyLogic(KeyboardEvent* event)
 {
-  // Do nothing if the event was already handled (likely from editing a text
-  // box)
+  // Do nothing if the event was already handled (likely from editing a text box)
   if (event->Handled)
     return;
 
@@ -2038,9 +2033,9 @@ void TreeView::UpdateTransform()
 
   uint activeRows = mRows.Size();
 
-  // scrolling past the end of our total list by half of the visible rows
-  // results in a consistent buffer area past the end. Subtracting a flat number
-  // gives varying results for the object view and library view.
+  // scrolling past the end of our total list by half of the visible rows results in
+  // a consistent buffer area past the end. Subtracting a flat number gives varying
+  // results for the object view and library view.
   mScrollAreaRows = activeRows + (visibleRows / 2);
 
   // Update the client size with the size of all the rows

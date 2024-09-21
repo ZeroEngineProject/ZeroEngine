@@ -278,8 +278,8 @@ void ObjectTransformTool::OnSelectionChanged(Event* event)
 
   Cog* primary = selection->GetPrimaryAs<Cog>();
 
-  // if no objects are selected (or if the selected object is the editor
-  // camera), destroy the gizmo
+  // if no objects are selected (or if the selected object is the editor camera),
+  // destroy the gizmo
   if (selection->Empty() || (primary && primary->has(EditorCameraController)))
   {
     DestroyGizmo();
@@ -420,8 +420,7 @@ GizmoDragMode::Enum ObjectTranslateTool::GetDragMode()
   if (gizmo)
     return gizmo->has(TranslateGizmo)->mDragMode;
   else
-    return GizmoDragMode::Line; // Default, even though gizmo doesn't exist?
-                                // Sure.
+    return GizmoDragMode::Line; // Default, even though gizmo doesn't exist? Sure.
 }
 
 bool ObjectTranslateTool::GetSnapping()
@@ -547,8 +546,7 @@ GizmoDragMode::Enum ObjectScaleTool::GetDragMode()
   if (gizmo)
     return gizmo->has(ScaleGizmo)->mDragMode;
   else
-    return GizmoDragMode::Line; // Default, even though gizmo doesn't exist?
-                                // Sure.
+    return GizmoDragMode::Line; // Default, even though gizmo doesn't exist? Sure.
 }
 
 bool ObjectScaleTool::GetSnapping()

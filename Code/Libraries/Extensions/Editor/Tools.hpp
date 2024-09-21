@@ -87,11 +87,9 @@ public:
   typedef bool (*CogSelectFilter)(Cog*, Cog*);
 
   static Cog* WalkRayCast(Cog* current, RaycastResultList& result, CogSelectFilter func);
-  // Checks the object to select against the archetype selection setup if it is
-  // an archetype
+  // Checks the object to select against the archetype selection setup if it is an archetype
   static Cog* ArchetypeSelect(MetaSelection* selection, Cog* toSelect);
-  // Check the object to select in the context of an archetype or hierarchy
-  // depending on the selection options
+  // Check the object to select in the context of an archetype or hierarchy depending on the selection options
   static Cog* SmartSelect(MetaSelection* selection, Cog* toSelect, bool rootSelect, bool archetypeSelect);
 
   void Select(ViewportMouseEvent* e);
@@ -117,8 +115,8 @@ public:
   /// subsequent clicks will select children objects
   bool mRootSelect;
 
-  /// If a parent of a hierarchy is already selected drag select will only
-  /// select all the children of the currently selected parent.
+  /// If a parent of a hierarchy is already selected drag select will only select all the children
+  /// of the currently selected parent.
   bool mSmartGroupSelect;
 
   // stores all of the providers for raycasting and does the actual casting.

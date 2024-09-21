@@ -44,8 +44,7 @@ public:
   void RedoLastRowUI();
 
 public:
-  /// Formatting option to fit each column to the max-row's text size in that
-  /// column.
+  /// Formatting option to fit each column to the max-row's text size in that column.
   Array<bool> mFitToText;
   /// Headers for each column
   Array<ListColumnHeader*> mHeaders;

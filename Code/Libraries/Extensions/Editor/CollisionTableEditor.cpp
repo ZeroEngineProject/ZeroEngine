@@ -185,8 +185,7 @@ CollisionGroupLabel::CollisionGroupLabel(Composite* parent,
 
 void CollisionGroupLabel::UpdateTransform()
 {
-  // Update the text's size first (that's important), then call the base
-  // function
+  // Update the text's size first (that's important), then call the base function
   mText->SetSize(GetSize());
   Composite::UpdateTransform();
 }
@@ -237,8 +236,7 @@ void CollisionGroupLabel::UpdateGroupState(uint flags)
   {
     CollisionGroupInstance* groupInstance = range.Front().second;
 
-    // Make a search filter so we can find the filter between ourself and the
-    // other type
+    // Make a search filter so we can find the filter between ourself and the other type
     CollisionFilter searchFilter(mGroup->mResourceId, groupInstance->mResource->mResourceId);
 
     // If the filter type doesn't exist, create it so we can set the state
@@ -249,8 +247,7 @@ void CollisionGroupLabel::UpdateGroupState(uint flags)
     filter->SetCollisionFlag((CollisionFilterCollisionFlags::Enum)flags);
   }
 
-  // Now make sure that we mark the resource as modified and update the property
-  // grid
+  // Now make sure that we mark the resource as modified and update the property grid
   mTableEditor->MarkModified();
   mTableEditor->RefreshAll();
 }
@@ -266,12 +263,10 @@ void CollisionGroupLabel::OnRemoveGroup(Event* event)
     return;
   }
 
-  // Remove the group from the table and set that we aren't editing any filter
-  // currently
+  // Remove the group from the table and set that we aren't editing any filter currently
   mTableEditor->mTable->UnRegisterGroup(mGroup);
   mTableEditor->SetEditingFilter(nullptr);
-  // Now make sure that we mark the resource as modified and update the property
-  // grid
+  // Now make sure that we mark the resource as modified and update the property grid
   mTableEditor->MarkModified();
   mTableEditor->RefreshAll();
 }
@@ -343,8 +338,7 @@ void CollisionTableMatrix::SetTable(CollisionTableEditor* tableEditor)
   // Now that we know where to start the matrix at we can lay it out
   CreateMatrix(groups, xStart, yStart, size, buffer);
 
-  // Now create a combobox that allows the user to add/register more groups to
-  // this table
+  // Now create a combobox that allows the user to add/register more groups to this table
   Vec3 startPosition(Pixels(150), yStart + groupCount * (size.y + buffer), 0);
   mAddableGroupSelector = new ComboBox(this);
   mAddableGroupSelector->SetTranslation(startPosition);
@@ -352,8 +346,7 @@ void CollisionTableMatrix::SetTable(CollisionTableEditor* tableEditor)
   mAddableGroupSelector->SetListSource(&mAvailableGroups);
   mAddableGroupSelector->SetText("Add existing group");
 
-  // Create a button next to the combo-box that allows users to create a new
-  // collision group
+  // Create a button next to the combo-box that allows users to create a new collision group
   mAddNewGroupButton = new IconButton(this);
   mAddNewGroupButton->SetSize(Pixels(18, 18));
   // Position this button just to the right of the group selector
@@ -363,8 +356,7 @@ void CollisionTableMatrix::SetTable(CollisionTableEditor* tableEditor)
   mAddNewGroupButton->mBorder->SetActive(false);
   ConnectThisTo(mAddNewGroupButton, Events::ButtonPressed, OnAddNewCollisionGroup);
 
-  // Now build the list of what we can add (anything that exists that not
-  // already in the list)
+  // Now build the list of what we can add (anything that exists that not already in the list)
   BuildGroupListing();
 
   // Now store the minimum size we need to display everything. This is used to
@@ -387,8 +379,7 @@ void CollisionTableMatrix::Refresh()
 
 Vec2 CollisionTableMatrix::GetMinSize()
 {
-  // We stored the min size we need to display everything during the last table
-  // set
+  // We stored the min size we need to display everything during the last table set
   return mMinSize;
 }
 
@@ -489,8 +480,7 @@ void CollisionTableMatrix::BuildGroupListing()
   // Now iterate through all of the groups
   for (uint i = 0; i < groupsList.Size(); ++i)
   {
-    // Get the actual resource (this shouldn't fail, but it doesn't hurt to
-    // check)
+    // Get the actual resource (this shouldn't fail, but it doesn't hurt to check)
     CollisionGroup* group = groupManager->FindOrNull(groupsList[i]);
     if (group == nullptr)
       continue;
@@ -555,13 +545,12 @@ CollisionTableEditor::CollisionTableEditor(Composite* parent, CollisionTable* ta
   mScrollArea = new ScrollArea(this);
   mScrollArea->SetSizing(SizeAxis::X, SizePolicy::Flex, 20);
 
-  // create a splitter between the property view (the dummy composite
-  // technically) and the matrix.
+  // create a splitter between the property view (the dummy composite technically) and the matrix.
   Splitter* splitter = new Splitter(this);
 
-  // Create a dummy parent composite for the property view and the editing
-  // label. This is used so that the property grid and its label can be docked
-  // easily and the sash can be used to resize this area as a whole.
+  // Create a dummy parent composite for the property view and the editing label.
+  // This is used so that the property grid and its label can be docked easily
+  // and the sash can be used to resize this area as a whole.
   Composite* rightArea = new Composite(this);
   rightArea->SetLayout(CreateStackLayout());
   rightArea->SetSizing(SizeAxis::X, SizePolicy::Fixed, 200);
@@ -586,9 +575,9 @@ CollisionTableEditor::CollisionTableEditor(Composite* parent, CollisionTable* ta
   // to update the ui and mark the resource as modified
   ConnectThisTo(mPropertyView, Events::PropertyModified, OnPropertyChanged);
 
-  // Listen to the collision group manager for resources being
-  // added/modified/removed. This is done so that the property view can display
-  // correctly when items are added/deleted and when they are renamed.
+  // Listen to the collision group manager for resources being added/modified/removed.
+  // This is done so that the property view can display correctly when items are
+  // added/deleted and when they are renamed.
   CollisionGroupManager* groupManager = CollisionGroupManager::GetInstance();
   ConnectThisTo(groupManager, Events::ResourceAdded, OnCollisionGroupAdded);
   ConnectThisTo(groupManager, Events::ResourceModified, OnCollisionGroupModified);
@@ -688,8 +677,7 @@ void CollisionTableEditor::OnCollisionGroupAdded(ResourceEvent* e)
 void CollisionTableEditor::OnCollisionGroupModified(ResourceEvent* e)
 {
   // Something was modified, most likely a name. Just rebuild everything.
-  // The matrix needs to change because of the new name and the filter might
-  // also need to change.
+  // The matrix needs to change because of the new name and the filter might also need to change.
   RefreshAll();
 }
 

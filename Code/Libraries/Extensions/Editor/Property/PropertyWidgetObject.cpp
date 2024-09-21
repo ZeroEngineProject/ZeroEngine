@@ -197,8 +197,8 @@ void PropertyWidgetObject::OnMouseEnterTitle(MouseEvent* event)
   mMouseOverTitle = true;
 
   if (mProxyIcon)
-    CreateTooltip("This Component type does not exist. Either the type was removed or "
-                  "scripts aren't compiling. This is referred to as being proxied.",
+    CreateTooltip("This Component type does not exist. Either the type was removed or scripts aren't compiling. This "
+                  "is referred to as being proxied.",
                   ToolTipColorScheme::Yellow);
   if (mLocallyRemoved)
     CreateTooltip("This Component has been locally removed from the Archetype", ToolTipColorScheme::Red);
@@ -364,11 +364,10 @@ void PropertyWidgetObject::UpdateTransform()
         mProxyIcon->SetTranslation(Pixels(20, 3, 0));
     }
 
-    // Find the total area left for the component when taking the other icons
-    // into account
+    // Find the total area left for the component when taking the other icons into account
     Vec2 labelArea = mTitleBackground->GetSize();
-    // Magic number is a buffer zone to account for the space between other
-    // elements on the title bar 7 looked the best in terms of spacing on items
+    // Magic number is a buffer zone to account for the space between other elements on the title bar
+    // 7 looked the best in terms of spacing on items
     float otherIconWidth = mExpandNode->GetSize().x + Pixels(7);
     if (mRemoveIcon)
       otherIconWidth += mRemoveIcon->GetSize().x;
@@ -393,10 +392,9 @@ void PropertyWidgetObject::UpdateTransform()
       if (mNode && mNode->mProperty)
         namePos.x = Pixels(14);
 
-      // If centering logic puts our position before the clipped position, use
-      // the min label position this case is hit near the transition point
-      // because so many elements have manually set positions so proper spacing
-      // cannot be programmatically
+      // If centering logic puts our position before the clipped position, use the min label position
+      // this case is hit near the transition point because so many elements have manually set positions
+      // so proper spacing cannot be programmatically
       if (namePos.x < labelPos.x)
         namePos = labelPos;
 
@@ -717,8 +715,7 @@ void PropertyWidgetObject::OpenNode(bool animate)
     }
   }
 
-  // Add the 'Add Object' widget if we're of a composite type, and we have
-  // addable types
+  // Add the 'Add Object' widget if we're of a composite type, and we have addable types
   bool canAdd = false;
 
   if (MetaComposition* composition = mComposition)
@@ -916,9 +913,8 @@ void PropertyWidgetObject::OnRightClick(MouseEvent* event)
     ContextMenuEntry* entry = menu->AddEntry("Restore");
     ConnectThisTo(entry, Events::MenuItemSelected, OnRestore);
 
-    // If the component can't be added disable the menu entry and provide the
-    // reason why which will grey out the restore button and create a tooltip
-    // displaying the reason
+    // If the component can't be added disable the menu entry and provide the reason why
+    // which will grey out the restore button and create a tooltip displaying the reason
     if (!composition->CanAddComponent(parentObject, childType, &addInfo))
       entry->SetEnabled(false, addInfo.Reason);
   }

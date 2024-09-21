@@ -90,9 +90,8 @@ Vec3 ScaleVector(Vec3Param delta, float distance, Vec3Param start);
 ///   but only on non-zero drag-axis(axes) values.
 /// </param>
 /// <param name="WorldGrid">
-///   Will first snap all 3 axes to a world position defined by 'SnapDistance'
-///   increments. Then will continue to snap to world positions, but only on
-///   non-zero drag-axis(axes) values.
+///   Will first snap all 3 axes to a world position defined by 'SnapDistance' increments.
+///   Then will continue to snap to world positions, but only on non-zero drag-axis(axes) values.
 /// </param>
 DeclareEnum3(GizmoSnapMode, Relative, WorldAxes, WorldGrid);
 
@@ -229,8 +228,7 @@ public:
   bool mFilledHeads;
   /// Length of the arrow shaft.
   float mLength;
-  /// Radius around the arrow shaft within which the Gizmo receives mouse
-  /// events.
+  /// Radius around the arrow shaft within which the Gizmo receives mouse events.
   float mSelectRadius;
   /// Arrow head size.
   float mHeadSize;
@@ -240,8 +238,7 @@ public:
   ArrowHeadType::Enum mHeadType;
 };
 
-/// Notification about various rotation parameters on the most recent RingGizmo
-/// modification.
+/// Notification about various rotation parameters on the most recent RingGizmo modification.
 class RingGizmoEvent : public GizmoUpdateEvent
 {
 public:
@@ -382,8 +379,7 @@ public:
   /// As the gizmo is being dragged, we want to update all objects.
   void OnGizmoModified(GizmoUpdateEvent* e);
 
-  /// Generate a new scale based on drag-type [ie: viewplane, gizmo-basis-plane,
-  /// gizmo-axis].
+  /// Generate a new scale based on drag-type [ie: viewplane, gizmo-basis-plane, gizmo-axis].
   Vec3 ScaleFromDrag(GizmoBasis::Enum basis,
                      GizmoDrag* gizmoDrag,
                      float distance,

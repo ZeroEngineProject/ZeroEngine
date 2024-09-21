@@ -84,8 +84,8 @@ public:
 
   Space* GetSpaceFromSelection(MetaSelection* selection);
 
-  virtual void GizmoCreated(Cog* gizmo){};
-  virtual void CopyPropertiesToGizmo(){};
+  virtual void GizmoCreated(Cog* gizmo) {};
+  virtual void CopyPropertiesToGizmo() {};
 
 public:
   bool mChangeFromUs;
@@ -106,8 +106,7 @@ public:
 ///     <shortcut> Ctrl + Drag </shortcut>
 ///     <description>
 ///       Duplicate all objects in the current selection.  Then, set the
-///       duplicates to be the current selection and target of the
-///       TranslateTool.
+///       duplicates to be the current selection and target of the TranslateTool.
 ///     </description>
 ///   </command>
 ///   <command name = "SnapToSurface">
@@ -216,12 +215,10 @@ public:
 public:
   GizmoSnapMode::Enum mSnapMode;
   /// With multiple objects selected, allow their spacial-offest to be affected
-  /// about the chosen pivot point, while being locally scaled with
-  /// 'mAffectScale'.
+  /// about the chosen pivot point, while being locally scaled with 'mAffectScale'.
   bool mAffectTranslation;
   /// With multiple objects selected, allow their local scale to be affected
-  /// while being spacially-offset (with 'AffectTranslation') about the chosen
-  /// pivot point.
+  /// while being spacially-offset (with 'AffectTranslation') about the chosen pivot point.
   bool mAffectScale;
 };
 
@@ -266,12 +263,10 @@ public:
 
 public:
   /// With multiple objects selected, allow their spacial-offest to be rotated
-  /// about the chosen pivot point, while being locally rotated with
-  /// 'mAffectRotation'.
+  /// about the chosen pivot point, while being locally rotated with 'mAffectRotation'.
   bool mAffectTranslation;
   /// With multiple objects selected, allow their local rotation to be affected
-  /// while being spacially-rotated (with 'AffectTranslation') about the chosen
-  /// pivot point.
+  /// while being spacially-rotated (with 'AffectTranslation') about the chosen pivot point.
   bool mAffectRotation;
 };
 

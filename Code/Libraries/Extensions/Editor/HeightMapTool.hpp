@@ -38,8 +38,7 @@ public:
   {
   }
 
-  /// Draws the tool (has its own implementation to draw the cells that will be
-  /// affected)
+  /// Draws the tool (has its own implementation to draw the cells that will be affected)
   virtual void Draw(HeightMap* map);
 
 public:
@@ -92,12 +91,10 @@ public:
   /// The radius of the tool
   float mRadius;
 
-  /// The feather radius (controls how soft the edges are in addition to the
-  /// main radius)
+  /// The feather radius (controls how soft the edges are in addition to the main radius)
   float mFeatherRadius;
 
-  /// Stores required information to perform an undo or redo of any manipulation
-  /// tool operation.
+  /// Stores required information to perform an undo or redo of any manipulation tool operation.
   HeightMapUndoRedo* mOperation;
 
   /// Stores required information to record brush strokes for undo/redo
@@ -154,8 +151,7 @@ public:
   /// The amount of strength used in smoothing or sharpening
   float mStrength;
 
-  /// How many uniform samples we make when smoothing (high values will go
-  /// slow!)
+  /// How many uniform samples we make when smoothing (high values will go slow!)
   int mUniformSamples;
 
   /// How many random samples we make when smoothing
@@ -188,16 +184,13 @@ public:
   bool LeftMouseDown(HeightMap* map, ViewportMouseEvent* e) override;
 
 public:
-  /// The amount of strength used to flatten [0, 1] where 0 is no strength, 1 is
-  /// full strength
+  /// The amount of strength used to flatten [0, 1] where 0 is no strength, 1 is full strength
   float mStrength;
 
-  /// The height that we want to flatten to (usually sampled and not set
-  /// directly)
+  /// The height that we want to flatten to (usually sampled and not set directly)
   float mHeight;
 
-  /// The plane normal that we flatten the height map to (straight up means
-  /// flat)
+  /// The plane normal that we flatten the height map to (straight up means flat)
   Vec3 mSlopeNormal;
 
   /// Flattens the height map to the point where clicked
@@ -236,8 +229,7 @@ public:
   /// The large the perlin noise is allowed to make the terrain
   float mPerlinAmplitude;
 
-  /// Stores required information to perform an undo or redo of a create or
-  /// destroy operation.
+  /// Stores required information to perform an undo or redo of a create or destroy operation.
   HeightPatchUndoRedo* mOperation;
 };
 
@@ -294,54 +286,53 @@ public:
 /// Declaration debug index type
 DeclareEnum2(CellIndexType, Local, Absoulte)
 
-/// <Commands>
-///   <command name = "CreateDestroy">
-///     <shortcut> Shift + 1 </shortcut>
-///     <description>
-///       Set the HeightMapTool's sub-tool to the CreateDestroy tool.
-///     </description>
-///   </command>
-///   <command name = "RaiseLower">
-///     <shortcut> Shift + 2 </shortcut>
-///     <description>
-///       Set the HeightMapTool's sub-tool to the RaiseLower tool.
-///     </description>
-///   </command>
-///   <command name = "SmoothSharpen">
-///     <shortcut> Shift + 3 </shortcut>
-///     <description>
-///       Set the HeightMapTool's sub-tool to the SmoothSharpen tool.
-///     </description>
-///   </command>
-///   <command name = "Flatten">
-///     <shortcut> Shift + 4 </shortcut>
-///     <description>
-///       Set the HeightMapTool's sub-tool to the Flatten tool.
-///     </description>
-///   </command>
-///   <command name = "WeightPainter">
-///     <shortcut> Shift + 5 </shortcut>
-///     <description>
-///       Set the HeightMapTool's sub-tool to the WeightPainter tool.
-///     </description>
-///   </command>
-///   <command name = "ResizeBrush">
-///     <shortcut> Shift + MouseScroll </shortcut>
-///     <description>
-///       Resize the brush size up or down depending on the scroll
-///       direction.
-///     </description>
-///   </command>
-///   <command name = "SubToolCommands">
-///     <shortcut> Shift + LeftClick/LeftDrag </shortcut>
-///     <description>
-///       CreateDestroy: Destroy patches instead of creating them.
-///       RaiseLower: Lower height map with the brush instead of raising it.
-///       SmoothSharpen: Sharpen height map with the brush instead of smoothing it.
-///     </description>
-///   </command>
-/// </Commands>
-class HeightMapTool : public Component
+    /// <Commands>
+    ///   <command name = "CreateDestroy">
+    ///     <shortcut> Shift + 1 </shortcut>
+    ///     <description>
+    ///       Set the HeightMapTool's sub-tool to the CreateDestroy tool.
+    ///     </description>
+    ///   </command>
+    ///   <command name = "RaiseLower">
+    ///     <shortcut> Shift + 2 </shortcut>
+    ///     <description>
+    ///       Set the HeightMapTool's sub-tool to the RaiseLower tool.
+    ///     </description>
+    ///   </command>
+    ///   <command name = "SmoothSharpen">
+    ///     <shortcut> Shift + 3 </shortcut>
+    ///     <description>
+    ///       Set the HeightMapTool's sub-tool to the SmoothSharpen tool.
+    ///     </description>
+    ///   </command>
+    ///   <command name = "Flatten">
+    ///     <shortcut> Shift + 4 </shortcut>
+    ///     <description>
+    ///       Set the HeightMapTool's sub-tool to the Flatten tool.
+    ///     </description>
+    ///   </command>
+    ///   <command name = "WeightPainter">
+    ///     <shortcut> Shift + 5 </shortcut>
+    ///     <description>
+    ///       Set the HeightMapTool's sub-tool to the WeightPainter tool.
+    ///     </description>
+    ///   </command>
+    ///   <command name = "ResizeBrush">
+    ///     <shortcut> Shift + MouseScroll </shortcut>
+    ///     <description>
+    ///       Resize the brush size up or down depending on the scroll direction.
+    ///     </description>
+    ///   </command>
+    ///   <command name = "SubToolCommands">
+    ///     <shortcut> Shift + LeftClick/LeftDrag </shortcut>
+    ///     <description>
+    ///       CreateDestroy:\Destroy patches instead of creating them.\ \
+///       RaiseLower:\Lower height map with the brush instead of raising it.\ \
+///       SmoothSharpen:\Sharpen height map with the brush instead of smoothing it.
+    ///     </description>
+    ///   </command>
+    /// </Commands>
+    class HeightMapTool : public Component
 {
 public:
   /// Meta Initialization.

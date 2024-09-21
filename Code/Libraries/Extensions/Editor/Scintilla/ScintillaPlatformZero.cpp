@@ -185,8 +185,7 @@ void SurfaceImpl::AlphaRectangle(PRectangle rc,
   {
     mDrawType = Quads;
     Zero::Texture* texture = Zero::TextureManager::FindOrNull("White");
-    mViewNode = &mWidget->AddRenderNodes(*mViewBlock, *mFrameBlock, mClipRect,
-  texture);
+    mViewNode = &mWidget->AddRenderNodes(*mViewBlock, *mFrameBlock, mClipRect, texture);
   }
   */
 
@@ -367,9 +366,9 @@ void SurfaceImpl::SetDBCSMode(int codePage)
   // Do nothing
 }
 
-// 'cornerEmulation' is either 0 or 1 based on 'cornerSize' passed from
-// Scintilla to the 'AlphaRectangle' method defined in this file.  Internally,
-// Scintilla keeps track of an indicator style for each indicator ID. So, if:
+// 'cornerEmulation' is either 0 or 1 based on 'cornerSize' passed from Scintilla
+// to the 'AlphaRectangle' method defined in this file.  Internally, Scintilla
+// keeps track of an indicator style for each indicator ID. So, if:
 //
 // style == INDIC_ROUNDBOX [ie, Zero's IndicatorStyle::Roundbox]
 //
@@ -388,13 +387,12 @@ void SurfaceImpl::RoundedLineRectHelper(PRectangle rc,
   {
     mDrawType = Lines;
     Zero::Texture* texture = Zero::TextureManager::FindOrNull("White");
-    mViewNode = &mWidget->AddRenderNodes(*mViewBlock, *mFrameBlock, mClipRect,
-  texture); mViewNode->mStreamedVertexType = Zero::PrimitiveType::Lines;
+    mViewNode = &mWidget->AddRenderNodes(*mViewBlock, *mFrameBlock, mClipRect, texture);
+    mViewNode->mStreamedVertexType = Zero::PrimitiveType::Lines;
   }
   */
 
-  // Prevent the bottom line of the outline rect from getting clipped by
-  // Scintilla.
+  // Prevent the bottom line of the outline rect from getting clipped by Scintilla.
   const int cScintillaCorrection = 1;
 
   Vec3 pos0 = Vec3(rc.left, rc.top, 0);
@@ -614,8 +612,7 @@ void Window::SetTitle(const char* s)
 {
 }
 
-// Returns rectangle of monitor pt is on, both rect and pt are in Window's
-// coordinates
+// Returns rectangle of monitor pt is on, both rect and pt are in Window's coordinates
 PRectangle Window::GetMonitorRect(Point pt)
 {
   Zero::Widget* widget = (Zero::Widget*)wid;

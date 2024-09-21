@@ -53,22 +53,22 @@ public:
   ZilchDeclareType(TileEditor2DSubTool, TypeCopyMode::ReferenceType);
 
   TileEditor2DSubTool(TileEditor2D* owner);
-  virtual ~TileEditor2DSubTool(){};
+  virtual ~TileEditor2DSubTool() {};
 
   void StartPrimaryAction(TileMap* map);
   void StartSecondaryAction(TileMap* map);
   void ContinueAction(TileMap* map);
   void EndAction(TileMap* map);
 
-  virtual void Draw(TileMap* map){};
+  virtual void Draw(TileMap* map) {};
 
-  virtual void PrimaryStart(TileMap* map){};
-  virtual void PrimaryContinue(TileMap* map){};
-  virtual void PrimaryEnd(TileMap* map){};
+  virtual void PrimaryStart(TileMap* map) {};
+  virtual void PrimaryContinue(TileMap* map) {};
+  virtual void PrimaryEnd(TileMap* map) {};
 
-  virtual void SecondaryStart(TileMap* map){};
-  virtual void SecondaryContinue(TileMap* map){};
-  virtual void SecondaryEnd(TileMap* map){};
+  virtual void SecondaryStart(TileMap* map) {};
+  virtual void SecondaryContinue(TileMap* map) {};
+  virtual void SecondaryEnd(TileMap* map) {};
 
   bool HasChange(TileMapChange& change);
   void CommitOperation(TileMap* map);
@@ -152,16 +152,15 @@ private:
 ///     <shortcut> RightMouse + Drag </shortcut>
 ///     <description>
 ///       DrawTool:\Erase tiles using the current brush size.\ \
-///       SelectionTool:\Commit the current tile-selection to be used as the new
-///       brush.
+///       SelectionTool:\Commit the current tile-selection to be used as the new brush.
 ///     </description>
 ///   </command>
 ///   <command name = "SelectTilePaletteBrush">
 ///     <shortcut> Esc </shortcut>
 ///     <description>
-///       Return the brush's tile-selection to the current TilePalette
-///       selection, or if there isn't one - return the brush to the default,
-///       single-tile TilePalette setup.
+///       Return the brush's tile-selection to the current TilePalette selection,
+///       or if there isn't one - return the brush to the default, single-tile
+///       TilePalette setup.
 ///     </description>
 ///   </command>
 ///   <command name = "TilePaletteSelection">
@@ -184,8 +183,7 @@ private:
 ///       Paste a copy of the current tile-selection at the click-point
 ///       in the TilePalette view.\ \
 ///       Note:\  - Current tile-selection may be in either the TilePalette view
-///       or in any other view containing tiles recognized by the TileEditor2D
-///       tool.
+///       or in any other view containing tiles recognized by the TileEditor2D tool.
 ///     </description>
 ///   </command>
 ///   <command name = "TilePaletteZoom">

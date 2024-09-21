@@ -155,9 +155,8 @@ void LinearizeTrack(TrackNode* track)
     KeyFrame* next = (i < count - 1) ? keyFrames[i + 1].second : nullptr;
 
     // using namespace CurveEditing;
-    // current->mEditorFlags |= (CurveEditorFlags::LinearIn |
-    // CurveEditorFlags::LinearOut); current->mEditorFlags |=
-    // CurveEditorFlags::TangentsSplit;
+    // current->mEditorFlags |= (CurveEditorFlags::LinearIn | CurveEditorFlags::LinearOut);
+    // current->mEditorFlags |= CurveEditorFlags::TangentsSplit;
 
     // Can only do this for float types
     if (current->GetValue().Is<float>())
