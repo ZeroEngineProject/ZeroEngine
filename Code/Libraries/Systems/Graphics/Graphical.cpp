@@ -247,8 +247,7 @@ void Graphical::SetMaterial(Material* material)
   {
     mMaterial = material;
 
-    // Some shader inputs could be using the material to auto-find which
-    // fragment to use
+    // Some shader inputs could be using the material to auto-find which fragment to use
     RebuildComponentShaderInputs();
   }
 }
@@ -373,8 +372,7 @@ void Graphical::AddComponentShaderInputs(Component* component)
     if (inputName.Empty())
       inputName = metaProperty->Name;
 
-    // Look on material for a fragment with matching input if attribute did not
-    // specify
+    // Look on material for a fragment with matching input if attribute did not specify
     if (fragmentName.Empty())
     {
       forRange (MaterialBlock* materialBlock, mMaterial->mMaterialBlocks.All())

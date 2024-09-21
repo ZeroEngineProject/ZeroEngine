@@ -33,8 +33,7 @@ public:
   // Below members are set by AtlasManager.
   // Texture atlas where sprite images are placed.
   HandleOf<Atlas> mAtlas;
-  // UV's in texture where image of all frames was placed, including pixel
-  // padding.
+  // UV's in texture where image of all frames was placed, including pixel padding.
   UvRect mAtlasUvRect;
   // UV's of sprite frame 0, the top left frame.
   UvRect mBaseFrameUv;

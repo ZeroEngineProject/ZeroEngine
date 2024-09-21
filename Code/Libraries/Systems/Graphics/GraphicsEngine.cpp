@@ -72,8 +72,7 @@ cstr GraphicsEngine::GetName()
 
 void GraphicsEngine::Initialize(SystemInitializer& initializer)
 {
-  // This needs to be initialized only once and multiple shader generators might
-  // be created
+  // This needs to be initialized only once and multiple shader generators might be created
   ShaderSettingsLibrary::InitializeInstance();
 
   // Need to get translator or mode from Renderer
@@ -294,8 +293,7 @@ void GraphicsEngine::Update(bool debugger)
   mRenderQueuesBack->Clear();
   mRenderQueuesBack->mSkinningBufferVersion = mFrameCounter;
 
-  // UpdateRenderGroups can happen at the beginning of update if broadphase is
-  // done within this update function
+  // UpdateRenderGroups can happen at the beginning of update if broadphase is done within this update function
   UpdateRenderGroups();
 
   {
@@ -321,8 +319,7 @@ void GraphicsEngine::Update(bool debugger)
 
   {
     ProfileScopeTree("UiRenderUpdate", "Graphics", Color::DarkOliveGreen);
-    // add ui render task range after sorting so that everything else renders
-    // before it
+    // add ui render task range after sorting so that everything else renders before it
     Event event;
     DispatchEvent("UiRenderUpdate", &event);
   }
@@ -381,20 +378,16 @@ void GraphicsEngine::Update(bool debugger)
   // Release textures that were not reused this frame
   mRenderTargetManager.ClearUnusedTextures();
 
-  // when new RenderGroups are added or removed, it could happen after
-  // broadphase used them to organize visible objects but before that data is
-  // used to render, and the renderer needs RenderGroup values to match still
-  // so, any management or changes to RenderGroup id's should happen here after
-  // the whole frame and rendering are completed if done at end of update, add
-  // and remove events need to defer their operations until here
+  // when new RenderGroups are added or removed, it could happen after broadphase used them to organize visible objects
+  // but before that data is used to render, and the renderer needs RenderGroup values to match still
+  // so, any management or changes to RenderGroup id's should happen here after the whole frame and rendering are
+  // completed if done at end of update, add and remove events need to defer their operations until here
   // UpdateRenderGroups();
 
   if (gDebugDraw->MaxCountExceeded())
     DoNotifyWarning("Max debug object count exceeded.",
-                    "To edit the max count, open the Select menu and choose "
-                    "'Select Project'. "
-                    "Expand the component 'DebugSettings' (or add it) and "
-                    "modify 'MaxDebugObjects'.");
+                    "To edit the max count, open the Select menu and choose 'Select Project'. "
+                    "Expand the component 'DebugSettings' (or add it) and modify 'MaxDebugObjects'.");
 
   gDebugDraw->ClearObjects();
 
@@ -511,10 +504,11 @@ void GraphicsEngine::UpdateProgress(ProgressEvent* event)
   {
     static const size_t cProgressUpdateInterval = 10;
     static size_t sProgressUpdateFrame = 0;
-	if (sProgressUpdateFrame == 0) {
+    if (sProgressUpdateFrame == 0)
+    {
       InitialLoadingCompleted();
     }
-	
+
     if (sProgressUpdateFrame % cProgressUpdateInterval == 0)
     {
       RendererThreadMain(mRendererJobQueue);
@@ -637,15 +631,13 @@ void GraphicsEngine::CheckTextureYInvert(Texture* texture)
 {
   ProfileScopeFunctionArgs(texture->Name);
   // Check for Y-invert
-  // Some Api's expect byte 0 to be the bottom left pixel, in Zero byte 0 is the
-  // top left Have to Y-invert because sampling from a rendered target must also
-  // work correctly Uv coordinate correction from Zero to Api is done by the
-  // shader translation of texture samples
+  // Some Api's expect byte 0 to be the bottom left pixel, in Zero byte 0 is the top left
+  // Have to Y-invert because sampling from a rendered target must also work correctly
+  // Uv coordinate correction from Zero to Api is done by the shader translation of texture samples
   if (!Z::gRenderer->YInvertImageData(texture->mType))
     return;
 
-  // All incoming image data from Zero should be a color format and/or block
-  // compressed
+  // All incoming image data from Zero should be a color format and/or block compressed
   if (texture->mImageData && IsColorFormat(texture->mFormat))
   {
     if (texture->mCompression == TextureCompression::None)
@@ -959,8 +951,8 @@ void GraphicsEngine::OnZilchFragmentRemoved(ResourceEvent* event)
   // Only need removed fragments if going to send compile in removed resources
   mRemovedFragmentFiles.PushBack(event->EventResource->Name);
   // Cannot process modified files that were removed
-  // Added/modified methods do not erase from removed list because removed has
-  // to operate on the previous fragments library
+  // Added/modified methods do not erase from removed list because removed has to operate on the previous fragments
+  // library
   mModifiedFragmentFiles.EraseValue(event->EventResource->Name);
 }
 
@@ -1044,8 +1036,7 @@ void GraphicsEngine::OnResourcesAdded(ResourceEvent* event)
 // should this invoke a compile if there are removed fragment files?
 void GraphicsEngine::OnResourcesRemoved(ResourceEvent* event)
 {
-  // Can't rebuild meta on shutdown because content system is destroyed by this
-  // point
+  // Can't rebuild meta on shutdown because content system is destroyed by this point
   // if (mEngineShutdown || mRemovedFragmentFiles.Empty())
   //  return;
 
@@ -1117,8 +1108,7 @@ void GraphicsEngine::FindShadersToCompile(Array<String>& coreVertexRange,
   uint i1 = (i0 + 1) % 3;
   uint i2 = (i0 + 2) % 3;
 
-  // Fragment order from iteration order for indexing fragment names,
-  // {CoreVertex, Composite, RenderPass}
+  // Fragment order from iteration order for indexing fragment names, {CoreVertex, Composite, RenderPass}
   uint f0 = (index + index) % 3;
   uint f1 = (f0 + 1) % 3;
   uint f2 = (f0 + 2) % 3;
@@ -1159,8 +1149,7 @@ void GraphicsEngine::FindShadersToRemove(Array<String>& elementRange, ShaderSetM
 {
   forRange (String name, elementRange.All())
   {
-    // Composites can not be in the map if the composite exists because one of
-    // its fragments didn't compile
+    // Composites can not be in the map if the composite exists because one of its fragments didn't compile
     if (testMap.ContainsKey(name) == false)
       continue;
 
@@ -1281,8 +1270,7 @@ void GraphicsEngine::ForceCompileAllShaders()
   bool compiled = mShaderGenerator->BuildShaders(allShaders, mUniqueComposites, addShadersJob->mShaders);
   ErrorIf(!compiled, "Shaders did not compile after composition.");
 
-  // Blocking task is ended in the return exectute of the job,
-  // mForceCompileBatchCount cannot be 0 here.
+  // Blocking task is ended in the return exectute of the job, mForceCompileBatchCount cannot be 0 here.
   addShadersJob->mForceCompileBatchCount = 10;
   AddRendererJob(addShadersJob);
 }
@@ -1392,8 +1380,7 @@ void GraphicsEngine::OnScriptsCompiledPrePatch(ZilchCompileEvent* event)
         String resourceName = fragmentUserData.mResourceName;
         if (mModifiedFragmentFiles.Contains(resourceName))
         {
-          // Check for fragments that used to have a special attribute and add
-          // them to the appropriate removed list
+          // Check for fragments that used to have a special attribute and add them to the appropriate removed list
           ZilchFragmentType::Enum currentFragmentType =
               currentFragmentTypes.FindValue(shaderTypeMeta->mZilchName, ZilchFragmentType::Fragment);
           ZilchFragmentType::Enum pendingFragmentType =
@@ -1404,9 +1391,8 @@ void GraphicsEngine::OnScriptsCompiledPrePatch(ZilchCompileEvent* event)
 
           ModifiedFragment(pendingFragmentType, shaderTypeMeta->mZilchName);
 
-          // If current type is fragment and pending type isn't then any
-          // affected composites are just going to get removed and don't need to
-          // be checked
+          // If current type is fragment and pending type isn't then any affected composites
+          // are just going to get removed and don't need to be checked
           if (pendingFragmentType == ZilchFragmentType::Fragment)
           {
             forRange (UniqueComposite& composite, mUniqueComposites.Values())
@@ -1428,15 +1414,13 @@ void GraphicsEngine::OnScriptsCompiledPrePatch(ZilchCompileEvent* event)
             ZilchFragmentType::Enum dependentType =
                 pendingFragmentTypes.FindValue(dependentTypeMeta->mZilchName, ZilchFragmentType::Fragment);
 
-            // Do not need to check composites unless it's a regular fragment
-            // type Composites will otherwise be handled by the other fragment
-            // types being modified
+            // Do not need to check composites unless it's a regular fragment type
+            // Composites will otherwise be handled by the other fragment types being modified
             if (dependentType == ZilchFragmentType::Fragment)
             {
               // Check all composites
               // Post patch still needs to run composite update on materials,
-              // but if a composite results in being removed it will correctly
-              // be removed from this list
+              // but if a composite results in being removed it will correctly be removed from this list
               forRange (UniqueComposite& composite, mUniqueComposites.Values())
               {
                 if (composite.mFragmentNameMap.Contains(dependentTypeMeta->mZilchName))
@@ -1464,8 +1448,7 @@ void GraphicsEngine::OnScriptsCompiledCommit(ZilchCompileEvent* event)
   // Update the old libraries with the new ones
   mNewLibrariesCommitted = mShaderGenerator->Commit(event);
 
-  // After fragment libraries are committed component shader inputs can be
-  // processed
+  // After fragment libraries are committed component shader inputs can be processed
   forRange (ResourceLibrary* modifiedLibrary, event->mModifiedLibraries.All())
   {
     if (modifiedLibrary->mSwapScript.HasPendingLibrary())
@@ -1515,8 +1498,7 @@ void GraphicsEngine::OnScriptCompilationFailed(Event* event)
   }
   mAddedMaterialsForComposites.Clear();
 
-  // If scripts failed, we want to update any material modifications to use the
-  // old fragment library
+  // If scripts failed, we want to update any material modifications to use the old fragment library
   if (!mModifiedComposites.Empty() || !mRemovedComposites.Empty())
     CompileShaders();
 }

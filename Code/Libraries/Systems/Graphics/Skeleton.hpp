@@ -28,8 +28,7 @@ public:
   Skeleton* mSkeleton;
 };
 
-/// Used by Skeleton to identify child objects whose transforms can be used for
-/// mesh skinning.
+/// Used by Skeleton to identify child objects whose transforms can be used for mesh skinning.
 class Bone : public Component
 {
 public:
@@ -58,8 +57,7 @@ public:
   Array<Cog*> mChildren;
 };
 
-/// Stores a map of Bones so that SkinnedModels can collect transform matrices
-/// for mesh skinning.
+/// Stores a map of Bones so that SkinnedModels can collect transform matrices for mesh skinning.
 class Skeleton : public Component
 {
 public:

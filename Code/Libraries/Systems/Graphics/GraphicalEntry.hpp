@@ -31,8 +31,7 @@ public:
 // to render Graphicals. This class must stay very small so that sorting is as
 // fast as possible. The final set of entries is used to populate data from the
 // Graphicals in already sorted order.
-/// Represents a Graphical that has been identified as visible from broadphase.
-/// Used for sorting.
+/// Represents a Graphical that has been identified as visible from broadphase. Used for sorting.
 class GraphicalEntry
 {
 public:

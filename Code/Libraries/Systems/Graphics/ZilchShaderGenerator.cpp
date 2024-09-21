@@ -182,7 +182,7 @@ void ZilchShaderGenerator::InitializeSpirV()
   mFrontEndTranslator->SetSettings(mSpirVSettings);
   mFrontEndTranslator->Setup();
   // Create the core library and parse it
-  
+
   ZilchShaderIRCore& coreLibrary = ZilchShaderIRCore::GetInstance();
   coreLibrary.Parse(mFrontEndTranslator);
   mCoreLibrary = coreLibrary.GetLibrary();
@@ -226,8 +226,7 @@ LibraryRef BuildWrapperLibrary(ZilchShaderIRLibraryRef fragmentsLibrary)
     bool mIsTexture;
   };
 
-  // The Zero editor attributes to check for valid crossover attributes from the
-  // shader types.
+  // The Zero editor attributes to check for valid crossover attributes from the shader types.
   AttributeExtensions* zeroAttributes = AttributeExtensions::GetInstance();
 
   String wrapperLibraryName = BuildString(fragmentsLibrary->mZilchLibrary->Name, "Wrapper");
@@ -247,8 +246,7 @@ LibraryRef BuildWrapperLibrary(ZilchShaderIRLibraryRef fragmentsLibrary)
 
       Array<ShaderPropertyInfo> shaderProperties;
 
-      // Calculate the fragment type's size and get info needed to bind
-      // properties.
+      // Calculate the fragment type's size and get info needed to bind properties.
       forRange (ShaderIRFieldMeta* field, shaderTypeMeta->mFields.All())
       {
         if (field->mZilchType->Name.Contains("FixedArray"))
@@ -282,8 +280,7 @@ LibraryRef BuildWrapperLibrary(ZilchShaderIRLibraryRef fragmentsLibrary)
               shaderProperty.mIsTexture = false;
             }
 
-            // Compute pad bytes needed for placing this data member on correct
-            // alignment.
+            // Compute pad bytes needed for placing this data member on correct alignment.
             size_t pad = (byteAlignment - fragmentSize % byteAlignment) % byteAlignment;
             fragmentSize += pad;
 
@@ -305,8 +302,7 @@ LibraryRef BuildWrapperLibrary(ZilchShaderIRLibraryRef fragmentsLibrary)
       BoundType* boundType =
           builder.AddBoundType(shaderTypeMeta->mZilchName, TypeCopyMode::ReferenceType, fragmentSize);
       boundType->BaseType = ZilchTypeId(MaterialBlock);
-      // Associate this type to the ZilchFragment resource containing the shader
-      // type.
+      // Associate this type to the ZilchFragment resource containing the shader type.
       boundType->Add(new MetaResource((Resource*)shaderTypeMeta->mZilchType->Location.CodeUserData));
 
       builder.AddBoundDefaultConstructor(boundType, FragmentConstructor);
@@ -350,13 +346,11 @@ LibraryRef BuildWrapperLibrary(ZilchShaderIRLibraryRef fragmentsLibrary)
         // Create property.
         GetterSetter* getterSetter = builder.AddBoundGetterSetter(
             boundType, shaderProperty.mName, shaderProperty.mBoundType, setter, getter, MemberOptions::None);
-        // Storing member offset on the property meta for generic getter/setter
-        // implementation.
+        // Storing member offset on the property meta for generic getter/setter implementation.
         getterSetter->UserData = (void*)shaderProperty.mMemberOffset;
         getterSetter->Get->UserData = (void*)shaderProperty.mMemberOffset;
         getterSetter->Set->UserData = (void*)shaderProperty.mMemberOffset;
-        // Currently just setting the type location, a more specific location
-        // for properties still needs to be added.
+        // Currently just setting the type location, a more specific location for properties still needs to be added.
         getterSetter->NameLocation = shaderProperty.mShaderField->mZilchType->NameLocation;
         getterSetter->Location = shaderProperty.mShaderField->mZilchType->Location;
 
@@ -408,9 +402,8 @@ LibraryRef ZilchShaderGenerator::BuildFragmentsLibrary(Module& dependencies,
   // Add all fragments
   forRange (Resource* resource, fragments.All())
   {
-    // Templates shouldn't be compiled. They contain potentially invalid code
-    // and identifiers such as RESOURCE_NAME_ that are replaced when a new
-    // resource is created from the template
+    // Templates shouldn't be compiled. They contain potentially invalid code and identifiers
+    // such as RESOURCE_NAME_ that are replaced when a new resource is created from the template
     if (resource->GetResourceTemplate())
       continue;
 
@@ -423,9 +416,9 @@ LibraryRef ZilchShaderGenerator::BuildFragmentsLibrary(Module& dependencies,
   internalDependencies->PushBack(mCoreLibrary);
   internalDependencies->PushBack(mShaderIntrinsicsLibrary);
 
-  // We gave the engine our "wrapped" library, and it's giving them back as
-  // dependencies. For fragment compilation, it expects our internal libraries,
-  // so we need to look them up and use those instead
+  // We gave the engine our "wrapped" library, and it's giving them back as dependencies.
+  // For fragment compilation, it expects our internal libraries, so we need to look them up
+  // and use those instead
   forRange (Library* dependentLibrary, dependencies.All())
   {
     ZilchShaderIRLibraryRef internalDependency = GetInternalLibrary(dependentLibrary);
@@ -437,9 +430,9 @@ LibraryRef ZilchShaderGenerator::BuildFragmentsLibrary(Module& dependencies,
   if (fragmentsLibrary == nullptr)
     return nullptr;
 
-  // Write to the complex user data of each shader type the name of the resource
-  // they came from. This has to be done as a second pass because complex user
-  // currently can't be written per file (we also need per type).
+  // Write to the complex user data of each shader type the name of the resource they came from.
+  // This has to be done as a second pass because complex user currently can't be written per file (we also need per
+  // type).
   forRange (ZilchShaderIRType* shaderType, fragmentsLibrary->mTypes.Values())
   {
     ShaderIRTypeMeta* shaderTypeMeta = shaderType->mMeta;
@@ -453,8 +446,7 @@ LibraryRef ZilchShaderGenerator::BuildFragmentsLibrary(Module& dependencies,
       continue;
 
     Resource* resource = (Resource*)zilchType->Location.CodeUserData;
-    // If we have a valid user data (some types won't, like arrays that are
-    // generated in your library)
+    // If we have a valid user data (some types won't, like arrays that are generated in your library)
     if (resource == nullptr)
       continue;
     FragmentUserData complexUserData(resource->Name);
@@ -467,9 +459,9 @@ LibraryRef ZilchShaderGenerator::BuildFragmentsLibrary(Module& dependencies,
   if (library == nullptr)
     return nullptr;
 
-  // If pending changes cause scripts to not compile, and then fragments are
-  // changed again to fix it, will have duplicate pending libraries that should
-  // be replaced. Libraries aren't mapped by name so find it manually.
+  // If pending changes cause scripts to not compile, and then fragments are changed again to fix it,
+  // will have duplicate pending libraries that should be replaced.
+  // Libraries aren't mapped by name so find it manually.
   forRange (LibraryRef pendingLib, mPendingToPendingInternal.Keys())
   {
     if (pendingLib->Name == library->Name)
@@ -605,8 +597,7 @@ bool ZilchShaderGenerator::BuildShaders(ShaderSet& shaders,
   Array<Shader*> shaderArray;
   shaderArray.Append(shaders.All());
 
-  // Value should not be very large to prevent unnecessary memory consumption to
-  // compile.
+  // Value should not be very large to prevent unnecessary memory consumption to compile.
   const size_t compositeBatchCount = 20;
 
   size_t totalShaderCount = shaderArray.Size();
@@ -667,8 +658,8 @@ bool ZilchShaderGenerator::BuildShaders(ShaderSet& shaders,
       ShaderCapabilities capabilities;
       compositor.Composite(shaderDef, capabilities, mSpirVSettings);
 
-      // If the user requested it, then add the resulting shader def as an
-      // output. Used for debugging purposes to display the zilch composites.
+      // If the user requested it, then add the resulting shader def as an output.
+      // Used for debugging purposes to display the zilch composites.
       if (compositeShaderDefs != nullptr)
         compositeShaderDefs->PushBack(shaderDef);
 
@@ -745,8 +736,7 @@ bool ZilchShaderGenerator::CompilePipeline(ZilchShaderIRType* shaderType,
   ShaderTranslationPassResult* binaryBackendData = new ShaderTranslationPassResult();
   pipelineResults.PushBack(binaryBackendData);
 
-  // Convert from the in-memory format of spir-v to actual binary (array of
-  // words)
+  // Convert from the in-memory format of spir-v to actual binary (array of words)
   ShaderByteStreamWriter byteWriter(&binaryBackendData->mByteStream);
   ZilchShaderSpirVBinaryBackend binaryBackend;
   binaryBackend.TranslateType(shaderType, byteWriter, binaryBackendData->mReflectionData);
@@ -773,8 +763,8 @@ bool ZilchShaderGenerator::CompilePipeline(ZilchShaderIRType* shaderType,
   //  ZilchShaderIRTranslationPass* debugBackend = pipeline.mDebugPasses[i];
   //
   //  ShaderTranslationPassResult* prevPassData = pipelineResults.Back();
-  //  ShaderTranslationPassResult* resultData = new
-  //  ShaderTranslationPassResult(); debugResults.PushBack(resultData);
+  //  ShaderTranslationPassResult* resultData = new ShaderTranslationPassResult();
+  //  debugResults.PushBack(resultData);
   //
   //  debugBackend->RunTranslationPass(*prevPassData, *resultData);
   //}
@@ -812,9 +802,8 @@ ShaderInput ZilchShaderGenerator::CreateShaderInput(StringParam fragmentName,
   Any valueCopy = value;
 
   // Ideally this should be using shader reflection.
-  // For now, this is just getting names exactly as they will appear in glsl so
-  // long as the ZilchShaderGenerator does not change its setup and naming
-  // schemes.
+  // For now, this is just getting names exactly as they will appear in glsl so long as
+  // the ZilchShaderGenerator does not change its setup and naming schemes.
   if (type == ShaderInputType::Texture)
   {
     shaderInput.mTranslatedInputName = GenerateSpirVPropertyName(inputName, fragmentName);
@@ -828,9 +817,11 @@ ShaderInput ZilchShaderGenerator::CreateShaderInput(StringParam fragmentName,
   }
   else
   {
-    shaderInput.mTranslatedInputName = BuildString("Material_", FragmentType::Names[shaderTypeMeta->mFragmentType], ".", GenerateSpirVPropertyName(inputName, fragmentName));
-    // SPIR-V doesn't allow boolean uniforms so we convert boolean inputs from
-    // Zilch to integers.
+    shaderInput.mTranslatedInputName = BuildString("Material_",
+                                                   FragmentType::Names[shaderTypeMeta->mFragmentType],
+                                                   ".",
+                                                   GenerateSpirVPropertyName(inputName, fragmentName));
+    // SPIR-V doesn't allow boolean uniforms so we convert boolean inputs from Zilch to integers.
     if (type == ShaderInputType::Bool)
     {
       shaderInput.mTranslatedInputName = BuildString(shaderInput.mTranslatedInputName, "_Boolean");
@@ -839,8 +830,7 @@ ShaderInput ZilchShaderGenerator::CreateShaderInput(StringParam fragmentName,
     }
   }
 
-  // If unsuccessful returned ShaderInput's type will be Invalid, otherwise it
-  // will be the passed in type
+  // If unsuccessful returned ShaderInput's type will be Invalid, otherwise it will be the passed in type
   shaderInput.mShaderInputType = type;
   ShaderInputSetValue(shaderInput, valueCopy);
 
@@ -857,9 +847,9 @@ void ZilchShaderGenerator::OnZilchFragmentCompilationError(Zilch::ErrorEvent* ev
 
 void ZilchShaderGenerator::OnZilchFragmentTypeParsed(Zilch::ParseEvent* event)
 {
-  // There are a lot of attributes in zilch fragments that aren't valid for
-  // zilch script. Because of this, we want to ignore invalid attributes here
-  // and let the fragment compilation catch them
+  // There are a lot of attributes in zilch fragments that aren't valid for zilch script.
+  // Because of this, we want to ignore invalid attributes here and let the fragment compilation
+  // catch them
   BoundType* boundType = event->Type;
   AttributeStatus status;
   AttributeExtensions::GetInstance()->ProcessType(status, boundType, true);

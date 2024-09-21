@@ -5,8 +5,7 @@
 namespace Zero
 {
 
-/// Represents meta data of shader fragment types that can be composited
-/// together on Materials.
+/// Represents meta data of shader fragment types that can be composited together on Materials.
 class MaterialBlock : public Object
 {
 public:
@@ -19,7 +18,8 @@ public:
 
   void Serialize(Serializer& stream) override;
 
-  union {
+  union
+  {
     MaxAlignmentType mAligned;
     Material* mOwner;
   };

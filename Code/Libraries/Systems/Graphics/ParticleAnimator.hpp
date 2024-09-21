@@ -4,8 +4,7 @@
 namespace Zero
 {
 
-/// Particle Animator Interface. Particle Animators effect particles in the
-/// system.
+/// Particle Animator Interface. Particle Animators effect particles in the system.
 class ParticleAnimator : public Component
 {
 public:

@@ -65,8 +65,7 @@ bool MaterialFactory::CanAddComponent(HandleParam owner, BoundType* typeToAdd, A
   {
     if (info)
     {
-      info->Reason = "CoreVertex, RenderPass, and PostProcess fragments cannot "
-                     "be added to materials, "
+      info->Reason = "CoreVertex, RenderPass, and PostProcess fragments cannot be added to materials, "
                      "they are used for auto generated shader permutations.";
     }
     return false;

@@ -31,8 +31,7 @@ public:
   PixelBuffer* mWeightTexture;
 };
 
-/// Generates a graphical mesh from every patch of height data in the HeightMap
-/// component.
+/// Generates a graphical mesh from every patch of height data in the HeightMap component.
 class HeightMapModel : public Graphical
 {
 public:

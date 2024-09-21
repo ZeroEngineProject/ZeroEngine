@@ -11,8 +11,7 @@ namespace Zero
 {
 
 VertexSemanticRange::VertexSemanticRange(const FixedVertexDescription& fixedDesc) :
-    mFixedDesc(fixedDesc),
-    mCurrentIndex(0)
+    mFixedDesc(fixedDesc), mCurrentIndex(0)
 {
 }
 
@@ -723,8 +722,7 @@ bool Mesh::TestRay(GraphicsRayCast& raycast, Mat4 worldTransform)
   }
   else if (mPrimitiveType == PrimitiveType::Triangles)
   {
-    // If mesh doesn't have normals, one will be calculated facing outward for
-    // CCW triangles
+    // If mesh doesn't have normals, one will be calculated facing outward for CCW triangles
     raycast.mNormal = Math::Cross(points[1] - points[0], points[2] - points[0]);
     Math::AttemptNormalize(raycast.mNormal);
   }

@@ -10,13 +10,12 @@ ZilchShaderGenerator* CreateZilchShaderGenerator();
 DeclareEnum5(ZilchFragmentType, CoreVertex, RenderPass, PostProcess, Protected, Fragment);
 typedef HashMap<String, ZilchFragmentType::Enum> ZilchFragmentTypeMap;
 
-// User data written per shader type. Used to deal with efficient re-compiling
-// of fragments/shaders.
+// User data written per shader type. Used to deal with efficient re-compiling of fragments/shaders.
 class FragmentUserData
 {
 public:
-  FragmentUserData(){};
-  FragmentUserData(StringParam resourceName) : mResourceName(resourceName){};
+  FragmentUserData() {};
+  FragmentUserData(StringParam resourceName) : mResourceName(resourceName) {};
   String mResourceName;
 };
 

@@ -38,8 +38,7 @@ int EmitParticles(ParticleSystem* main,
 void RunAnimator(
     ParticleSystem* main, ParticleAnimator* animator, ParticleList* particleList, float dt, Mat4Ref parentTransform)
 {
-  // Could not find anywhere that ParticleAnimator::mTransform was being
-  // initialized, so I removed it
+  // Could not find anywhere that ParticleAnimator::mTransform was being initialized, so I removed it
   // if(animator->GetOwner() != main->GetOwner())
   //{
   //  Mat4 transform = parentTransform * animator->mTransform->GetLocalMatrix();
@@ -130,11 +129,10 @@ void ParticleSystem::Initialize(CogInitializer& initializer)
 void ParticleSystem::ScriptInitialize(CogInitializer& initializer)
 {
   // We're warming up the particle system on ScriptInitialize to accommodate for
-  // the SplineParticleEmitter. SplineParticleEmitter resolves its serialized
-  // CogPath target to the spline in OnAllObjectsCreated. It has a dependency on
-  // us, which means its OnAllObjectsCreated will be called after ours. Because
-  // of this, we have to warm up the particle system at a later point, hence the
-  // use of ScriptInitialize
+  // the SplineParticleEmitter. SplineParticleEmitter resolves its serialized CogPath
+  // target to the spline in OnAllObjectsCreated. It has a dependency on us, which means
+  // its OnAllObjectsCreated will be called after ours. Because of this, we have to
+  // warm up the particle system at a later point, hence the use of ScriptInitialize
 
   // Use the engines dt for simulating the warm up
   float timeStep = Z::gEngine->has(TimeSystem)->GetTargetDt();
@@ -282,8 +280,7 @@ void ParticleSystem::SetPreviewInEditor(bool previewInEditor)
     ConnectThisTo(GetSpace(), Events::LogicUpdate, OnUpdate);
     GetSpace()->GetDispatcher()->DisconnectEvent(Events::FrameUpdate, this);
 
-    // If we're selected in the editor, it's being updated by DebugDraw(), so
-    // don't clear the particles
+    // If we're selected in the editor, it's being updated by DebugDraw(), so don't clear the particles
     if (!IsSelectedInEditor())
       Clear();
   }

@@ -38,8 +38,8 @@ public:
 
   // Properties
 
-  /// Color attribute of the generated vertices accessible in the vertex shader,
-  /// value is multiplied with the particle color.
+  /// Color attribute of the generated vertices accessible in the vertex shader, value is multiplied with the particle
+  /// color.
   Vec4 mVertexColor;
 
   /// How the geometry of the particles are generated.
@@ -51,8 +51,7 @@ public:
   /// How the sprite's animation should be used.
   SpriteParticleAnimationMode::Enum mParticleAnimation;
 
-  /// How particles should be sorted with each other, determines draw order
-  /// between particles.
+  /// How particles should be sorted with each other, determines draw order between particles.
   SpriteParticleSortMode::Enum mParticleSort;
 
   /// How much to scale particles along their direction of movement.

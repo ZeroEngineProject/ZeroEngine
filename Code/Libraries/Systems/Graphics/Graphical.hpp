@@ -73,14 +73,12 @@ public:
   void SetVisible(bool visible);
   bool mVisible;
 
-  /// If the graphical should not be drawn when its bounding volume is outside
-  /// of the view frustum.
+  /// If the graphical should not be drawn when its bounding volume is outside of the view frustum.
   bool GetViewCulling();
   void SetViewCulling(bool culling);
   bool mViewCulling;
 
-  /// If object receives events when entering/exiting the view of an active
-  /// camera.
+  /// If object receives events when entering/exiting the view of an active camera.
   bool mVisibilityEvents;
 
   /// Manually set the bounding box that is used for frustum culling.
@@ -88,14 +86,12 @@ public:
   void SetOverrideBoundingBox(bool overrideBoundingBox);
   bool mOverrideBoundingBox;
 
-  /// Center of the bounding box defined in local space, world transform will be
-  /// applied.
+  /// Center of the bounding box defined in local space, world transform will be applied.
   Vec3 GetLocalAabbCenter();
   void SetLocalAabbCenter(Vec3 center);
   Vec3 mLocalAabbCenter;
 
-  /// Half extents of the bounding box defined in local space, world transform
-  /// will be applied.
+  /// Half extents of the bounding box defined in local space, world transform will be applied.
   Vec3 GetLocalAabbHalfExtents();
   void SetLocalAabbHalfExtents(Vec3 halfExtents);
   Vec3 mLocalAabbHalfExtents;
@@ -103,8 +99,7 @@ public:
   /// Can be used by a RenderGroup to define draw order, from lowest to highest.
   int mGroupSortValue;
 
-  /// The composition of shader fragments that determines how the graphical is
-  /// rendered.
+  /// The composition of shader fragments that determines how the graphical is rendered.
   Material* GetMaterial();
   void SetMaterial(Material* material);
   HandleOf<Material> mMaterial;
@@ -114,8 +109,7 @@ public:
   void SetShaderInputs(ShaderInputs* shaderInputs);
   HandleOf<ShaderInputs> mShaderInputs;
 
-  /// The world space axis aligned bounding volume that is used for frustum
-  /// culling.
+  /// The world space axis aligned bounding volume that is used for frustum culling.
   Aabb GetWorldAabb();
 
   // Internal
@@ -123,8 +117,7 @@ public:
   // Returns local aabb transformed to world space without re-axis aligning.
   Obb GetWorldObb();
 
-  // Returns the local aabb as specified by the graphical type or the override
-  // if active.
+  // Returns the local aabb as specified by the graphical type or the override if active.
   Aabb GetLocalAabbInternal();
 
   void UpdateBroadPhaseAabb();
@@ -142,8 +135,7 @@ public:
 
   Array<PropertyShaderInput> mPropertyShaderInputs;
 
-  // TODO: add this to separate derived class so it is not bloat for
-  // HeightMap/MultiSprite
+  // TODO: add this to separate derived class so it is not bloat for HeightMap/MultiSprite
   GraphicalEntryData mGraphicalEntryData;
 
   VisibilityFlag mVisibleFlags;

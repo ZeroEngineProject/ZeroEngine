@@ -97,8 +97,7 @@ void FragmentGetter(Call& call, ExceptionReport& report)
   MaterialBlock* materialBlock = call.Get<MaterialBlock*>(Call::This);
   ::byte* memberPtr = GetFragmentMemberPointer(call, materialBlock);
 
-  // Get the type's size off of the return type so that we don't need to store
-  // it.
+  // Get the type's size off of the return type so that we don't need to store it.
   size_t returnSize = call.GetFunction()->FunctionType->Return->GetCopyableSize();
   // Copy member to return value.
   memcpy(call.GetReturnUnchecked(), memberPtr, returnSize);
@@ -111,14 +110,12 @@ void FragmentSetter(Call& call, ExceptionReport& report)
   MaterialBlock* materialBlock = call.Get<MaterialBlock*>(Call::This);
   ::byte* memberPtr = GetFragmentMemberPointer(call, materialBlock);
 
-  // Get the type's size off of the parameter type so that we don't need to
-  // store it.
+  // Get the type's size off of the parameter type so that we don't need to store it.
   size_t memberSize = call.GetFunction()->FunctionType->Parameters[0].ParameterType->GetCopyableSize();
   // Copy parameter value to member.
   memcpy(memberPtr, call.GetParameterUnchecked(0), memberSize);
 
-  // If this fragment belongs to a Material, this will tell it that its shader
-  // inputs have changed.
+  // If this fragment belongs to a Material, this will tell it that its shader inputs have changed.
   materialBlock->MarkAsModified();
 }
 
@@ -149,8 +146,7 @@ void FragmentTextureSetter(Call& call, ExceptionReport& report)
   else
     *(u64*)memberPtr = 0;
 
-  // If this fragment belongs to a Material, this will tell it that its shader
-  // inputs have changed.
+  // If this fragment belongs to a Material, this will tell it that its shader inputs have changed.
   materialBlock->MarkAsModified();
 }
 

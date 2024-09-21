@@ -77,9 +77,9 @@ void Material::SerializeMaterialBlocks(Serializer& stream)
       // Notify them of data loss if we cannot proxy
       if (materialNodeType && materialNodeType->IsA(materialBlockType) == false)
       {
-        String message = String::Format("A Fragment with the type name %s could not be proxied "
-                                        "because a type with that name already exists. Data will be lost "
-                                        "where this Fragment is "
+        String message =
+            String::Format("A Fragment with the type name %s could not be proxied "
+                           "because a type with that name already exists. Data will be lost where this Fragment is "
                                         "used if the project is saved",
                                         materialNode.TypeName.mBegin);
         DoNotifyError("Could not proxy Material Fragment", message);
@@ -87,9 +87,8 @@ void Material::SerializeMaterialBlocks(Serializer& stream)
         continue;
       }
 
-      // If the block couldn't be created then we need to create a proxy meta
-      // for it (for zilch fragments that fail to compile and because resources
-      // can be loaded before compiling)
+      // If the block couldn't be created then we need to create a proxy meta for it
+      // (for zilch fragments that fail to compile and because resources can be loaded before compiling)
       if (materialNodeType == nullptr)
       {
         // Create a proxy component
@@ -145,8 +144,8 @@ HandleOf<Material> Material::RuntimeClone()
 
   resource->mCompositeName = mCompositeName;
 
-  // Add the runtime list to the clone's list so that library resources don't
-  // have to be modified and all effective connections are preserved
+  // Add the runtime list to the clone's list so that library resources don't have to be modified
+  // and all effective connections are preserved
   resource->mSerializedList.mResourceIdNames.Append(mReferencedByList.mResourceIdNames.All());
 
   ResourceEvent event(mManager, resource);
@@ -266,8 +265,7 @@ void Material::UpdateCompositeName()
     // Check if fragment had a restricted attribute added
     if (factory->mRestrictedComponents.Contains(block.StoredType))
     {
-      String warning = String::Format("Fragment '%s' cannot be added to Materials and will "
-                                      "have no effect on '%s'.",
+      String warning = String::Format("Fragment '%s' cannot be added to Materials and will have no effect on '%s'.",
                                       block.StoredType->Name.c_str(),
                                       Name.c_str());
       DoNotifyWarning("Restricted Fragment", warning);
@@ -279,8 +277,8 @@ void Material::UpdateCompositeName()
     {
       if (hasGeometry)
       {
-        String warning = String::Format("Geometry Fragment '%s' cannot be added to Material "
-                                        "'%s', a Geometry Fragment is already present.",
+        String warning = String::Format(
+            "Geometry Fragment '%s' cannot be added to Material '%s', a Geometry Fragment is already present.",
                                         block.StoredType->Name.c_str(),
                                         Name.c_str());
         DoNotifyWarning("Multiple Geometry Fragments", warning);
@@ -326,13 +324,12 @@ void MaterialManager::ResourceDuplicated(Resource* resource, Resource* duplicate
   Material* material = (Material*)resource;
   Material* dupMaterial = (Material*)duplicate;
 
-  // If no RenderGroups reference the duplicated Material then nothing needs to
-  // be done
+  // If no RenderGroups reference the duplicated Material then nothing needs to be done
   if (material->mReferencedByList.mResourceIdNames.Empty())
     return;
 
-  // If any resources are not writable then they are added to the duplicate
-  // instead so the content item needs to be re-saved
+  // If any resources are not writable then they are added to the duplicate instead
+  // so the content item needs to be re-saved
   forRange (StringParam resourceIdName, material->mReferencedByList.GetIdNames())
   {
     RenderGroup* renderGroup = RenderGroupManager::FindOrNull(resourceIdName);

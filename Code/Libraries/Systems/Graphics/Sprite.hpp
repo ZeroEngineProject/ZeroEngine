@@ -36,8 +36,7 @@ public:
   void ComputeLocalToViewMatrix(Mat4& localToView, Mat4& localToWorld, Mat4& worldToView);
 };
 
-/// A generated quad that addresses atlased image data for efficient frame-based
-/// animations and batched rendering.
+/// A generated quad that addresses atlased image data for efficient frame-based animations and batched rendering.
 class Sprite : public BaseSprite
 {
 public:
@@ -57,8 +56,7 @@ public:
 
   // Properties
 
-  /// The resource defining one or more image sequences used for frame-based
-  /// animation.
+  /// The resource defining one or more image sequences used for frame-based animation.
   SpriteSource* GetSpriteSource();
   void SetSpriteSource(SpriteSource* spriteSource);
   HandleOf<SpriteSource> mSpriteSource;
@@ -69,15 +67,13 @@ public:
   /// Flips the Y axis of the Sprite's image (top/bottom).
   bool mFlipY;
 
-  /// If the Sprite animation should be playing on logic update, paused if
-  /// false.
+  /// If the Sprite animation should be playing on logic update, paused if false.
   bool mAnimationActive;
 
   /// Scalar to the amount of time passed used to advance frames of animation.
   float mAnimationSpeed;
 
-  /// Index of the frame to start the animation on when the object is
-  /// initialized, 0-based.
+  /// Index of the frame to start the animation on when the object is initialized, 0-based.
   uint GetStartFrame();
   void SetStartFrame(uint frameIndex);
   uint mStartFrame;
@@ -145,8 +141,7 @@ public:
   /// Get the effective size in world space of the current text.
   Vec2 MeasureText();
 
-  /// Get the effective size in world space that the SpriteText would be if this
-  /// was its text.
+  /// Get the effective size in world space that the SpriteText would be if this was its text.
   Vec2 MeasureGivenText(StringParam text);
 
   /// Get the position in world space of a character by index.
@@ -234,8 +229,7 @@ public:
 
   // Properties
 
-  /// If the Sprite animation should be playing on logic update, paused if
-  /// false.
+  /// If the Sprite animation should be playing on logic update, paused if false.
   bool mAnimationActive;
 
   /// Scalar to the amount of time passed used to advance frames of animation.
@@ -244,8 +238,7 @@ public:
   /// Gets an entry containing which SpriteSource is stored at the given index.
   MultiSpriteEntry Get(IntVec2 index);
 
-  /// Set the SpriteSource to be used at the given index, passing null removes
-  /// entry.
+  /// Set the SpriteSource to be used at the given index, passing null removes entry.
   void Set(IntVec2 index, SpriteSource* spriteSource);
 
   /// Removes all SpriteSource entries.

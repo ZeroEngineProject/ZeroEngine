@@ -23,8 +23,7 @@ class GraphicsResourceList : public SafeId32EventObject
 public:
   GraphicsResourceList(Resource* owner);
   GraphicsResourceList(const GraphicsResourceList& rhs);
-  // Required by property interface, default doesn't exist because of
-  // EventObject
+  // Required by property interface, default doesn't exist because of EventObject
   GraphicsResourceList& operator=(const GraphicsResourceList& graphicsResourceList);
 
   // Interface required by ResourceListEditor
@@ -113,8 +112,7 @@ public:
   // For script to modify runtime resources
   /// Adds the Material to this RenderGroups's list. Runtime resources only.
   void Add(Material& material);
-  /// Removes the Material from this RenderGroups's list. Runtime resources
-  /// only.
+  /// Removes the Material from this RenderGroups's list. Runtime resources only.
   void Remove(Material& material);
   /// Range of all resources in the list.
   Array<HandleOf<Material>> All();
@@ -123,9 +121,8 @@ public:
 template <typename SelfResource, typename OtherResource>
 void ResourceListResourceAdded(SelfResource* selfResource, OtherResource* otherResource, String* listName = nullptr)
 {
-  // If the found resource has a matching name for an old entry then the id part
-  // of this entry will be out of date Reassign the current resource's idName so
-  // that addition queries made against the resource list are valid
+  // If the found resource has a matching name for an old entry then the id part of this entry will be out of date
+  // Reassign the current resource's idName so that addition queries made against the resource list are valid
   if (listName != nullptr)
     *listName = otherResource->ResourceIdName;
 
@@ -136,8 +133,7 @@ void ResourceListResourceAdded(SelfResource* selfResource, OtherResource* otherR
   otherResource->mReferencedByList.mResourceIdNames.PushBack(selfResource->ResourceIdName);
 
   bool activeHandle = selfResource->mActiveResources.Contains(otherResource);
-  // There is an error in our management of cross references if these ever don't
-  // match
+  // There is an error in our management of cross references if these ever don't match
   ErrorIf(activeHandle != otherResource->mActiveResources.Contains(selfResource),
           "Material/RenderGroup cross reference mismatch.");
 
@@ -153,8 +149,7 @@ void ResourceListResourceAdded(SelfResource* selfResource, OtherResource* otherR
 template <typename SelfResource, typename OtherResource>
 void ResourceListResourceRemoved(SelfResource* selfResource, OtherResource* otherResource)
 {
-  // If other resource was in the serialized list then entry from runtime list
-  // needs to be removed
+  // If other resource was in the serialized list then entry from runtime list needs to be removed
   if (selfResource->mSerializedList.mResourceIdNames.Contains(otherResource->ResourceIdName))
   {
     ErrorIf(!otherResource->mReferencedByList.mResourceIdNames.Contains(selfResource->ResourceIdName),
@@ -165,8 +160,7 @@ void ResourceListResourceRemoved(SelfResource* selfResource, OtherResource* othe
   ErrorIf(!otherResource->mActiveResources.Contains(selfResource), "Resource not in list.");
 
   // Remove active entry from other resource but not self resource
-  // This method is expected to be called while iterating over self resource's
-  // active list and is cleared afterward
+  // This method is expected to be called while iterating over self resource's active list and is cleared afterward
   otherResource->mActiveResources.EraseValue(selfResource);
 }
 
@@ -179,8 +173,7 @@ void ResourceListEntryAdded(SelfResource* selfResource, OtherResource* otherReso
   otherResource->mReferencedByList.mResourceIdNames.PushBack(selfResource->ResourceIdName);
 
   bool activeHandle = selfResource->mActiveResources.Contains(otherResource);
-  // There is an error in our management of cross references if these ever don't
-  // match
+  // There is an error in our management of cross references if these ever don't match
   ErrorIf(activeHandle != otherResource->mActiveResources.Contains(selfResource),
           "Material/RenderGroup cross reference mismatch.");
 
@@ -201,8 +194,7 @@ void ResourceListEntryRemoved(SelfResource* selfResource, OtherResource* otherRe
   // Remove from the runtime list of the other resource
   otherResource->mReferencedByList.mResourceIdNames.EraseValue(selfResource->ResourceIdName);
 
-  // There is an error in our management of cross references if these ever don't
-  // match
+  // There is an error in our management of cross references if these ever don't match
   ErrorIf(selfResource->mActiveResources.Contains(otherResource) !=
               otherResource->mActiveResources.Contains(selfResource),
           "Material/RenderGroup cross reference mismatch.");
@@ -248,14 +240,11 @@ void ResourceListAdd(RenderGroup* renderGroup);
 // Should be called when a resource is removed from the engine
 void ResourceListRemove(Material* material);
 void ResourceListRemove(RenderGroup* renderGroup);
-// Should be called on every Material after any RenderGroups are added to the
-// engine
+// Should be called on every Material after any RenderGroups are added to the engine
 void ResourceListResolveReferences(Material* material);
-// Should be called on every RenderGroup after any Materials are added to the
-// engine
+// Should be called on every RenderGroup after any Materials are added to the engine
 void ResourceListResolveReferences(RenderGroup* renderGroup);
-// Should be called when a RenderGroup is added or renamed to resolve and update
-// idNames.
+// Should be called when a RenderGroup is added or renamed to resolve and update idNames.
 void ResolveRenderGroupHierarchies();
 
 } // namespace Zero

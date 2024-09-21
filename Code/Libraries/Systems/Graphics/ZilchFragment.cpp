@@ -151,8 +151,7 @@ void ZilchFragmentLoader::ReloadFromFile(Resource* resource, ResourceEntry& entr
 ImplementResourceManager(ZilchFragmentManager, ZilchFragment);
 
 ZilchFragmentManager::ZilchFragmentManager(BoundType* resourceType) :
-    ResourceManager(resourceType),
-    mLastExceptionVersion(-1)
+    ResourceManager(resourceType), mLastExceptionVersion(-1)
 {
   mCategory = "Code";
   mCanAddFile = true;
@@ -232,8 +231,7 @@ void ZilchFragmentManager::DispatchScriptError(StringParam eventId,
                                                StringParam fullMessage,
                                                const Zilch::CodeLocation& location)
 {
-  // This should only happen when a composite has a zilch error. Figure out how
-  // to report later?
+  // This should only happen when a composite has a zilch error. Figure out how to report later?
   if (location.CodeUserData == nullptr)
     return;
 

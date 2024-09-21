@@ -336,13 +336,11 @@ void ShowProgressJob::OnExecute()
   }
   else
   {
-    // Increases current percent every run so that progress always smoothly
-    // completes
+    // Increases current percent every run so that progress always smoothly completes
     mCurrentPercent = Math::Min((mProgressWidth * mCurrentPercent + 16.0f) / mProgressWidth, mTargetPercent);
 
     // It's OK if the UI freezes for a small acceptable amount of time
-    // During this time we don't show the loading screen (for example, when
-    // creating a script or material)
+    // During this time we don't show the loading screen (for example, when creating a script or material)
     if (mPerJobTimer.Time() >= cAcceptableLoadtime)
       ShowCurrentProgress();
   }

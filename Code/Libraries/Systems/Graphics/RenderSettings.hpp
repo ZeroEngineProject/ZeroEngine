@@ -59,8 +59,7 @@ public:
   u32 mGuardId = cGuardId;
 };
 
-/// Settings for how pixel shader outputs are combined with the RenderTarget's
-/// current values.
+/// Settings for how pixel shader outputs are combined with the RenderTarget's current values.
 class GraphicsBlendSettings : public BlendSettings
 {
 public:
@@ -94,8 +93,7 @@ public:
 
   GraphicsRenderSettings();
 
-  /// Settings to use when blending shader output with the ColorTarget,
-  /// implicitly BlendSettings0.
+  /// Settings to use when blending shader output with the ColorTarget, implicitly BlendSettings0.
   GraphicsBlendSettings* GetBlendSettings();
   void SetBlendSettings(GraphicsBlendSettings* blendSettings);
 
@@ -109,8 +107,7 @@ public:
   /// The RenderTarget of a color format to output to, implicitly RenderTarget0.
   void SetColorTarget(RenderTarget* target);
 
-  /// The RenderTarget of a depth format to use as a depth buffer for
-  /// depth/stencil testing.
+  /// The RenderTarget of a depth format to use as a depth buffer for depth/stencil testing.
   void SetDepthTarget(RenderTarget* target);
 
   /// Shader input values to be globally overridden for all objects/shaders.
@@ -129,8 +126,7 @@ public:
   void ClearAll();
 };
 
-// MultiRenderTarget classes are just for providing an uncluttered script
-// interface for RenderSettings
+// MultiRenderTarget classes are just for providing an uncluttered script interface for RenderSettings
 
 /// Indexable interface for settings ColorTargets.
 class ColorTargetMrt : public ThreadSafeReferenceCounted
@@ -223,36 +219,28 @@ public:
   Setter(RenderTarget, ColorTarget, 7);
 
   // TODO: Macro comments for auto-doc
-  /// GraphicsBlendSettings for a RenderTarget at a specific index for
-  /// configuring multiple render targets.
+  /// GraphicsBlendSettings for a RenderTarget at a specific index for configuring multiple render targets.
   Getter(GraphicsBlendSettings, BlendSettings, 0);
   Setter(GraphicsBlendSettings, BlendSettings, 0);
-  /// GraphicsBlendSettings for a RenderTarget at a specific index for
-  /// configuring multiple render targets.
+  /// GraphicsBlendSettings for a RenderTarget at a specific index for configuring multiple render targets.
   Getter(GraphicsBlendSettings, BlendSettings, 1);
   Setter(GraphicsBlendSettings, BlendSettings, 1);
-  /// GraphicsBlendSettings for a RenderTarget at a specific index for
-  /// configuring multiple render targets.
+  /// GraphicsBlendSettings for a RenderTarget at a specific index for configuring multiple render targets.
   Getter(GraphicsBlendSettings, BlendSettings, 2);
   Setter(GraphicsBlendSettings, BlendSettings, 2);
-  /// GraphicsBlendSettings for a RenderTarget at a specific index for
-  /// configuring multiple render targets.
+  /// GraphicsBlendSettings for a RenderTarget at a specific index for configuring multiple render targets.
   Getter(GraphicsBlendSettings, BlendSettings, 3);
   Setter(GraphicsBlendSettings, BlendSettings, 3);
-  /// GraphicsBlendSettings for a RenderTarget at a specific index for
-  /// configuring multiple render targets.
+  /// GraphicsBlendSettings for a RenderTarget at a specific index for configuring multiple render targets.
   Getter(GraphicsBlendSettings, BlendSettings, 4);
   Setter(GraphicsBlendSettings, BlendSettings, 4);
-  /// GraphicsBlendSettings for a RenderTarget at a specific index for
-  /// configuring multiple render targets.
+  /// GraphicsBlendSettings for a RenderTarget at a specific index for configuring multiple render targets.
   Getter(GraphicsBlendSettings, BlendSettings, 5);
   Setter(GraphicsBlendSettings, BlendSettings, 5);
-  /// GraphicsBlendSettings for a RenderTarget at a specific index for
-  /// configuring multiple render targets.
+  /// GraphicsBlendSettings for a RenderTarget at a specific index for configuring multiple render targets.
   Getter(GraphicsBlendSettings, BlendSettings, 6);
   Setter(GraphicsBlendSettings, BlendSettings, 6);
-  /// GraphicsBlendSettings for a RenderTarget at a specific index for
-  /// configuring multiple render targets.
+  /// GraphicsBlendSettings for a RenderTarget at a specific index for configuring multiple render targets.
   Getter(GraphicsBlendSettings, BlendSettings, 7);
   Setter(GraphicsBlendSettings, BlendSettings, 7);
 

@@ -252,8 +252,7 @@ u32 GetParticleSortValue(SpriteParticleSortMode::Enum sortMode, Vec3 pos, Vec3 c
   }
 
   // If sign bit, flip all bits. If no sign bit, flip sign bit.
-  // Makes negative smaller than positive and makes both positive and negative
-  // compare in the same direction.
+  // Makes negative smaller than positive and makes both positive and negative compare in the same direction.
   value ^= -s32(value >> 31) | 0x80000000;
   return value;
 }
@@ -302,15 +301,14 @@ void SpriteParticleSystem::CheckSort(ViewBlock& viewBlock)
     sortedParticles[i].mParticle->Next = sortedParticles[i + 1].mParticle;
   }
 
-  // Make sure we set the last particle in the array to point at null for its
-  // "next" pointer
+  // Make sure we set the last particle in the array to point at null for its "next" pointer
   sortedParticles.Back().mParticle->Next = nullptr;
 
   // The particle list is now pointing to the front of our array
   particle = sortedParticles.Front().mParticle;
 
-  // Since we resorted the list and actually modified the particles, we need to
-  // make sure we set the new head of the list
+  // Since we resorted the list and actually modified the particles, we need to make sure we set the new head of the
+  // list
   mParticleList.Particles = particle;
 }
 

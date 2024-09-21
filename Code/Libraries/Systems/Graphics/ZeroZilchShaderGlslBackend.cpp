@@ -2,7 +2,7 @@
 #include "Precompiled.hpp"
 
 #ifndef ZeroExceptions
-#define SPIRV_CROSS_EXCEPTIONS_TO_ASSERTIONS
+#  define SPIRV_CROSS_EXCEPTIONS_TO_ASSERTIONS
 #endif
 #include "spirv_glsl.hpp"
 
@@ -30,16 +30,16 @@ bool ZeroZilchShaderGlslBackend::RunTranslationPass(ShaderTranslationPassResult&
   spirv_cross::CompilerGLSL compiler(data, wordCount);
   // Set options
   spirv_cross::CompilerGLSL::Options opts = compiler.get_common_options();
-  //opts.force_legacy = true; // zero specific
-  opts.emit_uniform_buffer_as_plain_uniforms = true; // replaces zero specific line above after spirv-cross update, zero specific patch not needed anymore
+  // opts.force_legacy = true; // zero specific
+  opts.emit_uniform_buffer_as_plain_uniforms =
+      true; // replaces zero specific line above after spirv-cross update, zero specific patch not needed anymore
   opts.version = mTargetVersion;
   opts.es = mTargetGlslEs;
   compiler.set_common_options(opts);
 
   spirv_cross::ShaderResources resources = compiler.get_shader_resources();
 
-  // Forcing buffer typenames to match between different stages so that the
-  // uniform instance names can be the same.
+  // Forcing buffer typenames to match between different stages so that the uniform instance names can be the same.
   for (auto& ubo : resources.uniform_buffers)
   {
     int id = compiler.get_decoration(ubo.id, spv::DecorationBinding);
@@ -49,8 +49,8 @@ bool ZeroZilchShaderGlslBackend::RunTranslationPass(ShaderTranslationPassResult&
   }
 
 #ifdef ZeroTargetOsEmscripten
-  // gles output is going to flatten input/output blocks and prepend the block
-  // name to each member. Forcing block typenames to match.
+  // gles output is going to flatten input/output blocks and prepend the block name to each member. 
+  // Forcing block typenames to match.
   for (auto stageInput : resources.stage_inputs)
   {
     int isBlock = compiler.get_decoration(stageInput.base_type_id, spv::DecorationBlock);
@@ -71,8 +71,7 @@ bool ZeroZilchShaderGlslBackend::RunTranslationPass(ShaderTranslationPassResult&
   }
 
   // When target outputs get flattened the layout decorations do not get copied.
-  // gles requires the layout decorations when there are multiple output
-  // targets.
+  // gles requires the layout decorations when there are multiple output targets.
   auto entryPoints = compiler.get_entry_points_and_stages();
   auto entryPoint = entryPoints[0];
   if (entryPoint.execution_model == spv::ExecutionModel::ExecutionModelFragment)

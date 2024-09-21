@@ -23,10 +23,7 @@ bool GraphicsResourceList::mRenderGroupRuntimeExpanded = false;
 bool GraphicsResourceList::mChildRenderGroupListExpanded = false;
 
 GraphicsResourceList::GraphicsResourceList(Resource* owner) :
-    mReadOnly(false),
-    mOwner(owner),
-    mExpanded(nullptr),
-    mListItemCallback(nullptr)
+    mReadOnly(false), mOwner(owner), mExpanded(nullptr), mListItemCallback(nullptr)
 {
 }
 
@@ -289,8 +286,7 @@ void ResourceListResolveReferences(Material* material)
     RenderGroup* renderGroup = RenderGroupManager::FindOrNull(resourceIdName);
     if (renderGroup != nullptr)
     {
-      // If this resource is not in the runtime list of the found resource then
-      // this is a newly added resource
+      // If this resource is not in the runtime list of the found resource then this is a newly added resource
       if (renderGroup->mReferencedByList.mResourceIdNames.Contains(material->ResourceIdName) == false)
         ResourceListResourceAdded(material, renderGroup, &resourceIdName);
     }
@@ -305,8 +301,7 @@ void ResourceListResolveReferences(RenderGroup* renderGroup)
     Material* material = MaterialManager::FindOrNull(resourceIdName);
     if (material != nullptr)
     {
-      // If this resource is not in the runtime list of the found resource then
-      // this is a newly added resource
+      // If this resource is not in the runtime list of the found resource then this is a newly added resource
       if (material->mReferencedByList.mResourceIdNames.Contains(renderGroup->ResourceIdName) == false)
         ResourceListResourceAdded(renderGroup, material, &resourceIdName);
     }
@@ -315,9 +310,9 @@ void ResourceListResolveReferences(RenderGroup* renderGroup)
 
 void ResolveRenderGroupHierarchy(RenderGroup* renderGroup)
 {
-  // For valid entries the idName is reassigned to resolve resource renames or
-  // new resources matching an old entry by name. Also sets internal pointers in
-  // case it's newly resolved. Redundantly setting is okay.
+  // For valid entries the idName is reassigned to resolve resource renames or new resources
+  // matching an old entry by name. Also sets internal pointers in case it's newly resolved.
+  // Redundantly setting is okay.
 
   // Resolve parent if valid.
   RenderGroup* parentGroup = RenderGroupManager::Instance->FindOrNull(renderGroup->mParentRenderGroup);

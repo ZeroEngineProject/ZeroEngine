@@ -30,7 +30,7 @@ public:
   EmitParticles(ParticleList* particleList, float dt, Mat4Ref transform, Vec3Param velocity, float timeAlive) = 0;
 
   // Reset the number of particles to emit back to EmitCount.
-  virtual void ResetCount(){};
+  virtual void ResetCount() {};
 
   void UpdateLastTranslation();
 
@@ -111,8 +111,7 @@ public:
   /// Velocity of each particle at start
   Vec3 mStartVelocity;
 
-  /// Velocity of each particle in x horizontal tangent y vertical tangent and z
-  /// outward tangent.
+  /// Velocity of each particle in x horizontal tangent y vertical tangent and z outward tangent.
   Vec3 mTangentVelocity;
 
   /// Random Velocity per particle.
@@ -143,9 +142,8 @@ public:
 };
 
 // Hide Base Filter
-// This is used to hide properties on ParticleEmitterShared that don't apply to
-// derived particle emitters. This is temporary and should be removed once we
-// refactor particles.
+// This is used to hide properties on ParticleEmitterShared that don't apply to derived
+// particle emitters. This is temporary and should be removed once we refactor particles.
 class HideBaseFilter : public MetaPropertyFilter
 {
 public:

@@ -253,8 +253,7 @@ Vec2 Sprite::GetLocalCenter()
   {
     Vec2 size = mSpriteSource->GetSize();
     Vec2 origin = mSpriteSource->GetOrigin();
-    // Origin is in uv coordinate direction, so y needs to be flipped for
-    // position
+    // Origin is in uv coordinate direction, so y needs to be flipped for position
     Vec2 offset = size * 0.5f - origin;
     offset.y = -offset.y;
 
@@ -679,9 +678,8 @@ void MultiSprite::MidPhaseQuery(Array<GraphicalEntry>& entries, Camera& camera, 
   }
   else
   {
-    // We're going to get a world quad representing the entire multisprite area
-    // in order to clip it against the view frustum The clipped region will
-    // contain the exact multisprite area visible to the view frustum
+    // We're going to get a world quad representing the entire multisprite area in order to clip it against the view
+    // frustum The clipped region will contain the exact multisprite area visible to the view frustum
     Mat4 worldMatrix = mTransform->GetWorldMatrix();
     Vec3 localAabbCenter;
     Vec3 localAabbHalfExtents;
@@ -697,8 +695,7 @@ void MultiSprite::MidPhaseQuery(Array<GraphicalEntry>& entries, Camera& camera, 
     worldQuadPoints[3] =
         Math::TransformPoint(worldMatrix, localAabbCenter + (localAabbHalfExtents * Vec3(-1, -1, 0))); // "Bottom Left"
 
-    // Negate the frustum planes because ClipPolygonWithPlanes expects outward
-    // facing planes
+    // Negate the frustum planes because ClipPolygonWithPlanes expects outward facing planes
     Vec4 frustumPlanes[6];
     frustumPlanes[0] = -frustum->Planes[0].mData;
     frustumPlanes[1] = -frustum->Planes[1].mData;
@@ -714,8 +711,8 @@ void MultiSprite::MidPhaseQuery(Array<GraphicalEntry>& entries, Camera& camera, 
     if (clippedPointCount == 0) // Outside frustum?
       return;
 
-    // From the clipped region we create a surrounding AABB so that we can
-    // easily loop over all cells that are potentially within the frustum
+    // From the clipped region we create a surrounding AABB so that we can easily loop over all cells that are
+    // potentially within the frustum
     Aabb clippedAabb;
     clippedAabb.Compute(clippedPoints, clippedPointCount);
 

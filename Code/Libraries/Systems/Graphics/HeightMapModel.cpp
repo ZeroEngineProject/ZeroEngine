@@ -277,8 +277,7 @@ void HeightMapModel::CreateGraphicalPatchMesh(HeightPatch* heightPatch)
   vertices->AddAttribute(VertexSemantic::Tangent, VertexElementType::Real, 3);
   vertices->AddAttribute(VertexSemantic::Bitangent, VertexElementType::Real, 3);
 
-  // Iterate over the middle of the padded area and adjacent indexing will
-  // always be valid
+  // Iterate over the middle of the padded area and adjacent indexing will always be valid
   for (uint y = 1; y < paddedWidth - 1; ++y)
   {
     for (uint x = 1; x < paddedWidth - 1; ++x)

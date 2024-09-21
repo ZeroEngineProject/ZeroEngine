@@ -42,8 +42,7 @@ public:
   /// Scalar for how big the icon should appear in the viewport.
   float mViewScale;
 
-  /// If collider/graphical or other selection logic should be disabled and only
-  /// selectable via this icon.
+  /// If collider/graphical or other selection logic should be disabled and only selectable via this icon.
   bool GetOverrideSelections();
   void SetOverrideSelections(bool overrideSelections);
   bool mOverrideSelections;

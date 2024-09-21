@@ -5,15 +5,13 @@
 namespace Zero
 {
 
-/// Data that represents a texture in the way that is intended to be used by
-/// graphics hardware.
+/// Data that represents a texture in the way that is intended to be used by graphics hardware.
 class Texture : public Resource
 {
 public:
   ZilchDeclareType(Texture, TypeCopyMode::ReferenceType);
 
-  /// Makes an anonymous Texture resource that can be defined by script and
-  /// uploaded to the gpu.
+  /// Makes an anonymous Texture resource that can be defined by script and uploaded to the gpu.
   static HandleOf<Texture> CreateRuntime();
 
   Texture();
@@ -23,8 +21,7 @@ public:
   /// The type of texture data being represented.
   TextureType::Enum mType;
 
-  /// Block compression method being used. Requires pre-processing, cannot be
-  /// set for runtime Textures.
+  /// Block compression method being used. Requires pre-processing, cannot be set for runtime Textures.
   TextureCompression::Enum mCompression;
 
   // Setters are for modifying runtime textures and setting dirty flag.
@@ -36,13 +33,11 @@ public:
   /// Height of the Texture in pixels. Set on Upload() for runtime Textures.
   uint mHeight;
 
-  /// Width and height (x, y) of the Texture in pixels. Set on Upload() for
-  /// runtime Textures.
+  /// Width and height (x, y) of the Texture in pixels. Set on Upload() for runtime Textures.
   IntVec2 GetSize();
   void SetSize(IntVec2 size);
 
-  /// Memory format of the stored pixel data. Set on Upload() for runtime
-  /// Textures.
+  /// Memory format of the stored pixel data. Set on Upload() for runtime Textures.
   TextureFormat::Enum GetFormat();
   void SetFormat(TextureFormat::Enum format);
   TextureFormat::Enum mFormat;
@@ -62,23 +57,21 @@ public:
   void SetFiltering(TextureFiltering::Enum filtering);
   TextureFiltering::Enum mFiltering;
 
-  /// Max ratio of anisotropy that filtering will account for at oblique viewing
-  /// angles.
+  /// Max ratio of anisotropy that filtering will account for at oblique viewing angles.
   TextureAnisotropy::Enum GetAnisotropy();
   void SetAnisotropy(TextureAnisotropy::Enum anisotropy);
   TextureAnisotropy::Enum mAnisotropy;
 
-  /// If downsampled versions of the texture (mip maps) should be generated.
-  /// PreGenerated is not valid for runtime Textures.
+  /// If downsampled versions of the texture (mip maps) should be generated. PreGenerated is not valid for runtime
+  /// Textures.
   TextureMipMapping::Enum GetMipMapping();
   void SetMipMapping(TextureMipMapping::Enum mipMapping);
   TextureMipMapping::Enum mMipMapping;
-  // Limits how many gpu generated mip levels will be done, default is 0 for no
-  // limit.
+  // Limits how many gpu generated mip levels will be done, default is 0 for no limit.
   uint mMaxMipOverride;
 
-  /// If sampling in hardware should perform comparison instead of fetching.
-  /// Requires using SamplerShadow2d in the shader.
+  /// If sampling in hardware should perform comparison instead of fetching. Requires using SamplerShadow2d in the
+  /// shader.
   TextureCompareMode::Enum GetCompareMode();
   void SetCompareMode(TextureCompareMode::Enum compareMode);
   TextureCompareMode::Enum mCompareMode;
@@ -88,12 +81,10 @@ public:
   void SetCompareFunc(TextureCompareFunc::Enum compareFunc);
   TextureCompareFunc::Enum mCompareFunc;
 
-  /// Uploads the given texture data to the gpu, configured with the current
-  /// settings of this Texture.
+  /// Uploads the given texture data to the gpu, configured with the current settings of this Texture.
   void Upload(TextureData& textureData);
 
-  /// Uploads the given texture data, overwriting a sub region of the texture
-  /// data that is already on the gpu.
+  /// Uploads the given texture data, overwriting a sub region of the texture data that is already on the gpu.
   void SubUpload(TextureData& textureData, int xOffset, int yOffset);
 
   // Used by graphics engine to upload data directly.

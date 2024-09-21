@@ -28,8 +28,7 @@ public:
 
 DeclareEnum2(SystemSpace, WorldSpace, LocalSpace);
 
-/// An interface for generating and managing particles of a generic definition
-/// using emitters and animators.
+/// An interface for generating and managing particles of a generic definition using emitters and animators.
 class ParticleSystem : public Graphical
 {
 public:
@@ -56,14 +55,13 @@ public:
   void SetBoundingBoxSize(float size);
   float mBoundingBoxSize;
 
-  /// If set, particle emission will happen for each particle in a parent
-  /// system.
+  /// If set, particle emission will happen for each particle in a parent system.
   bool GetChildSystem();
   void SetChildSystem(bool state);
   bool mChildSystem;
 
-  /// If particles are emitted into world space or if transform data remains
-  /// relative to the transform of the system object.
+  /// If particles are emitted into world space or if transform data remains relative to the transform of the system
+  /// object.
   SystemSpace::Enum mSystemSpace;
 
   /// The amount of time to simulate the particle system on startup. This will
@@ -74,8 +72,7 @@ public:
   void SetWarmUpTime(float time);
   float mWarmUpTime;
 
-  /// If the particle system should run on frame update in the editor instead of
-  /// logic update.
+  /// If the particle system should run on frame update in the editor instead of logic update.
   bool GetPreviewInEditor();
   void SetPreviewInEditor(bool state);
   bool mPreviewInEditor;

@@ -5,8 +5,7 @@
 namespace Zero
 {
 
-/// Renders a mesh using the transform hierarchy of a Skeleton to apply
-/// skinning.
+/// Renders a mesh using the transform hierarchy of a Skeleton to apply skinning.
 class SkinnedModel : public Graphical
 {
 public:
@@ -31,8 +30,7 @@ public:
   void SetMesh(Mesh* newMesh);
   HandleOf<Mesh> mMesh;
 
-  /// Path to an object with a Skeleton component that will be used for
-  /// skinning.
+  /// Path to an object with a Skeleton component that will be used for skinning.
   CogPath GetSkeletonPath();
   void SetSkeletonPath(CogPath path);
   CogPath mSkeletonPath;

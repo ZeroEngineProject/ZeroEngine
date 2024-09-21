@@ -310,20 +310,18 @@ RenderFont* FontRasterizer::UpdateRasteredFont(RenderFont* existingFont, Array<i
   LoadFontFace(existingFont->mFontHeight);
 
   CollectRenderGlyphInfo(newRuneCodes);
-  // We are checking whether or not we have to collect and re-rasterize the
-  // existing runes onto a new texture
+  // We are checking whether or not we have to collect and re-rasterize the existing runes onto a new texture
   bool isCurrentTexture = PrepareFontImage();
-  // subtex2d is broken in the old graphics engine, just always re-rasterize the
-  // whole font set
+  // subtex2d is broken in the old graphics engine, just always re-rasterize the whole font set
   if (isCurrentTexture == false)
   {
     // Since we are treating our render font as new, reset tracked values
     ResetRenderFont(mRenderFont->mFontHeight);
     CollectExisitingRuneCodes(newRuneCodes);
     CollectRenderGlyphInfo(newRuneCodes);
-    // After recollecting the existing runes we may need to increase the texture
-    // size again so re-run just in case, it deallocates/allocates again,
-    // investigate better solutions
+    // After recollecting the existing runes we may need to increase the texture size again
+    // so re-run just in case, it deallocates/allocates again, investigate
+    // better solutions
     PrepareFontImage();
   }
 
@@ -362,9 +360,8 @@ void FontRasterizer::LoadFontFace(int fontHeight)
   uint faceIndex = 0;
 
   // Load the font from the font file into memory
-  // We don't use the freetype file API because it doens't use our internal File
-  // wrapper and doesn't handle utf8. We CANNOT deallocate this file block here
-  // because freetype continues to reference it.
+  //  We don't use the freetype file API because it doens't use our internal File wrapper and doesn't handle utf8.
+  //  We CANNOT deallocate this file block here because freetype continues to reference it.
   mFontSource = ReadFileIntoDataBlock(mFontObject->LoadPath.c_str());
   // Create the font face from the file data now stored in memory
   int errorCode = FT_New_Memory_Face(mData->Library, mFontSource.Data, mFontSource.Size, faceIndex, &mData->FontFace);
@@ -432,8 +429,8 @@ void FontRasterizer::LoadGlyphsOntoTexture(bool isOriginalTexture)
 {
   int errorCode = 0;
 
-  // we want to track the starting texPos(X,Y) for where to start rendering
-  // glyphs after we have placed them in our image font
+  // we want to track the starting texPos(X,Y) for where to start rendering glyphs
+  // after we have placed them in our image font
   uint texPosX = mRenderFont->mTexPosX;
   uint texPosY = mRenderFont->mTexPosY;
 
@@ -446,8 +443,8 @@ void FontRasterizer::LoadGlyphsOntoTexture(bool isOriginalTexture)
   ComputeAndRasterizeGlyphs();
 
   HandleOf<Texture> texture;
-  // We have to special case if this is a new texture entirely, or if we are
-  // adding these glyphs to an existing texture
+  // We have to special case if this is a new texture entirely, or if we are adding
+  // these glyphs to an existing texture
   if (isOriginalTexture)
   {
     texture = mRenderFont->mTexture;
@@ -471,8 +468,8 @@ void FontRasterizer::LoadGlyphsOntoTexture(bool isOriginalTexture)
         texPosY += slotHeight;
         texPosX = cFontSpacing;
         timeToRasterStrip = true;
-        // since we 'counted' one glyph past the end we need to move our count
-        // back one to get all the glyphs should their be more to render
+        // since we 'counted' one glyph past the end we need to move our count back one to get all the glyphs
+        // should their be more to render
         glyphsInStrip -= 1;
         i -= 1;
       }
@@ -485,8 +482,8 @@ void FontRasterizer::LoadGlyphsOntoTexture(bool isOriginalTexture)
 
       if (timeToRasterStrip)
       {
-        // figure out the size of the sub image we will be copying and uploading
-        // to the existing rasterized font texture
+        // figure out the size of the sub image we will be copying and uploading to the
+        // existing rasterized font texture
         int stripWidth = slotWidth * glyphsInStrip;
         int stripHeight = slotHeight;
 
@@ -511,8 +508,7 @@ void FontRasterizer::LoadGlyphsOntoTexture(bool isOriginalTexture)
       }
     }
   }
-  // This is a new texture altogether so create a texture and load the image
-  // data into it
+  // This is a new texture altogether so create a texture and load the image data into it
   else
   {
     int textureSize = mRenderFont->mTextureSize;
@@ -539,8 +535,8 @@ void FontRasterizer::LoadGlyphsOntoTexture(bool isOriginalTexture)
     FT_GlyphSlot glyphSlot = mData->FontFace->glyph;
     mRenderFont->mRunes[cEmptyRuneIndex].Advance = (float)FtToPixels(glyphSlot->advance.x);
 
-    // If the hashmap resizes during an assignment the returned reference will
-    // be invalid so we need a copy here for assignment below.
+    // If the hashmap resizes during an assignment the returned reference will be invalid so we need
+    // a copy here for assignment below.
     RenderRune emptyRune = mRenderFont->mRunes[cEmptyRuneIndex];
     // Copy to other characters
     for (int i = 1; i <= cEmptyRuneIndex; ++i)
@@ -579,8 +575,7 @@ void FontRasterizer::ComputeAndRasterizeGlyphs()
 
   int errorCode = 0;
 
-  // even when adding new glyphs to an existing font texture this places them
-  // correctly
+  // even when adding new glyphs to an existing font texture this places them correctly
   for (uint n = 0; n < mGlyphInfo.Size(); n++)
   {
     RenderGlyph& curGlyph = mGlyphInfo[n];
@@ -630,9 +625,8 @@ void FontRasterizer::ComputeGlyphTextureCoordinates()
 {
   const float texSize = (float)mRenderFont->mTextureSize;
 
-  // Compute texture coordinates, since we place the glyphs in the respective
-  // positions on the font image this step doesn't change between new fonts or
-  // adding to existing sets
+  // Compute texture coordinates, since we place the glyphs in the respective positions
+  // on the font image this step doesn't change between new fonts or adding to existing sets
   Array<RenderGlyph>::range r = mGlyphInfo.All();
   for (; !r.Empty(); r.PopFront())
   {
@@ -667,8 +661,7 @@ bool FontRasterizer::PrepareFontImage()
   int& textureSize = mRenderFont->mTextureSize;
   int prevTextureSize = textureSize;
 
-  // then we need to see if we have a texture space available for the number of
-  // glyphs
+  // then we need to see if we have a texture space available for the number of glyphs
   while (!RoomOnTextureForRunes(mRenderFont->mTexPosX, mRenderFont->mTexPosY))
   {
     // increase texture size, there is no space

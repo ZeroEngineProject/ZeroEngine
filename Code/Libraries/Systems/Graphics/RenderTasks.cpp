@@ -368,8 +368,8 @@ void RenderTasksEvent::AddRenderTaskRenderPass(GraphicsRenderSettings& renderSet
 void RenderTasksEvent::AddRenderTaskSubRenderGroupPass(SubRenderGroupPass& subRenderGroupPass)
 {
   // Index 0 is always the base task entry and/or the defaults.
-  // The base task needs to know how many other tasks proceed it for sub
-  // RenderGroup settings, which is all the elements minus the one base task.
+  // The base task needs to know how many other tasks proceed it for sub RenderGroup settings,
+  // which is all the elements minus the one base task.
   uint subGroupCount = subRenderGroupPass.mSubData.Size() - 1;
 
   HashSet<Material*> materials;
@@ -386,9 +386,8 @@ void RenderTasksEvent::AddRenderTaskSubRenderGroupPass(SubRenderGroupPass& subRe
     if (subData.mRender)
     {
       AddShaderInputs(subData.mRenderPass, shaderInputsId);
-      // Okay to use the whole Material set from the base RenderGroup because
-      // inputs will just be cached but we need an input range entry for each
-      // unique shaderInputsId to find the inputs.
+      // Okay to use the whole Material set from the base RenderGroup because inputs will just be cached
+      // but we need an input range entry for each unique shaderInputsId to find the inputs.
       forRange (Material* material, materials.All())
         AddShaderInputs(material, shaderInputsId);
 
@@ -407,8 +406,7 @@ void RenderTasksEvent::AddRenderTaskSubRenderGroupPass(SubRenderGroupPass& subRe
     subGroupCount = 0;
   }
 
-  // Sub RenderGroups are sorted as the base group, only set the base as being
-  // used.
+  // Sub RenderGroups are sorted as the base group, only set the base as being used.
   mCamera->mUsedRenderGroupIds.Insert(subRenderGroupPass.mBaseRenderGroup->mSortId);
 }
 
@@ -432,8 +430,7 @@ void RenderTasksEvent::AddRenderTaskRenderPass(GraphicsRenderSettings& renderSet
     if (graphical->GetSpace() != mGraphicsSpace->GetOwner())
       continue;
 
-    // No sort values are needed, these entries are to be rendered in the order
-    // given
+    // No sort values are needed, these entries are to be rendered in the order given
     graphical->MidPhaseQuery(mGraphicsSpace->mVisibleGraphicals, *mCamera, nullptr);
     materials.Insert(graphical->mMaterial);
   }
@@ -445,9 +442,8 @@ void RenderTasksEvent::AddRenderTaskRenderPass(GraphicsRenderSettings& renderSet
 
   mCamera->mGraphicalIndexRanges.PushBack(indexRange);
 
-  // Adding to render group counts will make the camera setup a range for nodes
-  // that will end up in view block The indexes of this array correspond to
-  // render group id's, adding to it acts as a custom render group
+  // Adding to render group counts will make the camera setup a range for nodes that will end up in view block
+  // The indexes of this array correspond to render group id's, adding to it acts as a custom render group
   mCamera->mRenderGroupCounts.PushBack(indexRange.Count());
   uint groupId = mCamera->mRenderGroupCounts.Size() - 1;
 
@@ -610,8 +606,7 @@ void RenderTaskHelper::AddRenderTaskRenderPass(RenderSettings& renderSettings,
                                                uint subRenderGroupCount,
                                                bool render)
 {
-  // Don't validate targets if not rendering this group, none of the settings
-  // are made or used in this case.
+  // Don't validate targets if not rendering this group, none of the settings are made or used in this case.
   if (render && !ValidateRenderTargets(renderSettings))
     return;
 
@@ -774,9 +769,8 @@ void RenderTasksUpdateHelper(RenderTasksUpdateData& update)
   // signal to the camera that its data is needed for the RenderQueues
   update.mCamera->mRenderQueuesDataNeeded = true;
 
-  // tell GraphicsSpace and the Camera the index of the RenderTasks object so
-  // that they can later tell the RenderTasks what the FrameBlock and ViewBlock
-  // index is
+  // tell GraphicsSpace and the Camera the index of the RenderTasks object so that
+  // they can later tell the RenderTasks what the FrameBlock and ViewBlock index is
   update.mGraphicsSpace->mRenderTaskRangeIndices.PushBack(rangeIndex);
   update.mCamera->mRenderTaskRangeIndices.PushBack(rangeIndex);
 }

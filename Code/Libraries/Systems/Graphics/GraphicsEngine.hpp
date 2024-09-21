@@ -158,8 +158,7 @@ public:
   void ModifiedFragment(ZilchFragmentType::Enum type, StringParam name);
   void RemovedFragment(ZilchFragmentType::Enum type, StringParam name);
 
-  // ResourceLibraries don't know how to compile fragment libraries, so we do it
-  // here.
+  // ResourceLibraries don't know how to compile fragment libraries, so we do it here.
   void OnCompileZilchFragments(ZilchCompileFragmentEvent* event);
   void OnScriptsCompiledPrePatch(ZilchCompileEvent* event);
   void OnScriptsCompiledCommit(ZilchCompileEvent* event);

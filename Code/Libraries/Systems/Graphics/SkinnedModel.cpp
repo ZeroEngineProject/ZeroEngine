@@ -90,28 +90,23 @@ void SkinnedModel::ExtractFrameData(FrameNode& frameNode, FrameBlock& frameBlock
     return;
   }
 
-  // If a skinned mesh object has a transform that brings it to its bind
-  // location, then at every pose this transform has to be removed from each
-  // bone's bind transform. This allows us to maintain the mesh object's
-  // transform without applying it twice and also means that any animating that
-  // was done to the mesh object's transform is preserved. This results in
-  // changing the series of transforms:
+  // If a skinned mesh object has a transform that brings it to its bind location,
+  // then at every pose this transform has to be removed from each bone's bind transform.
+  // This allows us to maintain the mesh object's transform without applying it twice
+  // and also means that any animating that was done to the mesh object's transform is preserved.
+  // This results in changing the series of transforms:
   //   world * hierarchyPose * boneBind
   // To:
   //   world * hierarchyPose * (boneSpaceBindOffsetInv) * boneBind
-  // Where boneSpaceBindOffsetInv is the result of the similarity transform to
-  // boneSpace:
+  // Where boneSpaceBindOffsetInv is the result of the similarity transform to boneSpace:
   //   hierarchyPoseInv * bindOffsetInv * hierarchyPose
-  // This offset cannot be baked into the bone bind transforms because
-  // hierarchyPose is not constant. However, we can simplify the whole transform
-  // from:
-  //   world * hierarchyPose * (hierarchyPoseInv * bindOffsetInv *
-  //   hierarchyPose) * boneBind
+  // This offset cannot be baked into the bone bind transforms because hierarchyPose is not constant.
+  // However, we can simplify the whole transform from:
+  //   world * hierarchyPose * (hierarchyPoseInv * bindOffsetInv * hierarchyPose) * boneBind
   // To:
   //   world * bindOffsetInv * hierarchyPose * boneBind
-  // So that (hierarchyPose * boneBind) is the original transforms used for
-  // skinning as before, and accounting for the mesh's bind offset is just a
-  // concatenation with the world matrix (world * bindOffsetInv)
+  // So that (hierarchyPose * boneBind) is the original transforms used for skinning as before,
+  // and accounting for the mesh's bind offset is just a concatenation with the world matrix (world * bindOffsetInv)
   frameNode.mLocalToWorld = frameNode.mLocalToWorld * mMesh->mBindOffsetInv;
   frameNode.mLocalToWorldNormal = frameNode.mLocalToWorldNormal * Math::ToMatrix3(mMesh->mBindOffsetInv);
 

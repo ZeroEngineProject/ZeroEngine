@@ -9,7 +9,7 @@ class DefinitionCreator
 {
 public:
   virtual BaseDefinition* Create() = 0;
-  virtual ~DefinitionCreator(){};
+  virtual ~DefinitionCreator() {};
 };
 
 template <typename type>
@@ -31,8 +31,8 @@ class BaseDefinition : public Resource
 public:
   virtual void Initialize() = 0;
   virtual void Serialize(Serializer& stream) = 0;
-  virtual void SetParent(DefinitionSet* set){};
-  virtual ~BaseDefinition(){};
+  virtual void SetParent(DefinitionSet* set) {};
+  virtual ~BaseDefinition() {};
 };
 
 /// Base Definition Collection

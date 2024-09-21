@@ -11,8 +11,7 @@ DeclareEvent(RenderTasksUpdate);
 DeclareEvent(RenderTasksUpdateInternal);
 } // namespace Events
 
-/// A list for custom specifying which Graphicals and in what draw order for a
-/// RenderPass.
+/// A list for custom specifying which Graphicals and in what draw order for a RenderPass.
 class GraphicalRangeInterface
 {
 public:
@@ -30,8 +29,7 @@ public:
   Array<Graphical*> mGraphicals;
 };
 
-/// Interface used to define unique render settings for a base RenderGroup and
-/// its sub RenderGroups.
+/// Interface used to define unique render settings for a base RenderGroup and its sub RenderGroups.
 class SubRenderGroupPass : public SafeId32
 {
 public:
@@ -39,20 +37,16 @@ public:
 
   SubRenderGroupPass(RenderTasksEvent* renderTasksEvent, RenderGroup& baseRenderGroup);
 
-  /// Resets interface back to the initial creation state with a given base
-  /// RenderGroup.
+  /// Resets interface back to the initial creation state with a given base RenderGroup.
   void Reset(RenderGroup& baseRenderGroup);
-  /// Settings to use for the base or all sub RenderGroups that do not have
-  /// specified settings. Without defaults, the base or any sub RenderGroup
-  /// without settings will not render.
+  /// Settings to use for the base or all sub RenderGroups that do not have specified settings.
+  /// Without defaults, the base or any sub RenderGroup without settings will not render.
   void SetDefaultSettings(GraphicsRenderSettings& defaultSettings, MaterialBlock& defaultPass);
   /// Define the settings to use for a specific RenderGroup.
-  /// Given RenderGroup must be a child of the base RenderGroup, or the base
-  /// itself, that this was initialized with.
+  /// Given RenderGroup must be a child of the base RenderGroup, or the base itself, that this was initialized with.
   void AddSubSettings(GraphicsRenderSettings& subSettings, RenderGroup& subGroup, MaterialBlock& subPass);
-  /// Explicitely exclude a RenderGroup from rendering when there are default
-  /// settings. Given RenderGroup must be a child of the base RenderGroup, or
-  /// the base itself, that this was initialized with.
+  /// Explicitely exclude a RenderGroup from rendering when there are default settings.
+  /// Given RenderGroup must be a child of the base RenderGroup, or the base itself, that this was initialized with.
   void ExcludeSubRenderGroup(RenderGroup& subGroup);
 
   // Internal
@@ -72,8 +66,7 @@ public:
   Array<SubData> mSubData;
 };
 
-/// Interface for adding tasks for the renderer, essentially defining a
-/// rendering pipeline.
+/// Interface for adding tasks for the renderer, essentially defining a rendering pipeline.
 class RenderTasksEvent : public Event
 {
 public:
@@ -82,31 +75,24 @@ public:
   RenderTasksEvent();
   ~RenderTasksEvent();
 
-  /// Object with the CameraViewport component that this event is getting tasks
-  /// for.
+  /// Object with the CameraViewport component that this event is getting tasks for.
   Cog* GetCameraViewportCog();
-  /// Size of the UI viewport, or the resolution on CameraViewport if not
-  /// rendering to viewport.
+  /// Size of the UI viewport, or the resolution on CameraViewport if not rendering to viewport.
   IntVec2 GetViewportSize();
 
   // Dimensions are clamped to [1, 4096]
-  /// Returns a RenderTarget for use when adding render tasks. Target only valid
-  /// during this event.
+  /// Returns a RenderTarget for use when adding render tasks. Target only valid during this event.
   HandleOf<RenderTarget> GetRenderTarget(IntVec2 size, TextureFormat::Enum format);
-  /// Returns a RenderTarget for use when adding render tasks. Target only valid
-  /// during this event.
+  /// Returns a RenderTarget for use when adding render tasks. Target only valid during this event.
   HandleOf<RenderTarget> GetRenderTarget(IntVec2 size, TextureFormat::Enum format, SamplerSettings& samplerSettings);
-  /// Returns a RenderTarget for use when adding render tasks. Target only valid
-  /// during this event. Will render to the given texture instead of an
-  /// internally managed texture.
+  /// Returns a RenderTarget for use when adding render tasks. Target only valid during this event.
+  /// Will render to the given texture instead of an internally managed texture.
   HandleOf<RenderTarget> GetRenderTarget(HandleOf<Texture> texture);
 
-  /// Creates the interface used to define unique render settings for a base
-  /// RenderGroup and its sub RenderGroups. The given RenderGroup is used to
-  /// define the hierarchy, or sub hierarchy, that should be rendered. The given
-  /// RenderGroup also defines the sort order for all objects that are within
-  /// its hierarchy. Returned SubRenderGroupPass is only valid during this
-  /// event.
+  /// Creates the interface used to define unique render settings for a base RenderGroup and its sub RenderGroups.
+  /// The given RenderGroup is used to define the hierarchy, or sub hierarchy, that should be rendered.
+  /// The given RenderGroup also defines the sort order for all objects that are within its hierarchy.
+  /// Returned SubRenderGroupPass is only valid during this event.
   HandleOf<SubRenderGroupPass> CreateSubRenderGroupPass(RenderGroup& baseGroup);
 
   /// Initializes all the internal texture data for the given RenderTargets.
@@ -139,20 +125,19 @@ public:
   void AddRenderTaskClearTarget(
       GraphicsRenderSettings& renderSettings, Vec4 color, float depth, uint stencil, uint stencilWriteMask);
 
-  /// Renders a group of objects with the given settings. The RenderPass
-  /// fragment defines what data is written to RenderTargets.
+  /// Renders a group of objects with the given settings. The RenderPass fragment defines what data is written to
+  /// RenderTargets.
   void AddRenderTaskRenderPass(GraphicsRenderSettings& renderSettings,
                                RenderGroup& renderGroup,
                                MaterialBlock& renderPass);
-  /// Renders a group of objects with the given settings. The RenderPass
-  /// fragment defines what data is written to RenderTargets.
+  /// Renders a group of objects with the given settings. The RenderPass fragment defines what data is written to
+  /// RenderTargets.
   void AddRenderTaskRenderPass(GraphicsRenderSettings& renderSettings,
                                GraphicalRangeInterface& graphicalRange,
                                MaterialBlock& renderPass);
 
-  /// Renders all objects within a RenderGroup hierarchy, sorted in the order
-  /// defined by the base RenderGroup, and can use unique render settings for
-  /// each RenderGroup in the hierarchy.
+  /// Renders all objects within a RenderGroup hierarchy, sorted in the order defined by the base RenderGroup,
+  /// and can use unique render settings for each RenderGroup in the hierarchy.
   void AddRenderTaskSubRenderGroupPass(SubRenderGroupPass& subRenderGroupPass);
 
   /// Invokes the pixel shader for every pixel of the RenderTargets.
@@ -167,11 +152,11 @@ public:
   // Internal for the graphics engine.
   void AddRenderTaskBackBufferBlit(RenderTarget* colorTarget, ScreenViewport viewport);
 
-  /// Returns a RenderTarget for rendering to the CameraViewport's FinalTexture
-  /// that represents the end result of the renderer.
+  /// Returns a RenderTarget for rendering to the CameraViewport's FinalTexture that represents the end result of the
+  /// renderer.
   HandleOf<RenderTarget> GetFinalTarget(IntVec2 size, TextureFormat::Enum format);
-  /// Returns a RenderTarget for rendering to the CameraViewport's FinalTexture
-  /// that represents the end result of the renderer.
+  /// Returns a RenderTarget for rendering to the CameraViewport's FinalTexture that represents the end result of the
+  /// renderer.
   HandleOf<RenderTarget> GetFinalTarget(IntVec2 size, TextureFormat::Enum format, SamplerSettings& samplerSettings);
 
   // Internal
@@ -189,8 +174,7 @@ public:
   GraphicsSpace* mGraphicsSpace;
   Camera* mCamera;
 
-  // All created SubRenderGroupPasses have to be destroyed when the event is
-  // done.
+  // All created SubRenderGroupPasses have to be destroyed when the event is done.
   Array<SubRenderGroupPass*> mSubRenderGroupPasses;
 };
 

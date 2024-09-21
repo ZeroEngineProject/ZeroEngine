@@ -32,8 +32,7 @@ public:
   // because they are used automatically in shader permutation generation
   HashSet<BoundType*> mRestrictedComponents;
 
-  // Keeping track of geometry fragments so that using multiple can be
-  // disallowed
+  // Keeping track of geometry fragments so that using multiple can be disallowed
   HashSet<BoundType*> mGeometryComponents;
 };
 

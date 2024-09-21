@@ -24,11 +24,7 @@ ZilchDefineType(RenderGroup, builder, type)
 }
 
 RenderGroup::RenderGroup() :
-    mSerializedList(this),
-    mReferencedByList(this),
-    mChildRenderGroups(this),
-    mParentInternal(nullptr),
-    mSortId(-1)
+    mSerializedList(this), mReferencedByList(this), mChildRenderGroups(this), mParentInternal(nullptr), mSortId(-1)
 {
   mSerializedList.mDisplayName = "Materials";
   mReferencedByList.mDisplayName = "ReferencedBy";
@@ -137,13 +133,11 @@ HandleOf<RenderGroup> RenderGroup::GetParentRenderGroup()
 
 void RenderGroup::SetParentRenderGroup(HandleOf<RenderGroup> renderGroup)
 {
-  // If parent is established by this being in its child list, do not allow
-  // changing this property. This limitation is for simplicity's sake in
-  // managing the RenderGroup hierarchies.
+  // If parent is established by this being in its child list, do not allow changing this property.
+  // This limitation is for simplicity's sake in managing the RenderGroup hierarchies.
   if (mParentInternal != nullptr && mParentInternal->mChildRenderGroups.mResourceIdNames.Contains(ResourceIdName))
     return DoNotifyWarning("Cannot modify parent",
-                           "RenderGroup is in the child list of the other and "
-                           "can only be removed from there.");
+                           "RenderGroup is in the child list of the other and can only be removed from there.");
 
   // Null will not be a sub group and is valid to set as the parent.
   RenderGroup* group = renderGroup;

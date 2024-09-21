@@ -438,8 +438,7 @@ void ReflectParticle(Particle* particle, Vec3Param planeNormal, float restitutio
   // Reflect
   velocity = Math::ReflectAcrossPlane(velocity, planeNormal);
 
-  // Split up the velocity so we can apply restitution and friction in different
-  // directions
+  // Split up the velocity so we can apply restitution and friction in different directions
   Vec3 velocityNormal = Math::ProjectOnVector(velocity, planeNormal);
   Vec3 velocityTangent = velocity - velocityNormal;
 
@@ -488,8 +487,7 @@ float ParticleCollisionPlane::GetRestitution()
 
 void ParticleCollisionPlane::SetRestitution(float restitution)
 {
-  // Negative numbers can cause a particle to infinitely speed up, causing
-  // floating point errors
+  // Negative numbers can cause a particle to infinitely speed up, causing floating point errors
   mRestitution = Math::Max(0.0f, restitution);
 }
 
@@ -584,8 +582,7 @@ float ParticleCollisionHeightmap::GetRestitution()
 
 void ParticleCollisionHeightmap::SetRestitution(float restitution)
 {
-  // Negative numbers can cause a particle to infinitely speed up, causing
-  // floating point errors
+  // Negative numbers can cause a particle to infinitely speed up, causing floating point errors
   mRestitution = Math::Max(0.0f, restitution);
 }
 

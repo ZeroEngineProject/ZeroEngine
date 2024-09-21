@@ -60,8 +60,7 @@ public:
   /// The character found can be rounded up to nearest or last valid.
   uint GetPosition(StringRange text, float offset, float unitsPerPixel, TextRounding::Enum rounding);
 
-  // We need to keep track of what font is being used for at use loading of
-  // symbols
+  // We need to keep track of what font is being used for at use loading of symbols
   Font* mFont;
   // Font size in pixels
   int mFontHeight;
@@ -112,8 +111,7 @@ public:
   RenderFont* GetRenderFont(StringParam face, uint size, uint flags);
 };
 
-// Font Rasterizer helper class, creates new Render Fonts or updates existing
-// ones
+// Font Rasterizer helper class, creates new Render Fonts or updates existing ones
 class FontRasterizer
 {
 public:
@@ -124,14 +122,12 @@ public:
   RenderFont* UpdateRasteredFont(RenderFont* existingFont, Rune newRuneCode);
   RenderFont* UpdateRasteredFont(RenderFont* existingFont, Array<int>& newRuneCodes);
 
-  // Must be called within RasterNewFont or UpdateReasteredFont before
-  // additional calls this is better than constantly passing the RenderFont into
-  // each function herein
+  // Must be called within RasterNewFont or UpdateReasteredFont before additional calls
+  // this is better than constantly passing the RenderFont into each function herein
   void SetRenderFont(RenderFont* renderFont);
   void ResetRenderFont(int fontHeight);
 
-  /// FT_Face is a pointer to the freetype face object and must be released
-  /// later
+  /// FT_Face is a pointer to the freetype face object and must be released later
   void LoadFontFace(int fontHeight);
 
   void CollectRenderGlyphInfo(Array<int>& runeCodes);
