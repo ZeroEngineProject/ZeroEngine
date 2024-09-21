@@ -5,19 +5,17 @@ namespace Zero
 {
 
 ArchetypeProcessor::ArchetypeProcessor(GeneratedArchetype* generatedArchetype, HierarchyDataMap& hierarchyData) :
-    mGeneratedArchetype(generatedArchetype),
-    mHierarchyDataMap(hierarchyData)
+    mGeneratedArchetype(generatedArchetype), mHierarchyDataMap(hierarchyData)
 {
 }
 
 void ArchetypeProcessor::BuildSceneGraph(String rootNode)
 {
-  // We will go through the hierarchy building our scene graph starting with the
-  // root All assimp scenes have their root named RootNode
+  // We will go through the hierarchy building our scene graph starting with the root
+  // All assimp scenes have their root named RootNode
   HierarchyData nodeData = mHierarchyDataMap[rootNode];
 
-  // these nodes represent the hierarchy of the cogs that will construct an
-  // archetype on import
+  // these nodes represent the hierarchy of the cogs that will construct an archetype on import
   mSceneSource.Name = rootNode;
   mSceneSource.Root = BuildSceneNodes(nodeData);
 }

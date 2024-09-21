@@ -17,8 +17,7 @@ String SanitizeContentFilename(StringParam filename)
 
 ZilchDefineType(ImageOptions, builder, type)
 {
-  // These options are referred to directly by pointer on the import options
-  // (unsafe for script)
+  // These options are referred to directly by pointer on the import options (unsafe for script)
   type->HandleManager = ZilchManagerId(PointerManager);
 
   ZeroBindExpanded();
@@ -32,8 +31,7 @@ ImageOptions::ImageOptions(ImportOptions* owner) : mOwner(owner)
 
 ZilchDefineType(GeometryOptions, builder, type)
 {
-  // These options are referred to directly by pointer on the import options
-  // (unsafe for script)
+  // These options are referred to directly by pointer on the import options (unsafe for script)
   type->HandleManager = ZilchManagerId(PointerManager);
 
   ZeroBindExpanded();
@@ -101,8 +99,7 @@ bool ShowNormalGenerationOptionsFilter::Filter(Member* prop, HandleParam instanc
 
 ZilchDefineType(AudioOptions, builder, type)
 {
-  // These options are referred to directly by pointer on the import options
-  // (unsafe for script)
+  // These options are referred to directly by pointer on the import options (unsafe for script)
   type->HandleManager = ZilchManagerId(PointerManager);
 
   ZeroBindExpanded();
@@ -120,8 +117,7 @@ AudioOptions::AudioOptions(ImportOptions* owner) : mOwner(owner)
 
 ZilchDefineType(ConflictOptions, builder, type)
 {
-  // These options are referred to directly by pointer on the import options
-  // (unsafe for script)
+  // These options are referred to directly by pointer on the import options (unsafe for script)
   type->HandleManager = ZilchManagerId(PointerManager);
 
   ZeroBindExpanded();
@@ -148,8 +144,7 @@ ConflictAction::Enum ConflictOptions::GetAction()
 
 ZilchDefineType(ImportOptions, builder, type)
 {
-  // These options are referred to directly by pointer on the import options
-  // (unsafe for script)
+  // These options are referred to directly by pointer on the import options (unsafe for script)
   type->HandleManager = ZilchManagerId(PointerManager);
 
   ZilchBindFieldProperty(mImageOptions);

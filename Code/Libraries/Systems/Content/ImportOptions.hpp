@@ -7,8 +7,7 @@ namespace Zero
 
 // Support Functions
 
-// Sanitizes the name of the content file to be compatible with cog, archetype,
-// and resource names
+// Sanitizes the name of the content file to be compatible with cog, archetype, and resource names
 String SanitizeContentFilename(StringParam filename);
 
 DeclareEnum2(ImageImport, Textures, Sprites);
@@ -54,13 +53,12 @@ public:
   bool mImportMeshes;
   // sub mesh import options only visible if importing a mesh
   bool mCombineMeshes;
-  // overwrites imported normals with generated ones, generates normals if none
-  // are present either way
+  // overwrites imported normals with generated ones, generates normals if none are present either way
   bool mGenerateSmoothNormals;
   // the angle at or under which two normals are averaged together
   float mSmoothingAngleDegreesThreshold;
-  // overwrites imported tangents and bitangents with generated ones, generates
-  // tangents and bitangents if none are present either way
+  // overwrites imported tangents and bitangents with generated ones, generates tangents and bitangents if none are
+  // present either way
   bool mGenerateTangentSpace;
   // flips the y-axis and adjusts tangent space as needed
   bool mInvertUvYAxis;
@@ -68,8 +66,7 @@ public:
   PhysicsImport::Enum mPhysicsImport;
   // end sub mesh import options
 
-  /// Warning: When collapsing pivots on models non-embedded animations may not
-  /// remain compatible
+  /// Warning: When collapsing pivots on models non-embedded animations may not remain compatible
   bool mCollapsePivots;
   bool mImportAnimations;
   bool mCreateArchetype;

@@ -42,11 +42,9 @@ public:
   static const unsigned cMaxPacketSize = 4000;
 
 private:
-  // Reads in audio data from a WAV file and puts it into the AudioFileData
-  // buffer
+  // Reads in audio data from a WAV file and puts it into the AudioFileData buffer
   static void ReadWav(Status& status, File& file, StringParam fileName, AudioFileData& data);
-  // Reads in audio data from an OGG file and puts it into the AudioFileData
-  // buffer
+  // Reads in audio data from an OGG file and puts it into the AudioFileData buffer
   static void ReadOgg(Status& status, File& file, StringParam fileName, AudioFileData& data);
   // Translates PCM audio data to floats
   static bool PcmToFloat(::byte* inputBuffer,
@@ -54,8 +52,7 @@ private:
                          const unsigned totalSampleCount,
                          const unsigned channelCount,
                          const unsigned bytesPerSample);
-  // Processes the audio data so that its volume peak matches the specified max
-  // volume
+  // Processes the audio data so that its volume peak matches the specified max volume
   static void Normalize(float** samplesPerChannel, const unsigned frames, const unsigned channels, float maxVolume);
   // Resamples the audio data to match the system's sample rate
   static unsigned
@@ -95,8 +92,8 @@ public:
   // Initializes encoder for use with EncodePacket.
   // If the encoder already exists, it will be destroyed and re-created.
   void InitializeEncoder();
-  // Encodes a single packet of data and allocates a buffer for the encoded
-  // data. Number of samples must be the same as PacketFrames
+  // Encodes a single packet of data and allocates a buffer for the encoded data.
+  // Number of samples must be the same as PacketFrames
   void EncodePacket(const float* dataBuffer, const unsigned samples, Zero::Array<::byte>& encodedData);
 
   static const unsigned cChannels = 1;

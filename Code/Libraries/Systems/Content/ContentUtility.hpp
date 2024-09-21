@@ -13,8 +13,8 @@ bool CheckFileAndMeta(BuildOptions& options, StringParam sourceFile, StringParam
 /// Check the output file against the tool file.
 bool CheckToolFile(BuildOptions& options, StringParam outputFile, StringParam toolFile);
 
-/// Check the file modified time and file size. If the source file is newer or a
-/// different size then the file needs to be built.
+/// Check the file modified time and file size. If the source file is newer or a different
+/// size then the file needs to be built.
 bool CheckFileMetaAndSize(BuildOptions& options, StringParam sourceFile, StringParam destFile);
 
 template <typename type>

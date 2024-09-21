@@ -54,8 +54,8 @@ void SoundBuilder::Serialize(Serializer& stream)
   SerializeNameDefault(mNormalize, false);
   SerializeNameDefault(mMaxVolume, 0.9f);
 
-  // This should be removed at the next major version (makes sure that we keep
-  // the streaming setting for existing sounds)
+  // This should be removed at the next major version (makes sure that we keep the streaming
+  // setting for existing sounds)
   if (stream.GetType() != SerializerType::Binary && stream.GetMode() == SerializerMode::Loading)
   {
     SerializeNameDefault(mStreamed, false);

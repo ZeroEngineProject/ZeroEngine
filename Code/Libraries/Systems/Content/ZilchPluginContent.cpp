@@ -50,8 +50,7 @@ void ZilchPluginBuilder::Rename(StringParam newName)
 {
   DataBuilder::Rename(newName);
   DoNotifyWarning("Zilch Plugin",
-                  "You must rename the plugin directory and all the contents "
-                  "(projects, solutions, make files, etc)");
+                  "You must rename the plugin directory and all the contents (projects, solutions, make files, etc)");
 }
 
 String ZilchPluginBuilder::GetSharedLibraryPlatformName()
@@ -60,14 +59,12 @@ String ZilchPluginBuilder::GetSharedLibraryPlatformName()
 
   // This is not currently used because we ensured that Debug/Release builds
   // of the plugins are compatible with both Debug/Release builds of Zero
-  // Note that this relates to linked libraries within the generated project
-  // files (plugin templates) The template projects also generate dynamic
-  // libraries with extensions that could include Debug/Release
+  // Note that this relates to linked libraries within the generated project files (plugin templates)
+  // The template projects also generate dynamic libraries with extensions that could include Debug/Release
   // builder.Append(GetConfigurationString());
   // builder.Append('-');
 
-  // Append the operating system name (or some grouped name for all OSes that
-  // support this shared library)
+  // Append the operating system name (or some grouped name for all OSes that support this shared library)
   builder.Append(ZeroTargetOsName);
   builder.Append('-');
 
@@ -116,8 +113,8 @@ void ZilchPluginBuilder::Generate(ContentInitializer& initializer)
 void ZilchPluginBuilder::BuildContent(BuildOptions& buildOptions)
 {
   // This must run before the template early out so that we output the data file
-  // to the content output directory and the template plugin stops thinking it
-  // needs to build every time we run Zero.
+  // to the content output directory and the template plugin stops thinking it needs 
+  // to build every time we run Zero.
   DataBuilder::BuildContent(buildOptions);
 
   // Don't build the resource template plugin.
@@ -200,8 +197,7 @@ ContentItem* MakeZilchPluginContent(ContentInitializer& initializer)
     String outputFileName = templateFileName.Replace(ReplaceName, pluginName);
     String outputFile = FilePath::Combine(codeDir, outputFileName);
 
-    // Everything we're writing in this template is string data that required
-    // replacements
+    // Everything we're writing in this template is string data that required replacements
     String data = ReadFileIntoString(templateFile.c_str());
 
     // Replace any guids and names inside the template text files

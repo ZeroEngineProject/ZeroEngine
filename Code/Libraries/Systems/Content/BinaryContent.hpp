@@ -5,8 +5,8 @@ namespace Zero
 {
 
 // BinaryContent Item. Binary content is content that is directly edited
-// by the editor in its binary form, or just generic binary data that requires
-// no processing.
+// by the editor in its binary form, or just generic binary data that requires no
+// processing.
 class BinaryContent : public ContentComposition
 {
 public:

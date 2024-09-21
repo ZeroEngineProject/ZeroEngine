@@ -66,10 +66,7 @@ void MeshBuilder::BuildListing(ResourceListing& listing)
 }
 
 VertexAttribute::VertexAttribute(VertexSemantic::Enum semantic, VertexElementType::Enum type, ::byte count, ::byte offset) :
-    mSemantic(semantic),
-    mType(type),
-    mCount(count),
-    mOffset(offset)
+    mSemantic(semantic), mType(type), mCount(count), mOffset(offset)
 {
 }
 

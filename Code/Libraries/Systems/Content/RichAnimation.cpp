@@ -277,8 +277,7 @@ TrackNode::TrackNode(StringParam name,
     }
     else
     {
-      Error("The property we tried to animate was not a BoundType (may be "
-            "because of the meta refactor)");
+      Error("The property we tried to animate was not a BoundType (may be because of the meta refactor)");
       mPropertyType = ZilchTypeId(void);
     }
   }
@@ -358,8 +357,7 @@ void TrackNode::Initialize(RichAnimation* richAnimation, TrackNode* parent)
 
         if (mPropertyType == nullptr)
         {
-          Error("The property we tried to animate was not a BoundType (may be "
-                "because of the meta refactor)");
+          Error("The property we tried to animate was not a BoundType (may be because of the meta refactor)");
           mPropertyType = ZilchTypeId(void);
         }
       }
@@ -628,8 +626,7 @@ TrackNode* TrackNode::IsValid(Cog* animGraphObject, Status& status)
   }
   case TrackType::Property:
   {
-    // Check to see if the property exists (could be gone from script
-    // components)
+    // Check to see if the property exists (could be gone from script components)
     Property* prop = GetProperty(animGraphObject);
     if (prop == nullptr)
     {
@@ -641,8 +638,7 @@ TrackNode* TrackNode::IsValid(Cog* animGraphObject, Status& status)
     // If the type has changed from the initial type the track was created with
     else if (prop->PropertyType != mPropertyType)
     {
-      // The stored type could no longer exist (such as a removed custom
-      // resource)
+      // The stored type could no longer exist (such as a removed custom resource)
       BoundType* storedType = mPropertyType;
 
       // The current type should exist as it's currently on the object
@@ -1083,8 +1079,7 @@ void BakeSubPropertyKeyFrames(TrackNode* vectorTrack, Array<TrackNode::KeyEntry>
   float range = endTime - startTime;
   const float cStep = 0.003f;
 
-  // Step through and sample at the given times. This will stop before the
-  // endTime
+  // Step through and sample at the given times. This will stop before the endTime
   for (float t = startTime; t < endTime; t += cStep)
   {
     // Sampling the property track of a vector type will sample each
@@ -1349,8 +1344,7 @@ void RichAnimation::BakeToAnimation(Animation* animation)
   // Clear the animation of any data
   //   forRange(ObjectTrack& objectTrack, animation->ObjectTracks.All())
   //   {
-  //     forRange(PropertyTrack& propertyTrack,
-  //     objectTrack.PropertyTracks.All())
+  //     forRange(PropertyTrack& propertyTrack, objectTrack.PropertyTracks.All())
   //     {
   //       delete &propertyTrack;
   //     }

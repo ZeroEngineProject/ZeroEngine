@@ -37,8 +37,7 @@ bool TypeExtensionEntry::IsValidExtensionNoDot(StringParam extension) const
 
 FileExtensionManager::FileExtensionManager()
 {
-  // Create default type entries. The first one in the list is assumed to be the
-  // default extension
+  // Create default type entries. The first one in the list is assumed to be the default extension
   TypeExtensionEntry& zilchEntry = mTypeExtensionEntries["ZilchScript"];
   zilchEntry.mExtensions.PushBack("zilchscript");
   zilchEntry.mExtensions.PushBack("z");

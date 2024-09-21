@@ -7,9 +7,7 @@ namespace Zero
 PivotProcessor::PivotProcessor(HierarchyDataMap& hierarchyData,
                                String& rootNodeName,
                                AnimationNodeRedirectMap& animationRedirectMap) :
-    mHierarchyDataMap(hierarchyData),
-    mRootNodeName(rootNodeName),
-    mAnimationRedirectMap(animationRedirectMap)
+    mHierarchyDataMap(hierarchyData), mRootNodeName(rootNodeName), mAnimationRedirectMap(animationRedirectMap)
 {
 }
 
@@ -60,8 +58,7 @@ String PivotProcessor::CollapsePivotHierarchy(HierarchyData& startNode, bool pre
 {
   // Compute the collapsed pivots transform
   ErrorIf(startNode.mChildren.Size() > 1 || startNode.mChildren.Empty(),
-          "Pivot Hierarchies should not have a pivot node with more than 1 "
-          "child or be empty");
+          "Pivot Hierarchies should not have a pivot node with more than 1 child or be empty");
 
   Array<String> nodesToRemove;
   nodesToRemove.PushBack(startNode.mNodeName);
@@ -72,8 +69,8 @@ String PivotProcessor::CollapsePivotHierarchy(HierarchyData& startNode, bool pre
   bool isPivot = true;
   Mat4 transformData = startNode.mLocalTransform;
 
-  // If there is an animation node set then this nodes local transform for
-  // animation correction is the transform from each single track value
+  // If there is an animation node set then this nodes local transform for animation correction
+  // is the transform from each single track value
   if (startNode.mAnimationNode)
     animationCorrection = animationCorrection * GetLocalTransfromFromAnimation(startNode.mAnimationNode);
   else if (preAnimationCorrection)
@@ -81,8 +78,7 @@ String PivotProcessor::CollapsePivotHierarchy(HierarchyData& startNode, bool pre
   else
     animationCorrection = Mat4::cIdentity;
 
-  // Go down the pivot hierarchy updating the local transform all the way down
-  // to our base node
+  // Go down the pivot hierarchy updating the local transform all the way down to our base node
   while (isPivot)
   {
     HierarchyData& childData = mHierarchyDataMap[childName];
@@ -113,8 +109,8 @@ String PivotProcessor::CollapsePivotHierarchy(HierarchyData& startNode, bool pre
     baseNode.mPostAnimationCorrection = animationCorrection * baseNode.mLocalTransform;
   }
 
-  // The animation correction needs the base nodes original local transform so
-  // set this data after storing the animation correction data
+  // The animation correction needs the base nodes original local transform so set this
+  // data after storing the animation correction data
   baseNode.mLocalTransform = transformData;
 
   // Update the base nodes data to reflect the collapsed hierarchy
@@ -122,8 +118,7 @@ String PivotProcessor::CollapsePivotHierarchy(HierarchyData& startNode, bool pre
   baseNode.mParentNodeName = parentdata.mNodeName;
   baseNode.mNodePath = BuildString(parentdata.mNodePath, cAnimationPathDelimiterStr, baseNode.mNodeName);
 
-  // Remove the original child node from the pivots parent node and set it to
-  // our base node
+  // Remove the original child node from the pivots parent node and set it to our base node
   parentdata.mChildren.EraseValue(startNode.mNodeName);
   parentdata.mChildren.PushBack(childName);
 
@@ -135,18 +130,16 @@ String PivotProcessor::CollapsePivotHierarchy(HierarchyData& startNode, bool pre
   for (size_t i = 0; i < nodesToRemove.Size(); ++i)
     mHierarchyDataMap.Erase(nodesToRemove[i]);
 
-  // NOTE: Collapsing animated pivots down through a hierarchy can result in the
-  // need to add new animation frames and will be discussed and revisited later.
+  // NOTE: Collapsing animated pivots down through a hierarchy can result in the need to add
+  // new animation frames and will be discussed and revisited later.
 
-  // Check the children nodes below our base node and collapse the animations
-  // down through any pivots that are not animated themselves, only works if
-  // there is one child
+  // Check the children nodes below our base node and collapse the animations down
+  // through any pivots that are not animated themselves, only works if there is one child
   // if (baseNode.mChildren.Size() == 1 && preAnimationCorrection)
   //{
   //  HierarchyData& childNode = mHierarchyDataMap[baseNode.mChildren[0]];
   //
-  //  // If our new base node is not an animated pivot or if our child is also
-  //  an animated pivot
+  //  // If our new base node is not an animated pivot or if our child is also an animated pivot
   //  // do not attempt to collapse the hierarchy further
   //  if (!baseNode.mIsAnimatedPivot || childNode.mIsAnimatedPivot)
   //    return baseNode.mNodeName;
@@ -155,9 +148,9 @@ String PivotProcessor::CollapsePivotHierarchy(HierarchyData& startNode, bool pre
   //  HierarchyData& nodeCollapsedTo = mHierarchyDataMap[nodeCollapsedToName];
   //  nodeCollapsedTo.mIsAnimatedPivot = true;
   //  // The animated node was collapsed as far down as possible
-  //  // Key the old nodes animations to the node it was collapsed into for the
-  //  animation processor mAnimationRedirectMap.Insert(baseNodeName,
-  //  nodeCollapsedToName); return nodeCollapsedToName;
+  //  // Key the old nodes animations to the node it was collapsed into for the animation processor
+  //  mAnimationRedirectMap.Insert(baseNodeName, nodeCollapsedToName);
+  //  return nodeCollapsedToName;
   //}
 
   return baseNodeName;
@@ -170,9 +163,8 @@ void PivotProcessor::CorrectSkeletonPath(HierarchyData& node)
   StringRange skeletonRootStart = skeletonPath.FindLastOf(cCogPathParent);
   String skeletonRootName = skeletonPath.SubString(skeletonRootStart.End(), skeletonPath.End());
 
-  // Walk up to the root node to build the path to the new skeleton root for the
-  // collapsed hierarchy, the skeleton root will always be one level below the
-  // root node
+  // Walk up to the root node to build the path to the new skeleton root for the collapsed
+  // hierarchy, the skeleton root will always be one level below the root node
   StringBuilder skeletonRootCogPath;
   String nodeName = node.mNodeName;
   while (nodeName != "RootNode")

@@ -40,8 +40,7 @@ public:
   SpriteDataMembers();
 };
 
-// Sprite source builder outputs a png to be composited at runtime by the
-// engine.
+// Sprite source builder outputs a png to be composited at runtime by the engine.
 class SpriteSourceBuilder : public DirectBuilderComponent
 {
 public:

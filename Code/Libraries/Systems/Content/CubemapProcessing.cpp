@@ -10,10 +10,8 @@ namespace Zero
 
 // Aspect ratios of valid cubemap layouts: 1/6, 6/1, 2/3, 3/2, 3/4, 4/3, 4/2
 // Cubemap faces are processed from the image as shown in the diagrams below
-// Face locations are world space axis and images are expected to be viewed from
-// the origin
-// +/-Y faces are expected to be oriented on the top/bottom of the +Z face for
-// all layouts
+// Face locations are world space axis and images are expected to be viewed from the origin
+// +/-Y faces are expected to be oriented on the top/bottom of the +Z face for all layouts
 
 // 1/6
 //  ___
@@ -712,8 +710,7 @@ Vec2 Hammersley(uint i, uint count)
 
 Vec3 ImportanceSampleGgx(Vec2 xi, float alpha, float random)
 {
-  // Random rotation on angle phi so sample pattern does not cause
-  // banding/ghosting
+  // Random rotation on angle phi so sample pattern does not cause banding/ghosting
   float phi = (xi.x + random) * Math::cTwoPi;
   float cosTheta = Math::Sqrt((1.0f - xi.y) / (1.0f + (alpha * alpha - 1.0f) * xi.y));
   float sinTheta = Math::Sqrt(1.0f - cosTheta * cosTheta);
@@ -843,10 +840,9 @@ void MipmapCubemap(Array<MipHeader>& mipHeaders, Array<::byte*>& imageData, Text
   if (format != TextureFormat::RGBA8 && format != TextureFormat::SRGB8 && format != TextureFormat::RGB32f)
     return;
 
-  // If mips are going to be compressed we need the top level faces to be a
-  // power of two in order to guarantee that every mip size is a multiple of 4
-  // Pixel padding caused by compressing sizes 2 or 1 works correctly if image
-  // needs to be y inverted
+  // If mips are going to be compressed we need the top level faces to be a power of two
+  // in order to guarantee that every mip size is a multiple of 4
+  // Pixel padding caused by compressing sizes 2 or 1 works correctly if image needs to be y inverted
   if (compressed)
   {
     uint width = mipHeaders[0].mWidth;

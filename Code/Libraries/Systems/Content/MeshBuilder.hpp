@@ -7,7 +7,7 @@ namespace Zero
 class FixedVertexDescription
 {
 public:
-  FixedVertexDescription(){};
+  FixedVertexDescription() {};
 
   uint mVertexSize;
   static const size_t sMaxElements = 16;

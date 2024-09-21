@@ -33,9 +33,7 @@ struct ContentTypeEntry
   {
   }
   ContentTypeEntry(BoundType* meta, MakeContentItem make, UpdateContentItem update = nullptr) :
-      Meta(meta),
-      MakeItem(make),
-      UpdateItem(update)
+      Meta(meta), MakeItem(make), UpdateItem(update)
   {
   }
   BoundType* Meta;
@@ -141,8 +139,7 @@ public:
 
   // Content item management
 
-  /// Add a new ContentItem to the given library. See AddContentItemInfo for
-  /// details.
+  /// Add a new ContentItem to the given library. See AddContentItemInfo for details.
   ContentItem* AddContentItemToLibrary(Status& status, AddContentItemInfo& addContent);
 
   /// Remove the ContentItem from it library.

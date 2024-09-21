@@ -5,8 +5,7 @@ namespace Zero
 {
 
 MeshProcessor::MeshProcessor(MeshBuilder* meshBuilder, MeshDataMap& meshDataMap) :
-    mBuilder(meshBuilder),
-    mMeshDataMap(meshDataMap)
+    mBuilder(meshBuilder), mMeshDataMap(meshDataMap)
 {
 }
 
@@ -21,8 +20,7 @@ void MeshProcessor::ExtractAndProcessMeshData(const aiScene* scene)
   Mat3 normalTransform = geoImport->mNormalTransform;
   Mat3 changeOfBasis = geoImport->mChangeOfBasis;
 
-  // if the winding order is being flipped our normal transform needs to account
-  // for this
+  // if the winding order is being flipped our normal transform needs to account for this
   if (mBuilder->mFlipWindingOrder)
     normalTransform *= -1;
   // this is an in editor only exposed option to fixed messed up normals
@@ -171,8 +169,7 @@ void MeshProcessor::ExtractAndProcessMeshData(const aiScene* scene)
         }
       }
 
-      // go over our data and make sure no vertex has more than 4 bones
-      // affecting it
+      // go over our data and make sure no vertex has more than 4 bones affecting it
       for (size_t i = 0; i < numVertices; ++i)
       {
         Array<BoneData>* weightDataPointer = boneWeightData.FindPointer(i);
@@ -210,16 +207,14 @@ void MeshProcessor::ExtractAndProcessMeshData(const aiScene* scene)
         }
       }
 
-      // now that we have collected all the weights we need to go to assign each
-      // to their corresponding vertices
+      // now that we have collected all the weights we need to go to assign each to their corresponding vertices
       for (size_t i = 0; i < numVertices; ++i)
       {
         Array<BoneData>* weightDataPointer = boneWeightData.FindPointer(i);
         if (weightDataPointer)
         {
-          // the memzero'ed vertex buffer at the start makes sure that bone data
-          // is at least weight 0 index 0 so we only assign the data we
-          // collected from the bones
+          // the memzero'ed vertex buffer at the start makes sure that bone data is at least
+          // weight 0 index 0 so we only assign the data we collected from the bones
           Array<BoneData>& weightData = *weightDataPointer;
           for (size_t j = 0; j < weightData.Size(); ++j)
           {
@@ -254,8 +249,8 @@ void MeshProcessor::ExtractAndProcessMeshData(const aiScene* scene)
 
       uint* indices = faces->mIndices;
       uint numIndices = faces->mNumIndices;
-      // this only works for now assuming all faces are triangles as we force
-      // triangulate models determine the index size needed based on index count
+      // this only works for now assuming all faces are triangles as we force triangulate models
+      // determine the index size needed based on index count
 
       uint totalIndicies = numFaces * numIndices;
       meshData.mIndexBuffer.Reserve(totalIndicies);

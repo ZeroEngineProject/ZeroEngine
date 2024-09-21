@@ -48,7 +48,7 @@ public:
       mHasUV1(false),
       mHasColor0(false),
       mHasColor1(false),
-      mHasBones(false){};
+      mHasBones(false) {};
 
   String mMeshName;
   String mPhysicsMeshName;
@@ -85,15 +85,14 @@ public:
       mIsAnimatedPivot(false),
       mPreAnimationCorrection(Mat4::cIdentity),
       mPostAnimationCorrection(Mat4::cIdentity),
-      mAnimationNode(nullptr){};
+      mAnimationNode(nullptr) {};
 
   String mParentNodeName;
   // The node name is needed for data processing despite it also being the key
   String mNodeName;
   // Hierarchy structure of the animation nodes
   String mNodePath;
-  // Must be combined with parent transforms to prior to being used for its
-  // updated location
+  // Must be combined with parent transforms to prior to being used for its updated location
   Mat4 mLocalTransform;
   // All children of this node by name
   Array<String> mChildren;
@@ -105,11 +104,9 @@ public:
   String mSkeletonRootNodePath;
   bool mIsSkeletonRoot;
 
-  // Flag to mark if a node is a pivot for consideration when collapsing pivots
-  // is enabled
+  // Flag to mark if a node is a pivot for consideration when collapsing pivots is enabled
   bool mIsPivot;
-  // Flag to mark whether a node is an animated pivot and may needs its
-  // animations corrected
+  // Flag to mark whether a node is an animated pivot and may needs its animations corrected
   bool mIsAnimatedPivot;
   // Combined transforms of removed nodes for correcting animations
   Mat4 mPreAnimationCorrection;

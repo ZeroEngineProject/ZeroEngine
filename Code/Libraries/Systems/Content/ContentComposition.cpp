@@ -133,8 +133,7 @@ void SerializeComponents(Serializer& stream, ContentComposition* contentItem)
       {
         String componentName = node.TypeName;
         ZPrintFilter(Filter::DefaultFilter,
-                     "Content component %s was in the data file but could not "
-                     "be created (most likely deprecated)\n",
+                     "Content component %s was in the data file but could not be created (most likely deprecated)\n",
                      componentName.c_str());
         stream.EndPolymorphic();
       }

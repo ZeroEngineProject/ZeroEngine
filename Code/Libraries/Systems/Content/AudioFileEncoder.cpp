@@ -114,8 +114,7 @@ void AudioFileEncoder::WriteFile(
   if (normalize)
     Normalize(data.BuffersPerChannel, data.SamplesPerChannel, data.Channels, maxVolume);
 
-  // If the sample rate of the file is different from the system's sample rate,
-  // resample the audio
+  // If the sample rate of the file is different from the system's sample rate, resample the audio
   if (data.SampleRate != AudioConstants::cSystemSampleRate)
   {
     data.SamplesPerChannel = Resample(data.SampleRate, data.Channels, data.SamplesPerChannel, data.BuffersPerChannel);
@@ -188,8 +187,7 @@ void AudioFileEncoder::ReadWav(Status& status, File& file, StringParam fileName,
   for (unsigned i = 0; i < data.Channels; ++i)
     data.BuffersPerChannel[i] = new float[data.SamplesPerChannel];
 
-  // If the PCM to float translation returns false, it wasn't able to translate
-  // the format
+  // If the PCM to float translation returns false, it wasn't able to translate the format
   if (!PcmToFloat(rawDataBuffer,
                   data.BuffersPerChannel,
                   data.SamplesPerChannel * data.Channels,
@@ -267,8 +265,8 @@ bool AudioFileEncoder::PcmToFloat(::byte* inputBuffer,
     // Save a variable for accessing the input buffer as shorts
     short* input = (short*)inputBuffer;
 
-    // Step through each sample in the input buffer, also keeping track of audio
-    // frames for the buffers of translated floats per channel
+    // Step through each sample in the input buffer, also keeping track of audio frames
+    // for the buffers of translated floats per channel
     for (unsigned inputIndex = 0, frameIndex = 0; inputIndex < totalSampleCount; ++frameIndex)
     {
       for (unsigned channel = 0; channel < channelCount; ++channel, ++inputIndex)
@@ -280,8 +278,8 @@ bool AudioFileEncoder::PcmToFloat(::byte* inputBuffer,
   // 24 bit data
   else if (bytesPerSample == 3)
   {
-    // Step through each byte of data in the input buffer, also keeping track of
-    // audio frames for the buffers of translated floats per channel
+    // Step through each byte of data in the input buffer, also keeping track of audio frames
+    // for the buffers of translated floats per channel
     for (unsigned index = 0, sampleIndex = 0; index < totalSampleCount * bytesPerSample; ++sampleIndex)
     {
       for (unsigned channel = 0; channel < channelCount; index += bytesPerSample, ++channel)
@@ -315,8 +313,8 @@ void AudioFileEncoder::Normalize(float** samplesPerChannel,
   float maxFileVolume(0.0f);
   float volume(0.0f);
 
-  // Step through every audio frame and every channel, saving the volume if its
-  // higher than the current maximum
+  // Step through every audio frame and every channel, saving the volume if its higher
+  // than the current maximum
   for (unsigned i = 0; i < frames; ++i)
   {
     for (unsigned j = 0; j < channels; ++j)
@@ -415,8 +413,7 @@ void AudioFileEncoder::EncodeFile(Status& status, File& outputFile, AudioFileDat
   {
     encodersPerChannel[i] = opus_encoder_create(AudioConstants::cSystemSampleRate, 1, OPUS_APPLICATION_AUDIO, &error);
 
-    // If there was an error creating the encoder, set the failed message and
-    // return
+    // If there was an error creating the encoder, set the failed message and return
     if (error < 0)
       status.SetFailed(String::Format("Error encoding file: %s\n", opus_strerror(error)));
   }
@@ -432,9 +429,8 @@ void AudioFileEncoder::EncodeFile(Status& status, File& outputFile, AudioFileDat
     // Handle each channel separately
     for (unsigned channel = 0; channel < data.Channels; ++channel)
     {
-      // If the next PacketFrames-sized chunk would go past the end of the audio
-      // data, fill in what's available to the finalBuffer, the rest will be
-      // zeros
+      // If the next PacketFrames-sized chunk would go past the end of the audio data, fill in what's
+      // available to the finalBuffer, the rest will be zeros
       if (inputIndex + cPacketFrames > data.SamplesPerChannel)
       {
         buffer = finalBuffer;

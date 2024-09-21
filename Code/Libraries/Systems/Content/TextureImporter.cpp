@@ -109,10 +109,9 @@ void MipmapTexture(Array<MipHeader>& mipHeaders, Array<::byte*>& imageData, Text
   if (mipHeaders.Size() != 1 || imageData.Size() != 1)
     return;
 
-  // If mips are going to be compressed we need the top level image to be a
-  // power of two in order to guarantee that every mip size is a multiple of 4
-  // Pixel padding caused by compressing sizes 2 or 1 works correctly if image
-  // needs to be y inverted
+  // If mips are going to be compressed we need the top level image to be a power of two
+  // in order to guarantee that every mip size is a multiple of 4
+  // Pixel padding caused by compressing sizes 2 or 1 works correctly if image needs to be y inverted
   if (compressed)
   {
     uint width = mipHeaders[0].mWidth;
@@ -271,7 +270,8 @@ void ToNvttSurface(nvtt::Surface& surface, uint width, uint height, TextureForma
   delete[] convertedImage;
 }
 
-void FromNvttSurface(const nvtt::Surface& surface, uint& width, uint& height, TextureFormat::Enum format, ::byte*& image)
+void FromNvttSurface(
+    const nvtt::Surface& surface, uint& width, uint& height, TextureFormat::Enum format, ::byte*& image)
 {
   const float* srcImage = surface.data();
   width = surface.width();
@@ -540,8 +540,7 @@ ImageProcessorCodes::Enum TextureImporter::ProcessTexture(Status& status)
     }
   }
 
-  // Save a downsized backup of the texture for drivers that don't support
-  // texture compression
+  // Save a downsized backup of the texture for drivers that don't support texture compression
   if (mBuilder->mCompression != TextureCompression::None)
   {
     mBackupMipHeaders.Resize(mMipHeaders.Size());
@@ -638,8 +637,8 @@ ImageProcessorCodes::Enum TextureImporter::ProcessTexture(Status& status)
       nvtt::Context context;
 
       // NVidia texture tools uses threads (pthreads on Emscripten) and
-      // since threads are disabled, this unfortunately just freezes in
-      // browsers. For now, we actually support not having compressed textures.
+      // since threads are disabled, this unfortunately just freezes in browsers. 
+      // For now, we actually support not having compressed textures.
 #if defined(ZeroTargetOsEmscripten)
       bool result = true;
 #else

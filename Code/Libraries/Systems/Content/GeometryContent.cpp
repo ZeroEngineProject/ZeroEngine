@@ -112,8 +112,7 @@ ContentItem* MakeGeometryContent(ContentInitializer& initializer)
     newGeo->AddComponent(meshBuilder);
   }
 
-  // PhysicsImport::Enum physicsImportType =
-  // options->mGeometryOptions->mPhysicsImport;
+  // PhysicsImport::Enum physicsImportType = options->mGeometryOptions->mPhysicsImport;
   if (options->mGeometryOptions->mPhysicsImport != PhysicsImport::NoMesh)
   {
     PhysicsMeshBuilder* meshBuilder = new PhysicsMeshBuilder();
@@ -157,8 +156,7 @@ ContentItem* UpdateGeometryContent(ContentItem* existingItem, ContentInitializer
 
   GeometryContent* geometryContent = Type::DebugOnlyDynamicCast<GeometryContent*>(existingItem);
 
-  // we have loaded our existing geometry content and need to update the meta
-  // file for our rebuild
+  // we have loaded our existing geometry content and need to update the meta file for our rebuild
   GeometryImport* import = geometryContent->has(GeometryImport);
 
   if (initializer.Options == nullptr && !geometryContent->has(MeshBuilder))
@@ -319,8 +317,7 @@ void GeometryImport::ComputeTransforms()
     mChangeOfBasis.Transpose();
     if (!mChangeOfBasis.SafeInvert())
     {
-      ZPrint("Geometry Processor: Change of basis invalid. Falling back to no "
-             "change of basis.\n");
+      ZPrint("Geometry Processor: Change of basis invalid. Falling back to no change of basis.\n");
       mChangeOfBasis.SetIdentity();
     }
   }
@@ -521,12 +518,10 @@ void GeometryContent::BuildContentItem(BuildOptions& options)
     case Zero::GeometryProcessorCodes::NoContent:
     {
       options.Failure = true;
-      options.Message = String::Format("Failed to process Geometry. File '%s' "
-                                       "Error: No importable content present",
+      options.Message = String::Format("Failed to process Geometry. File '%s' Error: No importable content present",
                                        Filename.c_str());
 
-      // there was no content, remove the associated files from our content
-      // directory
+      // there was no content, remove the associated files from our content directory
       String metaFile = BuildString(fullFilePath, ".meta");
       return;
     }
@@ -538,8 +533,7 @@ void GeometryContent::BuildContentItem(BuildOptions& options)
     case Zero::GeometryProcessorCodes::Failed:
     {
       options.Failure = true;
-      options.Message = String::Format("Failed to process Geometry. File '%s', "
-                                       "See above Geometry Processor Error.",
+      options.Message = String::Format("Failed to process Geometry. File '%s', See above Geometry Processor Error.",
                                        Filename.c_str());
 
       // Get our projects content folder
@@ -548,11 +542,10 @@ void GeometryContent::BuildContentItem(BuildOptions& options)
       {
         String contentDirectory = FilePath::Normalize(projectSettings->GetContentFolder());
 
-        // If importing the item failed delete the content item but only if that
-        // item is in the projects local content folder since it was copied and
-        // will fail to be processed each time the project is opened until the
-        // user deletes the files manually. Otherwise a core resource failed and
-        // should not be deleted.
+        // If importing the item failed delete the content item but only if that item
+        // is in the projects local content folder since it was copied and will fail
+        // to be processed each time the project is opened until the user deletes the files
+        // manually. Otherwise a core resource failed and should not be deleted.
         String fileDirectory = FilePath::Normalize(FilePath::GetDirectoryPath(fullFilePath));
         if (fileDirectory == contentDirectory)
         {
@@ -563,8 +556,7 @@ void GeometryContent::BuildContentItem(BuildOptions& options)
       }
       return;
     }
-    // let editor side importing know we have to load/reload the scene graph or
-    // textures
+    // let editor side importing know we have to load/reload the scene graph or textures
     case Zero::GeometryProcessorCodes::LoadGraph:
     case Zero::GeometryProcessorCodes::LoadTextures:
     case Zero::GeometryProcessorCodes::LoadGraphAndTextures:
@@ -654,8 +646,7 @@ void CreateGeometryContent(ContentSystem* system)
   // 3ds Max ASE
   system->CreatorsByExtension["ase"] =
       ContentTypeEntry(ZilchTypeId(GeometryContent), MakeGeometryContent, UpdateGeometryContent);
-  // Industry Foundation Classes (IFC/Step) NEEDS ADDITIONAL TESTING TO FIGURE
-  // OUT WHAT WENT WRONG
+  // Industry Foundation Classes (IFC/Step) NEEDS ADDITIONAL TESTING TO FIGURE OUT WHAT WENT WRONG
   system->CreatorsByExtension["ifc"] =
       ContentTypeEntry(ZilchTypeId(GeometryContent), MakeGeometryContent, UpdateGeometryContent);
   // XGL
@@ -698,9 +689,8 @@ void CreateGeometryContent(ContentSystem* system)
       ContentTypeEntry(ZilchTypeId(GeometryContent), MakeGeometryContent, UpdateGeometryContent);
 
   // MOTION CAPTURE FORMATS
-  // Biovision BVH <- ASSIMP tokenizer does not properly handle nodes names with
-  // spaces in this format. system->CreatorsByExtension["bvh"] =
-  // ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
+  // Biovision BVH <- ASSIMP tokenizer does not properly handle nodes names with spaces in this format.
+  // system->CreatorsByExtension["bvh"] = ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
   // CharacterStudio Motion
   system->CreatorsByExtension["csm"] =
       ContentTypeEntry(ZilchTypeId(GeometryContent), MakeGeometryContent, UpdateGeometryContent);
@@ -710,11 +700,9 @@ void CreateGeometryContent(ContentSystem* system)
   system->CreatorsByExtension["xml"] =
       ContentTypeEntry(ZilchTypeId(GeometryContent), MakeGeometryContent, UpdateGeometryContent);
   // Irrlicht Mesh
-  // system->CreatorsByExtension["irrmesh"] =
-  // ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
+  // system->CreatorsByExtension["irrmesh"] = ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
   // Irrlicht Scene <- irradiance values to apply to the above
-  // system->CreatorsByExtension["irr"] =
-  // ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
+  // system->CreatorsByExtension["irr"] = ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
 
   // GAME FILE FORMATS
   // Quake I && (not game file) -> 3D GameStudio (3DGS)
@@ -726,10 +714,8 @@ void CreateGeometryContent(ContentSystem* system)
   // Quake III Mesh
   system->CreatorsByExtension["md3"] =
       ContentTypeEntry(ZilchTypeId(GeometryContent), MakeGeometryContent, UpdateGeometryContent);
-  // Quake III Map/BSP, none of these files I found had models or textures
-  // present in them
-  // system->CreatorsByExtension["pk3"] =
-  // ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
+  // Quake III Map/BSP, none of these files I found had models or textures present in them
+  // system->CreatorsByExtension["pk3"] = ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
   // Doom 3
   system->CreatorsByExtension["md5mesh"] =
       ContentTypeEntry(ZilchTypeId(GeometryContent), MakeGeometryContent, UpdateGeometryContent);
@@ -775,28 +761,22 @@ void CreateGeometryContent(ContentSystem* system)
   system->CreatorsByExtension["mmd"] =
       ContentTypeEntry(ZilchTypeId(GeometryContent), MakeGeometryContent, UpdateGeometryContent);
 
-  // system->CreatorsByExtension["wrl"] =
-  // ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent,
+  // system->CreatorsByExtension["wrl"] = ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent,
   // UpdateGeometryContent);
 
   // UNTESTED FORMAT IMPORTS BELOW, no readily available models to test
   // UNTESTED GAME FORMATS
   // glTF <-DOESN'T WORK, NEEDS TO OPEN ADDITIONAL FILES
-  // system->CreatorsByExtension["gltf"] =
-  // ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
+  // system->CreatorsByExtension["gltf"] = ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
   // Return to Castle Wolfenstein
-  // system->CreatorsByExtension["mdc"] =
-  // ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
-  // system->CreatorsByExtension["vta"] =
-  // ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
-  //   // Unreal, may attempt to open multiple files that reference each other,
-  //   not currently supported system->CreatorsByExtension["3d"] =
-  //   ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
+  // system->CreatorsByExtension["mdc"] = ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
+  // system->CreatorsByExtension["vta"] = ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
+  //   // Unreal, may attempt to open multiple files that reference each other, not currently supported
+  //   system->CreatorsByExtension["3d"] = ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
 
   // UNTESTED OTHER FILE FORMATS
   // Izware Nendo
-  // system->CreatorsByExtension["ndo"] =
-  // ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
+  // system->CreatorsByExtension["ndo"] = ContentTypeEntry(MetaTypeOf(GeometryContent), MakeGeometryContent);
 }
 
 void AddGeometryFileFilters(ResourceManager* manager)

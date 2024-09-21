@@ -51,7 +51,7 @@ class PhysicsMeshBuilder : public BuilderComponent
 public:
   ZilchDeclareType(PhysicsMeshBuilder, TypeCopyMode::ReferenceType);
 
-  PhysicsMeshBuilder(){};
+  PhysicsMeshBuilder() {};
 
   void SetMeshBuilt(PhysicsMeshType::Enum type);
   PhysicsMeshType::Enum GetMeshBuilt();

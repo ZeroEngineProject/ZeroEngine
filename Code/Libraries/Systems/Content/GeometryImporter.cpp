@@ -42,8 +42,7 @@ uint GeometryImporter::SetupAssimpPostProcess()
 
   if (meshBuilder->mGenerateSmoothNormals)
   {
-    // if generate normals is checked we want to remove any existing normals and
-    // generate our own
+    // if generate normals is checked we want to remove any existing normals and generate our own
     flags |= aiProcess_RemoveComponent;
     removeFlags |= aiComponent_NORMALS;
     mAssetImporter.SetPropertyFloat(AI_CONFIG_PP_GSN_MAX_SMOOTHING_ANGLE, meshBuilder->mSmoothingAngleDegreesThreshold);
@@ -99,13 +98,14 @@ GeometryProcessorCodes::Enum GeometryImporter::ProcessModelFiles()
   // it does not know where the current file is, and will fail.
   // To solve this problem, we need to change the current directory
   // of the IO handler to the directory of the current file.
-  // When loading is done, set the current directory back to 
+  // When loading is done, set the current directory back to
   // the previous value so we don't mess anything up with assimp
   String ioHandlerDirectory = String(mAssetImporter.GetIOHandler()->CurrentDirectory().c_str());
   String inputFileDirectory = FilePath::GetDirectoryPath(mInputFile);
   mAssetImporter.GetIOHandler()->ChangeDirectory(inputFileDirectory.c_str());
   mScene = mAssetImporter.ReadFileFromMemory(block.Data, block.Size, flags);
-  if (!mScene) {
+  if (!mScene)
+  {
     String extension = FilePath::GetExtension(mInputFile);
     mScene = mAssetImporter.ReadFileFromMemory(block.Data, block.Size, flags, extension.c_str());
   }
@@ -130,18 +130,16 @@ GeometryProcessorCodes::Enum GeometryImporter::ProcessModelFiles()
 
   mGeometryContent->has(GeometryImport)->ComputeTransforms();
 
-  // Assimp stores all bone data on the meshes so if there are no meshes, there
-  // are no skeletons
+  // Assimp stores all bone data on the meshes so if there are no meshes, there are no skeletons
   if (mScene->HasMeshes())
   {
-    // We need the hierarchy data to travel through it marking what nodes
-    // comprise the skeleton
+    // We need the hierarchy data to travel through it marking what nodes comprise the skeleton
     SkeletonProcessor skeletonProcess(mHierarchyDataMap, mMeshDataMap, mRootNodeName);
     skeletonProcess.ProcessSkeletonHierarchy(mScene);
   }
 
-  // The pivot processor needs the skeleton data to properly collapse pivots
-  // with animations so run this step after the SkeletonProcessor
+  // The pivot processor needs the skeleton data to properly collapse pivots with animations
+  // so run this step after the SkeletonProcessor
   if (mGeometryContent->has(GeometryImport)->mCollapsePivots)
   {
     PivotProcessor pivotProcessor(mHierarchyDataMap, mRootNodeName, mAnimationRedirectMap);
@@ -180,9 +178,8 @@ GeometryProcessorCodes::Enum GeometryImporter::ProcessModelFiles()
     animationProcessor.ExportAnimationData(mOutputPath);
   }
 
-  // we need to build a scene graph such that on import the engine can create an
-  // archetype for this mesh file and any animations attached to it if it has
-  // any
+  // we need to build a scene graph such that on import the engine can create an archetype for
+  // this mesh file and any animations attached to it if it has any
   GeneratedArchetype* generatedArchetype = mGeometryContent->has(GeneratedArchetype);
   if (generatedArchetype)
   {
@@ -215,15 +212,13 @@ bool GeometryImporter::SceneEmpty()
 void GeometryImporter::CollectNodeData()
 {
   aiNode* rootNode = mScene->mRootNode;
-  // If the root scene node has 1 child, no meshes, and its transform is the
-  // identity matrix then don't include it in the model hierarchy as this is
-  // commonly a hidden node within Maya
+  // If the root scene node has 1 child, no meshes, and its transform is the identity matrix then
+  // don't include it in the model hierarchy as this is commonly a hidden node within Maya
   if ((rootNode->mNumChildren == 1) && (rootNode->mNumMeshes == 0) && (rootNode->mTransformation.IsIdentity()))
     rootNode = rootNode->mChildren[0];
 
-  // Set the root node name and loop through the scenes nodes children and find
-  // the ones with a mesh attached and store them along with their name for
-  // process and export
+  // Set the root node name and loop through the scenes nodes children and find the ones
+  // with a mesh attached and store them along with their name for process and export
   mRootNodeName = CleanAssetName(rootNode->mName.C_Str());
   ExtractDataFromNodesRescursive(rootNode, "");
 
@@ -244,8 +239,7 @@ String GeometryImporter::ExtractDataFromNodesRescursive(aiNode* node, String par
   bool isPivot = IsPivot(node->mName.C_Str());
   String unsantizedName = node->mName.C_Str();
   String nodeName = CleanAssetName(unsantizedName);
-  // check to see if this node name is a unique entry, if no append an number to
-  // the end to make it unique
+  // check to see if this node name is a unique entry, if no append an number to the end to make it unique
   if (mHierarchyDataMap.ContainsKey(nodeName))
     nodeName = BuildString(nodeName, ToString(mUniquifyingIndex++));
 
@@ -260,8 +254,7 @@ String GeometryImporter::ExtractDataFromNodesRescursive(aiNode* node, String par
   hierarchyData.mLocalTransform = AiMat4ToZeroMat4(node->mTransformation);
   hierarchyData.mIsPivot = isPivot;
 
-  // Maya outputs an inverted PostRotation value to the fbx file. We currently
-  // do not know why.
+  // Maya outputs an inverted PostRotation value to the fbx file. We currently do not know why.
   if (unsantizedName.Contains("_$AssimpFbx$_PostRotation"))
     hierarchyData.mLocalTransform.Invert();
 
@@ -348,10 +341,10 @@ void GeometryImporter::FindAnimationNodes()
       HierarchyData& node = mHierarchyDataMap[name];
       if (node.mIsPivot)
       {
-        // If the node has a single value track for translation, rotation, and
-        // scale it does not count as an animation and will be collapsed as
-        // these values are only used to take the model out of bind pose and are
-        // effectively the nodes local transform
+        // If the node has a single value track for translation, rotation, and scale
+        // it does not count as an animation and will be collapsed as these values
+        // are only used to take the model out of bind pose and are effectively
+        // the nodes local transform
         if (sceneChannelNode->mNumPositionKeys > 1 || sceneChannelNode->mNumRotationKeys > 1 ||
             sceneChannelNode->mNumScalingKeys > 1)
         {
@@ -491,8 +484,7 @@ bool GeometryImporter::UpdateBuilderMetaData()
         if (animEntries.Contains(entry))
           continue;
 
-        // Get resource id if this name already had one, otherwise make a new
-        // one.
+        // Get resource id if this name already had one, otherwise make a new one.
         if (GeometryResourceEntry* previousEntry = animBuilder->mAnimations.FindPointer(entry))
           entry.mResourceId = previousEntry->mResourceId;
         else
@@ -514,8 +506,7 @@ bool GeometryImporter::UpdateBuilderMetaData()
         GeometryResourceEntry entry;
         entry.mName = name;
 
-        // Get resource id if this name already had one, otherwise make a new
-        // one.
+        // Get resource id if this name already had one, otherwise make a new one.
         if (GeometryResourceEntry* previousEntry = animBuilder->mAnimations.FindPointer(entry))
           entry.mResourceId = previousEntry->mResourceId;
         else
@@ -554,8 +545,7 @@ bool GeometryImporter::UpdateBuilderMetaData()
         GeometryResourceEntry entry;
         entry.mName = BuildString(FilePath::GetFileNameWithoutExtension(mInputFile), ToString(i), ".", extension);
 
-        // Get resource id if this name already had one, otherwise make a new
-        // one.
+        // Get resource id if this name already had one, otherwise make a new one.
         if (GeometryResourceEntry* previousEntry = textureContent->mTextures.FindPointer(entry))
           entry.mResourceId = previousEntry->mResourceId;
         else
@@ -579,12 +569,10 @@ bool GeometryImporter::UpdateBuilderMetaData()
 
 String GeometryImporter::ProcessAssimpErrorMessage(StringParam errorMessage)
 {
-  // This string is output when the FBX file experiences a parsing error, most
-  // likely a result of the format but assimp attempts to parse the entire FBX
-  // DOM before checking if the format is supported
+  // This string is output when the FBX file experiences a parsing error, most likely a result of the format
+  // but assimp attempts to parse the entire FBX DOM before checking if the format is supported
   if (errorMessage.Contains("FBX-Tokenize"))
-    return String("FBX Parsing Error. Supported formats are FBX 2011, FBX 2012 "
-                  "and FBX 2013.");
+    return String("FBX Parsing Error. Supported formats are FBX 2011, FBX 2012 and FBX 2013.");
 
   return errorMessage;
 }

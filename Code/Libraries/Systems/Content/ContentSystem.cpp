@@ -117,8 +117,7 @@ void ContentSystem::EnumerateLibraries()
 
 ContentLibrary* ContentSystem::LibraryFromDirectory(Status& status, StringParam name, StringParam libraryDirectory)
 {
-  // If the library already exists then update the directory and return the
-  // library
+  // If the library already exists then update the directory and return the library
   if (ContentLibrary* loadedLibrary = Libraries.FindValue(name, nullptr))
     return loadedLibrary;
 
@@ -226,10 +225,10 @@ HandleOf<ResourcePackage> ContentSystem::BuildLibrary(Status& status, ContentLib
       ZPrint("Prebuilt content '%s' does not exist\n", prebuiltContent.c_str());
     }
   }
-  //else
+  // else
   //{
-  //  ZPrint("Content output for '%s' exists\n", outputPath.c_str());
-  //}
+  //   ZPrint("Content output for '%s' exists\n", outputPath.c_str());
+  // }
 
   Array<ContentItem*> items;
   items.Reserve(library->ContentItems.Size());
@@ -349,8 +348,7 @@ ContentItem* ContentSystem::AddContentItemToLibrary(Status& status, AddContentIt
           // Replacing content file
           CopyFile(fullPath, info.ExternalFile);
 
-          // Fill out our content initializer, this has information for the new
-          // content options
+          // Fill out our content initializer, this has information for the new content options
           ContentInitializer initializer;
           initializer.Filename = info.FileName;
           initializer.Library = library;
@@ -374,20 +372,17 @@ ContentItem* ContentSystem::AddContentItemToLibrary(Status& status, AddContentIt
           }
           else
           {
-            // Return existing content item, the newer file was already copied
-            // in
+            // Return existing content item, the newer file was already copied in
             return existingItem;
           }
         }
         else
         {
           String metaFilePath = BuildString(fullPath, ".meta");
-          // If we found the content file and no content item check to see if a
-          // meta file is present
+          // If we found the content file and no content item check to see if a meta file is present
           if (FileExists(metaFilePath))
           {
-            // If there is a meta file it is most likely corrupted or failed to
-            // load somehow
+            // If there is a meta file it is most likely corrupted or failed to load somehow
             String metaFile = FilePath::GetFileName(metaFilePath);
             status.SetFailed(
                 String::Format("Meta file %s is corrupt or failed to load.", info.FileName.c_str(), metaFile.c_str()));
@@ -650,8 +645,7 @@ bool ContentSystem::RenameContentItemFile(ContentItem* contentItem, StringParam 
   String newMetaFile = BuildString(newFullPath, ".meta");
 
   // Does a file with this name already exist?
-  // Is that file not the file we are renaming? If they are the same file allow
-  // capitalization changes in existing name.
+  // Is that file not the file we are renaming? If they are the same file allow capitalization changes in existing name.
   if (FileExists(newFileName) && (contentFile.ToLower() != newFullPath.ToLower()))
   {
     // Do not rename the file

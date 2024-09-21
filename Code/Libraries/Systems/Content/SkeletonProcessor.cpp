@@ -5,9 +5,7 @@ namespace Zero
 {
 
 SkeletonProcessor::SkeletonProcessor(HierarchyDataMap& hierarchyData, MeshDataMap& meshData, String& rootNodeName) :
-    mHierarchyDataMap(hierarchyData),
-    mMeshDataMap(meshData),
-    mRootNodeName(rootNodeName)
+    mHierarchyDataMap(hierarchyData), mMeshDataMap(meshData), mRootNodeName(rootNodeName)
 {
 }
 
@@ -54,8 +52,7 @@ String SkeletonProcessor::FindSkeletonRootFromBone(String boneName)
   if (data.mParentNodeName != mRootNodeName && boneName != mRootNodeName)
     return FindSkeletonRootFromBone(data.mParentNodeName);
 
-  // the parent is the root node or we are the root node, so mark our current
-  // node as the skeletons root
+  // the parent is the root node or we are the root node, so mark our current node as the skeletons root
   data.mIsSkeletonRoot = true;
   return data.mNodeName;
 }
@@ -63,8 +60,7 @@ String SkeletonProcessor::FindSkeletonRootFromBone(String boneName)
 String SkeletonProcessor::CreateCogPathToSkeletonRoot(String meshNode, String skeletonRootNode)
 {
   // the skeleton will always be one level down from the root node
-  // so we just need to count up the number of levels to the root that the mesh
-  // is from
+  // so we just need to count up the number of levels to the root that the mesh is from
   HierarchyData meshNodeData = *mHierarchyDataMap.FindPointer(meshNode);
 
   // if the root is the skeleton set the proper cog path for self
@@ -87,8 +83,7 @@ String SkeletonProcessor::CreateCogPathToSkeletonRoot(String meshNode, String sk
 
 void SkeletonProcessor::GenerateObjectRoot()
 {
-  // Create our new object root that will be empty and contains the original
-  // root only
+  // Create our new object root that will be empty and contains the original root only
   HierarchyData newRoot;
   newRoot.mNodeName = String("ObjectRoot");
   newRoot.mLocalTransform = Mat4::cIdentity;

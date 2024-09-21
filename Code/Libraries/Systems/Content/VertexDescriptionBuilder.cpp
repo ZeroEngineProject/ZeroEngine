@@ -45,8 +45,7 @@ FixedVertexDescription& VertexDescriptionBuilder::SetupDescriptionFromMesh(aiMes
   }
 
   mVertexDescription.mVertexSize = mCurrentOffset;
-  // if we have filled up and used every vertex description slot we don't need
-  // to mark none to signify the end
+  // if we have filled up and used every vertex description slot we don't need to mark none to signify the end
   if (mIndex != (VertexSemantic::Size - 1))
     AddAttribute(VertexSemantic::None, VertexElementType::Byte, 0);
 

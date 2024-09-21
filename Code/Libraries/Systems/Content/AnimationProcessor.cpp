@@ -7,9 +7,7 @@ namespace Zero
 AnimationProcessor::AnimationProcessor(AnimationBuilder* animationBuilder,
                                        HierarchyDataMap& hierarchyData,
                                        AnimationNodeRedirectMap& animationRedirectMap) :
-    mBuilder(animationBuilder),
-    mHierarchyDataMap(hierarchyData),
-    mAnimationRedirectMap(animationRedirectMap)
+    mBuilder(animationBuilder), mHierarchyDataMap(hierarchyData), mAnimationRedirectMap(animationRedirectMap)
 {
 }
 
@@ -48,13 +46,11 @@ void AnimationProcessor::ExtractAndProcessAnimationData(const aiScene* scene)
       aiNodeAnim* sceneChannelNode = sceneAnimationChannels[channelIndex];
       String name = CleanAssetName(sceneChannelNode->mNodeName.C_Str());
 
-      // Check if the animation has been corrected and collapsed into a
-      // different node
+      // Check if the animation has been corrected and collapsed into a different node
       if (mAnimationRedirectMap.ContainsKey(name))
         name = mAnimationRedirectMap.FindValue(name, String());
-      // Some animations have been removed completely if they were just taking a
-      // node out of bind pose and used as a local transform on a collapsed node
-      // when animating
+      // Some animations have been removed completely if they were just taking a node out of bind pose
+      // and used as a local transform on a collapsed node when animating
       else if (!mHierarchyDataMap.ContainsKey(name))
         continue;
 
@@ -63,8 +59,7 @@ void AnimationProcessor::ExtractAndProcessAnimationData(const aiScene* scene)
 
       zeroTrackData.FullPath = node.mNodePath;
 
-      // These variables are used to decompose the transform matrix to extract
-      // the scale for animation correction
+      // These variables are used to decompose the transform matrix to extract the scale for animation correction
       Vec3 translation;
       Mat3 rotation;
       Vec3 preScaleCorrection;

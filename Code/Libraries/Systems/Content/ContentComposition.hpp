@@ -13,8 +13,8 @@ class ContentComponent : public EventObject
 {
 public:
   ZilchDeclareType(ContentComponent, TypeCopyMode::ReferenceType);
-  ContentComponent(){};
-  virtual ~ContentComponent(){};
+  ContentComponent() {};
+  virtual ~ContentComponent() {};
   ContentComposition* mOwner;
 
   // ContentComponent Interface.

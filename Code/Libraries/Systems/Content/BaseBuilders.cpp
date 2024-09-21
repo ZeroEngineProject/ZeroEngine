@@ -55,8 +55,7 @@ void DirectBuilderComponent::BuildContent(BuildOptions& buildOptions)
   bool success = CopyFile(destFile, sourceFile);
   if (!success)
   {
-    // Try to create any missing parent directories of the destination path and
-    // try again
+    // Try to create any missing parent directories of the destination path and try again
     CreateDirectoryAndParents(FilePath::GetDirectoryPath(destFile));
     success = CopyFile(destFile, sourceFile);
   }

@@ -31,11 +31,9 @@ ZilchDefineType(FontBuilder, builder, type)
   ZeroBindDependency(FontContent);
 }
 
-// Note: Since we added more font builders, and we cannot pass the extension
-// into the constructor (builders require a default constructor) then we cannot
-// properly pass the extension in. All the base class does is store it, so above
-// when we create the builder we just immediately set the Extension afterward
-// (this should be refactored later)
+// Note: Since we added more font builders, and we cannot pass the extension into the constructor (builders require a
+// default constructor) then we cannot properly pass the extension in. All the base class does is store it, so above
+// when we create the builder we just immediately set the Extension afterward (this should be refactored later)
 FontBuilder::FontBuilder() : DirectBuilderComponent(0, ".ttf", "Font")
 {
 }
