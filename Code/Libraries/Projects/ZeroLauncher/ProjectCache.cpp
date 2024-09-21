@@ -22,8 +22,7 @@ void LauncherProjectInfo::Serialize(Serializer& stream)
   SerializeNameDefault(mTags, String());
   mBuildId.Serialize(stream, false);
 
-  // If we're loading and we have no platform then default to the current build
-  // (legacy builds)
+  // If we're loading and we have no platform then default to the current build (legacy builds)
   if (stream.GetMode() == SerializerMode::Loading && mBuildId.IsPlatformEmpty())
     mBuildId.SetToThisPlatform();
 }
@@ -54,9 +53,8 @@ void LauncherProjectInfo::SetBuildId(const BuildId& buildId)
   mBuildId = buildId;
 }
 
-// Simple macros to wrap getting/setting a property from a component in a data
-// tree. Just used to turn the type-name into a string to help renames work
-// correctly.
+// Simple macros to wrap getting/setting a property from a component in a data tree.
+// Just used to turn the type-name into a string to help renames work correctly.
 #define GetChildComponentPropertyValueMacro(component, propertyName)                                                   \
   GetChildComponentPropertyValue(#component, "ProjectName")
 #define SetChildComponentPropertyValueMacro(component, propertyName, newValue)                                         \
@@ -82,9 +80,8 @@ bool CachedProject::Load(StringParam projectFilePath)
   if (mProjectCog == nullptr)
     return false;
 
-  // Add a launcher info if it doesn't already exist. If it didn't exist then we
-  // have to copy old values from other components to the launcher's component.
-  // If it did exist then keep all old values the same.
+  // Add a launcher info if it doesn't already exist. If it didn't exist then we have to copy
+  // old values from other components to the launcher's component. If it did exist then keep all old values the same.
   mLauncherInfo = mProjectCog->has(LauncherProjectInfo);
   if (mLauncherInfo == nullptr)
   {
@@ -197,8 +194,7 @@ String CachedProject::GetProjectName()
 
 bool CachedProject::RenameAndMoveProject(Status& status, StringParam newProjectName)
 {
-  // Rename the zeroproj file in the old location (avoid calling delete where
-  // possible)
+  // Rename the zeroproj file in the old location (avoid calling delete where possible)
   String renamedZeroProjPath = FilePath::CombineWithExtension(mProjectFolder, newProjectName, ".zeroproj");
   ZPrint("Moving and renaming project '%s' to '%s'.\n", mProjectPath.c_str(), renamedZeroProjPath.c_str());
 
@@ -306,9 +302,8 @@ void CachedProject::ParseTags(LauncherProjectInfo* launcherInfo, StringParam tag
   {
     // In some versions of the engine, tags were just a comma separated list.
     // In later versions the tags were split with ':' to give the tag a category
-    // for Project or User tags. We only parse project tags and throw away user
-    // tags now (user tags were used to filter things to only ProjectFun or
-    // similar things).
+    // for Project or User tags. We only parse project tags and throw away user tags now
+    // (user tags were used to filter things to only ProjectFun or similar things).
     StringRange tag = tagRange.Front();
 
     // Skip empty tags
@@ -370,10 +365,9 @@ void CachedProject::SetChildComponentPropertyValue(StringParam componentType,
 
 void CachedProject::AddOrReplaceDataNodeComponent(Component* component)
 {
-  // In order to update a component's node in the tree, we have to remove the
-  // old node if it exists and then re-add the new data as a child node. To do
-  // this requires serializing the component and then creating a data set from
-  // it.
+  // In order to update a component's node in the tree, we have to remove the old node if it
+  // exists and then re-add the new data as a child node. To do this requires serializing
+  // the component and then creating a data set from it.
 
   mLoader.Reset();
   DataNode* root = mLoader.GetNext();
@@ -449,8 +443,7 @@ CachedProject* ProjectCache::LoadProjectFile(StringParam projectFilePath)
   if (cachedProject != nullptr)
     return cachedProject;
 
-  // Otherwise create the project. If we fail to load then delete the project we
-  // just created.
+  // Otherwise create the project. If we fail to load then delete the project we just created.
   cachedProject = new CachedProject();
   if (!cachedProject->Load(projectFilePath))
   {
@@ -511,8 +504,7 @@ CachedProject* ProjectCache::CreateProjectFromTemplate(StringParam projectName,
   // Create the cached project from this template zero proj
   CachedProject* cachedProject = new CachedProject();
   bool loadedSuccessfully = cachedProject->Load(newProjectFilePath);
-  // If we failed to load a valid project file (typically due to some invalid
-  // naming) then notify the user and exit
+  // If we failed to load a valid project file (typically due to some invalid naming) then notify the user and exit
   if (!loadedSuccessfully)
   {
     DoNotifyError("Failed to load project",
@@ -559,8 +551,7 @@ String ProjectCache::FindZeroProj(StringParam searchpath, StringParam projectNam
   if (FileExists(expectedProjectFilePath))
     return expectedProjectFilePath;
 
-  // Otherwise, search the path for any zero proj file and return the first we
-  // find
+  // Otherwise, search the path for any zero proj file and return the first we find
   FileRange fileRange(searchpath);
   for (; !fileRange.Empty(); fileRange.PopFront())
   {

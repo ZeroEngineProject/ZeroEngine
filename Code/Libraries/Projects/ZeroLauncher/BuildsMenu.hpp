@@ -25,14 +25,13 @@ public:
 
   /// Uninstall the build.
   void Uninstall();
-  /// Internal uninstall function that actually does the uninstalling (shouldn't
-  /// be called directly unless all relevant modals have already been passed).
+  /// Internal uninstall function that actually does the uninstalling (shouldn't be
+  /// called directly unless all relevant modals have already been passed).
   void UninstallBuildInternal();
   void OnUninstallModalResult(ModalConfirmEvent* e);
   /// Create a modal notifying the user that a build has instances running.
   void CreateBuildsRunningModal();
-  /// Get the result from the user about how they want to deal with instances of
-  /// a build running.
+  /// Get the result from the user about how they want to deal with instances of a build running.
   void OnBuildRunningModalResult(ModalButtonEvent* e);
 
   /// Download Event Response.
@@ -116,8 +115,7 @@ public:
 
   /// Composite Interface.
   void UpdateTransform() override;
-  /// Delete all old BuildItems and then create all new ones (with the current
-  /// filtering)
+  /// Delete all old BuildItems and then create all new ones (with the current filtering)
   void CreateBuildItems();
   /// Event Response.
   void OnVersionListLoaded(Event* e);

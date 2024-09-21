@@ -48,8 +48,7 @@ Vec2 MenuButton::GetMinSize()
 }
 
 MenuTextButton::MenuTextButton(Composite* parent, StringParam style, LauncherMenu::Type menu) :
-    TextButton(parent, style),
-    mMenu(menu)
+    TextButton(parent, style), mMenu(menu)
 {
   SetStyle(TextButtonStyle::Modern);
   DeSelect();
@@ -147,8 +146,7 @@ void MainButton::SetVersionAndProject(ZeroBuild* version, Project* project)
   {
     // We're always going to try to launch the current project
     SetText("LAUNCH");
-    // Choose whether or not the button is enabled based upon if the build is
-    // installed
+    // Choose whether or not the button is enabled based upon if the build is installed
     if (version->mInstallState == InstallState::Installed)
       SetEnabled(true);
     else
@@ -490,9 +488,8 @@ void LauncherWindow::OnMajorLauncherUpdateDownloaded(BackgroundTaskEvent* e)
     return;
   }
 
-  // Invoke the installer in such a way that it'll run silently (not very
-  // silent, this still shows progress but has no prompts) and close and re-open
-  // the launcher.
+  // Invoke the installer in such a way that it'll run silently (not very silent, this still 
+  // shows progress but has no prompts) and close and re-open the launcher.
 #if defined(ZeroTargetOsWindows)
   Os::ShellOpenApplication(job->mInstallerPath, "/SILENT /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS");
 #else
@@ -531,8 +528,8 @@ void LauncherWindow::OnPatchLauncherUpdateDownloaded(BackgroundTaskEvent* e)
   }
 
   // Check the job to see if there's a new major version, if not then
-  // queue up a job to check for a new minor version (ignored for now, needs
-  // further testing and minor versions are auto-downloaded on launcher).
+  // queue up a job to check for a new minor version (ignored for now, needs further
+  // testing and minor versions are auto-downloaded on launcher).
   DownloadLauncherPatchInstallerJob* job = (DownloadLauncherPatchInstallerJob*)e->mTask->GetFinishedJob();
   if (!job->mIsNewPatchAvailable)
   {
@@ -576,8 +573,7 @@ void LauncherWindow::ForceUpdateBuilds()
   ConnectThisTo(modal, Events::ModalButtonPressed, OnForcedBuildsModal);
   modal->mCloseOnBackgroundClicked = false;
   modal->TakeFocus();
-  // Make sure to set what the active modal is on the launcher window (so escape
-  // can cancel)
+  // Make sure to set what the active modal is on the launcher window (so escape can cancel)
   mActiveModal = modal;
 }
 
@@ -888,8 +884,7 @@ void LauncherWindow::OnPackageListing(BackgroundTaskEvent* taskEvent)
   Event e;
   mVersionSelector->GetDispatcher()->Dispatch(Events::VersionListLoaded, &e);
 
-  // If the user doesn't have any builds installed and has no recent projects
-  // then install the latest stable version
+  // If the user doesn't have any builds installed and has no recent projects then install the latest stable version
   RecentProjects* recentProjects = Z::gEngine->GetConfigCog()->has(RecentProjects);
   if (mVersionSelector->GetInstalledBuildsCount() == 0 &&
       (recentProjects == nullptr || recentProjects->GetRecentProjectsCount() == 0))
@@ -939,8 +934,7 @@ void LauncherWindow::OnLauncherListing(BackgroundTaskEvent* taskEvent)
     if (buildId.IsForThisPlatform())
       continue;
 
-    // If this is a patch we need to check the minor version (and make sure it's
-    // the same major as ours).
+    // If this is a patch we need to check the minor version (and make sure it's the same major as ours).
     if (content->mPackageExtension == cPatchExtension)
     {
       if (newestPatch == nullptr || (buildId.mMajorVersion == newestPatch->mBuildId.mMajorVersion &&
@@ -1011,8 +1005,7 @@ void LauncherWindow::CheckForForcedBuildUpdate()
 
 void LauncherWindow::OnNewBuildAvailable(Event* e)
 {
-  // Display some special notification letting them know something new is
-  // available?
+  // Display some special notification letting them know something new is available?
   ZPrint("New Build Available\n");
 }
 
@@ -1140,8 +1133,7 @@ void LauncherWindow::OnInstallProjectPack(ModalConfirmEvent* e)
   if (!e->mConfirmed)
     return;
 
-  // Unzip the project to the current default project save location using the
-  // zip file's name
+  // Unzip the project to the current default project save location using the zip file's name
   LauncherConfig* launcherConfig = Z::gEngine->GetConfigCog()->has(LauncherConfig);
   String projectLocation = launcherConfig->mDefaultProjectSaveLocation;
   String exportDirectory =
@@ -1159,8 +1151,7 @@ void LauncherWindow::OnInstallProjectPack(ModalConfirmEvent* e)
   ExtensionFilterFile filter("zeroproj");
   FindFilesRecursively(exportDirectory, files, &filter);
 
-  // If there's no zeroproj then return (prob should front-load this during
-  // drag-drop)
+  // If there's no zeroproj then return (prob should front-load this during drag-drop)
   if (files.Empty())
     return;
 
@@ -1245,8 +1236,7 @@ void LauncherWindow::StartListening()
   ConnectThisTo(mListener, Events::LauncherOpenBuild, OnLauncherOpenBuild);
   ConnectThisTo(mListener, Events::LauncherOpenTemplate, OnLauncherOpenTemplate);
   ConnectThisTo(mListener, Events::LauncherInstallProject, OnLauncherInstallProject);
-  // Also listen for the same events on ourself (to make parsing command-line
-  // arguments easier)
+  // Also listen for the same events on ourself (to make parsing command-line arguments easier)
   ConnectThisTo(this, Events::LauncherUpdateTags, OnLauncherUpdateTags);
   ConnectThisTo(this, Events::LauncherNewProject, OnLauncherNewProject);
   ConnectThisTo(this, Events::LauncherOpenProject, OnLauncherOpenProject);
@@ -1263,8 +1253,7 @@ void LauncherWindow::StartListening()
 void LauncherWindow::OnLauncherUpdateTags(LauncherCommunicationEvent* e)
 {
   // If the event provided any new tags then load them (should only be at the
-  // moment from another launcher opening with a different mode, such as the
-  // ProjectFun shortcut)
+  // moment from another launcher opening with a different mode, such as the ProjectFun shortcut)
   LauncherConfig* launcherConfig = Z::gEngine->GetConfigCog()->has(LauncherConfig);
 
   if (e->mExtraData == LauncherStartupArguments::Names[LauncherStartupArguments::DebuggerMode])

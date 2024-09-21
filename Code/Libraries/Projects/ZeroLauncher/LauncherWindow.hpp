@@ -137,19 +137,16 @@ public:
   /// Check to see if there is a new launcher available
   void CheckForLauncherUpdates();
 
-  /// Prompt response for asking if a user wants to install a new major version
-  /// (runs installer).
+  /// Prompt response for asking if a user wants to install a new major version (runs installer).
   void OnInstallMajorVersion(ModalConfirmEvent* e);
   /// Response for a launcher installer being downloaded.
   void OnMajorLauncherUpdateDownloaded(BackgroundTaskEvent* e);
-  /// Prompt response for asking if a user wants to install a new patch version
-  /// (downloads/extracts/restarts).
+  /// Prompt response for asking if a user wants to install a new patch version (downloads/extracts/restarts).
   void OnInstallPatchVersion(ModalConfirmEvent* e);
   /// Response for a launcher patch being downloaded.
   void OnPatchLauncherUpdateDownloaded(BackgroundTaskEvent* e);
 
-  /// Tell the user that all of their builds must be updated. Needed for
-  /// emergency patches to old builds.
+  /// Tell the user that all of their builds must be updated. Needed for emergency patches to old builds.
   void ForceUpdateBuilds();
   void ForceUpdateBuildsAndUpdateConfig();
   void OnForcedBuildsModal(ModalButtonEvent* e);
@@ -204,8 +201,7 @@ public:
   void OnOsMouseDrop(OsMouseDropEvent* e);
   /// Callback function for the modal dialog after installing a local build.
   void OnInstallLocalBuild(ModalConfirmEvent* e);
-  /// Callback function for the modal dialog after installing a template
-  /// project.
+  /// Callback function for the modal dialog after installing a template project.
   void OnInstallTemplateProject(ModalConfirmEvent* e);
   void OnInstallProjectPack(ModalConfirmEvent* e);
 
@@ -272,9 +268,8 @@ public:
   HandleOf<Modal> mActiveProjectModal;
   HandleOf<Modal> mSettingsModal;
 
-  /// Various event objects created to send data via tcpsockets. They need to
-  /// live for an undetermined amount of time so we're just storing them to
-  /// clean up at the end.
+  /// Various event objects created to send data via tcpsockets. They need to live for
+  /// an undetermined amount of time so we're just storing them to clean up at the end.
   Array<EventObject*> mDummyCommunicators;
 
   String mUpdateModalName;

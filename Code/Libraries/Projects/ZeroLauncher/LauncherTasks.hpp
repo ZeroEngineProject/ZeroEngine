@@ -97,9 +97,8 @@ public:
   String mInstallLocation;
 };
 
-// Deletes a directory on a thread because deleting can take a little bit of
-// time. Can also recursively delete empty parent directories up to a certain
-// root so as to not leave empty folders.
+// Deletes a directory on a thread because deleting can take a little bit of time.
+// Can also recursively delete empty parent directories up to a certain root so as to not leave empty folders.
 class DeleteDirectoryJob : public BackgroundTaskJob
 {
 public:
@@ -150,8 +149,7 @@ public:
   String mTemplateNameWithoutExtension;
 };
 
-// Downloads a template (if needed) and creates a new project from that
-// template.
+// Downloads a template (if needed) and creates a new project from that template.
 class DownloadAndCreateTemplateTaskJob : public DownloadTemplateTaskJob
 {
 public:
@@ -162,8 +160,8 @@ public:
   void Execute() override;
   void OnReponse(WebResponseEvent* event);
 
-  // Creating a project currently involves serialization which is not thread
-  // safe, this must be called on the main thread.
+  // Creating a project currently involves serialization which is not thread safe, this must be called on the main
+  // thread.
   CachedProject* GetOrCreateCachedProject(ProjectCache* projectCache);
 
   /// What to name the project that is created from the template
@@ -183,8 +181,7 @@ private:
   CachedProject* mCachedProject;
 };
 
-// A background task to check if there's a new patch version installer for the
-// launcher and if so download it.
+// A background task to check if there's a new patch version installer for the launcher and if so download it.
 class DownloadLauncherPatchInstallerJob : public DownloadTaskJob
 {
 public:
@@ -203,8 +200,7 @@ public:
   String mRootDownloadLocation;
 };
 
-// A background task to check if there's a new major version installer for the
-// launcher and if so download it.
+// A background task to check if there's a new major version installer for the launcher and if so download it.
 class DownloadLauncherMajorInstallerJob : public DownloadTaskJob
 {
 public:

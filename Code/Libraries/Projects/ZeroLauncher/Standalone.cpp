@@ -58,21 +58,20 @@ void BuildId::Serialize(Serializer& stream, bool includePlatform)
 BuildId BuildId::GetCurrentApplicationId()
 {
   BuildId id;
-  // This major id needs to match "ZeroLauncherMajorId" on the web server in
-  // order to determine if a new major version is available which triggers a
-  // re-install of the launcher.
+  // This major id needs to match "ZeroLauncherMajorId" on the web server in order to determine 
+  // if a new major version is available which triggers a  re-install of the launcher.
 
   id.mApplication = GetOrganizationApplicationName(); // Application [ZeroEditor]
-  id.mBranch = ZeroBranchName;                      // Branch [master]
+  id.mBranch = ZeroBranchName;                        // Branch [master]
   id.mMajorVersion = GetMajorVersion();               // Major [1]
   id.mMinorVersion = GetMinorVersion();               // Minor [5]
   id.mPatchVersion = GetPatchVersion();               // Patch [0]
   id.mRevisionId = GetRevisionNumber();               // Revision [1501]
   id.mShortChangeSet = GetShortChangeSetString();     // ShortChangeset [fb02756c46a4]
-  id.mMsSinceEpoch = ZeroMsSinceEpoch;              // MsSinceEpoch [1574702096290]
-  id.mTargetOs = ZeroTargetOsName;                  // TargetOs [Windows]
-  id.mArchitecture = ZeroArchitectureName;          // Architecture [x86]
-  id.mConfig = ZeroConfigName;                      // Config [Release]
+  id.mMsSinceEpoch = ZeroMsSinceEpoch;                // MsSinceEpoch [1574702096290]
+  id.mTargetOs = ZeroTargetOsName;                    // TargetOs [Windows]
+  id.mArchitecture = ZeroArchitectureName;            // Architecture [x86]
+  id.mConfig = ZeroConfigName;                        // Config [Release]
   id.mPackageExtension = "zip";                       // Extension [zip]
   return id;
 }
@@ -92,17 +91,17 @@ bool BuildId::Parse(StringParam buildName)
    * Example: ZeroEditor.1.5.0.1501.zip
    */
   const Regex cBuildNameRegex("([a-zA-Z0-9_]+)\\." // Application [ZeroEditor]
-                              //"([a-zA-Z0-9_]+)\\." // Branch [master]
-                              "([0-9]+)\\."        // Major [1]
-                              "([0-9]+)\\."        // Minor [5]
-                              "([0-9]+)\\."        // Patch [0]
-                              "([0-9]+)\\."        // Revision [1501]
+                                                   //"([a-zA-Z0-9_]+)\\." // Branch [master]
+                              "([0-9]+)\\." // Major [1]
+                              "([0-9]+)\\." // Minor [5]
+                              "([0-9]+)\\." // Patch [0]
+                              "([0-9]+)\\." // Revision [1501]
                               //"([0-9a-fA-F]+)\\."  // ShortChangeset [fb02756c46a4]
                               //"([0-9]+)\\."        // MsSinceEpoch [1574702096290]
                               //"([a-zA-Z0-9_]+)\\." // TargetOs [Windows]
                               //"([a-zA-Z0-9_]+)\\." // Architecture [x86]
                               //"([a-zA-Z0-9_]+)\\." // Config [Release]
-                              "([a-zA-Z0-9_]+)"    // Extension [zip]
+                              "([a-zA-Z0-9_]+)" // Extension [zip]
   );
 
   Matches matches;
@@ -115,20 +114,18 @@ bool BuildId::Parse(StringParam buildName)
   //// 1           2      3     4     5     6        7              8            9        10           11     12
   //// Application.Branch.Major.Minor.Patch.Revision.ShortChangeset.MsSinceEpoch.TargetOs.Architecture.Config.Extension
 
-  //mApplication = matches[1];
-  //mBranch = matches[2];
-  //ToValue(matches[3], mMajorVersion);
-  //ToValue(matches[4], mMinorVersion);
-  //ToValue(matches[5], mPatchVersion);
-  //ToValue(matches[6], mRevisionId);
-  //mShortChangeSet = matches[7];
-  //ToValue(matches[8], mMsSinceEpoch);
-  //mTargetOs = matches[9];
-  //mArchitecture = matches[10];
-  //mConfig = matches[11];
-  //mPackageExtension = matches[12];
-
-  
+  // mApplication = matches[1];
+  // mBranch = matches[2];
+  // ToValue(matches[3], mMajorVersion);
+  // ToValue(matches[4], mMinorVersion);
+  // ToValue(matches[5], mPatchVersion);
+  // ToValue(matches[6], mRevisionId);
+  // mShortChangeSet = matches[7];
+  // ToValue(matches[8], mMsSinceEpoch);
+  // mTargetOs = matches[9];
+  // mArchitecture = matches[10];
+  // mConfig = matches[11];
+  // mPackageExtension = matches[12];
 
   // 1           2     3     4     5        6
   // Application.Major.Minor.Patch.Revision.Extension
@@ -149,29 +146,29 @@ bool BuildId::ParseRequired(StringParam buildName)
   return false;
 }
 
-//String BuildId::GetFullId() const
+// String BuildId::GetFullId() const
 //{
-//  /*
-//   * This needs to match
-//   * index.js:pack/Standalone.cpp:BuildId::Parse/BuildId::GetFullId/BuildVersion.cpp:GetBuildVersionName
-//   * Application.Branch.Major.Minor.Patch.Revision.ShortChangeset.MsSinceEpoch.TargetOs.Architecture.Config.Extension
-//   * Example: ZeroEditor.master.1.5.0.1501.fb02756c46a4.1574702096290.Windows.x86.Release.zip
-//   */
-//  StringBuilder builder;
-//  builder.AppendFormat("%s.", mApplication.c_str());     // Application [ZeroEditor]
-//  builder.AppendFormat("%s.", mBranch.c_str());          // Branch [master]
-//  builder.AppendFormat("%d.", mMajorVersion);            // Major [1]
-//  builder.AppendFormat("%d.", mMinorVersion);            // Minor [5]
-//  builder.AppendFormat("%d.", mPatchVersion);            // Patch [0]
-//  builder.AppendFormat("%d.", mRevisionId);              // Revision [1501]
-//  builder.AppendFormat("%s.", mShortChangeSet.c_str());  // ShortChangeset [fb02756c46a4]
-//  builder.AppendFormat("%llu.", mMsSinceEpoch);          // MsSinceEpoch [1574702096290]
-//  builder.AppendFormat("%s.", mTargetOs.c_str());        // TargetOs [Windows]
-//  builder.AppendFormat("%s.", mArchitecture.c_str());    // Architecture [x86]
-//  builder.AppendFormat("%s.", mConfig.c_str());          // Config [Release]
-//  builder.AppendFormat("%s", mPackageExtension.c_str()); // Extension [zip]
-//  return builder.ToString();
-//}
+//   /*
+//    * This needs to match
+//    * index.js:pack/Standalone.cpp:BuildId::Parse/BuildId::GetFullId/BuildVersion.cpp:GetBuildVersionName
+//    * Application.Branch.Major.Minor.Patch.Revision.ShortChangeset.MsSinceEpoch.TargetOs.Architecture.Config.Extension
+//    * Example: ZeroEditor.master.1.5.0.1501.fb02756c46a4.1574702096290.Windows.x86.Release.zip
+//    */
+//   StringBuilder builder;
+//   builder.AppendFormat("%s.", mApplication.c_str());     // Application [ZeroEditor]
+//   builder.AppendFormat("%s.", mBranch.c_str());          // Branch [master]
+//   builder.AppendFormat("%d.", mMajorVersion);            // Major [1]
+//   builder.AppendFormat("%d.", mMinorVersion);            // Minor [5]
+//   builder.AppendFormat("%d.", mPatchVersion);            // Patch [0]
+//   builder.AppendFormat("%d.", mRevisionId);              // Revision [1501]
+//   builder.AppendFormat("%s.", mShortChangeSet.c_str());  // ShortChangeset [fb02756c46a4]
+//   builder.AppendFormat("%llu.", mMsSinceEpoch);          // MsSinceEpoch [1574702096290]
+//   builder.AppendFormat("%s.", mTargetOs.c_str());        // TargetOs [Windows]
+//   builder.AppendFormat("%s.", mArchitecture.c_str());    // Architecture [x86]
+//   builder.AppendFormat("%s.", mConfig.c_str());          // Config [Release]
+//   builder.AppendFormat("%s", mPackageExtension.c_str()); // Extension [zip]
+//   return builder.ToString();
+// }
 
 String BuildId::GetFullId() const
 {
@@ -182,17 +179,17 @@ String BuildId::GetFullId() const
    * Example: ZeroEditor.1.5.0.1501.zip
    */
   StringBuilder builder;
-  builder.AppendFormat("%s.", mApplication.c_str());     // Application [ZeroEditor]
-  //builder.AppendFormat("%s.", mBranch.c_str());          // Branch [master]
-  builder.AppendFormat("%d.", mMajorVersion);            // Major [1]
-  builder.AppendFormat("%d.", mMinorVersion);            // Minor [5]
-  builder.AppendFormat("%d.", mPatchVersion);            // Patch [0]
-  builder.AppendFormat("%d.", mRevisionId);              // Revision [1501]
-  //builder.AppendFormat("%s.", mShortChangeSet.c_str());  // ShortChangeset [fb02756c46a4]
-  //builder.AppendFormat("%llu.", mMsSinceEpoch);          // MsSinceEpoch [1574702096290]
-  //builder.AppendFormat("%s.", mTargetOs.c_str());        // TargetOs [Windows]
-  //builder.AppendFormat("%s.", mArchitecture.c_str());    // Architecture [x86]
-  //builder.AppendFormat("%s.", mConfig.c_str());          // Config [Release]
+  builder.AppendFormat("%s.", mApplication.c_str()); // Application [ZeroEditor]
+  // builder.AppendFormat("%s.", mBranch.c_str());          // Branch [master]
+  builder.AppendFormat("%d.", mMajorVersion); // Major [1]
+  builder.AppendFormat("%d.", mMinorVersion); // Minor [5]
+  builder.AppendFormat("%d.", mPatchVersion); // Patch [0]
+  builder.AppendFormat("%d.", mRevisionId);   // Revision [1501]
+  // builder.AppendFormat("%s.", mShortChangeSet.c_str());  // ShortChangeset [fb02756c46a4]
+  // builder.AppendFormat("%llu.", mMsSinceEpoch);          // MsSinceEpoch [1574702096290]
+  // builder.AppendFormat("%s.", mTargetOs.c_str());        // TargetOs [Windows]
+  // builder.AppendFormat("%s.", mArchitecture.c_str());    // Architecture [x86]
+  // builder.AppendFormat("%s.", mConfig.c_str());          // Config [Release]
   builder.AppendFormat("%s", mPackageExtension.c_str()); // Extension [zip]
   return builder.ToString();
 }
@@ -281,7 +278,7 @@ bool BuildId::IsPlatformEmpty() const
 
 bool BuildId::IsForThisPlatform() const
 {
-  //return mTargetOs == ZeroTargetOsName && mArchitecture == ZeroArchitectureName && mConfig == ZeroConfigName;
+  // return mTargetOs == ZeroTargetOsName && mArchitecture == ZeroArchitectureName && mConfig == ZeroConfigName;
   return true;
 }
 
@@ -371,8 +368,8 @@ String ZeroBuild::GetDebugIdString()
 
 BuildId ZeroBuild::GetBuildId()
 {
-  // If we have a cog with the build content component on it then return its
-  // build id, otherwise just return the current launcher's id
+  // If we have a cog with the build content component on it then return its build id,
+  // otherwise just return the current launcher's id
   ZeroBuildContent* zeroBuild = GetBuildContent(false);
   if (zeroBuild != nullptr)
     return zeroBuild->GetBuildId();
@@ -537,8 +534,7 @@ bool TemplateProject::ContainsVersion(const BuildId& buildId)
 
 void TemplateProject::DownloadIcon(VersionSelector* versionSelector)
 {
-  // When we finish downloading the preview image we need to update our texture
-  // (on the main thread)
+  // When we finish downloading the preview image we need to update our texture (on the main thread)
   BackgroundTask* task = versionSelector->DownloadTemplateIcon(this);
   ConnectThisTo(task, Events::BackgroundTaskCompleted, OnPreviewImageDownloaded);
 }
@@ -564,12 +560,10 @@ void TemplateProject::OnPreviewImageDownloaded(BackgroundTaskEvent* e)
 {
   DownloadImageTaskJob* job = (DownloadImageTaskJob*)e->mTask->GetFinishedJob();
 
-  // If we got a valid image then load it (different than having a valid or
-  // complete job)
+  // If we got a valid image then load it (different than having a valid or complete job)
   if (!job->mImageWasInvalid)
   {
-    // This event can get dispatched multiple times. If the image is empty then
-    // don't swap again
+    // This event can get dispatched multiple times. If the image is empty then don't swap again
     if (job->mImage.SizeInBytes == 0)
       return;
 

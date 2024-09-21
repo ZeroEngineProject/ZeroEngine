@@ -152,9 +152,7 @@ void BuildStatusView::OnBuildStateChanged(Event*)
 }
 
 BuildList::BuildList(Composite* parent, VersionSelector* versionSelector, ZeroBuild* selected, bool installedOnly) :
-    Composite(parent),
-    mSelected(selected),
-    mVersionSelector(versionSelector)
+    Composite(parent), mSelected(selected), mVersionSelector(versionSelector)
 {
   SetLayout(CreateStackLayout(LayoutDirection::TopToBottom, Pixels(0, 1), Thickness(1, 1, 1, 1)));
 
@@ -199,8 +197,7 @@ BuildList::BuildList(Composite* parent, VersionSelector* versionSelector, ZeroBu
   ZeroBuildTagPolicy policy(mVersionSelector->mConfig);
   forRange (ZeroBuild* version, versionSelector->mVersions.All())
   {
-    // Check if we should include this build (fitlers things like platform,
-    // branches, etc...)
+    // Check if we should include this build (fitlers things like platform, branches, etc...)
     if (!policy.ShouldInclude(version))
       continue;
 
@@ -359,8 +356,7 @@ int BuildList::IndexFromPosition(Vec2Param localPosition)
 }
 
 BuildSelector::BuildSelector(Composite* parent, VersionSelector* versionSelector, ZeroBuild* version) :
-    Composite(parent),
-    mVersionSelector(versionSelector)
+    Composite(parent), mVersionSelector(versionSelector)
 {
   mInstalledOnly = true;
 

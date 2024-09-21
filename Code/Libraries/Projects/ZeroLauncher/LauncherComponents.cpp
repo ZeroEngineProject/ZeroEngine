@@ -132,8 +132,7 @@ void ZeroTemplate::Serialize(Serializer& stream)
   SerializeNameDefault(mSortPriority, 10.0f);
   SerializeNameDefault(mTags, emptyStr);
 
-  // Server side information (doesn't technically need to be saved locally, but
-  // whatever)
+  // Server side information (doesn't technically need to be saved locally, but whatever)
   SerializeNameDefault(mDownloadUrl, emptyStr);
   SerializeNameDefault(mIconUrl, emptyStr);
 }
@@ -172,8 +171,7 @@ String ZeroTemplate::GetFullTemplateVersionName()
   for (size_t i = 0; i < mBuildIds.Size(); ++i)
   {
     BuildIdRange& idRange = mBuildIds[i];
-    // Always print out the min build id, but only print out the max if we have
-    // one
+    // Always print out the min build id, but only print out the max if we have one
     builder.Append(idRange.mMin.GetFullId());
     if (idRange.mHasMax)
     {
@@ -214,14 +212,12 @@ bool ZeroTemplate::TestBuildId(const BuildId& buildId)
 
 bool ZeroTemplate::IsMoreExactRangeThan(const BuildId& buildId, ZeroTemplate* otherTemplate)
 {
-  // Find the best build range for 'this' template. If one doesn't exist then
-  // this is not a more exact range.
+  // Find the best build range for 'this' template. If one doesn't exist then this is not a more exact range.
   BuildIdRange* myBuildRange = FindBestBuildRange(buildId);
   if (myBuildRange == nullptr)
     return false;
 
-  // Find the best build range for the 'other' template. If it doesn't exist
-  // then 'this' is the better range.
+  // Find the best build range for the 'other' template. If it doesn't exist then 'this' is the better range.
   BuildIdRange* otherBuildRange = otherTemplate->FindBestBuildRange(buildId);
   if (otherBuildRange == nullptr)
     return true;
@@ -232,9 +228,8 @@ bool ZeroTemplate::IsMoreExactRangeThan(const BuildId& buildId, ZeroTemplate* ot
 
 bool ZeroTemplate::ParseVersionId(StringParam versionId, BuildIdList& buildIds)
 {
-  // Split on ',' and parse each remaining string as a range/individual id
-  // value. If a valid fails to parse correctly then mark the entire parsing as
-  // failing.
+  // Split on ',' and parse each remaining string as a range/individual id value.
+  // If a valid fails to parse correctly then mark the entire parsing as failing.
   bool validId = false;
   StringSplitRange splitRange = versionId.Split(",");
   for (; !splitRange.Empty(); splitRange.PopFront())
@@ -253,14 +248,12 @@ bool ZeroTemplate::ParseVersionId(StringParam versionId, BuildIdRange& buildIdRa
 {
   // Split on the range separator token '-'.
   StringSplitRange splitRange = versionId.Split("-");
-  // To make life easy this information is stored in an array so we can check
-  // counts
+  // To make life easy this information is stored in an array so we can check counts
   Array<StringRange> range;
   for (; !splitRange.Empty(); splitRange.PopFront())
     range.PushBack(splitRange.Front());
 
-  // We must have either 1 or 2 items after the split, otherwise this isn't
-  // valid
+  // We must have either 1 or 2 items after the split, otherwise this isn't valid
   if (range.Empty() || range.Size() > 2)
     return false;
 
@@ -286,8 +279,7 @@ bool ZeroTemplate::ParseVersionId(StringParam versionId, BuildIdRange& buildIdRa
 
 bool ZeroTemplate::ParseVersionId(StringParam versionId, BuildId& buildId)
 {
-  // It's far easier to split the string than to use a regex due to the optional
-  // terms
+  // It's far easier to split the string than to use a regex due to the optional terms
   StringSplitRange splitRange = versionId.Split(".");
   // Parse into an array to make checks easier
   Array<StringRange> tokens;
@@ -299,17 +291,15 @@ bool ZeroTemplate::ParseVersionId(StringParam versionId, BuildId& buildId)
     return false;
 
   int index = 0;
-  // If the first token contains a non-numeric value then this is assumed to be
-  // the branch
+  // If the first token contains a non-numeric value then this is assumed to be the branch
   if (!IsNumber(tokens[0]))
   {
     buildId.mBranch = tokens[0];
     ++index;
   }
 
-  // Continue parsing 4 values from wherever we left off (i.e. index 1 if we
-  // parsed a branch), up to the max number of tokens. This should technically
-  // check if any value isn't a valid number but I'm lazy for now.
+  // Continue parsing 4 values from wherever we left off (i.e. index 1 if we parsed a branch), up to the max
+  // number of tokens. This should technically check if any value isn't a valid number but I'm lazy for now.
   int* ids[4] = {&buildId.mMajorVersion, &buildId.mMinorVersion, &buildId.mPatchVersion, &buildId.mRevisionId};
   for (size_t i = 0; i < 4; ++i, ++index)
   {
@@ -337,13 +327,11 @@ bool ZeroTemplate::TestBuildId(const BuildId& buildId, BuildIdRange& buildIdRang
   BuildId& minId = buildIdRange.mMin;
   BuildId& maxId = buildIdRange.mMax;
 
-  // Determine what kind of an update it is to go from the build's id to the min
-  // version's id
+  // Determine what kind of an update it is to go from the build's id to the min version's id
   BuildUpdateState::Enum minResult = buildId.CheckForUpdate(minId);
 
-  // If going from the build id to the min version is not explicitly an older or
-  // same upgrade then this isn't valid. (This deals with going to new and
-  // breaking changes).
+  // If going from the build id to the min version is not explicitly an older or same
+  // upgrade then this isn't valid. (This deals with going to new and breaking changes).
   if (!(minResult == BuildUpdateState::Older || minResult == BuildUpdateState::Same))
     return false;
 

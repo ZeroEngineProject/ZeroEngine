@@ -17,8 +17,7 @@ DefineEvent(NewBuildAvailable);
 
 } // namespace Events
 
-/// Sort versions such that newer builds are first. If the branches are
-/// different then sort alphabetically.
+/// Sort versions such that newer builds are first. If the branches are different then sort alphabetically.
 struct VersionSorter
 {
   // Return true if lhs is "newer" than rhs (first things should return true)
@@ -136,8 +135,7 @@ void VersionSelector::LoadInstalledBuild(StringParam directoryPath, StringParam 
     mVersions.PushBack(localBuild);
   }
 
-  // If the build has a deprecated component then make sure to add the
-  // deprecated tag
+  // If the build has a deprecated component then make sure to add the deprecated tag
   if (localBuild->GetDeprecatedInfo(false) != nullptr)
   {
     ZeroBuildContent* buildInfo = localBuild->GetBuildContent(true);
@@ -176,8 +174,7 @@ void VersionSelector::UpdatePackageListing(GetVersionListingTaskJob* job)
   for (uint i = 0; i < mVersions.Size(); ++i)
     mVersions[i]->mOnServer = false;
 
-  // Since versions are sorted by newest to oldest, the first one is the latest
-  // version
+  // Since versions are sorted by newest to oldest, the first one is the latest version
   BuildId prevNewestBuildId;
   if (!mVersions.Empty())
     prevNewestBuildId = mVersions[0]->GetBuildId();
@@ -197,8 +194,7 @@ void VersionSelector::UpdatePackageListing(GetVersionListingTaskJob* job)
     // if we have the same build locally installed
     BuildId serverBuildId = buildContent->GetBuildId();
     ZeroBuild* localStandalone = mVersionMap.FindValue(serverBuildId, nullptr);
-    // If this build wasn't locally installed, then we need to create a
-    // ZeroBuild for it
+    // If this build wasn't locally installed, then we need to create a ZeroBuild for it
     if (localStandalone == nullptr)
     {
       localStandalone = new ZeroBuild();
@@ -209,8 +205,7 @@ void VersionSelector::UpdatePackageListing(GetVersionListingTaskJob* job)
       mVersions.PushBack(localStandalone);
       mVersionMap.Insert(serverBuildId, localStandalone);
     }
-    // Otherwise, this build was already installed so we have to update the meta
-    // info
+    // Otherwise, this build was already installed so we have to update the meta info
     else
     {
       // Overwrite the local build's  meta with the server's
@@ -220,8 +215,7 @@ void VersionSelector::UpdatePackageListing(GetVersionListingTaskJob* job)
       // If there local build had a meta then transfer certain local properties
       if (oldMetaCog != nullptr)
       {
-        // If the local build had a user defined deprecated message then
-        // transfer that over to the new meta
+        // If the local build had a user defined deprecated message then transfer that over to the new meta
         ZeroBuildDeprecated* oldDeprecatedInfo = oldMetaCog->has(ZeroBuildDeprecated);
         if (oldDeprecatedInfo != nullptr && !oldDeprecatedInfo->mUserMessage.Empty())
         {
@@ -234,14 +228,12 @@ void VersionSelector::UpdatePackageListing(GetVersionListingTaskJob* job)
     // Either way, mark this build as being on the server
     localStandalone->mOnServer = true;
 
-    // If there is a deprecated component then make sure the build is tagged as
-    // deprecated
+    // If there is a deprecated component then make sure the build is tagged as deprecated
     if (localStandalone->GetDeprecatedInfo(false) != nullptr)
       buildContent->AddTag(ZeroBuild::mDeprecatedTag);
-    // On the flip side, the server could have a build tagged as deprecated
-    // without actually having the component (or no message). In this case add
-    // the component and set a message if there wasn't one. If the tag says this
-    // version is deprecated then mark that it is bad
+    // On the flip side, the server could have a build tagged as deprecated without actually
+    // having the component (or no message). In this case add the component and set a message if there wasn't one.
+    // If the tag says this version is deprecated then mark that it is bad
     if (buildContent->ContainsTag(ZeroBuild::mDeprecatedTag) == true)
     {
       ZeroBuildDeprecated* deprecatedInfo = localStandalone->GetDeprecatedInfo(true);
@@ -251,8 +243,7 @@ void VersionSelector::UpdatePackageListing(GetVersionListingTaskJob* job)
   }
 
   // Now we know which versions are on the server so remove all of the templates
-  // that are no longer on the server (and haven't been downloaded) and then
-  // re-populate the hashmap
+  // that are no longer on the server (and haven't been downloaded) and then re-populate the hashmap
   mVersionMap.Clear();
   size_t i = 0;
   while (i < mVersions.Size())
@@ -260,10 +251,9 @@ void VersionSelector::UpdatePackageListing(GetVersionListingTaskJob* job)
     ZeroBuild* build = mVersions[i];
     if (!build->mOnServer && build->mInstallState == InstallState::NotInstalled)
     {
-      // Because people were listening to the builds (they're event objects) we
-      // can't safely delete them. Instead just move them to another list that
-      // we'll clean-up on close (there shouldn't ever be too many of these
-      // unless someone leaves the launcher running for months)
+      // Because people were listening to the builds (they're event objects) we can't
+      // safely delete them. Instead just move them to another list that we'll clean-up on
+      // close (there shouldn't ever be too many of these unless someone leaves the launcher running for months)
       mOldVersions.PushBack(build);
       mVersions[i] = mVersions.Back();
       mVersions.PopBack();
@@ -279,9 +269,8 @@ void VersionSelector::UpdatePackageListing(GetVersionListingTaskJob* job)
   Event e;
   DispatchEvent(Events::BuildListUpdated, &e);
 
-  // If there is a newer version available, it'll have a name different than the
-  // one we cached before, in that case send out an event so someone knows (and
-  // can update Ui or something)
+  // If there is a newer version available, it'll have a name different than the one we cached before,
+  // in that case send out an event so someone knows (and can update Ui or something)
   if (!mVersions.Empty() && prevNewestBuildId != mVersions[0]->GetBuildId())
   {
     Event toSend;
@@ -355,20 +344,17 @@ bool VersionSelector::InstallLocalTemplateProject(StringParam filePath)
   Archive archive(ArchiveMode::Decompressing);
   archive.ReadZip(ArchiveReadFlags::Entries, file);
 
-  // Try and extract the meta file from the archive (as well as any preview
-  // images/icons if they exist)
+  // Try and extract the meta file from the archive (as well as any preview images/icons if they exist)
   String sku = FilePath::GetFileNameWithoutExtension(filePath);
   String metaFileName = BuildString(sku, ".meta");
   Cog* metaCog = ExtractLocalTemplateMetaAndImages(archive, file, metaFileName, true);
-  // If we failed to find a meta file then we need to parse the file name to get
-  // the sku and build id
+  // If we failed to find a meta file then we need to parse the file name to get the sku and build id
   if (metaCog == nullptr)
   {
     String fileName = FilePath::GetFileNameWithoutExtension(filePath);
 
-    // Find a string that is _VersionNumber, this can include '.' ',' and '-' in
-    // order to specify ranges The expected file name is SKU_UserId_BuildId
-    // where _UserId is optional.
+    // Find a string that is _VersionNumber, this can include '.' ',' and '-' in order to specify ranges
+    // The expected file name is SKU_UserId_BuildId where _UserId is optional.
     Matches matches;
     Regex regex("(\\w+)(_[\\w\\d\\.\\,\\-]+)?_([\\w\\d\\.\\,\\-]+)");
     regex.Search(fileName, matches);
@@ -381,8 +367,7 @@ bool VersionSelector::InstallLocalTemplateProject(StringParam filePath)
     metaCog = Z::gFactory->Create(Z::gEngine->GetEngineSpace(), CoreArchetypes::Empty, 0, nullptr);
     metaCog->ClearArchetype();
 
-    // Create the zero template component and set the sku and version id from
-    // what we parsed
+    // Create the zero template component and set the sku and version id from what we parsed
     ZeroTemplate* zeroTemplate = HasOrAdd<ZeroTemplate>(metaCog);
     zeroTemplate->mSKU = matches[1];
     zeroTemplate->mVersionId = matches[3];
@@ -403,8 +388,7 @@ bool VersionSelector::InstallLocalTemplateProject(StringParam filePath)
   // Create the template project from our meta cog so that we can
   // cache information like where this is installed, icon images, etc...
   TemplateProject* currentProject = CreateTemplateProjectFromMeta(metaCog, templateInstallDirectory, String());
-  // Make sure we set the local path of where this template is installed right
-  // away as several other functions use this
+  // Make sure we set the local path of where this template is installed right away as several other functions use this
   currentProject->mLocalPath = templateInstallDirectory;
 
   // Always copy over the ".zerotemplate" that is being installed.
@@ -472,8 +456,7 @@ TemplateProject* VersionSelector::CreateTemplateProjectFromMeta(Cog* metaCog,
   // Check and see if we already had this template
   String key = zeroTemplate->GetIdString();
   TemplateProject* currentProject = mTemplateMap.FindValue(key, nullptr);
-  // If we didn't then create a new project and mark it as not existing on the
-  // server
+  // If we didn't then create a new project and mark it as not existing on the server
   if (currentProject == nullptr)
   {
     currentProject = new TemplateProject();
@@ -543,8 +526,7 @@ BackgroundTask* VersionSelector::GetTemplateListing()
 void VersionSelector::UpdateTemplateListing(GetTemplateListingTaskJob* templates)
 {
   ZPrint("Updating template project listing.\n");
-  // Mark all templates as not being on the server (so we know which ones to get
-  // rid of later)
+  // Mark all templates as not being on the server (so we know which ones to get rid of later)
   for (size_t i = 0; i < mTemplates.Size(); ++i)
     mTemplates[i]->mIsOnServer = false;
 
@@ -574,10 +556,9 @@ void VersionSelector::UpdateTemplateListing(GetTemplateListingTaskJob* templates
       continue;
     }
 
-    // Otherwise we already had a copy, but this copy could've been from a
-    // previous call to the server or it could be a locally downloaded template.
-    // If it is locally downloaded then keep that template's information instead
-    // of the servers. Otherwise just update in place.
+    // Otherwise we already had a copy, but this copy could've been from a previous call to the server or
+    // it could be a locally downloaded template. If it is locally downloaded then keep that template's
+    // information instead of the servers. Otherwise just update in place.
     if (localTemplate->mIsDownloaded)
     {
       ZeroTemplate* localZeroTemplate = localTemplate->GetZeroTemplate(true);
@@ -592,8 +573,7 @@ void VersionSelector::UpdateTemplateListing(GetTemplateListingTaskJob* templates
   }
 
   // Now we know which versions are on the server so remove all of the templates
-  // that are no longer on the server (and haven't been downloaded) and then
-  // re-populate the hashmap
+  // that are no longer on the server (and haven't been downloaded) and then re-populate the hashmap
   mTemplateMap.Clear();
   size_t i = 0;
   while (i < mTemplates.Size())
@@ -601,10 +581,9 @@ void VersionSelector::UpdateTemplateListing(GetTemplateListingTaskJob* templates
     TemplateProject* project = mTemplates[i];
     if (!project->mIsOnServer && !project->mIsDownloaded)
     {
-      // Because people were listening to the templates (they're event objects)
-      // we can't safely delete them. Instead just move them to another list
-      // that we'll clean-up on close (there shouldn't ever be too many of these
-      // unless someone leaves the launcher running for months)
+      // Because people were listening to the templates (they're event objects) we can't
+      // safely delete them. Instead just move them to another list that we'll clean-up on
+      // close (there shouldn't ever be too many of these unless someone leaves the launcher running for months)
       mOldTemplates.PushBack(mTemplates[i]);
       mTemplates[i] = mTemplates.Back();
       mTemplates.PopBack();
@@ -697,17 +676,15 @@ Cog* VersionSelector::ExtractLocalTemplateMetaAndImages(Archive& archive,
   DataTreeLoader loader;
   loader.OpenBuffer(status, metaContents);
   Cog* metaCog = Z::gFactory->CreateFromStream(Z::gEngine->GetEngineSpace(), loader, 0, nullptr);
-  // Make sure we successfully created the cog and that it has the required
-  // component
+  // Make sure we successfully created the cog and that it has the required component
   if (metaCog == nullptr)
     return nullptr;
   ZeroTemplate* zeroTemplate = metaCog->has(ZeroTemplate);
   if (zeroTemplate == nullptr)
     return nullptr;
 
-  // If we want to display previews from a template we need to extract them from
-  // the archive and put them in the template folder where we can easily load
-  // them
+  // If we want to display previews from a template we need to extract them from the
+  // archive and put them in the template folder where we can easily load them
   if (extractImages)
   {
     // Make sure the template's directory exists
@@ -752,8 +729,7 @@ BackgroundTask* VersionSelector::InstallVersion(ZeroBuild* standalone)
 
   ZPrint("Installing build '%s'\n", standalone->GetDebugIdString().c_str());
 
-  // mark the version as now being installed (maybe have this happen on the
-  // outside in case something failed?)
+  // mark the version as now being installed (maybe have this happen on the outside in case something failed?)
   standalone->mInstallState = InstallState::Installing;
 
   // build the task to start the install
@@ -827,8 +803,7 @@ bool VersionSelector::CheckForRunningBuild(ZeroBuild* build)
 
   Array<ProcessInfo> processes;
   GetProcesses(processes);
-  // If we find any processes that match the exe path for the given build then
-  // return true
+  // If we find any processes that match the exe path for the given build then return true
   for (size_t i = 0; i < processes.Size(); ++i)
   {
     if (processes[i].mProcessPath == buildInstallPath)
@@ -846,8 +821,7 @@ void VersionSelector::ForceCloseRunningBuilds(ZeroBuild* build)
 
   Array<ProcessInfo> processes;
   GetProcesses(processes);
-  // If we find any processes that match the exe path for the given build then
-  // kill it
+  // If we find any processes that match the exe path for the given build then kill it
   for (size_t i = 0; i < processes.Size(); ++i)
   {
     if (processes[i].mProcessPath == buildInstallPath)
@@ -860,8 +834,8 @@ void VersionSelector::ForceCloseRunningBuilds(ZeroBuild* build)
 
 void VersionSelector::ForceUpdateAllBuilds()
 {
-  // Copy all of the builds into an array beforehand as uninstalling a build
-  // could possibly remove it from the array we're iterating through otherwise
+  // Copy all of the builds into an array beforehand as uninstalling a build could
+  // possibly remove it from the array we're iterating through otherwise
   Array<ZeroBuild*> buildsToRemove = mVersions;
   for (size_t i = 0; i < buildsToRemove.Size(); ++i)
   {
@@ -902,9 +876,8 @@ ZeroBuild* VersionSelector::FindExactVersion(CachedProject* cachedProject)
   if (cachedProject == nullptr)
     return nullptr;
 
-  // Find a build for this project given its build id (full match). If we only
-  // display the preferred platform then always try to find the current
-  // launcher's platform build.
+  // Find a build for this project given its build id (full match). If we only display the
+  // preferred platform then always try to find the current launcher's platform build.
   BuildId buildId = cachedProject->GetBuildId();
   buildId.SetToThisPlatform();
 
@@ -913,12 +886,11 @@ ZeroBuild* VersionSelector::FindExactVersion(CachedProject* cachedProject)
   if (matchingBuild != nullptr)
     return matchingBuild;
 
-  // Otherwise there's a bit of a legacy problem here. Builds previously didn't
-  // store the changeset as part of it's id. Now that they do, old projects may
-  // not have this field saved. If they don't then the hash of BuildId won't
-  // resolve properly even though the build may exist. Do a linear search
-  // instead to fix these legacy projects. After loading them they should
-  // properly store the changeset and resolve quickly next time.
+  // Otherwise there's a bit of a legacy problem here. Builds previously didn't store the
+  // changeset as part of it's id. Now that they do, old projects may not have this field saved.
+  // If they don't then the hash of BuildId won't resolve properly even though the build may exist.
+  // Do a linear search instead to fix these legacy projects. After loading them they should properly
+  // store the changeset and resolve quickly next time.
   for (size_t i = 0; i < mVersions.Size(); ++i)
   {
     ZeroBuild* build = mVersions[i];
@@ -986,17 +958,15 @@ void VersionSelector::FindTemplateWithTags(const BuildId& buildId,
   policy.mBuildId = buildId;
   FilterDataSetWithTags(activeTags, rejectionTags, activeSearch, mTemplates, results, resultTags, policy);
 
-  // There's a chance that two projects with the same SKU could match the given
-  // build. This typically happens with an installed template (such as the ones
-  // shipped with the launcher's installer). In this case we want to only
-  // display the build that has the best matching range.
+  // There's a chance that two projects with the same SKU could match the given build. This typically
+  // happens with an installed template (such as the ones shipped with the launcher's installer).
+  // In this case we want to only display the build that has the best matching range.
   HashMap<String, TemplateProject*> uniqueTemplates;
   for (size_t i = 0; i < results.Size(); ++i)
   {
     TemplateProject* currentProject = results[i];
     ZeroTemplate* currentTemplate = currentProject->GetZeroTemplate(false);
-    // If we haven't seen a project with this SKU already then add this template
-    // project as the best result for now
+    // If we haven't seen a project with this SKU already then add this template project as the best result for now
     if (!uniqueTemplates.ContainsKey(currentTemplate->mSKU))
     {
       uniqueTemplates.Insert(currentTemplate->mSKU, currentProject);
@@ -1005,8 +975,7 @@ void VersionSelector::FindTemplateWithTags(const BuildId& buildId,
 
     // Log a warning
     ZPrint("Project template conflict of SKU '%s'. Picking latest version.\n", currentTemplate->mSKU.c_str());
-    // Get the previous template project for this SKU and determine which one is
-    // a more exact range
+    // Get the previous template project for this SKU and determine which one is a more exact range
     ZeroTemplate* previousTemplate = uniqueTemplates[currentTemplate->mSKU]->GetZeroTemplate(false);
     if (currentTemplate->IsMoreExactRangeThan(buildId, previousTemplate))
       uniqueTemplates[currentTemplate->mSKU] = currentProject;
@@ -1060,8 +1029,7 @@ WarningLevel::Enum VersionSelector::CheckVersionForProject(ZeroBuild* standalone
   {
     if (warnForUpgrading)
     {
-      warningString = "Going to a newer version. This may include breaking "
-                      "changes. Are you sure?";
+      warningString = "Going to a newer version. This may include breaking changes. Are you sure?";
       return WarningLevel::Basic;
     }
   }

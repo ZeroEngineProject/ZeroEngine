@@ -19,9 +19,7 @@ Tweakable(Vec4, InvalidColor, Vec4(1, 1, 1, 1), cLocation);
 
 // TemplateProjectItem
 TemplateProjectItem::TemplateProjectItem(Composite* parent, NewProjectMenu* newProjectMenu, TemplateProject* project) :
-    Composite(parent),
-    mNewProjectMenu(newProjectMenu),
-    mTemplateProject(project)
+    Composite(parent), mNewProjectMenu(newProjectMenu), mTemplateProject(project)
 {
   mSelected = false;
   SetClipping(true);
@@ -50,8 +48,7 @@ TemplateProjectItem::TemplateProjectItem(Composite* parent, NewProjectMenu* newP
   ConnectThisTo(this, Events::LeftClick, OnLeftClick);
   ConnectThisTo(this, Events::RightClick, OnRightClick);
 
-  // Listen for the template project being updated (so if it ever downloads a
-  // new preview we update)
+  // Listen for the template project being updated (so if it ever downloads a new preview we update)
   ConnectThisTo(mTemplateProject, Events::TemplateProjectPreviewUpdated, OnTemplateProjectPreviewUpdated);
   // Grab the current preview image (if it has one)
   UpdatePreviewImage();
@@ -218,8 +215,7 @@ NewProjectMenu::NewProjectMenu(Composite* parent, LauncherWindow* launcher) : Co
   ConnectThisTo(versionSelector, Events::TemplateListUpdated, OnTemplateListLoaded);
   ConnectThisTo(mBuildSelector, Events::BuildSelected, OnVersionChange);
 
-  // Listen for when the user tags change on the config (most likely from the
-  // settings menu)
+  // Listen for when the user tags change on the config (most likely from the settings menu)
   ConnectThisTo(Z::gEngine->GetConfigCog(), Events::LauncherConfigChanged, OnLauncherConfigChanged);
 }
 
@@ -342,8 +338,7 @@ void NewProjectMenu::ValidateProjectCreation()
   }
   else
   {
-    // make sure the project isn't named the same as any of our default
-    // libraries
+    // make sure the project isn't named the same as any of our default libraries
     ContentLibrary* library = Z::gContentSystem->Libraries.FindValue(projectName, NULL);
     if (library)
     {
@@ -378,8 +373,7 @@ void NewProjectMenu::OnMenuDisplayed(Event* e)
   button->SetEnabled(true);
   button->SetVisible(true);
 
-  // If the text was empty set it to the text 'Project Name'. Also always select
-  // the text.
+  // If the text was empty set it to the text 'Project Name'. Also always select the text.
   if (mNameBox->GetText().Empty())
     mNameBox->SetText("Project Name");
   mNameBox->TakeFocus();
@@ -560,11 +554,10 @@ void NewProjectMenu::OnCreateProject(Event* e)
   LauncherConfig* config = Z::gEngine->GetConfigCog()->has(LauncherConfig);
   String templateInstallLocation = config->GetTemplateInstallPath();
 
-  // Make a task to create the project from the template (download the template,
-  // unzip it and rename it)
+  // Make a task to create the project from the template (download the template, unzip it and rename it)
   HashSet<String> projectTags;
-  // At the moment the tags box is nothing more than a text box, for now just
-  // split based upon commas until we have an actual tag chain box or something
+  // At the moment the tags box is nothing more than a text box, for now just split based 
+  // upon commas until we have an actual tag chain box or something
   StringSplitRange splitRange = mTags->GetText().Split(",");
   for (; !splitRange.Empty(); splitRange.PopFront())
   {
@@ -581,8 +574,7 @@ void NewProjectMenu::OnCreateProject(Event* e)
   ZPrint("  Build: %s\n", projectBuildId.GetFullId().c_str());
   ZPrint("  Project Tags: %s\n", mTags->GetText().c_str());
 
-  // If the project is already downloaded then just create a project from that,
-  // otherwise download it
+  // If the project is already downloaded then just create a project from that, otherwise download it
   if (selectedProject->mIsDownloaded)
   {
     CachedProject* cachedProject = mLauncher->mProjectCache->CreateProjectFromTemplate(
@@ -608,8 +600,7 @@ void NewProjectMenu::OnCreateProject(Event* e)
 void NewProjectMenu::OnTemplateInstallFinished(BackgroundTaskEvent* e)
 {
   bool completed = e->mTask->IsCompleted();
-  // If downloading the template failed for any reason notify the user
-  // (typically no internet)
+  // If downloading the template failed for any reason notify the user (typically no internet)
   if (!completed)
   {
     String msg = "Project creation failed";

@@ -39,8 +39,7 @@ public:
   /// Updates the install state text.
   void UpdateInstallState();
 
-  /// When the install state of the build has changed, we want to update the
-  /// text.
+  /// When the install state of the build has changed, we want to update the text.
   void OnBuildStateChanged(Event*);
 
   Text* mBuildText;
@@ -104,8 +103,7 @@ public:
 
   /// Sets the current version to display.
   void SetBuild(ZeroBuild* version);
-  /// This version should only be called when we're setting the build for a
-  /// project where there's no backing build
+  /// This version should only be called when we're setting the build for a project where there's no backing build
   void SetBuild(const BuildId& buildId);
 
   /// Returns the currently selected version.

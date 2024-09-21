@@ -69,8 +69,7 @@ public:
 
   /// Open the windows folder dialog when the
   void OnSelectLocationPressed(Event* e);
-  /// Special case handling of the user trying to run the new project with the
-  /// active debugger but none exists.
+  /// Special case handling of the user trying to run the new project with the active debugger but none exists.
   void OnNewProjectDebuggerCommunicationFailed(LauncherCommunicationEvent* e);
   void OnLocationSelected(OsFileSelection* e);
 

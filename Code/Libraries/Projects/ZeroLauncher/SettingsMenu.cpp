@@ -23,9 +23,7 @@ Tweakable(Vec4, TextBoxButtonClicked, Vec4(1, 1, 1, 1), cLocation);
 } // namespace SettingsUi
 
 SettingsMenu::SettingsMenu(Modal* parent, LauncherWindow* launcher) :
-    Composite(parent),
-    mLauncher(launcher),
-    mParentModal(parent)
+    Composite(parent), mLauncher(launcher), mParentModal(parent)
 {
   ZPrint("Settings Menu Displayed\n");
   SetLayout(CreateStackLayout(LayoutDirection::TopToBottom, Pixels(0, 5), Thickness(32, 52, 32, 22)));
@@ -82,8 +80,7 @@ SettingsMenu::SettingsMenu(Modal* parent, LauncherWindow* launcher) :
     mAutoRunMode = new ComboBox(this);
     mAutoRunMode->SetListSource(source);
     mAutoRunMode->SetSizing(SizeAxis::X, SizePolicy::Fixed, Pixels(200));
-    // mAutoRunMode->mBackgroundColor =
-    // ToByteColor(ModernTextBoxUi::BackgroundColor);
+    // mAutoRunMode->mBackgroundColor = ToByteColor(ModernTextBoxUi::BackgroundColor);
     ConnectThisTo(mAutoRunMode, Events::ItemSelected, OnAutoRunModeSelected);
     mWidgetsToAnimate.PushBack(mAutoRunMode);
   }
@@ -249,8 +246,8 @@ void SettingsMenu::OnActivated(Event* e)
   mLauncher->mMainButton->SetEnabled(false);
   mLauncher->mSearch->SetVisible(false);
 
-  // The config settings could've been changed (via a project loading for
-  // example) so reload the current settings from the config
+  // The config settings could've been changed (via a project loading for example)
+  // so reload the current settings from the config
   LoadFromConfig();
   MarkAsNeedsUpdate();
 }
@@ -310,8 +307,7 @@ void SettingsMenu::OnBrowseProjectLocationSelected(OsFileSelection* e)
 
 void SettingsMenu::OnDownloadLocationTextChanged(Event* e)
 {
-  // If there's an active tooltip then destroy it (the user is changing the text
-  // right now)
+  // If there's an active tooltip then destroy it (the user is changing the text right now)
   ToolTip* toolTip = mToolTip;
   if (toolTip != nullptr)
     toolTip->Destroy();
@@ -323,10 +319,10 @@ void SettingsMenu::OnDownloadLocationTextSubmit(Event* e)
   String oldDownloadPath = config->mDownloadPath;
   String oldDownloadPathWithSeparator = BuildString(oldDownloadPath, cDirectorySeparatorCstr);
 
-  // Since we're just moving the folder to the new location, we can't move to a
-  // sub-folder of the current location, to detect this we're just seeing if the
-  // starting paths are the same (by adding a trailing '\' right now, hopefully
-  // that's sufficient) and if they are we're just showing a tooltip to the user
+  // Since we're just moving the folder to the new location, we can't move to a sub-folder
+  // of the current location, to detect this we're just seeing if the starting paths are the
+  // same (by adding a trailing '\' right now, hopefully that's sufficient) and if they are
+  // we're just showing a tooltip to the user
   String newPathWithSeparator = BuildString(FilePath::Normalize(mDownloadLocation->GetText()), cDirectorySeparatorCstr);
   if (newPathWithSeparator.StartsWith(oldDownloadPathWithSeparator))
   {
@@ -402,8 +398,7 @@ void SettingsMenu::OnChangeDownloadLocation(ModalConfirmEvent* e)
   }
   else
   {
-    // They hit cancel, set the download location text back to the config's
-    // settings
+    // They hit cancel, set the download location text back to the config's settings
     mDownloadLocation->SetText(config->mDownloadPath);
   }
 }
@@ -462,8 +457,7 @@ void SettingsMenu::OnShowDevelopModified(Event* e)
   // Save the config now with the new settings
   SaveConfig();
 
-  // Tell everyone listening to the config that this changed (so the builds menu
-  // is updated)
+  // Tell everyone listening to the config that this changed (so the builds menu is updated)
   Event toSend;
   config->DispatchEvent(Events::ShowDevelopChanged, &toSend);
 }
@@ -476,8 +470,7 @@ void SettingsMenu::OnShowExperimentalBranchesModified(Event* e)
   // Save the config now with the new settings
   SaveConfig();
 
-  // Tell everyone listening to the config that this changed (so the builds menu
-  // is updated)
+  // Tell everyone listening to the config that this changed (so the builds menu is updated)
   Event toSend;
   config->DispatchEvent(Events::ShowExperimentalBranchesChanged, &toSend);
 }
@@ -534,9 +527,8 @@ void SettingsMenu::RevertConfigToDefaults()
   // Revert the config to the default serialization values
   DefaultSerializer defaultStream;
   config->Serialize(defaultStream);
-  // We can't default serialize the recent projects because then we'd lose all
-  // of the recent projects, so for now the max recent projects default is
-  // hardcoded here as well.
+  // We can't default serialize the recent projects because then we'd lose all of 
+  // the recent projects, so for now the max recent projects default is hardcoded here as well.
   RecentProjects* recentProjects = Z::gEngine->GetConfigCog()->has(RecentProjects);
   recentProjects->mMaxRecentProjects = 20;
 

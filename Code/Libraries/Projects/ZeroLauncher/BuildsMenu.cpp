@@ -24,9 +24,7 @@ Tweakable(Vec4, DownloadBackground, Vec4(1, 1, 1, 1), cLocation);
 } // namespace BuildsUi
 
 BuildItem::BuildItem(Composite* parent, ZeroBuild* version, BuildsMenu* buildsMenu) :
-    Composite(parent),
-    mVersion(version),
-    mBuildsMenu(buildsMenu)
+    Composite(parent), mVersion(version), mBuildsMenu(buildsMenu)
 {
   mVersionSelector = buildsMenu->mLauncher->mVersionSelector;
 
@@ -224,8 +222,8 @@ void BuildItem::OnUninstallModalResult(ModalConfirmEvent* e)
 {
   if (e->mConfirmed)
   {
-    // If there are copies of the build currently running then we can't close
-    // and we have to prompt the user on what action they want to take
+    // If there are copies of the build currently running then we can't close and
+    // we have to prompt the user on what action they want to take
     if (mVersionSelector->CheckForRunningBuild(mVersion) == true)
     {
       CreateBuildsRunningModal();
@@ -250,8 +248,7 @@ void BuildItem::CreateBuildsRunningModal()
   ModalButtonsAction* modal = new ModalButtonsAction(mBuildsMenu, msg.ToUpper(), buttons);
   ConnectThisTo(modal, Events::ModalButtonPressed, OnBuildRunningModalResult);
   modal->TakeFocus();
-  // Make sure to set what the active modal is on the launcher window (so escape
-  // can cancel)
+  // Make sure to set what the active modal is on the launcher window (so escape can cancel)
   mBuildsMenu->mLauncher->mActiveModal = modal;
 }
 
@@ -260,8 +257,7 @@ void BuildItem::OnBuildRunningModalResult(ModalButtonEvent* e)
   // The user wants to retry (they are manually closing their copies of zero)
   if (e->mButtonName == "RETRY")
   {
-    // If there are any copies of the build still running then create the modal
-    // again
+    // If there are any copies of the build still running then create the modal again
     if (mVersionSelector->CheckForRunningBuild(mVersion) == true)
     {
       CreateBuildsRunningModal();
@@ -494,10 +490,9 @@ void ReleaseNotes::DisplayReleaseNotes(ZeroBuild* build)
   mReleaseNotes->SetAllText(releaseNotes);
   TextEditorHotspot::MarkHotspots(mReleaseNotes);
   mReleaseNotes->SetReadOnly(true);
-  // At the moment, scroll bars only grow, never shrink. To prevent showing a
-  // scrollbar when there's no text (which looks odd) for now just toggle
-  // visibility on the release notes. Need to figure out what's wrong with
-  // scintilla later...
+  // At the moment, scroll bars only grow, never shrink. To prevent showing a scrollbar
+  // when there's no text (which looks odd) for now just toggle visibility on the release
+  // notes. Need to figure out what's wrong with scintilla later...
   mReleaseNotes->SetVisible(!releaseNotes.Empty());
   mReleaseNotes->GoToLine(0);
 
@@ -553,8 +548,7 @@ BuildsMenu::BuildsMenu(Composite* parent, LauncherWindow* launcher) : Composite(
   ConnectThisTo(Z::gEngine->GetConfigCog(), Events::ShowDevelopChanged, OnShowDevelopChanged);
   ConnectThisTo(Z::gEngine->GetConfigCog(), Events::ShowExperimentalBranchesChanged, OnShowDevelopChanged);
 
-  // Create the initial build list (at this point it should be the locally
-  // downloaded ones)
+  // Create the initial build list (at this point it should be the locally downloaded ones)
   CreateBuildItems();
 }
 
@@ -753,8 +747,7 @@ void BuildsMenu::UpdateInstallButton()
 
 BuildItem* BuildsMenu::FindBuildItem(BuildId& buildId)
 {
-  // Just do a linear search right now. This is currently never big enough to
-  // matter
+  // Just do a linear search right now. This is currently never big enough to matter
   for (size_t i = 0; i < mBuildItems.Size(); ++i)
   {
     BuildItem* buildItem = mBuildItems[i];

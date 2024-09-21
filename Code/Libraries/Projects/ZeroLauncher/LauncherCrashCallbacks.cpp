@@ -4,13 +4,11 @@
 namespace Zero
 {
 
-// We want to avoid allocations, so store how many memory ranges we want to add
-// to the crash dumper
+// We want to avoid allocations, so store how many memory ranges we want to add to the crash dumper
 MemoryRange gMemoryRanges[64] = {0};
 size_t gMemoryRangeCount = 0;
 
-// How many ranges we've written to the dump (re-entrant callback from mini
-// dump)
+// How many ranges we've written to the dump (re-entrant callback from mini dump)
 size_t gMemoryRangesWritten = 0;
 
 void LauncherCrashStartCallback(CrashInfo& info, void* userData)

@@ -20,8 +20,7 @@ DeclareEvent(TemplateListUpdated);
 DeclareEnum3(WarningLevel, None, Basic, Severe);
 typedef HashSet<String> TagSet;
 
-// Basic functionality for managing/installing/etc... different versions of
-// zero.
+// Basic functionality for managing/installing/etc... different versions of zero.
 class VersionSelector : public EventObject
 {
 public:
@@ -30,25 +29,21 @@ public:
   VersionSelector(LauncherConfig* config);
   ~VersionSelector();
 
-  // Finds what versions are currently installed and populates the internal
-  // version listings
+  // Finds what versions are currently installed and populates the internal version listings
   void FindInstalledVersions();
   void FindInstalledVersions(StringParam searchPath);
-  /// Given a directory and build folder name, load the locally installed
-  /// build's information.
+  /// Given a directory and build folder name, load the locally installed build's information.
   void LoadInstalledBuild(StringParam directoryPath, StringParam buildFolder);
 
   // Queue up a task to get the listing of versions from the server
   BackgroundTask* GetServerListing();
   BackgroundTask* GetLauncherListing();
   BackgroundTask* GetReleaseListing(StringParam applicationName);
-  // Updates the internal version listing based upon the results from
-  // GetServerListing
+  // Updates the internal version listing based upon the results from GetServerListing
   void UpdatePackageListing(GetVersionListingTaskJob* job);
   void AddCustomBuild(StringParam buildPath, bool shouldInstall);
-  /// Given a path to a local '.zerotemplate' file, install the template project
-  /// and extract all necessary information. Returns false if no valid sku/id
-  /// could be extracted.
+  /// Given a path to a local '.zerotemplate' file, install the template project and extract
+  /// all necessary information. Returns false if no valid sku/id could be extracted.
   bool InstallLocalTemplateProject(StringParam filePath);
 
   /// Create a template project from the specified meta file
@@ -85,14 +80,11 @@ public:
   BackgroundTask* InstallVersion(ZeroBuild* standalone);
   // Starts a task to delete (uninstall) the given version
   BackgroundTask* DeleteVersion(ZeroBuild* standalone);
-  // Checks to see if any instances of the given build are currently running (so
-  // we can try to uninstall it).
+  // Checks to see if any instances of the given build are currently running (so we can try to uninstall it).
   bool CheckForRunningBuild(ZeroBuild* build);
-  // Kills any instances of the given build that are currently running (so we
-  // can try to uninstall it).
+  // Kills any instances of the given build that are currently running (so we can try to uninstall it).
   void ForceCloseRunningBuilds(ZeroBuild* build);
-  /// Take all installed builds and uninstall->reinstall them (mostly for
-  /// patching old issues).
+  /// Take all installed builds and uninstall->reinstall them (mostly for patching old issues).
   void ForceUpdateAllBuilds();
 
   /// Run a background task to download a new patch version of the launcher.
@@ -108,9 +100,8 @@ public:
   size_t GetInstalledBuildsCount() const;
   void OnForwardEvent(Event* e);
 
-  // Given a set of current acceptance and rejection tags as well as the current
-  // search string, returns what versions match this along with what tags within
-  // these versions match the current search.
+  // Given a set of current acceptance and rejection tags as well as the current search string, returns what
+  // versions match this along with what tags within these versions match the current search.
   void FindVersionsWithTags(TagSet& activeTags,
                             TagSet& rejectionTags,
                             StringParam activeSearch,
@@ -123,22 +114,19 @@ public:
                             Array<TemplateProject*>& results,
                             TagSet& resultTags);
   // Checks the given version to see if it is compatible for the project.
-  // If the versions aren't an exact match then the warning string will be
-  // updated to reflect why they don't match. If the warning level is "severe"
-  // then it's likely a bad idea to update and the user should be warned even
-  // more so.
+  // If the versions aren't an exact match then the warning string will be updated to
+  // reflect why they don't match. If the warning level is "severe" then it's likely
+  // a bad idea to update and the user should be warned even more so.
   WarningLevel::Enum CheckVersionForProject(ZeroBuild* standalone,
                                             CachedProject* cachedProject,
                                             String& warningString,
                                             bool warnForUpgrading = true);
 
-  // Runs the given version with the specified project (assumes the version is
-  // installed)
+  // Runs the given version with the specified project (assumes the version is installed)
   void RunProject(ZeroBuild* standalone, StringParam projectPath);
   void RunProject(ZeroBuild* standalone, CachedProject* cachedProject);
-  // Runs the given version and tells it to create a new project with the given
-  // name (if possible, some old versions can't properly specify the name). Also
-  // assumes the version is installed.
+  // Runs the given version and tells it to create a new project with the given name
+  // (if possible, some old versions can't properly specify the name). Also assumes the version is installed.
   void RunNewProject(ZeroBuild* standalone, StringParam projectName, Cog* configCog);
 
   // Locally marks the version as valid

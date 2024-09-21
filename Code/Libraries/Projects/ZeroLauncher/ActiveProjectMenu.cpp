@@ -25,8 +25,7 @@ Modal* ActiveProjectMenu::OpenProject(Composite* modalParent, CachedProject* cac
 }
 
 ActiveProjectMenu::ActiveProjectMenu(Composite* parent, LauncherWindow* launcher) :
-    Composite(parent),
-    mLauncher(launcher)
+    Composite(parent), mLauncher(launcher)
 {
   mActiveSizeTask = nullptr;
 
@@ -75,15 +74,13 @@ ActiveProjectMenu::ActiveProjectMenu(Composite* parent, LauncherWindow* launcher
 
     mProjectName = new TextBox(projectNameArea, "ActiveProjectName");
     mProjectName->SetSizing(SizeAxis::X, SizePolicy::Fixed, Pixels(300));
-    // Text box doesn't properly take the font definition from the provided
-    // style, forcibly override the font for now...
+    // Text box doesn't properly take the font definition from the provided style, forcibly override the font for now...
     mProjectName->mEditTextField->mFont = FontManager::GetInstance()->GetRenderFont(mLauncherRegularFont, 24, 0);
     mProjectName->SetTextClipping(true);
     mProjectName->HideBackground(true);
     mProjectName->SetColor(ActiveProjectUi::TextColor);
     ConnectThisTo(parent, Events::KeyDown, OnKeyDown);
-    // Listen for the text changing on the project name so the user can rename
-    // their project
+    // Listen for the text changing on the project name so the user can rename their project
     ConnectThisTo(mProjectName, Events::TextSubmit, OnProjectNameTextSubmit);
     ConnectThisTo(mProjectName, Events::FocusLostHierarchy, OnProjectNameFocusLost);
 
@@ -145,9 +142,8 @@ ActiveProjectMenu::ActiveProjectMenu(Composite* parent, LauncherWindow* launcher
 
       new Spacer(buildRow, SizePolicy::Flex, Vec2(1));
 
-      // If we are to run with the debugger (zero is currently in visual studio
-      // with the debugger attached) then add an extra button to communicate
-      // with the open zero
+      // If we are to run with the debugger (zero is currently in visual studio with the
+      // debugger attached) then add an extra button to communicate with the open zero
       if (mLauncher->GetConfig()->mRunDebuggerMode)
       {
         mRunWithDebugger = new TextButton(buildRow);
@@ -254,8 +250,7 @@ void ActiveProjectMenu::OnModalClosed(Event* e)
   // Re-Enable the selected menu
   MenuData* data = mLauncher->mSelectedMenu;
 
-  // When shutting down cancel the directory size task and stop listening to
-  // events on it
+  // When shutting down cancel the directory size task and stop listening to events on it
   if (mActiveSizeTask != nullptr)
   {
     mActiveSizeTask->Cancel();
@@ -268,21 +263,19 @@ void ActiveProjectMenu::OnModalClosed(Event* e)
     data->mClientArea->DispatchEvent(Events::MenuDisplayed, &eventToSend);
   }
 
-  // Destruction doesn't seem to disconnect events, so manually disconnect from
-  // some
+  // Destruction doesn't seem to disconnect events, so manually disconnect from some
   DisconnectAll(mBuildSelector->mCurrentBuild, this);
   DisconnectAll(mLauncher->mVersionSelector, this);
-  // This one is the most important as we can receive this event callback later
-  // whenever the thread finishes loading a screenshot. This occasionally
-  // happens in-between when we are destroyed and when we are deleted.
+  // This one is the most important as we can receive this event callback later whenever
+  // the thread finishes loading a screenshot. This occasionally happens in-between
+  // when we are destroyed and when we are deleted.
   DisconnectAll(mCachedProject, this);
 }
 
 void ActiveProjectMenu::UpdateScreenshot()
 {
   Texture* texture = mCachedProject->mScreenshotTexture;
-  // If there is a texture then de-activate the no-screenshot image and set the
-  // texture as active
+  // If there is a texture then de-activate the no-screenshot image and set the texture as active
   if (texture != nullptr)
   {
     mProjectImage->SetTexture(mCachedProject->mScreenshotTexture);
@@ -308,8 +301,7 @@ void ActiveProjectMenu::OnScreenshotUpdated(Event* e)
 void ActiveProjectMenu::SelectProject(CachedProject* cachedProject)
 {
   mCachedProject = cachedProject;
-  // The project file could've changed out from underneath us (version control
-  // for example)
+  // The project file could've changed out from underneath us (version control for example)
   bool successfulReload = mLauncher->mProjectCache->ReloadProjectFile(mCachedProject, false);
   // The project was deleted out from under us so close the modal.
   if (!successfulReload)
@@ -370,8 +362,7 @@ void ActiveProjectMenu::SelectProject(CachedProject* cachedProject)
 
   // Listen for whenever the screenshot changes for this cached project
   ConnectThisTo(mCachedProject, Events::ScreenshotUpdated, OnScreenshotUpdated);
-  // Update the texture (if it is newer we'll get the ScreenshotUpdated event
-  // called
+  // Update the texture (if it is newer we'll get the ScreenshotUpdated event called
   mCachedProject->UpdateTexture();
   // Update the current screenshot
   UpdateScreenshot();
@@ -417,8 +408,7 @@ void ActiveProjectMenu::OnProjectNameTextSubmit(Event* e)
   String newProjectFolder = FilePath::Combine(projectParentPath, newProjectName);
   String newProjectFolderName = newProjectName;
 
-  // If this project already exists then let the user know we can't rename to
-  // this name
+  // If this project already exists then let the user know we can't rename to this name
   if (DirectoryExists(newProjectFolder))
   {
     String msg = "Project already exists";
@@ -429,15 +419,13 @@ void ActiveProjectMenu::OnProjectNameTextSubmit(Event* e)
     return;
   }
 
-  // @JoshD: This should ideally check to see if the project folder is in use
-  // before trying to rename, but if it is then no major problem happens as the
-  // next run of the engine will fail. Properly checking for use is fairly
-  // complicated because only certain files/folders will randomly be marked as
-  // readonly/archive/etc...
+  // @JoshD: This should ideally check to see if the project folder is in use before
+  // trying to rename, but if it is then no major problem happens as the next run of
+  // the engine will fail. Properly checking for use is fairly complicated because only
+  // certain files/folders will randomly be marked as readonly/archive/etc...
 
   // Open a confirmation modal for them to rename and move the project.
-  // For now include the project name and folder so they know how it will be
-  // renamed.
+  // For now include the project name and folder so they know how it will be renamed.
   Array<String> buttonNames;
   buttonNames.PushBack("CONFIRM");
   buttonNames.PushBack("CANCEL");
@@ -485,8 +473,7 @@ void ActiveProjectMenu::OnProjectRenameConfirmed(ModalButtonEvent* e)
   // Report failure via a modal
   if (status.Failed())
   {
-    // Ideally this should use the status' error message, but there's word-wrap
-    // issues with modals right now.
+    // Ideally this should use the status' error message, but there's word-wrap issues with modals right now.
     String msg = String::Format("Cannot rename project to '%s'", newProjectName.c_str());
     ModalButtonsAction* modal = new ModalButtonsAction(mLauncher, "Invalid Rename", "Close", msg);
     mLauncher->mActiveModal = modal;
@@ -502,9 +489,8 @@ void ActiveProjectMenu::OnBackupProject(Event* e)
   String projectDirectory = mCachedProject->GetProjectFolder();
   String projectName = mCachedProject->GetProjectName();
 
-  // Build the backup's file path based upon the project name and the current
-  // time date stamp.
-  String backupDirectory = FilePath::Combine(GetUserDocumentsApplicationDirectory(), "Backups");
+  // Build the backup's file path based upon the project name and the current time date stamp.
+  String backupDirectory = FilePath::Combine(GetUserDocumentsDirectory(), "ZeroProjects", "Backups");
   String timeStamp = GetTimeAndDateStamp();
   String backupName = BuildString(projectName, timeStamp);
   String backupFilePath = FilePath::CombineWithExtension(backupDirectory, backupName, ".zip");
@@ -540,21 +526,18 @@ void ActiveProjectMenu::OnBuildStateChanged(Event* e)
   {
     String primaryMsg;
     String secondMsg;
-    // Check the warning for changing versions (for now don't warn for upgrades,
-    // except to broken builds)
+    // Check the warning for changing versions (for now don't warn for upgrades, except to broken builds)
     WarningLevel::Enum result =
         mLauncher->mVersionSelector->CheckVersionForProject(activeBuild, mCachedProject, primaryMsg, false);
     // If this is a sever warning add a second message to double check
     if (result == WarningLevel::Severe)
       secondMsg = "Are you absolutely sure?";
 
-    // If we had any message for any reason then create a modal confirmation
-    // before changing the version number
+    // If we had any message for any reason then create a modal confirmation before changing the version number
     if (!primaryMsg.Empty())
     {
       ModalConfirmAction* modal = new ModalConfirmAction(this, primaryMsg.ToUpper());
-      // Save the new build version on the modal's user data (so we can change
-      // if they confirm)
+      // Save the new build version on the modal's user data (so we can change if they confirm)
       modal->mUserData = activeBuild;
       modal->mStringUserData = secondMsg;
       mLauncher->mActiveModal = modal;
@@ -569,8 +552,7 @@ void ActiveProjectMenu::OnBuildStateChanged(Event* e)
            mCachedProject->GetProjectPath().c_str(),
            oldBuildString.c_str(),
            newBuildString.c_str());
-    // Otherwise no warning message was required, change the project's version
-    // number
+    // Otherwise no warning message was required, change the project's version number
     mCachedProject->SetBuildId(activeBuild->GetBuildId());
 
     bool installed = false;
@@ -590,8 +572,8 @@ void ActiveProjectMenu::OnConfirmBuildVersionChange(ModalConfirmEvent* e)
 
   if (e->mConfirmed)
   {
-    // If the upgrade has a second message (likely just "Are you absolutely
-    // sure?") then open a second modal to double check their response.
+    // If the upgrade has a second message (likely just "Are you absolutely sure?")
+    // then open a second modal to double check their response.
     if (!e->mStringUserData.Empty())
     {
       ModalConfirmAction* modal = new ModalConfirmAction(this, e->mStringUserData.ToUpper());
@@ -637,9 +619,8 @@ void ActiveProjectMenu::OnLaunchProject(Event* e)
 {
   VersionSelector* versionSelector = mLauncher->mVersionSelector;
 
-  // The project could've changed after we cached it (it could be currently
-  // running in zero) so reload it but make sure to preserve the current version
-  // id we have loaded in the cache.
+  // The project could've changed after we cached it (it could be currently running in zero) so reload it
+  // but make sure to preserve the current version id we have loaded in the cache.
   mLauncher->mProjectCache->ReloadProjectFile(mCachedProject, true);
   ZeroBuild* version = versionSelector->FindExactVersion(mCachedProject);
   if (version != nullptr)
@@ -656,8 +637,7 @@ void ActiveProjectMenu::OnLaunchProject(Event* e)
     }
     else if (version->mInstallState == InstallState::Installing)
     {
-      // It's currently installing, wait for the install to finish then
-      // auto-run?
+      // It's currently installing, wait for the install to finish then auto-run?
     }
   }
 }

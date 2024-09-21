@@ -4,8 +4,7 @@
 namespace Zero
 {
 
-/// Represents information about a template project for the user. This may
-/// reside locally or on the server.
+/// Represents information about a template project for the user. This may reside locally or on the server.
 class DeveloperNotes
 {
 public:

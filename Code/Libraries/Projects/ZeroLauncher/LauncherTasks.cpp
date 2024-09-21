@@ -5,8 +5,7 @@ namespace Zero
 {
 
 GetVersionListingTaskJob::GetVersionListingTaskJob(StringParam applicationName) :
-    DownloadTaskJob(Urls::cApiBuilds, cCacheSeconds),
-    mApplicationName(applicationName)
+    DownloadTaskJob(Urls::cApiBuilds, cCacheSeconds), mApplicationName(applicationName)
 {
 }
 
@@ -80,8 +79,7 @@ void GetVersionListingTaskJob::PopulatePackageList()
 
       zeroBuildContent->mDownloadUrl = jsonAsset->MemberAsString(cJsonDownloadUrl);
 
-      // Parse tags or anything else that we just populated (normally happens
-      // during Initialize).
+      // Parse tags or anything else that we just populated (normally happens during Initialize).
       zeroBuildContent->Parse();
 
       String releaseNotes = jsonRelease->MemberAsString(cJsonBody, String(), JsonErrorMode::DefaultValue);
@@ -375,9 +373,8 @@ void GetTemplateListingTaskJob::PopulateTemplateList()
   static const String cJsonUpdatedAt("updated_at");
   static const String cJsonBody("body");
 
-  // Find a string that is _VersionNumber, this can include '.' ',' and '-' in
-  // order to specify ranges The expected file name is SKU_UserId_BuildId where
-  // _UserId is optional.
+  // Find a string that is _VersionNumber, this can include '.' ',' and '-' in order to specify ranges
+  // The expected file name is SKU_UserId_BuildId where _UserId is optional.
   static const Regex cNameRegex("(\\w+)(_[\\w\\d\\.\\,\\-]+)?_([\\w\\d\\.\\,\\-]+)\\.zerotemplate");
   static const size_t cNameRegexMatches = 4;
 
@@ -396,9 +393,8 @@ void GetTemplateListingTaskJob::PopulateTemplateList()
       Matches matches;
       cNameRegex.Search(name, matches);
 
-      // Make sure the regular expression matched (if not, it may be some other
-      // release that's not a zerotemplate). Specificially, if this is a png for
-      // the release then it will not match.
+      // Make sure the regular expression matched (if not, it may be some other release that's not a zerotemplate).
+      // Specificially, if this is a png for the release then it will not match.
       if (matches.Size() != cNameRegexMatches)
         continue;
 
@@ -412,8 +408,7 @@ void GetTemplateListingTaskJob::PopulateTemplateList()
 
       zeroTemplate->mDate = jsonAsset->MemberAsString(cJsonUpdatedAt);
 
-      // Remove the time portion (otherwise, the date is in the exact format we
-      // expect: YYYY-MM-DD).
+      // Remove the time portion (otherwise, the date is in the exact format we expect: YYYY-MM-DD).
       StringIterator begin = zeroTemplate->mDate.Begin();
       StringIterator end = zeroTemplate->mDate.FindFirstOf(Rune('T')).Begin();
       if (!end.Empty())
@@ -421,15 +416,13 @@ void GetTemplateListingTaskJob::PopulateTemplateList()
 
       zeroTemplate->mDownloadUrl = jsonAsset->MemberAsString(cJsonDownloadUrl);
 
-      // The icon url is always the same as the template url, but with a png
-      // extension instead.
+      // The icon url is always the same as the template url, but with a png extension instead.
       zeroTemplate->mIconUrl = zeroTemplate->mDownloadUrl.Replace(".zerotemplate", ".png");
 
       zeroTemplate->mDisplayName = jsonRelease->MemberAsString(cJsonName);
       zeroTemplate->mDescription = jsonRelease->MemberAsString(cJsonBody);
 
-      // Parse tags/build-ids and anything else that we just populated (normally
-      // happens during Initialize).
+      // Parse tags/build-ids and anything else that we just populated (normally happens during Initialize).
       zeroTemplate->Parse();
     }
   }
@@ -487,12 +480,10 @@ DownloadAndCreateTemplateTaskJob::DownloadAndCreateTemplateTaskJob(StringParam t
 void DownloadAndCreateTemplateTaskJob::Execute()
 {
   mCachedProject = nullptr;
-  // If the template is downloaded and not available on the server then just
-  // create from the local path
+  // If the template is downloaded and not available on the server then just create from the local path
   if (mTemplate->mIsDownloaded && !mTemplate->mIsOnServer)
   {
-    // @JoshD: This is currently broken because the even will be sent before the
-    // listener.
+    // @JoshD: This is currently broken because the even will be sent before the listener.
     UpdateProgress("CreatedTemplate", 1.0f);
     mState = BackgroundTaskState::Completed;
     return;
@@ -523,8 +514,7 @@ CachedProject* DownloadAndCreateTemplateTaskJob::GetOrCreateCachedProject(Projec
 
   mState = BackgroundTaskState::Completed;
 
-  // Save the template file to a temporary location, if it already exists then
-  // delete the old file.
+  // Save the template file to a temporary location, if it already exists then delete the old file.
   String templatePath = GetTemporaryDirectory();
   String templateFilePath =
       FilePath::CombineWithExtension(templatePath, mTemplateNameWithoutExtension, TemplateProject::mExtensionWithDot);
@@ -569,8 +559,7 @@ void DownloadLauncherPatchInstallerJob::Execute()
 
 void DownloadLauncherPatchInstallerJob::OnReponse(WebResponseEvent* event)
 {
-  // Check if there's no new installer available, either from a failed request
-  // or getting no data back
+  // Check if there's no new installer available, either from a failed request or getting no data back
   String data = event->mData;
   if (event->mResponseCode != WebResponseCode::OK || data.SizeInBytes() == 0)
   {
@@ -634,8 +623,7 @@ void DownloadLauncherMajorInstallerJob::Execute()
 
 void DownloadLauncherMajorInstallerJob::OnReponse(WebResponseEvent* event)
 {
-  // Check if there's no new installer available, either from a failed request
-  // or getting no data back
+  // Check if there's no new installer available, either from a failed request or getting no data back
   String data = event->mData;
   if (event->mResponseCode != WebResponseCode::OK || data.SizeInBytes() == 0)
   {

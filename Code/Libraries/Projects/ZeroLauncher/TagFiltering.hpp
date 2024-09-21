@@ -35,8 +35,8 @@ struct ZeroBuildTagPolicy
   bool ShouldInclude(ZeroBuild* build)
   {
     BuildId buildId = build->GetBuildId();
-    //if (!mShowExperimentalBranches && buildId.mBranch != BuildId::GetMasterBranch())
-    //  return false;
+    // if (!mShowExperimentalBranches && buildId.mBranch != BuildId::GetMasterBranch())
+    //   return false;
     if (mShowOnlyPreferredPlatform && !buildId.IsForThisPlatform())
       return false;
     return true;
@@ -64,10 +64,9 @@ struct TemplatePackageTagPolicy
   BuildId mBuildId;
 };
 
-// Small helper struct to make filtering of projects easier. This is needed
-// because the TagSet must be returned by reference but the project has 2 sets
-// that need to be merged (and the sets might not exist because they're on the
-// ProjectDescription component)
+// Small helper struct to make filtering of projects easier. This is needed because the
+// TagSet must be returned by reference but the project has 2 sets that need to be merged
+// (and the sets might not exist because they're on the ProjectDescription component)
 struct ProjectInformation
 {
   CachedProject* mCachedProject;
@@ -92,8 +91,7 @@ struct ProjectPolicy
   }
 };
 
-// Requires a policy that Contains 3 functions (GetTagSet, GetName, and
-// ShouldInclude)
+// Requires a policy that Contains 3 functions (GetTagSet, GetName, and ShouldInclude)
 template <typename DataType, typename Policy>
 void FilterDataSetWithTags(TagSet& activeTags,
                            TagSet& rejectionTags,
@@ -129,9 +127,8 @@ void FilterDataSetWithTags(TagSet& activeTags,
       }
     }
 
-    // if the standalone Contains all of the necessary tags then we need to
-    // check if it Contains the current search string and we need to populate
-    // the new list of available tags
+    // if the standalone Contains all of the necessary tags then we need to check if it Contains
+    // the current search string and we need to populate the new list of available tags
     if (containsAllTags && !containsRejection)
     {
       // check the active search string and see if this version matches
@@ -142,8 +139,7 @@ void FilterDataSetWithTags(TagSet& activeTags,
       }
       else
       {
-        // check to see if there's a partial match with any tag (aka add any
-        // item with reasonable tags)
+        // check to see if there's a partial match with any tag (aka add any item with reasonable tags)
         for (TagSet::range range = tagSet.All(); !range.Empty(); range.PopFront())
         {
           StringRange tag = range.Front();

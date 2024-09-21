@@ -48,9 +48,7 @@ void NoScreenshotAvailable::UpdateTransform()
 RecentProjectItem::RecentProjectItem(Composite* parent,
                                      RecentProjectsMenu* projectsMenu,
                                      CachedProject* cachedProject) :
-    Composite(parent),
-    mRecentProjectsMenu(projectsMenu),
-    mCachedProject(cachedProject)
+    Composite(parent), mRecentProjectsMenu(projectsMenu), mCachedProject(cachedProject)
 {
   mBackground = CreateAttached<Element>(cWhiteSquare);
   mBackground->SetColor(RecentProjectUi::ProjectColor);
@@ -179,8 +177,7 @@ RecentProjectItem::RecentProjectItem(Composite* parent,
 void RecentProjectItem::UpdateScreenshot()
 {
   Texture* texture = mCachedProject->mScreenshotTexture;
-  // If there is a texture then de-activate the no-screenshot image and set the
-  // texture as active
+  // If there is a texture then de-activate the no-screenshot image and set the texture as active
   if (texture != nullptr)
   {
     mProjectImage->SetTexture(mCachedProject->mScreenshotTexture);
@@ -270,8 +267,7 @@ void RecentProjectItem::OnRemoveModalResult(ModalConfirmEvent* e)
 }
 
 RecentProjectsMenu::RecentProjectsMenu(Composite* parent, LauncherWindow* launcher) :
-    Composite(parent),
-    mLauncher(launcher)
+    Composite(parent), mLauncher(launcher)
 {
   SetLayout(CreateStackLayout(LayoutDirection::TopToBottom, Vec2::cZero, Thickness(Pixels(0, 0, 10, 0))));
   mScrollArea = new ScrollArea(this);
@@ -295,10 +291,10 @@ void RecentProjectsMenu::UpdateTransform()
   Vec2 projectSize = RecentProjectUi::ProjectSize;
 
   uint xCount = uint((mSize.x - startPos.x) / (projectSize.x + spacing.x));
-  // If this transform update happens from the launcher being opened and showing
-  // the project page right away, the size will be small (since we're animating
-  // in) and the xCount we get will be 0. This will cause a zero division (from
-  // a mod) below so just bail and wait for another frame.
+  // If this transform update happens from the launcher being opened and showing the
+  // project page right away, the size will be small (since we're animating in) and the
+  // xCount we get will be 0. This will cause a zero division (from a mod) below
+  // so just bail and wait for another frame.
   if (xCount == 0)
   {
     Composite::UpdateTransform();
@@ -357,11 +353,10 @@ void RecentProjectsMenu::UpdateRecentProjects()
     Array<String> projects;
     recentProjects->GetProjectsByDate(projects);
 
-    // To make life easier, we need to convert to a format that can be used for
-    // the FilterDataSetWithTags function, however this function has a few minor
-    // restrictions, most notably that it needs a HashSet to return by
-    // reference. Since projects have tags split up into two sets we need to
-    // re-merge them here to make life easier.
+    // To make life easier, we need to convert to a format that can be used for the FilterDataSetWithTags
+    // function, however this function has a few minor restrictions, most notably that it needs a HashSet
+    // to return by reference. Since projects have tags split up into two sets we need to re-merge them here to make
+    // life easier.
     Array<ProjectInformation> projectList;
     for (uint i = 0; i < projects.Size(); ++i)
     {
