@@ -83,8 +83,7 @@ public:
         // Should this be an error?
         DoNotifyError("ActionEvent Failed",
                       "The event inside the action was destructed. Did you "
-                      "send a C++ event? C++ events are destructed and "
-                      "generally cannot be saved for later.");
+                      "send a C++ event? C++ events are destructed and generally cannot be saved for later.");
         return ActionState::Completed;
       }
 

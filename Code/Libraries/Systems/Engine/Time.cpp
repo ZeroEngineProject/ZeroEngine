@@ -34,10 +34,7 @@ ZilchDefineType(UpdateEvent, builder, type)
 }
 
 UpdateEvent::UpdateEvent(float dt, float realDt, float timePassed, float realTimePassed) :
-    Dt(dt),
-    RealDt(realDt),
-    TimePassed(timePassed),
-    RealTimePassed(realTimePassed)
+    Dt(dt), RealDt(realDt), TimePassed(timePassed), RealTimePassed(realTimePassed)
 {
 }
 
@@ -136,9 +133,8 @@ void TimeSpace::Update(float dt)
 
   Space* space = GetSpace();
 
-  // If this is a preview space and we're sending out update (should include any
-  // special preview update) we don't want notifications to happen which we're
-  // previewing, as its very annoying to the user
+  // If this is a preview space and we're sending out update (should include any special preview update)
+  // we don't want notifications to happen which we're previewing, as its very annoying to the user
   NotificationCallback notify = nullptr;
   if (space->IsPreviewMode())
     notify = IgnoreDoNotify;
@@ -283,9 +279,9 @@ void TimeSystem::Update(bool debugger)
   float dt = (float)mTimer.TimeDelta();
 
   // The frame rate is normally limited by graphics vertical sync
-  // but on some systems the vertical sync is disabled by the driver or the
-  // user. Instead of wastefully drawing at maximum speed this try to sleep for
-  // the the rest of the frame. This reduces heat and power use on laptops.
+  // but on some systems the vertical sync is disabled by the driver or the user.
+  // Instead of wastefully drawing at maximum speed this try to sleep for the
+  // the rest of the frame. This reduces heat and power use on laptops.
   if (mLimitFrameRate)
   {
     ProfileScopeTree("Limiter", "Engine", Color::Green);

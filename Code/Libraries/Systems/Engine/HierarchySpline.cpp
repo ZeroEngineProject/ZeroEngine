@@ -189,8 +189,7 @@ void HierarchySpline::OnFrameUpdate(UpdateEvent* e)
 
 void HierarchySpline::OnChildAttached(HierarchyEvent* e)
 {
-  // A new child was added to us, connect all the required evens and mark
-  // ourself as modified
+  // A new child was added to us, connect all the required evens and mark ourself as modified
   ConnectChildEvents(e->Child);
   mIsModified = true;
 }
@@ -209,8 +208,7 @@ void HierarchySpline::OnMarkModified(Event* e)
 
 void HierarchySpline::ConnectChildEvents(Cog* child)
 {
-  // Disconnect any connections we have to this child (so we don't get duplicate
-  // events)
+  // Disconnect any connections we have to this child (so we don't get duplicate events)
   DisconnectAll(child, this);
   // Listen for transform update so we can rebuild the spline when a child moves
   ConnectThisTo(child, Events::TransformUpdated, OnMarkModified);

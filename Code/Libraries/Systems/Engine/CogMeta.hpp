@@ -20,8 +20,7 @@ public:
 
   u64 GetUndoHandleId(HandleParam object) override;
 
-  // Used to restore the space modified state when any operations are done to
-  // the Cog.
+  // Used to restore the space modified state when any operations are done to the Cog.
   Any GetUndoData(HandleParam object) override;
   void ObjectModified(HandleParam object, bool intermediateChange) override;
   void RestoreUndoData(HandleParam object, AnyParam undoData) override;
@@ -61,9 +60,7 @@ public:
   MetaTransformInstance GetInstance(HandleParam object) override;
 };
 
-// Archetype Extension
-/// Used to give a custom editor for Archetype on Cog instead of the usual
-/// resource selector.
+/// Used to give a custom editor for Archetype on Cog instead of the usual resource selector.
 class CogArchetypeExtension : public EditorPropertyExtension
 {
 public:
@@ -80,9 +77,8 @@ public:
   String GetDebugText(HandleParam object) override;
 };
 
-// Cog Meta Display
-/// When saving a Cog as a property (such as in CogPath), we want to save out
-/// the CogId, not the full definition of the Cog.
+/// When saving a Cog as a property (such as in CogPath), we want to save out the CogId,
+/// not the full definition of the Cog.
 class CogMetaSerialization : public MetaSerialization
 {
 public:
@@ -91,9 +87,9 @@ public:
   bool SerializeReferenceProperty(BoundType* propertyType, cstr fieldName, Any& value, Serializer& serializer) override;
   void AddCustomAttributes(HandleParam object, TextSaver* saver) override;
 
-  /// ContextIds are currently only for levels, so when saving out an Archetype
-  /// definition, this will be set to false, and context id's won't be assigned.
-  /// This means that CogPaths must have a unique path within an Archetype.
+  /// ContextIds are currently only for levels, so when saving out an Archetype definition, this
+  /// will be set to false, and context id's won't be assigned. This means that CogPaths must
+  /// have a unique path within an Archetype.
   static bool sSaveContextIds;
 };
 

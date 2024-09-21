@@ -34,7 +34,7 @@ Cog* ResolveCog(Cog* r)
 }
 
 template <typename rangeType>
-void SaveRangeOfObjects(Serializer& saver, uint objectCount, rangeType range)
+void SaveRangeOfObjects(Serializer& saver, size_t objectCount, rangeType range)
 {
   // Should fix this
   ObjectSaver* objectSaver = (ObjectSaver*)&saver;
@@ -84,9 +84,9 @@ void CogSerialization::SaveSelection(Serializer& saver, MetaSelection* selection
 
   size_t cogCount = cogs.Size();
 
-  // If a cog is an Archetype, and is a child of another Archetype, we need to
-  // save out all of our modifications in our parent's Archetype Do this for
-  // each object that we're copying
+  // If a cog is an Archetype, and is a child of another Archetype, we need to save out all of
+  // our modifications in our parent's Archetype
+  // Do this for each object that we're copying
   typedef Pair<bool, CachedModifications> CacheEntry;
   Array<CacheEntry> cachedModifications;
   cachedModifications.Resize(cogCount);
@@ -138,8 +138,8 @@ String CogSerialization::SaveToStringForCopy(Cog* cog)
 {
   CogSavingContext context;
 
-  // If this cog is an Archetype, and is a child of another Archetype, we need
-  // to save out all of our modifications in our parent's Archetype
+  // If this cog is an Archetype, and is a child of another Archetype, we need to save out all of
+  // our modifications in our parent's Archetype
   CachedModifications restoreState;
   bool modificationsApplied = PreProcessForCopy(cog, restoreState);
 
@@ -159,13 +159,13 @@ String CogSerialization::SaveToStringForCopy(Cog* cog)
 
 bool CogSerialization::PreProcessForCopy(Cog* cog, CachedModifications& restoreState)
 {
-  // If we're an Archetype, and a child of another Archetype, there's one extra
-  // step we need to take before saving the object
+  // If we're an Archetype, and a child of another Archetype, there's one extra step we need to take
+  // before saving the object
   Cog* archetypeContextCog = cog->FindNearestArchetypeContext();
   if (archetypeContextCog && archetypeContextCog != cog)
   {
-    // We're going to make modifications to our current state so that we can
-    // save out properly. Store out our state so we can recover it after saving
+    // We're going to make modifications to our current state so that we can save out properly.
+    // Store out our state so we can recover it after saving
     restoreState.Cache(cog);
 
     // Apply all modifications to us in our parents Archetype
@@ -365,19 +365,15 @@ uint CogSavingContext::ToContextId(uint objectId)
 }
 
 // template<typename rangeType>
-// void SerializeRangeOfObjects(Serializer& saver, uint objectCount, rangeType
-// range)
+// void SerializeRangeOfObjects(Serializer& saver, uint objectCount, rangeType range)
 //{
-//  SaveRangeOfObjects(saver, objectCount, range,
-//  CogSerialization::SerializeObject);
+//   SaveRangeOfObjects(saver, objectCount, range, CogSerialization::SerializeObject);
 //}
 //
 // template<typename rangeType>
-// void SerializeRangeOfStartObjects(Serializer& saver, uint objectCount,
-// rangeType range)
+// void SerializeRangeOfStartObjects(Serializer& saver, uint objectCount, rangeType range)
 //{
-//  SaveRangeOfObjects(saver, objectCount, range,
-//  CogSerialization::StartSerializeObject);
+//   SaveRangeOfObjects(saver, objectCount, range, CogSerialization::StartSerializeObject);
 //}
 
 } // namespace Zero

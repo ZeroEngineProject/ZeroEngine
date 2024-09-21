@@ -40,7 +40,7 @@ public:
 
   uint GetObjectCount()
   {
-    return mObjectMap.Size();
+    return (uint)mObjectMap.Size();
   }
 
 private:

@@ -64,8 +64,7 @@ void OsShell::Update(bool debugger)
   Keyboard* keyboard = Keyboard::GetInstance();
   keyboard->Update();
 
-  // Zero the cursor movement before the windows message pump to clear last
-  // frames movement
+  // Zero the cursor movement before the windows message pump to clear last frames movement
   Z::gMouse->mCursorMovement = Vec2::cZero;
   Z::gMouse->mRawMovement = Vec2(0, 0);
 

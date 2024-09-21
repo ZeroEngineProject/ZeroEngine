@@ -5,9 +5,8 @@ namespace Zero
 {
 
 DeclareEnum3(RemoveMode,
-             // This means the resource is not being removed. This is odd, and
-             // should probably be removed, but it's needed until we split
-             // ResourceEvent into a ResourceRemovedEvent.
+             // This means the resource is not being removed. This is odd, and should probably be removed,
+             // but it's needed until we split ResourceEvent into a ResourceRemovedEvent.
              None,
              // Resource is being unloaded
              Unloading,
@@ -66,11 +65,9 @@ public:
 
   BoundType* GetResourceType();
 
-  // Allocates and initializes a new resource. Should be the only method that
-  // uses AllocateDefaultConstructed().
+  // Allocates and initializes a new resource. Should be the only method that uses AllocateDefaultConstructed().
   virtual Resource* CreateNewResourceInternal(StringParam name);
-  // Calls CreateNewResourceInternal and does required setup for runtime
-  // resources
+  // Calls CreateNewResourceInternal and does required setup for runtime resources
   virtual Resource* CreateRuntimeInternal(StringParam name = String());
 
   // Get a resource by NameId string
@@ -93,8 +90,7 @@ public:
   // and that it won't conflict with another resource of the same name
   virtual void ValidateNewName(Status& status, StringParam name, BoundType* optionalType);
 
-  // Validate that a name is even valid (not considering the current state of
-  // the engine).
+  // Validate that a name is even valid (not considering the current state of the engine).
   virtual void ValidateRawName(Status& status, StringParam name, BoundType* optionalType);
 
   // List all available resources
@@ -114,9 +110,9 @@ public:
 
   // Name of the resource type managed by this resource manager.
   String mResourceTypeName;
-  // Resource Type managed by this resource manager. Storing this BoundType* is
-  // safe because we only have native Resource types. If we ever support
-  // non-native Resource types, this will have to be changed to a handle.
+  // Resource Type managed by this resource manager. Storing this BoundType* is safe because
+  // we only have native Resource types. If we ever support non-native Resource types, this will
+  // have to be changed to a handle.
   BoundType* mResourceType;
   // Name of the resource to use when defaulting a resource field.
   String DefaultResourceName;
@@ -147,9 +143,9 @@ public:
   // Sort weight in the add resource window.
   uint mAddSortWeight;
 
-  // This is currently only used for the import dialog in the add menu. Some of
-  // the extension in this array are not the actual extensions used by the
-  // engine, but are filters for use in the file dialog.
+  // This is currently only used for the import dialog in the add menu. Some of the extension
+  // in this array are not the actual extensions used by the engine, but are filters for use
+  // in the file dialog.
   Array<FileDialogFilter> mOpenFileFilters;
 
   friend class ResourceSystem;
@@ -182,8 +178,7 @@ private:
   Resource* GetResourceByName(StringParam name);
   void MissingResource(StringParam resourceName, ResourceId resourceId);
 
-  // Used internally to allocated the derived resource type, do not call this
-  // method.
+  // Used internally to allocated the derived resource type, do not call this method.
   virtual Resource* AllocateDefaultConstructed() = 0;
 };
 
@@ -192,8 +187,8 @@ private:
 class ResourceLoader
 {
 public:
-  ResourceLoader(){};
-  virtual ~ResourceLoader(){};
+  ResourceLoader() {};
+  virtual ~ResourceLoader() {};
   virtual HandleOf<Resource> LoadFromFile(ResourceEntry& entry) = 0;
   virtual void ReloadFromFile(Resource* resource, ResourceEntry& entry)
   {
@@ -207,11 +202,9 @@ public:
 // Manager Setup
 
 // Adds Resource Typed Static Functions for native resource types
-// CreateRuntime should not be used directly, implement a static CreateRuntime
-// method on the resource type and call the manager's CreateRuntime from there,
-// along with any other required setup of the resource for runtime usage. If
-// creation of a runtime resource in script is intended then bind the resource's
-// CreateRuntime method.
+// CreateRuntime should not be used directly, implement a static CreateRuntime method on the resource type
+// and call the manager's CreateRuntime from there, along with any other required setup of the resource for runtime
+// usage. If creation of a runtime resource in script is intended then bind the resource's CreateRuntime method.
 #define DeclareResourceManager(ManagerType, ManagerResourceType)                                                       \
   typedef ResourceManager ZilchBase;                                                                                   \
   typedef ManagerType ZilchSelf;                                                                                       \

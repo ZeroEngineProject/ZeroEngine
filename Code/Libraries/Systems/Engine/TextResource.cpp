@@ -48,8 +48,7 @@ void TextBlock::ReloadData(StringRange data)
 {
   Text = data;
 
-  // Resource has been modified. Some objects (SpriteTextBlock) may need to
-  // reload data.
+  // Resource has been modified. Some objects (SpriteTextBlock) may need to reload data.
   ResourceEvent event;
   event.EventResource = this;
   TextBlockManager::GetInstance()->DispatchEvent(Events::ResourceModified, &event);

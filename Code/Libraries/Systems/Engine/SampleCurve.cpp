@@ -199,15 +199,11 @@ uint SampleCurve::InsertControlPoint(ControlPoint cp)
 
   mPiecewiseFunction.AddControlPoint(cp.GetPosition(), cp.TangentIn, cp.TangentOut);
 
-  return mControlPoints.FindIndex(cp);
+  return (uint)mControlPoints.FindIndex(cp);
 }
 
 SampleCurve::ControlPoint::ControlPoint(Vec2Param pos, Vec2Param tanIn, Vec2Param tanOut, uint editorFlags) :
-    Time(pos.x),
-    Value(pos.y),
-    TangentIn(tanIn),
-    TangentOut(tanOut),
-    EditorFlags(editorFlags)
+    Time(pos.x), Value(pos.y), TangentIn(tanIn), TangentOut(tanOut), EditorFlags(editorFlags)
 {
 }
 

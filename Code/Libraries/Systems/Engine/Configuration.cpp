@@ -164,9 +164,8 @@ void TextEditorConfig::Serialize(Serializer& stream)
 {
   // This has to be done since the original values were serialized as garbage
   // (didn't use SerializeNameDefault, and had no constructor / SetDefaults)
-  // Therefore we had to tell it to serialize as another name, so we never
-  // pulled from the incorrectly saved data Eventually when we roll a new
-  // config, these should be changed back to just SerializeNameDefault
+  // Therefore we had to tell it to serialize as another name, so we never pulled from the incorrectly saved data
+  // Eventually when we roll a new config, these should be changed back to just SerializeNameDefault
   stream.SerializeFieldDefault("ShowWhiteSpace2", ShowWhiteSpace, true);
   stream.SerializeFieldDefault("ConfidentAutoCompleteOnSymbols6", ConfidentAutoCompleteOnSymbols, true);
   stream.SerializeFieldDefault("LocalWordCompletion", LocalWordCompletion, true);
@@ -205,8 +204,7 @@ void RecentProjects::AddRecentProject(StringParam file, bool sendsEvent)
   // See if we can make room for this project if needed
   RemoveMissingProjects();
 
-  // If we already contain the file being added then don't remove or add
-  // anything
+  // If we already contain the file being added then don't remove or add anything
   if (mRecentProjects.Contains(file) == false)
   {
     // If we've hit the limit of recent projects, remove the oldest project
@@ -382,7 +380,7 @@ Cog* LoadConfig(ModifyConfigFn modifier, void* userData)
 
   ZPrint("Build Version: %s\n", GetBuildVersionName().c_str());
 
-  //ZPrint("Loading configuration for %s...\n", GetApplicationName().c_str());
+  // ZPrint("Loading configuration for %s...\n", GetApplicationName().c_str());
 
   static const String cDataDirectoryName("Data");
 

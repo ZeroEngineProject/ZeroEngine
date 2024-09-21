@@ -26,7 +26,7 @@ public:
   void Cancel();
 
   /// Allow inherited actions to perform custom logic
-  virtual void CancelOverride(){};
+  virtual void CancelOverride() {};
 
   /// The action ran until it completed.
   bool GetCompleted();
@@ -104,8 +104,7 @@ private:
   InActionList mActions;
 };
 
-/// A group of actions that run in serial. The first child action will block the
-/// second from running and so on.
+/// A group of actions that run in serial. The first child action will block the second from running and so on.
 class ActionSequence : public ActionSet
 {
 public:

@@ -156,8 +156,7 @@ Cog* RestoreLink(CogId* id, CogCreationContext* context, Component* component, S
   {
     if (isError)
     {
-      // The object could not be found. An object referred to an object outside
-      // its context within archetype or level.
+      // The object could not be found. An object referred to an object outside its context within archetype or level.
       String errorMessage = "Failed to restore direct id link";
 
       if (component)

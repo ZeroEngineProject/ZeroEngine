@@ -21,8 +21,7 @@ DeclareBitField4(CreationFlags,
                  Editing,
                  DynamicallyAdded,
                  Preview,
-                 /// Are proxy components expected when creating this object?
-                 /// Doesn't warn on proxies being created.
+                 /// Are proxy components expected when creating this object? Doesn't warn on proxies being created.
                  ProxyComponentsExpected);
 
 namespace CreationFlags
@@ -100,8 +99,8 @@ public:
   /// Load the level file
   void LoadLevelFile(StringParam filePath);
 
-  /// Do no destroy current objects, add objects from level and change loaded
-  /// level.
+
+  /// Do no destroy current objects, add objects from level and change loaded level.
   void LoadLevelAdditive(Level* levelName);
 
   /// Add all objects from a level.
@@ -153,8 +152,7 @@ public:
 
   /// Any change to the count / structure of the objects.
   void CheckForChangedObjects();
-  /// This should be called whenever we want the object view to be refreshed /
-  /// updated.
+  /// This should be called whenever we want the object view to be refreshed / updated.
   void ChangedObjects();
 
   // Get create flags used for create new objects in this space.

@@ -290,8 +290,8 @@ Cog* Space::Create(Archetype* archetype)
   {
     // Don't allow objects to be created
     DoNotifyException("Space",
-                      "Cannot create a Cog in a Space that is being destroyed. "
-                      "Check the MarkedForDestruction property on the Space.");
+                      "Cannot create a Cog in a Space that is being destroyed. Check the MarkedForDestruction property "
+                      "on the Space.");
     return nullptr;
   }
 
@@ -310,8 +310,8 @@ Cog* Space::CreateAtPosition(Archetype* archetype, Vec3Param position)
   {
     // Don't allow objects to be created
     DoNotifyException("Space",
-                      "Cannot create a Cog in a Space that is being destroyed. "
-                      "Check the MarkedForDestruction property on the Space.");
+                      "Cannot create a Cog in a Space that is being destroyed. Check the MarkedForDestruction property "
+                      "on the Space.");
     return nullptr;
   }
 
@@ -325,8 +325,8 @@ Cog* Space::CreateNamed(StringParam source, StringParam name)
   {
     // Don't allow objects to be created
     DoNotifyException("Space",
-                      "Cannot create a Cog in a Space that is being destroyed. "
-                      "Check the MarkedForDestruction property on the Space.");
+                      "Cannot create a Cog in a Space that is being destroyed. Check the MarkedForDestruction property "
+                      "on the Space.");
     return nullptr;
   }
 
@@ -365,8 +365,8 @@ Cog* Space::CreateNamedLink(StringParam archetypeName, Cog* objectA, Cog* object
   {
     // Don't allow objects to be created
     DoNotifyException("Space",
-                      "Cannot create a Cog in a Space that is being destroyed. "
-                      "Check the MarkedForDestruction property on the Space.");
+                      "Cannot create a Cog in a Space that is being destroyed. Check the MarkedForDestruction property "
+                      "on the Space.");
     return nullptr;
   }
 
@@ -470,7 +470,7 @@ void Space::SerializeObjectsToSpace(CogInitializer& initializer, CogCreationCont
 
   uint numberOfObjects = 0;
   loader.ArraySize(numberOfObjects);
-  for (uint i = 0; i < numberOfObjects; ++i)
+  for (size_t i = 0; i < numberOfObjects; ++i)
   {
     Cog* cog = Z::gFactory->BuildFromStream(&context, loader);
     if (cog == nullptr)
@@ -561,8 +561,7 @@ Cog* Space::FindLastRootObjectByName(StringParam name)
 
 void Space::LoadLevelAdditive(Level* level)
 {
-  // Set the level redundantly because AddObjectsFromLevel can send out an
-  // event.
+  // Set the level redundantly because AddObjectsFromLevel can send out an event.
   mLevelLoaded = level;
   mLevelLoaded = AddObjectsFromLevel(level);
 }
@@ -607,8 +606,8 @@ Level* Space::AddObjectsFromLevel(Level* level)
   {
     // Don't allow objects to be created
     DoNotifyException("Space",
-                      "Cannot create a Cog in a Space that is being destroyed. "
-                      "Check the MarkedForDestruction property on the Space.");
+                      "Cannot create a Cog in a Space that is being destroyed. Check the MarkedForDestruction property "
+                      "on the Space.");
     return nullptr;
   }
 
@@ -697,8 +696,8 @@ void Space::LoadLevel(Level* level)
   {
     // Don't allow levels to be loaded
     DoNotifyException("Space",
-                      "Cannot load a Level in a Space that is being destroyed. "
-                      "Check the MarkedForDestruction property on the Space.");
+                      "Cannot load a Level in a Space that is being destroyed. Check the MarkedForDestruction property "
+                      "on the Space.");
     return;
   }
 
@@ -730,10 +729,9 @@ void Space::LoadLevel(Level* level)
     // Add all objects to the destroy list
     DestroyAll();
 
-    // There is a issue when a level is loaded where all objects from the
-    // current space will exist with and interfere with the new objects due to
-    // delayed destruction. Wait one frame for the previous objects to be
-    // destroyed then load the level.
+    // There is a issue when a level is loaded where all objects from the current space
+    // will exist with and interfere with the new objects due to delayed destruction.
+    // Wait one frame for the previous objects to be destroyed then load the level.
     mPendingLevel = level;
   }
 }

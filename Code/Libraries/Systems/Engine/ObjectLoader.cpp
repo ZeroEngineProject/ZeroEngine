@@ -154,8 +154,7 @@ BoundType* FindAddableType(BoundType* typeToFind)
 
 void AddDependencies(DataNode* parent, BoundType* type, DataNode* addLocation)
 {
-  // Extra dependencies can be defined on more derived types, so we have to
-  // check all
+  // Extra dependencies can be defined on more derived types, so we have to check all
   forRange (CogComponentMeta* metaComponent, type->HasAll<CogComponentMeta>())
   {
     forRange (BoundType* dependency, metaComponent->mDependencies.All())
@@ -275,8 +274,7 @@ void CachedModifications::ApplyModificationsToObject(Object* object, bool combin
 
 void CachedModifications::ApplyModificationsToChildObject(Object* rootObject, Object* childObject, bool combine)
 {
-  // Search for the node that contains the child object and apply modifications
-  // from there
+  // Search for the node that contains the child object and apply modifications from there
   if (ObjectNode* childNode = FindChildNode(rootObject, childObject))
     ApplyModificationsToObjectInternal(childObject, childNode, combine);
 }
@@ -293,9 +291,9 @@ CachedModifications::ObjectNode* CachedModifications::FindChildNode(Object* root
   if (mRootObjectNode == nullptr)
     return nullptr;
 
-  // This function was initially written recursively, however it was not easy to
-  // follow. It was re-written to be more legible and now uses alloca, which may
-  // not really be worse than the overhead of recursive function calls
+  // This function was initially written recursively, however it was not easy to follow. It was
+  // re-written to be more legible and now uses alloca, which may not really be worse than the
+  // overhead of recursive function calls
   uint pathSize = 0;
 
   // Count how many objects are between the child and root (child included)
@@ -511,8 +509,7 @@ void CachedModifications::ExtractInternal(DataNode* dataNode, ObjectNode* object
       // Add the current property to the path
       path.AddPropertyToPath(childDataNode.mPropertyName);
 
-      // If it has properties as children, it's likely a property object, so
-      // recurse down
+      // If it has properties as children, it's likely a property object, so recurse down
       if (childDataNode.HasChildProperties())
       {
         forRange (DataNode& subNode, childDataNode.GetChildren())

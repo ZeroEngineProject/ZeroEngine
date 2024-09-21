@@ -35,10 +35,9 @@ private:
   Array<QueuedEvent> mEvents;
 };
 
-/// A thread dispatch list for storage by an event receiver. Connects to
-/// EngineUpdate to automatically pump events on the main thread, but can also
-/// be manually pumped or cleared. Doesn't store handles to objects since it
-/// should be owned by the receiver.
+/// A thread dispatch list for storage by an event receiver. Connects to EngineUpdate to automatically
+/// pump events on the main thread, but can also be manually pumped or cleared. Doesn't store handles to
+/// objects since it should be owned by the receiver.
 class ObjectThreadDispatch : public EventObject
 {
 public:
@@ -56,8 +55,7 @@ public:
   /// Queue up an event for dispatching on the main thread.
   void Dispatch(Object* object, StringParam eventId, Event* event);
 
-  /// Sends the current buffer of events. Note: Should only be called on the
-  /// main thread.
+  /// Sends the current buffer of events. Note: Should only be called on the main thread.
   void DispatchEvents();
   /// Clears the buffer of events.
   void ClearEvents();

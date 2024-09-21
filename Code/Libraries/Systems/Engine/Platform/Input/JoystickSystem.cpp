@@ -234,13 +234,12 @@ int Joystick::GetAxisIndex(StringParam name)
   {
     if (mRawMapping->mAxes[i].Name == name)
     {
-      return i;
+      return (int)i;
     }
   }
 
   // DoNotifyError("Joystick Error",
-  //  String::Format("The axis with the name '%s' was not found",
-  //  name.c_str()));
+  //   String::Format("The axis with the name '%s' was not found", name.c_str()));
   return -1;
 }
 
@@ -452,8 +451,7 @@ void Joystick::RawProcess(DataBlock dataBlock)
   ReturnIf(mIsActive == false, , "We should not be updating a joystick that is not active");
 
   ErrorIf(this->mRawMapping == nullptr,
-          "We should not be calling raw process with a raw data block when we "
-          "have no mapping set");
+          "We should not be calling raw process with a raw data block when we have no mapping set");
 
   RawControlMapping* mapping = this->mRawMapping;
 
@@ -519,8 +517,7 @@ void Joysticks::DeactivateAll()
     joyStick->mIsActive = false;
     joyStick->InactiveClear();
 
-    // Dispatch a joystick lost message to both the joystick system and the
-    // joystick itself
+    // Dispatch a joystick lost message to both the joystick system and the joystick itself
     JoystickEvent event(joyStick, 0);
     joyStick->DispatchEvent(Events::JoystickLost, &event);
     this->DispatchEvent(Events::JoystickLost, &event);
@@ -539,7 +536,7 @@ Joysticks::~Joysticks()
 
 uint Joysticks::GetJoystickCount()
 {
-  return mDeviceToJoystick.Size();
+  return (uint)mDeviceToJoystick.Size();
 }
 
 Joystick* Joysticks::GetJoystickByDevice(OsHandle handle)
@@ -558,8 +555,7 @@ void Joysticks::AddJoystickDevice(const PlatformInputDevice& device)
   // Look for the joystick by device
   Joystick* joyStick = mDeviceToJoystick.FindValue(device.mDeviceHandle, nullptr);
 
-  // This will either be 'stolen' below or will be deleted in the internal set
-  // functions
+  // This will either be 'stolen' below or will be deleted in the internal set functions
   RawControlMapping* map = new RawControlMapping(device);
 
   // If we didn't find the joystick by device...
@@ -568,18 +564,16 @@ void Joysticks::AddJoystickDevice(const PlatformInputDevice& device)
     // Attempt to look for the joystick by guid
     joyStick = mGuidToJoystick.FindValue(device.mGuid, nullptr);
 
-    // We found the joystick by guid, which means it's probably one that was
-    // already plugged in! This actually may not be the case if it turns out two
-    // joysticks had the same guid... which we try to guarantee they don't but
-    // can't be certain We need to make sure this joystick isn't already active
-    // (if it is, we need to make a new one)
+    // We found the joystick by guid, which means it's probably one that was already plugged in!
+    // This actually may not be the case if it turns out two joysticks had the same guid...
+    // which we try to guarantee they don't but can't be certain
+    // We need to make sure this joystick isn't already active (if it is, we need to make a new one)
     if (joyStick != nullptr && joyStick->mIsActive == false)
     {
       // Reactivate the joystick
       joyStick->mIsActive = true;
 
-      // Generally the mappings should be the same if our guid matched, but we
-      // should do this anyways
+      // Generally the mappings should be the same if our guid matched, but we should do this anyways
       joyStick->InternalSetInputMappingIfDifferent(map);
 
       // We need to update the device of the joystick
@@ -605,9 +599,7 @@ void Joysticks::AddJoystickDevice(const PlatformInputDevice& device)
   else
   {
     // Make sure the joystick hasn't already been activated
-    ErrorIf(joyStick->mIsActive,
-            "Someone else activated the joystick, but two devices can't have "
-            "the same device id!");
+    ErrorIf(joyStick->mIsActive, "Someone else activated the joystick, but two devices can't have the same device id!");
 
     // Reactivate the joystick
     joyStick->mIsActive = true;

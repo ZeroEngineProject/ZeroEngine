@@ -50,9 +50,7 @@ BoundType* ZilchCompileEvent::GetReplacingType(BoundType* oldType)
 
 // Zilch Manager
 ZilchManager::ZilchManager() :
-    mVersion(0),
-    mShouldAttemptCompile(true),
-    mLastCompileResult(CompileResult::CompilationSucceeded)
+    mVersion(0), mShouldAttemptCompile(true), mLastCompileResult(CompileResult::CompilationSucceeded)
 {
   ConnectThisTo(Z::gEngine, Events::EngineUpdate, OnEngineUpdate);
 
@@ -66,8 +64,8 @@ ZilchManager::ZilchManager() :
 void ZilchManager::TriggerCompileExternally()
 {
   // Currently the version is used to detect duplicate errors
-  // If something is externally triggering a compile (such as saving, project
-  // loading, playing a game, etc) then we want to show duplicate errors again.
+  // If something is externally triggering a compile (such as saving, project loading,
+  // playing a game, etc) then we want to show duplicate errors again.
   ++mVersion;
   InternalCompile();
 }
@@ -97,22 +95,20 @@ void ZilchManager::InternalCompile()
 
   // If there are no pending libraries, nothing was compiled
   ErrorIf(mPendingLibraries.Empty(),
-          "If the mShouldAttemptCompile flag was set, we should always have "
-          "pending libraries (even at startup with no scripts)!");
+          "If the mShouldAttemptCompile flag was set, we should always have pending libraries (even at startup with no "
+          "scripts)!");
 
-  // Since we binary cache archetypes (in a way that is NOT saving the data
-  // tree, but rather a 'known serialization format' then if we moved any
-  // properties around in any script it would completely destroy how the
-  // archetypes were cached The simplest solution is to clear the cache
+  // Since we binary cache archetypes (in a way that is NOT saving the data tree, but rather a 'known serialization
+  // format' then if we moved any properties around in any script it would completely destroy how the archetypes were
+  // cached The simplest solution is to clear the cache
   ArchetypeManager::GetInstance()->FlushBinaryArchetypes();
 
   // Scripts were successfully compiled
   ZilchCompileEvent compileEvent(mPendingLibraries);
 
-  // If Events::ScriptsCompiledPrePatch is dispatched, we MUST dispatch the
-  // PostPatch event after. There cannot be a return in between them. This is
-  // due to how we re-initialize Cogs and rebuild Archetype's (see
-  // Archetype::sRebuilding)
+  // If Events::ScriptsCompiledPrePatch is dispatched, we MUST dispatch the PostPatch event
+  // after. There cannot be a return in between them. This is due to how we re-initialize Cogs
+  // and rebuild Archetype's (see Archetype::sRebuilding)
   this->DispatchEvent(Events::ScriptsCompiledPrePatch, &compileEvent);
   // Library commits must happen after all systems have handle PrePatch
   this->DispatchEvent(Events::ScriptsCompiledCommit, &compileEvent);

@@ -152,7 +152,7 @@ void SplineControlPoints::Clear()
 
 int SplineControlPoints::GetCount() const
 {
-  return mControlPoints.Size();
+  return (int)mControlPoints.Size();
 }
 
 ZilchDefineType(SplineBakedPoint, builder, type)
@@ -381,7 +381,7 @@ void Spline::DebugDraw(Vec4Param color)
 {
   RebuildIfModified();
 
-  for (size_t i = 1; i < mBakedCurve.Size(); ++i)
+  for (uint i = 1; i < (uint)mBakedCurve.Size(); ++i)
   {
     Vec3 p0 = mBakedCurve.GetPoint(i - 1).Position;
     Vec3 p1 = mBakedCurve.GetPoint(i).Position;

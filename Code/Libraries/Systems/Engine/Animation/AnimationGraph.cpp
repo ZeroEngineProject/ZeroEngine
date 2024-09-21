@@ -224,8 +224,7 @@ Cog* ResolveObjectPath(Cog* object, Array<String>& cogNames)
     foundObject = object->FindChildByName(name);
 
     // If we failed to find the object then this could be an error
-    // We'll at least attempt to find the next child by name incase name changes
-    // occurred
+    // We'll at least attempt to find the next child by name incase name changes occurred
     if (foundObject == nullptr)
       continue;
 
@@ -296,9 +295,7 @@ void AnimationGraph::PrintGraph()
 BasicAnimation* AnimationGraph::CreateBasicNode(Animation* animation, AnimationPlayMode::Enum mode)
 {
   if (animation == NULL)
-    DoNotifyException("Null Animation",
-                      "Trying to create an animation node but the animation "
-                      "resource is null.");
+    DoNotifyException("Null Animation", "Trying to create an animation node but the animation resource is null.");
   return new BasicAnimation(this, animation, 0.0f, mode);
 }
 

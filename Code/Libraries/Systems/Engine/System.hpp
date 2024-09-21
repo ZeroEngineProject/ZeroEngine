@@ -12,8 +12,7 @@ struct SystemInitializer
   Cog* Config;
 };
 
-/// System is a pure virtual base class that is the base class for all systems
-/// used by the game.
+/// System is a pure virtual base class that is the base class for all systems used by the game.
 class System : public EngineObject
 {
 public:

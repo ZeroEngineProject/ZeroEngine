@@ -18,8 +18,8 @@ DeclareEvent(BlockingTaskFinish);
 
 DeclareEnum4(InputDevice, Keyboard, Mouse, Gamepad, Joystick);
 
-/// The engine Contains all the systems in the game. The engine is used to
-/// update all system and query for other services.
+/// The engine Contains all the systems in the game. The engine is used to update
+/// all system and query for other services.
 class Engine : public EngineObject
 {
 public:
@@ -48,8 +48,7 @@ public:
 
   /// Adds a new system to the engine.
   void AddSystem(System* system);
-  /// Adds a system as a child 'component'. Internal and should rarely be
-  /// externally called.
+  /// Adds a system as a child 'component'. Internal and should rarely be externally called.
   void AddSystemInterface(BoundType* typeId, System* component);
   /// Get a component on the engine by system's TypeId.
   /// This will return null if the system is not found.
@@ -83,8 +82,7 @@ public:
                      float percentage = 0.0f);
   void LoadingFinish();
 
-  /// The input device that the user last used (pressed buttons, moved sticks or
-  /// triggers, etc...)
+  /// The input device that the user last used (pressed buttons, moved sticks or triggers, etc...)
   InputDevice::Enum GetCurrentInputDevice();
   void SetCurrentInputDevice(InputDevice::Enum device);
 

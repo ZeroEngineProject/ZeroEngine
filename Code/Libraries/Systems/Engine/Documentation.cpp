@@ -51,8 +51,7 @@ MethodDoc* MethodDocWithSameParams(Array<MethodDoc*>& methodList, Zilch::Functio
 
     MethodDoc* posMatchMeth = methodList[i];
 
-    // iterate over all parameters and assume we found a match until we have a
-    // parameter mismatch
+    // iterate over all parameters and assume we found a match until we have a parameter mismatch
     bool match = true;
     for (uint j = 0; j < posMatchMeth->mParameterList.Size(); ++j)
     {
@@ -97,10 +96,10 @@ bool TrimCompareFn(const MethodDoc* lhs, const MethodDoc* rhs)
     return nameComparison < 0;
   }
 
-  uint iterLimit = Math::Min(lhs->mParameterList.Size(), rhs->mParameterList.Size());
+  size_t iterLimit = Math::Min(lhs->mParameterList.Size(), rhs->mParameterList.Size());
 
   // if the names are the same, sort by parameter type
-  for (uint i = 0; i < iterLimit; ++i)
+  for (size_t i = 0; i < iterLimit; ++i)
   {
     String lhsTypeName = lhs->mParameterList[i]->mType.ToLower();
     String rhsTypeName = rhs->mParameterList[i]->mType.ToLower();
@@ -114,8 +113,7 @@ bool TrimCompareFn(const MethodDoc* lhs, const MethodDoc* rhs)
   return lhs->mParameterList.Size() < rhs->mParameterList.Size();
 }
 
-// creates the full template name but with the template type names instead of
-// the instance type names
+// creates the full template name but with the template type names instead of the instance type names
 String BuildDocumentationFullTemplateName(StringParam baseName,
                                           Array<Constant>& templateArgs,
                                           TypeReplacementMap& replacements)
@@ -166,8 +164,7 @@ String ReplaceTypeIfOnList(String& type, TypeReplacementMap* replacements)
     if (!replacementPair)
       continue;
 
-    // make sure we are not just appending more template params by replacing
-    // base with full type
+    // make sure we are not just appending more template params by replacing base with full type
     if (type == replacementPair->second)
       return returnString;
 
@@ -177,8 +174,7 @@ String ReplaceTypeIfOnList(String& type, TypeReplacementMap* replacements)
   return returnString;
 }
 
-// inserts new replacements into the the replacement map from template and
-// returns full doc name
+// inserts new replacements into the the replacement map from template and returns full doc name
 String InsertIntoReplacementsMap(String& baseName,
                                  String& fullInstanceName,
                                  InstantiateTemplateInfo& templateHandler,
@@ -188,17 +184,14 @@ String InsertIntoReplacementsMap(String& baseName,
 {
   Array<TemplateParameter>& params = templateHandler.TemplateParameters;
 
-  // maybe theway this has to wok is if we see a mismatch we have to do some
-  // replacement shit
+  // maybe theway this has to wok is if we see a mismatch we have to do some replacement shit
   if (params.Size() != dummyTypes.Size())
   {
-    Error("Template Parameter and type replacement length mismatch, unable to "
-          "document template.");
+    Error("Template Parameter and type replacement length mismatch, unable to document template.");
     return "";
   }
 
-  // get the full name with the nice template param names, instead of the dummy
-  // type names
+  // get the full name with the nice template param names, instead of the dummy type names
   String fullDocTemplateName;
 
   if (fullDocName == nullptr)
@@ -677,8 +670,7 @@ MethodDoc* ClassDoc::GetMethodDoc(Function* function)
 {
   if (MethodDocArray* overloadedMethods = mMethodsMap.FindPointer(function->Name))
   {
-    // get the list of parameters so we can make sure we get the same function
-    // signature
+    // get the list of parameters so we can make sure we get the same function signature
     ParameterArray& functionParameters = function->FunctionType->Parameters;
 
     // Walk all overloaded methods and find the matching function
@@ -696,8 +688,7 @@ MethodDoc* ClassDoc::GetMethodDoc(Function* function)
         DelegateParameter& functionParameter = functionParameters[i];
         ParameterDoc* docParameter = docParameters[i];
 
-        // we have to make sure the docParameter type is in the same form that
-        // documentation uses
+        // we have to make sure the docParameter type is in the same form that documentation uses
         String metaParamType = ReplaceTypeIfTemplated(functionParameter.ParameterType->ToString());
 
         if (metaParamType != docParameter->mType)
@@ -729,8 +720,7 @@ void ClassDoc::CreateMethodDocFromBoundType(Zilch::Function* method, TypeReplace
 
   newMethod->mStatic = method->IsStatic;
 
-  // Currently, the majority of methods contain angle brackets that we have to
-  // strip.
+  // Currently, the majority of methods contain angle brackets that we have to strip.
   if (method->Name.StartsWith("["))
   {
     newMethod->mName = method->Name.SubString(method->Name.Begin() + 1, method->Name.End() - 1);
@@ -843,8 +833,7 @@ void EnumDoc::FillDocumentation(BoundType* enumOrFlagType)
 
     forRange (Property* enumValueProperty, valueProp.All())
     {
-      // since we get properties by value, we have to find the property with the
-      // right name
+      // since we get properties by value, we have to find the property with the right name
       if (enumValueProperty->Name == valueDescriptionPair.first)
       {
         enumValueProperty->Description = valueDescriptionPair.second;
@@ -945,8 +934,7 @@ void DocumentationLibrary::FinalizeDocumentation(void)
   }
 }
 
-// due to not all templates filling out their base name, strip everything after
-// to bracket to make our own
+// due to not all templates filling out their base name, strip everything after to bracket to make our own
 String GetTemplateBaseName(StringParam templateName)
 {
   StringRange paramSubstring = templateName.FindFirstOf("[");
@@ -1012,8 +1000,7 @@ void ClassDoc::CreateEventDocFromBoundType(SendsEvent* eventSent)
     // Check if we are missing type information for this event
     if (eventDoc->mType == "")
     {
-      // If we were missing the event type, see if the version we just found has
-      // it
+      // If we were missing the event type, see if the version we just found has it
       if (eventType)
         eventDoc->mType = eventType->Name;
     }
@@ -1088,8 +1075,7 @@ ClassDoc* DocumentationLibrary::CreateClassDocFromBoundType(BoundType* type, Typ
     mClassMap[classDoc->mName] = classDoc;
   }
 
-  // This is to tell the doc tool to only import doxygen descriptions if we had
-  // either of these
+  // This is to tell the doc tool to only import doxygen descriptions if we had either of these
   classDoc->mImportDocumentation =
       type->HasAttribute(ObjectAttributes::cDocumented) || type->HasAttribute(ImportDocumentation);
 
@@ -1122,8 +1108,7 @@ ClassDoc* DocumentationLibrary::CreateClassDocFromBoundType(BoundType* type, Typ
 
     classDoc->CreateMethodDocFromBoundType(method, replacements, exportDoc);
 
-    // Insert the new method into the map so we can make sure to check for
-    // repeats.
+    // Insert the new method into the map so we can make sure to check for repeats.
     functionSet.Insert(method);
   }
 
@@ -1147,8 +1132,7 @@ void DocumentationLibrary::GetDocumentationFromTemplateHandler(StringParam libNa
 
   Array<Constant> dummyTypes;
 
-  // if we have two params, use Wrapper and Utf8Encoding as replaceable dummy
-  // types
+  // if we have two params, use Wrapper and Utf8Encoding as replaceable dummy types
   if (templateHandler.TemplateParameters.Size() == 2)
   {
     dummyTypes.PushBack(Constant(ZilchTypeId(Wrapper)));
@@ -1163,21 +1147,18 @@ void DocumentationLibrary::GetDocumentationFromTemplateHandler(StringParam libNa
   }
 
   String instanceFullName = templateHandler.GetFullName(dummyTypes);
-  // currently some types are missing their base name, so create it ourself from
-  // the full name
+  // currently some types are missing their base name, so create it ourself from the full name
   baseName = GetTemplateBaseName(instanceFullName);
 
-  // save our type replacements so we can remove the dummy types after
-  // instantiation
+  // save our type replacements so we can remove the dummy types after instantiation
   fullDocTemplateName =
       InsertIntoReplacementsMap(baseName, instanceFullName, templateHandler, dummyTypes, replacements);
 
-  // create the template instance, possibly instantiating more then one template
-  // type
+  // create the template instance, possibly instantiating more then one template type
   templateHandler.Delegate.Callback(builder, baseName, fullDocTemplateName, dummyTypes, nullptr);
 
-  // instantiating that template type could have instantiated more then one
-  // template get type replacements for them all
+  // instantiating that template type could have instantiated more then one template
+  // get type replacements for them all
   forRange (BoundType* boundTemplateType, builder.BoundTypes.Values().All())
   {
     String newInstanceBaseName = GetTemplateBaseName(boundTemplateType->Name);
@@ -1211,8 +1192,7 @@ void DocumentationLibrary::GetDocumentationFromTemplateHandler(StringParam libNa
 
   mClasses.PushBack(classDoc);
   mClassMap[classDoc->mName] = classDoc;
-  // add version of the class name without template params so it is easier to
-  // search for
+  // add version of the class name without template params so it is easier to search for
   mClassMap[GetTemplateBaseName(name)] = classDoc;
 }
 

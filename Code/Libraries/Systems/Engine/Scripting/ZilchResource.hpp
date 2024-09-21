@@ -53,8 +53,7 @@ public:
   // Does not check if the name itself is valid, only that it does not conflict.
   static void ValidateNewScriptName(Status& status, StringParam name);
 
-  // Validate that a name is even valid (not considering the current state of
-  // the engine).
+  // Validate that a name is even valid (not considering the current state of the engine).
   static void ValidateRawScriptName(Status& status, StringParam name);
 
   // Fill a project with a single document that the code editor is looking at

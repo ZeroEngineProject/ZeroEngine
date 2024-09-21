@@ -9,8 +9,7 @@ Cog* LowestCommonAncestor(Cog* objectA, Cog* objectB);
 // When events occur on sub objects like mouse enter/exit it is useful to
 // have events that are only sent when the mouse leaves the object and all
 // children (MouseExitHierarchy). This function sends the correct events to
-// the base objects and up the trees to the lowest common ancestor of the
-// object.
+// the base objects and up the trees to the lowest common ancestor of the object.
 DeclareEnum2(FlagOperation, Set, Clear);
 typedef void (*FlagCallback)(Cog*, uint, FlagOperation::Enum);
 void SendHierarchyEvents(cstr op,

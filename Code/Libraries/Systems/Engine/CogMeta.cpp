@@ -33,16 +33,14 @@ Any CogMetaOperations::GetUndoData(HandleParam object)
   Cog* cog = object.Get<Cog*>();
   ReturnIf(cog == nullptr, Any(), "Invalid Cog given.");
 
-  // This could be a component on the game session, so we can't assume it has a
-  // Space
+  // This could be a component on the game session, so we can't assume it has a Space
   if (Space* space = cog->GetSpace())
   {
     return true; // Temporary until we fix issues with how this works
     // return space->GetModified();
   }
 
-  // Doesn't matter what we return because we won't do anything with it when we
-  // get it back
+  // Doesn't matter what we return because we won't do anything with it when we get it back
   return nullptr;
 }
 
@@ -75,8 +73,7 @@ void CogMetaOperations::RestoreUndoData(HandleParam object, AnyParam undoData)
 {
   Cog* cog = object.Get<Cog*>(GetOptions::AssertOnNull);
 
-  // This could be a component on the game session, so we can't assume it has a
-  // Space
+  // This could be a component on the game session, so we can't assume it has a Space
   if (Space* space = cog->GetSpace())
   {
     bool wasSpaceModified = undoData.Get<bool>();

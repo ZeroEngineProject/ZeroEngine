@@ -59,8 +59,7 @@ JobSystem::~JobSystem()
   forRange (Job& job, mActiveJobs.All())
     job.Cancel();
 
-  // Release all active and pending job references that we own (this may delete
-  // the jobs).
+  // Release all active and pending job references that we own (this may delete the jobs).
   mPendingJobs.Clear();
   mLock.Unlock();
 
@@ -76,9 +75,8 @@ JobSystem::~JobSystem()
     thread.WaitForCompletion();
   }
 
-  // Clear all active jobs now that all threads have stopped (may release the
-  // memory for jobs). There should be no more threads running, but we lock just
-  // to be safe.
+  // Clear all active jobs now that all threads have stopped (may release the memory for jobs).
+  // There should be no more threads running, but we lock just to be safe.
   mLock.Lock();
   mActiveJobs.Clear();
   mLock.Unlock();

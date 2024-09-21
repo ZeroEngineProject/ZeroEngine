@@ -74,8 +74,7 @@ ZilchDefineType(GameSession, builder, type)
 
 GameSession::GameSession()
 {
-  // METAREFACTOR this was previous set to a passed in MetaCreateContext
-  // context->Flags
+  // METAREFACTOR this was previous set to a passed in MetaCreateContext context->Flags
   mCreationFlags = CreationFlags::Default;
   mInEditor = false;
   mQuiting = false;
@@ -115,8 +114,8 @@ void GameSession::Destroy()
   forRange (Space* space, mTrackedSpaces.AllValues())
     space->Destroy();
 
-  // Cog::Destroy will do logic based on whether or not we're destroyed, so set
-  // it back to false to allow normal destruction
+  // Cog::Destroy will do logic based on whether or not we're destroyed, so set it
+  // back to false to allow normal destruction
   mFlags.ClearFlag(CogFlags::Destroyed);
 
   Cog::Destroy();
@@ -227,8 +226,8 @@ Space* GameSession::CreateSpaceFlags(Archetype* archetype, CreationFlags::Type f
   {
     // Don't allow objects to be created
     DoNotifyException("GameSession",
-                      "Cannot create a Space in a GameSession that is being destroyed. Check "
-                      "the MarkedForDestruction property on the GameSession.");
+                      "Cannot create a Space in a GameSession that is being destroyed. Check the MarkedForDestruction "
+                      "property on the GameSession.");
     return nullptr;
   }
 
@@ -248,8 +247,8 @@ Space* GameSession::CreateNamedSpace(StringParam name, Archetype* archetype)
   {
     // Don't allow objects to be created
     DoNotifyException("GameSession",
-                      "Cannot create a Space in a GameSession that is being destroyed. Check "
-                      "the MarkedForDestruction property on the GameSession.");
+                      "Cannot create a Space in a GameSession that is being destroyed. Check the MarkedForDestruction "
+                      "property on the GameSession.");
     return nullptr;
   }
 
@@ -343,15 +342,13 @@ void GameSession::EditSpaces()
       focusSpace = space;
   }
 
-  // set the currently being edited space as the focus, otherwise focus on the
-  // first space
+  // set the currently being edited space as the focus, otherwise focus on the first space
   if (focusSpace)
     Z::gRuntimeEditor->SetFocus(focusSpace);
   else
     Z::gRuntimeEditor->SetFocus(mTrackedSpaces.Front().second);
 
-  // Send this message for someone to respond to and override any of this
-  // behavior
+  // Send this message for someone to respond to and override any of this behavior
   Event event;
   DispatchEvent(Events::EditSpaces, &event);
 }

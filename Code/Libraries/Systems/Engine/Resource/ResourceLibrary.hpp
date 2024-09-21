@@ -16,15 +16,13 @@ namespace Events
 // Sent out before scripts are compiled
 DeclareEvent(PreScriptCompile);
 DeclareEvent(CompileZilchFragments);
-// Sent out on the Z::gResources in the constructor of ResourceLibrary (no
-// resources added/loaded yet).
+// Sent out on the Z::gResources in the constructor of ResourceLibrary (no resources added/loaded yet).
 DeclareEvent(ResourceLibraryConstructed);
 } // namespace Events
 
 // Status of Zilch Script Compile
 DeclareEnum2(ZilchCompileStatus,
-             Modified, // Scripts have been modified and will not match what is
-                       // in library
+             Modified, // Scripts have been modified and will not match what is in library
              Compiled  // All scripts compiled and project library is up to date
 );
 
@@ -118,8 +116,7 @@ class ResourcePackageDisplay : public MetaDisplay
   String GetDebugText(HandleParam object) override;
 };
 
-// Keeps the current library that we have already built and one that is pending
-// with newer code.
+// Keeps the current library that we have already built and one that is pending with newer code.
 class SwapLibrary
 {
 public:
@@ -159,19 +156,17 @@ public:
 
   void AddDependency(ResourceLibrary* dependency);
 
-  /// Checks the current libraries to see if the given type was built from our
-  /// scripts, fragments, or plugins.
+  /// Checks the current libraries to see if the given type was built from our scripts, fragments,
+  /// or plugins.
   bool BuiltType(BoundType* type);
 
-  /// If the given type was built in this library, it will attempt to find the
-  /// type replacing it in the pending libraries. It's usually only valid to
-  /// call this function in response to the ZilchManager compile events before
-  /// libraries are committed.
+  /// If the given type was built in this library, it will attempt to find the type replacing it
+  /// in the pending libraries. It's usually only valid to call this function in response to
+  /// the ZilchManager compile events before libraries are committed.
   BoundType* GetReplacingType(BoundType* oldType);
 
-  /// Can this library hold a reference to a resource in the given library.
-  /// Checks library dependencies to see if the given library is in a dependent
-  /// (parent).
+  /// Can this library hold a reference to a resource in the given library. Checks
+  /// library dependencies to see if the given library is in a dependent (parent).
   bool CanReference(ResourceLibrary* library);
 
   /// Deletes all Resources in this library.
@@ -183,9 +178,8 @@ public:
   void PluginsModified();
 
   // Attempts to compile this resource library if it was modified
-  // Note that this function will call Compile if a dependent resource library
-  // requires it Also remember that this function does not handle things that
-  // need to happen globally
+  // Note that this function will call Compile if a dependent resource library requires it
+  // Also remember that this function does not handle things that need to happen globally
   bool CompileScripts(HashSet<ResourceLibrary*>& modifiedLibrariesOut);
   bool CompileFragments(HashSet<ResourceLibrary*>& modifiedLibrariesOut);
   bool CompilePlugins(HashSet<ResourceLibrary*>& modifiedLibrariesOut);
@@ -203,8 +197,7 @@ public:
   String Location;
 
   // All the resource libraries that we are dependent upon
-  // This must form a DAG (cycles are not allowed) where the core set is the
-  // root
+  // This must form a DAG (cycles are not allowed) where the core set is the root
   Array<ResourceLibrary*> Dependencies;
 
   // All libraries that depend on us.
@@ -215,31 +208,27 @@ public:
   Array<ZilchDocumentResource*> mFragments;
   Array<ZilchLibraryResource*> mPlugins;
 
-  // The plugins that this resource library has built (may be empty if none
-  // exist or haven't been compiled yet)
+  // The plugins that this resource library has built (may be empty if none exist or haven't been compiled yet)
   OrderedHashMap<ZilchLibraryResource*, SwapLibrary> mSwapPlugins;
 
-  // The library that this resource library has built (may be null if it hasn't
-  // compiled yet) If this is set to 'Compiled', it also implies that the
-  // Fragment status is compiled as well
+  // The library that this resource library has built (may be null if it hasn't compiled yet)
+  // If this is set to 'Compiled', it also implies that the Fragment status is compiled as well
   SwapLibrary mSwapScript;
 
-  // The fragment library that this resource library has built (may be null if
-  // it hasn't compiled yet)
+  // The fragment library that this resource library has built (may be null if it hasn't compiled yet)
   SwapLibrary mSwapFragment;
 
   // A project we use for the scripts (we clear it and re-add all code files)
   // We need this to stick around for the Zilch debugger
   Project mScriptProject;
 
-  // All loaded resources. These handles are the ones in charge of keeping the
-  // Resources in this library alive.
+  // All loaded resources. These handles are the ones in charge of keeping the Resources in this
+  // library alive.
   Array<HandleOf<Resource>> Resources;
 
-  // When a Resource is added, we want to do something special for scripts and
-  // fragments. Unfortunately, we don't know those types in the Engine project.
-  // These should be set during the Graphics and ZilchScript project
-  // initialization.
+  // When a Resource is added, we want to do something special for scripts and fragments.
+  // Unfortunately, we don't know those types in the Engine project. These should be set
+  // during the Graphics and ZilchScript project initialization.
   static BoundType* sScriptType;
   static BoundType* sFragmentType;
   // Getter for the unloading flag

@@ -26,8 +26,7 @@ DeclareBitField12(CogFlags,
                   Protected,
                   // Object will not be destroy on level change or clear
                   Persistent,
-                  // Object is not saved in a level (Temporary objects from particles systems
-                  // etc)
+                  // Object is not saved in a level (Temporary objects from particles systems etc)
                   Transient,
                   // Object has been initialized
                   Initialized,
@@ -58,8 +57,7 @@ public:
 
 typedef BaseInList<BaseCog, Cog, &BaseCog::HierarchyLink> HierarchyList;
 
-/// A range that only iterates over diret children and checks for specific
-/// names.
+/// A range that only iterates over diret children and checks for specific names.
 typedef ConditionalRange<HierarchyList::range, NameCondition> HierarchyListNameRange;
 
 // Cog
@@ -100,12 +98,11 @@ public:
   virtual Space* GetSpace();
   /// Get the GameSession that owns us and our Space.
   virtual GameSession* GetGameSession();
-  /// Get the object named 'LevelSettings', a special convenience object where
-  /// we can put general functionality for our Level.
+  /// Get the object named 'LevelSettings', a special convenience object where we can put general
+  /// functionality for our Level.
   Cog* GetLevelSettings();
 
-  /// Clones this cog. The cloned object will be parented to this objects parent
-  /// (if it exists).
+  /// Clones this cog. The cloned object will be parented to this objects parent (if it exists).
   virtual Cog* Clone();
 
   // Serialization
@@ -127,8 +124,7 @@ public:
   /// 4. The event 'AllObjectsInitialized' is sent out on the CogInitializer
   /// Generally script Initialize comes after ALL C++ initialization because
   /// it makes scripts safer and easier to debug
-  /// (knowing all C++ components have been fully setup, can't access anything
-  /// bad)
+  /// (knowing all C++ components have been fully setup, can't access anything bad)
   virtual void Initialize(CogInitializer& initializer);
   virtual void OnAllObjectsCreated(CogInitializer& initializer);
   virtual void ScriptInitialize(CogInitializer& initializer);
@@ -147,14 +143,13 @@ public:
   bool AddComponentByType(BoundType* componentType);
   /// Add a component by name.
   bool AddComponentByName(StringParam name);
-  /// Adds the given Component at the given index. If the index is -1, it will
-  /// be placed at the end. Returns false if the Component couldn't be added due
-  /// to missing dependencies or if there was already a Component of the same
-  /// type.
+  /// Adds the given Component at the given index. If the index is -1, it will be placed at the end.
+  /// Returns false if the Component couldn't be added due to missing dependencies or if there
+  /// was already a Component of the same type.
   bool AddComponent(Component* component, int index = -1);
-  /// Adds the Component without checking for dependencies. If the index is -1,
-  /// it will be placed at the end. This was added mostly as an optimization
-  /// where we know dependency checking is not required.
+  /// Adds the Component without checking for dependencies. If the index is -1, it will be placed
+  /// at the end. This was added mostly as an optimization where we know dependency
+  /// checking is not required.
   void ForceAddComponent(Component* component, int index = -1);
 
   //----- Component Querying
@@ -169,8 +164,7 @@ public:
   Component* GetComponentByIndex(size_t index);
   /// Returns how many Components are on this Cog.
   size_t GetComponentCount();
-  /// Finds the index of the given Component type. Returns uint max if the
-  /// Component didn't exist.
+  /// Finds the index of the given Component type. Returns uint max if the Component didn't exist.
   uint GetComponentIndex(BoundType* componentType);
   /// Returns a range of all Components on this Cog.
   ComponentRange GetComponents();
@@ -180,12 +174,11 @@ public:
   bool RemoveComponentByType(BoundType* componentType);
   /// Remove a component by name.  Returns true if the component existed.
   bool RemoveComponentByName(StringParam typeName);
-  /// Removes the given Component from the Cog. Returns false if the Component
-  /// couldn't be removed due to dependencies (cannot remove Transform if it has
-  /// a Model).
+  /// Removes the given Component from the Cog. Returns false if the Component couldn't be removed
+  /// due to dependencies (cannot remove Transform if it has a Model).
   bool RemoveComponent(Component* component);
-  /// Removes the given Component without checking dependencies. This was added
-  /// mostly as an optimization
+  /// Removes the given Component without checking dependencies. This was added mostly as
+  /// an optimization
   void ForceRemoveComponent(Component* component);
   /// Moves the component from one index to another.
   /// This function assumes that the move is valid (meaning it's not moving
@@ -193,8 +186,8 @@ public:
   void MoveComponentBefore(uint componentToMove, uint destination);
 
   //----- Internals
-  /// Add a component interface. This was added mostly as an optimization where
-  /// we know dependency checking is not required.
+  /// Add a component interface. This was added mostly as an optimization where we know dependency
+  /// checking is not required.
   void AddComponentInterface(BoundType* alternateType, Component* component);
   /// Add component to internal map used mostly during construction
   void AddComponentInternal(BoundType* typeId, Component* component, int index = -1);
@@ -202,17 +195,14 @@ public:
   void RemoveComponentInternal(Component* component);
   /// Checks for
   bool CheckForAddition(BoundType* componentType);
-  /// Helper to check for dependencies with component addition and DoNotify if
-  /// it won't
+  /// Helper to check for dependencies with component addition and DoNotify if it won't
   bool CheckForAdditionWithNotify(BoundType* componentType);
-  /// Helper to check for dependencies with component removal and DoNotify if it
-  /// won't
+  /// Helper to check for dependencies with component removal and DoNotify if it won't
   bool CheckForRemovalWithNotify(BoundType* componentType);
   /// Private, use Destroy function to destroy compositions.
   void DeleteComponents();
 
-  /// Ordered list of Components. Components will be initialized in the order of
-  /// this Array.
+  /// Ordered list of Components. Components will be initialized in the order of this Array.
   ComponentArray mComponents;
   /// The map of the component's name to their instance for fast lookup.
   ComponentMap mComponentMap;
@@ -227,19 +217,17 @@ public:
   /// Returns a range of all direct children on this Cog, in reverse order.
   HierarchyList::reverse_range GetChildrenReversed();
 
-  /// Returns the amount of children on this Cog. Note that this function has to
-  /// iterate over all children to calculate the count.
+  /// Returns the amount of children on this Cog. Note that this function has to iterate over
+  /// all children to calculate the count.
   uint GetChildCount();
 
   /// Attach to a parent object.
   bool AttachToPreserveLocal(Cog* parent);
-  /// Attach to a parent object and compute the new transform so that the
-  /// objects are relative
+  /// Attach to a parent object and compute the new transform so that the objects are relative
   bool AttachTo(Cog* parent);
   /// Detach from a parent object.
   void DetachPreserveLocal();
-  /// Detach from a parent object and compute the new transform so that the
-  /// objects are relative
+  /// Detach from a parent object and compute the new transform so that the objects are relative
   void Detach();
 
   /// Depth first search of all children.
@@ -250,8 +238,7 @@ public:
   HierarchyNameRange FindAllChildrenByName(StringParam name);
   /// Returns a range of all direct children with the given name.
   HierarchyListNameRange FindAllDirectChildrenByName(StringParam name);
-  /// Returns the child object with the given id. This is only checks direct
-  /// children.
+  /// Returns the child object with the given id. This is only checks direct children.
   Cog* FindChildByChildId(Guid childId);
 
   /// Returns whether or not the given cog is a descendant of us.
@@ -263,22 +250,18 @@ public:
   /// Returns whether or not we are an ancestor of the given Cog.
   bool IsAncestorOf(Cog* descendant);
 
-  /// Returns the sibling Cog after this in the parents child list. Returns null
-  /// if it's the last child. If the Cog doesn't have a parent, it will return
-  /// the Cog after it in the Space.
+  /// Returns the sibling Cog after this in the parents child list. Returns null if it's the
+  /// last child. If the Cog doesn't have a parent, it will return the Cog after it in the Space.
   Cog* FindNextSibling();
-  /// Returns the sibling Cog before this in the parents child list. Returns
-  /// null if it's the first child. If the Cog doesn't have a parent, it will
-  /// return the Cog before it in the Space.
+  /// Returns the sibling Cog before this in the parents child list. Returns null if it's the
+  /// first child. If the Cog doesn't have a parent, it will return the Cog before it in the Space.
   Cog* FindPreviousSibling();
   /// Finds the next Cog in depth first post-order.
   Cog* FindNextInOrder();
-  /// Finds the previous Cog in reverse depth first post-order (the opposite of
-  /// FindNextInOrder).
+  /// Finds the previous Cog in reverse depth first post-order (the opposite of FindNextInOrder).
   Cog* FindPreviousInOrder();
 
-  /// Moves this Cog before the given sibling. Assumes they have the same
-  /// parent.
+  /// Moves this Cog before the given sibling. Assumes they have the same parent.
   void PlaceBeforeSibling(Cog* sibling);
   /// Moves this Cog after the given sibling. Assumes they have the same parent.
   void PlaceAfterSibling(Cog* sibling);
@@ -286,21 +269,21 @@ public:
   /// This detaches but does not destroy the old child.
   void ReplaceChild(Cog* oldChild, Cog* newChild);
 
-  /// Returns this Cogs index in the parents children list. If it doesn't have a
-  /// parent, it will return the index in the Space's object list. Note that
-  /// this ignores siblings that are marked for destruction.
+  /// Returns this Cogs index in the parents children list. If it doesn't have a parent, it will
+  /// return the index in the Space's object list. Note that this ignores siblings that
+  /// are marked for destruction.
   uint GetHierarchyIndex();
 
   //----- Internals
-  /// Moves the object to the given index in the parents child list. This
-  /// currently does no bounds checking as an optimization. Note that this
-  /// ignores siblings that are marked for destruction.
+  /// Moves the object to the given index in the parents child list. This currently does no
+  /// bounds checking as an optimization. Note that this ignores siblings that
+  /// are marked for destruction.
   void PlaceInHierarchy(uint index);
   Cog* FindLastDeepestChild();
   /// Returns the list of all children.
   HierarchyList* GetHierarchyList();
-  /// Returns the list of all of our parents children. If we don't have a
-  /// parent, it will return the list of all objects in the Space.
+  /// Returns the list of all of our parents children. If we don't have a parent, it will return
+  /// the list of all objects in the Space.
   HierarchyList* GetParentHierarchyList();
   void AssignChildIds();
 
@@ -314,30 +297,25 @@ public:
   /// Returns the Archetype our Archetype inherits from.
   Archetype* GetBaseArchetype();
 
-  /// Returns whether or not we have any local modifications from our Archetype.
-  /// This does not account for properties with LocalModificationOverride (such
-  /// as Transform modifications).
+  /// Returns whether or not we have any local modifications from our Archetype. This does not
+  /// account for properties with LocalModificationOverride (such as Transform modifications).
   bool IsModifiedFromArchetype();
   /// Removes our association with the current Archetype.
   void ClearArchetype();
-  /// Clears all modifications on this Cog. Does not clear
-  /// LocalModificationOverride properties.
+  /// Clears all modifications on this Cog. Does not clear LocalModificationOverride properties.
   void MarkNotModified();
-  /// Upload this objects data to the archetype and marks this object as not
-  /// modified. This function does not rebuild all other Cogs with the same
-  /// Archetype. See ArchetypeRebuilder for more information about how to
-  /// rebuild Archetypes.
+  /// Upload this objects data to the archetype and marks this object as not modified.
+  /// This function does not rebuild all other Cogs with the same Archetype. See ArchetypeRebuilder
+  /// for more information about how to rebuild Archetypes.
   void UploadToArchetype();
   /// Removes all local modifications and rebuilds the Cog.
   void RevertToArchetype();
-  /// Marks all Transform properties as modified. This is a common operation
-  /// when creating a Cog from Archetype in the editor. We want the Transform
-  /// modified when we create it in the scene so that it's location is saved
-  /// when the level is saved.
+  /// Marks all Transform properties as modified. This is a common operation when creating a
+  /// Cog from Archetype in the editor. We want the Transform modified when we create it in the
+  /// scene so that it's location is saved when the level is saved.
   void MarkTransformModified();
 
-  /// This will find either the root Archetype, or the nearest locally added
-  /// Archetype.
+  /// This will find either the root Archetype, or the nearest locally added Archetype.
   Cog* FindNearestArchetypeContext();
   /// Finds the nearest parent that has an Archetype (does not include itself).
   Cog* FindNearestParentArchetype();
@@ -357,12 +335,10 @@ public:
   /// Dispatches an event on this object
   void DispatchEvent(StringParam eventId, Event* event);
 
-  /// Dispatches an event up the tree on each parent recursively (pre-order
-  /// traversal)
+  /// Dispatches an event up the tree on each parent recursively (pre-order traversal)
   void DispatchUp(StringParam eventId, Event* event);
 
-  /// Dispatches an event down the tree on all children recursively (pre-order
-  /// traversal)
+  /// Dispatches an event down the tree on all children recursively (pre-order traversal)
   void DispatchDown(StringParam eventId, Event* event);
 
   /// Check if anyone has signed up for a particular event.
@@ -414,14 +390,13 @@ public:
   bool InArchetypeDefinitionMode();
   void SetArchetypeDefinitionMode();
 
-  /// When the object is moved, this should be called to inform all Components
-  /// that it has moved. It also sends an event.
+  /// When the object is moved, this should be called to inform all Components that it has moved.
+  /// It also sends an event.
   void TransformUpdate(TransformUpdateInfo& info);
 
-  /// Has this Cog already been destroyed and is waiting for the frame to end
-  /// (delayed destruction). This allows us to do custom logic when an object is
-  /// still not null, but about to be destroyed (e.g. we don't want to render
-  /// Cogs marked for deletion).
+  /// Has this Cog already been destroyed and is waiting for the frame to end (delayed destruction).
+  /// This allows us to do custom logic when an object is still not null, but about to be destroyed
+  /// (e.g. we don't want to render Cogs marked for deletion).
   bool GetMarkedForDestruction() const;
 
   void WriteDescription(StringBuilder& builder);

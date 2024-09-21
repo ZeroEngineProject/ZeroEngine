@@ -4,8 +4,7 @@
 namespace Zero
 {
 
-/// Base class for common engine/system objects. Provides overloaded new/delete
-/// to track memory allocations.
+/// Base class for common engine/system objects. Provides overloaded new/delete to track memory allocations.
 class EngineObject : public EventObject
 {
 public:

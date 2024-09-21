@@ -68,8 +68,7 @@ public:
   // Add a new resource
   virtual Resource* AddResource(ResourceManager* resourceManager, ResourceAdd& resourceAdd) = 0;
 
-  // Determines if a new resource should be created, otherwise returns the
-  // original
+  // Determines if a new resource should be created, otherwise returns the original
   virtual Resource* NewResourceOnWrite(ResourceManager* resourceManager,
                                        BoundType* type,
                                        StringParam propertyName,
@@ -81,8 +80,7 @@ public:
   // If there is a resource id conflict notify the editor
   virtual void OnResourceIdConflict(ResourceEntry& resourceEntry, Resource* previous) = 0;
 
-  // Show an error in a text file or resource text file using the editor's text
-  // editor
+  // Show an error in a text file or resource text file using the editor's text editor
   virtual void ShowTextError(StringParam file, int line, StringParam message) = 0;
 
   // Show a text block
@@ -90,7 +88,7 @@ public:
 
   virtual MetaSelection* GetActiveSelection() = 0;
 
-  virtual ~RuntimeEditor(){};
+  virtual ~RuntimeEditor() {};
 };
 
 namespace Z

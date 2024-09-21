@@ -243,8 +243,8 @@ bool OperationQueue::Undo(Operation* allbeforeThis)
     return operationFound;
   }
 
-  int size = toErase.Size();
-  for (int i = 0; i < size; ++i)
+  size_t size = toErase.Size();
+  for (size_t i = 0; i < size; ++i)
   {
     toErase[i]->Undo();
     mCommands.Erase(toErase[i]);
@@ -303,8 +303,8 @@ bool OperationQueue::Redo(Operation* upToAndThis)
     return operationFound;
   }
 
-  int size = toErase.Size();
-  for (int i = 0; i < size; ++i)
+  size_t size = toErase.Size();
+  for (size_t i = 0; i < size; ++i)
   {
     toErase[i]->Redo();
     mRedoCommands.Erase(toErase[i]);
@@ -493,13 +493,12 @@ void OperationQueue::EndBatch()
         mCommands.PushBack(ActiveBatch);
       }
 
-      // Do NOT queue any operations that come about through updating the
-      // history window, as that is what responds to 'OperationQueued'
+      // Do NOT queue any operations that come about through updating the history
+      // window, as that is what responds to 'OperationQueued'
       bool prevSideEffects = sListeningForSideEffects;
       sListeningForSideEffects = false;
 
-      // ONLY send out the queue event when the root-batch in the stack has
-      // ended.
+      // ONLY send out the queue event when the root-batch in the stack has ended.
       OperationQueueEvent event(&mCommands.Back());
       DispatchEvent(Events::OperationQueued, &event);
 
@@ -864,8 +863,8 @@ void OperationQueue::QueueRegisteredSideEffects()
     // Query for the new value
     op->UpdateValueAfter();
 
-    // Even though the value is already set, we want to notify of the property
-    // change and properly mark it as modified if it's part of an Archetype
+    // Even though the value is already set, we want to notify of the property change
+    // and properly mark it as modified if it's part of an Archetype
     op->Redo();
 
     Queue(op);

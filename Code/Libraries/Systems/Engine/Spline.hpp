@@ -84,8 +84,7 @@ public:
   Vec3 mPosition;
 };
 
-/// Read-only baked points for the Spline class. Will auto-recompute if the
-/// control points have changed.
+/// Read-only baked points for the Spline class. Will auto-recompute if the control points have changed.
 class SplineBakedPoints : SafeId32Object
 {
 public:
@@ -115,9 +114,8 @@ public:
 };
 
 /// A spline built from control points. Bakes out the curve using an error
-/// term (distance from actual spline). Provides an interface to sample the
-/// curve at a given arc-length distance in order to provide constant speed
-/// interpolation.
+/// term (distance from actual spline). Provides an interface to sample the curve
+/// at a given arc-length distance in order to provide constant speed interpolation.
 class Spline : public ReferenceCountedEventObject
 {
 public:
@@ -149,9 +147,8 @@ public:
   /// Samples the curve with a time in the range of [0, 1].
   SplineSampleData SampleNormalized(float time);
 
-  /// Rebuild the baked points from the control points if they have changed.
-  /// Should not need to be manually called unless the user wants to control the
-  /// timing when the points are baked.
+  /// Rebuild the baked points from the control points if they have changed. Should not need to be manually
+  /// called unless the user wants to control the timing when the points are baked.
   void RebuildIfModified();
   /// Forcibly rebuild the baked points from the control points.
   void ForceRebuild();
@@ -160,8 +157,7 @@ public:
 
   /// The control points used to bake out the curve.
   SplineControlPoints* GetControlPoints();
-  /// The read-only curve points baked out to line segments using the provided
-  /// error.
+  /// The read-only curve points baked out to line segments using the provided error.
   SplineBakedPoints* GetBakedPoints();
 
 private:

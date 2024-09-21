@@ -81,8 +81,7 @@ void ResourceSystem::SetupDefaults()
         resource->mContentItem->ShowInEditor = true;
 
         // Moved default font to the Loading library for progress display
-        ErrorIf(resource->mContentItem->mLibrary->Name != "Core" &&
-                    resource->mContentItem->mLibrary->Name != "Loading",
+        ErrorIf(resource->mContentItem->mLibrary->Name != "Core" && resource->mContentItem->mLibrary->Name != "Loading",
                 "Only resources that are in core can be defaults");
       }
     }
@@ -152,10 +151,9 @@ ResourceLibrary* ResourceSystem::LoadPackage(Status& status, ResourcePackage* pa
   event.Path = package->Location;
   DispatchEvent(Events::PackagedStarted, &event);
 
-  // METAREFACTOR this is the worst way to handle this, but it works until we
-  // get true dependencies. Find the last resource library (assuming we load
-  // Core first, then others) and pretend we're always dependent upon the
-  // previous resource library
+  // METAREFACTOR this is the worst way to handle this, but it works until we get true dependencies.
+  // Find the last resource library (assuming we load Core first, then others)
+  // and pretend we're always dependent upon the previous resource library
   ResourceLibrary* lastResourceLibrary = nullptr;
   forRange (ResourceLibrary* library, LoadedResourceLibraries.Values())
   {
@@ -277,11 +275,11 @@ void ResourceSystem::LoadIntoLibrary(Status& status,
   Z::gEngine->LoadingStart();
 
   StringBuilder errorString;
-  uint count = resourcePackage->Resources.Size();
+  size_t count = resourcePackage->Resources.Size();
 
   ProgressType::Enum progressType = count > 1 ? ProgressType::Normal : ProgressType::None;
 
-  for (uint i = 0; i < count; ++i)
+  for (size_t i = 0; i < count; ++i)
   {
     ResourceEntry& entry = resourcePackage->Resources[i];
     entry.mLibrary = resourceLibrary;
@@ -356,8 +354,7 @@ HandleOf<Resource> ResourceSystem::LoadEntry(Status& status, ResourceEntry& elem
   if (!range.Empty())
   {
     HandleOf<Resource> newResource = range.Front().second->LoadFromFile(element);
-    // ideally we'd do a check here, but some resources don't load anything
-    // (fragments)
+    // ideally we'd do a check here, but some resources don't load anything (fragments)
     return newResource;
   }
   else

@@ -28,13 +28,12 @@ public:
 
   static String SaveToStringForCopy(Cog* cog);
 
-  /// Copy + pasting an object is done by saving out the object to text, then
-  /// loading from that text. If we're copy + pasting an Archetype that's a
-  /// child of another Archetype, there are some extra steps we have to do to
-  /// guarantee the object that is pasted has the same exact properties as the
-  /// one copied. Call these two functions (one before, one after) saving the
-  /// object to text. PreProcess returns whether or not a post process is
-  /// required after the object is saved.
+  /// Copy + pasting an object is done by saving out the object to text, then loading from that text.
+  /// If we're copy + pasting an Archetype that's a child of another Archetype, there are some
+  /// extra steps we have to do to guarantee the object that is pasted has the same exact properties
+  /// as the one copied. Call these two functions (one before, one after) saving the object to
+  /// text.
+  /// PreProcess returns whether or not a post process is required after the object is saved.
   static bool PreProcessForCopy(Cog* cog, CachedModifications& restoreState);
   static void PostProcessAfterCopy(Cog* cog, CachedModifications& restoreState);
 };
@@ -114,9 +113,7 @@ public:
   Space* mSpace;
 };
 
-// Archetype Instance
-/// Used as an alternate to data tree patching. This is strictly an
-/// optimization.
+/// Used as an alternate to data tree patching. This is strictly an optimization.
 class ArchetypeInstance
 {
 public:
@@ -157,8 +154,7 @@ public:
   // Map of scene ids to  ContextIds.
   HashMap<uint, uint> ContextIdMap;
 
-  // Doesn't need to be a handle because Resources will never be deleted while
-  // saving Cogs.
+  // Doesn't need to be a handle because Resources will never be deleted while saving Cogs.
   Archetype* SavingArchetype;
 
   // A callback that can be provided to ignore certain components
@@ -178,7 +174,7 @@ public:
   // Object created in this context
   struct CreationEntry
   {
-    CreationEntry() : NewId(0), Object(nullptr){};
+    CreationEntry() : NewId(0), Object(nullptr) {};
     CreationEntry(uint newId, Cog* obj) : NewId(newId), Object(obj)
     {
     }

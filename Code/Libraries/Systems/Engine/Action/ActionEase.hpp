@@ -44,8 +44,7 @@ struct Lerp<String>
       return t0;
     if (t >= 1.0f)
       return t1;
-    // compute rune count is not the most efficient, might need optimization
-    // later - Dane
+    // compute rune count is not the most efficient, might need optimization later - Dane
     int t0Size = (int)t0.ComputeRuneCount();
     int t1Size = (int)t1.ComputeRuneCount();
 
@@ -80,8 +79,7 @@ struct Lerp<String>
     {
       startRune = ' ';
       if (runeIndex < t0Size)
-        // moving forward from the begin iterator is also not very fast, just
-        // updating logic for UTF8
+        // moving forward from the begin iterator is also not very fast, just updating logic for UTF8
         startRune = *(t0.Begin() + runeIndex);
       endRune = *(t1.Begin() + runeIndex);
     }

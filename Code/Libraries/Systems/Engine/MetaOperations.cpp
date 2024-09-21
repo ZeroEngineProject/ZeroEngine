@@ -121,9 +121,8 @@ void RestoreLocallyRemovedChild(OperationQueue* queue, HandleParam parent, Objec
 {
   ReturnIf(parent.StoredType == nullptr, , "We should always be given a valid parent handle");
 
-  // First check dependencies before re-adding the child (e.g. if Transform and
-  // Model were both locally removed, we cannot restore Model until Transform
-  // has been restored)
+  // First check dependencies before re-adding the child (e.g. if Transform and Model were
+  // both locally removed, we cannot restore Model until Transform has been restored)
   if (BoundType* childType = MetaDatabase::FindType(childId.mTypeName))
   {
     MetaComposition* composition = parent.StoredType->HasInherited<MetaComposition>();
@@ -185,8 +184,7 @@ ZilchDefineType(PropertyOperation, builder, type)
 }
 
 PropertyOperation::PropertyOperation(HandleParam object, PropertyPathParam property, AnyParam before, AnyParam after) :
-    MetaOperation(object),
-    mPropertyPath(property)
+    MetaOperation(object), mPropertyPath(property)
 {
   MetaOwner* owner = object.StoredType->HasInherited<MetaOwner>();
   if (owner && owner->GetOwner(object).IsNotNull())
@@ -319,10 +317,7 @@ AddRemoveComponentOperation::AddRemoveComponentOperation(HandleParam object,
                                                          ComponentOperation::Enum mode,
                                                          StringParam componentData,
                                                          uint componentIndex) :
-    MetaOperation(object),
-    mComposition(object.StoredType),
-    mComponentType(componentType),
-    mRemovedObjectState(nullptr)
+    MetaOperation(object), mComposition(object.StoredType), mComponentType(componentType), mRemovedObjectState(nullptr)
 {
   mNotifyModified = true;
 
@@ -341,8 +336,7 @@ AddRemoveComponentOperation::AddRemoveComponentOperation(HandleParam object,
   if (mComponentIndex == uint(-1))
     mComponentIndex = composition->GetComponentIndex(object, componentType);
 
-  // Take the objects global modified state so we can apply the same
-  // modifications it when we re-create it
+  // Take the objects global modified state so we can apply the same modifications it when we re-create it
   if (mode == ComponentOperation::Remove)
   {
     Handle component = composition->GetComponent(object, componentType);
@@ -389,15 +383,13 @@ void AddRemoveComponentOperation::AddComponentFromBuffer()
 
   LocalModifications* modifications = LocalModifications::GetInstance();
 
-  // Lets say you have an Archetype with the Model Component. The Model's
-  // Material property is set to the Dirt Material. If you locally remove the
-  // Model Component and then revert it, it should come back with the Dirt
-  // Material still set. If instead of reverting we add a new Model from the
-  // 'Add Component' button, it would have the default property values (not the
-  // Dirt Material). Unless you re-upload to Archetype, when you run the game,
-  // the instance in the game will have the Dirt Material again, instead of the
-  // default it shows in the editor. Because of this, instead of actually adding
-  // a new Model, we're going to revert the locally removed one.
+  // Lets say you have an Archetype with the Model Component. The Model's Material property is set
+  // to the Dirt Material. If you locally remove the Model Component and then revert it, it should
+  // come back with the Dirt Material still set. If instead of reverting we add a new Model from
+  // the 'Add Component' button, it would have the default property values (not the Dirt Material).
+  // Unless you re-upload to Archetype, when you run the game, the instance in the game will have
+  // the Dirt Material again, instead of the default it shows in the editor. Because of this,
+  // instead of actually adding a new Model, we're going to revert the locally removed one.
   if (mMode == ComponentOperation::Add && componentType != nullptr &&
       modifications->IsChildLocallyRemoved(object, componentType))
   {
@@ -420,8 +412,8 @@ void AddRemoveComponentOperation::AddComponentFromBuffer()
   // to restore the data, so lets create a proxy component
   if (componentType == nullptr || componentInstance == nullptr)
   {
-    // If the type existed, but the component was null, it was likely due to an
-    // exception when allocating the object
+    // If the type existed, but the component was null, it was likely due to an exception
+    // when allocating the object
     ProxyReason::Enum reasonToProxy = ProxyReason::TypeDidntExist;
     if (componentType)
       reasonToProxy = ProxyReason::AllocationException;
@@ -487,11 +479,10 @@ void AddRemoveComponentOperation::AddComponentFromBuffer()
   // Re-add the local modifications
   if (mRemovedObjectState)
   {
-    // In the case of Cogs, the Components handles contain the CogId in it. This
-    // component handle was created before being added to the Cog, so it has a
-    // raw pointer in the handle data, not a valid CogId. Now that it has been
-    // added to the Cog, lets get a new, proper handle to it. This should change
-    // once we change Component handles.
+    // In the case of Cogs, the Components handles contain the CogId in it. This component handle
+    // was created before being added to the Cog, so it has a raw pointer in the handle data, not
+    // a valid CogId. Now that it has been added to the Cog, lets get a new, proper handle to it.
+    // This should change once we change Component handles.
     modifications->RestoreObjectState(component, mRemovedObjectState);
   }
 
@@ -709,9 +700,7 @@ void RevertPropertyOperation::Redo()
 }
 
 RestoreChildOperation::RestoreChildOperation(HandleParam parent, ObjectState::ChildId& childId) :
-    MetaOperation(parent),
-    mChildId(childId),
-    mInheritance(parent.StoredType)
+    MetaOperation(parent), mChildId(childId), mInheritance(parent.StoredType)
 {
   mName = BuildString("RestoreChild on '", GetNameFromHandle(parent), "'");
 }
@@ -745,9 +734,7 @@ void RestoreChildOperation::Redo()
 }
 
 RestoreChildOrderOperation::RestoreChildOrderOperation(HandleParam object) :
-    MetaOperation(object),
-    mMetaOperations(object.StoredType),
-    mInheritance(object.StoredType)
+    MetaOperation(object), mMetaOperations(object.StoredType), mInheritance(object.StoredType)
 {
   mName = BuildString("RestoreChildOrder on '", GetNameFromHandle(object), "'");
 

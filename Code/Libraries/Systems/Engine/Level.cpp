@@ -78,8 +78,8 @@ void Level::SaveSpace(Space* space)
     return;
   }
 
-  // When saving levels in the editor change the resource to directly point at
-  // the file. Normally it loads from the built content directory.
+  // When saving levels in the editor change the resource to directly point at the file.
+  // Normally it loads from the built content directory.
   if (mContentItem)
   {
     String filename = mContentItem->GetFullPath();

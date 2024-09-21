@@ -62,8 +62,8 @@ void ObjectSaver::SaveObject(
     return;
   }
 
-  // If the given object inherits from another object, we want to save the
-  // object out as a data patch
+  // If the given object inherits from another object, we want to save the object out
+  // as a data patch
   String inheritId;
   if (MetaDataInheritanceRoot* inheritance = objectType->HasInherited<MetaDataInheritanceRoot>())
     inheritId = inheritance->GetInheritId(object, context);
@@ -82,14 +82,13 @@ void ObjectSaver::SaveFullObjectInternal(Object* object)
 {
   LocalModifications* modifications = LocalModifications::GetInstance();
 
-  // The 'InheritIdContext' here doesn't matter because this object is not being
-  // saved as inherited data. We're just passing in 'InheritIdContext::Instance'
-  // because we need to pass in something
+  // The 'InheritIdContext' here doesn't matter because this object is not being saved as inherited
+  // data. We're just passing in 'InheritIdContext::Instance' because we need to pass in something
   PolymorphicInfo info;
   BuildPolymorphicInfo(info, object, InheritIdContext::Instance, false);
 
-  // We're saving the full object, so clear out the inheritance id if it exists
-  // (it could exist when saving out a definition (e.g. an Archetype)
+  // We're saving the full object, so clear out the inheritance id if it exists (it could exist when
+  // saving out a definition (e.g. an Archetype)
   if (mFullObjectOverride == false)
     info.mInheritanceId = String();
 
@@ -137,8 +136,7 @@ void ObjectSaver::SaveProperties(Object* object,
       BoundType* objectType = ZilchVirtualTypeId(object);
       forRange (Property* metaProperty, objectType->GetProperties())
       {
-        // Skip properties that aren't serialized (disabled until full meta
-        // serialization refactor)
+        // Skip properties that aren't serialized (disabled until full meta serialization refactor)
         // if(!metaProperty->Flags.IsSet(PropertyFlags::Serialized))
         // continue;
 
@@ -225,9 +223,8 @@ void ObjectSaver::SaveChildren(Object* object,
         PolymorphicInfo info;
         BuildPolymorphicInfo(info, child, InheritIdContext::Instance, true);
 
-        // We didn't actually have any modifications to the child's data, so
-        // just create and close a polymorphic node to get its order correct in
-        // the file
+        // We didn't actually have any modifications to the child's data, so just create and close
+        // a polymorphic node to get its order correct in the file
         StartPolymorphicInternal(info);
         EndPolymorphic();
       }
@@ -267,8 +264,8 @@ void ObjectSaver::BuildPolymorphicInfo(PolymorphicInfo& info,
     // Get the unique node id
     if (MetaDataInheritance* inheritance = objectType->HasInherited<MetaDataInheritance>())
     {
-      // We don't need the unique node id if it's the root object being saved
-      // because it's only used for resolving child nodes
+      // We don't need the unique node id if it's the root object being saved because it's only
+      // used for resolving child nodes
       if (object != mSerializeStart)
         info.mUniqueNodeId = inheritance->GetUniqueId(object);
     }
@@ -288,12 +285,11 @@ void ObjectSaver::BuildPolymorphicInfo(PolymorphicInfo& info,
       }
     }
 
-    // If we're patching, we don't want to add child inherit id's because don't
-    // want the inherit id's to be resolved twice. It will be resolved when our
-    // parents inherited data is resolved, and we only want to show
-    // modifications here. This is true unless we're locally added, in that case
-    // we do want to include the inherit id, because it's not in our parents
-    // inherited data
+    // If we're patching, we don't want to add child inherit id's because don't want the inherit
+    // id's to be resolved twice. It will be resolved when our parents inherited data is resolved,
+    // and we only want to show modifications here.
+    // This is true unless we're locally added, in that case we do want to include the inherit id,
+    // because it's not in our parents inherited data
     // if(!info.mFlags.IsSet(PolymorphicSaveFlags::LocallyAdded))
     // info.mInheritanceId = "";
 

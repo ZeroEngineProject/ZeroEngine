@@ -50,8 +50,7 @@ ZilchDefineType(AsyncProcess, builder, type)
 
 AsyncProcess* AsyncProcess::Create()
 {
-  // This function is currently required to create reference counted objects
-  // from script.
+  // This function is currently required to create reference counted objects from script.
   AsyncProcess* result = new AsyncProcess();
   return result;
 }
@@ -206,9 +205,8 @@ void AsyncProcess::CloseInternal()
   for (size_t i = 0; i < 2; ++i)
     mThreads[i].mThread.WaitForCompletion();
 
-  // Clear our event list. Sending any buffered events could be problematic as
-  // all of the threads are closed which could confuse users, especially during
-  // destruction.
+  // Clear our event list. Sending any buffered events could be problematic as all
+  // of the threads are closed which could confuse users, especially during destruction.
   mEventDispatchList.ClearEvents();
 }
 
@@ -292,8 +290,7 @@ OsInt AsyncProcess::RunThread(AsyncProcess* asyncProcess,
     for (;;)
     {
       bool hasData = threadInfo.mFileStream.HasData(status);
-      // Failure here typically means the pipe was closed by the main thread
-      // (destruction).
+      // Failure here typically means the pipe was closed by the main thread (destruction).
       if (status.Failed())
         return 0;
       if (hasData)
@@ -314,11 +311,10 @@ OsInt AsyncProcess::RunThread(AsyncProcess* asyncProcess,
     asyncProcess->mEventDispatchList.Dispatch(asyncProcess, partialResponseEventName, toSend);
   }
 
-  // The process has finished but we need to signal back to the main thread that
-  // there's no more data to be read from the stream. We may have just sent data
-  // that will come back to AsyncProcess the next time the main thread runs. To
-  // make sure this data has been received we send out another event that will
-  // correctly signal that the main thread has all data for this stream.
+  // The process has finished but we need to signal back to the main thread that there's no more
+  // data to be read from the stream. We may have just sent data that will come back to AsyncProcess
+  // the next time the main thread runs. To make sure this data has been received we send out another
+  // event that will correctly signal that the main thread has all data for this stream.
   AsyncProcessEvent* finalEvent = new AsyncProcessEvent();
   finalEvent->mStreamType = streamType;
   asyncProcess->mEventDispatchList.Dispatch(asyncProcess, finishedEventName, finalEvent);

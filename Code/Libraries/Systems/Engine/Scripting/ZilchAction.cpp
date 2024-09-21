@@ -40,7 +40,7 @@ struct EaseTypeSampleCurve
 {
   HandleOf<SampleCurve> mSampleCurve;
 
-  EaseTypeSampleCurve(){};
+  EaseTypeSampleCurve() {};
 
   EaseTypeSampleCurve(SampleCurve* curve) : mSampleCurve(curve)
   {
@@ -269,8 +269,7 @@ void CreateCallAction(Call& call, ExceptionReport& report)
 
   // This 'CreateCallAction' is bound multiple times to support "variadic anys"
   // By default, the base function just takes 2 arguments (ActionSet, Delegate)
-  // The variadic forms will take (ActionSet, Delegate, Any, Any...) which
-  // starts on parameter 2
+  // The variadic forms will take (ActionSet, Delegate, Any, Any...) which starts on parameter 2
   size_t anyStartParameter = 2;
   DelegateType* createCallFunctionType = call.GetFunction()->FunctionType;
 

@@ -28,9 +28,8 @@ void EngineLibraryExtensions::AddNativeExtensions(LibraryBuilder& builder, Bound
     if (type->IsA(resourceType) && !type->HasAttribute(ObjectAttributes::cResourceInterface))
       AddResourceFind(builder, type);
 
-    // The only reason we need to check if 'EnumMetaSerialization' already
-    // exists is because we call this for a plugin library (more than once
-    // unfortunately).
+    // The only reason we need to check if 'EnumMetaSerialization' already exists is because
+    // we call this for a plugin library (more than once unfortunately).
     if (type->IsEnumOrFlags() && type->has(EnumMetaSerialization) == nullptr)
       type->Add(new EnumMetaSerialization(type));
   }
@@ -58,16 +57,14 @@ void EngineLibraryExtensions::TypeParsedCallback(Zilch::ParseEvent* e, void* use
 
   BoundType* boundType = e->Type;
 
-  // @TrevorS: Is this necessary anymore? I believe HandleManagers are
-  // inherited.
+  // @TrevorS: Is this necessary anymore? I believe HandleManagers are inherited.
   if (boundType->IsA(componentType))
     boundType->HandleManager = componentType->HandleManager;
 
   if (boundType->IsEnumOrFlags())
     boundType->Add(new EnumMetaSerialization(boundType));
 
-  // Get the location of the resource so we can take the user to where the type
-  // is defined
+  // Get the location of the resource so we can take the user to where the type is defined
   ZilchDocumentResource* resource = (ZilchDocumentResource*)e->Location->CodeUserData;
   ReturnIf(resource == nullptr, , "Type parsed not from a Resource?");
   boundType->Add(new MetaResource(resource));
@@ -93,8 +90,8 @@ void EngineLibraryExtensions::FindProxiedTypeOrigin(BoundType* proxiedType)
 
 void EngineLibraryExtensions::AddResourceExtensions(LibraryBuilder& builder, ResourceLibrary* resources)
 {
-  // Add a property extension for all resources so they can be accessed on the
-  // resource type e.g. SpriteSource.Fireball
+  // Add a property extension for all resources so they can be accessed on the resource type
+  // e.g. SpriteSource.Fireball
   forRange (HandleOf<Resource> resourceHandle, resources->Resources.All())
   {
     Resource* resource = resourceHandle;
@@ -160,8 +157,7 @@ void FindResourceOrError(Call& call, ExceptionReport& report)
 {
   if (FindResourceMode(call, report, ResourceNotFound::ReturnNull) == false)
   {
-    // If the first parameter wasn't a string, an exception may have already
-    // been thrown
+    // If the first parameter wasn't a string, an exception may have already been thrown
     if (report.HasThrownExceptions() == false)
     {
       String* name = call.Get<String*>(0);
@@ -173,8 +169,7 @@ void FindResourceOrError(Call& call, ExceptionReport& report)
 
 void AddResourceFind(LibraryBuilder& builder, BoundType* resourceType)
 {
-  // We're binding a static function on the type called 'Find', which finds a
-  // resource of that type by name
+  // We're binding a static function on the type called 'Find', which finds a resource of that type by name
   ParameterArray params;
   DelegateParameter& p0 = params.PushBack();
   p0.ParameterType = ZilchTypeId(String);
@@ -211,16 +206,14 @@ void ProcessComponentInterfaces(BoundType* type)
   if (componentInterfaceAttribute)
   {
     BoundType* baseType = type->BaseType;
-    // Keep walking up the hierarchy to find what base type had the attribute.
-    // Make sure we skip the base type itself though (i.e. Collider can't add
-    // Collider as an interface)
+    // Keep walking up the hierarchy to find what base type had the attribute. Make
+    // sure we skip the base type itself though (i.e. Collider can't add Collider as an interface)
     while (baseType != nullptr && type != baseType)
     {
       if (baseType->HasAttribute(ObjectAttributes::cComponentInterface))
       {
         CogComponentMeta* componentMeta = type->HasOrAdd<CogComponentMeta>(type);
-        // The default constructor will set this type to FromDataOnly so we have
-        // to manually set this for now
+        // The default constructor will set this type to FromDataOnly so we have to manually set this for now
         componentMeta->mSetupMode = SetupMode::DefaultSerialization;
         componentMeta->AddInterface(baseType);
         break;

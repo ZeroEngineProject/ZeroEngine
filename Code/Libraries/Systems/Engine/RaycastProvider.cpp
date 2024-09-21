@@ -59,9 +59,8 @@ void RaycastResultList::AddItem(RayCastEntry& inputEntry)
   // If we're at the max size
   if (mSize == mCapacity)
   {
-    // Then we start at the last item. If the time of intersection is after the
-    // last item then we do not want to insert this item as it happens too late
-    // in time.
+    // Then we start at the last item. If the time of intersection is after the last item
+    // then we do not want to insert this item as it happens too late in time.
     startIndex = mCapacity - 1;
     if (inputEntry.T >= mEntries[startIndex].T)
       return;
@@ -129,8 +128,7 @@ void RaycastResultList::AddList(RaycastResultList& list)
 
   // Since multiple providers may point to the same object we need to filter out
   // multiple occurrences of the same item. To do this we just insert all of the
-  // items from both list into a map and keep the smaller time if the item was
-  // already there.
+  // items from both list into a map and keep the smaller time if the item was already there.
 
   // Add all the items from this list
   typedef HashMap<Handle, RayCastEntry> CastMap;
@@ -141,8 +139,7 @@ void RaycastResultList::AddList(RaycastResultList& list)
     map.Insert(entry.Instance, entry);
   }
 
-  // Add all of the items from the other list (keep the smallest time of an
-  // item)
+  // Add all of the items from the other list (keep the smallest time of an item)
   for (uint i = 0; i < list.mSize; ++i)
   {
     RayCastEntry& entry = list.mEntries[i];
@@ -157,8 +154,7 @@ void RaycastResultList::AddList(RaycastResultList& list)
   }
 
   // Now the list contains all of the items with their smallest times.
-  // Just add all of the items (which will automatically sort and store up to
-  // capacity)
+  // Just add all of the items (which will automatically sort and store up to capacity)
   mSize = 0;
   CastMap::range range = map.All();
   for (; !range.Empty(); range.PopFront())
@@ -221,8 +217,7 @@ void Raycaster::Serialize(Serializer& stream)
   SerializeProviders(stream);
 }
 
-// If the given block requests to be setup via default serialization then run
-// that
+// If the given block requests to be setup via default serialization then run that
 void SetupBlock(Handle& handle, BoundType* blockMeta)
 {
   RaycastProvider* block = handle.Get<RaycastProvider*>();
@@ -340,7 +335,7 @@ RaycasterMetaComposition::RaycasterMetaComposition() : MetaComposition(ZilchType
 uint RaycasterMetaComposition::GetComponentCount(HandleParam owner)
 {
   Raycaster* raycaster = owner.Get<Raycaster*>();
-  return raycaster->mProviders.Size();
+  return (uint)raycaster->mProviders.Size();
 }
 
 Handle RaycasterMetaComposition::GetComponentAt(HandleParam owner, uint index)

@@ -34,10 +34,10 @@ public:
     // Check to make sure the interpolant is valid
     ErrorIf(interpolant < 0.0f || interpolant > 1.0f, "Interpolant value must be between [0,1].");
 
-    uint count = mControlPoints.Size();
+    size_t count = mControlPoints.Size();
 
-    const int firstIndex = 0;
-    int lastIndex = count - 1;
+    const size_t firstIndex = 0;
+    size_t lastIndex = count - 1;
 
     // If there are no values, simply add it
     if (count == 0)
@@ -74,10 +74,10 @@ public:
     // Check to make sure the interpolant is valid
     ErrorIf(interpolant < 0.0f || interpolant > 1.0f, "Interpolant value must be between [0,1].");
 
-    uint count = mControlPoints.Size();
+    size_t count = mControlPoints.Size();
 
-    const int firstIndex = 0;
-    int lastIndex = count - 1;
+    const size_t firstIndex = 0;
+    size_t lastIndex = count - 1;
 
     // If there are no values, return a default
     if (count == 0)

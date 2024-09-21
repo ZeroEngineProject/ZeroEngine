@@ -13,8 +13,8 @@ DefineEvent(ObjectLinkPointChanged);
 ZilchDefineType(ObjectLinkEdge, builder, type)
 {
   ZeroBindDocumented();
-  // This should be safe to bind even though we contain an inlist link because
-  // when we're returned we can't perform any operations on the link itself.
+  // This should be safe to bind even though we contain an inlist link because when
+  // we're returned we can't perform any operations on the link itself.
   ZilchBindDefaultCopyDestructor();
 
   ZilchBindGetterProperty(SelfCog);
@@ -61,8 +61,7 @@ void ObjectLinkEdge::Set(ObjectLink* link, Cog* cog)
 {
   mObjectLinkHandle = link;
 
-  // Find the ObjectLinkAnchor on the passed in cog (if it doesn't exist then
-  // add it)
+  // Find the ObjectLinkAnchor on the passed in cog (if it doesn't exist then add it)
   ObjectLinkAnchor* cogAnchor = nullptr;
   if (cog != nullptr)
     cogAnchor = HasOrAdd<ObjectLinkAnchor>(cog);
@@ -72,8 +71,7 @@ void ObjectLinkEdge::Set(ObjectLink* link, Cog* cog)
   if (oldSelfAnchor != nullptr)
     oldSelfAnchor->mEdges.Unlink(this);
 
-  // Set the anchor and if we it exists (will always exist if the cog wasn't
-  // null) then add this edge to the anchor
+  // Set the anchor and if we it exists (will always exist if the cog wasn't null) then add this edge to the anchor
   mSelfAnchorHandle = cogAnchor;
   if (cogAnchor != nullptr)
     cogAnchor->mEdges.PushBack(this);
@@ -324,8 +322,7 @@ Vec3 ObjectLink::GetWorldPosition()
   Vec3 worldPointA = GetWorldPointA();
   Vec3 worldPointB = GetWorldPointB();
 
-  // Get each objects transform so we can determine if we should average the
-  // positions or not
+  // Get each objects transform so we can determine if we should average the positions or not
   Transform* transformA = GetTransform(IndexA);
   Transform* transformB = GetTransform(IndexB);
 

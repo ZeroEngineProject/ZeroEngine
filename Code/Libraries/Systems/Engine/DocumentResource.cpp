@@ -21,10 +21,7 @@ Completion::Completion(StringParam name) : Name(name), AssociatedResourceId(0), 
 }
 
 Completion::Completion(StringParam name, StringParam description) :
-    Name(name),
-    Description(description),
-    AssociatedResourceId(0),
-    Hidden(false)
+    Name(name), Description(description), AssociatedResourceId(0), Hidden(false)
 {
 }
 
@@ -249,9 +246,8 @@ bool ICodeInspector::UnindentOnCharacter(ICodeEditor* editor, Rune added, Rune l
 
 void ICodeInspector::AddCompletionsFromMetaType(Array<Completion>& completions, BoundType* type)
 {
-  // This seems slightly counter intuitive, but we actually add everything we
-  // find both from docs and from the meta type We must do docs first because
-  // any duplicates will get filtered out in the completion dialog
+  // This seems slightly counter intuitive, but we actually add everything we find both from docs and from the meta type
+  // We must do docs first because any duplicates will get filtered out in the completion dialog
   if (ClassDoc* classDoc = Z::gDocumentation->mClassMap.FindValue(type->Name, nullptr))
   {
     // Add all properties the ClassDoc has to the completion list

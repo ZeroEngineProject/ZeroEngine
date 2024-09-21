@@ -28,8 +28,7 @@ public:
 
   /// The cog that this edge on the object link is connected to.
   Cog* GetSelfCog();
-  /// The other cog that the object link is connected to (the one not part of
-  /// this edge).
+  /// The other cog that the object link is connected to (the one not part of this edge).
   Cog* GetOtherCog();
   /// The object link that this edge is connected to.
   ObjectLink* GetObjectLink();
@@ -98,9 +97,9 @@ public:
   EdgeList mEdges;
 };
 
-/// Forms a link between two positions on two objects. ObjectLinks are used
-/// primarily by physics to represent joints, but can also be used by graphics,
-/// gameplay, etc... to represent some connection between two objects.
+/// Forms a link between two positions on two objects. ObjectLinks are used primarily by physics
+/// to represent joints, but can also be used by graphics, gameplay, etc...
+/// to represent some connection between two objects.
 class ObjectLink : public Component
 {
 public:
@@ -124,12 +123,10 @@ public:
   CogPath GetObjectBPath();
   void SetObjectBPath(CogPath& path);
 
-  /// The first object that is being connected to. Set this to null to clear the
-  /// link.
+  /// The first object that is being connected to. Set this to null to clear the link.
   Cog* GetObjectA();
   void SetObjectA(Cog* cog);
-  /// The second object that is being connected to. Set this to null to clear
-  /// the link.
+  /// The second object that is being connected to. Set this to null to clear the link.
   Cog* GetObjectB();
   void SetObjectB(Cog* cog);
 
@@ -147,11 +144,10 @@ public:
   Vec3 GetWorldPointB();
   void SetWorldPointB(Vec3Param worldPoint);
 
-  // Returns a position used to represent the link. If both objects have at
-  // transform this will be the center of the two points in world space. If only
-  // one object has a transform then this will be the world point on that
-  // object. Otherwise this will just be the center of the local points relative
-  // to the origin.
+  // Returns a position used to represent the link. If both objects have at transform
+  // this will be the center of the two points in world space. If only one object has a
+  // transform then this will be the world point on that object. Otherwise this will just
+  // be the center of the local points relative to the origin.
   Vec3 GetWorldPosition();
 
   // Internals

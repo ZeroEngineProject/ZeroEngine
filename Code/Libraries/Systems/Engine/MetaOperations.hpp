@@ -63,16 +63,15 @@ public:
   void Undo() override;
   void Redo() override;
 
-  /// Property operations are created before the value is set for side affect
-  /// actions. Because of this, the 'after' value is not valid until after this
-  /// operations construction. Before the operation is actually put in the
-  /// operation queue, this will be called to query for the value after.
+  /// Property operations are created before the value is set for side affect actions. Because of
+  /// this, the 'after' value is not valid until after this operations construction. Before the
+  /// operation is actually put in the operation queue, this will be called to query for
+  /// the value after.
   void UpdateValueAfter();
 
 private:
-  /// When scripts change, the types in 'mValueBefore' and 'mValueAfter' could
-  /// be deleted. We need to update them to either the new types, or null them
-  /// out.
+  /// When scripts change, the types in 'mValueBefore' and 'mValueAfter' could be deleted.
+  /// We need to update them to either the new types, or null them out.
   void OnScriptsCompiled(ZilchCompileEvent* e);
   void OnMetaRemoved(MetaLibraryEvent* e);
 
@@ -104,8 +103,7 @@ public:
   void ComponentAdded(HandleParam object);
   void ComponentRemoved(HandleParam object);
 
-  // Temporary, for use in Material re-initialization. Should not be used
-  // elsewhere.
+  // Temporary, for use in Material re-initialization. Should not be used elsewhere.
   bool mNotifyModified;
 
 private:

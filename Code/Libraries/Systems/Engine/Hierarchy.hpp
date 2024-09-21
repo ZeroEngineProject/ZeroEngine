@@ -33,8 +33,8 @@ public:
 };
 
 // Hierarchy
-/// Component that gives an game object the ability to have child objects and
-/// Contains a list of children.
+/// Component that gives an game object the ability to have child objects and Contains a list
+/// of children.
 class Hierarchy : public Component
 {
 public:

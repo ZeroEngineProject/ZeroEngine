@@ -48,16 +48,14 @@ void Archetype::Save(StringParam filename)
       CogMetaSerialization::sSaveContextIds = true;
       saver.Close();
 
-      // We need to clear all cached data for us and Archetypes that reference
-      // us
+      // We need to clear all cached data for us and Archetypes that reference us
       ClearDataTreeCache();
       ClearBinaryCache();
 
       forRange (Resource* archetypeResource, ArchetypeManager::GetInstance()->AllResources())
       {
-        // For now we're clearing the cache for all Archetypes, however this
-        // should check to see if each Archetype has a dependency on this
-        // Archetype before clearing the Cache
+        // For now we're clearing the cache for all Archetypes, however this should check to see
+        // if each Archetype has a dependency on this Archetype before clearing the Cache
         Archetype* archetype = (Archetype*)archetypeResource;
         archetype->ClearDataTreeCache();
         archetype->ClearBinaryCache();
@@ -134,10 +132,9 @@ void Archetype::CacheDataTree()
     mAllCachedModifications.Combine(baseArchetype->mLocalCachedModifications);
   }
 
-  // When we clone and give this to other data files inheriting from this
-  // Archetype, we don't want them to inherit our patched properties and objects
-  // as we're in a different context. If they need that information, they can
-  // query our cached modifications
+  // When we clone and give this to other data files inheriting from this Archetype, we don't want
+  // them to inherit our patched properties and objects as we're in a different context. If they
+  // need that information, they can query our cached modifications
   mCachedTree->ClearPatchState();
 }
 
@@ -207,9 +204,7 @@ public:
   String FilterTag;
 
   ArchetypeLoader(StringParam objectTypeName, StringParam filterTag) :
-      StoredTypeName(objectTypeName),
-      FilterTag(filterTag),
-      StoredType(nullptr)
+      StoredTypeName(objectTypeName), FilterTag(filterTag), StoredType(nullptr)
   {
   }
 
@@ -298,9 +293,7 @@ Archetype* ArchetypeManager::MakeNewArchetypeWith(Cog* cog,
 
     if (archetype->mStoredType != ZilchVirtualTypeId(cog))
     {
-      DoNotifyWarning("Can not set",
-                      "Archetype Contains a different composition type than "
-                      "object's composition type.");
+      DoNotifyWarning("Can not set", "Archetype Contains a different composition type than object's composition type.");
       return nullptr;
     }
     // Archetype already exists, check to make sure it is valid to reuse
@@ -337,8 +330,8 @@ Archetype* ArchetypeManager::MakeNewArchetypeWith(Cog* cog,
     }
     else if (Archetype* oldArchetype = cog->GetArchetype())
     {
-      // We want the new Archetype to be exactly the same as the old, so we need
-      // to copy over any modifications from the Archetype we're copying from
+      // We want the new Archetype to be exactly the same as the old, so we need to copy over
+      // any modifications from the Archetype we're copying from
       oldArchetype->GetLocalCachedModifications().ApplyModificationsToObject(cog);
       newArchetype->mBaseResourceIdName = oldArchetype->mBaseResourceIdName;
     }
@@ -383,8 +376,7 @@ bool ArchetypeManager::SaveToContent(Cog* object, Archetype* archetype, Resource
 
     Z::gRuntimeEditor->AddResource(this, resourceAdd);
 
-    // Re-assign to get a handle with the resource id in it instead of a raw
-    // pointer
+    // Re-assign to get a handle with the resource id in it instead of a raw pointer
     object->SetArchetype(archetype);
 
     if (resourceAdd.WasSuccessful())
@@ -472,10 +464,9 @@ void ArchetypeManager::ArchetypeModified(Archetype* archetype)
     }
   }
 
-  // We need to clear Level caches so they appropriately reflect the changes to
-  // this Archetype. For now, we're going to just clear all Level caches.
-  // However, in the future we should optimize this to clear only Levels that
-  // contain the modified Archetype
+  // We need to clear Level caches so they appropriately reflect the changes to this Archetype.
+  // For now, we're going to just clear all Level caches. However, in the future we should
+  // optimize this to clear only Levels that contain the modified Archetype
   LevelManager::ClearCachedLevels();
 }
 

@@ -10,18 +10,15 @@ class ResourceListOperation : public Operation
 {
 public:
   UndoHandle mObjectHandle;
-  // Storing a pointer to this is safe because it only ever points to native
-  // types, which never get destructed
+  // Storing a pointer to this is safe because it only ever points to native types, which never
+  // get destructed
   BoundTypeHandle mMeta;
   String mResourceIdName;
   uint mIndex;
   bool mAddOp;
 
   ResourceListOperation(HandleParam object, StringParam resourceIdName, uint index = -1, bool addOp = true) :
-      mResourceIdName(resourceIdName),
-      mIndex(index),
-      mAddOp(addOp),
-      mObjectHandle(object)
+      mResourceIdName(resourceIdName), mIndex(index), mAddOp(addOp), mObjectHandle(object)
   {
     mName = "Removed resource";
     if (mAddOp)

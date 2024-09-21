@@ -41,8 +41,7 @@ ZilchDefineType(OsWindow, builder, type)
   ZilchBindGetterSetterProperty(State);
 
   ZilchBindMethod(HasFocus);
-  // Currently behaves weird when called from script when the window doesn't
-  // have focus
+  // Currently behaves weird when called from script when the window doesn't have focus
   // ZilchBindMethod(TakeFocus);
   ZilchBindSetter(MouseCapture);
   ZilchBindGetterSetter(MouseTrap);
@@ -93,8 +92,7 @@ OsWindow::OsWindow(OsShell* shell,
   mWindow.mOnHitTest = &ShellWindowOnHitTest;
   mWindow.mOnInputDeviceChanged = &ShellWindowOnInputDeviceChanged;
 
-  // Since we're creating the main window, do a single scan for input devices
-  // (they rely on a main window)
+  // Since we're creating the main window, do a single scan for input devices (they rely on a main window)
   if (flags & WindowStyleFlags::MainWindow)
     shell->ScanInputDevices();
 }
@@ -595,12 +593,11 @@ void OsWindow::ShellWindowOnInputDeviceChanged(
 
   joystick->RawSetButtons(buttons);
 
-  for (size_t i = 0; i < axes.Size(); ++i)
+  for (uint i = 0; i < (uint)axes.Size(); ++i)
   {
     if (i >= device.mAxes.Size())
     {
-      Error("We should be getting the same number of axes as was registered "
-            "with the device, unless an error occurred");
+      Error("We should be getting the same number of axes as was registered with the device, unless an error occurred");
       break;
     }
 
@@ -682,9 +679,7 @@ ZilchDefineType(OsWindowBorderHitTest, builder, type)
 }
 
 OsWindowBorderHitTest::OsWindowBorderHitTest() :
-    Window(nullptr),
-    ClientPosition(IntVec2::cZero),
-    mWindowBorderArea(WindowBorderArea::None)
+    Window(nullptr), ClientPosition(IntVec2::cZero), mWindowBorderArea(WindowBorderArea::None)
 {
 }
 

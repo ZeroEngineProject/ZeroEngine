@@ -75,8 +75,7 @@ public:
   /// Step the game one frame
   void Step();
 
-  /// Pauses the game session which prevents updates to all spaces owned by this
-  /// game.
+  /// Pauses the game session which prevents updates to all spaces owned by this game.
   void Pause();
 
   /// Create a space in the game. Use the archetype's name.
@@ -122,17 +121,15 @@ public:
   void OnSpaceLoaded(ObjectEvent* event);
 
   /// Is the game running in the editor?
-  /// This property specifies if the editor was present (as opposed to an
-  /// exported game) in this space. Currently this only gets set on game
-  /// sessions created by the editor but not the editor's space itself. Note:
-  /// this is not if this is an editor (or editing) space.
+  /// This property specifies if the editor was present (as opposed to an exported game) in this space.
+  /// Currently this only gets set on game sessions created by the editor but not the editor's space itself.
+  /// Note: this is not if this is an editor (or editing) space.
   bool mInEditor;
 
   /// Is the game running in edit mode?
   BitField<CreationFlags::Enum> mCreationFlags;
 
-  /// Controls if the game session is paused which prevents updates to all
-  /// spaces owned by this game.
+  /// Controls if the game session is paused which prevents updates to all spaces owned by this game.
   bool mPaused;
 
   /// Has the game started prevents double starts

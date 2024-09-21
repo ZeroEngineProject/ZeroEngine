@@ -255,8 +255,8 @@ public:
   template <typename searchKeyType>
   size_t FindApproxIndex(const searchKeyType& key)
   {
-    int begin = 0;
-    int end = (int)mArray.Size();
+    size_t begin = 0;
+    size_t end = (int)mArray.Size();
 
     while (begin < end)
     {
@@ -292,7 +292,7 @@ public:
 
   uint Size()
   {
-    return mArray.Size();
+    return (uint)mArray.Size();
   }
 
   value_type& Front()

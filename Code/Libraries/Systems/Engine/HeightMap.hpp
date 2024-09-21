@@ -52,10 +52,9 @@ struct HeightPatch
   static const size_t Size = 32;
   static const size_t TotalSize = Size * Size;
 
-  /// We actually have as many quads as we have height cells, though our
-  /// vertices are placed in the middle of a height cell. This means we have
-  /// extra quads, which we use to seam between patches (they stick out to the
-  /// right and up)
+  /// We actually have as many quads as we have height cells, though our vertices
+  /// are placed in the middle of a height cell. This means we have extra quads, which
+  /// we use to seam between patches (they stick out to the right and up)
   static const size_t NumQuadsPerSide = Size;
   static const size_t NumQuadsTotal = NumQuadsPerSide * NumQuadsPerSide;
   static const size_t NumVerticesPerSide = (Size + 1);
@@ -97,16 +96,16 @@ typedef HashMap<PatchIndex, HeightPatch> PatchMapCopy;
 
 struct HeightMapCell
 {
-  /// The index of the cell in a patch. Note that this is not necessarily
-  /// related to a height in the patch
+  /// The index of the cell in a patch. Note that this is not necessarily related
+  /// to a height in the patch
   CellIndex Index;
 
-  /// Typically cells are returned in queries (many of those queries use
-  /// feathering) This is the computed influence for this particular cell
+  /// Typically cells are returned in queries (many of those queries use feathering)
+  /// This is the computed influence for this particular cell
   float Influence;
 
-  /// The patch that this cell relates to. Note that the Index not necessarily
-  /// related to a height in the patch
+  /// The patch that this cell relates to. Note that the Index not necessarily related
+  /// to a height in the patch
   HeightPatch* Patch;
 };
 
@@ -187,8 +186,7 @@ public:
   void SignalAllPatchesModified();
 
   /// Sample a height given an absolute index
-  /// Absolute indices are determined using the PatchIndex * HeightPatch::Size +
-  /// CellIndex
+  /// Absolute indices are determined using the PatchIndex * HeightPatch::Size + CellIndex
   float SampleHeight(AbsoluteIndexParam absoluteIndex, float defaultValue);
 
   /// Sample the height using a local space position
@@ -271,8 +269,7 @@ public:
 
   void GetQuadAtIndex(AbsoluteIndex index, Triangle triangles[2], uint& count);
 
-  /// Signal that a particular patch was modified (typically updates physics,
-  /// graphics, etc)
+  /// Signal that a particular patch was modified (typically updates physics, graphics, etc)
   void SignalPatchModified(HeightPatch* patch);
   void SignalPatchModified(HeightPatch* patch, Vec2 min, Vec2 max);
 
@@ -308,14 +305,12 @@ private:
   /// Updates adjacent patch vertices
   void UpdateAdjacentPatches(HeightPatch* patch);
 
-  /// Pre-fetches all patch and adjacent patch heights that are needed to
-  /// compute tangents and bitangents for this patch to prevent any hashes or
-  /// branching when computing vertices
+  /// Pre-fetches all patch and adjacent patch heights that are needed to compute
+  /// tangents and bitangents for this patch to prevent any hashes or branching when computing vertices
   void MakePaddedHeightBuffer(HeightPatch* patch, real* heights);
 
   /// Computes the patch's vertex data and stores it in outVertices
-  /// outVertices must already be the correct size, it is assumed that not all
-  /// vertices always need to be computed
+  /// outVertices must already be the correct size, it is assumed that not all vertices always need to be computed
   void ComputePaddedHeightPatchVertices(HeightPatch* patch,
                                         Array<Vec3>& outVertices,
                                         CellIndex min = sCellIndexMin,
@@ -355,7 +350,7 @@ public:
 /// and raycasting use the center of the cell.
 struct CellRayRange
 {
-  CellRayRange(){};
+  CellRayRange() {};
   CellRayRange(HeightMap* map, PatchIndex index, Vec2Param rayStart, Vec2Param rayDir, real maxT);
 
   void Set(HeightMap* map, PatchIndex index, Vec2Param rayStart, Vec2Param rayDir, real maxT);
@@ -393,11 +388,10 @@ struct HeightMapQueryCache
 };
 
 /// A range to iterate through all of the patches that a ray hits. Used during
-/// actual raycasting to determine which patches we should used the cell range
-/// on.
+/// actual raycasting to determine which patches we should used the cell range on.
 struct PatchRayRange
 {
-  PatchRayRange(){};
+  PatchRayRange() {};
   PatchRayRange(HeightMap* map, Vec2Param rayStart, Vec2Param rayDir, real minT, real maxT);
 
   void Set(HeightMap* map, Vec2Param rayStart, Vec2Param rayDir, real minT, real maxT);
@@ -426,9 +420,9 @@ private:
 };
 
 /// A range for performing raycasting against a height map. Uses DDA to iterate
-/// efficiently through only the patches and cells that the ray actually
-/// touches. Returns a structure containing the triangle hit and the
-/// intersection info about how it was hit.
+/// efficiently through only the patches and cells that the ray actually touches.
+/// Returns a structure containing the triangle hit and the intersection
+/// info about how it was hit.
 struct HeightMapRayRange
 {
   /// Data returned by this range. Contains the triangle
@@ -483,8 +477,7 @@ struct HeightMapRayRange
 /// A range to iterate through all triangles that an aabb should consider
 /// checking collision against. Projects the extents of the aabb onto the
 /// grid to determine which patches and cells to even consider.
-/// Returns a structure containing the local triangle hit and the patch and cell
-/// index.
+/// Returns a structure containing the local triangle hit and the patch and cell index.
 struct HeightMapAabbRange
 {
   struct TriangleInfo
@@ -515,8 +508,8 @@ struct HeightMapAabbRange
 
   HeightMap* mMap;
   bool mSkipNonCollidingCells;
-  // the local and projected aabb info. The non-projected aabb is needed to
-  // determine if a triangle can be skipped (performs the remaining aabb check)
+  // the local and projected aabb info. The non-projected aabb is needed to determine
+  // if a triangle can be skipped (performs the remaining aabb check)
   Vec3 mLocalAabbMin, mLocalAabbMax;
   Vec2 mProjAabbMin, mProjAabbMax;
 

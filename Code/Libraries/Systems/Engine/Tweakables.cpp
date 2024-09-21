@@ -135,8 +135,7 @@ void Tweakables::Save()
 
   // Get the file location
   String file = GetFileLocation();
-  // Can we write to the tweakables? (Installed versions can't because they're
-  // in program files)
+  // Can we write to the tweakables? (Installed versions can't because they're in program files)
   if (FileWritable(file) == false)
     return;
 
@@ -190,7 +189,7 @@ TweakablesComposition::TweakablesComposition() : MetaComposition(nullptr)
 uint TweakablesComposition::GetComponentCount(HandleParam owner)
 {
   TweakableNode* node = owner.Get<TweakableNode*>(GetOptions::AssertOnNull);
-  return node->Children.Size();
+  return (uint)node->Children.Size();
 }
 
 Handle TweakablesComposition::GetComponentAt(HandleParam owner, uint index)

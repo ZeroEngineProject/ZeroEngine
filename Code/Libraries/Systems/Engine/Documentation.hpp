@@ -20,8 +20,7 @@ typedef ArrayMap<String, String> TypeReplacementMap;
 
 ///// HELPERS /////
 
-/// Find the method doc in a list that has the same parameters as the meta
-/// method passed in
+/// Find the method doc in a list that has the same parameters as the meta method passed in
 MethodDoc* MethodDocWithSameParams(Array<MethodDoc*>& methodList, Zilch::Function* metaMeth);
 
 /// Loads from zilch, saves to data file, then safe deletes
@@ -31,22 +30,18 @@ void SaveInfoFromMetaToFile(StringParam fileName, bool saveUnbound);
 /// Safely deletes the global documentation
 void ShutdownDocumentation();
 
-/// Generates a giant string containing nearly all documentation for class by
-/// the passed in name
+/// Generates a giant string containing nearly all documentation for class by the passed in name
 String GenerateDocumentationString(StringParam className);
 
-/// Creates the full template name but with the template type names instead of
-/// the instance type names
+/// Creates the full template name but with the template type names instead of the instance type names
 String BuildDocumentationFullTemplateName(StringParam baseName,
                                           Array<Constant>& templateArgs,
                                           TypeReplacementMap& replacements);
 
-/// If type is in replacement map (or contains a token that is) return type with
-/// that replaced
+/// If type is in replacement map (or contains a token that is) return type with that replaced
 String ReplaceTypeIfOnList(String& type, TypeReplacementMap* replacements);
 
-/// Insert templated type into the replacement map, used when loading templated
-/// types from meta.
+/// Insert templated type into the replacement map, used when loading templated types from meta.
 void InsertIntoReplacementsMap(InstantiateTemplateInfo& templateHandler,
                                Array<Constant>& dummyTypes,
                                ArrayMap<String, String>& replacements,
@@ -62,8 +57,7 @@ public:
   String mMessage;
 };
 
-/// Contains the name, description, shortcut, and list of tags for a zero
-/// command
+/// Contains the name, description, shortcut, and list of tags for a zero command
 class CommandDoc : public Object
 {
 public:
@@ -82,8 +76,7 @@ public:
   Array<String> mTags;
 };
 
-/// Wrapper around our command documentation list so we can serialize it
-/// properly
+/// Wrapper around our command documentation list so we can serialize it properly
 class CommandDocList : public Object
 {
 public:
@@ -111,8 +104,7 @@ public:
   bool mDeveloperAttribute;
 };
 
-/// Wrapper around our attribute documentation list so we can serialize it
-/// properly
+/// Wrapper around our attribute documentation list so we can serialize it properly
 class AttributeDocList : public Object
 {
 public:
@@ -135,8 +127,7 @@ public:
   Array<AttributeDoc*> mPropertyAttributes;
 };
 
-/// Contains name and type for documented event, usually saved inside of a
-/// classDoc
+/// Contains name and type for documented event, usually saved inside of a classDoc
 class EventDoc
 {
 public:
@@ -147,8 +138,7 @@ public:
 
   void Serialize(Serializer& stream);
 
-  /// Compares type, and then name if equal, with another event doc so we have a
-  /// way of sorting them
+  /// Compares type, and then name if equal, with another event doc so we have a way of sorting them
   bool operator<(const EventDoc& rhs) const;
 
   String mName;
@@ -158,8 +148,7 @@ public:
   Array<String> mListeners;
 };
 
-/// EventDocList actually contains both a map and a list of pointers to event
-/// documentation
+/// EventDocList actually contains both a map and a list of pointers to event documentation
 class EventDocList : public Object
 {
 public:
@@ -318,8 +307,7 @@ public:
   String mDescription;
 };
 
-/// Contains list of documented classes, unlike Raw Documentation this is all
-/// saved to one file
+/// Contains list of documented classes, unlike Raw Documentation this is all saved to one file
 class DocumentationLibrary : public LazySingleton<DocumentationLibrary, EventObject>
 {
 public:
@@ -331,8 +319,7 @@ public:
 
   void LoadDocumentation(StringParam fileName);
 
-  /// Finalize the documentation for saving/loading (builds maps and fills out
-  /// missing data)
+  /// Finalize the documentation for saving/loading (builds maps and fills out missing data)
   void FinalizeDocumentation();
 
   /// Helper for CreateClassDocFromBoundType to load enums and flags
@@ -341,8 +328,7 @@ public:
   /// Helper for LoadFromMeta, checks if a type is in the replacements map
   ClassDoc* CreateClassDocFromBoundType(BoundType* type, TypeReplacementMap* replacements);
 
-  /// Helper for LoadFromMeta, loop for instantiating and loading information
-  /// from templated types
+  /// Helper for LoadFromMeta, loop for instantiating and loading information from templated types
   void GetDocumentationFromTemplateHandler(StringParam libName,
                                            InstantiateTemplateInfo& templateHandler,
                                            LibraryBuilder& builder,

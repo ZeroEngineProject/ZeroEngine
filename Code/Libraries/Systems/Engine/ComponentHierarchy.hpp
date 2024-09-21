@@ -67,8 +67,8 @@ public:
     return mChildren.ReverseAll();
   }
 
-  /// Returns the amount of children. Note that this function has to iterate
-  /// over all children to calculate the count.
+  /// Returns the amount of children. Note that this function has to iterate over
+  /// all children to calculate the count.
   uint GetChildCount();
 
   ComponentType* mParent;
@@ -124,8 +124,8 @@ void ComponentHierarchy<ComponentType>::Initialize(CogInitializer& initializer)
   }
 
   // If we were dynamically added, we need to add all of our children. If we
-  // aren't dynamically added, our children will add themselves to our child
-  // list in their initialize
+  // aren't dynamically added, our children will add themselves to our child list
+  // in their initialize
   if (initializer.Flags & CreationFlags::DynamicallyAdded)
   {
     forRange (Cog& childCog, base_type::GetOwner()->GetChildren())

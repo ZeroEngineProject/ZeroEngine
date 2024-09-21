@@ -250,11 +250,10 @@ void ProjectDescription::Serialize(Serializer& stream)
   SerializeNameDefault(ShortDescription, String());
   SerializeNameDefault(LongDescription, String());
 
-  // This complicated logic is because proxy serialization doesn't properly work
-  // with arrays so if we alter this structure to contain the information we
-  // need, older projects will wipe out that information when they load (instead
-  // of saving it in proxy form) and we'll lose all tag information. To deal
-  // with that we convert tags to a comma separated list of Name:TagType.
+  // This complicated logic is because proxy serialization doesn't properly work with arrays
+  // so if we alter this structure to contain the information we need, older projects will
+  // wipe out that information when they load (instead of saving it in proxy form) and we'll
+  // lose all tag information. To deal with that we convert tags to a comma separated list of Name:TagType.
   if (stream.GetMode() == SerializerMode::Saving)
   {
     // Build the comma delimited list of tags with their types
@@ -275,8 +274,7 @@ void ProjectDescription::Serialize(Serializer& stream)
     for (; !splitRange.Empty(); splitRange.PopFront())
     {
       StringRange tag = splitRange.Front();
-      // Make sure to account for any empty sets (especially since we don't
-      // leave off the last ',')
+      // Make sure to account for any empty sets (especially since we don't leave off the last ',')
       if (tag.Empty())
         continue;
 
@@ -323,10 +321,8 @@ ZilchDefineType(WindowLaunchSettings, builder, type)
 
   // Disabled usage of launch options popup for now
   // ZilchBindFieldProperty(mUseLaunchOptionsPopup)->AddAttribute(PropertyAttributes::cInvalidatesObject);
-  ZilchBindFieldProperty(mLaunchFullscreen);   //->ZeroFilterEquality(mUseLaunchOptionsPopup,
-                                               // bool, false);
-  ZilchBindFieldProperty(mWindowedResolution); //->ZeroFilterEquality(mUseLaunchOptionsPopup,
-                                               // bool, false);
+  ZilchBindFieldProperty(mLaunchFullscreen);   //->ZeroFilterEquality(mUseLaunchOptionsPopup, bool, false);
+  ZilchBindFieldProperty(mWindowedResolution); //->ZeroFilterEquality(mUseLaunchOptionsPopup, bool, false);
 }
 
 void WindowLaunchSettings::Serialize(Serializer& stream)

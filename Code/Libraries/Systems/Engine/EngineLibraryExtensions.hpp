@@ -21,13 +21,12 @@ public:
   // Called after each type is parsed (only called for Resource Libraries)
   static void TypeParsedCallback(Zilch::ParseEvent* e, void* userData);
 
-  // Used to search for where a Proxy came from. This is helpful when scripts
-  // failed to compile on startup
+  // Used to search for where a Proxy came from. This is helpful when scripts failed to
+  // compile on startup
   static void FindProxiedTypeOrigin(BoundType* proxiedType);
 
 private:
-  // Adds easier access to resources in the given resource library (e.g.
-  // Sprite.Fireball)
+  // Adds easier access to resources in the given resource library (e.g. Sprite.Fireball)
   static void AddResourceExtensions(LibraryBuilder& builder, ResourceLibrary* resources);
 };
 

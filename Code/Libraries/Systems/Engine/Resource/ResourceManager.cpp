@@ -185,8 +185,7 @@ ResourceManager::ResourceRange ResourceManager::AllResources()
 
 void ResourceManager::Remove(Resource* resource, RemoveMode::Enum removeMode)
 {
-  // Remove the resource so that is can not be found with EnumerateResources or
-  // by name
+  // Remove the resource so that is can not be found with EnumerateResources or by name
 
   // Remove from Name map
   ResourceNameMap.Erase(resource->Name);
@@ -230,11 +229,10 @@ void ResourceManager::EnumerateResources(Array<Resource*>& values)
 
 Resource* ResourceManager::GetResource(StringParam resourceString, ResourceNotFound::Enum notFound)
 {
-  /// Standard resource string is 16 digit hex and a resource name separated by
-  /// a ':' Example 0123456789ABCDEF:SomeName
-  // The reason we're using 'SizeInBytes' instead of 'ComputeRuneCount' because
-  // we can guarantee that each rune is 1 byte for the hex portion of the
-  // resource string
+  /// Standard resource string is 16 digit hex and a resource name separated by a ':'
+  /// Example 0123456789ABCDEF:SomeName
+  // The reason we're using 'SizeInBytes' instead of 'ComputeRuneCount' because we can guarantee that each rune is 1
+  // byte for the hex portion of the resource string
   if (resourceString.SizeInBytes() > cHex64Size + 1 && resourceString.Data()[cHex64Size] == ':')
   {
     /// Isolate Hex sub string
@@ -257,8 +255,7 @@ Resource* ResourceManager::GetResource(StringParam resourceString, ResourceNotFo
     // StringRange delimiter = resourceString.FindFirstOf('(');
     // StringRange delimiterEnd = resourceString.FindFirstOf(')');
     // Hex part
-    // StringRange hexString = resourceString.SubString(resourceString.Begin(),
-    // delimiter.Begin());
+    // StringRange hexString = resourceString.SubString(resourceString.Begin(), delimiter.Begin());
     StringRange hexString = resourceString.SubStringFromByteIndices(0, cHex64Size);
     Guid resourceId = ReadHexString(hexString);
 
@@ -464,10 +461,9 @@ Resource* ResourceManager::ResolveResourceStream(cstr fieldName,
 
       Resource* newResource = GetResource(resourceIdName, ifNotFound);
 
-      // We have to handle if the Resource specified in the file was removed (or
-      // doesn't exist). It will return null, but we still want to set it to the
-      // default We need to check if resourceIdName is empty, because empty is
-      // valid for nullable properties
+      // We have to handle if the Resource specified in the file was removed (or doesn't exist).
+      // It will return null, but we still want to set it to the default
+      // We need to check if resourceIdName is empty, because empty is valid for nullable properties
       if (newResource == nullptr && valid && resourceIdName.Empty() == false)
         newResource = GetResource(defaultResourceName, ResourceNotFound::ErrorFallback);
 

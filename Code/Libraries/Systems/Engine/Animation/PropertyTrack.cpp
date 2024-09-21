@@ -52,8 +52,7 @@ void InterpolateKeyFrame(float time, uint& keyFrameIndex, keyFrames& mKeyFrames,
   if (CurKey >= mKeyFrames.Size())
     CurKey = 0;
 
-  // If it's to the left of the first frame, use the key value of the first
-  // frame
+  // If it's to the left of the first frame, use the key value of the first frame
   if (mKeyFrames.Front().Time > time)
   {
     keyFrame = mKeyFrames.Front();
@@ -102,7 +101,7 @@ BlendTrack* GetBlendTrack(StringParam name, BlendTracks& tracks, HandleParam ins
   if (blendTrack == nullptr)
   {
     blendTrack = new BlendTrack();
-    blendTrack->Index = tracks.Size();
+    blendTrack->Index = (uint)tracks.Size();
     blendTrack->Object = instance;
     blendTrack->Property = prop;
     tracks.Insert(name, blendTrack);

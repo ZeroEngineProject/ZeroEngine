@@ -26,8 +26,7 @@ public:
 
   u64 GetUndoHandleId(HandleParam object) override;
 
-  // Used to restore the space modified state when any operations are done to
-  // the Component.
+  // Used to restore the space modified state when any operations are done to the Component.
   Any GetUndoData(HandleParam object) override;
   void ObjectModified(HandleParam object, bool intermediateChange) override;
   void RestoreUndoData(HandleParam object, AnyParam undoData) override;

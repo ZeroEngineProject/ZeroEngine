@@ -153,8 +153,8 @@ Transform::Transform()
 Transform::~Transform()
 {
   // There's a chance that someone could've caused us to re-allocate the cached
-  // world matrix after OnDestroy which would cause us to leak memory. Cleanup
-  // the cached matrix if we have one here no matter what.
+  // world matrix after OnDestroy which would cause us to leak memory. Cleanup the
+  // cached matrix if we have one here no matter what.
   FreeCachedMatrix();
 }
 
@@ -410,8 +410,7 @@ void Transform::SetLocalScale(Vec3Param localScale)
   if (IsInitialized())
   {
     TransformUpdateInfo info;
-    // compute the delta of this transform so that child in-world objects can be
-    // updated
+    // compute the delta of this transform so that child in-world objects can be updated
     info.TransformFlags = TransformUpdateFlags::Scale;
     ComputeDeltaTransform(info, oldMat, GetWorldMatrix());
     GetOwner()->TransformUpdate(info);
@@ -471,8 +470,7 @@ void Transform::SetLocalRotation(QuatParam localRotation)
   if (IsInitialized())
   {
     TransformUpdateInfo info;
-    // compute the delta of this transform so that child in-world objects can be
-    // updated
+    // compute the delta of this transform so that child in-world objects can be updated
     ComputeDeltaTransform(info, oldMat, GetWorldMatrix());
     info.TransformFlags = TransformUpdateFlags::Rotation;
     GetOwner()->TransformUpdate(info);
@@ -481,8 +479,7 @@ void Transform::SetLocalRotation(QuatParam localRotation)
 
 void Transform::SetLocalRotationInternal(QuatParam localRotation)
 {
-  // we only need to do special logic if we are marked as in world and have a
-  // parent
+  // we only need to do special logic if we are marked as in world and have a parent
   if (InWorld && TransformParent)
   {
     Quat parentRot = TransformParent->GetWorldRotation();
@@ -523,8 +520,7 @@ void Transform::SetLocalTranslation(Vec3Param localTranslation)
   if (IsInitialized())
   {
     TransformUpdateInfo info;
-    // compute the delta of this transform so that child in-world objects can be
-    // updated
+    // compute the delta of this transform so that child in-world objects can be updated
     ComputeDeltaTransform(info, oldMat, GetWorldMatrix());
     info.TransformFlags = TransformUpdateFlags::Translation;
     GetOwner()->TransformUpdate(info);
@@ -533,12 +529,10 @@ void Transform::SetLocalTranslation(Vec3Param localTranslation)
 
 void Transform::SetLocalTranslationInternal(Vec3Param localTranslation)
 {
-  // clamp to max transform values (should maybe clamp the world values, don't
-  // care right now)
+  // clamp to max transform values (should maybe clamp the world values, don't care right now)
   Vec3 newLocalTranslation = ClampTranslation(GetSpace(), GetOwner(), localTranslation);
 
-  // we only need to do special logic if we are marked as in world and have a
-  // parent
+  // we only need to do special logic if we are marked as in world and have a parent
   if (InWorld && TransformParent)
   {
     Mat4 parentMat = TransformParent->GetWorldMatrix();
@@ -583,8 +577,7 @@ void Transform::SetWorldScale(Vec3Param worldScale)
   if (IsInitialized())
   {
     TransformUpdateInfo info;
-    // compute the delta of this transform so that child in-world objects can be
-    // updated
+    // compute the delta of this transform so that child in-world objects can be updated
     ComputeDeltaTransform(info, oldMat, GetWorldMatrix());
     info.TransformFlags = TransformUpdateFlags::Scale;
     GetOwner()->TransformUpdate(info);
@@ -644,8 +637,7 @@ void Transform::SetWorldRotation(QuatParam worldRotation)
   if (IsInitialized())
   {
     TransformUpdateInfo info;
-    // compute the delta of this transform so that child in-world objects can be
-    // updated
+    // compute the delta of this transform so that child in-world objects can be updated
     ComputeDeltaTransform(info, oldMat, GetWorldMatrix());
     info.TransformFlags = TransformUpdateFlags::Rotation;
     GetOwner()->TransformUpdate(info);
@@ -693,8 +685,7 @@ void Transform::SetWorldTranslation(Vec3Param worldTranslation)
   if (IsInitialized())
   {
     TransformUpdateInfo info;
-    // compute the delta of this transform so that child in-world objects can be
-    // updated
+    // compute the delta of this transform so that child in-world objects can be updated
     ComputeDeltaTransform(info, oldMat, GetWorldMatrix());
     info.TransformFlags = TransformUpdateFlags::Translation;
     GetOwner()->TransformUpdate(info);
@@ -703,8 +694,7 @@ void Transform::SetWorldTranslation(Vec3Param worldTranslation)
 
 void Transform::SetWorldTranslationInternal(Vec3Param worldTranslation)
 {
-  // clamp to max transform values (should maybe clamp the world values, don't
-  // care right now)
+  // clamp to max transform values (should maybe clamp the world values, don't care right now)
   Vec3 newWorldTranslation = ClampTranslation(GetSpace(), GetOwner(), worldTranslation);
 
   if (!InWorld && TransformParent)
@@ -805,7 +795,9 @@ Vec3 Transform::ClampTranslation(Space* space, Cog* owner, Vec3 translation)
     String objName = owner->GetDescription();
     String errStr = String::Format("Translation [%g, %g, %g] set beyond the range of [%g, %g] on object %s. "
                                    "The translation will be clamped to this range.",
-                                   translation.x, translation.y, translation.z,
+                                   translation.x,
+                                   translation.y,
+                                   translation.z,
                                    -maxTranslation,
                                    maxTranslation,
                                    objName.c_str());

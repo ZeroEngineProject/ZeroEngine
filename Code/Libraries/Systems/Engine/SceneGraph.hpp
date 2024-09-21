@@ -52,8 +52,8 @@ public:
   void Serialize(Serializer& stream);
 };
 
-// Scene graph resource is used to load scene graphs from external
-// resources/content. Used during content importing.
+// Scene graph resource is used to load scene graphs from external resources/content.
+// Used during content importing.
 class SceneGraphSource
 {
 public:

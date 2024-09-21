@@ -72,27 +72,26 @@ void ArchetypeRebuilder::RebuildArchetypes(Archetype* modifiedArchetype,
 
         bool found = false;
 
-        // Walk all base types to see if the current cog's Archetype derives
-        // from the Archetype we're rebuilding
+        // Walk all base types to see if the current cog's Archetype derives from the
+        // Archetype we're rebuilding
         Resource* currArchetype = cog->GetArchetype();
         while (currArchetype)
         {
           if (currArchetype == modifiedArchetype)
           {
-            // If the Archetype is contained under another Archetype, we want to
-            // rebuild it from the highest Archetype context. This way, when we
-            // delete and re-create it, all potential modifications on the root
-            // Archetype will be properly applied to this object we want to
-            // rebuild. An alternative to this solution is applying cached
-            // modifications (stored on Archetype) to the object, save it out,
-            // then rebuild it. This method is already used when uploading to
-            // Archetype on a child of another Archetype. See
-            // Cog::UploadToArchetype.
+            // If the Archetype is contained under another Archetype, we want to rebuild it from
+            // the highest Archetype context. This way, when we delete and re-create it, all
+            // potential modifications on the root Archetype will be properly applied to this
+            // object we want to rebuild.
+            // An alternative to this solution is applying cached modifications (stored on
+            // Archetype) to the object, save it out, then rebuild it. This method is already
+            // used when uploading to Archetype on a child of another Archetype.
+            // See Cog::UploadToArchetype.
             Cog* archetypeContext = cog->FindNearestArchetypeContext();
             objectsToReload.Insert(archetypeContext);
 
-            // We're already rebuilding this Cog, so we can skip all its
-            // children and move to the next Cog
+            // We're already rebuilding this Cog, so we can skip all its children and move
+            // to the next Cog
             cog = FindNextInOrderSkipChildren(archetypeContext);
             found = true;
             break;
@@ -101,8 +100,8 @@ void ArchetypeRebuilder::RebuildArchetypes(Archetype* modifiedArchetype,
           currArchetype = currArchetype->GetBaseResource();
         }
 
-        // We didn't find an object with the modified Archetype, so continue
-        // searching the full hierarchy
+        // We didn't find an object with the modified Archetype, so continue searching
+        // the full hierarchy
         if (found == false)
           cog = cog->FindNextInOrder();
       }
@@ -171,8 +170,8 @@ void RestoreUndoHandles(Cog* oldCog, Cog* newCog)
 
 Cog* ArchetypeRebuilder::RebuildCog(Cog* oldCog, HashSet<MetaSelection*>* modifiedSelections)
 {
-  // TODO: For now, don't rebuild objects that are transient. We could mark them
-  // as non-transient, rebuild, then mark the new one as transient
+  // TODO: For now, don't rebuild objects that are transient. We could mark them as non-transient,
+  // rebuild, then mark the new one as transient
   if (oldCog->GetTransient() || oldCog->GetMarkedForDestruction())
     return nullptr;
 
@@ -185,11 +184,10 @@ Cog* ArchetypeRebuilder::RebuildCog(Cog* oldCog, HashSet<MetaSelection*>* modifi
   // from that string. This way it retains any local modifications
 
   // TODO: There is a possible issue with this action:
-  // One example is regarding Gizmos. The Translate tool creates a Translate
-  // Gizmo and destroys it when the tool is de-activated. If we rebuild that
-  // Gizmo due to an Archetype change, the Tool's handle to it will now be null,
-  // and the Gizmo will forever be sitting there. We should consider creating
-  // the new Cog with the old Cog's id.
+  // One example is regarding Gizmos. The Translate tool creates a Translate Gizmo and
+  // destroys it when the tool is de-activated. If we rebuild that Gizmo due to an Archetype change,
+  // the Tool's handle to it will now be null, and the Gizmo will forever be sitting there.
+  // We should consider creating the new Cog with the old Cog's id.
 
   // Save the object
   ObjectSaver saver;

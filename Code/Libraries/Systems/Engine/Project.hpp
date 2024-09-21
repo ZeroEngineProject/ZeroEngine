@@ -33,8 +33,7 @@ public:
   /// Returns the path to the generated content folder for this project.
   String GetContentFolder();
 
-  /// Returns the path to the content folder containing editor specific content
-  /// (screen shot, editor settings, etc...).
+  /// Returns the path to the content folder containing editor specific content (screen shot, editor settings, etc...).
   String GetEditorContentFolder();
 
   void Save();
@@ -82,8 +81,7 @@ public:
   String ContentFolder;
   /// Editor specific content (screen shot, editor settings, etc...)
   String EditorContentFolder;
-  /// Should a screenshot of the project be taken every time the project is
-  /// saved.
+  /// Should a screenshot of the project be taken every time the project is saved.
   bool AutoTakeProjectScreenshot;
 
   /// Project File Path
@@ -152,8 +150,7 @@ public:
 
   void Serialize(Serializer& stream) override;
 
-  /// If a pre-launch popup should be used to determine how application window
-  /// is sized.
+  /// If a pre-launch popup should be used to determine how application window is sized.
   // bool mUseLaunchOptionsPopup;
   /// If application launches in fullscreen mode.
   bool mLaunchFullscreen;
@@ -170,8 +167,7 @@ public:
   void Serialize(Serializer& stream) override;
   void Initialize(CogInitializer& initializer) override;
 
-  /// If the frame rate should sync with the monitor's refresh rate, superseded
-  /// by LimitFrameRate.
+  /// If the frame rate should sync with the monitor's refresh rate, superseded by LimitFrameRate.
   bool mVerticalSync;
   /// If the engine should limit the frame rate.
   bool mLimitFrameRate;
@@ -195,8 +191,7 @@ public:
   void Serialize(Serializer& stream) override;
   void Initialize(CogInitializer& initializer) override;
 
-  /// Maximum number of debug objects allowed at any one time to prevent
-  /// accidentally running out of memory.
+  /// Maximum number of debug objects allowed at any one time to prevent accidentally running out of memory.
   int GetMaxDebugObjects();
   void SetMaxDebugObjects(int maxDebugObjects);
   int mMaxDebugObjects;

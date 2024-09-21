@@ -12,8 +12,7 @@ public:
 
   Mouse();
 
-  /// The position of the mouse cursor relative to the application's top-left
-  /// corner in pixels.
+  /// The position of the mouse cursor relative to the application's top-left corner in pixels.
   Vec2 GetClientPosition()
   {
     return mClientPosition;

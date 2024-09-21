@@ -75,9 +75,9 @@ ZilchDefineExternalBaseType(Keys::Enum, TypeCopyMode::ValueType, builder, type)
   SetUpKeyNames();
   ZilchFullBindEnum(builder, type, SpecialType::Enumeration);
 
-  // For now, just iterate over all keys in the name map and if there was no
-  // saved name then assume that the key doesn't exist (linear but whatever)
-  for (size_t i = 0; i < Keys::Size; ++i)
+  // For now, just iterate over all keys in the name map and if there was no saved name then
+  // assume that the key doesn't exist (linear but whatever)
+  for (int i = 0; i < Keys::Size; ++i)
   {
     if (KeyNames[i] == nullptr)
       continue;
@@ -390,7 +390,7 @@ bool EngineLibrary::Initialize()
   RegisterPropertyAttributeType(PropertyAttributes::cDependency, MetaDependency)->TypeMustBe(Component);
   RegisterPropertyAttributeType(PropertyAttributes::cResourceProperty, MetaEditorResource)->TypeMustBe(Resource);
 
-  //ZPrintFilter(Filter::DefaultFilter, "Engine Initialize...\n");
+  // ZPrintFilter(Filter::DefaultFilter, "Engine Initialize...\n");
 
   EngineObject::sEngineHeap = new Memory::Heap("Engine", Memory::GetRoot());
 
@@ -436,8 +436,7 @@ bool EngineLibrary::Initialize()
   // Create the engine.
   Engine* engine = new Engine();
 
-  // This must be called right after the engine is created because it connects
-  // to the engine.
+  // This must be called right after the engine is created because it connects to the engine.
   StartThreadSystem();
 
   Keyboard::Initialize();

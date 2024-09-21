@@ -48,8 +48,8 @@ private:
   String GetFile(StringParam name);
   void SetupDirectory();
 
-  /// Populate the internal array of file names in the ObjectStore, if the
-  /// proper ObjectStore directory exists.
+  /// Populate the internal array of file names in the ObjectStore, if the proper
+  /// ObjectStore directory exists.
   void PopulateEntries(StringParam storePath);
 
   String mStoreName;

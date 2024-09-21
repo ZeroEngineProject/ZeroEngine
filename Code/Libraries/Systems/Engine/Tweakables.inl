@@ -43,8 +43,7 @@ void Tweakables::RegisterTweakable(PropertyType* tweakable, PropertyType& defaul
 
   //// Create the new property with our custom getters and setters
   // MetaProperty* customProperty = new MetaProperty(name, typeId,
-  //                                          &TweakableGetter,
-  //                                          &TweakableSetter);
+  //                                           &TweakableGetter, &TweakableSetter);
   //// We want it to be serialized
   // customProperty->Flags.SetFlag(PropertyFlags::Serialized);
   // customProperty->UserData = tweakable;

@@ -54,32 +54,25 @@ public:
   /// Waits for a process to close, this will block until the process closes.
   int WaitForClose();
   /// Waits for a process to close up to a given number of milliseconds.
-  /// This can take up to 3 * milliseconds due to waiting for the output streams
-  /// to close.
+  /// This can take up to 3 * milliseconds due to waiting for the output streams to close.
   int WaitForClose(int milliseconds);
-  /// Closes the wrapper around the process, does not close the process
-  /// launched.
+  /// Closes the wrapper around the process, does not close the process launched.
   void Close();
-  /// Attempts to manually shut down the process. This is not safe for the other
-  /// process or what it's handling.
+  /// Attempts to manually shut down the process. This is not safe for the other process or what it's handling.
   void Terminate();
 
-  /// Should the results from standard output be accumulated and stored? If a
-  /// lot of data is output it may be good to turn this off and use the partial
-  /// data callback events instead.
+  /// Should the results from standard output be accumulated and stored? If a lot of data
+  /// is output it may be good to turn this off and use the partial data callback events instead.
   bool GetStoreStandardOutputData();
   void SetStoreStandardOutputData(bool state);
-  /// Should the results from standard error be accumulated and stored? If a lot
-  /// of data is output it may be good to turn this off and use the partial data
-  /// callback events instead.
+  /// Should the results from standard error be accumulated and stored? If a lot of data
+  /// is output it may be good to turn this off and use the partial data callback events instead.
   bool GetStoreStandardErrorData();
   void SetStoreStandardErrorData(bool state);
 
-  /// The cached total results from standard output. Will be empty if
-  /// StoreStandardOutputData is false.
+  /// The cached total results from standard output. Will be empty if StoreStandardOutputData is false.
   String GetStandardOutput();
-  /// The cached total results from standard error. Will be empty if
-  /// StoreStandardErrorData is false.
+  /// The cached total results from standard error. Will be empty if StoreStandardErrorData is false.
   String GetStandardError();
 
 private:
@@ -93,8 +86,7 @@ private:
   void ResetEventConnections();
   /// We got back some data from a thread.
   void OnPartialResponse(AsyncProcessEvent* e);
-  /// A thread has finished so we can correctly mark that we have all of it's
-  /// data.
+  /// A thread has finished so we can correctly mark that we have all of it's data.
   void OnFinished(AsyncProcessEvent* e);
 
   /// Info for a running thread. Helps to generalize thread response functions.
@@ -107,11 +99,9 @@ private:
 
     Thread mThread;
     File mFileStream;
-    /// Is the thread currently running? Assures that AsyncProcess gets all data
-    /// back on the main thread.
+    /// Is the thread currently running? Assures that AsyncProcess gets all data back on the main thread.
     bool mIsRunning;
-    /// Should the thread's data be cached in one buffer? Convenience data for
-    /// the user.
+    /// Should the thread's data be cached in one buffer? Convenience data for the user.
     bool mShouldStoreResults;
     /// The cached output data of the stream.
     String mResults;

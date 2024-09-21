@@ -152,9 +152,8 @@ public:
   virtual bool SetData(DataEntry* dataEntry, const Any& variant, StringParam column) = 0;
 
   /// Sorting
-  /// Short children of entry by column. If the dataEntry is null, sort
-  /// everything
-  virtual void Sort(DataEntry* dataEntry, StringParam column, bool sortFlip){};
+  /// Short children of entry by column. If the dataEntry is null, sort everything
+  virtual void Sort(DataEntry* dataEntry, StringParam column, bool sortFlip) {};
 
   /// Tree Modification
   virtual void CanMove(Status& status, DataEntry* source, DataEntry* destination, InsertMode::Type insertMode);
@@ -191,20 +190,18 @@ public:
 class ArrayDataSource : public DataSource
 {
 public:
-  static const u64 RootIndex = (u64)-1;
+  static const size_t RootIndex = (size_t)-1;
 
   /// Return the size of the contained array
-  virtual u64 GetArraySize() = 0;
-  /// Fills out the variant with the data of the given column at the given array
-  /// index
-  virtual void GetData(u64 index, Any& any, StringParam column) = 0;
-  /// Sets the data of the given column at the given array index with the passed
-  /// in variant.
-  virtual void SetData(u64 index, const Any& any, StringParam column) = 0;
+  virtual size_t GetArraySize() = 0;
+  /// Fills out the variant with the data of the given column at the given array index
+  virtual void GetData(size_t index, Any& any, StringParam column) = 0;
+  /// Sets the data of the given column at the given array index with the passed in variant.
+  virtual void SetData(size_t index, const Any& any, StringParam column) = 0;
 
   // Helpers to get an array index from an entry or index
-  u64 DataEntryToArrayIndex(DataEntry* entry);
-  u64 DataIndexToArrayIndex(DataIndex index);
+  size_t DataEntryToArrayIndex(DataEntry* entry);
+  size_t DataIndexToArrayIndex(DataIndex index);
 
   // DataSource Interface
   DataEntry* GetRoot() override;
@@ -227,7 +224,7 @@ public:
   DataSelection() : mSupportsMultiSelect(true)
   {
   }
-  virtual ~DataSelection(){};
+  virtual ~DataSelection() {};
 
   /// Get all selected objects
   virtual void GetSelected(Array<DataIndex>& selected) = 0;
@@ -293,7 +290,7 @@ public:
 
   uint Size() override
   {
-    return mSelection.Size();
+    return (uint)mSelection.Size();
   }
 };
 
@@ -396,7 +393,7 @@ public:
   }
   virtual uint GetCount()
   {
-    return mData->Size();
+    return (uint)mData->Size();
   }
 
   uint Size()
@@ -542,8 +539,7 @@ public:
 
   /// Get the enum name at a particular index.
   String GetStringValueAt(DataIndex index) override;
-  /// Get the description (documentation) for the corresponding enum at the same
-  /// index.
+  /// Get the description (documentation) for the corresponding enum at the same index.
   String GetDescriptionAt(DataIndex index) override;
 
 private:

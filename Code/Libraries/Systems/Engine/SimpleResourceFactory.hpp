@@ -4,9 +4,10 @@
 namespace Zero
 {
 
-// A simple resource factory that wraps a lot of functionality of
-// MetaComposition by expecting the resource to have some basic functions. These
-// functions are: uint GetSize() HandleOf<BlockType> GetBlockAt(uint index)
+// A simple resource factory that wraps a lot of functionality of MetaComposition by expecting the
+// resource to have some basic functions. These functions are:
+// uint GetSize()
+// HandleOf<BlockType> GetBlockAt(uint index)
 // HandleOf<BlockType> GetById(BoundType* type)
 // void Add(const HandleOf<BlockType>& block)
 // void Remove(const HandleOf<BlockType>& block)
@@ -15,7 +16,7 @@ class SimpleResourceFactory : public MetaComposition
 {
 public:
   ZilchDeclareType(SimpleResourceFactory, TypeCopyMode::ReferenceType);
-  SimpleResourceFactory() : MetaComposition(ZilchTypeId(BlockType)), mDeleteMemory(false){};
+  SimpleResourceFactory() : MetaComposition(ZilchTypeId(BlockType)), mDeleteMemory(false) {};
 
   SimpleResourceFactory(bool deleteMemory) : MetaComposition(ZilchTypeId(BlockType))
   {
@@ -85,10 +86,9 @@ public:
     bool success = resource->Remove(subObject);
     ErrorIf(success == false, "Failed to remove block");
 
-    // If this composition is in charge of managing the block's memory then it
-    // should delete it. The main exception for this are reference counted
-    // types, but ThreadSafeHandle/Pointer managers should probably delete the
-    // memory.
+    // If this composition is in charge of managing the block's memory then it should delete it.
+    // The main exception for this are reference counted types, but ThreadSafeHandle/Pointer managers should probably
+    // delete the memory.
     if (mDeleteMemory)
     {
       BlockType* block = subObject.Get<BlockType*>();
@@ -96,8 +96,7 @@ public:
     }
   }
 
-  // If the given block requests to be setup via default serialization then run
-  // that
+  // If the given block requests to be setup via default serialization then run that
   void SetupBlock(Handle& handle, BoundType* blockMeta)
   {
     BlockType* block = handle.Get<BlockType*>();

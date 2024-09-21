@@ -71,22 +71,20 @@ public:
   /// for its own cleanup, such as in the case of script components
   virtual void Delete();
 
-  /// Get the Cog this Component is owned by (not the parent of this
-  /// composition).
+  /// Get the Cog this Component is owned by (not the parent of this composition).
   Cog* GetOwner() const;
 
-  /// This is to guard from Zilch Components accessing the owner inside property
-  /// setters during serialization. The owner used to be null, but had to be set
-  /// for something in CogPath. This getter is bound to script (as 'Owner'), and
-  /// it only returns the owner if the Cog is initialized. Get the Cog this
-  /// Component is owned by (not the parent of this composition).
+  /// This is to guard from Zilch Components accessing the owner inside property setters during
+  /// serialization. The owner used to be null, but had to be set for something in CogPath.
+  /// This getter is bound to script (as 'Owner'), and it only returns the owner if the
+  /// Cog is initialized.
+  /// Get the Cog this Component is owned by (not the parent of this composition).
   Cog* GetOwnerScript() const;
 
   /// The Space where the object is located.
   Space* GetSpace();
 
-  /// Get the object named 'LevelSettings', a special object where we can put
-  /// components for our level
+  /// Get the object named 'LevelSettings', a special object where we can put components for our level
   Cog* GetLevelSettings();
 
   /// Get the GameSession that owns us and our space

@@ -68,8 +68,8 @@ void MoveObject(OperationQueue* queue, Cog* objectToMove, Cog* newParent, uint i
 
   queue->SetActiveBatchName(BuildString("'", objectName, "' moved to '", parentName, "'"));
 
-  // If the object isn't already a child of the given parent, we have to attach
-  // it If the new parent is NULL, we need to detach it
+  // If the object isn't already a child of the given parent, we have to attach it
+  // If the new parent is NULL, we need to detach it
   if (objectToMove->GetParent() != newParent)
   {
     if (newParent)
@@ -217,8 +217,7 @@ Archetype* UploadToArchetype(OperationQueue* queue, Cog* cog, StringParam archet
           if (baseArchetype == archetype)
           {
             DoNotifyError("Archetype",
-                          "Cannot upload to an archetype whose base inherits "
-                          "from itself in the base chain");
+                          "Cannot upload to an archetype whose base inherits from itself in the base chain");
             delete op;
             return nullptr;
           }
@@ -323,10 +322,10 @@ Cog* CreateFromArchetypeOperation::DoCreation()
   mUndoHandle.UpdateObject(object);
 
   // Update all components in the undo map
-  uint componentCount = object->GetComponentCount();
+  size_t componentCount = object->GetComponentCount();
   mComponentHandles.Resize(componentCount, cInvalidUndoObjectId);
 
-  for (uint i = 0; i < componentCount; ++i)
+  for (size_t i = 0; i < componentCount; ++i)
   {
     Component* component = object->GetComponentByIndex(i);
     mComponentHandles[i] = Z::gUndoMap->UpdateUndoId(mComponentHandles[i], component);
@@ -361,8 +360,7 @@ void AttachOperation::Undo()
   if (object == nullptr || parent == nullptr)
     return;
 
-  // Record that the object was removed before detaching it (detaching will
-  // invalidate the child id)
+  // Record that the object was removed before detaching it (detaching will invalidate the child id)
   LocalModifications::GetInstance()->ChildRemoved(parent->has(Hierarchy), object);
 
   // Detach the object
@@ -396,17 +394,15 @@ void AttachOperation::Redo()
   // Store the new child id if we haven't already
   if (mNewChildId == PolymorphicNode::cInvalidUniqueNodeId)
     mNewChildId = object->mChildId;
-  // Otherwise assign the new child id we were assigned the first time we were
-  // attached
+  // Otherwise assign the new child id we were assigned the first time we were attached
   else
     object->mChildId = mNewChildId;
 
   // Record that the object was attached
   LocalModifications::GetInstance()->ChildAdded(parent->has(Hierarchy), object);
 
-  // If we attached relative, the Transform properties may have been modified.
-  // We should explicitly mark them as modified to ensure the object has the
-  // correct position, rotation, and scale
+  // If we attached relative, the Transform properties may have been modified. We should explicitly
+  // mark them as modified to ensure the object has the correct position, rotation, and scale
   if (mRelativeAttach)
     object->MarkTransformModified();
 
@@ -416,8 +412,7 @@ void AttachOperation::Redo()
 
 // Detach Operation
 DetachOperation::DetachOperation(Cog* object, bool relativeDetach) :
-    mRelativeDetach(relativeDetach),
-    mObjectUndoHandle(object)
+    mRelativeDetach(relativeDetach), mObjectUndoHandle(object)
 {
   Cog* parent = object->GetParent();
   ErrorIf(object == nullptr || parent == nullptr, "Invalid object given to DetachOperation");
@@ -429,8 +424,7 @@ DetachOperation::DetachOperation(Cog* object, bool relativeDetach) :
   mOldChildId = object->mChildId;
   mOldObjectLocation = object->GetHierarchyIndex();
 
-  // We should only store/restore modifications if we are a non-locally added
-  // child of an Archetype
+  // We should only store/restore modifications if we are a non-locally added child of an Archetype
   Cog* archetypeContext = object->FindNearestArchetypeContext();
   mStoreModifications = (archetypeContext && archetypeContext != object);
 
@@ -453,9 +447,8 @@ void DetachOperation::Undo()
   // Apply the old modifications to the object
   if (mStoreModifications)
   {
-    // When we were detached, we may have gotten more modifications added to us
-    // that were in the base Archetype. Clear those before restoring the old
-    // modifications
+    // When we were detached, we may have gotten more modifications added to us that were in the
+    // base Archetype. Clear those before restoring the old modifications
     LocalModifications::GetInstance()->ClearModifications(object, true, false);
 
     // Restore
@@ -480,33 +473,29 @@ void DetachOperation::Undo()
     space->MarkNotModified();
 }
 
-// When detaching a Cog that is a child of an Archetype, we may need to clean up
-// some local modifications that are no longer relevant.
+// When detaching a Cog that is a child of an Archetype, we may need to clean up some local
+// modifications that are no longer relevant.
 //
 // Example 1:
-// Let's say we have an Archetype called Enemy. This Archetype has a child Cog
-// that is a sword (not an Archetype).
+// Let's say we have an Archetype called Enemy. This Archetype has a child Cog that is a sword (not
+// an Archetype).
 //
-// In our level, we have an instance of the Enemy, and the damage of the sword
-// is locally modified on this instance. If we detach the sword, the locally
-// modified damage is no longer relevant because it was a modification from the
-// no longer associated Enemy Archetype.
+// In our level, we have an instance of the Enemy, and the damage of the sword is locally modified
+// on this instance. If we detach the sword, the locally modified damage is no longer relevant
+// because it was a modification from the no longer associated Enemy Archetype.
 //
 // Example 2:
-// Similar to Example 1, but in this case the sword is an Archetype and it's
-// attached to the "Hand" Cog underneath the Enemy. The hierarchy would look
-// like this:
+// Similar to Example 1, but in this case the sword is an Archetype and it's attached to the
+// "Hand" Cog underneath the Enemy. The hierarchy would look like this:
 //
 // Enemy [Archetype:Enemy]
 //   Hand
 //     Sword [Archetype:Sword]
 //
-// If both the Hand and Sword were modified on the instance in the level and we
-// detached the hand, we would want to clear modifications on the hand like the
-// previous example. However, we would not want to clear modifications on the
-// Sword, because those modifications are still modifications from the Sword
-// Archetype. This is why we stop clearing modifications once we hit an
-// Archetype.
+// If both the Hand and Sword were modified on the instance in the level and we detached the hand,
+// we would want to clear modifications on the hand like the previous example. However, we would
+// not want to clear modifications on the Sword, because those modifications are still modifications
+// from the Sword Archetype. This is why we stop clearing modifications once we hit an Archetype.
 void ClearModificationsUntilArchetype(Cog* cog)
 {
   if (cog->GetArchetype() != nullptr)
@@ -515,8 +504,7 @@ void ClearModificationsUntilArchetype(Cog* cog)
   LocalModifications* localModifications = LocalModifications::GetInstance();
   localModifications->ClearModifications(cog, false, false);
 
-  // Modifications are stored on Components as well as Cogs, so we need to clear
-  // both
+  // Modifications are stored on Components as well as Cogs, so we need to clear both
   forRange (Component* component, cog->GetComponents())
     localModifications->ClearModifications(component, false, false);
 
@@ -544,8 +532,8 @@ void DetachOperation::Redo()
     archetype->GetAllCachedModifications().ApplyModificationsToChildObject(archetypeCog, object, true);
   }
 
-  // Record that the object was removed before actually detaching it (this is
-  // because detaching will invalidate the child id)
+  // Record that the object was removed before actually detaching it (this is because detaching
+  // will invalidate the child id)
   LocalModifications::GetInstance()->ChildRemoved(parent->has(Hierarchy), object);
 
   // Detach the object
@@ -554,9 +542,8 @@ void DetachOperation::Redo()
   else
     object->DetachPreserveLocal();
 
-  // We should mark the Transform, as modified so that the object is re-created
-  // at its current position, rotation, and scale (instead of what's in the
-  // Archetype)
+  // We should mark the Transform, as modified so that the object is re-created at its current
+  // position, rotation, and scale (instead of what's in the Archetype)
   object->MarkTransformModified();
 
   if (Space* space = object->GetSpace())
@@ -564,8 +551,7 @@ void DetachOperation::Redo()
 }
 
 ReorderOperation::ReorderOperation(Cog* movingObject, uint movingToIndex) :
-    mWasParentChildOrderLocallyModified(false),
-    mMovingObjectHandle(movingObject)
+    mWasParentChildOrderLocallyModified(false), mMovingObjectHandle(movingObject)
 {
   ErrorIf(movingObject == nullptr, "Invalid object given to ReorderOperation");
 
@@ -636,10 +622,10 @@ CreateDestroyOperation::CreateDestroyOperation(Cog* object, ObjectOperationMode:
 
   mMode = mode;
 
-  // If the object has an Archetype, mark the translation as modified so that
-  // when we destroy it, we can create it back at the same location. If the
-  // object does not have Archetype, the translation will be saved out without
-  // having to mark Translation as modified (the whole object will be saved)
+  // If the object has an Archetype, mark the translation as modified so that when we destroy it,
+  // we can create it back at the same location. If the object does not have Archetype, the
+  // translation will be saved out without having to mark Translation as modified (the whole
+  // object will be saved)
   if (mMode == ObjectOperationMode::Create && object->GetArchetype())
     object->MarkTransformModified();
 
@@ -763,8 +749,7 @@ void UploadToArchetypeOperation::RebuildArchetypes(Cog* cog)
 }
 
 UploadToNewArchetypeOperation::UploadToNewArchetypeOperation(Cog* object) :
-    UploadToArchetypeOperation(object),
-    mUploadedToNewArchetype(false)
+    UploadToArchetypeOperation(object), mUploadedToNewArchetype(false)
 {
   mNewChildId = GenerateUniqueId64();
 
@@ -788,8 +773,8 @@ void UploadToNewArchetypeOperation::Undo()
 
   // Restore the Archetype data to what it was previously.
   // If we uploaded to a new Archetype, there was no previous data to restore.
-  // We could delete the newly created Archetype Resource, but for now our
-  // operation do not handle resource creation / destruction
+  // We could delete the newly created Archetype Resource, but for now our operation
+  // do not handle resource creation / destruction
   if (!mUploadedToNewArchetype)
     RestoreCachedArchetype(mNewArchetype);
 

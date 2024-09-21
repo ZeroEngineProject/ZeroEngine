@@ -92,9 +92,8 @@ public:
   UndoHandleOf<Cog> mObject;
   UndoHandleOf<Cog> mParent;
 
-  /// When we're first attached to the new object, it will assign us a child id.
-  /// If undone and redone, we want to maintain that new child id as operations
-  /// after this may rely on that.
+  /// When we're first attached to the new object, it will assign us a child id. If undone and
+  /// redone, we want to maintain that new child id as operations after this may rely on that.
   Guid mNewChildId;
 
   /// The Space hierarchy location the object was at before the operation.
@@ -119,12 +118,11 @@ public:
   UndoHandleOf<Cog> mObjectUndoHandle;
   UndoHandleOf<Cog> mParentUndoHandle;
 
-  /// Our modifications will only be affected if we are a non-locally added
-  /// child of an Archetype.
+  /// Our modifications will only be affected if we are a non-locally added child of an Archetype.
   bool mStoreModifications;
 
-  /// When we detach ourself, our local modifications will change. When we undo
-  /// that, we want to restore those modifications.
+  /// When we detach ourself, our local modifications will change. When we undo that, we want to
+  /// restore those modifications.
   CachedModifications mOldModifications;
 
   /// When the object is re-attached, we want it to have its old child id.
@@ -193,18 +191,16 @@ public:
   String mCachedArchetypeData;
   CogRestoreState mRestoreState;
 
-  /// When we upload to Archetype, we have to rebuild all live Cogs assigned to
-  /// that Archetype. There is a chance for data loss here. Example:
+  /// When we upload to Archetype, we have to rebuild all live Cogs assigned to that Archetype.
+  /// There is a chance for data loss here. Example:
   ///   - You have multiple objects with the Enemy Archetype in the level
   ///   - One instance locally modifies the child Gun Archetype
   ///   - On another instance, remove the Gun and upload to Archetype
-  ///   - When the object is uploaded, the instance with the modified gun will
-  ///   no longer have a gun
-  ///   - When saving that object, the data that described the modification to
-  ///   the gun is lost
+  ///   - When the object is uploaded, the instance with the modified gun will no longer have a gun
+  ///   - When saving that object, the data that described the modification to the gun is lost
   ///   - Undoing the Archetype upload will not bring that data back
-  /// Because of this, we need to store the original modified objects state
-  /// before uploading to Archetype so that we can avoid losing data.
+  /// Because of this, we need to store the original modified objects state before uploading to
+  /// Archetype so that we can avoid losing data.
   Array<CogRestoreState*> mRebuiltCogs;
 };
 
@@ -229,8 +225,8 @@ public:
   HandleOf<Archetype> mNewArchetype;
 
   /// This operation will remove the old Archetyped object, and add the new one.
-  /// We need a newly generated child id to assign the new object, and we want
-  /// it to be consistent every time this operation is redone.
+  /// We need a newly generated child id to assign the new object, and we want it
+  /// to be consistent every time this operation is redone.
   Guid mNewChildId;
 };
 
@@ -260,9 +256,9 @@ public:
   void Undo() override;
   void Redo() override;
 
-  /// This operation will remove the old Archetyped object, and add the cleared
-  /// object. We need a newly generated child id to assign the new object, and
-  /// we want it to be consistent every time this operation is redone.
+  /// This operation will remove the old Archetyped object, and add the cleared object.
+  /// We need a newly generated child id to assign the new object, and we want it
+  /// to be consistent every time this operation is redone.
   u64 mNewChildId;
 
   /// This operation will mark the parent Hierarchy as child order modified, so

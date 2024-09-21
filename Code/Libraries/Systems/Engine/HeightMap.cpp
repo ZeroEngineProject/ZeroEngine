@@ -56,10 +56,7 @@ void HeightPatch::SetHeight(CellIndex index, float height)
 }
 
 HeightMapCellRange::HeightMapCellRange(HeightMap* heightMap, Vec2 position, real radius, real feather) :
-    mHeightMap(heightMap),
-    mToolPosition(position),
-    mRadius(radius),
-    mFeather(feather)
+    mHeightMap(heightMap), mToolPosition(position), mRadius(radius), mFeather(feather)
 {
   mCellSize = mHeightMap->mUnitsPerPatch / HeightPatch::Size;
 
@@ -602,14 +599,13 @@ Vec2 HeightMap::GetLocalPosition(PatchIndexParam index)
 
 void HeightMap::ApplyNoiseToPatch(HeightPatch* patch, float baseHeight, float frequency, float amplitude)
 {
-  // We scale the frequency because we're using whole units (integers) rather
-  // than floats
+  // We scale the frequency because we're using whole units (integers) rather than floats
   const float FrequencyScale = 0.005f;
 
   // Loop through all cells
-  for (size_t y = 0; y < HeightPatch::Size; ++y)
+  for (int y = 0; y < (int)HeightPatch::Size; ++y)
   {
-    for (size_t x = 0; x < HeightPatch::Size; ++x)
+    for (int x = 0; x < (int)HeightPatch::Size; ++x)
     {
       // Compute the cell and absolute index
       CellIndex cellIndex(x, y);
@@ -640,8 +636,7 @@ HeightPatch* HeightMap::CreatePatchAtIndex(PatchIndexParam index)
     patch = new HeightPatch();
     patch->Index = index;
 
-    // Send out an event that the height map patch was added (and update
-    // adjacents)
+    // Send out an event that the height map patch was added (and update adjacents)
     SendPatchEvent(Events::HeightMapPatchAdded, patch);
 
     // Update adjacent patches *after* we add the patch
@@ -698,8 +693,8 @@ void HeightMap::GetQuadAtIndex(AbsoluteIndex index, Triangle triangles[2], uint&
   Vec2 patchHalfExtents = Vec2(mUnitsPerPatch, mUnitsPerPatch) * .5f;
   Vec2 patchStart = patchPos - patchHalfExtents;
   // To get a cell center, we have to start at the patch bottom left, offset by
-  // the cell index scaled by each cell size. This gets us the bottom left of a
-  // cell, to get the center we then have to offset by half a cell.
+  // the cell index scaled by each cell size. This gets us the bottom left of a cell,
+  // to get the center we then have to offset by half a cell.
   real cellSizeScalar = mUnitsPerPatch / HeightPatch::Size;
   Vec2 cellSize = Vec2(cellSizeScalar, cellSizeScalar) * .5f;
   Vec2 currCell = Vec2((float)cellIndex.x, (float)cellIndex.y);
@@ -720,8 +715,7 @@ void HeightMap::GetQuadAtIndex(AbsoluteIndex index, Triangle triangles[2], uint&
   Vec3 p10 = Vec3(cellPos.x + cellSize.x, h10, cellPos.y - cellSize.y);
   Vec3 p11 = Vec3(cellPos.x + cellSize.x, h11, cellPos.y + cellSize.y);
 
-  // edge triangles and holes are defined by vertices set to infinite, so
-  // determine if any of the vertices are infinite
+  // edge triangles and holes are defined by vertices set to infinite, so determine if any of the vertices are infinite
   bool b01 = h01 != Math::cInfinite;
   bool b00 = h00 != Math::cInfinite;
   bool b10 = h10 != Math::cInfinite;
@@ -1044,8 +1038,7 @@ void HeightMap::UpdateAdjacentPatches(HeightPatch* patch)
     if (adjacentPatch != NULL)
     {
       UpdatePatchVertices(adjacentPatch, patchMin, patchMax);
-      // Send out an event that the adjacent patch was modified (we do not need
-      // to update adjacent patches)
+      // Send out an event that the adjacent patch was modified (we do not need to update adjacent patches)
       SendPatchEvent(Events::HeightMapPatchModified, adjacentPatch);
     }
   }
@@ -1329,8 +1322,7 @@ void CellRayRange::Set(HeightMap* map, PatchIndex index, Vec2Param rayStart, Vec
 
   // our start point on the ray is where we start hitting this patch
   Vec2 startPoint = mRayStart + mRayDir * mCurrT;
-  // bring that starting point from map space to patch space (defined from the
-  // bottom left of the patch)
+  // bring that starting point from map space to patch space (defined from the bottom left of the patch)
   Vec2 localPoint = startPoint - patchStart;
 
   // now convert that position to a cell index and clamp between
@@ -1343,8 +1335,8 @@ void CellRayRange::Set(HeightMap* map, PatchIndex index, Vec2Param rayStart, Vec
 Vec2 CellRayRange::GetCurrentCellCenter()
 {
   // To get a cell center, we have to start at the patch bottom left, offset by
-  // the cell index scaled by each cell size. This gets us the bottom left of a
-  // cell, to get the center we then have to offset by half a cell.
+  // the cell index scaled by each cell size. This gets us the bottom left of a cell,
+  // to get the center we then have to offset by half a cell.
   real cellSizeScalar = mMap->mUnitsPerPatch / HeightPatch::Size;
   Vec2 cellSize = Vec2(cellSizeScalar, cellSizeScalar);
   Vec2 currCell = Vec2((float)mCellIndex.x, (float)mCellIndex.y);
@@ -1393,8 +1385,7 @@ CellIndex CellRayRange::Front()
 
 bool CellRayRange::Empty()
 {
-  // if we are out of the patch bounds or we have exceeded our max tValue, then
-  // we are empty
+  // if we are out of the patch bounds or we have exceeded our max tValue, then we are empty
   if (mCellIndex.x < 0 || mCellIndex.y < 0 || mCellIndex.x >= HeightPatch::Size || mCellIndex.y >= HeightPatch::Size ||
       mCurrT >= mMaxT)
     return true;
@@ -1407,8 +1398,8 @@ Vec2 CellRayRange::IntersectPlane(Vec2Param planeDistance, Vec2Param rayStart, V
   Vec2 num = planeDistance - rayStart;
   Vec2 t = Vec2(Math::PositiveMax(), Math::PositiveMax());
 
-  // safeguard from zero divisions, if we would zero divide leave the distance
-  // at infinity since we aren't going to hit that axis any time soon
+  // safeguard from zero divisions, if we would zero divide leave the distance at
+  // infinity since we aren't going to hit that axis any time soon
   if (rayDir.x != 0)
     t.x = num.x / rayDir.x;
   if (rayDir.y != real(0.0))
@@ -1459,8 +1450,7 @@ void PatchRayRange::Set(HeightMap* map, Vec2Param rayStart, Vec2Param rayDir, re
 
   // get the starting "patch" (might not actually be a patch there)
   mCurrPatchIndex = mMap->GetPatchIndexFromLocal(mRayStart + mRayDir * mCurrT);
-  // now walk until our current patch is a valid one (no point in checking
-  // patches that don't exist)
+  // now walk until our current patch is a valid one (no point in checking patches that don't exist)
   SkipDeadPatches();
 }
 
@@ -1481,8 +1471,7 @@ bool PatchRayRange::Empty() const
 {
   // we're done when we run out of length to explore on the ray (since patches
   // are in a hash map, there's no easy way to know when we reached the end of
-  // the grid apart from a max t value which approximates the bounds of the
-  // grid)
+  // the grid apart from a max t value which approximates the bounds of the grid)
   return mCurrT > mMaxT;
 }
 
@@ -1497,8 +1486,8 @@ void PatchRayRange::GetNextPatch()
   real unitsPerPatch = mMap->mUnitsPerPatch;
   // get the local center of the next patch
   Vec2 localPos = mMap->GetLocalPosition(mCurrPatchIndex + PatchIndex(mStepX, mStepY));
-  // we need to compare t values with the start of the patch though, so offset
-  // by half the patch size in the opposite direction we are searching from
+  // we need to compare t values with the start of the patch though, so offset by
+  // half the patch size in the opposite direction we are searching from
   Vec2 halfOffset = Vec2(unitsPerPatch * mStepX, unitsPerPatch * mStepY) * .5f;
   Vec2 tValues = CellRayRange::IntersectPlane(localPos - halfOffset, mRayStart, mRayDir);
   // advance in the direction that we hit first
@@ -1587,11 +1576,9 @@ void HeightMapRayRange::SetUp(float maxT)
 void HeightMapRayRange::GetTMinMaxRange(
     Vec3Param localRayStart, Vec3Param localRayDir, Vec2Param rayStart, Vec2Param rayDir, float& minT, float& maxT)
 {
-  // if the raycast is straight down, then the projected ray will cause some bad
-  // things to happen. Just set a simple set of bounds for the min/max so that
-  // we'll check at least once (we should be prevented from infinite looping at
-  // a
-  // different spot)
+  // if the raycast is straight down, then the projected ray will cause some bad things to happen.
+  // Just set a simple set of bounds for the min/max so that we'll check at least once
+  //(we should be prevented from infinite looping at a different spot)
   if (mProjectedRayDir.Length() == real(0))
   {
     minT = 0;
@@ -1631,8 +1618,8 @@ void HeightMapRayRange::GetTMinMaxRange(
     return;
   }
 
-  // we compute the min and max indices, convert those to positions (accounting
-  // for the fact the position of min and max is the patch center)
+  // we compute the min and max indices, convert those to positions (accounting for the fact the position of min and max
+  // is the patch center)
   Vec2 patchSize = Vec2(mMap->mUnitsPerPatch, mMap->mUnitsPerPatch) * .5f;
   Vec2 minLocal = mMap->GetLocalPosition(min) - patchSize;
   Vec2 maxLocal = mMap->GetLocalPosition(max) + patchSize;
@@ -1649,8 +1636,7 @@ void HeightMapRayRange::GetTMinMaxRange(
   Vec3 aabbMin = Vec3(minLocal.x, minHeight, minLocal.y);
   Vec3 aabbMax = Vec3(maxLocal.x, maxHeight, maxLocal.y);
   // cast the local ray against full aabb and then limit to that range
-  //(use the interval test because the point test can return p0 = p1 when the
-  // ray starts inside the aabb
+  //(use the interval test because the point test can return p0 = p1 when the ray starts inside the aabb
   if (Intersection::RayAabb(localRayStart, localRayDir, aabbMin, aabbMax, &interval) != Intersection::None)
   {
     Vec3 p0 = localRayStart + (localRayDir * interval.Min);
@@ -1685,8 +1671,8 @@ HeightMapRayRange::TriangleInfo& HeightMapRayRange::Front()
 
 bool HeightMapRayRange::TrianglesToProcess()
 {
-  // Determine whether or not we have any triangles left to process in this
-  // cell. Obviously, if we have no triangles we're done with this cell.
+  // Determine whether or not we have any triangles left to process in this cell.
+  // Obviously, if we have no triangles we're done with this cell.
   if (mTriangleCount == 0)
     return false;
 
@@ -1701,8 +1687,7 @@ bool HeightMapRayRange::TrianglesToProcess()
 void HeightMapRayRange::LoadUntilValidTriangles()
 {
   // if there are no triangles in this cell to process, we need to load the next
-  // cell until we either get valid triangles or until we reach the end of the
-  // range
+  // cell until we either get valid triangles or until we reach the end of the range
   while (!TrianglesToProcess() && !Empty())
   {
     mTriangleIndex = 0;
@@ -1716,13 +1701,11 @@ void HeightMapRayRange::LoadUntilValidTriangles()
 
 void HeightMapRayRange::LoadNext()
 {
-  // get the next cell, if there is not another cell then we must go to the next
-  // patch
+  // get the next cell, if there is not another cell then we must go to the next patch
   mCellRange.PopFront();
   if (mCellRange.Empty())
   {
-    // get the next patch, if we run out of patches then we are done (our range
-    // is now empty)
+    // get the next patch, if we run out of patches then we are done (our range is now empty)
     mPatchRange.PopFront();
     if (mPatchRange.Empty())
       return;
@@ -1736,8 +1719,7 @@ void HeightMapRayRange::LoadNext()
 void HeightMapRayRange::LoadTriangles()
 {
   ReturnIf(mPatchRange.Empty(), , "The patch range for HeightMapRayRange was empty and it never should be");
-  // This isn't actually an error when you look straight up-down and the maxT
-  // value is 0
+  // This isn't actually an error when you look straight up-down and the maxT value is 0
   if (mCellRange.Empty())
     return;
 
@@ -1760,8 +1742,7 @@ void HeightMapRayRange::LoadTriangles()
   Vec3 p10 = Vec3(cellPos.x + cellSize.x, h10, cellPos.y - cellSize.y);
   Vec3 p11 = Vec3(cellPos.x + cellSize.x, h11, cellPos.y + cellSize.y);
 
-  // edge triangles and holes are defined by vertices set to infinite, so
-  // determine if any of the vertices are infinite
+  // edge triangles and holes are defined by vertices set to infinite, so determine if any of the vertices are infinite
   bool b01 = h01 != Math::cInfinite;
   bool b00 = h00 != Math::cInfinite;
   bool b10 = h10 != Math::cInfinite;
@@ -1838,9 +1819,9 @@ void HeightMapAabbRange::SetWorld(HeightMap* map, const Aabb& aabb, real thickne
 
   // we need to turn the world aabb into a local one. There may be a faster way
   // to do this, but this way works (previous method didn't work with rotation
-  // and scale due to sheer terms showing up during decomposition of the inverse
-  // matrix. The previous method was to get the obb of the rotated aabb, then
-  // take the aabb of that. Decomposition seems to be the problem).
+  // and scale due to sheer terms showing up during decomposition of the inverse matrix.
+  // The previous method was to get the obb of the rotated aabb, then take the aabb
+  // of that. Decomposition seems to be the problem).
 
   // compute all 8 aabb points
   Vec3 aabbPoints[8];
@@ -1984,8 +1965,8 @@ void HeightMapAabbRange::LoadTriangles()
   Vec2 patchHalfExtents = Vec2(mMap->mUnitsPerPatch, mMap->mUnitsPerPatch) * .5f;
   Vec2 patchStart = patchPos - patchHalfExtents;
   // To get a cell center, we have to start at the patch bottom left, offset by
-  // the cell index scaled by each cell size. This gets us the bottom left of a
-  // cell, to get the center we then have to offset by half a cell.
+  // the cell index scaled by each cell size. This gets us the bottom left of a cell,
+  // to get the center we then have to offset by half a cell.
   real cellSizeScalar = mMap->mUnitsPerPatch / HeightPatch::Size;
   Vec2 cellSize = Vec2(cellSizeScalar, cellSizeScalar) * .5f;
   Vec2 currCell = Vec2((float)cellIndex.x, (float)cellIndex.y);
@@ -2006,8 +1987,7 @@ void HeightMapAabbRange::LoadTriangles()
   Vec3 p10 = Vec3(cellPos.x + cellSize.x, h10, cellPos.y - cellSize.y);
   Vec3 p11 = Vec3(cellPos.x + cellSize.x, h11, cellPos.y + cellSize.y);
 
-  // edge triangles and holes are defined by vertices set to infinite, so
-  // determine if any of the vertices are infinite
+  // edge triangles and holes are defined by vertices set to infinite, so determine if any of the vertices are infinite
   bool b01 = h01 != Math::cInfinite;
   bool b00 = h00 != Math::cInfinite;
   bool b10 = h10 != Math::cInfinite;
@@ -2112,8 +2092,7 @@ void HeightMapAabbRange::SkipDeadCells()
   {
     GetNextCell();
     mTriangleIndex = 0;
-    // for debug drawing, we want to see every cell that is touched, so stop
-    // here
+    // for debug drawing, we want to see every cell that is touched, so stop here
     if (!mSkipNonCollidingCells)
       return;
   }
@@ -2195,7 +2174,7 @@ void HeightMap::SaveToObj(StringParam fileName, HeightMap* heightMap)
     }
 
     // Offset the indices for the next patch
-    indexOffset += vertices.Size();
+    indexOffset += (uint)vertices.Size();
 
     // Move on to the next patch
     ++patchIndex;

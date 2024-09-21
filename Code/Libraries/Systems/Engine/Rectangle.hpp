@@ -11,12 +11,12 @@ DeclareEnum9(
 // Extensions
 namespace Location
 {
-// Returns whether or not the given location is a cardinal direction
-// (CenterLeft, TopCenter, CenterRight, BottomCenter).
+// Returns whether or not the given location is a cardinal direction (CenterLeft, TopCenter,
+// CenterRight, BottomCenter).
 bool IsCardinal(Location::Enum location);
 
-// Returns the axis of the given location. This is only valid for the cardinal
-// directions (CenterLeft, TopCenter, CenterRight, BottomCenter).
+// Returns the axis of the given location. This is only valid for the cardinal directions
+// (CenterLeft, TopCenter, CenterRight, BottomCenter).
 int GetCardinalAxis(Location::Enum location);
 
 // Returns the direction of the given location from the center.
@@ -113,29 +113,27 @@ struct Rectangle
   /// Translates the rectangle by the passed in vector.
   void Translate(Vec2Param translation);
 
-  /// Applies transformation to the Rectangle. Note that Rectangle is
-  /// non-rotated, so this will result in the Aabb around the rotated rectangle.
+  /// Applies transformation to the Rectangle. Note that Rectangle is non-rotated, so this will
+  /// result in the Aabb around the rotated rectangle.
   void Transform(Mat2Param transform);
 
-  /// Applies transformation to the Rectangle. Note that Rectangle is
-  /// non-rotated, so this will result in the Aabb around the rotated rectangle.
-  /// The given transform is assumed to be a 2D transformation.
+  /// Applies transformation to the Rectangle. Note that Rectangle is non-rotated, so this will
+  /// result in the Aabb around the rotated rectangle. The given transform is assumed to be a
+  /// 2D transformation.
   void Transform(Mat3Param transform);
 
   /// Takes a full 3D transformation matrix and brings it down to a 2D matrix.
-  /// Applies transformation to the Rectangle. Note that Rectangle is
-  /// non-rotated, so this will result in the Aabb around the rotated rectangle.
+  /// Applies transformation to the Rectangle. Note that Rectangle is non-rotated, so this will
+  /// result in the Aabb around the rotated rectangle.
   void Transform(Mat4Param transform);
 
-  /// Returns a copy of ourself transformed by the given matrix. Note that
-  /// Rectangle is non-rotated, so this will result in the Aabb around the
-  /// rotated rectangle.
+  /// Returns a copy of ourself transformed by the given matrix. Note that Rectangle is non-rotated,
+  /// so this will result in the Aabb around the rotated rectangle.
   Rectangle Transformed(Mat2Param transform) const;
 
-  /// Returns a copy of ourself transformed by the given matrix. Note that
-  /// Rectangle is non-rotated, so this will result in the Aabb around the
-  /// rotated rectangle. The given transform is assumed to be a 2D
-  /// transformation.
+  /// Returns a copy of ourself transformed by the given matrix. Note that Rectangle is non-rotated,
+  /// so this will result in the Aabb around the rotated rectangle. The given transform is assumed
+  /// to be a 2D transformation.
   Rectangle Transformed(Mat3Param transform) const;
 
   /// Takes a full 3D transformation matrix and brings it down to a 2D matrix.

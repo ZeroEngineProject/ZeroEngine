@@ -95,8 +95,7 @@ void ObjectThreadDispatch::DispatchEvents()
 {
   Array<ObjectQueuedEvent> eventsToDispatch;
 
-  // To avoid dead lock pull out all message before dispatching (dispatching may
-  // add more events)
+  // To avoid dead lock pull out all message before dispatching (dispatching may add more events)
   mLock.Lock();
   eventsToDispatch.Swap(mEvents);
   mLock.Unlock();
@@ -139,8 +138,7 @@ void StartThreadSystem()
 
 void ShutdownThreadSystem()
 {
-  // This is important that the jobs are deleted first, because the job threads
-  // could be using the gDispatch
+  // This is important that the jobs are deleted first, because the job threads could be using the gDispatch
   SafeDelete(Z::gJobs);
   SafeDelete(Z::gDispatch);
 }

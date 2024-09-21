@@ -32,8 +32,7 @@ Handle CogGetOwner(HandleParam object)
 {
   Cog* cog = object.Get<Cog*>();
 
-  // Hierarchy is technically our Owner according to Meta (Hierarchy has a meta
-  // composition)
+  // Hierarchy is technically our Owner according to Meta (Hierarchy has a meta composition)
   if (Cog* parent = cog->GetParent())
     return parent->has(Hierarchy);
   return nullptr;
@@ -337,8 +336,7 @@ void Cog::Serialize(Serializer& stream)
 
   ErrorIf(context != nullptr && context->CurrentContextMode != ContextMode::Saving, "Not a saving context");
 
-  // We need to save out the name differently in the legacy format (to support
-  // old projects)
+  // We need to save out the name differently in the legacy format (to support old projects)
   bool legacy = false;
   if (stream.GetType() == SerializerType::Text)
   {
@@ -499,8 +497,8 @@ void Cog::Initialize(CogInitializer& initializer)
 
   // Use indexes so components can be added during
   // Initialization.
-  uint componentCount = mComponents.Size();
-  for (uint i = 0; i < componentCount; ++i)
+  size_t componentCount = mComponents.Size();
+  for (size_t i = 0; i < componentCount; ++i)
   {
     Component* component = mComponents[i];
     component->mOwner = this;
@@ -602,8 +600,7 @@ bool Cog::AddComponentByType(BoundType* componentType)
   if (current)
     return false;
 
-  // Create the object (we know it must be a component because it was registered
-  // as one)
+  // Create the object (we know it must be a component because it was registered as one)
   uint flags = 0;
   if (GetSpace() && GetSpace()->IsEditorMode())
     flags |= CreationFlags::Editing;
@@ -750,8 +747,8 @@ bool Cog::RemoveComponentByType(BoundType* componentType)
     return false;
   }
 
-  // This check isn't really necessary as it will fail to find the Component,
-  // but it may be useful for the user to see a more informative error message
+  // This check isn't really necessary as it will fail to find the Component, but it may
+  // be useful for the user to see a more informative error message
   if (componentType->IsA(ZilchTypeId(Component)) == false)
   {
     String message = String::Format("Type of name '%s' is not a Component type", componentType->Name.c_str());
@@ -907,8 +904,8 @@ void Cog::DeleteComponents()
   // Delete each component using the component's virtual destructor
   // takes care of all resources and memory.
   ComponentRange range = mComponents.All();
-  uint numberOfComponents = mComponents.Size();
-  for (uint i = 0; i < numberOfComponents; ++i)
+  size_t numberOfComponents = mComponents.Size();
+  for (size_t i = 0; i < numberOfComponents; ++i)
     mComponents[numberOfComponents - 1 - i]->Delete();
 
   // Clear all components
@@ -1043,8 +1040,8 @@ bool Cog::AttachToPreserveLocal(Cog* parent)
     mHierarchyParent = parent;
   }
 
-  // Attaching to an object may mean that children who are in-world need to
-  // transform, first cache the current world matrix if we have one
+  // Attaching to an object may mean that children who are in-world need to transform,
+  // first cache the current world matrix if we have one
   Mat4 oldMat;
   Transform* transform = this->has(Transform);
   if (transform != nullptr)
@@ -1059,8 +1056,8 @@ bool Cog::AttachToPreserveLocal(Cog* parent)
   for (; !range.Empty(); range.PopFront())
     range.Front()->AttachTo(info);
 
-  // Now apply the delta to the hierarchy after we've been attached (have to
-  // split this because we need old and new values)
+  // Now apply the delta to the hierarchy after we've been attached (have to split this because we need old and new
+  // values)
   if (transform != nullptr)
     transform->UpdateAll(oldMat);
 
@@ -1155,8 +1152,8 @@ void Cog::DetachPreserveLocal()
   mSpace->mRoots.PushBack(this);
   ++mSpace->mRootCount;
 
-  // Detaching from an object may mean that children who are in-world need to
-  // transform, first cache the current world matrix if we have one
+  // Detaching from an object may mean that children who are in-world need to transform,
+  // first cache the current world matrix if we have one
   Mat4 oldMat;
   Transform* transform = this->has(Transform);
   if (transform != nullptr)
@@ -1171,8 +1168,8 @@ void Cog::DetachPreserveLocal()
   for (; !range.Empty(); range.PopFront())
     range.Front()->Detached(info);
 
-  // Now apply the delta to the hierarchy after we've been attached (have to
-  // split this because we need old and new values)
+  // Now apply the delta to the hierarchy after we've been attached (have to split this because we need old and new
+  // values)
   if (transform != nullptr)
     transform->UpdateAll(oldMat);
 
@@ -1466,7 +1463,7 @@ uint Cog::GetHierarchyIndex()
 
   if (HierarchyList* list = GetParentHierarchyList())
   {
-    size_t index = 0;
+    uint index = 0;
     forRange (Cog& cog, list->All())
     {
       // Don't account for Cogs marked for destruction
@@ -1593,8 +1590,8 @@ Archetype* Cog::GetBaseArchetype()
 
 bool Cog::IsModifiedFromArchetype()
 {
-  // Only ignore override properties if we're the root context (either root
-  // Archetype or a locally added Archetype).
+  // Only ignore override properties if we're the root context (either root Archetype or a locally
+  // added Archetype).
   Cog* nearestContext = FindNearestArchetypeContext();
 
   // If we aren't an Archetype and there isn't one above us, we're not modified
@@ -1610,17 +1607,16 @@ void Cog::ClearArchetype()
   if (mArchetype == nullptr)
     return;
 
-  // To retain the correct state of any child Archetypes, we need to apply all
-  // modifications of our Archetype and any inherited Archetypes
+  // To retain the correct state of any child Archetypes, we need to apply all modifications of our
+  // Archetype and any inherited Archetypes
   mArchetype->GetAllCachedModifications().ApplyModificationsToObject(this);
 
-  // We need to clear the Archetype before calling ClearCogModifications because
-  // it will keep around modifications if it thinks this Cog is still an
-  // Archetype.
+  // We need to clear the Archetype before calling ClearCogModifications because it
+  // will keep around modifications if it thinks this Cog is still an Archetype.
   mArchetype = nullptr;
 
-  // The modifications to us don't matter (our Archetype is being cleared), so
-  // clear ours but retain the newly applied child Archetype modifications
+  // The modifications to us don't matter (our Archetype is being cleared), so clear ours but
+  // retain the newly applied child Archetype modifications
   ClearCogModifications(this, true);
 }
 
@@ -1655,25 +1651,23 @@ void Cog::UploadToArchetype()
 
   Archetype* archetype = mArchetype;
 
-  // If we're a child of another Archetype, we may need to keep around some
-  // local changes after we upload to Archetype. Even though we're uploading,
-  // the changes we're uploading could still be considered modified from what
-  // our parent Archetype says it should be.
+  // If we're a child of another Archetype, we may need to keep around some local changes after
+  // we upload to Archetype. Even though we're uploading, the changes we're uploading could
+  // still be considered modified from what our parent Archetype says it should be.
   //
   // Example:
-  // Lets say we have an Archetype called Enemy. This Archetype has a child
-  // object that is the Gun Archetype.
+  // Lets say we have an Archetype called Enemy. This Archetype has a child object
+  // that is the Gun Archetype.
   //
-  // If we modify the Gun's damage to 5 and upload that to the Enemy Archetype,
-  // the Enemy has overridden the Gun's damage.
+  // If we modify the Gun's damage to 5 and upload that to the Enemy Archetype, the Enemy
+  // has overridden the Gun's damage.
   //
-  // If we then modify the Gun's damage to 7 and upload to Archetype on the Gun,
-  // the Gun's damage should still be marked as modified because it's still not
-  // what the Enemy Archetype says it should be (5).
+  // If we then modify the Gun's damage to 7 and upload to Archetype on the Gun, the Gun's
+  // damage should still be marked as modified because it's still not what the Enemy Archetype
+  // says it should be (5).
   //
-  // This is only the case because the Enemy ALSO had the same modification as
-  // the Gun. This is why we find overlapping modifications and re-apply them
-  // after the upload.
+  // This is only the case because the Enemy ALSO had the same modification as the Gun. This is
+  // why we find overlapping modifications and re-apply them after the upload.
   CachedModifications overlappingModifications;
 
   Cog* archetypeContextCog = FindNearestArchetypeContext();
@@ -1686,46 +1680,43 @@ void Cog::UploadToArchetype()
       overlappingModifications.StoreOverlappingModifications(this, thisChildNode);
   }
 
-  // All local modifications on this object are no longer considered
-  // modifications because they're becoming part of the Archetype. This is true
-  // UNLESS we inherit from another Archetype. In that case, our modifications
-  // from the base Archetype should remain.
+  // All local modifications on this object are no longer considered modifications because
+  // they're becoming part of the Archetype.
+  // This is true UNLESS we inherit from another Archetype. In that case, our modifications from
+  // the base Archetype should remain.
   if (archetype->mBaseResourceIdName.Empty())
   {
-    // We want to retain child archetype modifications because they are needed
-    // when saving out those Archetypes
+    // We want to retain child archetype modifications because they are needed when saving out
+    // those Archetypes
     ClearCogModifications(this, true);
 
     overlappingModifications.ApplyModificationsToObject(this);
   }
 
-  // Local modifications are contextual. When we upload a Cog instance to the
-  // Archetype definition, we're switching contexts.
+  // Local modifications are contextual. When we upload a Cog instance to the Archetype
+  // definition, we're switching contexts.
   //
   // Example:
-  // Lets say we have an Archetype called Enemy. This Archetype has a child
-  // object that is the Gun Archetype, with the Damage locally modified from the
-  // Gun Archetype within the context of the Enemy.
+  // Lets say we have an Archetype called Enemy. This Archetype has a child object
+  // that is the Gun Archetype, with the Damage locally modified from the Gun Archetype
+  // within the context of the Enemy.
   //
-  // In our level, we have an instance of Enemy. LocalModifications on this Cog
-  // are modifications from the Enemy Archetype; they do not include any
-  // modifications to the Gun that are part of the Enemy Archetype (such as the
-  // modified Damage).
+  // In our level, we have an instance of Enemy. LocalModifications on this Cog are modifications
+  // from the Enemy Archetype; they do not include any modifications to the Gun that are part
+  // of the Enemy Archetype (such as the modified Damage).
   //
-  // If we upload to Archetype on this instance in our level, it will not have
-  // the modified Damage stored in LocalModifications, and thus won't save out
-  // that modification, losing data. This is because that modification is in a
-  // different context. In a way, we're switching contexts, so we need to
-  // combine our modifications with the modifications that are local to the
-  // Enemy Archetype (the changed Damage).
+  // If we upload to Archetype on this instance in our level, it will not have the modified Damage
+  // stored in LocalModifications, and thus won't save out that modification, losing data.
+  // This is because that modification is in a different context.
+  // In a way, we're switching contexts, so we need to combine our modifications with the
+  // modifications that are local to the Enemy Archetype (the changed Damage).
   //
-  // If we only ever allowed people to modify the Archetype in its own window,
-  // this would not be an issue.
+  // If we only ever allowed people to modify the Archetype in its own window, this would not be
+  // an issue.
   //
-  // However, if we're in ArchetypeDefinition mode, all these modifications will
-  // already be on the object. Re-applying these could even override
-  // modifications we're trying to make to the Archetype definition (such as
-  // reverting a property)
+  // However, if we're in ArchetypeDefinition mode, all these modifications will already be
+  // on the object. Re-applying these could even override modifications we're trying to make
+  // to the Archetype definition (such as reverting a property)
   if (InArchetypeDefinitionMode() == false)
   {
     CachedModifications& archetypeModifications = archetype->GetLocalCachedModifications();
@@ -1740,17 +1731,13 @@ void Cog::UploadToArchetype()
   ArchetypeManager::GetInstance()->SaveToContent(this, mArchetype);
 
   // We have to clear again for two reasons:
-  // 1. Locally added child Archetypes won't get their modifications cleared
-  // because they were
-  //    required when saving out this Archetype definition. We want to clear
-  //    them on the instance because those modifications are now part of the
-  //    Archetype's context, not the instance
-  // 2. Any cached modifications we applied to the object before saving. See
-  // comment above
+  // 1. Locally added child Archetypes won't get their modifications cleared because they were
+  //    required when saving out this Archetype definition. We want to clear them on the instance
+  //    because those modifications are now part of the Archetype's context, not the instance
+  // 2. Any cached modifications we applied to the object before saving. See comment above
   //    applying the archetypes cached modifications in this function.
   //
-  // However, if we're in ArchetypeDefinition mode, we want to keep the
-  // modifications
+  // However, if we're in ArchetypeDefinition mode, we want to keep the modifications
   if (InArchetypeDefinitionMode() == false)
     ClearCogModifications(this, false);
 
@@ -1762,17 +1749,15 @@ void Cog::UploadToArchetype()
 
 void Cog::RevertToArchetype()
 {
-  // We can only be reverted if we are an Archetype or are a child of an
-  // Archetype
+  // We can only be reverted if we are an Archetype or are a child of an Archetype
 
-  // When we revert to Archetype on an object, we want to clear all
-  // modifications, except override properties that are on the root Archetype.
+  // When we revert to Archetype on an object, we want to clear all modifications, except override
+  // properties that are on the root Archetype.
   // This is slightly incorrect...
-  // Lets say we have an 'Enemy' Archetype, and we locally added a 'Gun'
-  // Archetype as a child. If we were to revert the 'Gun' Archetype, we want it
-  // to retain its override properties, otherwise it would move to the
-  // translation specified in the 'Gun' Archetype definition. Because of this,
-  // we call the 'FindNearestArchetypeContext' instead of 'FindRootArchetype'.
+  // Lets say we have an 'Enemy' Archetype, and we locally added a 'Gun' Archetype as a child. If we
+  // were to revert the 'Gun' Archetype, we want it to retain its override properties, otherwise it
+  // would move to the translation specified in the 'Gun' Archetype definition.
+  // Because of this, we call the 'FindNearestArchetypeContext' instead of 'FindRootArchetype'.
   if (Cog* nearestArchetypeContext = FindNearestArchetypeContext())
   {
     // No need to do anything if we aren't already modified from archetype
@@ -1892,8 +1877,7 @@ void Cog::DispatchDown(StringParam eventId, Event* event)
   Hierarchy* hierarchy = this->has(Hierarchy);
   if (hierarchy)
   {
-    // Hierarchy can be modified during any event, copy the list of children
-    // before dispatching.
+    // Hierarchy can be modified during any event, copy the list of children before dispatching.
     Array<Cog*> children;
     forRange (HierarchyList::sub_reference child, hierarchy->GetChildren())
       children.PushBack(&child);
@@ -1966,8 +1950,8 @@ void Cog::DebugDraw()
 
 String Cog::SanitizeName(StringParam newName)
 {
-  // 'FixIdentifier' will return "empty" if the string is empty, so we need to
-  // special case it here because we allow for empty names
+  // 'FixIdentifier' will return "empty" if the string is empty, so we need to special case it here
+  // because we allow for empty names
   if (newName.Empty())
     return newName;
 
@@ -2157,17 +2141,15 @@ void SetCogFlag(Cog* cog, CogFlags::Enum flag, cstr flagName, bool state)
   cog->GetSpace()->ChangedObjects();
 }
 
-// Similar to clearing Cog modifications, we have to do this in a custom way due
-// to how child properties work in an Archetype. See the comment for the
-// 'ClearCogModifications' function for a more detailed explanation. The
-// reasoning is the same for this operation. This could possibly be made generic
-// in meta.
+// Similar to clearing Cog modifications, we have to do this in a custom way due to how child
+// properties work in an Archetype. See the comment for the 'ClearCogModifications' function for
+// a more detailed explanation. The reasoning is the same for this operation.
+// This could possibly be made generic in meta.
 bool CogIsModifiedFromArchetype(Cog* cog, bool ignoreOverrideProperties)
 {
   LocalModifications* modifications = LocalModifications::GetInstance();
 
-  // Check any modifications on ourself (name change, added / removed
-  // components)
+  // Check any modifications on ourself (name change, added / removed components)
   if (modifications->IsModified(cog, false, ignoreOverrideProperties))
     return true;
 
@@ -2190,12 +2172,10 @@ bool CogIsModifiedFromArchetype(Cog* cog, bool ignoreOverrideProperties)
   }
 
   // Check for modifications on our children
-  // Never retain child override properties (see example about the enemy holding
-  // a gun)
+  // Never retain child override properties (see example about the enemy holding a gun)
   forRange (Cog& child, cog->GetChildren())
   {
-    // Never retain child override properties (see example about the enemy
-    // holding a gun)
+    // Never retain child override properties (see example about the enemy holding a gun)
     if (CogIsModifiedFromArchetype(&child, false))
       return true;
   }
@@ -2203,16 +2183,15 @@ bool CogIsModifiedFromArchetype(Cog* cog, bool ignoreOverrideProperties)
   return false;
 }
 
-// The reason for a custom method of clearing modifications on a Cog is because
-// of how override properties are handled in hierarchies. The 'Translation'
-// property on a Cog is marked as 'LocalModificationOverride'. This is because
-// when we revert an objects modified properties, we want the object to stay in
-// the same location. This is true for all properties on the root object in the
-// Archetype. However, it's not true for child objects in the Archetype. If
-// there is an enemy in the world, we want him to stay at the same position when
-// reverted. If the enemy is holding a gun and we move the gun, we want the gun
-// to go back to its original position relative to the enemy when reverted. This
-// could possibly be made generic in meta.
+// The reason for a custom method of clearing modifications on a Cog is because of how override
+// properties are handled in hierarchies. The 'Translation' property on a Cog is marked as
+// 'LocalModificationOverride'. This is because when we revert an objects modified properties,
+// we want the object to stay in the same location.
+// This is true for all properties on the root object in the Archetype. However, it's not true
+// for child objects in the Archetype. If there is an enemy in the world, we want him to stay
+// at the same position when reverted. If the enemy is holding a gun and we move the gun,
+// we want the gun to go back to its original position relative to the enemy when reverted.
+// This could possibly be made generic in meta.
 void ClearCogModifications(Cog* rootCog,
                            Cog* cog,
                            ObjectState::ModifiedProperties& cachedMemory,
@@ -2221,9 +2200,9 @@ void ClearCogModifications(Cog* rootCog,
 {
   LocalModifications* modifications = LocalModifications::GetInstance();
 
-  // When uploading to Archetype, modifications are cleared, then the object is
-  // saved to the Archetype file. We still want to save out modifications to
-  // locally added children, so don't touch them
+  // When uploading to Archetype, modifications are cleared, then the object is saved to
+  // the Archetype file. We still want to save out modifications to locally added children,
+  // so don't touch them
   if (cog->GetArchetype() != nullptr)
   {
     bool isRoot = (rootCog == cog);
@@ -2243,14 +2222,13 @@ void ClearCogModifications(Cog* rootCog,
     modifications->ClearModifications(component, true, retainOverrideProperties, cachedMemory);
   }
 
-  // Never retain child override properties (see example about the enemy holding
-  // a gun)
+  // Never retain child override properties (see example about the enemy holding a gun)
   forRange (Cog& child, cog->GetChildren())
     ClearCogModifications(rootCog, &child, cachedMemory, false, retainChildArchetypeModifications);
 
   // Clear modifications to our children list (added / removed Cogs)
-  // The hierarchy modifications should be cleared after recursing because we
-  // need this state to determine if our children are locally added
+  // The hierarchy modifications should be cleared after recursing because we need this state
+  // to determine if our children are locally added
   if (Hierarchy* hierarchy = cog->has(Hierarchy))
     modifications->ClearModifications(hierarchy, false, retainOverrideProperties);
 }

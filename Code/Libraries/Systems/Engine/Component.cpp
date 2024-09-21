@@ -145,10 +145,7 @@ String Component::GetDescription()
 
 void Component::DispatchEvent(StringParam eventId, Event* event)
 {
-  ReturnIf(!mOwner,
-           ,
-           "The Owner was null (is this being called from a constructor or "
-           "destructor?)");
+  ReturnIf(!mOwner, , "The Owner was null (is this being called from a constructor or destructor?)");
   mOwner->GetDispatcher()->Dispatch(eventId, event);
 }
 
@@ -224,8 +221,8 @@ void ComponentHandleManager::Delete(const Handle& handle)
 {
   const ComponentHandleData& data = *(const ComponentHandleData*)(handle.Data);
 
-  // METAREFACTOR This is what was previously happening with delete, except this
-  // doesn't seem correct since mRawObject is not set in all cases...
+  // METAREFACTOR This is what was previously happening with delete, except this doesn't seem correct
+  // since mRawObject is not set in all cases...
   zDeallocate(data.mRawObject);
 }
 

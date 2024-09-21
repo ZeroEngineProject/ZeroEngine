@@ -16,10 +16,9 @@ public:
   /// Constructor.
   ObjectSaver();
 
-  /// Saves the given object to the opened stream. If the given object inherits
-  /// from other data (as defined by the MetaDataInheritance on MetaType), it
-  /// will be saved out as a patch of the inherited data tree based on the
-  /// objects local modifications.
+  /// Saves the given object to the opened stream. If the given object inherits from other data
+  /// (as defined by the MetaDataInheritance on MetaType), it will be saved out as a patch
+  /// of the inherited data tree based on the objects local modifications.
 
   /// e.g. saving a Cog inside a level in the editor.
   void SaveInstance(Object* object);
@@ -28,8 +27,7 @@ public:
   void SaveDefinition(Object* object);
 
   /// Saves out all properties regardless of modifications.
-  /// e.g. saving the state of an object when saving game progress in an
-  /// exported game.
+  /// e.g. saving the state of an object when saving game progress in an exported game.
   void SaveFullObject(Object* object);
 
 private:
@@ -48,16 +46,15 @@ private:
 
   void BuildPolymorphicInfo(PolymorphicInfo& info, Object* object, InheritIdContext::Enum context, bool patching);
 
-  /// When we save an object starting in the middle of a hierarchy (e.g.
-  /// uploading to Archetype on a Cog that's underneath another Archetype),
-  /// there are some attributes we don't want to save
+  /// When we save an object starting in the middle of a hierarchy (e.g. uploading to Archetype on
+  /// a Cog that's underneath another Archetype), there are some attributes we don't want to save
   Object* mSerializeStart;
 
   /// Basically means that we're ignoring all local modifications.
   bool mFullObjectOverride;
 
-  /// All objects that have locally modified children - optimization for
-  /// checking if child objects are modified as we recurse saving children
+  /// All objects that have locally modified children - optimization for checking if child objects
+  /// are modified as we recurse saving children
   // HashSet<Object*> mChildModified;
 };
 

@@ -6,9 +6,9 @@ namespace Zero
 
 class Cog;
 
-/// To try to avoid accidentally changing command-line arguments for the
-/// launcher, some of the common ones (ones used for communication) are added
-/// here so they're shared between the engine and so on.
+/// To try to avoid accidentally changing command-line arguments for the launcher,
+/// some of the common ones (ones used for communication) are added here so
+/// they're shared between the engine and so on.
 DeclareEnum8(LauncherStartupArguments,
              New,
              Open,
@@ -17,9 +17,8 @@ DeclareEnum8(LauncherStartupArguments,
              Upgrade,
              Projects,
              Tags,
-             DebuggerMode /*Launcher in a special way so that the launcher gets
-                             extra buttons where it will try to communicate back
-                             to the active launcher*/
+             DebuggerMode /*Launcher in a special way so that the launcher gets extra buttons where it will try to
+                             communicate back to the active launcher*/
 );
 
 DeclareEnum3(LauncherAutoRunMode, None, IfInstalled, InstallAndRun);
@@ -41,8 +40,7 @@ public:
 
   void ApplyCommandLineArguments();
 
-  /// Will the version selector auto run? Will it install it if it wasn't
-  /// installed?
+  /// Will the version selector auto run? Will it install it if it wasn't installed?
   uint GetAutoRunMode();
   void SetAutoRunMode(uint mode);
 
@@ -66,8 +64,8 @@ public:
   bool mShowDevelopmentBuilds;
   bool mShowExperimentalBranches;
   bool mRunDebuggerMode;
-  /// Should the launcher only show the preferred (current) platform builds or
-  /// show all. Hardcoded to true for now since we only have one platform.
+  /// Should the launcher only show the preferred (current) platform builds or show all.
+  /// Hardcoded to true for now since we only have one platform.
   bool mDisplayOnlyPreferredPlatform;
   /// How often the launcher should check for new builds/templates/etc...
   float mAutoUpdateFrequencyInSeconds;

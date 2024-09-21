@@ -133,8 +133,7 @@ void ResourceTable::Serialize(Serializer& stream)
   SerializeNameDefault(mEntryList, EntryList());
   SerializeNameDefault(mMaxWeight, 1.0f);
 
-  // On loading, make sure to mark the table as dirty and to set each entry's
-  // resource type
+  // On loading, make sure to mark the table as dirty and to set each entry's resource type
   if (stream.GetMode() == SerializerMode::Loading)
   {
     SetOutOfDate();
@@ -273,8 +272,7 @@ void ResourceTable::Set(int index, ResourceTableEntry* entry)
   if (!ValidateEntryType(entry, true))
     return;
 
-  // For simplicity, always mark the table as dirty, even if we just throw an
-  // exception.
+  // For simplicity, always mark the table as dirty, even if we just throw an exception.
   SetOutOfDate();
 
   // Validate the index
@@ -297,8 +295,7 @@ void ResourceTable::Set(int index, ResourceTableEntry* entry)
   ResourceTableEntry* conflictingEntry = GetOrNull(entry->mName);
   if (conflictingEntry != nullptr)
   {
-    String msg = String::Format("Cannot set entry with name '%s' because the "
-                                "name already exists in the table",
+    String msg = String::Format("Cannot set entry with name '%s' because the name already exists in the table",
                                 entry->mName.c_str());
     DoNotifyException("Invalid Set", msg);
     return;
@@ -371,8 +368,7 @@ bool ResourceTable::RemoveOrIgnore(StringParam key)
     return false;
 
   SetOutOfDate();
-  // Remove the first occurrence of this pointer from the list (have to perform
-  // a linear search)
+  // Remove the first occurrence of this pointer from the list (have to perform a linear search)
   mEntryList.EraseValueError(entry);
   mEntryMap.Erase(key);
   // Return that we did remove something
@@ -386,7 +382,7 @@ bool ResourceTable::Contains(StringParam key)
 
 uint ResourceTable::Size()
 {
-  return mEntryList.Size();
+  return (uint)mEntryList.Size();
 }
 
 int ResourceTable::GetCount()
@@ -461,7 +457,7 @@ uint ResourceTable::SampleIndex(float random1, float random2)
   random1 = Math::Clamp(random1, 0.0f, .999f);
   random2 = Math::Clamp(random2, 0.0f, .999f);
 
-  return mWeightedTable.SampleIndex(random1, random2);
+  return (uint)mWeightedTable.SampleIndex(random1, random2);
 }
 
 ResourceTableEntry* ResourceTable::Sample(float random1, float random2)
@@ -488,7 +484,7 @@ void ResourceTable::ForceRebuild()
 void ResourceTable::AddNewEntry(StringParam value)
 {
   // Start with a name based upon the current size
-  uint index = mEntryList.Size() + 1;
+  uint index = (uint)mEntryList.Size() + 1;
   String entryName = String::Format("Name%d", index);
   // However, we need unique item names so make sure that we don't
   // have one with the same name already. If so just keep incrementing
@@ -535,8 +531,7 @@ bool ResourceTable::AddNewEntry(const ValueType& name, const ValueType& value, c
       entry->mValue = manager->GetDefaultResource()->ResourceIdName;
   }
 
-  // Add the entry to both the list and map, the weighted-table will be built on
-  // demand.
+  // Add the entry to both the list and map, the weighted-table will be built on demand.
   mEntryList.PushBack(entry);
   mEntryMap.Insert(name, entry);
   return true;
@@ -660,8 +655,7 @@ void ResourceTableManager::OnValidateTables(ResourceEvent* e)
     if (table->mContentItem != nullptr)
     {
       String libraryName = table->mContentItem->mLibrary->Name;
-      // If this resource table is from a different library then don't validate
-      // or rebuild it
+      // If this resource table is from a different library then don't validate or rebuild it
       if (libraryName != e->Name)
         continue;
     }

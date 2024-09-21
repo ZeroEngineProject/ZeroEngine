@@ -52,8 +52,7 @@ void ZilchDocumentResource::OnCharacterAdded(ICodeEditor* editor, Rune value)
     editor->HideCallTips();
   }
 
-  // Are we accessing a member (function/property/data, either instance or
-  // static?)
+  // Are we accessing a member (function/property/data, either instance or static?)
   if (value == '.')
   {
     AutoCompleteInfo info;
@@ -79,8 +78,7 @@ void ZilchDocumentResource::OnCharacterAdded(ICodeEditor* editor, Rune value)
   else if (value == ':' || (value == ' ' && currentLine.FindLastNonWhitespaceRune() == ':'))
   {
     Array<Completion> completions;
-    // The any keyword is special. Just force add it to our possible completion
-    // list.
+    // The any keyword is special. Just force add it to our possible completion list.
     completions.PushBack(Completion("any"));
 
     Array<LibraryRef> libraries;
@@ -90,8 +88,7 @@ void ZilchDocumentResource::OnCharacterAdded(ICodeEditor* editor, Rune value)
 
     editor->ShowAutoComplete(completions, CompletionConfidence::Perfect);
   }
-  // Are we attempting to call a function? (this may just be a grouping
-  // operator)
+  // Are we attempting to call a function? (this may just be a grouping operator)
   else if (value == '(' || value == ',')
   {
     AutoCompleteInfo info;
@@ -154,9 +151,8 @@ void AddTypesToAutoComplete(LibraryRef library, Array<Completion>& keywordsOut)
       }
       nameBuilder.Append("]");
 
-      // Since auto-completion adds the full name, we can't put the default
-      // template argument names in there. For now put the full name in the
-      // description so the user can at least see the required arguments.
+      // Since auto-completion adds the full name, we can't put the default template argument names in there.
+      // For now put the full name in the description so the user can at least see the required arguments.
       keywordsOut.PushBack(Completion(templateHandler.TemplateBaseName, nameBuilder.ToString()));
     }
   }
@@ -221,12 +217,11 @@ void ZilchDocumentResource::FindPositionToGenerateFunction(ICodeEditor* editor, 
   if (newlineBeforeFunction.Empty())
     return;
 
-  // Increment past the newline character to be at the beginning of the line the
-  // function declaration is on
+  // Increment past the newline character to be at the beginning of the line the function declaration is on
   newlineBeforeFunction.IncrementByRune();
 
-  // Find the indent space leading up the start of non-whitespace text to
-  // account for potential attribute tags and get the correct indent size
+  // Find the indent space leading up the start of non-whitespace text to account for
+  // potential attribute tags and get the correct indent size
   StringRange textBeforeFunction = allText.SubString(newlineBeforeFunction.Begin(), function.End());
   Rune indentEndRune = textBeforeFunction.FindFirstNonWhitespaceRune();
   StringRange indentEnd = textBeforeFunction.FindFirstOf(indentEndRune);
@@ -235,17 +230,15 @@ void ZilchDocumentResource::FindPositionToGenerateFunction(ICodeEditor* editor, 
   size_t bracesCount = 0;
   StringIterator endIndex;
 
-  // The entire idea here is that we scanned up until we found the function we
-  // were calling Zero.Connect in Now we're going to find the END of the
-  // function by counting { and } Once we find the end, that's where we put our
-  // generated code!
+  // The entire idea here is that we scanned up until we found the function we were calling Zero.Connect in
+  // Now we're going to find the END of the function by counting { and }
+  // Once we find the end, that's where we put our generated code!
   StringRange textRange(function.Begin(), allText.End());
   for (; !textRange.Empty(); textRange.PopFront())
   {
     Rune r = textRange.ReadCurrentRune();
 
-    // if we are in a comment scan until we reach a new line or the end of the
-    // text range
+    // if we are in a comment scan until we reach a new line or the end of the text range
     if (r == '/')
     {
       textRange.PopFront();
@@ -260,16 +253,14 @@ void ZilchDocumentResource::FindPositionToGenerateFunction(ICodeEditor* editor, 
         }
         if (r == '*')
         {
-          // Have to pop front after the star as /*/*/ is a valid c style
-          // comment
+          // Have to pop front after the star as /*/*/ is a valid c style comment
           textRange.PopFront();
           StringRange endComment = textRange.FindFirstOf("*/");
           if (!endComment.Empty())
             textRange = textRange.SubString(endComment.End(), textRange.End());
         }
       }
-      // we reached the end of the text range and need to break out of the for
-      // loop too
+      // we reached the end of the text range and need to break out of the for loop too
       if (textRange.Empty())
         break;
     }
@@ -295,13 +286,12 @@ void ZilchDocumentResource::FindPositionToGenerateFunction(ICodeEditor* editor, 
 
   // Move past the brace
   ++endIndex;
-  positionOut = endIndex.mIteratorRange.Data() - allText.Data();
+  positionOut = static_cast<int>(endIndex.mIteratorRange.Data() - allText.Data());
 }
 
 void ZilchDocumentResource::ValidateNewScriptName(Status& status, StringParam name)
 {
-  // If we're making a new type, then we need to check if this name already
-  // exists.
+  // If we're making a new type, then we need to check if this name already exists.
   if (BoundType* existingType = MetaDatabase::GetInstance()->FindType(name))
   {
     // We can replace proxies
@@ -318,8 +308,7 @@ void ZilchDocumentResource::ValidateRawScriptName(Status& status, StringParam na
   // Make sure the user used a valid Zilch type name
   if (LibraryBuilder::CheckUpperIdentifier(name) == false)
   {
-    status.SetFailed("Zilch type names must start with an uppercase letter and "
-                     "not contain invalid symbols");
+    status.SetFailed("Zilch type names must start with an uppercase letter and not contain invalid symbols");
     return;
   }
 }
@@ -392,7 +381,7 @@ void ZilchDocumentResource::GetAutoCompleteInfo(ICodeEditor* editor, AutoComplet
   project.GetAutoCompleteInfo(dependencies, editor->GetCaretPosition(), cursorOrigin, info);
 
   // Don't show types marked as hidden
-  for (uint i = info.CompletionEntries.Size() - 1; i < info.CompletionEntries.Size(); --i)
+  for (size_t i = info.CompletionEntries.Size() - 1; i < info.CompletionEntries.Size(); --i)
   {
     BoundType* type = MetaDatabase::FindType(info.CompletionEntries[i].Type);
     if (type && type->HasAttributeInherited(ObjectAttributes::cHidden))

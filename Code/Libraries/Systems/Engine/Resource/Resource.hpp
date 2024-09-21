@@ -15,8 +15,7 @@ class ResourceTemplate;
 
 DeclareEnum4(ResourceEditType, Data, Text, Custom, None);
 
-/// Resource Ids are 64 bit numbers. Stored in text files at a 16 digit hex
-/// value.
+/// Resource Ids are 64 bit numbers. Stored in text files at a 16 digit hex value.
 typedef Guid ResourceId;
 
 namespace Events
@@ -48,9 +47,8 @@ public:
   {
   }
 
-  // This will always be set for visual studio visualizers. If it's garbage,
-  // it's because the resource was deleted. If we could call functions in
-  // visualizers, this wouldn't be needed.
+  // This will always be set for visual studio visualizers. If it's garbage, it's because the
+  // resource was deleted. If we could call functions in visualizers, this wouldn't be needed.
   Resource* mDebugResource;
 
   // Actual handle data
@@ -102,17 +100,15 @@ public:
   {
   }
 
-  // If a resource type holds any references to other resources, the handles
-  // must be cleared in this method so that dangling references can be caught
-  // when libraries unload.
+  // If a resource type holds any references to other resources, the handles must be cleared
+  // in this method so that dangling references can be caught when libraries unload.
   virtual void Unload()
   {
   }
 
-  // To support runtime cloning, implement 'HandleOf<ResourceType>
-  // RuntimeClone()' for the resource. Override this method to call RuntimeClone
-  // and bind the RuntimeClone method. This method is needed for the
-  // [RuntimeClone] feature in script.
+  // To support runtime cloning, implement 'HandleOf<ResourceType> RuntimeClone()' for the resource.
+  // Override this method to call RuntimeClone and bind the RuntimeClone method.
+  // This method is needed for the [RuntimeClone] feature in script.
   virtual HandleOf<Resource> Clone();
 
   /// Gets the name of the resource (or the contents file path if we have it)
@@ -175,13 +171,11 @@ public:
   /// Returns the base Resource that this Resource inherited form.
   Resource* GetBaseResource();
 
-  /// Returns whether or not this Resource inherits from the given base
-  /// Resource.
+  /// Returns whether or not this Resource inherits from the given base Resource.
   bool InheritsFrom(Resource* baseResource);
 
   /// Can this resource hold a reference to the given resource. Checks resource
-  /// library dependencies to see if the given resource is in a dependent
-  /// (parent) library.
+  /// library dependencies to see if the given resource is in a dependent (parent) library.
   bool CanReference(Resource* resource);
 
   ResourceTemplate* GetResourceTemplate();
@@ -231,8 +225,8 @@ public:
   /// Content Item used to build this resource.
   ContentItem* mContentItem;
 
-  /// Builder type used for this content item. It's safe to store a pointer to
-  /// the type because it will always be a native type.
+  /// Builder type used for this content item. It's safe to store a pointer to the type
+  /// because it will always be a native type.
   BoundType* mBuilderType;
 
   /// Denotes a resource created at runtime (not loaded from a file).
@@ -271,8 +265,7 @@ public:
 extern const String DataResourceExtension;
 
 // Data Resource
-/// A resource that is stored in our serialization data format and is directly
-/// edited by the editor.
+/// A resource that is stored in our serialization data format and is directly edited by the editor.
 class DataResource : public Resource
 {
 public:

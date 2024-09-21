@@ -25,14 +25,13 @@ class Transform : public Component
 public:
   ZilchDeclareType(Transform, TypeCopyMode::ReferenceType);
 
-  /// Concatenating matrices to generate a world matrix can be very expensive
-  /// when dealing with deep hierarchies that are constantly changing. Caching
-  /// these world matrices can substantially increase the performance, but at
-  /// the cost of memory. Instead of adding a Matrix 4 to each Transform, we can
-  /// enable and disable the caching by using a memory pool and a single pointer
-  /// on the Transform. This way we can enable / disable the optimization
-  /// depending on what the user needs for their simulation. This is especially
-  /// important for memory restrictive platforms.
+  /// Concatenating matrices to generate a world matrix can be very expensive when dealing with
+  /// deep hierarchies that are constantly changing. Caching these world matrices can substantially
+  /// increase the performance, but at the cost of memory. Instead of adding a Matrix 4 to each
+  /// Transform, we can enable and disable the caching by using a memory pool and a single pointer
+  /// on the Transform. This way we can enable / disable the optimization depending on what
+  /// the user needs for their simulation. This is especially important for memory
+  /// restrictive platforms.
   static bool sCacheWorldMatrices;
   static Memory::Pool* sCachedWorldMatrixPool;
 
@@ -55,8 +54,8 @@ public:
   /// Send the TransformUpdateInfo and compute the delta transform from
   /// the old transform to the current transform (mostly for the gizmo).
   void Update(uint flags, Mat4Param oldMat);
-  /// Same as the above update function but it also auto sets the scale,
-  /// rotation, and translation flags. Currently used for attach/detach.
+  /// Same as the above update function but it also auto sets the scale, rotation, and
+  /// translation flags. Currently used for attach/detach.
   void UpdateAll(Mat4Param oldMat, uint flags = 0);
   void UpdateAll(uint flags = 0);
   void Reset();

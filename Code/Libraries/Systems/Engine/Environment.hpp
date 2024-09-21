@@ -14,13 +14,12 @@ public:
 
   /// Parse the given command-line arguments into a map of name/value pairs.
   /// Parameters are denoted by a leading '-' and the next argument is assumed
-  /// to be its value. If the next argument is another parameter then the
-  /// previous argument is assumed to be a bool with the value of "true".
+  /// to be its value. If the next argument is another parameter then the previous
+  /// argument is assumed to be a bool with the value of "true".
   void ParseCommandArgs(const Array<String>& commandLineArgs);
 
   /// Returns the value of the given parameter as parsed from the application's
-  /// command-line arguments. If the parameter doesn't exist, an empty string is
-  /// returned.
+  /// command-line arguments. If the parameter doesn't exist, an empty string is returned.
   String GetParsedArgument(StringParam parameterName);
 
   /// Queries the operating system for an environmental variable.
@@ -37,8 +36,8 @@ public:
   /// The original command-line, split up by arguments.
   Array<String> mCommandLineArguments;
 
-  /// The arguments split up into name/value pairs. If a parameter name had no
-  /// value then it is parsed as a boolean with the value of true.
+  /// The arguments split up into name/value pairs. If a parameter name had no value
+  /// then it is parsed as a boolean with the value of true.
   StringMap mParsedCommandLineArguments;
 
   template <typename type>

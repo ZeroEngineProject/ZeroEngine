@@ -38,14 +38,12 @@ void CogRestoreState::StoreObjectState(Object* object)
   if (Cog* parent = cog->GetParent())
     mParent = parent;
 
-  // If this object is an Archetype and a child of another Archetype, it may
-  // have modifications in that Archetype required to create it in the proper
-  // state. Apply those modifications to the object before saving it. These will
-  // be cleared later
+  // If this object is an Archetype and a child of another Archetype, it may have modifications
+  // in that Archetype required to create it in the proper state. Apply those modifications
+  // to the object before saving it. These will be cleared later
   bool appliedArchetypeModifications = CogSerialization::PreProcessForCopy(cog, mCachedModifications);
 
-  // Create a copy of our local modifications to restore later if pre-process
-  // didn't
+  // Create a copy of our local modifications to restore later if pre-process didn't
   if (appliedArchetypeModifications == false)
     mCachedModifications.Cache(object);
 
@@ -54,8 +52,8 @@ void CogRestoreState::StoreObjectState(Object* object)
   saver.OpenBuffer();
   saver.SaveInstance(cog);
 
-  // Restore original modifications. This step is extra work when we plan on
-  // deleting the object and could be optimized out
+  // Restore original modifications. This step is extra work when we plan on deleting the object
+  // and could be optimized out
   if (appliedArchetypeModifications)
     CogSerialization::PostProcessAfterCopy(cog, mCachedModifications);
 

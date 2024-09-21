@@ -73,8 +73,7 @@ public:
   Space* mTargetSpace;
   /// The camera for the viewport through which casting is happening.
   Cog* mCameraCog;
-  /// The point clicked for a raycast. For a frustum cast this is the drag end
-  /// point.
+  /// The point clicked for a raycast. For a frustum cast this is the drag end point.
   Vec2 mMouseCurrent;
   /// The point that a frustum cast drag started at.
   /// Will be set to mMouseCurrent when this is a raycast.
@@ -92,7 +91,7 @@ public:
   {
     mActive = true;
   }
-  virtual ~RaycastProvider(){};
+  virtual ~RaycastProvider() {};
 
   // Serialization
   void Serialize(Serializer& stream) override;
@@ -104,13 +103,11 @@ public:
   /// The list should be set to the desired capacity beforehand.
   virtual void FrustumCast(Frustum& frustum, CastInfo& castInfo, RaycastResultList& results) = 0;
 
-  /// Whether or not this provider is active. Used to fully disable the
-  /// provider.
+  /// Whether or not this provider is active. Used to fully disable the provider.
   bool mActive;
 };
 
-/// Stores all of the providers and manages casting and merging through all of
-/// them.
+/// Stores all of the providers and manages casting and merging through all of them.
 class Raycaster : public SafeId32
 {
 public:
@@ -120,8 +117,7 @@ public:
   void Serialize(Serializer& stream);
   void SerializeProviders(Serializer& stream);
 
-  /// Adds a new provider (that is owned by this class) to cast with during
-  /// editor casts.
+  /// Adds a new provider (that is owned by this class) to cast with during editor casts.
   void AddProvider(RaycastProvider* provider);
 
   /// Performs a raycast through all providers.

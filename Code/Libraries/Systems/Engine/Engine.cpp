@@ -33,13 +33,11 @@ void ZeroDoNotify(
   if (expections == NotifyException::Script)
     ExecutableState::CallingState->ThrowException(String::Format("%s: %s", title.c_str(), message.c_str()));
 
-  // This would normally not be safe because in a threaded scenario, the
-  // gDispatch could be deleted between when we check it and when we call
-  // Dispatch, however, the only threads that should be calling DoNotify are
-  // threads created by the job system and those threads are shutdown before we
-  // delete the gDispatch, therefore the only thread that could call DoNotify
-  // after would be the main thread (which is also the thread we are calling
-  // SafeDelete on the gDispatch)
+  // This would normally not be safe because in a threaded scenario, the gDispatch could be deleted between when we
+  // check it and when we call Dispatch, however, the only threads that should be calling DoNotify are threads created
+  // by the job system and those threads are shutdown before we delete the gDispatch, therefore the only thread that
+  // could call DoNotify after would be the main thread (which is also the thread we are calling SafeDelete on the
+  // gDispatch)
   if (Z::gDispatch != nullptr)
   {
     Environment* environment = Environment::GetInstance();
@@ -172,7 +170,7 @@ void Engine::Update()
 
     ++mFrameCounter;
   }
-  //YieldToOs();
+  // YieldToOs();
 }
 
 void Engine::Terminate()
@@ -236,9 +234,9 @@ void Engine::DestroySystems()
 {
   // Delete all the systems in reverse order that they were added
   // in (to minimize any dependency problems between systems)
-  for (unsigned i = 0; i < mSystems.Size(); ++i)
+  for (size_t i = 0; i < mSystems.Size(); ++i)
   {
-    int reverseIndex = mSystems.Size() - i - 1;
+    int reverseIndex = static_cast<int>(mSystems.Size() - i - 1);
     delete mSystems[reverseIndex];
   }
 }
@@ -278,8 +276,7 @@ Engine::SpaceListType::range Engine::GetSpaces()
   return mSpaceList.All();
 }
 
-// This function should be removed and all Spaces (if not already) should belong
-// to a GameSession
+// This function should be removed and all Spaces (if not already) should belong to a GameSession
 void Engine::DestroyAllSpaces()
 {
   SpaceListType::range r = mSpaceList.All();
@@ -348,8 +345,7 @@ void Engine::SetCurrentInputDevice(InputDevice::Enum device)
   InputDevice::Enum oldDevice = mCurrentInputDevice;
   mCurrentInputDevice = (InputDevice::Enum)device;
 
-  // Send an event to let everyone know the input device that the user is using
-  // has changed
+  // Send an event to let everyone know the input device that the user is using has changed
   InputDeviceEvent toSend;
   toSend.mDevice = device;
   toSend.mLastDevice = oldDevice;
@@ -364,11 +360,11 @@ void Engine::Shutdown()
   DestroyAllSpaces();
   Z::gTracker->ClearDeletedObjects();
 
-  // There could still be threaded events queued up. Make sure to delete all
-  // events so that no events can use a destructed handle manager (such as ui
-  // widget handles being destroyed after the widget system is shutdown). Do NOT
-  // call ShutdownThreadSystem here because there are still systems that are
-  // alive (and threaded) such as AsyncWebRequest that can be using gDispatch.
+  // There could still be threaded events queued up. Make sure to delete all events
+  // so that no events can use a destructed handle manager (such as ui widget handles
+  // being destroyed after the widget system is shutdown).
+  // Do NOT call ShutdownThreadSystem here because there are still systems that
+  // are alive (and threaded) such as AsyncWebRequest that can be using gDispatch.
   Z::gDispatch->ClearEvents();
 }
 
@@ -407,7 +403,7 @@ EngineMetaComposition::EngineMetaComposition() : MetaComposition(ZilchTypeId(Sys
 uint EngineMetaComposition::GetComponentCount(HandleParam owner)
 {
   Engine* engine = owner.Get<Engine*>(GetOptions::AssertOnNull);
-  return engine->mSystems.Size();
+  return (uint)engine->mSystems.Size();
 }
 
 Handle EngineMetaComposition::GetComponent(HandleParam owner, BoundType* componentType)

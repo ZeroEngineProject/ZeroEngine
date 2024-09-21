@@ -17,8 +17,7 @@ DeclareEvent(OperationUndo);
 DeclareEvent(OperationRedo);
 } // namespace Events
 
-/// Notification about most recent Operation/OperationBatch added to the
-/// OperationQueue.
+/// Notification about most recent Operation/OperationBatch added to the OperationQueue.
 class OperationQueueEvent : public Event
 {
 public:
@@ -39,8 +38,7 @@ class OperationCreationContext
 public:
   ~OperationCreationContext();
 
-  /// If the context for the given composition doesn't exist, it will be created
-  /// for you.
+  /// If the context for the given composition doesn't exist, it will be created for you.
   MetaCreationContext* GetContext(MetaComposition* composition);
   void Finalize();
 
@@ -185,8 +183,7 @@ public:
 
   void Undo();
   /// If the operation passed in has ancestors, then the Undo will be done on
-  /// all operations before the ancestor root of the hierarchy containing
-  /// 'allBeforeThis'.
+  /// all operations before the ancestor root of the hierarchy containing 'allBeforeThis'.
   bool Undo(Operation* allBeforeThis);
   void Redo();
   /// If the operation passed in has ancestors, then the Redo will be done on
@@ -216,13 +213,11 @@ public:
   /// will be recorded and operations will be properly created when EndBatch
   /// is called on the OperationQueue.
   void SaveObjectState(Cog* object);
-  /// Marks a property on the given component as being modified. This will set
-  /// the property to it's current value.
+  /// Marks a property on the given component as being modified. This will set the property to it's current value.
   void MarkPropertyAsModified(Component* component, StringParam propertyName);
 
   /// Records that the object was created. This will also mark the object
-  /// for any further modifications until EndBatch is called on the
-  /// OperationQueue.
+  /// for any further modifications until EndBatch is called on the OperationQueue.
   void ObjectCreated(Cog* object);
 
   /// Records that the object was destroyed.
@@ -236,7 +231,6 @@ public:
   OperationCreationContext mCreationContexts;
   HashSet<Cog*> mDestroyedObjects;
 
-  // Side Effects
   static void StartListeningForSideEffects();
   static bool IsListeningForSideEffects();
   static void RegisterSideEffect(HandleParam object, PropertyPathParam propertyPath, const Any& oldValue);
@@ -244,26 +238,22 @@ public:
   void QueueRegisteredSideEffects();
 
   /// The ObjectLink Component has the property 'ObjectAPath' of type CogPath.
-  /// When you modify the 'ResolvedCog' property on CogPath, it also modifies
-  /// the Path property. We want to make a side effect operation to also modify
-  /// the Path property. However, CogPath cannot store local modifications
-  /// because we cannot get a safe handle to it (it doesn't know what contains
-  /// it).
+  /// When you modify the 'ResolvedCog' property on CogPath, it also modifies the Path property.
+  /// We want to make a side effect operation to also modify the Path property.
+  /// However, CogPath cannot store local modifications because we cannot get a safe handle to it
+  /// (it doesn't know what contains it).
   ///
-  /// When ResolvedCog on CogPath is modified in the editor, the instance is the
-  /// ObjectLink Component, and the value changed is "ObjectAPath/ResolvedCog".
-  /// When the setter marks the 'Path' property as a side effect, we want it be
-  /// the same instance with "ObjectAPath/Path" as the modified property.
-  /// Unfortunately, that information is not available within the
+  /// When ResolvedCog on CogPath is modified in the editor, the instance is the ObjectLink
+  /// Component, and the value changed is "ObjectAPath/ResolvedCog". When the setter marks the
+  /// 'Path' property as a side effect, we want it be the same instance with "ObjectAPath/Path" as
+  /// the modified property. Unfortunately, that information is not available within the
   /// CogPath::SetResolvedCog setter.
   ///
-  /// SideEffectContext was added for this reason. When the
-  /// "ObjectAPath/ResolvedCog" is modified, it is pushed onto a context stack
-  /// so that if there is a side effect, it can read from that stack and have
-  /// the correct instance and build the correct path. In this case, what is
-  /// pushed onto the stack is the instance of ObjectLink and "ObjectAPath",
-  /// allowing the 'Path' side effect to be added to the end of the stored path
-  /// on the stack.
+  /// SideEffectContext was added for this reason. When the "ObjectAPath/ResolvedCog" is modified,
+  /// it is pushed onto a context stack so that if there is a side effect, it can read from that
+  /// stack and have the correct instance and build the correct path. In this case, what is pushed
+  /// onto the stack is the instance of ObjectLink and "ObjectAPath", allowing the 'Path' side
+  /// effect to be added to the end of the stored path on the stack.
   static void PushSubPropertyContext(HandleParam object, PropertyPathParam contextPath);
   static void PopSubPropertyContext();
 
@@ -303,8 +293,8 @@ public:
   template <typename T>
   T Get() const;
 
-  /// If an object was re-created (destroy Cog and undo), call this to update
-  /// the live object in the undo map.
+  /// If an object was re-created (destroy Cog and undo), call this to update the live object in
+  /// the undo map.
   void UpdateObject(HandleParam newObject);
 
 private:

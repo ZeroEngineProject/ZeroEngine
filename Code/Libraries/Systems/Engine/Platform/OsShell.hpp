@@ -5,8 +5,7 @@ namespace Zero
 {
 namespace Events
 {
-// This event occurs in the middle of OsShell update before we process Os
-// messages
+// This event occurs in the middle of OsShell update before we process Os messages
 DeclareEvent(Cut);
 DeclareEvent(Copy);
 DeclareEvent(Paste);

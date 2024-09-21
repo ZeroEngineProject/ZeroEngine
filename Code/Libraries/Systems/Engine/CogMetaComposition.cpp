@@ -35,7 +35,7 @@ CogMetaComposition::CogMetaComposition() : MetaComposition(ZilchTypeId(Component
 uint CogMetaComposition::GetComponentCount(HandleParam owner)
 {
   Cog* cog = owner.Get<Cog*>(GetOptions::AssertOnNull);
-  return cog->mComponents.Size();
+  return (uint)cog->mComponents.Size();
 }
 
 Handle CogMetaComposition::GetComponent(HandleParam owner, BoundType* typeId)
@@ -69,8 +69,7 @@ bool CogMetaComposition::CanAddComponent(HandleParam owner, BoundType* typeToAdd
     if (cog->GetParent() && !cog->GetParent()->has(Transform))
     {
       if (info)
-        info->Reason = "Cannot add Transform to an object who's parent doesn't "
-                       "have a Transform.";
+        info->Reason = "Cannot add Transform to an object who's parent doesn't have a Transform.";
       return false;
     }
   }
@@ -113,10 +112,9 @@ void CogMetaComposition::AddComponent(HandleParam owner,
   // the component then just return an empty object
   ReturnIf(component == nullptr, , "Invalid Component given");
 
-  // Originally we never set the owner on the component prior to serialization,
-  // but certain features such as CogPath require knowing the owning object We
-  // need to make sure the user cannot access the owner from script during the
-  // serialization phase
+  // Originally we never set the owner on the component prior to serialization, but certain features
+  // such as CogPath require knowing the owning object
+  // We need to make sure the user cannot access the owner from script during the serialization phase
   component->mOwner = cog;
 
   // Add the Component
@@ -137,10 +135,9 @@ void CogMetaComposition::AddComponent(HandleParam owner,
   init->mParent = cog;
   component->ScriptInitialize(*init);
 
-  // No objects were created, so instead of calling AllCreated, just send the
-  // AllObjectsInitialized event. If we have a valid creation context, it will
-  // send the AllObjectsInitialized event for us once all batched operations
-  // have been completed, so defer to it.
+  // No objects were created, so instead of calling AllCreated, just send the AllObjectsInitialized
+  // event. If we have a valid creation context, it will send the AllObjectsInitialized event
+  // for us once all batched operations have been completed, so defer to it.
   if (creationContext == nullptr)
     init->SendAllObjectsInitialized();
 
@@ -161,8 +158,7 @@ bool CogMetaComposition::CanRemoveComponent(HandleParam owner, HandleParam compo
 
   Cog* cog = owner.Get<Cog*>(GetOptions::AssertOnNull);
 
-  // The child transform's TransformParent* will not be fixed and be a dangling
-  // pointer.
+  // The child transform's TransformParent* will not be fixed and be a dangling pointer.
   if (typeToRemove->IsA(ZilchTypeId(Transform)))
   {
     // Can only remove it if we have no children with a Transform
@@ -170,8 +166,7 @@ bool CogMetaComposition::CanRemoveComponent(HandleParam owner, HandleParam compo
     {
       if (child.has(Transform))
       {
-        reason = "Cannot remove the Transform from an object who's children "
-                 "have a Transform.";
+        reason = "Cannot remove the Transform from an object who's children have a Transform.";
         return false;
       }
     }
@@ -209,8 +204,7 @@ void CogMetaComposition::MoveComponent(HandleParam owner, HandleParam component,
 }
 
 // METAREFACTOR Take care of this stuff (meta components)
-// void MetaSerializeCog(MetaObjectInstance owningInstance, MetaType*
-// propertyMeta, MetaProperty* property,
+// void MetaSerializeCog(MetaObjectInstance owningInstance, MetaType* propertyMeta, MetaProperty* property,
 //                      Serializer& serializer)
 //{
 //  ObjPtr instance = owningInstance.ObjectPtr;
@@ -222,8 +216,7 @@ void CogMetaComposition::MoveComponent(HandleParam owner, HandleParam component,
 //    Variant variant = property->GetValue(instance);
 //
 //    // Get the saving context and the stream id.
-//    CogSavingContext* context =
-//    static_cast<CogSavingContext*>(serializer.GetSerializationContext());
+//     CogSavingContext* context = static_cast<CogSavingContext*>(serializer.GetSerializationContext());
 //
 //    // By default write an empty id
 //    u32 contextId = 0;
@@ -239,8 +232,7 @@ void CogMetaComposition::MoveComponent(HandleParam owner, HandleParam component,
 //      if(Cog* object = variant.AsRef<Cog>())
 //      {
 //        //If there is a saving context convert the id to a Save Id
-//        if(context != NULL &&
-//        context->CurrentContextMode==ContextMode::Saving)
+//         if(context != NULL && context->CurrentContextMode==ContextMode::Saving)
 //          contextId = context->ToContextId(object->GetId().Id);
 //        else
 //          contextId = object->GetId().Id;
@@ -258,12 +250,10 @@ void CogMetaComposition::MoveComponent(HandleParam owner, HandleParam component,
 //    MetaType* metaType = MetaDatabase::GetInstance()->FindType(typeId);
 //    if(metaType)
 //    {
-//      CogCreationContext* context =
-//      static_cast<CogCreationContext*>(serializer.GetSerializationContext());
+//       CogCreationContext* context = static_cast<CogCreationContext*>(serializer.GetSerializationContext());
 //
 //      u32 contextId = 0;
-//      Serialization::Policy<uint>::Serialize(serializer, fieldName,
-//      contextId);
+//       Serialization::Policy<uint>::Serialize(serializer, fieldName, contextId);
 //
 //      Variant variant = contextId;
 //      property->SetValue(instance, &variant);
@@ -276,8 +266,7 @@ void CogMetaComposition::MoveComponent(HandleParam owner, HandleParam component,
 //{
 //  Component* component = (Component*)instance;
 //
-//  //LocalObjectModifications* modifications =
-//  LocalObjectModifications::GetInstance();
+//   //LocalObjectModifications* modifications = LocalObjectModifications::GetInstance();
 //  //PropertyPath path(component, property);
 //  return modifications->IsPropertyModified(component->GetOwner(), path);
 //}

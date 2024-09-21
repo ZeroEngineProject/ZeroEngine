@@ -47,8 +47,8 @@ private:
 };
 
 // Cached Modifications
-/// Given a data tree, this builds local modifications that can be applied to a
-/// given Object at a later time.
+/// Given a data tree, this builds local modifications that can be applied to a given Object
+/// at a later time.
 class CachedModifications
 {
 public:
@@ -59,10 +59,9 @@ public:
   CachedModifications();
   ~CachedModifications();
 
-  /// Builds local modifications from the give data tree. The object states can
-  /// then be applied to objects later once they have been allocated. This is
-  /// primarily used to cache the object states for Archetypes so that the
-  /// information can be quickly cloned.
+  /// Builds local modifications from the give data tree. The object states can then be applied
+  /// to objects later once they have been allocated. This is primarily used to cache the
+  /// object states for Archetypes so that the information can be quickly cloned.
   void Cache(DataNode* root);
   void Cache(Object* object);
   void Combine(CachedModifications& modifications);
@@ -70,8 +69,8 @@ public:
   void ApplyModificationsToObject(Object* object, bool combine = false);
   void ApplyModificationsToChildObject(Object* rootObject, Object* childObject, bool combine);
 
-  /// Any modifications that are stored on the object and the given cached
-  /// modifications will be stored on this.
+  /// Any modifications that are stored on the object and the given cached modifications will
+  /// be stored on this.
   void StoreOverlappingModifications(Object* object, ObjectNode* cachedNode);
 
   ObjectNode* FindChildNode(Object* rootObject, Object* childObject);

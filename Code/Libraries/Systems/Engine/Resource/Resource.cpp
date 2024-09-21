@@ -76,8 +76,7 @@ void ResourceHandleManager::Delete(const Handle& handle)
   {
     ErrorIf(!resource->IsRuntime(),
             "Only runtime resources should be able to be deleted through"
-            " handles. Otherwise, it should be deleted through its "
-            "ResourceLibrary");
+            " handles. Otherwise, it should be deleted through its ResourceLibrary");
     resource->GetManager()->Remove(resource, RemoveMode::Unloading);
     delete resource;
   }
@@ -98,13 +97,12 @@ Resource* ResourceHandleManager::GetResource(const Handle& handle, bool resolveT
   if (data.mRawObject)
     return data.mRawObject;
 
-  // If the handle was never assigned a Resource, no reason to use the fallback
-  // Resource
+  // If the handle was never assigned a Resource, no reason to use the fallback Resource
   if (data.mId == 0)
     return nullptr;
 
-  // If we can't find the resource, we need to get the fallback from the
-  // resource manager if it exists, otherwise it will just be null
+  // If we can't find the resource, we need to get the fallback from the resource manager
+  // if it exists, otherwise it will just be null
   Resource* resource = Z::gResources->GetResource(data.mId);
 
   if (resource == nullptr && resolveThroughManagerOnNull)
@@ -228,16 +226,14 @@ String ResourceToString(const BoundType* type, const ::byte* value)
 }
 
 // METAREFACTOR See below where we set all this information on the meta
-// bool ResourceStringConversion(MetaType* metaType, StringParam string,
-// Variant& var)
+// bool ResourceStringConversion(MetaType* metaType, StringParam string, Variant& var)
 //{
-//  // Find a Resource from String. Allows system to pass strings for resource
-//  parameters or properties. ResourceManager* resourceManger =
-//  Z::gResources->Managers.FindValue(metaType->TypeName, NULL);
+//   // Find a Resource from String. Allows system to pass strings for resource parameters or properties.
+//   ResourceManager* resourceManger = Z::gResources->Managers.FindValue(metaType->TypeName, NULL);
 //  if(resourceManger)
 //  {
-//    var = resourceManger->GetResource(string,
-//    ResourceNotFound::ErrorFallback); return true;
+//     var = resourceManger->GetResource(string, ResourceNotFound::ErrorFallback);
+//     return true;
 //  }
 //  else
 //  {
@@ -379,9 +375,8 @@ int Resource::Release()
   int referenceCount = (int)AtomicPreDecrement(&mReferenceCount);
   if (referenceCount == 0)
   {
-    // Resources owned by a resource library should only be deleted by that
-    // library. Library unloading flag will only be true while a library is
-    // clearing its own handles.
+    // Resources owned by a resource library should only be deleted by that library.
+    // Library unloading flag will only be true while a library is clearing its own handles.
     ErrorIf(!IsRuntime() && !ResourceLibrary::IsLibraryUnloading(),
             "A library resource is being removed but not by the library.");
 
@@ -564,17 +559,15 @@ ZilchDefineType(DataResource, builder, type)
 
 void DataResource::Save(StringParam filename)
 {
-  // Cannot use ObjectSaver with the current way resource id's are expected to
-  // be assigned. Added resources that don't come from a template save to temp
-  // file before an id is given by the content system, but interfaces used by
-  // ObjectSaver require a handle and resource handles require an id...
+  // Cannot use ObjectSaver with the current way resource id's are expected to be assigned.
+  // Added resources that don't come from a template save to temp file before an id is given by the content system,
+  // but interfaces used by ObjectSaver require a handle and resource handles require an id...
   SaveToDataFile(*this, filename);
 
   // ObjectSaver saver;
   // Status status;
   // saver.Open(status, filename.c_str());
-  // ReturnIf(status.Failed(), , "Failed to save resource '%s' to '%s'\n",
-  // Name.c_str(), filename.c_str());
+  // ReturnIf(status.Failed(), , "Failed to save resource '%s' to '%s'\n", Name.c_str(), filename.c_str());
 
   // saver.SaveDefinition(this);
   // saver.Close();

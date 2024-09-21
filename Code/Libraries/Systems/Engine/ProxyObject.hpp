@@ -75,9 +75,8 @@ void ProxyObject<ComponentType>::Serialize(Serializer& stream)
     if (mProxiedData == nullptr)
       return;
 
-    // mProxiedData stored the Component node, and it should have already been
-    // opened in the serializer once this function has been called, so we just
-    // want to save out the child nodes
+    // mProxiedData stored the Component node, and it should have already been opened in the
+    // serializer once this function has been called, so we just want to save out the child nodes
     forRange (DataNode& child, mProxiedData->GetChildren())
       child.SaveToStream(stream);
   }

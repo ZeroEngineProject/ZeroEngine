@@ -31,18 +31,17 @@ MetaEditorScriptObject::MetaEditorScriptObject() : mAutoRegister(true)
 
 void MetaEditorScriptObject::PostProcess(Status& status, ReflectionObject* owner)
 {
-  // If auto register is true, we're creating an empty Cog and adding this
-  // Component to it. Therefore, it cannot have any dependencies. We could first
-  // add the dependencies to the empty Cog, but that's for a later time
+  // If auto register is true, we're creating an empty Cog and adding this Component to it.
+  // Therefore, it cannot have any dependencies. We could first add the dependencies to the
+  // empty Cog, but that's for a later time
   if (mAutoRegister)
   {
     BoundType* componentType = Type::DebugOnlyDynamicCast<BoundType*>(owner);
 
-    // We would normally check for CogComponentMeta and check its dependencies,
-    // however when this post process happens, the property attributes haven't
-    // been processed yet. We should add a second pass for post process when all
-    // attributes for the class have been processed. Or we could even change
-    // this post process to be after everything
+    // We would normally check for CogComponentMeta and check its dependencies, however when
+    // this post process happens, the property attributes haven't been processed yet. We should
+    // add a second pass for post process when all attributes for the class have been processed.
+    // Or we could even change this post process to be after everything
 
     forRange (Property* property, componentType->GetProperties())
     {
@@ -64,8 +63,8 @@ void MetaDependency::PostProcess(Status& status, ReflectionObject* owner)
 {
   Property* property = Type::DynamicCast<Property*>(owner);
 
-  // The attribute system should stop this from ever being the case, so it's an
-  // assert instead of a compilation error
+  // The attribute system should stop this from ever being the case, so it's an assert instead
+  // of a compilation error
   ReturnIf(property == nullptr, , "Dependency attribute should only ever be on a property");
 
   BoundType* classType = property->Owner;
@@ -102,8 +101,8 @@ void MetaInterface::PostProcess(Status& status, ReflectionObject* owner)
 {
   BoundType* classType = Type::DynamicCast<BoundType*>(owner);
 
-  // The attribute system should stop this from ever being the case, so it's an
-  // assert instead of a compilation error
+  // The attribute system should stop this from ever being the case, so it's an assert instead
+  // of a compilation error
   ReturnIf(classType == nullptr, , "Interface attribute should only ever be on a class");
 
   BoundType* baseType = classType->BaseType;

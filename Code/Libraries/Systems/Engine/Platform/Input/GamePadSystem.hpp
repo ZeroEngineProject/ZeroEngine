@@ -74,8 +74,7 @@ public:
   /// Gamepad that generated this event.
   Gamepad* mGamepad;
 
-  /// When responding to the 'GamepadStickFlicked' event, this will be set to
-  /// the stick that was flicked
+  /// When responding to the 'GamepadStickFlicked' event, this will be set to the stick that was flicked
   FlickedStick::Enum mFlickedStick;
 
   /// The direction of the stick that was flicked (normalized)
@@ -131,9 +130,8 @@ public:
   int mGamepadIndex;
 
 private:
-  // If the user moves the stick from its base position to the edge, the stick
-  // is considered flicked This property generally should not be read by the
-  // user (rather event based)
+  // If the user moves the stick from its base position to the edge, the stick is considered flicked
+  // This property generally should not be read by the user (rather event based)
   bool mLeftStickFlicked;
   bool mRightStickFlicked;
 

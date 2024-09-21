@@ -32,17 +32,13 @@ public:
 
   UpdateEvent(float dt, float rDt, float timePassed, float realTimePassed);
 
-  /// The amount of time that passed between this frame and the last (scaled by
-  /// TimeSpace.TimeScale).
+  /// The amount of time that passed between this frame and the last (scaled by TimeSpace.TimeScale).
   float Dt;
-  /// The real amount of time that passed between this frame and the last
-  /// (unscaled and unclamped).
+  /// The real amount of time that passed between this frame and the last (unscaled and unclamped).
   float RealDt;
-  /// The amount of time that has passed since this space was created
-  /// (TimeSpace.TimeScale affects this value).
+  /// The amount of time that has passed since this space was created (TimeSpace.TimeScale affects this value).
   float TimePassed;
-  /// The real amount of time that has passed since this space was created
-  /// (unscaled and unclamped).
+  /// The real amount of time that has passed since this space was created (unscaled and unclamped).
   float RealTimePassed;
 };
 
@@ -84,62 +80,50 @@ public:
   void SetTimeScale(float timeScale);
 
   /// The maximum amount of time we send when running in 'ActualFrametime' mode
-  /// If this value is set too high and the user does anything to pause their
-  /// system or the game (example grabbing the window) then a large frame time
-  /// will be sent out and physics objects will jump very far (causing tunneling
-  /// and random bounces)
+  /// If this value is set too high and the user does anything to pause their system or the game (example grabbing the
+  /// window) then a large frame time will be sent out and physics objects will jump very far (causing tunneling and
+  /// random bounces)
   float mMaxDt;
 
   /// The minimum amount of time we send when running in 'ActualFrametime' mode
-  /// Ideally this is set to a very small non-zero value to prevent any division
-  /// by zero errors
+  /// Ideally this is set to a very small non-zero value to prevent any division by zero errors
   float mMinDt;
 
-  /// Scale the speed of time for interesting effects like bullet time or fast
-  /// paced gameplay
+  /// Scale the speed of time for interesting effects like bullet time or fast paced gameplay
   float mTimeScale;
 
   /// If the time space is paused then we cease sending out logic update events
-  /// When paused, the Dt will remain at whatever it was (it will NOT be set to
-  /// 0)
+  /// When paused, the Dt will remain at whatever it was (it will NOT be set to 0)
   bool mPaused;
 
-  /// When set to fixed framerate the Dt/frame time will never change (it will
-  /// send whatever the project frame-rate-limiter is set to) This means it is
-  /// important to run with a frame-rate limiter of some kind otherwise the game
-  /// will appear to run much faster/slower Note: For determinism, you should
-  /// always run in FixedFrametime mode When set to actual framerate we will
-  /// send out the real time that the engine is encountering (clamped by MinDt /
+  /// When set to fixed framerate the Dt/frame time will never change (it will send whatever the project
+  /// frame-rate-limiter is set to) This means it is important to run with a frame-rate limiter of some kind otherwise
+  /// the game will appear to run much faster/slower Note: For determinism, you should always run in FixedFrametime mode
+  /// When set to actual framerate we will send out the real time that the engine is encountering (clamped by MinDt /
   /// MaxDt)
   TimeMode::Enum mTimeMode;
 
   // Note: These only exist because meta cannot bind member enums!
-  /// When set to fixed framerate the Dt/frame time will never change (it will
-  /// send whatever the project frame-rate-limiter is set to) This means it is
-  /// important to run with a frame-rate limiter of some kind otherwise the game
-  /// will appear to run much faster/slower Note: For determinism, you should
-  /// always run in FixedFrametime mode When set to actual framerate we will
-  /// send out the real time that the engine is encountering (clamped by MinDt /
+  /// When set to fixed framerate the Dt/frame time will never change (it will send whatever the project
+  /// frame-rate-limiter is set to) This means it is important to run with a frame-rate limiter of some kind otherwise
+  /// the game will appear to run much faster/slower Note: For determinism, you should always run in FixedFrametime mode
+  /// When set to actual framerate we will send out the real time that the engine is encountering (clamped by MinDt /
   /// MaxDt)
   TimeMode::Enum GetTimeMode() const;
   void SetTimeMode(TimeMode::Enum value);
 
-  /// The current frame we are on (starts at 0 and counts up for every frame
-  /// that is run) This value counts up regardless of if the space is paused
+  /// The current frame we are on (starts at 0 and counts up for every frame that is run)
+  /// This value counts up regardless of if the space is paused
   int mFrame;
 
-  /// The real amount of time that has passed since this space was created
-  /// (unscaled and unclamped).
+  /// The real amount of time that has passed since this space was created (unscaled and unclamped).
   float mRealTimePassed;
-  /// The amount of time that has passed since this space was created
-  /// (TimeSpace.TimeScale affects this value).
+  /// The amount of time that has passed since this space was created (TimeSpace.TimeScale affects this value).
   float mScaledClampedTimePassed;
 
-  /// The real amount of time that passed between this frame and the last
-  /// (unscaled and unclamped).
+  /// The real amount of time that passed between this frame and the last (unscaled and unclamped).
   float mRealDt;
-  /// The amount of time that passed between this frame and the last (scaled by
-  /// TimeSpace.TimeScale).
+  /// The amount of time that passed between this frame and the last (scaled by TimeSpace.TimeScale).
   float mScaledClampedDt;
 
   /// Causes the engine to update multiple times before rendering a frame.

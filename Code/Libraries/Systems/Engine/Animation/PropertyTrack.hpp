@@ -37,9 +37,9 @@ public:
   {
   }
 
-  virtual ~PropertyTrack(){};
+  virtual ~PropertyTrack() {};
   virtual void LinkInstance(PropertyTrackPlayData& data, BlendTracks& tracks, StringParam objectPath, Cog* object) = 0;
-  virtual void UpdateFrame(PropertyTrackPlayData& data, TrackParams& params, AnimationFrame& animationFrame){};
+  virtual void UpdateFrame(PropertyTrackPlayData& data, TrackParams& params, AnimationFrame& animationFrame) {};
 
   // Editing
   virtual void InsertKey(PropertyTrackPlayData& data, float time)
@@ -51,7 +51,7 @@ public:
   virtual void AddKey(AnyParam value, float time)
   {
   }
-  virtual void ResortKeyFrames(){};
+  virtual void ResortKeyFrames() {};
   virtual void GetKeyTimes(Array<float>& times)
   {
   }

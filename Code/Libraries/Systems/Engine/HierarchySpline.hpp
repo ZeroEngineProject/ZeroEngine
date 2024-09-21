@@ -7,8 +7,7 @@ namespace Zero
 class UpdateEvent;
 class HierarchyEvent;
 
-/// A spline that builds its control points from all child cogs that have
-/// Transforms.
+/// A spline that builds its control points from all child cogs that have Transforms.
 class HierarchySpline : public Component
 {
 public:

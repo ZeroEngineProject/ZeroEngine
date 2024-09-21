@@ -62,20 +62,20 @@ bool DataSource::Move(DataEntry* destinationEntry, Array<DataIndex>& indicesToMo
   return true;
 }
 
-u64 ArrayDataSource::DataEntryToArrayIndex(DataEntry* entry)
+size_t ArrayDataSource::DataEntryToArrayIndex(DataEntry* entry)
 {
-  u64 index = (u64)(uintptr_t)entry;
+  size_t index = (size_t)(uintptr_t)entry;
   if (index == RootIndex)
-    return (u64)-1;
+    return (size_t)-1;
 
   return index - 1;
 }
 
-u64 ArrayDataSource::DataIndexToArrayIndex(DataIndex dataIndex)
+size_t ArrayDataSource::DataIndexToArrayIndex(DataIndex dataIndex)
 {
-  u64 index = (u64)dataIndex.Id;
+  size_t index = (size_t)dataIndex.Id;
   if (index == RootIndex)
-    return (u64)-1;
+    return (size_t)-1;
   return index - 1;
 }
 
@@ -97,7 +97,7 @@ DataIndex ArrayDataSource::ToIndex(DataEntry* dataEntry)
 DataEntry* ArrayDataSource::Parent(DataEntry* dataEntry)
 {
   // everyone but the root has the parent of the root
-  u64 index = (u64)dataEntry;
+  size_t index = (size_t)dataEntry;
   if (index == RootIndex)
     return nullptr;
   return (DataEntry*)RootIndex;
@@ -106,16 +106,15 @@ DataEntry* ArrayDataSource::Parent(DataEntry* dataEntry)
 uint ArrayDataSource::ChildCount(DataEntry* dataEntry)
 {
   // only the root has children, no one else does
-  u64 index = (u64)dataEntry;
+  size_t index = (size_t)dataEntry;
   if (index == RootIndex)
-    return GetArraySize();
+    return (uint)GetArraySize();
   return 0;
 }
 
 DataEntry* ArrayDataSource::GetChild(DataEntry* dataEntry, uint index, DataEntry* prev)
 {
-  // have to shift the child to be at index 1 (since a data entry of NULL is
-  // considered invalid)
+  // have to shift the child to be at index 1 (since a data entry of NULL is considered invalid)
   uint childIndex = index + 1;
   return ToEntry(DataIndex(childIndex));
 }
@@ -131,30 +130,28 @@ bool ArrayDataSource::IsExpandable(DataEntry* dataEntry)
 
 void ArrayDataSource::GetData(DataEntry* dataEntry, Any& any, StringParam column)
 {
-  u64 index = (u64)dataEntry;
+  size_t index = (size_t)dataEntry;
   if (index == RootIndex)
     return;
 
-  // we had to add one to avoid returning NULL, so shift back to the actual
-  // array index
-  u64 arrayIndex = index - 1;
+  // we had to add one to avoid returning NULL, so shift back to the actual array index
+  size_t arrayIndex = index - 1;
   GetData(arrayIndex, any, column);
 }
 
 bool ArrayDataSource::SetData(DataEntry* dataEntry, const Any& any, StringParam column)
 {
-  u64 index = (u64)dataEntry;
+  u32 index = (u32)(size_t)dataEntry;
   if (index == RootIndex)
     return false;
 
-  // we had to add one to avoid returning NULL, so shift back to the actual
-  // array index
-  u64 arrayIndex = index - 1;
+  // we had to add one to avoid returning NULL, so shift back to the actual array index
+  u32 arrayIndex = index - 1;
   SetData(arrayIndex, any, column);
   return true;
 }
 
-ListSource::ListSource(){
+ListSource::ListSource() {
 
 };
 
@@ -258,7 +255,7 @@ void EnumSource::FillOutDescriptions()
 uint EnumSource::GetCount()
 {
   // Return the computed size
-  return mNames.Size();
+  return (uint)mNames.Size();
 }
 
 // Get the name at a particular index
@@ -268,8 +265,7 @@ String EnumSource::GetStringValueAt(DataIndex index)
   return mNames[(uint)index.Id];
 }
 
-// Get the description (documentation) for the corresponding enum at the same
-// index
+// Get the description (documentation) for the corresponding enum at the same index
 String EnumSource::GetDescriptionAt(DataIndex index)
 {
   ErrorIf(index.Id > GetCount(), "Indexing past the bounds of a static array");

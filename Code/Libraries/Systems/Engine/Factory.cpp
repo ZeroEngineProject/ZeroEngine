@@ -67,8 +67,8 @@ void ComponentPropertyPatched(cstr fieldName, void* clientData)
 Cog* Factory::BuildFromStream(CogCreationContext* context, Serializer& stream)
 {
   bool previousPatching = stream.mPatching;
-  // Instantiation of script components can require the game session (to add
-  // some sort of script state component to the game)
+  // Instantiation of script components can require the game session (to add some sort of script state component to the
+  // game)
   GameSession* gameSession = context->mGameSession;
   if (!gameSession && context->mSpace)
     gameSession = context->mSpace->GetGameSession();
@@ -157,8 +157,7 @@ Cog* Factory::BuildFromStream(CogCreationContext* context, Serializer& stream)
     if (Archetype* archetype = ArchetypeManager::FindOrNull(cogNode.mInheritId))
       gameObject->SetArchetype(archetype);
 
-    // The game session might be what we're creating, in that case the script
-    // context is itself
+    // The game session might be what we're creating, in that case the script context is itself
     if (!gameSession)
       gameSession = Type::DynamicCast<GameSession*>(gameObject);
 
@@ -274,16 +273,15 @@ Cog* Factory::BuildFromStream(CogCreationContext* context, Serializer& stream)
             continue;
           }
 
-          // We have a proxy, but lets search all scripts for where it could
-          // have possibly come from This is helpful when scripts failed to
-          // compile on startup
+          // We have a proxy, but lets search all scripts for where it could have possibly come from
+          // This is helpful when scripts failed to compile on startup
           EngineLibraryExtensions::FindProxiedTypeOrigin(componentMeta);
         }
 
         Component* component = nullptr;
 
-        // All components in the Archetype instance should all already be
-        // created from the archetype, re-serialize the components in place
+        // All components in the Archetype instance should all already be created from the archetype,
+        // re-serialize the components in place
         if (archetypedInstance)
         {
           component = gameObject->QueryComponentType(componentMeta);
@@ -292,9 +290,8 @@ Cog* Factory::BuildFromStream(CogCreationContext* context, Serializer& stream)
         // Create and add the component
         if (component == nullptr && !subtractiveNode)
         {
-          // Only check dependencies for native types. We do this because
-          // non-native types (script Components) safely handle null
-          // dependencies, and it avoids loss of data
+          // Only check dependencies for native types. We do this because non-native types (script
+          // Components) safely handle null dependencies, and it avoids loss of data
           bool canAdd = true;
           if (componentMeta->Native)
             canAdd = gameObject->CheckForAddition(componentMeta);
@@ -313,9 +310,9 @@ Cog* Factory::BuildFromStream(CogCreationContext* context, Serializer& stream)
             // Create the component by using the ComponentMeta
             component = ZilchAllocate(Component, componentMeta, HeapFlags::NonReferenceCounted);
 
-            // If we failed to create the object (should only happen on Script
-            // Components where an exception was thrown in the constructor),
-            // proxy the object and re-create it under the proxy
+            // If we failed to create the object (should only happen on Script Components where
+            // an exception was thrown in the constructor), proxy the object and re-create it
+            // under the proxy
             if (component == nullptr && componentMeta->HasAttribute(ObjectAttributes::cProxy) == nullptr)
             {
               componentMeta =
@@ -479,8 +476,7 @@ Cog* Factory::BuildFromArchetype(BoundType* expectedMetaType, Archetype* archety
     if (cog)
       cog->SetArchetype(archetype);
 
-    // The Archetype owns the data tree, so pull it back from the loader so that
-    // it doesn't free it
+    // The Archetype owns the data tree, so pull it back from the loader so that it doesn't free it
     loader.TakeOwnershipOfFirstRoot();
 
     if (CacheBinaryArchetypes)
@@ -496,9 +492,8 @@ Cog* Factory::BuildFromArchetype(BoundType* expectedMetaType, Archetype* archety
     {
       cog->SetArchetype(archetype);
 
-      // If the Archetype inherits from a base Archetype, or has child
-      // Archetypes with modifications, we want to clear them because they're
-      // modifications of a different context
+      // If the Archetype inherits from a base Archetype, or has child Archetypes with
+      // modifications, we want to clear them because they're modifications of a different context
       cog->MarkNotModified();
 
       if (CacheBinaryArchetypes)
@@ -546,9 +541,9 @@ Cog* Factory::CreateCheckedType(
   Cog* cog = BuildAndSerialize(expectedType, filename, &context);
   if (cog != nullptr)
   {
-    // If we're creating a game sessions, the game session in this function
-    // would be null (can't create a game session in another game session). So
-    // we should set ourself as the game session before calling initialize
+    // If we're creating a game sessions, the game session in this function would be null (can't
+    // create a game session in another game session). So we should set ourself as the game
+    // session before calling initialize
     if (expectedType == ZilchTypeId(GameSession))
     {
       ErrorIf(gameSession != nullptr, "Cannot create a game session in another game session");

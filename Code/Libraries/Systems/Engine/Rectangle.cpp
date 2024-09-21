@@ -136,10 +136,7 @@ Thickness::Thickness(float splat) : Left(splat), Top(splat), Right(splat), Botto
 }
 
 Thickness::Thickness(float left, float top, float right, float bottom) :
-    Left(left),
-    Top(top),
-    Right(right),
-    Bottom(bottom)
+    Left(left), Top(top), Right(right), Bottom(bottom)
 {
 }
 
@@ -148,10 +145,7 @@ Thickness::Thickness(Vec4 vector) : Left(vector.x), Top(vector.y), Right(vector.
 }
 
 Thickness::Thickness(float leftRight, float topBottom) :
-    Left(leftRight),
-    Top(topBottom),
-    Right(leftRight),
-    Bottom(topBottom)
+    Left(leftRight), Top(topBottom), Right(leftRight), Bottom(topBottom)
 {
 }
 
@@ -452,8 +446,7 @@ void Rectangle::ResizeToPoint(Location::Enum location, Vec2Param position, Vec2P
   case Location::Center:
   {
     DoNotifyException("Location not supported.",
-                      "Location.Center is not implemented as it doesn't make "
-                      "sense in this context.");
+                      "Location.Center is not implemented as it doesn't make sense in this context.");
   }
   }
 }

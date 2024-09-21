@@ -10,8 +10,7 @@ namespace Zero
   ZilchBindDestructor();
 
 // Meta Resource
-// If a Type was created from a Resource, the resource id will be available as a
-// type component.
+// If a Type was created from a Resource, the resource id will be available as a type component.
 class MetaResource : public ReferenceCountedEventObject
 {
 public:

@@ -23,9 +23,7 @@ ZilchDefineType(ZilchCompileFragmentEvent, builder, type)
 ZilchCompileFragmentEvent::ZilchCompileFragmentEvent(Module& dependencies,
                                                      Array<ZilchDocumentResource*>& fragments,
                                                      ResourceLibrary* owningLibrary) :
-    mDependencies(dependencies),
-    mFragments(fragments),
-    mOwningLibrary(owningLibrary)
+    mDependencies(dependencies), mFragments(fragments), mOwningLibrary(owningLibrary)
 {
 }
 
@@ -145,14 +143,12 @@ void SwapLibrary::Commit()
 {
   if (mPendingLibrary)
   {
-    ErrorIf(mCompileStatus != ZilchCompileStatus::Compiled,
-            "When committing and we have a pending library the compile status "
-            "should have already been set to Compiled");
+    ErrorIf(
+        mCompileStatus != ZilchCompileStatus::Compiled,
+        "When committing and we have a pending library the compile status should have already been set to Compiled");
 
     // Verify mCurrentLibrary was unloaded.
-    ErrorIf(mCurrentLibrary != nullptr,
-            "The current library must be unloaded before committing a pending "
-            "library.");
+    ErrorIf(mCurrentLibrary != nullptr, "The current library must be unloaded before committing a pending library.");
 
     MetaDatabase::GetInstance()->AddLibrary(mPendingLibrary, true);
     mCurrentLibrary = mPendingLibrary;
@@ -236,12 +232,11 @@ void ResourceLibrary::Add(Resource* resource, bool isNew)
 
 void ResourceLibrary::Remove(Resource* resource)
 {
-  // Store a reference so we can remove from the array, then delete after (just
-  // in case the handle in the array was the last reference)
+  // Store a reference so we can remove from the array, then delete after (just in case the handle
+  // in the array was the last reference)
   HandleOf<Resource> resourceHandle = resource;
 
-  // Allow resources to do any required cleanup before being removed, same as
-  // when a library is unloaded.
+  // Allow resources to do any required cleanup before being removed, same as when a library is unloaded.
   resource->Unload();
 
   Resources.EraseValueError(resourceHandle);
@@ -343,8 +338,7 @@ void ResourceLibrary::Unload()
 {
   ErrorIf(!Dependents.Empty(), "Cannot unload a Resource Library when other libraries depend on us");
 
-  // Call unload on every resource so that references to other resources within
-  // the library can be cleared.
+  // Call unload on every resource so that references to other resources within the library can be cleared.
   forRange (Resource* resource, Resources.All())
   {
     if (resource != nullptr)
@@ -353,8 +347,7 @@ void ResourceLibrary::Unload()
       DoNotifyError("Error", String::Format("A resource owned by library '%s' was incorrectly removed.", Name.c_str()));
   }
 
-  // Validate all reference counts are now 1, otherwise there is likely a
-  // leaking handle somewhere.
+  // Validate all reference counts are now 1, otherwise there is likely a leaking handle somewhere.
   forRange (Resource* resource, Resources.All())
   {
     if (resource != nullptr && resource->GetReferenceCount() != 1)
@@ -371,9 +364,8 @@ void ResourceLibrary::Unload()
     }
   }
 
-  // Resources use this flag to detect incorrect removal of non-runtime
-  // resources. Changing this flag and removing library resources should only
-  // ever happen here.
+  // Resources use this flag to detect incorrect removal of non-runtime resources.
+  // Changing this flag and removing library resources should only ever happen here.
   sLibraryUnloading = true;
   Resources.Clear();
   sLibraryUnloading = false;
@@ -422,10 +414,9 @@ void ResourceLibrary::FragmentsModified()
 
 void ResourceLibrary::PluginsModified()
 {
-  // Plugins are always fully compiled so they don't need to have a 'modified'
-  // state However, since we decided that scripts in the same resource library
-  // (and in dependent libraries) are always dependent upon the plugins, then we
-  // must mark all scripts as being modified
+  // Plugins are always fully compiled so they don't need to have a 'modified' state
+  // However, since we decided that scripts in the same resource library (and in dependent libraries)
+  // are always dependent upon the plugins, then we must mark all scripts as being modified
   ScriptsModified();
 }
 
@@ -453,8 +444,7 @@ bool AddDependencies(Module& module,
         LibraryRef pluginLibrary = swapPlugin.GetNewestLibrary();
 
         // This will only ever be null in the case of templates since
-        // we should have successfully compiled all the plugins above in
-        // CompileScripts
+        // we should have successfully compiled all the plugins above in CompileScripts
         if (pluginLibrary != nullptr)
           module.Append(pluginLibrary);
       }
@@ -469,9 +459,8 @@ bool AddDependencies(Module& module,
 
 void ResourceLibrary::OnScriptProjectPreParser(ParseEvent* e)
 {
-  // This isnt' the best solution, however because we can't intercept the plugin
-  // library before its done we need to add extensions for the plugins here
-  // (such as .YourComponent).
+  // This isnt' the best solution, however because we can't intercept the plugin library before
+  // its done we need to add extensions for the plugins here (such as .YourComponent).
   forRange (SwapLibrary& swapLibrary, mSwapPlugins.Values())
   {
     if (swapLibrary.GetNewestLibrary())
@@ -490,8 +479,8 @@ void ResourceLibrary::OnScriptProjectPostSyntaxer(ParseEvent* e)
 
 bool ResourceLibrary::CompileScripts(HashSet<ResourceLibrary*>& modifiedLibrariesOut)
 {
-  // If we already compiled, then we know that all dependent libraries must have
-  // been good This means that if we ever referenced
+  // If we already compiled, then we know that all dependent libraries must have been good
+  // This means that if we ever referenced
   if (mSwapScript.mCompileStatus == ZilchCompileStatus::Compiled)
     return true;
 
@@ -509,8 +498,7 @@ bool ResourceLibrary::CompileScripts(HashSet<ResourceLibrary*>& modifiedLibrarie
 
   Module dependencies;
 
-  // Remove the core library from dependencies as we're going to add it from
-  // native libraries
+  // Remove the core library from dependencies as we're going to add it from native libraries
   dependencies.Clear();
 
   // Add all native libraries
@@ -542,9 +530,8 @@ bool ResourceLibrary::CompileScripts(HashSet<ResourceLibrary*>& modifiedLibrarie
   // Add all scripts
   forRange (ZilchDocumentResource* script, mScripts)
   {
-    // Templates shouldn't be compiled. They contain potentially invalid code
-    // and identifiers such as RESOURCE_NAME_ that are replaced when a new
-    // resource is created from the template
+    // Templates shouldn't be compiled. They contain potentially invalid code and identifiers
+    // such as RESOURCE_NAME_ that are replaced when a new resource is created from the template
     if (script->GetResourceTemplate() == nullptr)
       mScriptProject.AddCodeFromString(script->mText, script->GetOrigin(), script);
   }
@@ -563,8 +550,7 @@ bool ResourceLibrary::CompileScripts(HashSet<ResourceLibrary*>& modifiedLibrarie
 
 bool ResourceLibrary::CompileFragments(HashSet<ResourceLibrary*>& modifiedLibraries)
 {
-  // If we already compiled, then we know that all dependent libraries must have
-  // been good
+  // If we already compiled, then we know that all dependent libraries must have been good
   if (mSwapFragment.mCompileStatus == ZilchCompileStatus::Compiled)
     return true;
 
@@ -595,9 +581,8 @@ bool ResourceLibrary::CompileFragments(HashSet<ResourceLibrary*>& modifiedLibrar
 
 bool ResourceLibrary::CompilePlugins(HashSet<ResourceLibrary*>& modifiedLibrariesOut)
 {
-  // Plugins should only depend on the Core library and native Zero libraries
-  // (the only libraries we generate headers for) In the future we could attempt
-  // to generate other library headers (dependencies...)
+  // Plugins should only depend on the Core library and native Zero libraries (the only libraries we generate headers
+  // for) In the future we could attempt to generate other library headers (dependencies...)
   Module pluginDependencies;
   pluginDependencies.Append(MetaDatabase::GetInstance()->mNativeLibraries.All());
 
@@ -617,9 +602,8 @@ bool ResourceLibrary::CompilePlugins(HashSet<ResourceLibrary*>& modifiedLibrarie
 
       swapPlugin.mPendingLibrary = Plugin::LoadFromFile(status, pluginDependencies, pluginPath, origin);
 
-      // If the status failed, it could just be because the plugin was empty
-      // (we're in progress compiling it). Note: We'll get a separate error if
-      // the plugin fails to compile or if we can't find the compiler.
+      // If the status failed, it could just be because the plugin was empty (we're in progress compiling it).
+      // Note: We'll get a separate error if the plugin fails to compile or if we can't find the compiler.
       if (status.Failed() && status.Context != Plugin::StatusContextEmpty)
       {
         Console::Print(
@@ -633,8 +617,7 @@ bool ResourceLibrary::CompilePlugins(HashSet<ResourceLibrary*>& modifiedLibrarie
       }
       else
       {
-        // We failed to compile one plugin, so we should stop all other script
-        // compilation
+        // We failed to compile one plugin, so we should stop all other script compilation
         allPluginsSucceeded = false;
       }
     }
@@ -645,10 +628,9 @@ bool ResourceLibrary::CompilePlugins(HashSet<ResourceLibrary*>& modifiedLibrarie
 
 void ResourceLibrary::PreCommitUnload()
 {
-  // These unload calls are for removing types from the meta database before
-  // committing any pending types in order to prevent any type discrepancies or
-  // issues. Do NOT unload types unless there is actually a new library pending
-  // commit.
+  // These unload calls are for removing types from the meta database before committing
+  // any pending types in order to prevent any type discrepancies or issues.
+  // Do NOT unload types unless there is actually a new library pending commit.
   if (mSwapFragment.mPendingLibrary)
     mSwapFragment.Unload();
 
