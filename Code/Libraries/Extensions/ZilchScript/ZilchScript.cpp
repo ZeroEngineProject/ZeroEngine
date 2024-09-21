@@ -28,8 +28,7 @@ void ZeroZilchFatalErrorCallback(FatalErrorEvent* e)
 // Called when an error occurs in compilation
 void ZeroZilchErrorCallback(Zilch::ErrorEvent* e)
 {
-  // If plugins are currently compiling, let the user know that the error
-  // *might* be because of that
+  // If plugins are currently compiling, let the user know that the error *might* be because of that
   ZilchPluginSourceManager* manager = ZilchPluginSourceManager::GetInstance();
   if (manager->IsCompilingPlugins())
   {
@@ -49,9 +48,8 @@ void OnDebuggerPauseUpdate(DebuggerEvent* event)
   Event toSend;
   Z::gEngine->DispatchEvent(Events::DebuggerPauseUpdate, &toSend);
 
-  // We assume the graphical rendering will not change the state of the program,
-  // so its safe to do during a breakpoint This also generally draws some sort
-  // of 'debugging' overlay
+  // We assume the graphical rendering will not change the state of the program, so its safe to do during a breakpoint
+  // This also generally draws some sort of 'debugging' overlay
   // Z::gGraphics->PerformRenderTasks(0.0f);
 }
 
@@ -106,8 +104,7 @@ void ZilchScript::GetLibraries(Array<LibraryRef>& libraries)
   GetLibrariesRecursive(libraries, mResourceLibrary);
 }
 
-// @TrevorS: Isn't this the same logic as AddDependencies on
-// ResourceLibrary/ZilchManager?
+// @TrevorS: Isn't this the same logic as AddDependencies on ResourceLibrary/ZilchManager?
 void ZilchScript::GetLibrariesRecursive(Array<LibraryRef>& libraries, ResourceLibrary* library)
 {
   forRange (ResourceLibrary* dependency, library->Dependencies.All())
@@ -153,16 +150,14 @@ void ZilchScriptLoader::ReloadFromFile(Resource* resource, ResourceEntry& entry)
 ImplementResourceManager(ZilchScriptManager, ZilchScript);
 
 ZilchScriptManager::ZilchScriptManager(BoundType* resourceType) :
-    ResourceManager(resourceType),
-    mLastExceptionVersion(-1)
+    ResourceManager(resourceType), mLastExceptionVersion(-1)
 {
   mCategory = "Code";
   mCanAddFile = true;
   mOpenFileFilters.PushBack(FileDialogFilter("All Zilch Scripts", "*.zilchscript;*.z"));
   mOpenFileFilters.PushBack(FileDialogFilter("*.zilchscript"));
   mOpenFileFilters.PushBack(FileDialogFilter("*.z"));
-  // We want ZilchScript to be the first thing that shows up in the "Code"
-  // category in the add window
+  // We want ZilchScript to be the first thing that shows up in the "Code" category in the add window
   mAddSortWeight = 0;
   mNoFallbackNeeded = true;
   mCanCreateNew = true;
@@ -188,10 +183,10 @@ void ZilchScriptManager::ValidateRawName(Status& status, StringParam name, Bound
 {
   if (!optionalType || optionalType->IsA(ZilchTypeId(Component)))
   {
-    // Because we do component access off of Cogs using the . operator, then it
-    // might conflict with an actual member of Cog (name a component 'Destroy',
-    // what is Owner.Destroy?) We must do this for Space and GameSession also
-    // (technically GameSession and Space doubly hit Cog, but that's fine).
+    // Because we do component access off of Cogs using the . operator, then it might
+    // conflict with an actual member of Cog (name a component 'Destroy', what is Owner.Destroy?)
+    // We must do this for Space and GameSession also (technically GameSession and Space doubly hit Cog, but that's
+    // fine).
     bool hasMember = ZilchTypeId(Cog)->GetMember(name) || ZilchTypeId(GameSession)->GetMember(name) ||
                      ZilchTypeId(Space)->GetMember(name) || ZilchTypeId(CogPath)->GetMember(name);
 
@@ -306,10 +301,9 @@ void ZilchScriptManager::OnMemoryLeak(MemoryLeakEvent* event)
     isTypeNative = type->IsTypeOrBaseNative();
   }
 
-  String message = String::Format("* A memory leak was detected with the type %s. Make sure "
-                                  "to avoid cycles "
-                                  "of references, or explicitly invoke delete (typically "
-                                  "within a destructor).\n* Memory Dump:\n%s",
+  String message =
+      String::Format("* A memory leak was detected with the type %s. Make sure to avoid cycles "
+                     "of references, or explicitly invoke delete (typically within a destructor).\n* Memory Dump:\n%s",
                                   typeName.c_str(),
                                   dump.c_str());
 

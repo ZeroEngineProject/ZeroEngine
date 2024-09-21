@@ -87,14 +87,13 @@ void ZilchPluginSource::ForceCopyPluginDependencies()
   Cog* configCog = Z::gEngine->GetConfigCog();
   MainConfig* mainConfig = configCog->has(MainConfig);
 
-  // All plugin dependencies (library and headers) are located within our data
-  // directory This is copied here automatically by post build events We place
-  // it under a directory mangled by the platform name so that we can support
-  // both Debug/Release builds (and possibly x86/x64 in the future) This ALSO
-  // needs to partially match where we place the lib/all-to-one header in the
-  // Data directory (does not include the version number since every version is
-  // separated by the launcher) This is setup within the Zero engine build
-  // process (typically as a post build event)
+  // All plugin dependencies (library and headers) are located within our data directory
+  // This is copied here automatically by post build events
+  // We place it under a directory mangled by the platform name so that we can
+  // support both Debug/Release builds (and possibly x86/x64 in the future)
+  // This ALSO needs to partially match where we place the lib/all-to-one header in the Data directory
+  // (does not include the version number since every version is separated by the launcher)
+  // This is setup within the Zero engine build process (typically as a post build event)
   String platformName = ZilchPluginBuilder::GetSharedLibraryPlatformName();
   String sourceVersionDir = FilePath::Combine(mainConfig->DataDirectory, "ZilchCustomPluginShared", platformName);
 
@@ -285,8 +284,7 @@ void ZilchPluginSource::CopyPluginDependenciesOnce()
   if (DirectoryExists(GetCodeDirectory()) == false)
     return;
 
-  // We always write the current version, regardless of if we've already copied
-  // the dependencies
+  // We always write the current version, regardless of if we've already copied the dependencies
   WriteCurrentVersionFile();
 
   // If we already have a directory for the current version, just skip this step
@@ -304,9 +302,9 @@ void ZilchPluginSource::WriteCurrentVersionFile()
 
 #if defined(ZeroTargetOsWindows)
   String revisionNumber = GetRevisionNumberString();
-  String propsFile = BuildString("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
-                                 "<Project ToolsVersion=\"4.0\" "
-                                 "xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">\r\n"
+  String propsFile =
+      BuildString("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+                  "<Project ToolsVersion=\"4.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">\r\n"
                                  "  <PropertyGroup>\r\n"
                                  "    <ZeroVersion>",
                                  revisionNumber,
@@ -397,8 +395,7 @@ ZilchPluginConfig* ZilchPluginSource::GetConfig()
 
 void ZilchPluginSource::MarkAttemptedIdeToolsInstAll()
 {
-  // This resource is NOT actually modified, but I want to signal to the engine
-  // to save the config (refactor me)
+  // This resource is NOT actually modified, but I want to signal to the engine to save the config (refactor me)
   GetConfig()->mAttemptedIdeToolsInstall = true;
   ResourceModified();
 }
@@ -420,9 +417,7 @@ bool ZilchPluginSource::CheckIdeAndInformUser()
 
   if (IsIdeInstalled() == false)
   {
-    DoNotifyWarning("Zilch Plugin",
-                    "No IDE was detected, you must first install a C++ IDE for "
-                    "your platform");
+    DoNotifyWarning("Zilch Plugin", "No IDE was detected, you must first install a C++ IDE for your platform");
 
 #if defined(ZeroTargetOsWindows)
     Os::OpenUrl("https://www.visualstudio.com/"
@@ -471,8 +466,8 @@ void ZilchPluginSource::CompileConfiguration(StringParam configuration)
   mCompileTask->mIndeterminate = true;
   mCompileTask->mEstimatedTotalDuration = 15.0f;
 
-  // Other parts of the engine may want to know when a plugin is currently
-  // compiling We decrement this above in the 'CompletedCompilation' callback
+  // Other parts of the engine may want to know when a plugin is currently compiling
+  // We decrement this above in the 'CompletedCompilation' callback
   ZilchPluginSourceManager* manager = ZilchPluginSourceManager::GetInstance();
   ++manager->mCompilingPluginCount;
 #else
@@ -550,24 +545,21 @@ void ZilchPluginSourceManager::OnResourceEvent(ResourceEvent* event)
 {
   ZilchPluginSource* resource = Type::DebugOnlyDynamicCast<ZilchPluginSource*>(event->EventResource);
 
-  // If the resource was added (may be at load time, or may be the first time of
-  // adding in the editor) Only do this if its in the editor with a content item
+  // If the resource was added (may be at load time, or may be the first time of adding in the editor)
+  // Only do this if its in the editor with a content item
   if (event->EventId == Events::ResourceAdded && resource->mContentItem != nullptr)
   {
     resource->EditorInitialize();
 
-    // The shared library that we build (dll/so) should be the same name as our
-    // source
+    // The shared library that we build (dll/so) should be the same name as our source
     String extension = ZilchPluginBuilder::GetSharedLibraryExtension(true);
     String sharedLibraryPath =
         FilePath::CombineWithExtension(resource->mContentItem->mLibrary->SourcePath, resource->Name, extension);
 
-    // If the shared library already exists, just make sure the plugin
-    // dependencies are up to date
+    // If the shared library already exists, just make sure the plugin dependencies are up to date
     if (FileExists(sharedLibraryPath) && GetFileSize(sharedLibraryPath) != 0)
       resource->CopyPluginDependenciesOnce();
-    // Otherwise, attempt to build it once in release so we can get a working
-    // plugin immediately
+    // Otherwise, attempt to build it once in release so we can get a working plugin immediately
     else
       resource->CompileRelease();
   }
@@ -586,8 +578,7 @@ ZilchDefineType(ZilchPluginLibrary, builder, type)
 
 String ZilchPluginLibrary::GetSharedLibraryPath() const
 {
-  // If for some reason the 'SharedLibraryPath' was not set on loading, then try
-  // and use the resource library location
+  // If for some reason the 'SharedLibraryPath' was not set on loading, then try and use the resource library location
   if (SharedLibraryPath.Empty())
     return FilePath::CombineWithExtension(
         mResourceLibrary->Location, Name, ZilchPluginBuilder::GetSharedLibraryExtension(true));

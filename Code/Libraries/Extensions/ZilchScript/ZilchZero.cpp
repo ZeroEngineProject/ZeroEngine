@@ -13,8 +13,7 @@ ZilchDefineType(ZilchComponent, builder, type)
 
   type->Add(new MetaSerialization());
 
-  // Temporary solution so that ZilchComponent cannot be added on Cog in the
-  // property grid
+  // Temporary solution so that ZilchComponent cannot be added on Cog in the property grid
   type->HasOrAdd<CogComponentMeta>(type)->mSetupMode = SetupMode::FromDataOnly;
 }
 
@@ -23,11 +22,10 @@ void RestoreCogPathLinks(HandleParam object, Cog* owner, CogInitializer& initial
   BoundType* cogPathType = ZilchTypeId(CogPath);
   BoundType* objectType = object.StoredType;
 
-  // Cog paths and some certain properties need to have a special resolve phase
-  // called on them. We only loop over fields because properties could have side
-  // effects (get/set) and generally always have a backing field, unless they
-  // are generating a temporary, in which case a temporary CogPath doesn't make
-  // sense to restore links on.
+  // Cog paths and some certain properties need to have a special resolve phase called on them.
+  // We only loop over fields because properties could have side effects (get/set) and generally
+  // always have a backing field, unless they are generating a temporary, in which case a temporary
+  // CogPath doesn't make sense to restore links on.
   forRange (Field* field, objectType->GetFields())
   {
     BoundType* propertyType = Type::DirectDynamicCast<BoundType*>(field->PropertyType);
@@ -50,8 +48,7 @@ void RestoreCogPathLinks(HandleParam object, Cog* owner, CogInitializer& initial
         }
         else
         {
-          // We set the cog path here because we always expect cog paths to be
-          // non-null.
+          // We set the cog path here because we always expect cog paths to be non-null.
           CogPath path;
           path.SetRelativeTo(owner);
           field->SetValue(object, path);
@@ -83,8 +80,7 @@ void PopulateDependencies(Component* component, Cog* owner)
   forRange (Property* property, virtualBoundType->GetProperties())
   {
     // This property isn't marked as a dependency so don't set it to anything.
-    // This is likely an internal property that the user will set to something
-    // later.
+    // This is likely an internal property that the user will set to something later.
     if (!property->HasAttribute(PropertyAttributes::cDependency))
       continue;
 
@@ -137,9 +133,8 @@ void ZilchComponent::ScriptInitialize(CogInitializer& initializer)
       }
     }
 
-    // If this is any generic handle to an object that has a default constructor
-    // and a get/set and the object is currently null, then create it (CogPath,
-    // custom objects, etc)
+    // If this is any generic handle to an object that has a default constructor and a get/set
+    // and the object is currently null, then create it (CogPath, custom objects, etc)
     BoundType* boundPropertyType = Type::GetBoundType(propertyType);
     if (boundPropertyType)
     {
@@ -167,8 +162,7 @@ void ZilchComponent::ScriptInitialize(CogInitializer& initializer)
     }
   }
 
-  // Only run Initialize function if not in editor mode or if has RunInEditor
-  // attribute
+  // Only run Initialize function if not in editor mode or if has RunInEditor attribute
   bool editorMode = false;
   if (initializer.mSpace)
     editorMode = initializer.mSpace->IsEditorMode();
@@ -182,8 +176,8 @@ void ZilchComponent::ScriptInitialize(CogInitializer& initializer)
     BoundType* cogInit = ZilchTypeId(CogInitializer);
     ErrorIf(cogInit == nullptr, "Could not get the cog initializer type!");
 
-    // This should be cached possibly on the BoundType userdata, or as a meta
-    // component... but that might be slower than just looking it up
+    // This should be cached possibly on the BoundType userdata, or as a meta component... but that might be slower than
+    // just looking it up
     Array<Type*> params;
     params.PushBack(cogInit);
     static String FunctionName("Initialize");
@@ -233,10 +227,8 @@ void ZilchComponent::DebugDraw()
   Zilch::Function* function =
       thisType->FindFunction(FunctionName, Array<Zilch::Type*>(), core.VoidType, Zilch::FindMemberOptions::None);
 
-  // Do not want to re-invoke Component's DebugDraw, will not find
-  // ZilchComponent's DebugDraw because it is not bound Still want find to look
-  // for base class methods so that it invokes correctly with inheritance within
-  // script.
+  // Do not want to re-invoke Component's DebugDraw, will not find ZilchComponent's DebugDraw because it is not bound
+  // Still want find to look for base class methods so that it invokes correctly with inheritance within script.
   if (function != nullptr && function->Owner != ZilchTypeId(Component))
   {
     Zilch::ExceptionReport report;
@@ -253,10 +245,10 @@ ObjPtr ZilchComponent::GetEventThisObject()
 
 void ZilchComponent::Delete()
 {
-  // Component handles use CogId to dereference the handle. In this case, the
-  // Cog is being deleted, so the CogId won't resolve, and attempting to delete
-  // the handle will fail. We set the owner to null here to tell the handle
-  // manager to store it as a raw pointer, that way it can properly delete it.
+  // Component handles use CogId to dereference the handle. In this case, the Cog is being deleted,
+  // so the CogId won't resolve, and attempting to delete the handle will fail.
+  // We set the owner to null here to tell the handle manager to store it as a raw pointer, that
+  // way it can properly delete it.
   mOwner = nullptr;
   Handle handle(this);
   handle.Delete();
@@ -267,16 +259,14 @@ ZilchDefineType(ZilchEvent, builder, type)
 {
   type->Sealed = false;
 
-  // If ZilchEvent's created in Zilch were using the same handle manager as C++
-  // Events, they would leak. So, we want just ZilchEvents to be reference
-  // counted. We're using HeapManager over ReferenceCountedHandleManager because
-  // manually deleting it could be useful.
+  // If ZilchEvent's created in Zilch were using the same handle manager as C++ Events, they
+  // would leak. So, we want just ZilchEvents to be reference counted. We're using HeapManager
+  // over ReferenceCountedHandleManager because manually deleting it could be useful.
   type->HandleManager = ZilchManagerId(HeapManager);
   type->CreatableInScript = true;
   ZilchBindConstructor();
-  // Do not bind copy constructor. The only time it would be need is if this
-  // went from C++ to Zilch (because of HeapManager), and this should never be
-  // constructed in C++.
+  // Do not bind copy constructor. The only time it would be need is if this went from
+  // C++ to Zilch (because of HeapManager), and this should never be constructed in C++.
   ZilchBindDestructor();
 }
 
@@ -303,9 +293,8 @@ ZilchDefineType(ZilchObject, builder, type)
   ZilchBindMethod(DispatchEvent);
 
   ZilchBindConstructor();
-  // Do not bind copy constructor. The only time it would be need is if this
-  // went from C++ to Zilch (because of HeapManager), and this should never be
-  // constructed in C++.
+  // Do not bind copy constructor. The only time it would be need is if this went from
+  // C++ to Zilch (because of HeapManager), and this should never be constructed in C++.
   ZilchBindDestructor();
 }
 

@@ -32,8 +32,7 @@ public:
   ZilchPluginLibrary* GetLibrary() const;
 
   // Copies the library and header files to the plugin shared directory
-  // We pretty much litter this function in every call to open the plugin (ide,
-  // folder, upon loading, etc)
+  // We pretty much litter this function in every call to open the plugin (ide, folder, upon loading, etc)
   void ForceCopyPluginDependencies();
   void CopyPluginDependencies();
   void CopyPluginDependenciesOnce();

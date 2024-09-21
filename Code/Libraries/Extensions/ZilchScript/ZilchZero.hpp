@@ -33,9 +33,7 @@ public:
   void Delete() override;
 };
 
-// Zilch Object
-/// A base class for any object in Zilch that we want to have properties / meta
-/// / send and receive events
+/// A base class for any object in Zilch that we want to have properties / meta / send and receive events
 class ZilchObject : public EventObject
 {
 public:
