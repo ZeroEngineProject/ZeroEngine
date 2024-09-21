@@ -5,10 +5,7 @@ namespace Zero
 {
 
 InternetHostDiscovery::InternetHostDiscovery(NetPeer* netPeer) :
-    NetDiscoveryInterface(netPeer),
-    mCurrentMasterServerIndex(0),
-    mMasterServerConnectionIp(),
-    mInternetHostListTimer(0)
+    NetDiscoveryInterface(netPeer), mCurrentMasterServerIndex(0), mMasterServerConnectionIp(), mInternetHostListTimer(0)
 {
 }
 
@@ -48,12 +45,10 @@ void InternetHostDiscovery::HandleNetPeerSentConnectResponse(NetPeerSentConnectR
 
 void InternetHostDiscovery::HandleNetPeerReceivedConnectResponse(NetPeerReceivedConnectResponse* event)
 {
-  // Clients and servers check to see if this is correspondence from a master
-  // server.
+  // Clients and servers check to see if this is correspondence from a master server.
   if (mNetPeer->IsSubscribedMasterServer(event->mTheirIpAddress))
   {
-    // if we handle this event internally, then we also terminate it so the user
-    // doesn't see it.
+    // if we handle this event internally, then we also terminate it so the user doesn't see it.
     event->Terminate();
 
     // are we actively trying to connect to a master server for a host list?
@@ -63,11 +58,9 @@ void InternetHostDiscovery::HandleNetPeerReceivedConnectResponse(NetPeerReceived
       {
         // Accept the master server IP so we can retrieve the link.
         mMasterServerConnectionIp = event->mTheirIpAddress;
-        // At this point, the client peer is waiting for a message on the peer
-        // link to move host discovery forward.
+        // At this point, the client peer is waiting for a message on the peer link to move host discovery forward.
       }
-      else // Link was denied for one reason or another, so Clear master server
-           // IP, and try the next one!
+      else // Link was denied for one reason or another, so Clear master server IP, and try the next one!
       {
         mMasterServerConnectionIp = IpAddress();
         TryMasterServerConnection();
@@ -75,8 +68,7 @@ void InternetHostDiscovery::HandleNetPeerReceivedConnectResponse(NetPeerReceived
     }
     else // if not discovering or refreshing, then it must have been canceled.
     {
-      // Clear the master server IP connection,  and disconnect our link to it
-      // (if we have it)
+      // Clear the master server IP connection,  and disconnect our link to it (if we have it)
       mMasterServerConnectionIp = IpAddress();
       mNetPeer->DisconnectLink(event->mTheirIpAddress);
     }
@@ -85,8 +77,7 @@ void InternetHostDiscovery::HandleNetPeerReceivedConnectResponse(NetPeerReceived
 
 void InternetHostDiscovery::HandleNetPeerSentConnectRequest(NetPeerSentConnectRequest* event)
 {
-  // Clients and Servers will terminate connection events regarding master
-  // servers.
+  // Clients and Servers will terminate connection events regarding master servers.
   TerminateInternalEvent(event->mTheirIpAddress, event);
 }
 
@@ -118,14 +109,12 @@ void InternetHostDiscovery::HandleNetLinkDisconnected(NetLinkDisconnected* event
       // if the disconnect was not closed down purposely.
       if (event->mDisconnectReason != DisconnectReason::Request)
       {
-        // presume something happened which caused the master server to fail to
-        // transmit its host list message.
+        // presume something happened which caused the master server to fail to transmit its host list message.
         CancelRefreshes();
       }
       else
       {
-        // if disconnected on a request, it means the master server should have
-        // finished sending the host list.
+        // if disconnected on a request, it means the master server should have finished sending the host list.
       }
     }
   }
@@ -163,8 +152,8 @@ void InternetHostDiscovery::SingleHostRefresh(IpAddress const& thierIp,
   SingleHostRequest* hostRequest =
       CreateSingleHostRequest(Network::Internet, allowDiscovery, thierIp, removeStaleHosts, getExtraHostInfo);
 
-  // Can we possibly get a response with these parameters? (single refresh on
-  // not previously known host without discovery? no point...)
+  // Can we possibly get a response with these parameters? (single refresh on not previously known host without
+  // discovery? no point...)
   if (hostRequest->mPreviouslyKnown == false && allowDiscovery == false)
   {
     // Instantly end the request and return.
@@ -216,8 +205,7 @@ void InternetHostDiscovery::HandlePingTimeout(PendingHostPing& pendingHostPing)
   // Handle according to host ping type
   switch (pendingHostPing.mHostPingType)
   {
-  case HostPingType::RefreshList: // multi host refresh finished. now get extra
-                                  // or flush.
+  case HostPingType::RefreshList: // multi host refresh finished. now get extra or flush.
   {
     MultiHostRequest* hostRequest = GetMultiHostRequest();
     if (hostRequest->mAquireExtraHostInfo)
@@ -226,8 +214,8 @@ void InternetHostDiscovery::HandlePingTimeout(PendingHostPing& pendingHostPing)
     }
     else
     {
-      hostRequest->FlushHostRequest(*mNetPeer, *this); // dispatch events, create net hosts, clean up
-                                                       // stale hosts. dispatch host list.
+      hostRequest->FlushHostRequest(
+          *mNetPeer, *this);       // dispatch events, create net hosts, clean up stale hosts. dispatch host list.
       mOpenHostRequests.Clear();                       // Clear out hosts requests. (it is finished)
       mRespondingHostData.Clear();                     // Clear out responding host data (we are done with it)
       Assert(mSingleHostRequests.Size() == 0);         // shouldn't need to clean this, because it should be empty.
@@ -237,8 +225,7 @@ void InternetHostDiscovery::HandlePingTimeout(PendingHostPing& pendingHostPing)
   }
   break;
 
-  case HostPingType::Refresh: // single host refresh timed out. now get extra or
-                              // flush.
+  case HostPingType::Refresh: // single host refresh timed out. now get extra or flush.
   {
     SingleHostRequest* hostRequest = GetSingleHostRequest(pendingHostPing.mTheirIpAddresses[0]);
     Assert(hostRequest != nullptr);
@@ -254,8 +241,7 @@ void InternetHostDiscovery::HandlePingTimeout(PendingHostPing& pendingHostPing)
   }
   break;
 
-  case HostPingType::MasterServerRefreshHost: // Master server never responded.
-                                              // refresh failed to respond.
+  case HostPingType::MasterServerRefreshHost: // Master server never responded. refresh failed to respond.
   {
     // First find the IP address we intended to get the information on.
     // Read in the bitstream
@@ -289,13 +275,11 @@ void InternetHostDiscovery::HandlePong(IpAddress const& theirIpAddress,
 {
   // if ping from a game server:
   // read out ping data save it. update level of refresh.
-  // if its a refresh (individual refresh) then we should also remove pending
-  // ping.
+  // if its a refresh (individual refresh) then we should also remove pending ping.
 
   IpAddress pingedHost = PongHelper(theirIpAddress, netHostPongData, pendingHostPing);
 
-  // if we didn't actually handle it or early outed, we don't do additional
-  // logic.
+  // if we didn't actually handle it or early outed, we don't do additional logic.
   if (pingedHost == IpAddress())
     return;
 
@@ -344,8 +328,7 @@ void InternetHostDiscovery::HandlePong(IpAddress const& theirIpAddress,
   }
   break;
 
-  case HostPingType::MasterServerRefreshHost: // happens under single host
-                                              // refresh case.
+  case HostPingType::MasterServerRefreshHost: // happens under single host refresh case.
   {
     // We got indirect host info back from master server.
     if (isFirstResponse)
@@ -374,16 +357,15 @@ void InternetHostDiscovery::OnEngineUpdate(UpdateEvent* event)
   {
     MultiHostRequest* hostRequest = GetMultiHostRequest();
 
-    // Is this host request still in the unresponding stage? (this means it
-    // hasn't retrieved a host list yet)
+    // Is this host request still in the unresponding stage? (this means it hasn't retrieved a host list yet)
     if (hostRequest->mDiscoveryStage == NetDiscoveryStage::Unresponding)
     {
-      // has the time since the start of the host list request timed out? this
-      // including connection attempts to different master servers.
+      // has the time since the start of the host list request timed out? this including connection attempts to
+      // different master servers.
       if (mInternetHostListTimer > mNetPeer->GetInternetHostListTimeout())
       {
-        // it has timed out in this special case. it means we need to cancel
-        // further refreshing and dispatch what we got.
+        // it has timed out in this special case. it means we need to cancel further refreshing and dispatch what we
+        // got.
         CancelRefreshes();
       }
     }
@@ -408,17 +390,14 @@ void InternetHostDiscovery::ReceiveNetHostRecordList(IpAddress const& theirIpAdd
     // should not ever by in this mode here.
     Assert(mDiscoveryMode != NetDiscoveryMode::Refresh);
 
-    // in the case that we canceled, just end the link and return. no further
-    // processing.
+    // in the case that we canceled, just end the link and return. no further processing.
     mNetPeer->DisconnectLink(theirIpAddress);
     return;
   }
 
-  // a multi host request likely triggered this function, so we get that request
-  // for further processing.
+  // a multi host request likely triggered this function, so we get that request for further processing.
   MultiHostRequest* hostRequest = GetMultiHostRequest();
-  // if we got this, then we should still currently be in the unresponding
-  // stage.
+  // if we got this, then we should still currently be in the unresponding stage.
   Assert(hostRequest->mDiscoveryStage == NetDiscoveryStage::Unresponding);
 
   // update request discovery stage.
@@ -452,8 +431,7 @@ void InternetHostDiscovery::ReceiveNetHostRecordList(IpAddress const& theirIpAdd
       }
       else
       {
-        continue; // we do not allow discovery of new hosts, so skip this host
-                  // record.
+        continue; // we do not allow discovery of new hosts, so skip this host record.
       }
     }
     // put them in the request as a responding host.
@@ -471,8 +449,8 @@ void InternetHostDiscovery::ReceiveNetHostRecordList(IpAddress const& theirIpAdd
                         HostPingType::RefreshList,
                         FloatSecondsToTimeMs(mNetPeer->GetBasicHostInfoTimeout()),
                         EventBundle());
-  // Now we wait till this ping expires. When it does we check if they want
-  // extra host info or not. if they don't then the event is dispatched.
+  // Now we wait till this ping expires. When it does we check if they want extra host info or not.
+  // if they don't then the event is dispatched.
 
   // force disconnection from MasterServer on client end.
   mNetPeer->DisconnectLink(theirIpAddress);
@@ -489,8 +467,7 @@ bool InternetHostDiscovery::TryMasterServerConnection()
     // if we have previously attempted a connection to the last master server
     if (mCurrentMasterServerIndex == mNetPeer->mMasterServerSubscriptions.Size())
     {
-      // Failed to discover internet hosts. Attempted connections with All
-      // master servers, and none succeeded.
+      // Failed to discover internet hosts. Attempted connections with All master servers, and none succeeded.
       CancelRefreshes();
 
       return false;

@@ -15,23 +15,19 @@ static const String cScriptSource = "ScriptSource";
 static const String cEventId = "EventId";
 static const String cGameSetup = "GameSetup";
 
-/// Returns true if the specified property instance is a supported net property,
-/// else false.
+/// Returns true if the specified property instance is a supported net property, else false.
 bool IsValidNetProperty(Property* property);
-/// Returns true if the specified property type is a supported net property
-/// type, else false.
+/// Returns true if the specified property type is a supported net property type, else false.
 bool IsValidNetPropertyType(Type* propertyType);
 bool IsValidNetPropertyType(NativeType* propertyType);
-/// Returns true if the specified property type is a supported net peer ID
-/// property type, else false.
+/// Returns true if the specified property type is a supported net peer ID property type, else false.
 bool IsValidNetPeerIdPropertyType(Type* propertyType);
 
 //                            NetObject Configuration //
 
 /// Use Archetype "ResourceId:Name" String as ReplicaType?
 /// Otherwise we will use ResourceId u64 as ReplicaType (much more efficient).
-/// This impacts bandwidth performance when first spawning/cloning new NetObject
-/// types to remote peers.
+/// This impacts bandwidth performance when first spawning/cloning new NetObject types to remote peers.
 #ifdef ZeroDebug
 #  define NETOBJECT_USE_RESOURCE_ID_NAME_STRING
 #endif
@@ -75,8 +71,7 @@ typedef uint NetObjectId;
 typedef uint FamilyTreeId;
 
 /// Stores component property instance data.
-/// Used when getting / setting values on a specific component's property
-/// instance during replication.
+/// Used when getting / setting values on a specific component's property instance during replication.
 struct ComponentPropertyInstanceData
 {
   /// Constructor.
@@ -139,15 +134,12 @@ void SetComponentAnyProperty(const Variant& value, Variant& propertyData);
 // Helper Methods
 //
 
-/// Returns the BasicNativeType enum equivalent of the BasicNetType enum value,
-/// else BasicNativeType::Unknown.
+/// Returns the BasicNativeType enum equivalent of the BasicNetType enum value, else BasicNativeType::Unknown.
 BasicNativeType::Enum BasicNetworkToNativeTypeEnum(BasicNetType::Enum value);
-/// Returns the BasicNetType enum equivalent of the BasicNativeType enum value,
-/// else BasicNetType::Other.
+/// Returns the BasicNetType enum equivalent of the BasicNativeType enum value, else BasicNetType::Other.
 BasicNetType::Enum BasicNativeToNetworkTypeEnum(BasicNativeType::Enum value);
 
-/// Returns true if the event has a property with a NetPeerId attribute, else
-/// false.
+/// Returns true if the event has a property with a NetPeerId attribute, else false.
 bool HasNetPeerIdProperty(Event* event);
 /// Sets all properties with a NetPeerId attribute in the event.
 void SetNetPeerIdProperties(Event* event, NetPeerId netPeerId);
@@ -369,14 +361,14 @@ public:
   // Operations
   //
 
-  /// Adds a non-emplaced net object (ancestor or descendant) to the family
-  /// tree. These MUST be added in depth-first pre-order traversal order!
+  /// Adds a non-emplaced net object (ancestor or descendant) to the family tree.
+  /// These MUST be added in depth-first pre-order traversal order!
   /// Returns true if successful, else false.
   bool AddNetObject(NetObject* netObject);
-  /// Removes a non-emplaced net object (ancestor or descendant) from the family
-  /// tree. These may be removed in any order! When removed the net object is
-  /// actually just marked absent (pointer is cleared to null). Returns true if
-  /// successful, else false.
+  /// Removes a non-emplaced net object (ancestor or descendant) from the family tree.
+  /// These may be removed in any order!
+  /// When removed the net object is actually just marked absent (pointer is cleared to null).
+  /// Returns true if successful, else false.
   bool RemoveNetObject(NetObject* netObject);
 
   /// Returns the family tree ID.
@@ -390,27 +382,22 @@ public:
   const ReplicaType& GetAncestorReplicaType() const;
 
   /// Returns all net objects in the family tree.
-  /// First the ancestor, then descendants in depth-first pre-order traversal
-  /// order. Absent (destroyed/forgotten) net objects are represented with
-  /// nullptrs.
+  /// First the ancestor, then descendants in depth-first pre-order traversal order.
+  /// Absent (destroyed/forgotten) net objects are represented with nullptrs.
   const ReplicaArray& GetReplicas() const;
 
-  /// Returns true if the family tree is empty (all net objects are absent),
-  /// else false.
+  /// Returns true if the family tree is empty (all net objects are absent), else false.
   bool IsEmpty() const;
 
 private:
   // Data
   FamilyTreeId mFamilyTreeId;           ///< Family tree ID.
   String mAncestorDisplayName;          ///< Ancestor's cog display name string.
-  CreateContext mAncestorCreateContext; ///< Ancestor's create context (space
-                                        ///< net object ID).
-  ReplicaType mAncestorReplicaType;     ///< Ancestor's replica type (archetype
-                                        ///< resource ID).
+  CreateContext mAncestorCreateContext; ///< Ancestor's create context (space net object ID).
+  ReplicaType mAncestorReplicaType;     ///< Ancestor's replica type (archetype resource ID).
   ReplicaArray mReplicas;               ///< All net objects in the family tree.
-                                        /// First the ancestor, then descendants in depth-first
-                                        /// pre-order traversal order. Absent (destroyed/forgotten) net
-                                        /// objects are represented with nullptrs.
+                          /// First the ancestor, then descendants in depth-first pre-order traversal order.
+                          /// Absent (destroyed/forgotten) net objects are represented with nullptrs.
 };
 
 /// Typedefs.
@@ -434,8 +421,8 @@ inline Bits Serialize<NetUserAddRequestData>(SerializeDirection::Enum direction,
     const Bits bitsWrittenStart = bitStream.GetBitsWritten();
 
     // Write dummy bit
-    // TODO: Refactor BitStream interface to allow for serialization of empty
-    // structures without appearing to be an error
+    // TODO: Refactor BitStream interface to allow for serialization of empty structures without appearing to be an
+    // error
     bitStream.WriteBit(true);
 
     // Write event bundle data (if any)
@@ -450,8 +437,8 @@ inline Bits Serialize<NetUserAddRequestData>(SerializeDirection::Enum direction,
     const Bits bitsReadStart = bitStream.GetBitsRead();
 
     // Read dummy bit
-    // TODO: Refactor BitStream interface to allow for serialization of empty
-    // structures without appearing to be an error
+    // TODO: Refactor BitStream interface to allow for serialization of empty structures without appearing to be an
+    // error
     bool dummy;
     ReturnIf(!bitStream.Read(dummy), 0, "");
 
@@ -837,9 +824,8 @@ inline Bits Serialize<NetHostRecordListData>(SerializeDirection::Enum direction,
 
     size_t elements = 0;
     bitStream.Read(elements);
-    // TODO: Potentially need to also write how many elements were in this
-    // array. Its possible this isn't the only thing in a message. If there is
-    // anything written after this in a message, it would clobber it.
+    // TODO: Potentially need to also write how many elements were in this array. Its possible this isn't the only thing
+    // in a message. If there is anything written after this in a message, it would clobber it.
     for (size_t i = 0; i < elements; i += 1)
     {
       NetHostRecord record;
@@ -848,15 +834,12 @@ inline Bits Serialize<NetHostRecordListData>(SerializeDirection::Enum direction,
       // Read in the size of the BitStream written.
       Bits bitsToRead = 0;
       ReturnIf(!bitStream.Read(bitsToRead), 0, "");
-      // Create a temp bitstream, and have Reserve enough space for it to read
-      // the bitstream in.
+      // Create a temp bitstream, and have Reserve enough space for it to read the bitstream in.
       BitStream tempBitStream;
-      tempBitStream.Reserve(bitsToRead / 8); // Reserve enough space to write the bits into the stream
-                                             // directly.
+      tempBitStream.Reserve(bitsToRead / 8); // Reserve enough space to write the bits into the stream directly.
                                              // Read in the bitstream containing the BasicHostInfo eventbundle.
       ReturnIf(!bitStream.ReadBits(tempBitStream.GetDataExposed(), bitsToRead), 0, "");
-      // Set the number of bits we wrote into it (because we manually assigned
-      // bit data into it)
+      // Set the number of bits we wrote into it (because we manually assigned bit data into it)
       tempBitStream.SetBitsWritten(bitsToRead);
       // move the bitstream
       record.mBasicHostInfo = ZeroMove(tempBitStream);

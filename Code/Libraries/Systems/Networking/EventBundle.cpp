@@ -42,8 +42,7 @@ Handle EventBundleMetaComposition::GetComponentAt(HandleParam instance, uint ind
 
 Handle EventBundleMetaComposition::GetComponent(HandleParam instance, BoundType* boundType)
 {
-  // *** Note: At the moment this is our only MetaComposition function actually
-  // being used ***
+  // *** Note: At the moment this is our only MetaComposition function actually being used ***
 
   // Get event bundle instance
   EventBundle* eventBundle = instance.Get<EventBundle*>();
@@ -134,41 +133,25 @@ ZilchDefineType(EventBundle, builder, type)
 }
 
 EventBundle::EventBundle() :
-    mGameSession(nullptr),
-    mBitStream(),
-    mEvents(),
-    mNeedToSerialize(false),
-    mNeedToDeserialize(false)
+    mGameSession(nullptr), mBitStream(), mEvents(), mNeedToSerialize(false), mNeedToDeserialize(false)
 {
 }
 
 EventBundle::EventBundle(Event* event) :
-    mGameSession(nullptr),
-    mBitStream(),
-    mEvents(),
-    mNeedToSerialize(false),
-    mNeedToDeserialize(false)
+    mGameSession(nullptr), mBitStream(), mEvents(), mNeedToSerialize(false), mNeedToDeserialize(false)
 {
   // Add specified event
   AddEvent(event);
 }
 
 EventBundle::EventBundle(GameSession* gameSession) :
-    mGameSession(gameSession),
-    mBitStream(),
-    mEvents(),
-    mNeedToSerialize(false),
-    mNeedToDeserialize(false)
+    mGameSession(gameSession), mBitStream(), mEvents(), mNeedToSerialize(false), mNeedToDeserialize(false)
 {
   Assert(mGameSession);
 }
 
 EventBundle::EventBundle(GameSession* gameSession, Event* event) :
-    mGameSession(gameSession),
-    mBitStream(),
-    mEvents(),
-    mNeedToSerialize(false),
-    mNeedToDeserialize(false)
+    mGameSession(gameSession), mBitStream(), mEvents(), mNeedToSerialize(false), mNeedToDeserialize(false)
 {
   Assert(mGameSession);
 
@@ -177,11 +160,7 @@ EventBundle::EventBundle(GameSession* gameSession, Event* event) :
 }
 
 EventBundle::EventBundle(const EventBundle& rhs) :
-    mGameSession(rhs.mGameSession),
-    mBitStream(),
-    mEvents(),
-    mNeedToSerialize(false),
-    mNeedToDeserialize(false)
+    mGameSession(rhs.mGameSession), mBitStream(), mEvents(), mNeedToSerialize(false), mNeedToDeserialize(false)
 {
   // Assert(mGameSession);
 
@@ -482,8 +461,7 @@ bool EventBundle::SerializeEventsToBitStream()
 {
   // Clear bitstream
   // (Don't free memory because we're likely to write a similar size)
-  // (This is admittedly inefficient but EventBundle isn't intended for
-  // performance critical situations)
+  // (This is admittedly inefficient but EventBundle isn't intended for performance critical situations)
   mBitStream.Clear(false);
 
   // Write all events to bitstream
@@ -506,8 +484,7 @@ bool EventBundle::DeserializeBitStreamToEvents()
 
   // Clear events
   // (These are outdated and we are going to replace them here)
-  // (This is admittedly inefficient but EventBundle isn't intended for
-  // performance critical situations)
+  // (This is admittedly inefficient but EventBundle isn't intended for performance critical situations)
   mEvents.Clear();
 
   // Reset read cursor to start of bitstream

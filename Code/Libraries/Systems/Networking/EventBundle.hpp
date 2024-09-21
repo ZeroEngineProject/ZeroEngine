@@ -72,23 +72,19 @@ public:
   /// Returns the game session.
   GameSession* GetGameSession();
 
-  /// Returns true if the event bundle is empty (doesn't contain any events),
-  /// else false.
+  /// Returns true if the event bundle is empty (doesn't contain any events), else false.
   bool IsEmpty();
 
   /// Adds the event to back of the event bundle.
-  /// Returns true if successful, else false (an event of that type has already
-  /// been added).
+  /// Returns true if successful, else false (an event of that type has already been added).
   bool AddEvent(Event* event);
 
-  /// Returns the event specified if it has been added to the event bundle, else
-  /// nullptr.
+  /// Returns the event specified if it has been added to the event bundle, else nullptr.
   Event* GetEventByTypeName(StringParam eventTypeName);
   Event* GetEventByType(BoundType* eventType);
   Event* GetEventByIndex(uint index);
 
-  /// Returns the event index specified if it has been added to the event
-  /// bundle, else nullptr.
+  /// Returns the event index specified if it has been added to the event bundle, else nullptr.
   uint GetEventIndexByType(BoundType* eventType);
 
   /// Returns all the events that have been added to the event bundle.
@@ -97,8 +93,7 @@ public:
   uint GetEventCount();
 
   /// Removes the event specified from the event bundle.
-  /// Returns true if successful, else false (an event of that type has already
-  /// been added).
+  /// Returns true if successful, else false (an event of that type has already been added).
   bool RemoveEvent(Event* event);
   bool RemoveEventByTypeName(StringParam eventTypeName);
   bool RemoveEventByType(BoundType* eventType);
@@ -125,12 +120,9 @@ private:
   // Data
   GameSession* mGameSession;    ///< Operating game session (needed to create events).
   BitStreamExtended mBitStream; ///< Serialized event objects.
-  EventArray mEvents;           ///< Deserialized event objects (Note: We own the memory
-                                ///< for these events).
-  bool mNeedToSerialize;        ///< We need to serialize our modified events to update
-                                ///< our bitstream.
-  bool mNeedToDeserialize;      ///< We need to deserialize our modified bitstream to
-                                ///< update our events.
+  EventArray mEvents;           ///< Deserialized event objects (Note: We own the memory for these events).
+  bool mNeedToSerialize;        ///< We need to serialize our modified events to update our bitstream.
+  bool mNeedToDeserialize;      ///< We need to deserialize our modified bitstream to update our events.
 };
 
 } // namespace Zero

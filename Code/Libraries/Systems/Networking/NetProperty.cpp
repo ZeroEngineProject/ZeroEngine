@@ -4,8 +4,7 @@
 namespace Zero
 {
 
-/// Translates the specified variant into the target type (if possible) and
-/// returns the result, else Variant().
+/// Translates the specified variant into the target type (if possible) and returns the result, else Variant().
 Variant TranslateVariant(const Variant& originalValue, BasicNetType::Enum targetBasicNetType)
 {
   // Get original and target native types
@@ -102,8 +101,7 @@ float NetProperty::GetLastChangeTimePassed() const
   if (timestamp == cInvalidMessageTimestamp) // Invalid?
     return 0;
 
-  // Compute time passed since last change (duration between now and last change
-  // timestamp)
+  // Compute time passed since last change (duration between now and last change timestamp)
   TimeMs timePassed = (now - timestamp);
   return TimeMsToFloatSeconds(timePassed);
 }
@@ -505,8 +503,7 @@ void NetPropertyConfig::Serialize(Serializer& stream)
   // Loading?
   if (stream.GetMode() == SerializerMode::Loading)
   {
-    // Translate read in variant properties, just in case their types don't
-    // match our target type
+    // Translate read in variant properties, just in case their types don't match our target type
     TranslateVariantProperties();
   }
 }

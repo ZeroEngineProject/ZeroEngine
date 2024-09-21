@@ -51,12 +51,10 @@ public:
   // Object Interface
   //
 
-  /// Handles behavior when the net object is brought online, dispatches events
-  /// accordingly.
+  /// Handles behavior when the net object is brought online, dispatches events accordingly.
   const String& GetNetObjectOnlineEventId() const override;
   void HandleNetObjectOnlinePreDispatch(NetObjectOnline* event) override;
-  /// Handles behavior when the net object is taken offline, dispatches events
-  /// accordingly.
+  /// Handles behavior when the net object is taken offline, dispatches events accordingly.
   const String& GetNetObjectOfflineEventId() const override;
   void HandleNetObjectOfflinePostDispatch(NetObjectOffline* event) override;
 
@@ -64,19 +62,16 @@ public:
   // Ownership Interface
   //
 
-  /// Finds a net object with the given name owned by this user in the specified
-  /// space, else nullptr.
+  /// Finds a net object with the given name owned by this user in the specified space, else nullptr.
   Cog* FindOwnedNetObjectByNameInSpace(StringParam name, Space* space) const;
-  /// Finds a net object with the given name owned by this user in any space,
-  /// else nullptr.
+  /// Finds a net object with the given name owned by this user in any space, else nullptr.
   Cog* FindOwnedNetObjectByName(StringParam name) const;
   /// Returns all net objects owned by this user in all spaces.
   CogHashSetRange GetOwnedNetObjects() const;
   /// Returns the number of net objects owned by this user in all spaces.
   uint GetOwnedNetObjectCount() const;
 
-  /// [Server/Offline] Releases ownership of all net objects owned by this user
-  /// in all spaces.
+  /// [Server/Offline] Releases ownership of all net objects owned by this user in all spaces.
   void ReleaseOwnedNetObjects();
 
   // Data
@@ -110,8 +105,7 @@ struct NetUserSortPolicy : public SortPolicy<CogId>
     // Compare
     return *lhsNetUser < rhs;
   }
-  bool operator()(const value_type& lhs,
-                  const value_type& rhs) const // Intended for: CogId < CogId
+  bool operator()(const value_type& lhs, const value_type& rhs) const // Intended for: CogId < CogId
   {
     // Get net users
     NetUser* lhsNetUser = static_cast<Cog*>(lhs)->has(NetUser);
@@ -125,8 +119,7 @@ struct NetUserSortPolicy : public SortPolicy<CogId>
     // Compare
     return *lhsNetUser < *rhsNetUser;
   }
-  bool operator()(const value_type& lhs,
-                  const Cog*& rhs) const // Intended for: CogId < Cog*
+  bool operator()(const value_type& lhs, const Cog*& rhs) const // Intended for: CogId < Cog*
   {
     // Get net users
     NetUser* lhsNetUser = static_cast<Cog*>(lhs)->has(NetUser);
@@ -142,8 +135,7 @@ struct NetUserSortPolicy : public SortPolicy<CogId>
   }
 
   template <typename CompareType>
-  bool Equal(const value_type& lhs,
-             const CompareType& rhs) const // Intended for: CogId == NetUserId
+  bool Equal(const value_type& lhs, const CompareType& rhs) const // Intended for: CogId == NetUserId
   {
     // Get net user
     NetUser* lhsNetUser = static_cast<Cog*>(lhs)->has(NetUser);
@@ -156,8 +148,7 @@ struct NetUserSortPolicy : public SortPolicy<CogId>
     // Compare
     return *lhsNetUser == rhs;
   }
-  bool Equal(const value_type& lhs,
-             const value_type& rhs) const // Intended for: CogId == CogId
+  bool Equal(const value_type& lhs, const value_type& rhs) const // Intended for: CogId == CogId
   {
     // Get net users
     NetUser* lhsNetUser = static_cast<Cog*>(lhs)->has(NetUser);
@@ -171,8 +162,7 @@ struct NetUserSortPolicy : public SortPolicy<CogId>
     // Compare
     return *lhsNetUser == *rhsNetUser;
   }
-  bool Equal(const value_type& lhs,
-             const Cog*& rhs) const // Intended for: CogId == Cog*
+  bool Equal(const value_type& lhs, const Cog*& rhs) const // Intended for: CogId == Cog*
   {
     // Get net users
     NetUser* lhsNetUser = static_cast<Cog*>(lhs)->has(NetUser);

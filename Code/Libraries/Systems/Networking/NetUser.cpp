@@ -121,21 +121,19 @@ void NetUser::OnRegisterCppNetProperties(RegisterCppNetProperties* event)
   }
 
   // Configure net user channel
-  // (Note: Since we know these net properties never change, we don't bother
-  // detecting changes)
+  // (Note: Since we know these net properties never change, we don't bother detecting changes)
   netUserChannel->GetNetChannelType()->SetDetectOutgoingChanges(false);
   netUserChannel->GetNetChannelType()->SetAcceptIncomingChanges(false);
   netUserChannel->GetNetChannelType()->SetEventOnOutgoingPropertyChange(false);
   netUserChannel->GetNetChannelType()->SetEventOnIncomingPropertyChange(false);
 
-  // Add network peer ID net property (replicates adding network peer ID
-  // changes)
+  // Add network peer ID net property (replicates adding network peer ID changes)
   NetProperty* netPeerIdProperty = netUserChannel->AddBasicNetProperty("NetPeerId", mNetPeerId);
   if (!netPeerIdProperty) // Unable?
   {
-    DoNotifyError("Unable to Add NetUser C++ NetProperties",
-                  String::Format("Unable to add built-in 'NetPeerId' NetProperty to the "
-                                 "'NetUser' channel on the NetUser '%s'",
+    DoNotifyError(
+        "Unable to Add NetUser C++ NetProperties",
+        String::Format("Unable to add built-in 'NetPeerId' NetProperty to the 'NetUser' channel on the NetUser '%s'",
                                  owner->GetDescription().c_str()));
     return;
   }
@@ -144,9 +142,9 @@ void NetUser::OnRegisterCppNetProperties(RegisterCppNetProperties* event)
   NetProperty* netUserIdProperty = netUserChannel->AddBasicNetProperty("NetUserId", mNetUserId);
   if (!netUserIdProperty) // Unable?
   {
-    DoNotifyError("Unable to Add NetUser C++ NetProperties",
-                  String::Format("Unable to add built-in 'NetUserId' NetProperty to the "
-                                 "'NetUser' channel on the NetUser '%s'",
+    DoNotifyError(
+        "Unable to Add NetUser C++ NetProperties",
+        String::Format("Unable to add built-in 'NetUserId' NetProperty to the 'NetUser' channel on the NetUser '%s'",
                                  owner->GetDescription().c_str()));
     return;
   }

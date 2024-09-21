@@ -23,8 +23,7 @@ class GameSession;
 // All the data we need to know about connections
 struct ConnectionData
 {
-  // Connection data requires a meta so it can be attached as a component to
-  // events
+  // Connection data requires a meta so it can be attached as a component to events
   ZilchDeclareType(ConnectionData, TypeCopyMode::ReferenceType);
 
   // A constant that is set when a connection index is not initialized
@@ -42,8 +41,7 @@ struct ConnectionData
   bool Incoming;
 };
 
-// A connection event Contains basic information about a connection (IP address,
-// host-name, port, index, etc)
+// A connection event Contains basic information about a connection (IP address, host-name, port, index, etc)
 class ConnectionEvent : public Event
 {
 public:
@@ -59,8 +57,7 @@ public:
   bool Incoming;
 };
 
-// A received-data event stores information such as who the data came from, and
-// the data itself
+// A received-data event stores information such as who the data came from, and the data itself
 class ReceivedDataEvent : public ConnectionEvent
 {
 public:
@@ -102,12 +99,11 @@ struct SocketData
 };
 
 // Any extra protocols we'd like to tack on top of the socket
-// Guid   - Assigns Guids to every peer in a topology (useful for lock-step and
-// peer-to-peer networks) Events - Allows the sockets to send serializable
-// events that get broadcasted out on the other end Chunks - Data is always
-// received in full chunks rather than broken up packets (always enabled if any
-// other protocol is enabled) Otherwise, data is simply sent as is over a TCP
-// connection, which is useful when implementing other protocols
+// Guid   - Assigns Guids to every peer in a topology (useful for lock-step and peer-to-peer networks)
+// Events - Allows the sockets to send serializable events that get broadcasted out on the other end
+// Chunks - Data is always received in full chunks rather than broken up packets (always enabled if any other protocol
+// is enabled) Otherwise, data is simply sent as is over a TCP connection, which is useful when implementing other
+// protocols
 namespace Protocol
 {
 enum Enum
@@ -128,8 +124,7 @@ typedef uint Type;
 // The message types we use (for our own protocols)
 DeclareEnum3(TCPSocketMessageType, Event, Guid, UserData);
 
-// In chunks mode there are two ways of doing chunks, by delimiter or by length
-// encoding
+// In chunks mode there are two ways of doing chunks, by delimiter or by length encoding
 DeclareEnum2(ChunkType, LengthEncoded, Delimiter);
 
 // A structure that we create to setup protocol options
@@ -145,12 +140,11 @@ struct ProtocolSetup
   Protocol::Type Protocols;
 
   // Only applies if Protocol::Chunks is set
-  // This specifies the type of chunking we'd like to do (whether length encoded
-  // or delimiter)
+  // This specifies the type of chunking we'd like to do (whether length encoded or delimiter)
   ChunkType::Enum ChunkType;
 
-  // Only applies if Protocol::Chunks is set and the chunk type is set to
-  // delimiter The delimiter that separates whole packet chunks from each other
+  // Only applies if Protocol::Chunks is set and the chunk type is set to delimiter
+  // The delimiter that separates whole packet chunks from each other
   PodArray<::byte> Delimiter;
 };
 
@@ -252,9 +246,8 @@ private:
   // Extract a message into a buffer and return the number of bytes written
   static size_t ExtractIntoBuffer(const BinaryBufferSaver& message, ::byte* buffer, size_t bufferSize);
 
-  // Send directly to a particular socket (if there's any queued data, this will
-  // fail and instead queue up the data) If not all data is sent, it will also
-  // queue up the data (which we attempt to send in HandleOutgoingData)
+  // Send directly to a particular socket (if there's any queued data, this will fail and instead queue up the data)
+  // If not all data is sent, it will also queue up the data (which we attempt to send in HandleOutgoingData)
   void RawSend(SocketData& socketData, const ::byte* data, size_t size);
 
   // Track a send
@@ -299,8 +292,7 @@ private:
     cCloseConnection,
   };
 
-  // Do the actual receiving of data (returns true if we should move on to the
-  // next socket)
+  // Do the actual receiving of data (returns true if we should move on to the next socket)
   ReceiveState ReceiveData(SocketData& socketData, size_t index);
 
   // Handle chunks if we need to
@@ -315,8 +307,7 @@ private:
   // Finish setting up the packet
   void FinalizePacket(PodArray<::byte>& dataOut);
 
-  // Make a packet given a buffer (the buffer is expected to be of size
-  // BufferSize)
+  // Make a packet given a buffer (the buffer is expected to be of size BufferSize)
   inline void MakeEventPacket(SendableEvent* event, PodArray<::byte>& dataOut);
 
   // Make a user data packet and output the buffer
@@ -338,8 +329,7 @@ private:
   NetGuid mGuid;
 
   // Store a list of connections
-  // We never remove entries (but we do re-use slots as the connections get
-  // closed)
+  // We never remove entries (but we do re-use slots as the connections get closed)
   Array<SocketData> mConnections;
 
   // Store a list of pending connections

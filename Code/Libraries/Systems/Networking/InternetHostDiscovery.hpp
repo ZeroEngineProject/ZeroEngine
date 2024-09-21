@@ -14,35 +14,28 @@ public:
   // NetPeer Message Interface
   //
 
-  /// Handles a message sent directly to the net peer. Returns true if it
-  /// handled the message, and false if it did not.
+  /// Handles a message sent directly to the net peer. Returns true if it handled the message, and false if it did not.
   virtual bool ReceivePeerMessage(IpAddress const& theirIpAddress, Message& peerMessage) override;
-  /// Handles a message sent through a peer link of a net peer. Returns true if
-  /// it handled the message, and false if it did not.
+  /// Handles a message sent through a peer link of a net peer. Returns true if it handled the message, and false if it
+  /// did not.
   virtual bool ReceiveLinkMessage(IpAddress const& theirIpAddress, Message& linkMessage) override;
 
   //
   // NetPeer Connection Interface
   //
 
-  /// Handles the event where we sent a connect response to someone. Returns
-  /// true if we handled it, false if we did not.
+  /// Handles the event where we sent a connect response to someone. Returns true if we handled it, false if we did not.
   virtual void HandleNetPeerSentConnectResponse(NetPeerSentConnectResponse* event) override;
-  /// Handles a connection response received from another net peer. Returns true
-  /// if we handled it, false if we did not.
+  /// Handles a connection response received from another net peer. Returns true if we handled it, false if we did not.
   virtual void HandleNetPeerReceivedConnectResponse(NetPeerReceivedConnectResponse* event) override;
-  /// Handles the event where we sent a connect request. Returns true if we
-  /// handled it, false if we did not.
+  /// Handles the event where we sent a connect request. Returns true if we handled it, false if we did not.
   virtual void HandleNetPeerSentConnectRequest(NetPeerSentConnectRequest* event) override;
-  /// Handles the event where we received a connect response. Returns true if we
-  /// handled, false if we did not.
+  /// Handles the event where we received a connect response. Returns true if we handled, false if we did not.
   virtual void HandleNetPeerReceivedConnectRequest(NetPeerReceivedConnectRequest* event) override;
 
-  /// Handles the event where we established a connection. Returns true if we
-  /// handled, false if we did not.
+  /// Handles the event where we established a connection. Returns true if we handled, false if we did not.
   virtual void HandleNetLinkConnected(NetLinkConnected* event) override;
-  /// Handles the event where we established a connection. Returns true if we
-  /// handled, false if we did not.
+  /// Handles the event where we established a connection. Returns true if we handled, false if we did not.
   virtual void HandleNetLinkDisconnected(NetLinkDisconnected* event) override;
 
   //
@@ -83,14 +76,11 @@ public:
   //
   // Data
   //
-  unsigned int mCurrentMasterServerIndex; ///< [Client/Server] Used to poll
-                                          ///< master server in the order that
-                                          ///< they were placed in the array.
-  IpAddress mMasterServerConnectionIp;    ///< [Client/Server] Used to determine the
-                                          ///< master server that it did end up
+  unsigned int mCurrentMasterServerIndex; ///< [Client/Server] Used to poll master server in the order that they were
+                                          ///< placed in the array.
+  IpAddress mMasterServerConnectionIp;    ///< [Client/Server] Used to determine the master server that it did end up
                                           ///< connecting to when discovering hosts.
-  float mInternetHostListTimer;           ///< [Client/Server] Used to keep track of how
-                                          ///< much time has passed since internet host
+  float mInternetHostListTimer; ///< [Client/Server] Used to keep track of how much time has passed since internet host
                                           ///< list request was requested.
 };
 

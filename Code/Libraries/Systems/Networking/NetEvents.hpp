@@ -12,8 +12,7 @@ namespace Events
 
 // Host Info:
 // [Client/Server/MasterServer] (Dispatched on GameSession)
-// Generated when the NetPeer host is acquiring project-specific host
-// information.
+// Generated when the NetPeer host is acquiring project-specific host information.
 DeclareEvent(AcquireBasicNetHostInfo);
 DeclareEvent(AcquireExtraNetHostInfo);
 
@@ -23,8 +22,7 @@ DeclareEvent(AcquireExtraNetHostInfo);
 DeclareEvent(NetHostDiscovered);
 // Generated after a NetHost list discovery request completes or times out.
 DeclareEvent(NetHostListDiscovered);
-// Generated after a known NetHost is refreshed or the refresh request times
-// out.
+// Generated after a known NetHost is refreshed or the refresh request times out.
 DeclareEvent(NetHostRefreshed);
 // Generated after a NetHost list refresh request completes or times out.
 DeclareEvent(NetHostListRefreshed);
@@ -41,15 +39,13 @@ DeclareEvent(NetPeerClosed);
 
 // Game Scope:
 // [Client/Server/Offline] (Dispatched on GameSession)
-// Generated when the GameSession is brought online or taken offline, for ALL
-// peers in the network graph.
+// Generated when the GameSession is brought online or taken offline, for ALL peers in the network graph.
 DeclareEvent(NetGameOnline);
 DeclareEvent(NetGameOffline);
 
 // Game State:
 // [Client/Server/Offline] (Dispatched on GameSession and ALL Spaces)
-// Generated after fully joining or hosting a network game, for the LOCAL peer
-// only.
+// Generated after fully joining or hosting a network game, for the LOCAL peer only.
 DeclareEvent(NetGameStarted);
 
 //
@@ -58,8 +54,7 @@ DeclareEvent(NetGameStarted);
 
 // Link Handshake Sequence:
 // [Client/Server] (Dispatched on GameSession)
-// Generated as a result of a NetLink connect request, for the LOCAL peer and
-// REMOTE peer.
+// Generated as a result of a NetLink connect request, for the LOCAL peer and REMOTE peer.
 DeclareEvent(NetPeerSentConnectRequest);
 DeclareEvent(NetPeerReceivedConnectRequest);
 DeclareEvent(NetPeerSentConnectResponse);
@@ -67,8 +62,7 @@ DeclareEvent(NetPeerReceivedConnectResponse);
 
 // Link Status:
 // [Client/Server] (Dispatched on GameSession)
-// Generated when the NetLink is connected or disconnected, for the LOCAL peer
-// and REMOTE peer.
+// Generated when the NetLink is connected or disconnected, for the LOCAL peer and REMOTE peer.
 DeclareEvent(NetLinkConnected);
 DeclareEvent(NetLinkDisconnected);
 
@@ -78,15 +72,13 @@ DeclareEvent(NetLinkDisconnected);
 
 // Space Scope:
 // [Client/Server/Offline] (Dispatched on GameSession and Space)
-// Generated when the Space is brought online or taken offline, for ALL peers in
-// the network graph.
+// Generated when the Space is brought online or taken offline, for ALL peers in the network graph.
 DeclareEvent(NetSpaceOnline);
 DeclareEvent(NetSpaceOffline);
 
 // Level State:
 // [Client/Server/Offline] (Dispatched on GameSession and Space)
-// Generated after fully loading and synchronizing a level in a NetSpace, for
-// ALL RELEVANT peers in the network graph.
+// Generated after fully loading and synchronizing a level in a NetSpace, for ALL RELEVANT peers in the network graph.
 DeclareEvent(NetLevelStarted);
 
 //
@@ -95,8 +87,7 @@ DeclareEvent(NetLevelStarted);
 
 // User Add Handshake Sequence:
 // [Client/Server/Offline] (Dispatched on GameSession)
-// Generated as a result of a NetUser add request, for the LOCAL peer and REMOTE
-// peer.
+// Generated as a result of a NetUser add request, for the LOCAL peer and REMOTE peer.
 DeclareEvent(NetPeerSentUserAddRequest);
 DeclareEvent(NetPeerReceivedUserAddRequest);
 DeclareEvent(NetPeerSentUserAddResponse);
@@ -104,15 +95,13 @@ DeclareEvent(NetPeerReceivedUserAddResponse);
 
 // User Scope:
 // [Client/Server/Offline] (Dispatched on GameSession, Space, and Cog)
-// Generated when the User is brought online or taken offline, for ALL peers in
-// the network graph.
+// Generated when the User is brought online or taken offline, for ALL peers in the network graph.
 DeclareEvent(NetUserOnline);
 DeclareEvent(NetUserOffline);
 
 // Network Ownership:
 // [Client/Server/Offline] (Dispatched on User Cog)
-// Generated as a result of changing NetObject ownership, for ALL RELEVANT peers
-// in the network graph.
+// Generated as a result of changing NetObject ownership, for ALL RELEVANT peers in the network graph.
 DeclareEvent(NetUserLostObjectOwnership);
 DeclareEvent(NetUserAcquiredObjectOwnership);
 
@@ -122,28 +111,24 @@ DeclareEvent(NetUserAcquiredObjectOwnership);
 
 // Object Initialization:
 // [Client/Server/Offline] (Dispatched on Cog)
-// Generated while adding C++ component net properties to a NetObject, for the
-// LOCAL peer only. Gives C++ components the opportunity to add their net
-// properties to a NetObject at the appropriate time.
+// Generated while adding C++ component net properties to a NetObject, for the LOCAL peer only.
+// Gives C++ components the opportunity to add their net properties to a NetObject at the appropriate time.
 DeclareEvent(RegisterCppNetProperties);
 
 // Object Scope:
 // [Client/Server/Offline] (Dispatched on GameSession, Space, and Cog)
-// Generated when the Object is brought online or taken offline, for ALL
-// RELEVANT peers in the network graph.
+// Generated when the Object is brought online or taken offline, for ALL RELEVANT peers in the network graph.
 DeclareEvent(NetObjectOnline);
 DeclareEvent(NetObjectOffline);
 
 // Network Ownership:
 // [Client/Server/Offline] (Dispatched on Object Cog)
-// Generated as a result of changing NetObject ownership, for ALL RELEVANT peers
-// in the network graph.
+// Generated as a result of changing NetObject ownership, for ALL RELEVANT peers in the network graph.
 DeclareEvent(NetUserOwnerChanged);
 
 // Network Channel Property Change:
 // [Client/Server] (Dispatched on Cog)
-// Generated after an outgoing/incoming net property change is detected, for ALL
-// RELEVANT peers in the network graph.
+// Generated after an outgoing/incoming net property change is detected, for ALL RELEVANT peers in the network graph.
 DeclareEvent(NetChannelOutgoingPropertyInitialized);
 DeclareEvent(NetChannelIncomingPropertyInitialized);
 DeclareEvent(NetChannelOutgoingPropertyUninitialized);
@@ -155,11 +140,9 @@ DeclareEvent(NetChannelIncomingPropertyChanged);
 // [MasterServer] (Dispatched on GameSession)
 // Generated after a new NetHostRecord is discovered.
 DeclareEvent(NetHostRecordDiscovered);
-// Generated after an already discovered NetHostRecord is updated from receiving
-// new information.
+// Generated after an already discovered NetHostRecord is updated from receiving new information.
 DeclareEvent(NetHostRecordUpdate);
-// Generated after a NetHostRecord's lifetime has exceeded the max record
-// lifetime.
+// Generated after a NetHostRecord's lifetime has exceeded the max record lifetime.
 DeclareEvent(NetHostRecordExpired);
 
 //
@@ -168,8 +151,7 @@ DeclareEvent(NetHostRecordExpired);
 
 // Event Handling:
 // [Client/Server/Offline] (Dispatched on GameSession)
-// Generated as a result of sending/receiving Events over the network, for the
-// LOCAL peer and REMOTE peer(s).
+// Generated as a result of sending/receiving Events over the network, for the LOCAL peer and REMOTE peer(s).
 DeclareEvent(NetEventSent);
 DeclareEvent(NetEventReceived);
 } // namespace Events
@@ -208,8 +190,7 @@ public:
 
 //                              AcquireNetHostInfo //
 
-/// Dispatched when the net peer host is acquiring project-specific host
-/// information.
+/// Dispatched when the net peer host is acquiring project-specific host information.
 class AcquireNetHostInfo : public Event
 {
 public:
@@ -241,8 +222,7 @@ public:
   NetRefreshResult::Enum mRefreshResult; ///< Whether or not the operation completed successfully.
   float mResponseTime;                   ///< Operation response time (from request to completion).
   Network::Enum mNetwork;                ///< Operation target network.
-  NetHost* mHost;                        ///< Host discovered or refreshed (will contain the first host
-                                         ///< updated if this is a list update).
+  NetHost* mHost; ///< Host discovered or refreshed (will contain the first host updated if this is a list update).
 };
 
 //                                 NetHostListUpdate //
@@ -322,9 +302,8 @@ public:
   // Data
   IpAddress mTheirIpAddress;           ///< Their IP address (as seen from our perspective).
   EventBundle mOurRequestBundle;       ///< Our bundled request event data.
-  uint mOurPendingUserAddRequestCount; ///< Our pending user add requests
-                                       ///< following this connect request
-                                       ///< (within the same frame).
+  uint mOurPendingUserAddRequestCount; ///< Our pending user add requests following this connect request (within the
+                                       ///< same frame).
 };
 
 //                         NetPeerReceivedConnectRequest //
@@ -343,20 +322,17 @@ public:
   // Data
   IpAddress mTheirIpAddress;             ///< Their IP address (as seen from our perspective).
   EventBundle mTheirRequestBundle;       ///< Their bundled request event data.
-  uint mTheirPendingUserAddRequestCount; ///< Their pending user add requests
-                                         ///< following this connect request
-                                         ///< (within the same frame).
+  uint mTheirPendingUserAddRequestCount; ///< Their pending user add requests following this connect request (within the
+                                         ///< same frame).
   IpAddress mOurIpAddress;               ///< Our IP address (as seen from their perspective).
-  bool mReturnOurConnectResponse;        ///< Return: Our connect response (accept the
-                                         ///< connect request?).
+  bool mReturnOurConnectResponse;        ///< Return: Our connect response (accept the connect request?).
   EventBundle mReturnOurResponseBundle;  ///< Return: Our bundled response event data.
 };
 
 //                           NetPeerSentConnectResponse //
 
 /// Dispatched after sending a connect response.
-/// If denied, their net peer ID is released and link is destroyed immediately
-/// after this.
+/// If denied, their net peer ID is released and link is destroyed immediately after this.
 class NetPeerSentConnectResponse : public Event
 {
 public:
@@ -369,9 +345,8 @@ public:
   NetPeerId mTheirNetPeerId;                 ///< Their net peer ID (set only if accepted).
   IpAddress mTheirIpAddress;                 ///< Their IP address (as seen from our perspective).
   EventBundle mTheirRequestBundle;           ///< Their bundled request event data.
-  uint mTheirPendingUserAddRequestCount;     ///< Their pending user add requests
-                                             ///< following this connect request
-                                             ///< (within the same frame).
+  uint mTheirPendingUserAddRequestCount; ///< Their pending user add requests following this connect request (within the
+                                         ///< same frame).
   IpAddress mOurIpAddress;                   ///< Our IP address (as seen from their perspective).
   ConnectResponse::Enum mOurConnectResponse; ///< Our connect response.
   EventBundle mOurResponseBundle;            ///< Our bundled response event data.
@@ -380,9 +355,8 @@ public:
 //                        NetPeerReceivedConnectResponse //
 
 /// Dispatched after receiving a connect response.
-/// If accepted, our net peer ID is set immediately before this and a connect
-/// confirmation is sent after this. If denied, our net peer ID is cleared and
-/// link is destroyed immediately after this.
+/// If accepted, our net peer ID is set immediately before this and a connect confirmation is sent after this.
+/// If denied, our net peer ID is cleared and link is destroyed immediately after this.
 class NetPeerReceivedConnectResponse : public Event
 {
 public:
@@ -394,9 +368,8 @@ public:
   // Data
   IpAddress mTheirIpAddress;                   ///< Their IP address (as seen from our perspective).
   EventBundle mOurRequestBundle;               ///< Our bundled request event data.
-  uint mOurPendingUserAddRequestCount;         ///< Our pending user add requests
-                                               ///< following this connect request
-                                               ///< (within the same frame).
+  uint mOurPendingUserAddRequestCount; ///< Our pending user add requests following this connect request (within the
+                                       ///< same frame).
   IpAddress mOurIpAddress;                     ///< Our IP address (as seen from their perspective).
   ConnectResponse::Enum mTheirConnectResponse; ///< Their connect response.
   EventBundle mTheirResponseBundle;            ///< Their bundled response event data.
@@ -505,13 +478,10 @@ public:
   NetPeerId mTheirNetPeerId;            ///< Their net peer ID.
   IpAddress mTheirIpAddress;            ///< Their IP address (as seen from our perspective).
   EventBundle mTheirRequestBundle;      ///< Their bundled request event data.
-  bool mReturnOurAddResponse;           ///< Return: Our add response (accept the add
-                                        ///< request?).
+  bool mReturnOurAddResponse;           ///< Return: Our add response (accept the add request?).
   EventBundle mReturnOurResponseBundle; ///< Return: Our bundled response event data.
-  Cog* mReturnTheirNetUser;             ///< Return: Their network user object (must have a
-                                        ///< NetUser component).
-  NetUserId mTheirNetUserId;            ///< Their net user ID (released back to the store
-                                        ///< if not accepted).
+  Cog* mReturnTheirNetUser;             ///< Return: Their network user object (must have a NetUser component).
+  NetUserId mTheirNetUserId;            ///< Their net user ID (released back to the store if not accepted).
 };
 
 //                          NetPeerSentUserAddResponse //
@@ -532,8 +502,7 @@ public:
   NetUserAddResponse::Enum mOurAddResponse; ///< Our add response.
   EventBundle mOurResponseBundle;           ///< Our bundled response event data.
   NetUserId mTheirNetUserId;                ///< Their net user ID (set only if accepted).
-  Cog* mTheirNetUser;                       ///< Their net user object about to be added (set only if
-                                            ///< accepted).
+  Cog* mTheirNetUser;                       ///< Their net user object about to be added (set only if accepted).
 };
 
 //                        NetPeerReceivedUserAddResponse //
@@ -582,8 +551,7 @@ public:
   ZilchDeclareType(NetUserAcquiredObjectOwnership, TypeCopyMode::ReferenceType);
 
   // Data
-  Cog* mAcquiredObject;       ///< The object this user just acquired network
-                              ///< ownership of.
+  Cog* mAcquiredObject;       ///< The object this user just acquired network ownership of.
   Cog* mPreviousNetUserOwner; ///< The object's previous network user owner.
 };
 
@@ -659,8 +627,7 @@ public:
 
 //                           NetChannelPropertyChange //
 
-/// Dispatched after an outgoing/incoming net channel property change is
-/// detected during a particular replication phase.
+/// Dispatched after an outgoing/incoming net channel property change is detected during a particular replication phase.
 class NetChannelPropertyChange : public Event
 {
 public:
@@ -672,8 +639,7 @@ public:
   TransmissionDirection::Enum mDirection;   ///< The change direction.
   Cog* mObject;                             ///< The changed net object.
   String mChannelName;                      ///< The changed net channel.
-  String mComponentName;                    ///< The component which declared the changed net
-                                            ///< property.
+  String mComponentName;                    ///< The component which declared the changed net property.
   String mPropertyName;                     ///< The changed net property.
 };
 
@@ -708,10 +674,8 @@ public:
   // Data
   NetPeerId mTheirNetPeerId; ///< Their net peer ID.
   Event* mNetEvent;          ///< Network event received.
-  Cog* mDestination;         ///< Dispatch destination object (null if the net object
-                             ///< could not be found locally).
-  bool mReturnAllow;         ///< Return: Allow the received network event to be
-                             ///< dispatched on the destination object?
+  Cog* mDestination;         ///< Dispatch destination object (null if the net object could not be found locally).
+  bool mReturnAllow;         ///< Return: Allow the received network event to be dispatched on the destination object?
 };
 
 //                                 NetHostRecord //
@@ -726,8 +690,8 @@ public:
   NetHostRecordEvent();
   NetHostRecordEvent(NetHostRecord*);
 
-  NetHostRecord* mHostRecord; ///< Host discovered or refreshed (will contain the first
-                              ///< host updated if this is a list update).
+  NetHostRecord*
+      mHostRecord; ///< Host discovered or refreshed (will contain the first host updated if this is a list update).
 };
 
 } // namespace Zero

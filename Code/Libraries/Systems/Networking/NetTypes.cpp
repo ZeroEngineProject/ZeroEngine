@@ -27,8 +27,7 @@ bool IsValidNetPropertyType(Type* propertyType)
   //    Bitstream can serialize the underlying property type?
   // OR This a cog type?
   // OR This is a cog path type?
-  // (We allow NetObject net properties to serialize these types, but not
-  // NetEvents, for now)
+  // (We allow NetObject net properties to serialize these types, but not NetEvents, for now)
   return BitStreamCanSerializeType(propertyType) || propertyType == ZilchTypeId(Cog) ||
          propertyType == ZilchTypeId(CogPath);
 }
@@ -40,8 +39,7 @@ bool IsValidNetPeerIdPropertyType(Type* propertyType)
 //                                 Network Types //
 
 ComponentPropertyInstanceData::ComponentPropertyInstanceData(String propertyName, Component* component) :
-    mPropertyName(propertyName),
-    mComponent(component)
+    mPropertyName(propertyName), mComponent(component)
 {
 }
 
@@ -55,9 +53,8 @@ Variant GetNetChannelAuthorityProperty(const Variant& propertyData)
   ReplicaChannel* replicaChannel = propertyData.GetOrError<ReplicaChannel*>();
 
   // Success
-  // (We wrap the enum in an Any to take advantage of Zilch meta later during
-  // serialization to serialize the enum quantized, using only the bits
-  // necessary to represent all enum values)
+  // (We wrap the enum in an Any to take advantage of Zilch meta later during serialization
+  // to serialize the enum quantized, using only the bits necessary to represent all enum values)
   return Variant(Any(replicaChannel->GetAuthority()));
 }
 void SetNetChannelAuthorityProperty(const Variant& value, Variant& propertyData)
@@ -133,8 +130,7 @@ void SetNetObjectParentProperty(const Variant& value, Variant& propertyData)
       NetObject* currentParentNetObject = currentParent->has(NetObject);
       if (currentParentNetObject && (currentParentNetObject->GetNetObjectId() == newParentNetObjectId))
       {
-        // Done (This case needs to be explicitly checked because of internal
-        // hierarchies!)
+        // Done (This case needs to be explicitly checked because of internal hierarchies!)
         return;
       }
     }
@@ -159,16 +155,16 @@ void SetNetObjectParentProperty(const Variant& value, Variant& propertyData)
       {
         Assert(netPeer->IsClient());
 
-        // Add delayed attachment, will be performed when the parent exists
-        // locally
+        // Add delayed attachment, will be performed when the parent exists locally
         netSpace->AddDelayedAttachment(netObject->GetNetObjectId(), newParentNetObjectId);
       }
       // We are not receiving a net game clone?
       else
       {
-        DoNotifyWarning("Unable To Set NetObject Parent",
-                        String::Format("There was an error setting the parent of NetObject "
-                                       "'%s' - Parent NetObject does not exist locally!",
+        DoNotifyWarning(
+            "Unable To Set NetObject Parent",
+            String::Format(
+                "There was an error setting the parent of NetObject '%s' - Parent NetObject does not exist locally!",
                                        owner->GetDescription().c_str()));
       }
       return;
@@ -252,9 +248,7 @@ Variant GetComponentCogPathProperty(const Variant& propertyData)
   Any cogPathAny = property->GetValue(component);
   if (!cogPathAny.IsHoldingValue()) // Unable?
   {
-    DoNotifyError("NetProperty",
-                  "Error getting CogPath NetProperty - Unable to get property "
-                  "instance value");
+    DoNotifyError("NetProperty", "Error getting CogPath NetProperty - Unable to get property instance value");
     return Variant();
   }
   CogPath* cogPath = cogPathAny.Get<CogPath*>();
@@ -280,9 +274,7 @@ void SetComponentCogPathProperty(const Variant& value, Variant& propertyData)
   Any cogPathAny = property->GetValue(component);
   if (!cogPathAny.IsHoldingValue()) // Unable?
   {
-    DoNotifyError("NetProperty",
-                  "Error setting CogPath NetProperty - Unable to get property "
-                  "instance value");
+    DoNotifyError("NetProperty", "Error setting CogPath NetProperty - Unable to get property instance value");
     return;
   }
   CogPath* cogPath = cogPathAny.Get<CogPath*>();
@@ -314,12 +306,10 @@ Variant GetComponentAnyProperty(const Variant& propertyData)
 
   // Attempt to convert basic any value to variant value
   Variant variantValue = ConvertBasicAnyToVariant(anyValue);
-  if (variantValue.IsEmpty()) // Unable? (The any's stored type is not a basic
-                              // native type?)
+  if (variantValue.IsEmpty()) // Unable? (The any's stored type is not a basic native type?)
   {
     // Assign the any value itself to the variant value
-    // (Some property types like enums, resources, and bitstream are expected to
-    // be wrapped in an any this way)
+    // (Some property types like enums, resources, and bitstream are expected to be wrapped in an any this way)
     variantValue = anyValue;
   }
 
@@ -343,12 +333,10 @@ void SetComponentAnyProperty(const Variant& value, Variant& propertyData)
 
   // Attempt to convert basic variant value to any value
   Any anyValue = ConvertBasicVariantToAny(variantValue);
-  if (!anyValue.IsHoldingValue()) // Unable? (The variant's stored type is not a
-                                  // basic native type?)
+  if (!anyValue.IsHoldingValue()) // Unable? (The variant's stored type is not a basic native type?)
   {
     // Get the any value itself from the variant value
-    // (Some property types like enums, resources, and bitstream are expected to
-    // be wrapped in an any this way)
+    // (Some property types like enums, resources, and bitstream are expected to be wrapped in an any this way)
     anyValue = variantValue.GetOrError<Any>();
   }
 
@@ -531,9 +519,7 @@ void SetNetPropertyCogAsNetObjectId(Property* property, const Any& instance, Net
     cog = netPeer->GetNetObject(netObjectId);
     if (!cog) // Unable?
     {
-      DoNotifyWarning("NetProperty",
-                      "Unable to set Cog NetProperty - Network object does not "
-                      "exist locally");
+      DoNotifyWarning("NetProperty", "Unable to set Cog NetProperty - Network object does not exist locally");
       return;
     }
   }
@@ -553,8 +539,7 @@ NetObjectId GetNetPropertyCogAsNetObjectId(Property* property, const Any& instan
   if (!cogNetObject) // Unable?
   {
     DoNotifyError("NetProperty",
-                  "Error getting Cog NetProperty - Cog being referenced must "
-                  "have a NetObject component");
+                  "Error getting Cog NetProperty - Cog being referenced must have a NetObject component");
     return NetObjectId(0);
   }
 
@@ -565,11 +550,7 @@ NetObjectId GetNetPropertyCogAsNetObjectId(Property* property, const Any& instan
 //                                 FamilyTree //
 
 FamilyTree::FamilyTree() :
-    mFamilyTreeId(0),
-    mAncestorDisplayName(),
-    mAncestorCreateContext(),
-    mAncestorReplicaType(),
-    mReplicas()
+    mFamilyTreeId(0), mAncestorDisplayName(), mAncestorCreateContext(), mAncestorReplicaType(), mReplicas()
 {
   // (Should not actually get called)
   Assert(false);

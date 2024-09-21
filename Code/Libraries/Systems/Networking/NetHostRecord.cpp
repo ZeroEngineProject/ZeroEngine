@@ -15,8 +15,7 @@ ZilchDefineType(NetHostRecord, builder, type)
   ZilchBindFieldGetterProperty(mIpAddress);
   ZilchBindFieldGetterProperty(mBasicHostInfo);
   ZilchBindFieldGetterProperty(mLifetime);
-  // ZilchBindFieldGetterProperty(mProjectGuid); //This type is not yet bound.
-  // (int64 I think)
+  // ZilchBindFieldGetterProperty(mProjectGuid); //This type is not yet bound. (int64 I think)
 }
 
 NetHostRecord::NetHostRecord() : mLifetime(0.0f), mIpAddress(), mBasicHostInfo(), mProjectGuid()

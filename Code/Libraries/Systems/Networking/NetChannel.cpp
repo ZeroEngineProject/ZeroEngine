@@ -127,8 +127,7 @@ float NetChannel::GetLastChangeTimePassed() const
   if (timestamp == cInvalidMessageTimestamp) // Invalid?
     return 0;
 
-  // Compute time passed since last change (duration between now and last change
-  // timestamp)
+  // Compute time passed since last change (duration between now and last change timestamp)
   TimeMs timePassed = (now - timestamp);
   return TimeMsToFloatSeconds(timePassed);
 }
@@ -141,8 +140,8 @@ void NetChannel::SetAuthority(Authority::Enum authority)
   {
     // Unable to modify authority
     DoNotifyError("NetChannel",
-                  "Unable to modify NetChannel authority - NetObject is already online "
-                  "and NetChannelType specifies a fixed authority mode");
+                  "Unable to modify NetChannel authority - NetObject is already online and NetChannelType specifies a "
+                  "fixed authority mode");
     return;
   }
 
@@ -211,8 +210,7 @@ NetProperty* NetChannel::AddNetProperty(Component* component,
   if (ReplicaChannel::IsValid())
   {
     DoNotifyError("NetChannel",
-                  String::Format("Unable to add NetProperty named '%s' - "
-                                 "NetObject is already online",
+                  String::Format("Unable to add NetProperty named '%s' - NetObject is already online",
                                  combinedNetPropertyName.c_str()));
     return nullptr;
   }
@@ -221,8 +219,7 @@ NetProperty* NetChannel::AddNetProperty(Component* component,
   if (component == nullptr)
   {
     DoNotifyError("NetChannel",
-                  String::Format("Unable to add NetProperty named '%s' - "
-                                 "Specified component is null",
+                  String::Format("Unable to add NetProperty named '%s' - Specified component is null",
                                  combinedNetPropertyName.c_str()));
     return nullptr;
   }
@@ -231,8 +228,7 @@ NetProperty* NetChannel::AddNetProperty(Component* component,
   if (property == nullptr)
   {
     DoNotifyError("NetChannel",
-                  String::Format("Unable to add NetProperty named '%s' - "
-                                 "Specified meta property is null",
+                  String::Format("Unable to add NetProperty named '%s' - Specified meta property is null",
                                  combinedNetPropertyName.c_str()));
     return nullptr;
   }
@@ -283,13 +279,11 @@ NetProperty* NetChannel::AddNetProperty(Component* component,
   {
     // Get basic native type from the underlying property type
     NativeType* nativeType = ZilchTypeToBasicNativeType(property->PropertyType);
-    if (!nativeType) // Unable? (The underlying property type is not a basic
-                     // native type?)
+    if (!nativeType) // Unable? (The underlying property type is not a basic native type?)
     {
-      // Treat the property as an opaque Any, ignoring it's true underlying type
-      // here (The only purpose of knowing the property's underlying type here
-      // is so we can provide intelligent replication options on basic native
-      // types)
+      // Treat the property as an opaque Any, ignoring it's true underlying type here
+      // (The only purpose of knowing the property's underlying type here is so we can provide intelligent replication
+      // options on basic native types)
       nativeType = NativeTypeOf(Any);
     }
 
@@ -305,9 +299,9 @@ NetProperty* NetChannel::AddNetProperty(Component* component,
   // Unable to get or add net property type?
   if (!netPropertyType)
   {
-    DoNotifyError("NetChannel",
-                  String::Format("Unable to add NetProperty named '%s' - Unable to get "
-                                 "or add NetPropertyType named '%s'",
+    DoNotifyError(
+        "NetChannel",
+        String::Format("Unable to add NetProperty named '%s' - Unable to get or add NetPropertyType named '%s'",
                                  combinedNetPropertyName.c_str(),
                                  netPropertyTypeName.c_str()));
     return nullptr;
@@ -323,9 +317,10 @@ NetProperty* NetChannel::AddNetProperty(Component* component,
   // Unable to add net property?
   if (!netProperty)
   {
-    DoNotifyError("NetChannel",
-                  String::Format("Unable to add NetProperty named '%s' - A NetProperty "
-                                 "with that name already exists for this NetChannel",
+    DoNotifyError(
+        "NetChannel",
+        String::Format(
+            "Unable to add NetProperty named '%s' - A NetProperty with that name already exists for this NetChannel",
                                  combinedNetPropertyName.c_str()));
     return nullptr;
   }
@@ -344,10 +339,9 @@ NetProperty* NetChannel::AddBasicNetProperty(const String& netPropertyName,
   // Already valid? (Net object is already online?)
   if (ReplicaChannel::IsValid())
   {
-    DoNotifyError("NetChannel",
-                  String::Format("Unable to add NetProperty named '%s' - "
-                                 "NetObject is already online",
-                                 netPropertyName.c_str()));
+    DoNotifyError(
+        "NetChannel",
+        String::Format("Unable to add NetProperty named '%s' - NetObject is already online", netPropertyName.c_str()));
     return nullptr;
   }
 
@@ -372,9 +366,9 @@ NetProperty* NetChannel::AddBasicNetProperty(const String& netPropertyName,
   // Unable to get or add net property type?
   if (!netPropertyType)
   {
-    DoNotifyError("NetChannel",
-                  String::Format("Unable to add NetProperty named '%s' - Unable to get "
-                                 "or add NetPropertyType named '%s'",
+    DoNotifyError(
+        "NetChannel",
+        String::Format("Unable to add NetProperty named '%s' - Unable to get or add NetPropertyType named '%s'",
                                  netPropertyName.c_str(),
                                  netPropertyName.c_str()));
     return nullptr;
@@ -387,9 +381,10 @@ NetProperty* NetChannel::AddBasicNetProperty(const String& netPropertyName,
   // Unable to add net property?
   if (!netProperty)
   {
-    DoNotifyError("NetChannel",
-                  String::Format("Unable to add NetProperty named '%s' - A NetProperty "
-                                 "with that name already exists for this NetChannel",
+    DoNotifyError(
+        "NetChannel",
+        String::Format(
+            "Unable to add NetProperty named '%s' - A NetProperty with that name already exists for this NetChannel",
                                  netPropertyName.c_str()));
     return nullptr;
   }
@@ -407,8 +402,7 @@ bool NetChannel::RemoveNetProperty(Component* component, StringParam propertyNam
   if (ReplicaChannel::IsValid())
   {
     DoNotifyError("NetChannel",
-                  String::Format("Unable to remove NetProperty named '%s' - "
-                                 "NetObject is already online",
+                  String::Format("Unable to remove NetProperty named '%s' - NetObject is already online",
                                  combinedNetPropertyName.c_str()));
     return false;
   }
@@ -591,9 +585,7 @@ void NetChannelType::SetAuthorityMode(AuthorityMode::Enum authorityMode)
   if (ReplicaChannelType::IsValid())
   {
     // Unable to modify configuration
-    DoNotifyError("NetChannelType",
-                  "Unable to modify this NetChannelType configuration option "
-                  "at game runtime");
+    DoNotifyError("NetChannelType", "Unable to modify this NetChannelType configuration option at game runtime");
     return;
   }
 
@@ -655,9 +647,7 @@ void NetChannelType::SetAwakeDetectionInterval(uint awakeDetectionInterval)
   if (ReplicaChannelType::IsValid())
   {
     // Unable to modify configuration
-    DoNotifyError("NetChannelType",
-                  "Unable to modify this NetChannelType configuration option "
-                  "at game runtime");
+    DoNotifyError("NetChannelType", "Unable to modify this NetChannelType configuration option at game runtime");
     return;
   }
 
@@ -674,9 +664,7 @@ void NetChannelType::SetNapDetectionInterval(uint napDetectionInterval)
   if (ReplicaChannelType::IsValid())
   {
     // Unable to modify configuration
-    DoNotifyError("NetChannelType",
-                  "Unable to modify this NetChannelType configuration option "
-                  "at game runtime");
+    DoNotifyError("NetChannelType", "Unable to modify this NetChannelType configuration option at game runtime");
     return;
   }
 
@@ -703,9 +691,7 @@ void NetChannelType::SetReplicateOnOnline(bool replicateOnOnline)
   if (ReplicaChannelType::IsValid())
   {
     // Unable to modify configuration
-    DoNotifyError("NetChannelType",
-                  "Unable to modify this NetChannelType configuration option "
-                  "at game runtime");
+    DoNotifyError("NetChannelType", "Unable to modify this NetChannelType configuration option at game runtime");
     return;
   }
 
@@ -725,9 +711,7 @@ void NetChannelType::SetReplicateOnChange(bool replicateOnChange)
   if (ReplicaChannelType::IsValid())
   {
     // Unable to modify configuration
-    DoNotifyError("NetChannelType",
-                  "Unable to modify this NetChannelType configuration option "
-                  "at game runtime");
+    DoNotifyError("NetChannelType", "Unable to modify this NetChannelType configuration option at game runtime");
     return;
   }
 
@@ -747,9 +731,7 @@ void NetChannelType::SetReplicateOnOffline(bool replicateOnOffline)
   if (ReplicaChannelType::IsValid())
   {
     // Unable to modify configuration
-    DoNotifyError("NetChannelType",
-                  "Unable to modify this NetChannelType configuration option "
-                  "at game runtime");
+    DoNotifyError("NetChannelType", "Unable to modify this NetChannelType configuration option at game runtime");
     return;
   }
 
@@ -769,9 +751,7 @@ void NetChannelType::SetSerializationMode(SerializationMode::Enum serializationM
   if (ReplicaChannelType::IsValid())
   {
     // Unable to modify configuration
-    DoNotifyError("NetChannelType",
-                  "Unable to modify this NetChannelType configuration option "
-                  "at game runtime");
+    DoNotifyError("NetChannelType", "Unable to modify this NetChannelType configuration option at game runtime");
     return;
   }
 
@@ -797,9 +777,7 @@ void NetChannelType::SetTransferMode(TransferMode::Enum transferMode)
   if (ReplicaChannelType::IsValid())
   {
     // Unable to modify configuration
-    DoNotifyError("NetChannelType",
-                  "Unable to modify this NetChannelType configuration option "
-                  "at game runtime");
+    DoNotifyError("NetChannelType", "Unable to modify this NetChannelType configuration option at game runtime");
     return;
   }
 

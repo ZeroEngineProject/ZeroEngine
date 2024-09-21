@@ -29,10 +29,8 @@ public:
 
   // Data
   float mLifetime;            ///< How long has this record been alive in seconds?
-  IpAddress mIpAddress;       ///< The IpAddress associated with this record. This is
-                              ///< who published it.
-  EventBundle mBasicHostInfo; ///< The info published along with their record.
-                              ///< Contains game server specific data.
+  IpAddress mIpAddress;       ///< The IpAddress associated with this record. This is who published it.
+  EventBundle mBasicHostInfo; ///< The info published along with their record. Contains game server specific data.
   Guid mProjectGuid;          ///< The project Guid that this host record belongs too.
 };
 

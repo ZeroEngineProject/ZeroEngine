@@ -46,14 +46,12 @@ SendableEvent* SendableEvent::Load(Serializer& stream)
 
   // Make sure meta inherits from sendable event
   // Remove for now
-  // ErrorIf(meta->IsNotA(MetaTypeOf(SendableEvent)), "The event must
-  // bind/inherit from the base class SendableEvent");
+  // ErrorIf(meta->IsNotA(MetaTypeOf(SendableEvent)), "The event must bind/inherit from the base class SendableEvent");
 
   // If we actually found the meta data...
   if (boundType != nullptr)
   {
-    // METAREFACTOR This may not work since we're using the calling state for
-    // everything
+    // METAREFACTOR This may not work since we're using the calling state for everything
     // Create the object with no flags, then serialize it's data into the loader
     HandleOf<SendableEvent> event = ZilchAllocate(SendableEvent, boundType);
 
@@ -69,21 +67,18 @@ SendableEvent* SendableEvent::Load(Serializer& stream)
     else
     {
       // Throw a warning since we can't actually create that event type
-      Error("Unable to create event of type '%s', was its meta initialized "
-            "with InitializeMetaOfTypeWithCreator?",
+      Error("Unable to create event of type '%s', was its meta initialized with InitializeMetaOfTypeWithCreator?",
             String(node.TypeName).c_str());
     }
   }
   else
   {
     // Throw a warning since we got data that we don't know what it is
-    Error("Cannot find meta for object type '%s', was its meta initialized "
-          "with InitializeMetaOfTypeWithCreator?",
+    Error("Cannot find meta for object type '%s', was its meta initialized with InitializeMetaOfTypeWithCreator?",
           String(node.TypeName).c_str());
   }
 
-  // Otherwise, if we got here, return nullptr since we did not properly
-  // deserialize the event
+  // Otherwise, if we got here, return nullptr since we did not properly deserialize the event
   return nullptr;
 }
 
@@ -93,9 +88,9 @@ void SendableEvent::Save(SendableEvent* event, Serializer& stream)
   BoundType* eventType = ZilchVirtualTypeId(event);
 
   // Make sure that the meta class exists
-  ErrorIf(eventType == nullptr,
-          "The event that's being serialized has no meta class, which means "
-          "that InitializeMetaOfType was never called");
+  ErrorIf(
+      eventType == nullptr,
+      "The event that's being serialized has no meta class, which means that InitializeMetaOfType was never called");
 
   // Save the type name so we can read it on the other end
   stream.StartPolymorphic(eventType);

@@ -73,16 +73,16 @@ public:
   /// (Cannot be modified at game runtime)
   void ResetConfig();
 
-  /// Sets all configuration settings according to the specified
-  /// NetPropertyConfig resource. (Cannot be modified at game runtime)
+  /// Sets all configuration settings according to the specified NetPropertyConfig resource.
+  /// (Cannot be modified at game runtime)
   void SetConfig(NetPropertyConfig* netPropertyConfig);
 };
 
 //                              NetPropertyConfig //
 
 // Variant Configuration Helper Macros
-// TODO PLATFORM further investigate this macros usage, static constexpr float
-// does not compile on clang 3.7 so for now was changed to an int
+// TODO PLATFORM further investigate this macros usage, static constexpr float does not compile on clang 3.7 so for now
+// was changed to an int
 #define DeclareVariantGetSetForArithmeticTypes(property, defaultFloat, defaultInt)                                     \
   DeclareVariantGetSetForType(property, Integer, int);                                                                 \
   DeclareVariantGetSetForType(property, DoubleInteger, s64);                                                           \
@@ -101,8 +101,7 @@ public:
   type Get##property##typeName() const
 
 /// Network Property Configuration.
-/// Defines a configuration for the replication of a single property on the
-/// network.
+/// Defines a configuration for the replication of a single property on the network.
 class NetPropertyConfig : public DataResource
 {
 public:
@@ -125,8 +124,7 @@ public:
   /// Net property configuration name.
   const String& GetName() const;
 
-  /// Translates our variant properties into the target network property type
-  /// (where possible, else defaults).
+  /// Translates our variant properties into the target network property type (where possible, else defaults).
   void TranslateVariantProperties();
 
   //
@@ -137,13 +135,13 @@ public:
   void SetBasicNetType(BasicNetType::Enum basicNetType);
   BasicNetType::Enum GetBasicNetType() const;
 
-  /// Controls whether or not to use a delta threshold at which a net property's
-  /// primitive-components are considered changed during change detection.
+  /// Controls whether or not to use a delta threshold at which a net property's primitive-components are considered
+  /// changed during change detection.
   void SetUseDeltaThreshold(bool useDeltaThreshold);
   bool GetUseDeltaThreshold() const;
 
-  /// Controls the delta threshold at which a net property's
-  /// primitive-components are considered changed during change detection.
+  /// Controls the delta threshold at which a net property's primitive-components are considered changed during change
+  /// detection.
   DeclareVariantGetSetForArithmeticTypes(DeltaThreshold, (1), int(1));
 #define DefaultFloatDeltaThreshold float(1.0f)
 #define DefaultIntDeltaThreshold int(1)
@@ -152,95 +150,82 @@ public:
   void SetSerializationMode(SerializationMode::Enum serializationMode);
   SerializationMode::Enum GetSerializationMode() const;
 
-  /// Controls whether or not a floating-point net property's
-  /// primitive-components are converted to half floats during serialization.
-  /// (Using half floats is mutually exclusive with using quantization)
+  /// Controls whether or not a floating-point net property's primitive-components are converted to half floats during
+  /// serialization. (Using half floats is mutually exclusive with using quantization)
   void SetUseHalfFloats(bool useHalfFloats);
   bool GetUseHalfFloats() const;
 
-  /// Controls whether or not a net property's primitive-components are
-  /// quantized (bit-packed to use only the bits necessary to represent all
-  /// possible values) during serialization. (Quantization uses the specified
-  /// delta threshold as a quantum interval value) (Quantization is mutually
-  /// exclusive with using half floats)
+  /// Controls whether or not a net property's primitive-components are quantized (bit-packed to use only the bits
+  /// necessary to represent all possible values) during serialization. (Quantization uses the specified delta threshold
+  /// as a quantum interval value) (Quantization is mutually exclusive with using half floats)
   void SetUseQuantization(bool useQuantization);
   bool GetUseQuantization() const;
 
-  /// Controls the minimum, inclusive value at which a net property's
-  /// primitive-components may be quantized during serialization.
+  /// Controls the minimum, inclusive value at which a net property's primitive-components may be quantized during
+  /// serialization.
   DeclareVariantGetSetForArithmeticTypes(QuantizationRangeMin, (-1), int(-1));
 #define DefaultFloatQuantizationRangeMin float(-1.0f)
 #define DefaultIntQuantizationRangeMin int(-1)
 
-  /// Controls the maximum, inclusive value at which a net property's
-  /// primitive-components may be quantized during serialization.
+  /// Controls the maximum, inclusive value at which a net property's primitive-components may be quantized during
+  /// serialization.
   DeclareVariantGetSetForArithmeticTypes(QuantizationRangeMax, (+1), int(+1));
 #define DefaultFloatQuantizationRangeMax float(+1.0f)
 #define DefaultIntQuantizationRangeMax int(+1)
 
-  /// Controls whether or not to interpolate a net property's received
-  /// authoritative values before sampling them locally. (Enable to improve
-  /// changing value smoothness, at the expense of some small CPU and memory
-  /// impact)
+  /// Controls whether or not to interpolate a net property's received authoritative values before sampling them
+  /// locally. (Enable to improve changing value smoothness, at the expense of some small CPU and memory impact)
   void SetUseInterpolation(bool useInterpolation);
   bool GetUseInterpolation() const;
 
-  /// Controls the type of curve to use when interpolating a net property's
-  /// authoritative values to be sampled later locally.
+  /// Controls the type of curve to use when interpolating a net property's authoritative values to be sampled later
+  /// locally.
   void SetInterpolationCurve(Math::CurveType::Enum interpolationCurve);
   Math::CurveType::Enum GetInterpolationCurve() const;
 
-  /// Controls the time offset from now to sample a net property's interpolated
-  /// authoritative values. (This is effectively how "forward" or "backward" in
-  /// time we are sampling interpolated authority values)
+  /// Controls the time offset from now to sample a net property's interpolated authoritative values.
+  /// (This is effectively how "forward" or "backward" in time we are sampling interpolated authority values)
   void SetSampleTimeOffset(float sampleTimeOffset);
   float GetSampleTimeOffset() const;
 
-  /// Controls the maximum amount of time to extrapolate beyond a net property's
-  /// last received authoritative value. When sampling beyond this extrapolation
-  /// limit, the sampled value will remain unchanged until the next
-  /// authoritative value is received. (Helps minimize the negative effects of
-  /// missing changes or sparse change detection intervals when applied to
-  /// non-deterministic property data)
+  /// Controls the maximum amount of time to extrapolate beyond a net property's last received authoritative value.
+  /// When sampling beyond this extrapolation limit, the sampled value will remain unchanged until the next
+  /// authoritative value is received. (Helps minimize the negative effects of missing changes or sparse change
+  /// detection intervals when applied to non-deterministic property data)
   void SetExtrapolationLimit(float extrapolationLimit);
   float GetExtrapolationLimit() const;
 
-  /// Controls whether or not to gradually converge a net property's locally
-  /// simulated values with received authoritative values. (Enable to improve
-  /// changing value smoothness, at the expense of some small CPU and memory
+  /// Controls whether or not to gradually converge a net property's locally simulated values with received
+  /// authoritative values. (Enable to improve changing value smoothness, at the expense of some small CPU and memory
   /// impact)
   void SetUseConvergence(bool useConvergence);
   bool GetUseConvergence() const;
 
-  /// Controls whether or not net properties should dispatch
-  /// NetChannelPropertyConvergenceStateChange when its convergence state
-  /// changes.
+  /// Controls whether or not net properties should dispatch NetChannelPropertyConvergenceStateChange when its
+  /// convergence state changes.
   void SetEventOnConvergenceStateChange(bool eventOnConvergenceStateChange);
   bool GetEventOnConvergenceStateChange() const;
 
-  /// Controls the weight of an actively changing net property's sampled
-  /// authoritative values when performing active convergence, applied every
-  /// convergence interval. (Setting this to 0 will effectively never converge,
-  /// and setting this to 1 will effectively always snap)
+  /// Controls the weight of an actively changing net property's sampled authoritative values when performing active
+  /// convergence, applied every convergence interval. (Setting this to 0 will effectively never converge, and setting
+  /// this to 1 will effectively always snap)
   void SetActiveConvergenceWeight(float activeConvergenceWeight);
   float GetActiveConvergenceWeight() const;
 
-  /// Controls the elapsed duration in which a resting net property will be
-  /// fully converged with the last received authoritative value, applied every
-  /// convergence interval. (Setting this to 0 will effectively snap to the last
+  /// Controls the elapsed duration in which a resting net property will be fully converged with the last received
+  /// authoritative value, applied every convergence interval. (Setting this to 0 will effectively snap to the last
   /// received property value immediately on rest)
   void SetRestingConvergenceDuration(float restingConvergenceDuration);
   float GetRestingConvergenceDuration() const;
 
-  /// Controls the frame interval in which a net property's locally simulated
-  /// values are converged with sampled authoritative values. (Increase to
-  /// spread out convergence-related property setter calls which reduces CPU
-  /// impact at the expense of convergence smoothness)
+  /// Controls the frame interval in which a net property's locally simulated values are converged with sampled
+  /// authoritative values. (Increase to spread out convergence-related property setter calls which reduces CPU impact
+  /// at the expense of convergence smoothness)
   void SetConvergenceInterval(uint convergenceInterval);
   uint GetConvergenceInterval() const;
 
-  /// Controls the threshold at which to snap a net property's locally simulated
-  /// values to sampled authoritative values instead of gradually converging.
+  /// Controls the threshold at which to snap a net property's locally simulated values to sampled authoritative values
+  /// instead of gradually converging.
   DeclareVariantGetSetForArithmeticTypes(SnapThreshold, (10), int(10));
 #define DefaultFloatSnapThreshold float(10.0f)
 #define DefaultIntSnapThreshold int(10)
@@ -260,10 +245,8 @@ public:
   float mExtrapolationLimit;                  ///< Extrapolation time limit.
   bool mUseConvergence;                       ///< Use convergence?
   bool mEventOnConvergenceStateChange;        ///< Event on convergence state change?
-  float mActiveConvergenceWeight;             ///< Active convergence weight applied every
-                                              ///< convergence interval.
-  float mRestingConvergenceDuration;          ///< Resting convergence duration handled
-                                              ///< every convergence interval.
+  float mActiveConvergenceWeight;             ///< Active convergence weight applied every convergence interval.
+  float mRestingConvergenceDuration;          ///< Resting convergence duration handled every convergence interval.
   uint mConvergenceInterval;                  ///< Convergence interval.
   Variant mSnapThreshold;                     ///< Snap-instead-of-converge threshold.
 };
@@ -318,21 +301,18 @@ public:
   // Property Interface
   //
 
-  /// Component's type name (the component type which defines the property being
-  /// configured).
+  /// Component's type name (the component type which defines the property being configured).
   void SetComponentName(StringParam componentName);
   String GetComponentName();
 
   /// Property's variable name (the property being configured).
   String GetPropertyName();
 
-  /// Network channel configuration resource controlling how this property is
-  /// grouped and replicated.
+  /// Network channel configuration resource controlling how this property is grouped and replicated.
   void SetNetChannelConfig(NetChannelConfig* netChannelConfig);
   NetChannelConfig* GetNetChannelConfig();
 
-  /// Network property configuration resource controlling how this property is
-  /// replicated.
+  /// Network property configuration resource controlling how this property is replicated.
   void SetNetPropertyConfig(NetPropertyConfig* netPropertyConfig);
   NetPropertyConfig* GetNetPropertyConfig();
 

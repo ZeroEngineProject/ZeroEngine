@@ -62,8 +62,8 @@ void LanHostDiscovery::HandleNetLinkDisconnected(NetLinkDisconnected* event)
   return; // LAN Host Discovery does not currently deal with connections.
   /*
 
-  //TODO, do this only if it relates to us. terminate, only if it relates to
-  use. if (mNetPeer->IsClientOrServer())
+  //TODO, do this only if it relates to us. terminate, only if it relates to use.
+  if (mNetPeer->IsClientOrServer())
   {
     TerminateInternalEvent(event->mTheirIpAddress, event);
 
@@ -73,8 +73,8 @@ void LanHostDiscovery::HandleNetLinkDisconnected(NetLinkDisconnected* event)
       //if the disconnect was not closed down purposely.
       if (event->mDisconnectReason != DisconnectReason::Request)
       {
-        //presume something happened which caused the master server to fail to
-  transmit its message (host list). HandleFailedInternetHostList();
+        //presume something happened which caused the master server to fail to transmit its message (host list).
+        HandleFailedInternetHostList();
       }
     }
 
@@ -134,8 +134,8 @@ void LanHostDiscovery::HandleCancelSingleHostRequest(SingleHostRequest& singleHo
 void LanHostDiscovery::HandleCancelMultiHostRequest(MultiHostRequest& multiHostRequest)
 {
   // not sure this will do anything ever.
-  // pre-handle a multi host request before it is canceled. What did the
-  // discovery interface do that it might need to clean up?
+  // pre-handle a multi host request before it is canceled. What did the discovery interface do that it might need to
+  // clean up?
 }
 
 bool LanHostDiscovery::HandlePing(IpAddress const& theirIpAddress, NetHostPingData& netHostPingData)
@@ -165,8 +165,8 @@ void LanHostDiscovery::HandlePingTimeout(PendingHostPing& pendingHostPing)
     }
     else
     {
-      hostRequest->FlushHostRequest(*mNetPeer, *this); // dispatch events, create net hosts, clean up
-                                                       // stale hosts. dispatch host list.
+      hostRequest->FlushHostRequest(
+          *mNetPeer, *this);       // dispatch events, create net hosts, clean up stale hosts. dispatch host list.
       mOpenHostRequests.Clear();                       // Clear out hosts requests. (it is finished)
       mRespondingHostData.Clear();                     // Clear out responding host data (we are done with it)
       Assert(mSingleHostRequests.Size() == 0);         // shouldn't need to clean this, because it should be empty.
@@ -187,16 +187,14 @@ void LanHostDiscovery::HandlePingTimeout(PendingHostPing& pendingHostPing)
     else
     {
       hostRequest->FlushHostRequest(*mNetPeer, *this);    // dispatches event. Creates net hosts.
-      mSingleHostRequests.Erase(hostRequest->mIpAddress); // removes map of IP address to single host
-                                                          // request.
+      mSingleHostRequests.Erase(hostRequest->mIpAddress); // removes map of IP address to single host request.
       mOpenHostRequests.EraseValue(hostRequest);          // cleans up individual host refresh request.
     }
   }
   break;
 
   default:
-  case HostPingType::MasterServerRefreshHost: // shouldn't be receiving master
-                                              // server host refreshes on LAN...
+  case HostPingType::MasterServerRefreshHost: // shouldn't be receiving master server host refreshes on LAN...
     Assert(false);
     break;
   }
@@ -208,11 +206,9 @@ void LanHostDiscovery::HandlePong(IpAddress const& theirIpAddress,
 {
   // if ping from a game server:
   // read out ping data save it. update level of refresh.
-  // if its a refresh (individual refresh) then we should also remove pending
-  // ping.
+  // if its a refresh (individual refresh) then we should also remove pending ping.
 
-  // PongHelper returns IP address of pinged host. It also processes and updates
-  // responding host data.
+  // PongHelper returns IP address of pinged host. It also processes and updates responding host data.
   IpAddress pingedHost = PongHelper(theirIpAddress, netHostPongData, pendingHostPing);
 
   // Was PongHelper early outed?
@@ -234,8 +230,7 @@ void LanHostDiscovery::HandlePong(IpAddress const& theirIpAddress,
 
   // first time response?
   if (!isFirstResponse)
-    return; // we only want to handle events and additional actions on the first
-            // response.
+    return; // we only want to handle events and additional actions on the first response.
 
   // check if extra host info was requested.
   if (hostRequest->mAquireExtraHostInfo)
@@ -262,18 +257,16 @@ void LanHostDiscovery::HandlePong(IpAddress const& theirIpAddress,
     }
     else // mDiscoveryMode == NetDiscoveryMode::RefreshList
     {
-      // Here we dispatch a single host from the from a multi host request. then
-      // we have to remove the responding host data struct so that it does not
-      // get dispatched again.
-      hostRequest->FlushHost(*mNetPeer,
+      // Here we dispatch a single host from the from a multi host request. then we have to remove the responding host
+      // data struct so that it does not get dispatched again.
+      hostRequest->FlushHost(
+          *mNetPeer,
                              *this,
-                             theirIpAddress); // dispatches the host in the host request. Must
-                                              // remove the RespondingHostData.
+          theirIpAddress); // dispatches the host in the host request. Must remove the RespondingHostData.
     }
 
-    // remove them from responding hosts since they are finished and dispatched.
-    // (multi host requests will then not dispatch them later when it iterates
-    // through on timeout)
+    // remove them from responding hosts since they are finished and dispatched. (multi host requests will then not
+    // dispatch them later when it iterates through on timeout)
     mRespondingHostData.EraseValue(theirIpAddress);
   }
 }

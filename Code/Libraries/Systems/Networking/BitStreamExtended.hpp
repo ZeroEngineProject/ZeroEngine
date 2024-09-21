@@ -4,19 +4,16 @@
 //                      BitStreamExtended Configuration //
 
 /// BitStreamExtended "small" size bits.
-/// Determines the maximum bit size (bits written) a "small" BitStreamExtended
-/// may be serialized with. If a BitStreamExtended's bit size is larger than
-/// this "small" maximum, we will use the "large" size instead. (We use the last
-/// possible value as a bit flag to denote whether or not the BitStreamExtended
-/// is small or large. The idea is most BitStreams will be small and thus it's
-/// preferable to use fewer bits declaring when it's size. But for extensibility
-/// purposes we allow larger sizes.)
+/// Determines the maximum bit size (bits written) a "small" BitStreamExtended may be serialized with.
+/// If a BitStreamExtended's bit size is larger than this "small" maximum, we will use the "large" size instead.
+/// (We use the last possible value as a bit flag to denote whether or not the BitStreamExtended is small or large. The
+/// idea is most BitStreams will be small and thus it's preferable to use fewer bits declaring when it's size. But for
+/// extensibility purposes we allow larger sizes.)
 #define BITSTREAM_EXTENDED_SMALL_SIZE_BITS 12
 StaticAssertWithinRange(Range17, BITSTREAM_EXTENDED_SMALL_SIZE_BITS, 1, UINTMAX_BITS);
 
 /// BitStreamExtended "large" size bits.
-/// Determines the maximum bit size (bits written) a BitStreamExtended may be
-/// serialized with.
+/// Determines the maximum bit size (bits written) a BitStreamExtended may be serialized with.
 #define BITSTREAM_EXTENDED_LARGE_SIZE_BITS BITS_NEEDED_TO_REPRESENT(BYTES_TO_BITS(POW2(BITSTREAM_MAX_SIZE_BITS)) - 1)
 StaticAssertWithinRange(Range18, BITSTREAM_EXTENDED_LARGE_SIZE_BITS, 1, UINTMAX_BITS);
 
@@ -402,9 +399,8 @@ public:
 //
 
 /// Serializes a non-empty Variant.
-/// Will not serialize the stored type ID, the deserializer must default
-/// construct the variant as the expected type before deserializing. Returns the
-/// number of bits serialized if successful, else 0.
+/// Will not serialize the stored type ID, the deserializer must default construct the variant as the expected type
+/// before deserializing. Returns the number of bits serialized if successful, else 0.
 inline Bits SerializeKnownExtendedVariant(SerializeDirection::Enum direction, BitStream& bitStream, Variant& value)
 {
   // Get starting bits count
@@ -479,9 +475,7 @@ inline Bits SerializeKnownExtendedVariant(SerializeDirection::Enum direction, Bi
           if (!resource)
           {
             // Set default resource
-            DoNotifyWarning("BitStream",
-                            "Unable to find resource specified remotely, using "
-                            "default resource instead");
+            DoNotifyWarning("BitStream", "Unable to find resource specified remotely, using default resource instead");
             anyValue.DefaultConstruct(anyValue.StoredType);
           }
           // Found resource?
@@ -527,8 +521,7 @@ inline Bits SerializeKnownExtendedVariant(SerializeDirection::Enum direction, Bi
   }
 }
 
-/// Returns true if BitStream can serialize the specified zilch type, else
-/// false.
+/// Returns true if BitStream can serialize the specified zilch type, else false.
 inline bool BitStreamCanSerializeType(Type* zilchType)
 {
   // Get basic native type (or null)

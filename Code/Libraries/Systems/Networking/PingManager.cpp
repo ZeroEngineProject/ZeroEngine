@@ -18,8 +18,8 @@ PingManager::PingManager(NetPeer* netPeer) :
     mTimer(),
     mPingInterval(0.25f)
 {
-  // Now dependent on peer manager for id. Consider instead passing in argument
-  // for id if you truly want to encapsulate the class.
+  // Now dependent on peer manager for id. Consider instead passing in argument for id
+  // if you truly want to encapsulate the class.
   mManagerId = (netPeer->mNextManagerId += 1);
 }
 
@@ -66,9 +66,8 @@ void PingManager::UpdatePendingPings()
 
 uint PingManager::AcquireNextRandomIncrementalId()
 {
-  // Increment next random ID by some small random value. We don't care if this
-  // wraps around. (This helps prevent predictive message spam denial of service
-  // attacks)
+  // Increment next random ID by some small random value. We don't care if this wraps around.
+  // (This helps prevent predictive message spam denial of service attacks)
   return (mNextRandomId += uint(Math::Random().IntRangeInIn(0, 1024)));
 }
 
@@ -93,8 +92,7 @@ bool PingManager::PingHost(Network::Enum network,
   // Get current time
   TimeMs now = mTimer.UpdateAndGetTimeMilliseconds();
 
-  // Is there already a pending host ping request for the same IP address and
-  // ping type?
+  // Is there already a pending host ping request for the same IP address and ping type?
   for (uint i = 0; i < mPendingHostPings.Size(); ++i)
   {
     PendingHostPing& pendingHostPing = *mPendingHostPings[i];
@@ -193,8 +191,7 @@ bool PingManager::ReceiveHostPing(const IpAddress& theirIpAddress, const Message
   Assert(mNetPeer != nullptr);
   Assert(mNetPeer->IsOpen());
 
-  // Save the state of the bitstream before it was read from in case we need to
-  // return it to its previous state.
+  // Save the state of the bitstream before it was read from in case we need to return it to its previous state.
   Bits bitsPrevRead = message.GetData().GetBitsRead();
 
   // Read network host ping message data
@@ -281,9 +278,8 @@ bool PingManager::ReceiveHostPong(const IpAddress& theirIpAddress, const Message
   if (mPendingHostPings.Empty())
   {
     // Do nothing
-    // (This likely means the pending host ping request has timed out or was
-    // canceled earlier) (Or this is an erroneous/malicious response) in either
-    // case we return true as if it were handled.
+    // (This likely means the pending host ping request has timed out or was canceled earlier)
+    // (Or this is an erroneous/malicious response) in either case we return true as if it were handled.
     return true;
   }
 
@@ -293,8 +289,7 @@ bool PingManager::ReceiveHostPong(const IpAddress& theirIpAddress, const Message
   if (!pendingHostPingPtr) // Unable?
   {
     // Done
-    // (This likely means the pending host ping request has timed out or was
-    // canceled earlier)
+    // (This likely means the pending host ping request has timed out or was canceled earlier)
     return true;
   }
 
@@ -309,8 +304,7 @@ bool PingManager::ReceiveHostPong(const IpAddress& theirIpAddress, const Message
   // Add them to responding hosts.
   pendingPingRef.mRespondingHosts.InsertOrAssign(theirIpAddress);
 
-  // Individual refreshes get auto removed. multi-host refreshes generally go to
-  // timeout.
+  // Individual refreshes get auto removed. multi-host refreshes generally go to timeout.
   if (pendingPingRef.mHostPingType == HostPingType::Refresh ||
       pendingPingRef.mHostPingType == HostPingType::MasterServerRefreshHost)
   {
@@ -346,8 +340,7 @@ bool PingManager::ReceivePeerMessage(IpAddress const& theirIpAddress, Message& p
 
 bool PingManager::ReceiveLinkMessage(IpAddress const& theirIpAddress, Message& linkMessage)
 {
-  return false; // Pings make no use of Link messages (that's why they are
-                // pings). So we don't handle this message.
+  return false; // Pings make no use of Link messages (that's why they are pings). So we don't handle this message.
 }
 
 void PingManager::SetPingTimeoutCallback(PendingPingCallback callback)

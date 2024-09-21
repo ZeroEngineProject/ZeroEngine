@@ -28,11 +28,9 @@ public:
   bool operator!=(const IpAddress& rhs) const;
   bool operator<(const IpAddress& rhs) const;
 
-  /// Returns the round-trip time (RTT) in milliseconds from our peer to this
-  /// host.
+  /// Returns the round-trip time (RTT) in milliseconds from our peer to this host.
   uint GetRoundTripTime() const;
-  /// Returns the estimated latency ((RTT/2)) in milliseconds from our peer to
-  /// this host.
+  /// Returns the estimated latency ((RTT/2)) in milliseconds from our peer to this host.
   uint GetLatency() const;
 
   // Data

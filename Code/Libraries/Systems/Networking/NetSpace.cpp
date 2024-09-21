@@ -28,11 +28,7 @@ ZilchDefineType(NetSpace, builder, type)
 }
 
 NetSpace::NetSpace() :
-    NetObject(),
-    mPendingNetObjects(),
-    mPendingNetLevelStarted(false),
-    mReadyChildMap(),
-    mDelayedParentMap()
+    NetObject(), mPendingNetObjects(), mPendingNetLevelStarted(false), mReadyChildMap(), mDelayedParentMap()
 {
 }
 
@@ -84,8 +80,7 @@ void NetSpace::ClientOnEngineUpdate(UpdateEvent* event)
     if (space->GetCurrentLevel())
     {
       // Handle network level started
-      // (Our client peer has now fully loaded and synchronized the network
-      // level)
+      // (Our client peer has now fully loaded and synchronized the network level)
       GetNetPeer()->HandleNetLevelStarted(space);
     }
     mPendingNetLevelStarted = false;
@@ -120,9 +115,8 @@ void NetSpace::ServerOnEngineUpdate(UpdateEvent* event)
     {
       // Emplace net object by level now
       // (We clone later when replicating the entire net level state)
-      if (!netPeer->EmplaceNetObjectBySpaceAndLevel(cog,
-                                                    cog->GetSpace(),
-                                                    netObject->GetInitializationLevelResourceIdName())) // Unable?
+      if (!netPeer->EmplaceNetObjectBySpaceAndLevel(
+              cog, cog->GetSpace(), netObject->GetInitializationLevelResourceIdName())) // Unable?
         continue;                                                                                       // Skip
     }
     // Was cog initialized?
@@ -172,8 +166,7 @@ void NetSpace::ServerOnEngineUpdate(UpdateEvent* event)
     if (space->GetCurrentLevel())
     {
       // Perform network level started
-      // (If this is a new net space, then this is not a level transition,
-      // otherwise it is)
+      // (If this is a new net space, then this is not a level transition, otherwise it is)
       PerformNetLevelStarted(isNewNetSpace ? false : true);
     }
     mPendingNetLevelStarted = false;
@@ -233,8 +226,7 @@ void NetSpace::OfflineOnEngineUpdate(UpdateEvent* event)
     if (space->GetCurrentLevel())
     {
       // Perform network level started
-      // (If this is a new net space, then this is not a level transition,
-      // otherwise it is)
+      // (If this is a new net space, then this is not a level transition, otherwise it is)
       PerformNetLevelStarted(isNewNetSpace ? false : true);
     }
     mPendingNetLevelStarted = false;
@@ -244,10 +236,10 @@ void NetSpace::OfflineOnEngineUpdate(UpdateEvent* event)
 void NetSpace::OnLevelStarted(GameEvent* event)
 {
   // Is not server or offline?
-  // (Note: We can't put this check in our initialize, around connecting to the
-  // LevelStarted event, because emplaced net spaces
-  //  don't have an open peer at initialize time, but we still need to connect
-  //  to this event to handle future level transitions)
+  // (Note: We can't put this check in our initialize, around connecting to the LevelStarted event, because emplaced net
+  // spaces
+  //  don't have an open peer at initialize time, but we still need to connect to this event to handle future level
+  //  transitions)
   if (!IsServerOrOffline())
     return;
 
@@ -299,8 +291,7 @@ void NetSpace::PerformNetLevelStarted(bool isLevelTransition)
   Space* space = static_cast<Space*>(GetOwner());
 
   // Handle network level started
-  // (Our server or offline peer has now fully loaded and synchronized the
-  // network level)
+  // (Our server or offline peer has now fully loaded and synchronized the network level)
   netPeer->HandleNetLevelStarted(space);
 
   // Is server?
@@ -337,8 +328,7 @@ void NetSpace::FulfillDelayedAttachments(Cog* delayedParentObject)
     Cog* readyChildObject = netPeer->GetNetObject(readyChild);
     if (!readyChildObject) // Unable?
     {
-      // (We clean up ready children on destruction from our delayed attachments
-      // list, so this shouldn't fail)
+      // (We clean up ready children on destruction from our delayed attachments list, so this shouldn't fail)
       Assert(false);
       continue;
     }
@@ -350,8 +340,7 @@ void NetSpace::FulfillDelayedAttachments(Cog* delayedParentObject)
     mReadyChildMap.EraseValue(readyChild);
   }
 
-  // Erase delayed attachment entries (we've fulfilled all delayed attachments
-  // waiting on this parent object)
+  // Erase delayed attachment entries (we've fulfilled all delayed attachments waiting on this parent object)
   mDelayedParentMap.Erase(result);
 }
 
@@ -370,13 +359,10 @@ void NetSpace::AddDelayedAttachment(NetObjectId readyChild, NetObjectId delayedP
     // Get ready child object
     if (Cog* readyChildObject = netPeer->GetNetObject(readyChild))
     {
-      // METAREFACTOR GetDisplayName should be cleaned up and put on a
-      // CogComponentMeta
+      // METAREFACTOR GetDisplayName should be cleaned up and put on a CogComponentMeta
       // DoNotifyWarning("Delayed Attachment Unfulfilled",
-      //                String::Format("A delayed attachment for ready child
-      //                NetObject '%s' was not fulfilled - A newer delayed
-      //                parent overwrote the previous one",
-      //                GetDisplayName(readyChildObject).c_str()));
+      //                String::Format("A delayed attachment for ready child NetObject '%s' was not fulfilled - A newer
+      //                delayed parent overwrote the previous one", GetDisplayName(readyChildObject).c_str()));
     }
   }
 
@@ -400,8 +386,7 @@ bool NetSpace::RemoveDelayedAttachment(NetObjectId readyChild)
     ArrayMap<NetObjectId, ArraySet<NetObjectId>>::pointer result2 = mDelayedParentMap.FindPairPointer(delayedParent);
     if (!result2 || result2->second.Empty()) // Unable?
     {
-      // (This shouldn't happen, we don't allow a mismatch to occur between
-      // these corresponding maps)
+      // (This shouldn't happen, we don't allow a mismatch to occur between these corresponding maps)
       Assert(false);
       return false;
     }
@@ -436,12 +421,12 @@ const String& NetSpace::GetNetObjectOnlineEventId() const
 }
 void NetSpace::HandleNetObjectOnlinePreDispatch(NetObjectOnline* event)
 {
-  // // (These net objects didn't have their create context set during
-  // initialization because that requires an online net space.
-  // // So we set their create context now instead. Even though we don't need
-  // to, since these net objects are going to be emplaced,
-  // // for the sake of consistency and having this information available we're
-  // going to set their create context here anyway)
+  // // (These net objects didn't have their create context set during initialization because that requires an online
+  // net space.
+  // // So we set their create context now instead. Even though we don't need to, since these net objects are going to
+  // be emplaced,
+  // // for the sake of consistency and having this information available we're going to set their create context here
+  // anyway)
   //
   // // (Our net object ID should have been set by now)
   // Assert(GetNetObjectId() != 0);

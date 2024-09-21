@@ -60,8 +60,7 @@ public:
   Array<IpAddress> mTheirIpAddresses;   ///< Their IP addresses (as seen from our perspective).
   uint mPingId;                         ///< Unique ping request identifier.
   EventBundle mPingBundle;              ///< Our bundled ping request event data.
-  ArraySet<IpAddress> mRespondingHosts; ///< Hosts that responded to our ping
-                                        ///< (sorted by memory address).
+  ArraySet<IpAddress> mRespondingHosts; ///< Hosts that responded to our ping (sorted by memory address).
 };
 
 /// Typedefs.

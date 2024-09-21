@@ -88,8 +88,7 @@ void NetDiscoveryInterface::CancelRefreshesNow()
 {
   if (mOpenHostRequests.Size() > 0)
   {
-    // We can make some assumptions about the type of refreshes going on based
-    // on our discovery mode
+    // We can make some assumptions about the type of refreshes going on based on our discovery mode
     if (mDiscoveryMode == NetDiscoveryMode::Refresh)
     {
       // Go through each request and cancel it
@@ -141,12 +140,10 @@ bool NetDiscoveryInterface::ReceivePeerMessage(IpAddress const& theirIpAddress, 
 
 void NetDiscoveryInterface::SetPingManagerCallbacks()
 {
-  // these two commented out lines were experiments on what it could figure out
-  // without filling out template. auto thing =
-  // CreateCallback(&NetDiscoveryInterface::HandlePing, this);
-  // mPingManager.mPingCallback = CreateCallback<void, NetDiscoveryInterface,
-  // IpAddress const&, NetHostPingData&>( &NetDiscoveryInterface::HandlePing,
-  // this);
+  // these two commented out lines were experiments on what it could figure out without filling out template.
+  // auto thing = CreateCallback(&NetDiscoveryInterface::HandlePing, this);
+  // mPingManager.mPingCallback = CreateCallback<void, NetDiscoveryInterface, IpAddress const&, NetHostPingData&>(
+  // &NetDiscoveryInterface::HandlePing, this);
 
   mPingManager.SetPingCallback(CreateCallback(&NetDiscoveryInterface::HandlePing, this));
   mPingManager.SetPingCancelledCallback(CreateCallback(&NetDiscoveryInterface::HandlePingCancelled, this));
@@ -168,8 +165,7 @@ SingleHostRequest* NetDiscoveryInterface::CreateSingleHostRequest(Network::Enum 
                                                                   bool removeStaleHosts,
                                                                   bool extraHostInfo)
 {
-  // TODO: Avoid duplicate single host requests. Cancel the duplicate refresh,
-  // start again.
+  // TODO: Avoid duplicate single host requests. Cancel the duplicate refresh, start again.
 
   // Create Request
   SingleHostRequest* newRequest = new SingleHostRequest();
@@ -203,10 +199,8 @@ MultiHostRequest* NetDiscoveryInterface::CreateMultiHostRequest(Network::Enum ne
   MultiHostRequest* newRequest = new MultiHostRequest();
   newRequest->mNetwork = network;
   newRequest->mAllowDiscovery = allowDiscovery;
-  GetExpectedHosts(network,
-                   newRequest->mExpectedHosts); // get the hosts the multi host request is
-                                                // expecting. (if allow discovery is true,
-                                                // anyone can respond)
+  GetExpectedHosts(network, newRequest->mExpectedHosts); // get the hosts the multi host request is expecting. (if allow
+                                                         // discovery is true, anyone can respond)
   newRequest->mDiscoveryStage = NetDiscoveryStage::Unresponding;
   newRequest->mRemoveStaleHosts = removeStaleHosts;
   newRequest->mAquireExtraHostInfo = extraHostInfo;
@@ -245,8 +239,8 @@ void NetDiscoveryInterface::DispatchHost(IpAddress const& hostIp, OpenHostReques
   Assert(hostData != nullptr);
   if (hostData == nullptr)
   {
-    // (I don't think this should ever happen. newly discovered hosts should
-    // create this. Already known get one by default)
+    // (I don't think this should ever happen. newly discovered hosts should create this. Already known get one by
+    // default)
     Assert(false);
     hostData = &defaultHostData;
   }
@@ -303,10 +297,9 @@ void NetDiscoveryInterface::DispatchHost(IpAddress const& hostIp, OpenHostReques
   // Get owner as game session
   GameSession* owner = static_cast<GameSession*>(mNetPeer->GetOwner());
 
-  // we do all these if checks so that if they fail to get new host info, we
-  // don't clear out the old info on the NetHost. (eg. so if they fail to get
-  // the server name or something other, it doesn't clear out the server name
-  // any more, or clear the last screenshot or sent)
+  // we do all these if checks so that if they fail to get new host info, we don't clear out the old info
+  // on the NetHost. (eg. so if they fail to get the server name or something other, it doesn't clear out the server
+  // name any more, or clear the last screenshot or sent)
   if (hostData->mRefreshResult != NetRefreshResult::NoResponse)
   {
     if (!hostData->mBasicHostInfo.IsEmpty())
@@ -331,8 +324,7 @@ void NetDiscoveryInterface::DispatchHost(IpAddress const& hostIp, OpenHostReques
 
 MultiHostRequest* NetDiscoveryInterface::GetMultiHostRequest()
 {
-  Assert(mDiscoveryMode == NetDiscoveryMode::RefreshList); // should be in refresh list discovery
-                                                           // mode.
+  Assert(mDiscoveryMode == NetDiscoveryMode::RefreshList); // should be in refresh list discovery mode.
   Assert(mOpenHostRequests.Size() == 1); // should have exactly one open host request (a multi host request.)
 
   return reinterpret_cast<MultiHostRequest*>(mOpenHostRequests[0].mPointer);
@@ -352,9 +344,8 @@ SingleHostRequest* NetDiscoveryInterface::GetSingleHostRequest(IpAddress const& 
 
 void NetDiscoveryInterface::TerminateInternalEvent(IpAddress const& eventIp, Event* event)
 {
-  // If an event Contains correspondence from a master server, then a lot of the
-  // time we want to terminate the event so the client does not receive unwanted
-  // events.
+  // If an event Contains correspondence from a master server, then a lot of the time
+  // we want to terminate the event so the client does not receive unwanted events.
   if (mNetPeer->IsSubscribedMasterServer(eventIp))
   {
     event->Terminate();
@@ -378,12 +369,10 @@ IpAddress NetDiscoveryInterface::PongHelper(IpAddress const& theirIpAddress,
   EventBundle pongBundle(static_cast<GameSession*>(mNetPeer->GetOwner()));
   pongBundle = ZeroMove(netHostPongData.mEventBundleData);
 
-  // a temporary which talks about the host which we intended to ping (like for
-  // example, sometimes we ping the master server, but we want a host which it
-  // may contain)
+  // a temporary which talks about the host which we intended to ping (like for example, sometimes we ping the master
+  // server, but we want a host which it may contain)
   IpAddress pingedHostIp = theirIpAddress;
-  // a variable which indicates if this pong was from a master server as opposed
-  // to a host.
+  // a variable which indicates if this pong was from a master server as opposed to a host.
 
   bool fromMasterServer = false;
   OpenHostRequest* hostRequest = nullptr;
@@ -403,8 +392,7 @@ IpAddress NetDiscoveryInterface::PongHelper(IpAddress const& theirIpAddress,
       unsigned int bits_read = pongBundle.GetBitStream().Read(refreshData);
       Assert(bits_read > 0);
       pingedHostIp = refreshData.mHostIp;
-      // read out the IP, then here we can just move the info back into the
-      // pong.
+      // read out the IP, then here we can just move the info back into the pong.
       pongBundle = ZeroMove(refreshData.mBasicHostInfo);
       // this ping did come from a master server.
       fromMasterServer = true;
@@ -424,14 +412,13 @@ IpAddress NetDiscoveryInterface::PongHelper(IpAddress const& theirIpAddress,
 
   bool isFirstResponse = hostRequest->GetIsFirstResponseFrom(pingedHostIp);
 
-  // check to see if we have some data, or if it needs to be created (and if
-  // not, do nothing so discovery does not happen)
+  // check to see if we have some data, or if it needs to be created (and if not, do nothing so discovery does not
+  // happen)
   if (respondingHostData == nullptr)
   {
-    // Is discovery allowed? And have we already seen another response from this
-    // host? If this is not the first response, allow discovery is true, and the
-    // respondingHostData is missing, this host may have already been dispatched
-    // as refreshed or discovered host.
+    // Is discovery allowed? And have we already seen another response from this host?
+    // If this is not the first response, allow discovery is true, and the respondingHostData is missing, this host
+    // may have already been dispatched as refreshed or discovered host.
     if (hostRequest->mAllowDiscovery && isFirstResponse)
     {
       mRespondingHostData.Insert(pingedHostIp, RespondingHostData());
@@ -465,8 +452,7 @@ bool NetDiscoveryInterface::PongIsForThisProject(NetHostPongData const& netHostP
 
 void NetDiscoveryInterface::EndSingleRefresh(SingleHostRequest* hostRequest)
 {
-  hostRequest->FlushHostRequest(*mNetPeer,
-                                *this);                    // Dispatches event. Creates net hosts.
+  hostRequest->FlushHostRequest(*mNetPeer, *this);         // Dispatches event. Creates net hosts.
   mSingleHostRequests.Erase(hostRequest->mIpAddress);      // Removes map of IP to single host request.
   mOpenHostRequests.EraseValue(hostRequest);               // Cleans up individual host refresh request.
   mRespondingHostData.EraseValue(hostRequest->mIpAddress); // Clean up responding host data.
@@ -484,8 +470,8 @@ void OpenHostRequest::FlushHost(NetPeer& netPeer,
   netDiscoveryInstance.DispatchHost(ipAddress, *this);
 
   RespondingHostData* data = netDiscoveryInstance.mRespondingHostData.FindPointer(ipAddress);
-  Assert(data); // data should not ever be null. the host data should have been
-                // created immediately after the host request was created.
+  Assert(data); // data should not ever be null. the host data should have been created immediately after the host
+                // request was created.
                 // if assert fails, IpAddress could be wrong possibly?
 
   // Remove stale host
@@ -509,9 +495,8 @@ void SingleHostRequest::FlushHostRequest(NetPeer& netPeer, NetDiscoveryInterface
 
 bool SingleHostRequest::IsNewHost(IpAddress const& hostIpAddress)
 {
-  // TODO: Verify what would be needed to be certain this is a new host for a
-  // single host request. if we were not previously known, and now we are
-  // discovered.
+  // TODO: Verify what would be needed to be certain this is a new host for a single host request.
+  // if we were not previously known, and now we are discovered.
   return mPreviouslyKnown == false && mAllowDiscovery && mDiscoveryStage != NetDiscoveryStage::Unresponding;
 }
 

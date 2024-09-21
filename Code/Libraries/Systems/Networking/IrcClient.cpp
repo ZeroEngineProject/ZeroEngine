@@ -322,9 +322,9 @@ void IrcClient::ConnectionFailedOrDisconnected(ConnectionEvent* event)
   // Forward the event
   mReady = false;
   this->DispatchEvent(event->EventId, event);
-  DoNotifyWarning("Irc Client",
-                  "The connection failed or you were disconnected from the IRC "
-                  "server. Use the 'Chat' command to reconnect");
+  DoNotifyWarning(
+      "Irc Client",
+      "The connection failed or you were disconnected from the IRC server. Use the 'Chat' command to reconnect");
 }
 
 void IrcClient::SocketError(TextErrorEvent* event)
@@ -385,8 +385,7 @@ void IrcClient::ReceivedData(ReceivedDataEvent* event)
       // Create a string that represents the host name
       command.From = String(fromStart, stream);
 
-      // Now try and find a '!' inside the host name which designates that one
-      // part of the host is a nickname / identity
+      // Now try and find a '!' inside the host name which designates that one part of the host is a nickname / identity
       const char* identEnd = strchr(fromStart, '!');
 
       // If we didn't find anything, just use the whole host as the identity
@@ -454,8 +453,7 @@ void IrcClient::ReceivedData(ReceivedDataEvent* event)
       }
       else
       {
-        // Otherwise, create a string that only extends to just before the
-        // content
+        // Otherwise, create a string that only extends to just before the content
         String arguments = String(dataStream, content);
 
         // Increment the content pointer to go past the ':'
@@ -470,8 +468,7 @@ void IrcClient::ReceivedData(ReceivedDataEvent* event)
         // While we didn't hit a NULL pointer
         while (*currentArg != '\0')
         {
-          // Read to the end of the argument (there should always be a ' ' at
-          // the end of all the arguments)
+          // Read to the end of the argument (there should always be a ' ' at the end of all the arguments)
           const char* currentArgEnd = strchr(currentArg, ' ');
 
           // If for some reason we didn't find a space at the end...
@@ -495,8 +492,7 @@ void IrcClient::ReceivedData(ReceivedDataEvent* event)
     // If we got a ping
     else if (stream[0] == 'P' && stream[1] == 'I' && stream[2] == 'N' && stream[3] == 'G')
     {
-      // Create the pong reply and send it out (we just reply with the data we
-      // were given)
+      // Create the pong reply and send it out (we just reply with the data we were given)
       String reply(strchr(stream, ':'), strchr(stream, '\n') + 1);
       Send("PONG %s", reply.c_str());
 

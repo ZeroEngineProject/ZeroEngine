@@ -191,14 +191,11 @@ void TcpSocket::Initialize()
   // Do we have any protocols enabled?
   if (mProtocolSetup.Protocols != 0)
   {
-    // If we enabled any protocol that would require an extra message header
-    // (any time we add custom data)
+    // If we enabled any protocol that would require an extra message header (any time we add custom data)
     if (mProtocolSetup.RequiresCustomData())
     {
-      // We always enable the protocol of using length encoded chunks (don't
-      // want to get half an event!) Note: This may override what the user
-      // specified, but it's really important otherwise we might get garbled
-      // data
+      // We always enable the protocol of using length encoded chunks (don't want to get half an event!)
+      // Note: This may override what the user specified, but it's really important otherwise we might get garbled data
       mProtocolSetup.Protocols |= Protocol::Chunks;
       mProtocolSetup.ChunkType = ChunkType::LengthEncoded;
     }
@@ -290,8 +287,7 @@ void TcpSocket::InternalConnect(const ConnectionData& info)
     }
     else
     {
-      // Create a socket data structure to be added to the pending connections
-      // list
+      // Create a socket data structure to be added to the pending connections list
       SocketData newSocketData;
       newSocketData.ConnectionInfo = info;
       newSocketData.Handle = ZeroMove(newSocket);
@@ -319,8 +315,7 @@ bool TcpSocket::Listen(int port, uint maxConnections, TcpSocketBind::Enum bindTo
   if (ValidateServer() == false)
     return false;
 
-  // Create a socket address info that lets us bind to the local network adapter
-  // (probably the primary)
+  // Create a socket address info that lets us bind to the local network adapter (probably the primary)
   Status status;
   SocketAddress localAddress;
   if (bindTo == TcpSocketBind::Any)
@@ -576,8 +571,8 @@ void TcpSocket::MakeEventPacket(SendableEvent* event, PodArray<::byte>& dataOut)
 {
   // Make sure the protocol is enabled
   ErrorIf((mProtocolSetup.Protocols & Protocol::Events) == 0,
-          "In order to send packet-objects, the 'PacketObjects' protocol must "
-          "be enabled by passing it in to the TcpSocket constructor");
+          "In order to send packet-objects, the 'PacketObjects' protocol must be enabled by passing it in to the "
+          "TcpSocket constructor");
 
   // Setup the packet
   SetupPacket(TCPSocketMessageType::Event, dataOut);
@@ -612,17 +607,15 @@ void TcpSocket::SetupPacket(TCPSocketMessageType::Enum messageType, PodArray<::b
   // If we enabled the Chunks protocol and we're using length encoding...
   if (mProtocolSetup.Protocols & Protocol::Chunks && mProtocolSetup.ChunkType == ChunkType::LengthEncoded)
   {
-    // Add the size of the length to the header (we don't yet write the size
-    // because we don't know it!)
+    // Add the size of the length to the header (we don't yet write the size because we don't know it!)
     dataOut.Resize(sizeof(ChunkLengthType));
   }
 
-  // If we enabled any protocol that would require an extra message header (any
-  // time we add custom data)
+  // If we enabled any protocol that would require an extra message header (any time we add custom data)
   if (mProtocolSetup.RequiresCustomData())
   {
-    // We use a single character header when protocols are enabled, so we know
-    // what kind of packets they are (users can still send their own data!)
+    // We use a single character header when protocols are enabled, so we know what kind of packets they are (users can
+    // still send their own data!)
     dataOut.PushBack((::byte)messageType);
   }
 }
@@ -633,8 +626,7 @@ void TcpSocket::FinalizePacket(PodArray<::byte>& dataOut)
   // If we enabled the Chunks protocol and we're using length encoding...
   if (mProtocolSetup.Protocols & Protocol::Chunks && mProtocolSetup.ChunkType == ChunkType::LengthEncoded)
   {
-    // If we have length encoded chunks, then the head will always be the size
-    // of the packet
+    // If we have length encoded chunks, then the head will always be the size of the packet
     *((ChunkLengthType*)dataOut.Data()) = dataOut.Size();
   }
 }
@@ -665,8 +657,8 @@ void TcpSocket::TrackSend(const ::byte* data, size_t size, Socket& socket)
   mSendSize += size;
 
   // Printing
-  // ZPrint("%s Send Count (%d) Size (%d) - Sent data of size %d to socket
-  // %d\n", this->mDebugName.c_str(), mSendCount, mSendSize, size, socket);
+  // ZPrint("%s Send Count (%d) Size (%d) - Sent data of size %d to socket %d\n", this->mDebugName.c_str(), mSendCount,
+  // mSendSize, size, socket);
 
   PrintData("Sent", data, size);
 }
@@ -681,9 +673,8 @@ void TcpSocket::TrackReceive(const ::byte* data, size_t size, Socket& socket)
   mReceieveSize += size;
 
   // Printing
-  // ZPrint("%s Receive Count (%d) Size (%d) - Received data of size %d from
-  // socket %d\n", this->mDebugName.c_str(), mReceiveCount, mReceieveSize, size,
-  // socket);
+  // ZPrint("%s Receive Count (%d) Size (%d) - Received data of size %d from socket %d\n", this->mDebugName.c_str(),
+  // mReceiveCount, mReceieveSize, size, socket);
 
   PrintData("Received", data, size);
 }
@@ -739,8 +730,7 @@ void TcpSocket::HandleIncomingConnections()
   if (incomingConnections >= mMaxIncomingConnections)
     return;
 
-  // Accept any incoming connections (accept will fail if there's nothing to
-  // accept)
+  // Accept any incoming connections (accept will fail if there's nothing to accept)
   Status status;
   Socket newSocket;
   mServer.Accept(status, &newSocket);
@@ -754,8 +744,7 @@ void TcpSocket::HandleIncomingConnections()
     // Find an open connection slot or create one
     SocketData& newSocketData = this->FindOpenOrCreateSocketData();
 
-    // Create a socket data structure to be added to the pending connections
-    // list
+    // Create a socket data structure to be added to the pending connections list
     newSocketData.ConnectionInfo.AddressAndPort = newSocket.GetConnectedRemoteAddress();
     newSocketData.ConnectionInfo.Incoming = true;
     newSocketData.Handle = ZeroMove(newSocket);
@@ -870,8 +859,7 @@ void TcpSocket::HandleOutgoingData()
 
     // Make sure that the index inside the socket data is correct
     ErrorIf(socketData.ConnectionInfo.Index != i,
-            "The intrusive connection index doesn't align with its spot in the "
-            "array");
+            "The intrusive connection index doesn't align with its spot in the array");
 
     // If we don't have any data to send, skip this!
     if (socketData.PartialSentData.Empty())
@@ -919,8 +907,7 @@ void TcpSocket::HandleIncomingData()
 
     // Make sure that the index inside the socket data is correct
     ErrorIf(socketData.ConnectionInfo.Index != i,
-            "The intrusive connection index doesn't align with its spot in the "
-            "array");
+            "The intrusive connection index doesn't align with its spot in the array");
 
     // A boolean that specifies if a connection was erased
     bool connectionErased = false;
@@ -953,15 +940,13 @@ void TcpSocket::HandleIncomingData()
     // Otherwise, if the connection is to be closed...
     else if (state == cCloseConnection)
     {
-      // Close the connection (we don't need to increment the iterator since we
-      // push everything back)
+      // Close the connection (we don't need to increment the iterator since we push everything back)
       CloseConnection(i);
     }
   }
 }
 
-// Do the actual receiving of data (returns true if we should move on to the
-// next socket)
+// Do the actual receiving of data (returns true if we should move on to the next socket)
 TcpSocket::ReceiveState TcpSocket::ReceiveData(SocketData& socketData, size_t index)
 {
   // Keep a buffer for received data
@@ -1054,7 +1039,7 @@ void TcpSocket::HandleChunks(SocketData& socketData, const ::byte* buffer, size_
 
           // Erase the packet from the received data
           PodArray<::byte>::range range(socketData.PartialReceivedData.Begin(),
-                                      socketData.PartialReceivedData.Begin() + packetSize);
+                                        socketData.PartialReceivedData.Begin() + packetSize);
           socketData.PartialReceivedData.Erase(range);
         }
         else
@@ -1088,13 +1073,12 @@ void TcpSocket::HandleChunks(SocketData& socketData, const ::byte* buffer, size_
         // If we have a match...
         if (match)
         {
-          // Handle the received data up to this delimiter (not including the
-          // delimiter)
+          // Handle the received data up to this delimiter (not including the delimiter)
           HandleReceivedData(socketData, socketData.PartialReceivedData.Data(), i);
 
           // Erase the packet from the received data
           PodArray<::byte>::range range(socketData.PartialReceivedData.Begin(),
-                                      socketData.PartialReceivedData.Begin() + i);
+                                        socketData.PartialReceivedData.Begin() + i);
           socketData.PartialReceivedData.Erase(range);
           break;
         }
@@ -1111,8 +1095,8 @@ void TcpSocket::HandleReceivedData(const SocketData& socketData, const ::byte* b
   // If the protocol we're using is to send packet objects...
   if (mProtocolSetup.RequiresCustomData())
   {
-    // Since we have protocols enabled, we need to handle packets different
-    // (basically we need to read attached header data)
+    // Since we have protocols enabled, we need to handle packets different (basically we need to read attached header
+    // data)
     HandleProtocols(socketData, buffer, size);
   }
   else
@@ -1141,8 +1125,8 @@ void TcpSocket::HandleProtocols(const SocketData& socketData, const ::byte* buff
     else
     {
       // Throw a warning since we never should have gotten here
-      Warn("A packet was received for the event protocol, but the event "
-           "protocol was not enabled (though other protocols were!)");
+      Warn("A packet was received for the event protocol, but the event protocol was not enabled (though other "
+           "protocols were!)");
     }
     break;
   }
@@ -1159,8 +1143,8 @@ void TcpSocket::HandleProtocols(const SocketData& socketData, const ::byte* buff
     else
     {
       // Throw a warning since we never should have gotten here
-      Warn("A packet was received for the guid protocol, but the guid protocol "
-           "was not enabled (though other protocols were!)");
+      Warn("A packet was received for the guid protocol, but the guid protocol was not enabled (though other protocols "
+           "were!)");
     }
     break;
   }
@@ -1200,9 +1184,8 @@ void TcpSocket::HandleGuidProtocol(const SocketData& socketData, const ::byte* b
     }
   }
 
-  // Add the guid to the tracked guids (both the hoster and the one using the
-  // protocol do this) The hoster needs to know so that if anyone joins later,
-  // it can tell them who was already there
+  // Add the guid to the tracked guids (both the hoster and the one using the protocol do this)
+  // The hoster needs to know so that if anyone joins later, it can tell them who was already there
   mTrackedGuids.PushBack(guid);
   Sort(mTrackedGuids.All());
 }
@@ -1210,8 +1193,7 @@ void TcpSocket::HandleGuidProtocol(const SocketData& socketData, const ::byte* b
 // Handle the event protocol
 void TcpSocket::HandleEventProtocol(const SocketData& socketData, const ::byte* buffer, size_t size)
 {
-  // Create a binary deserializer (remove the const since the buffer loader
-  // doesn't respect it)
+  // Create a binary deserializer (remove the const since the buffer loader doesn't respect it)
   // BinaryBufferLoader loader;
   DataTreeLoader loader;
   // loader.SetBuffer((::byte*)buffer, size);
@@ -1307,9 +1289,8 @@ void TcpSocket::CloseConnection(uint index)
   // Close the connection and remove it from the list
   socketData.Handle.Close();
 
-  // We need to make a copy of the connection data so that when we dispatch the
-  // 'Disconnected event' we don't need to worry about them touching the socket
-  // or closing the connection
+  // We need to make a copy of the connection data so that when we dispatch the 'Disconnected event'
+  // we don't need to worry about them touching the socket or closing the connection
   ConnectionData tempCopy = socketData.ConnectionInfo;
 
   // Clear out this socket to be re-used later

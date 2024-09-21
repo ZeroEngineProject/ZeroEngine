@@ -100,9 +100,8 @@ void AsyncWebRequest::CancelAllActiveRequests()
   forRange (HandleOf<AsyncWebRequest>& request, requestsToCancel)
     request->Cancel();
 
-  // Destructing the temporary array should release the last handles to the
-  // requests. If any others are still being held onto, they at least should not
-  // be running.
+  // Destructing the temporary array should release the last handles to the requests.
+  // If any others are still being held onto, they at least should not be running.
 }
 
 String AsyncWebRequest::GetData()
@@ -129,18 +128,15 @@ void AsyncWebRequest::Run()
   // Clear stored data and progress.
   ClearResponseData();
 
-  // If we allow caching then we need to check if we already cached this
-  // file/url...
+  // If we allow caching then we need to check if we already cached this file/url...
   if (mForceCacheSeconds != 0)
   {
-    // If we successfully loaded a file from the cache, then send the completed
-    // event and return.
+    // If we successfully loaded a file from the cache, then send the completed event and return.
     if (SendCompletedCacheResponse(false))
       return;
   }
 
-  // This data is immutable while running the request. We should never modify
-  // it.
+  // This data is immutable while running the request. We should never modify it.
   mRequest.mUrl = mUrl;
   mRequest.mPostData = mPostData;
   mRequest.mAdditionalRequestHeaders = mAdditionalRequestHeaders;
@@ -295,8 +291,7 @@ void AsyncWebRequest::OnHeadersReceived(const Array<String>& headers, WebRespons
 
 void AsyncWebRequest::OnWebResponseHeadersInternal(WebResponseEvent* event)
 {
-  // If the user cancelled the request, ignore any incoming old events by
-  // comparing versions.
+  // If the user cancelled the request, ignore any incoming old events by comparing versions.
   if (event->mVersion != mVersion)
     return;
 
@@ -326,10 +321,9 @@ void AsyncWebRequest::OnDataReceived(const ::byte* data, size_t size, u64 totalD
   toSend->mVersion = self->mVersion;
   toSend->mData = strData;
 
-  // We always get total downloaded from the callback because in some
-  // implementations (Emscripten) we don't support partial binary downloads
-  // (only get the entire buffer at the end) but it does at least give us the
-  // total downloaded amount.
+  // We always get total downloaded from the callback because in some implementations (Emscripten)
+  // we don't support partial binary downloads (only get the entire buffer at the end) but it does at least
+  // give us the total downloaded amount.
   toSend->mTotalDownloaded = totalDownloaded;
 
   if (self->mSendEventsOnRequestThread)
@@ -340,17 +334,15 @@ void AsyncWebRequest::OnDataReceived(const ::byte* data, size_t size, u64 totalD
 
 void AsyncWebRequest::OnWebResponsePartialDataInternal(WebResponseEvent* event)
 {
-  // If the user cancelled the request, ignore any incoming old events by
-  // comparing versions.
+  // If the user cancelled the request, ignore any incoming old events by comparing versions.
   if (event->mVersion != mVersion)
     return;
 
   event->mResponseCode = mResponseCode;
   event->mResponseHeaders = mResponseHeaders;
 
-  // We can't just accumulate mData.SizeInBytes() because we may not actually
-  // get partial data on some platforms (however we are guaranteed to get the
-  // total downloaded amount as a number on all platforms).
+  // We can't just accumulate mData.SizeInBytes() because we may not actually get partial data
+  // on some platforms (however we are guaranteed to get the total downloaded amount as a number on all platforms).
   mTotalDownloaded = event->mTotalDownloaded;
   event->mTotalExpected = mTotalExpected;
 
@@ -384,8 +376,7 @@ void AsyncWebRequest::OnComplete(Status& status, WebRequest* request)
 
 void AsyncWebRequest::OnWebResponseCompleteInternal(WebResponseEvent* event)
 {
-  // If the user cancelled the request, ignore any incoming old events by
-  // comparing versions.
+  // If the user cancelled the request, ignore any incoming old events by comparing versions.
   if (event->mVersion != mVersion)
     return;
 
@@ -407,8 +398,7 @@ void AsyncWebRequest::OnWebResponseCompleteInternal(WebResponseEvent* event)
     // If the request came in OK from the server with no errors...
     if (event->mResponseCode == WebResponseCode::OK && event->mError.Empty())
     {
-      // If we allow caching then we need to check if we already cached this
-      // file/url...
+      // If we allow caching then we need to check if we already cached this file/url...
       if (mForceCacheSeconds != 0)
       {
         String cacheFile = GetCacheFile(mUrl);
@@ -417,9 +407,8 @@ void AsyncWebRequest::OnWebResponseCompleteInternal(WebResponseEvent* event)
     }
     else
     {
-      // We failed the request, but if we have caching enabled then attempt to
-      // load the file from the cache and send it as a complete event (even
-      // though the request failed).
+      // We failed the request, but if we have caching enabled then attempt to load the file
+      // from the cache and send it as a complete event (even though the request failed).
       if (mForceCacheSeconds != 0)
       {
         // Early out, since we don't want to send the actual event.
@@ -599,8 +588,7 @@ HandleOf<AsyncWebRequest> WebRequester::ReplaceRequest()
   // If we had a request previously, then copy the old data over.
   if (previousRequest)
   {
-    // We only need to keep the previous requests alive (the current is kept
-    // alive by mRequest).
+    // We only need to keep the previous requests alive (the current is kept alive by mRequest).
     mActiveRequests.PushBack(previousRequestHandle);
 
     request->mUrl = previousRequest->mUrl;

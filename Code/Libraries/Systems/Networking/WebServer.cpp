@@ -34,9 +34,7 @@ ZilchDefineType(WebServerRequestEvent, builder, type)
 }
 
 WebServerRequestEvent::WebServerRequestEvent(WebServerConnection* connection) :
-    mWebServer(connection->mWebServer),
-    mConnection(connection),
-    mMethod(WebServerRequestMethod::Other)
+    mWebServer(connection->mWebServer), mConnection(connection), mMethod(WebServerRequestMethod::Other)
 {
 }
 
@@ -136,8 +134,7 @@ WebServerConnection::~WebServerConnection()
 // Method   : Reading GET/POST/PUT first line of the HTTP request.
 // Headers  : Reading headers such as "Accept-Language: en-us\r\n".
 // Content  : Reading the content length from the headers if it exists.
-// PostData : Reading everything after the \r\n\r\n (should have read a content
-// length).
+// PostData : Reading everything after the \r\n\r\n (should have read a content length).
 DeclareEnum4(ReadStage, Method, Headers, Content, PostData);
 
 OsInt WebServerConnection::ReadWriteThread(void* userData)
@@ -172,12 +169,10 @@ OsInt WebServerConnection::ReadWriteThread(void* userData)
     Status status;
     size_t amount = self->mSocket.Receive(status, buffer, sizeof(buffer));
 
-    // If the connection is gracefully closed, or we had an error, then
-    // terminate the connection.
+    // If the connection is gracefully closed, or we had an error, then terminate the connection.
     if (amount == 0 || status.Failed() || !webServer->mRunning)
     {
-      // Mark the event's connection as null so it doesn't try to send a 404
-      // response in it's destructor.
+      // Mark the event's connection as null so it doesn't try to send a 404 response in it's destructor.
       toSend->mConnection = nullptr;
 
       // Since the connection is considered terminated, we're no
@@ -217,9 +212,8 @@ OsInt WebServerConnection::ReadWriteThread(void* userData)
         toSend->mOriginalUri = uri;
         toSend->mDecodedUri = UrlParamDecode(uri);
 
-        // Was this the last line in the header? We know this because we'll see
-        // \r\n\r\n. Note that this is extremely unlikely to not get any other
-        // headers, and only the method request line.
+        // Was this the last line in the header? We know this because we'll see \r\n\r\n.
+        // Note that this is extremely unlikely to not get any other headers, and only the method request line.
         if (!matches[3].Empty())
           stage = ReadStage::Content;
         else
@@ -232,22 +226,19 @@ OsInt WebServerConnection::ReadWriteThread(void* userData)
     if (stage == ReadStage::Headers)
     {
       // Loop until we don't find any headers in the unparsed data.
-      // Note that there could still be more incoming even when we finish this
-      // loop!
+      // Note that there could still be more incoming even when we finish this loop!
       for (;;)
       {
         cHeaderRegex.Search(unparsedContent, matches, RegexFlags::None);
 
         if (matches.Size() == cHeaderMatchCount)
         {
-          // Add the header to the event (keys are case-insensitive, and values
-          // have optional whitespace).
+          // Add the header to the event (keys are case-insensitive, and values have optional whitespace).
           String key = matches[1].ToLower();
           String value = matches[2].Trim();
           toSend->mHeaders[key] = value;
 
-          // Was this the last line in the header? We know this because we'll
-          // see \r\n\r\n.
+          // Was this the last line in the header? We know this because we'll see \r\n\r\n.
           if (!matches[3].Empty())
             stage = ReadStage::Content;
 
@@ -270,8 +261,7 @@ OsInt WebServerConnection::ReadWriteThread(void* userData)
       if (!contentLengthString.Empty())
         contentLength = atoi(contentLengthString.c_str());
 
-      // If we didn't have the header, or for some reason the content length was
-      // unparsable or 0, then we're done!
+      // If we didn't have the header, or for some reason the content length was unparsable or 0, then we're done!
       if (contentLength == 0)
       {
         toSend->mData = builder.ToString();
@@ -288,8 +278,7 @@ OsInt WebServerConnection::ReadWriteThread(void* userData)
 
     if (stage == ReadStage::PostData)
     {
-      // If we have enough data from the client to make-up all the post data,
-      // then dispatch it!
+      // If we have enough data from the client to make-up all the post data, then dispatch it!
       if ((int)unparsedContent.SizeInBytes() >= contentLength)
       {
         toSend->mData = builder.ToString();
@@ -340,8 +329,7 @@ OsInt WebServerConnection::ReadWriteThread(void* userData)
         buffer += amount;
       }
 
-      // Clear the data but keep the buffer allocated (this makes the swap more
-      // efficient).
+      // Clear the data but keep the buffer allocated (this makes the swap more efficient).
       writeData.Clear();
 
       // If we wrote all the data, then we're done with this thread!
@@ -595,17 +583,15 @@ void WebServer::OnWebServerRequestRaw(WebServerRequestEvent* event)
   // First let the user try and handle it.
   DispatchEvent(Events::WebServerRequest, event);
 
-  // If the users responded to the event then the connection would be null,
-  // nothing else for us to do!
+  // If the users responded to the event then the connection would be null, nothing else for us to do!
   if (!event->mConnection)
     return;
 
-  // If the user specified a mapped path, then look for files or directories
-  // there.
+  // If the user specified a mapped path, then look for files or directories there.
   if (!mPath.Empty())
   {
-    // Turn the URI into a relative file path by using an un-rooted URI and
-    // replacing the slashes with our os path separator.
+    // Turn the URI into a relative file path by using an un-rooted URI and replacing the slashes with our os path
+    // separator.
     String localPath = FilePath::Normalize(FilePath::Combine(mPath, event->mDecodedUri));
 
     // If we have a file on disk, attempt to open it so we can send it.
@@ -627,8 +613,7 @@ void WebServer::OnWebServerRequestRaw(WebServerRequestEvent* event)
       if (!uriWithSlash.EndsWith("/"))
         uriWithSlash = BuildString(uriWithSlash, "/");
 
-      // Build an HTML page that shows the name of the current directory and
-      // then lists all files.
+      // Build an HTML page that shows the name of the current directory and then lists all files.
       String sanitizedServerPath = SanitizeForHtml(uriWithSlash);
       StringBuilder builder;
       builder.Append("<html><head><title>");
@@ -669,8 +654,7 @@ void WebServer::OnWebServerRequestRaw(WebServerRequestEvent* event)
   if (!event->mConnection)
     return;
 
-  // One last chance for the user to handle the request before it automatically
-  // generates a 404.
+  // One last chance for the user to handle the request before it automatically generates a 404.
   DispatchEvent(Events::WebServerUnhandledRequest, event);
 }
 
@@ -690,8 +674,7 @@ OsInt WebServer::AcceptThread(void* userData)
     Status status;
     self->mAcceptSocket.Accept(status, &acceptedSocket);
 
-    // If we got a valid socket then throw it on the connections list and start
-    // up threads for the socket.
+    // If we got a valid socket then throw it on the connections list and start up threads for the socket.
     if (status.Succeeded() && acceptedSocket.IsOpen())
     {
       WebServerConnection* connection = new WebServerConnection(self);
