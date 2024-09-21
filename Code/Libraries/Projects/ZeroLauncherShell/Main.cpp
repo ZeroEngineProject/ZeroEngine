@@ -76,8 +76,7 @@ extern "C" int main(int argc, char* argv[])
   // restart the launcher if it was already running.
   RegisterApplicationRestartCommand(String(), 0);
 
-  // As long as the program wants to restart keep trying to load a new dll and
-  // running it
+  // As long as the program wants to restart keep trying to load a new dll and running it
   while (restart)
   {
     String versionIdFileName = "ZeroLauncherVersionId.txt";
@@ -90,9 +89,8 @@ extern "C" int main(int argc, char* argv[])
 
     String downloadPath = GetLauncherDownloadedPath();
     String downloadedVersionIdPath;
-    // If there was no download available then leave the version id path as an
-    // empty string. This will cause us to fail to open the file and get back a
-    // default id value.
+    // If there was no download available then leave the version id path as an empty string.
+    // This will cause us to fail to open the file and get back a default id value.
     if (!downloadPath.Empty())
       downloadedVersionIdPath = FilePath::Combine(downloadPath, versionIdFileName);
 
@@ -107,8 +105,7 @@ extern "C" int main(int argc, char* argv[])
       if (startupFunction != nullptr)
       {
         restart = startupFunction(localVersionPath.c_str());
-        // Make sure to free the module (otherwise the statics don't get cleaned
-        // up)
+        // Make sure to free the module (otherwise the statics don't get cleaned up)
         library.Unload();
         continue;
       }
@@ -116,16 +113,14 @@ extern "C" int main(int argc, char* argv[])
       return 1;
     }
 
-    // load whatever dll is newer between the installed one and the downloaded
-    // one (if they install a newer version selector we want to run that dll
-    // instead of the downloaded one and if the server was newer we would've
-    // already downloaded it)
+    // load whatever dll is newer between the installed one and the downloaded one
+    //(if they install a newer version selector we want to run that dll instead of
+    // the downloaded one and if the server was newer we would've already downloaded it)
     String dllDirectoryPath = ChooseDllPath(localVersionPath, localVersionId, downloadPath, downloadedVersionId);
     String dllPath = FilePath::Combine(dllDirectoryPath, launcherDllName);
     StartupFunction startupFunction = LoadDll(dllPath, library);
 
-    // if we didn't get back a valid function pointer then the there wasn't a
-    // valid dll to run
+    // if we didn't get back a valid function pointer then the there wasn't a valid dll to run
     if (startupFunction == nullptr)
       return 1;
 
