@@ -369,7 +369,7 @@ size_t MinimizeVolumeSum(Array<ObjectType>& proxies)
 
     // Walk through each aabb and calculate the cost.
     // We don't do the last one because the volume will be the same.
-    for (uisize_tnt i = 1; i < size - 1; ++i)
+    for (size_t i = 1; i < size - 1; ++i)
     {
       // Get the current cost
       real currentCost = ((leftVolume[i] / totalVolume) * i) + ((rightVolume[i] / totalVolume) * (size - i - 1));
