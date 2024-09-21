@@ -14,9 +14,8 @@ class ZilchShaderDefinition;
 class SimpleZilchShaderGenerator;
 class ZilchFragment;
 
-// Base class for displaying translated scripts in the editor. Mostly manages a
-// lot of helper functions on a ZilchCompositor and the actual script editor
-// display.
+// Base class for displaying translated scripts in the editor. Mostly manages a lot of
+// helper functions on a ZilchCompositor and the actual script editor display.
 class TranslatedShaderScriptEditor : public ScriptEditor
 {
 public:
@@ -27,18 +26,15 @@ public:
   // Updates the script editor with the translated text from OnTranslate
   void Build();
   void OnBuild(Event* e);
-  // Function meant to be implemented by derived classes that translate as
-  // needed
+  // Function meant to be implemented by derived classes that translate as needed
   virtual String OnTranslate();
 
   // Helper functions
-  // void CompileAndTranslateFragments(SimpleZilchShaderGenerator&
-  // shaderGenerator); void TranslateMaterial(SimpleZilchShaderGenerator&
-  // shaderGenerator, Material* material);
+  // void CompileAndTranslateFragments(SimpleZilchShaderGenerator& shaderGenerator);
+  // void TranslateMaterial(SimpleZilchShaderGenerator& shaderGenerator, Material* material);
 
-  // The Connect macro doesn't seem to work when trying to connect from a
-  // derived type on a base class function, hence this function allows easy
-  // connection on a resource type being modified.
+  // The Connect macro doesn't seem to work when trying to connect from a derived type on a base class function,
+  // hence this function allows easy connection on a resource type being modified.
   template <typename ResourceType>
   void ListenForModified(ResourceType* resource)
   {
@@ -48,8 +44,8 @@ public:
   SimpleZilchShaderGenerator* mShaderGenerator;
 };
 
-// Translates a given fragment. As long as this editor is open on
-// save/modification of the fragment the script editor will be updated.
+// Translates a given fragment. As long as this editor is open on save/modification
+// of the fragment the script editor will be updated.
 class FragmentFileTranslatorScriptEditor : public TranslatedShaderScriptEditor
 {
 public:
@@ -62,9 +58,8 @@ public:
   ZilchFragment* mFragment;
 };
 
-// Builds the zilch script representing a composite from a material. As long as
-// this editor is open on save/modification of the fragment the script editor
-// will be updated.
+// Builds the zilch script representing a composite from a material. As long as this editor is open
+// on save/modification of the fragment the script editor will be updated.
 class ZilchCompositorScriptEditor : public TranslatedShaderScriptEditor
 {
 public:
@@ -112,8 +107,7 @@ public:
   void OnBuild(Event* e);
   void OnLeftMouseDown(MouseEvent* e);
 
-  // CodeRangeMapping* FindRange(int positionWithinParent, CodeRangeMapping*
-  // current);
+  // CodeRangeMapping* FindRange(int positionWithinParent, CodeRangeMapping* current);
 
   ScriptEditor* mSourceEditor;
   Splitter* mSplitter;
@@ -131,8 +125,7 @@ public:
   virtual void SetTranslatedEditor() override;
   virtual void SaveCheck() override;
   virtual void Build() override;
-  // virtual void BuildFinalShader(ShaderTypeTranslation& shaderResult)
-  // override;
+  // virtual void BuildFinalShader(ShaderTypeTranslation& shaderResult) override;
 
   void SetResource(ZilchFragment* fragment);
 

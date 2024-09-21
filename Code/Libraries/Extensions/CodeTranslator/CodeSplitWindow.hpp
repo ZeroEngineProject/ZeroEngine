@@ -12,7 +12,7 @@ class KeyboardEvent;
 /// Interface for the code translator.
 struct CodeTranslator
 {
-  virtual ~CodeTranslator(){};
+  virtual ~CodeTranslator() {};
   virtual void Translate(HashMap<String, String>& files);
 
   virtual uint GetSourceLexer();

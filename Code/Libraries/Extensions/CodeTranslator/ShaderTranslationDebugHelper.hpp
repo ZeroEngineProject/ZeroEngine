@@ -48,19 +48,16 @@ public:
   ShaderTranslationEntry(Lexer::Enum lexerType, StringParam name, StringParam value);
   String ToString(bool shortFormat = false) const;
 
-  // The name of this entry (typically the fragment name or something like
-  // "ZilchVertex").
+  // The name of this entry (typically the fragment name or something like "ZilchVertex").
   String mName;
   // The translation string
   String mValue;
-  // The lexer type to use for display since multiple languages can be present
-  // in the same list.
+  // The lexer type to use for display since multiple languages can be present in the same list.
   Lexer::Enum mLexerType;
 };
 
-/// Widget to aid in debugging shader translation. Lets the user pick the
-/// material along with the core vertex type and render pass and then see the
-/// resulting composites and translations.
+/// Widget to aid in debugging shader translation. Lets the user pick the material along with the
+/// core vertex type and render pass and then see the resulting composites and translations.
 class ShaderTranslationDebugHelper : public Composite
 {
 public:
@@ -85,8 +82,8 @@ private:
   void OnCompileZilchFragments(ZilchCompileFragmentEvent* event);
   void OnScriptsCompiledPrePatch(ZilchCompileEvent* event);
   void OnScriptCompilationFailed(Event* event);
-  // void ValidateComposition(ZilchShaderGenerator& generator,
-  // ZilchFragmentInfo& info, FragmentType::Enum fragmentType);
+  // void ValidateComposition(ZilchShaderGenerator& generator, ZilchFragmentInfo& info, FragmentType::Enum
+  // fragmentType);
   void OnRunTranslation(Event* e);
   void OnScriptDisplayChanged(Event* e);
 

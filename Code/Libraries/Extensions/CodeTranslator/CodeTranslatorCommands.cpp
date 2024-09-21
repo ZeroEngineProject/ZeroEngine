@@ -9,8 +9,7 @@ void DispatchCodeTranslatorScriptError(StringParam eventId,
                                        StringParam fullMessage,
                                        const Zilch::CodeLocation& location)
 {
-  // This should only happen when a composite has a zilch error. Figure out how
-  // to report later?
+  // This should only happen when a composite has a zilch error. Figure out how to report later?
   if (location.CodeUserData == nullptr)
     return;
 
@@ -77,34 +76,27 @@ String TranslatedShaderScriptEditor::OnTranslate()
   return "";
 }
 
-// void
-// TranslatedShaderScriptEditor::CompileAndTranslateFragments(SimpleZilchShaderGenerator&
-// shaderGenerator)
+// void TranslatedShaderScriptEditor::CompileAndTranslateFragments(SimpleZilchShaderGenerator& shaderGenerator)
 //{
-//  // @JoshD: This is all kinda legacy now and should be cleaned up at some
-//  point.
-//  // This is mainly for testing my simpler stuff instead of graphic's more
-//  complicated pipeline. EventConnect(&shaderGenerator,
-//  Events::TranslationError, &OnZilchFragmentTranslationError);
-//  EventConnect(&shaderGenerator, Zilch::Events::CompilationError,
-//  &OnZilchFragmentCompilationError);
+//   // @JoshD: This is all kinda legacy now and should be cleaned up at some point.
+//   // This is mainly for testing my simpler stuff instead of graphic's more complicated pipeline.
+//   EventConnect(&shaderGenerator, Events::TranslationError, &OnZilchFragmentTranslationError);
+//   EventConnect(&shaderGenerator, Zilch::Events::CompilationError, &OnZilchFragmentCompilationError);
 //
 //  // Remove all old code
 //  shaderGenerator.ClearFragmentsProjectAndLibrary();
-//  // @JoshD: For now load the extensions from the data directory (otherwise
-//  there's an issue with putting
-//  // the resources in the core library as resources don't really do anything
-//  special with resource libraries yet) MainConfig* mainConfig =
-//  Z::gEngine->GetConfigCog()->has(MainConfig); String settingsDir =
-//  FilePath::Combine(mainConfig->DataDirectory, "ZilchFragmentSettings");
-//  String extensionsDir = FilePath::Combine(mainConfig->DataDirectory,
-//  "ZilchFragmentExtensions"); shaderGenerator.LoadSettings(settingsDir);
+//   // @JoshD: For now load the extensions from the data directory (otherwise there's an issue with putting
+//   // the resources in the core library as resources don't really do anything special with resource libraries yet)
+//   MainConfig* mainConfig = Z::gEngine->GetConfigCog()->has(MainConfig);
+//   String settingsDir = FilePath::Combine(mainConfig->DataDirectory, "ZilchFragmentSettings");
+//   String extensionsDir = FilePath::Combine(mainConfig->DataDirectory, "ZilchFragmentExtensions");
+//   shaderGenerator.LoadSettings(settingsDir);
 //  shaderGenerator.SetupDependencies(extensionsDir);
 //
 //  // Iterate over all fragments and add them to the compositor
 //  ZilchFragmentManager* manager = ZilchFragmentManager::GetInstance();
-//  ZilchFragmentManager::ResourceIdMapType::valuerange range =
-//  manager->ResourceIdMap.Values(); for(; !range.Empty(); range.PopFront())
+//   ZilchFragmentManager::ResourceIdMapType::valuerange range = manager->ResourceIdMap.Values();
+//   for(; !range.Empty(); range.PopFront())
 //  {
 //    ZilchFragment* fragment = (ZilchFragment*)range.Front();
 //
@@ -124,9 +116,7 @@ String TranslatedShaderScriptEditor::OnTranslate()
 //  shaderGenerator.CompileAndTranslateFragments();
 //}
 //
-// void
-// TranslatedShaderScriptEditor::TranslateMaterial(SimpleZilchShaderGenerator&
-// shaderGenerator, Material* material)
+// void TranslatedShaderScriptEditor::TranslateMaterial(SimpleZilchShaderGenerator& shaderGenerator, Material* material)
 //{
 //  CompileAndTranslateFragments(shaderGenerator);
 //
@@ -136,17 +126,17 @@ String TranslatedShaderScriptEditor::OnTranslate()
 //
 //  AutoDeclare(fragmentTypeRange, fragmentLibrary->mTypes.Values());
 //
-//  // For now this assumes that all materials blocks on the material are zilch
-//  fragments ZilchShaderDefinition shaderDef; shaderDef.mShaderName =
-//  material->Name; for(size_t i = 0; i < material->mMaterialBlocks.Size(); ++i)
+//   // For now this assumes that all materials blocks on the material are zilch fragments
+//   ZilchShaderDefinition shaderDef;
+//   shaderDef.mShaderName = material->Name;
+//   for(size_t i = 0; i < material->mMaterialBlocks.Size(); ++i)
 //  {
 //    MaterialBlock* block = material->mMaterialBlocks[i];
 //    String blockName = ZilchVirtualTypeId(block)->Name;
 //    shaderDef.mFragmentTypes.PushBack(fragmentLibrary->mTypes[blockName]);
 //  }
 //
-//  ShaderDefinitionSettings& shaderDefSettings =
-//  shaderGenerator.mSettings->mShaderDefinitionSettings;
+//   ShaderDefinitionSettings& shaderDefSettings = shaderGenerator.mSettings->mShaderDefinitionSettings;
 //
 //  // Composite the zilch shader for this material
 //  shaderGenerator.ComposeShader(shaderDef);
@@ -177,8 +167,7 @@ String FragmentFileTranslatorScriptEditor::OnTranslate()
   //  return "Failed to compile";
   //
   // StringBuilder builder;
-  //// Append a string that is all of the types who originated from this
-  /// fragment file
+  //// Append a string that is all of the types who originated from this fragment file
   // AutoDeclare(typeRange, library->mTypes.Values());
   // for(; !typeRange.Empty(); typeRange.PopFront())
   //{
@@ -192,8 +181,7 @@ String FragmentFileTranslatorScriptEditor::OnTranslate()
   //}
   //
   // String result = builder.ToString();
-  //// If we didn't generate any strings then return that we couldn't find the
-  /// translation
+  //// If we didn't generate any strings then return that we couldn't find the translation
   // if(result.Empty())
   //  result = "Not found";
   //
@@ -217,10 +205,9 @@ String ZilchCompositorScriptEditor::OnTranslate()
   // SimpleZilchShaderGenerator shaderGenerator;
   // TranslateMaterial(*mShaderGenerator, mMaterial);
   //
-  //// Find the shader that resulted from the given material. This has to do a
-  /// search of the project to / find which zilch file was created for the
-  /// material. As this is not a normal operation in / translation/compositing
-  /// and is only used for debugging I decided a search was acceptable.
+  //// Find the shader that resulted from the given material. This has to do a search of the project to
+  //// find which zilch file was created for the material. As this is not a normal operation in
+  //// translation/compositing and is only used for debugging I decided a search was acceptable.
   // String result = mShaderGenerator->FindZilchShaderString(mMaterial->Name);
   // if(result.Empty())
   //  result = "Failed to compose shader";
@@ -248,22 +235,17 @@ String TranslatedZilchCompositorScriptEditor::OnTranslate()
   // if(shaderGenerator.mShaderLibraryRef == nullptr)
   //  return "Failed to compile";
   //
-  // ZilchShaderDefinition* result =
-  // shaderGenerator.FindShaderResults(mMaterial->Name); if(result == nullptr)
+  // ZilchShaderDefinition* result = shaderGenerator.FindShaderResults(mMaterial->Name);
+  // if(result == nullptr)
   //  return "Failed to find";
   //
-  // String vertexShaderName =
-  // result->mShaderData[FragmentType::Vertex].mZilchClassName; String
-  // geometryShaderName =
-  // result->mShaderData[FragmentType::Geometry].mZilchClassName; String
-  // pixelShaderName = result->mShaderData[FragmentType::Pixel].mZilchClassName;
+  // String vertexShaderName = result->mShaderData[FragmentType::Vertex].mZilchClassName;
+  // String geometryShaderName = result->mShaderData[FragmentType::Geometry].mZilchClassName;
+  // String pixelShaderName = result->mShaderData[FragmentType::Pixel].mZilchClassName;
   //
-  // ShaderType* vertexShaderType =
-  // shaderGenerator.mShaderLibraryRef->FindType(vertexShaderName); ShaderType*
-  // geometryShaderType =
-  // shaderGenerator.mShaderLibraryRef->FindType(geometryShaderName);
-  // ShaderType* pixelShaderType =
-  // shaderGenerator.mShaderLibraryRef->FindType(pixelShaderName);
+  // ShaderType* vertexShaderType = shaderGenerator.mShaderLibraryRef->FindType(vertexShaderName);
+  // ShaderType* geometryShaderType = shaderGenerator.mShaderLibraryRef->FindType(geometryShaderName);
+  // ShaderType* pixelShaderType = shaderGenerator.mShaderLibraryRef->FindType(pixelShaderName);
   //
   // ShaderTypeTranslation vertexTranslation;
   // ShaderTypeTranslation geometryTranslation;
@@ -281,8 +263,8 @@ String TranslatedZilchCompositorScriptEditor::OnTranslate()
   // if(mDisplayMode == TranslationDisplayMode::Pixel)
   //  return pixelTranslation.mTranslation;
   //
-  // String combinedTranslation = BuildString(vertexTranslation.mTranslation,
-  // pixelTranslation.mTranslation); return combinedTranslation;
+  // String combinedTranslation = BuildString(vertexTranslation.mTranslation, pixelTranslation.mTranslation);
+  // return combinedTranslation;
 }
 
 void TranslatedZilchCompositorScriptEditor::SetDisplayMode(TranslationDisplayMode::Enum displayMode)
@@ -320,8 +302,7 @@ void BaseSplitScriptEditor::SaveCheck()
 {
 }
 //
-// void BaseSplitScriptEditor::BuildFinalShader(ShaderTypeTranslation&
-// shaderResult)
+// void BaseSplitScriptEditor::BuildFinalShader(ShaderTypeTranslation& shaderResult)
 //{
 //
 //}
@@ -358,17 +339,13 @@ void BaseSplitScriptEditor::OnLeftMouseDown(MouseEvent* e)
   // if(subRange == nullptr)
   //  return;
   //
-  //// Find the source file for the current range (it could be in a fragment or
-  /// shader so search both)
-  // SimpleZilchShaderGenerator* shaderGenerator =
-  // mTranslatedEditor->mShaderGenerator; ZilchShaderProject& fragmentProject =
-  // shaderGenerator->mFragmentProject; ZilchShaderProject& shaderProject =
-  // shaderGenerator->mShaderProject; for(size_t i = 0; i <
-  // mTranslatedEditor->mShaderGenerator->mFragmentProject.mCodeEntries.Size();
-  // ++i)
+  //// Find the source file for the current range (it could be in a fragment or shader so search both)
+  // SimpleZilchShaderGenerator* shaderGenerator = mTranslatedEditor->mShaderGenerator;
+  // ZilchShaderProject& fragmentProject = shaderGenerator->mFragmentProject;
+  // ZilchShaderProject& shaderProject = shaderGenerator->mShaderProject;
+  // for(size_t i = 0; i < mTranslatedEditor->mShaderGenerator->mFragmentProject.mCodeEntries.Size(); ++i)
   //{
-  //  ZilchShaderProject::CodeEntry& entry =
-  //  mTranslatedEditor->mShaderGenerator->mFragmentProject.mCodeEntries[i];
+  //   ZilchShaderProject::CodeEntry& entry = mTranslatedEditor->mShaderGenerator->mFragmentProject.mCodeEntries[i];
   //  if(entry.mCodeLocation == subRange->mSourceFile)
   //    mSourceEditor->SetAllText(entry.mCode);
   //}
@@ -385,15 +362,13 @@ void BaseSplitScriptEditor::OnLeftMouseDown(MouseEvent* e)
   // mSourceEditor->GotoAndSelect(sourceFirstLineStart, sourceLastLineEnd);
 }
 //
-// CodeRangeMapping* BaseSplitScriptEditor::FindRange(int positionWithinParent,
-// CodeRangeMapping* current)
+// CodeRangeMapping* BaseSplitScriptEditor::FindRange(int positionWithinParent, CodeRangeMapping* current)
 //{
 //  for(size_t i = 0; i < current->mChildren.Size(); ++i)
 //  {
 //    CodeRangeMapping* child = &current->mChildren[i];
 //    // If this position is not within the child's position range then skip it
-//    if(positionWithinParent < child->mDestPositionStart ||
-//    child->mDestPositionEnd < positionWithinParent)
+//    if(positionWithinParent < child->mDestPositionStart || child->mDestPositionEnd < positionWithinParent)
 //      continue;
 //
 //    // Otherwise we're within this child so recurse into it, but first
@@ -405,8 +380,7 @@ void BaseSplitScriptEditor::OnLeftMouseDown(MouseEvent* e)
 
 FragmentSplitScriptEditor::FragmentSplitScriptEditor(Composite* parent) : BaseSplitScriptEditor(parent)
 {
-  // This has to be called here so that the virtual functions will be properly
-  // set
+  // This has to be called here so that the virtual functions will be properly set
   Setup();
 }
 
@@ -427,15 +401,12 @@ void FragmentSplitScriptEditor::Build()
   mTranslatedEditor->Build();
 }
 //
-// void FragmentSplitScriptEditor::BuildFinalShader(ShaderTypeTranslation&
-// shaderResult)
+// void FragmentSplitScriptEditor::BuildFinalShader(ShaderTypeTranslation& shaderResult)
 //{
-//  ZilchShaderLibrary* library =
-//  mTranslatedEditor->mShaderGenerator->mFragmentLibraryRef; ShaderType* type =
-//  library->FindType(mFragment->Name);
+//  ZilchShaderLibrary* library = mTranslatedEditor->mShaderGenerator->mFragmentLibraryRef;
+//  ShaderType* type = library->FindType(mFragment->Name);
 //
-//  mTranslatedEditor->mShaderGenerator->mTranslator->BuildFinalShader(type,
-//  shaderResult, true, false);
+//  mTranslatedEditor->mShaderGenerator->mTranslator->BuildFinalShader(type, shaderResult, true, false);
 //}
 
 void FragmentSplitScriptEditor::SetResource(ZilchFragment* fragment)
@@ -448,8 +419,7 @@ void FragmentSplitScriptEditor::SetResource(ZilchFragment* fragment)
 MaterialSplitScriptEditor::MaterialSplitScriptEditor(Composite* parent) : BaseSplitScriptEditor(parent)
 {
   mDisplayMode = TranslationDisplayMode::Pixel;
-  // This has to be called here so that the virtual functions will be properly
-  // set
+  // This has to be called here so that the virtual functions will be properly set
   Setup();
 }
 
@@ -465,23 +435,19 @@ void MaterialSplitScriptEditor::Build()
   mTranslatedEditor->Build();
 }
 
-// void MaterialSplitScriptEditor::BuildFinalShader(ShaderTypeTranslation&
-// shaderResult)
+// void MaterialSplitScriptEditor::BuildFinalShader(ShaderTypeTranslation& shaderResult)
 //{
-//  ZilchShaderDefinition* def =
-//  mTranslatedEditor->mShaderGenerator->FindShaderResults(mMaterial->Name);
+//   ZilchShaderDefinition* def = mTranslatedEditor->mShaderGenerator->FindShaderResults(mMaterial->Name);
 //
-//  // Get the shader name (currently the translation display mode doesn't map
-//  to the fragment type enum) String shaderName; if(mDisplayMode ==
-//  TranslationDisplayMode::Pixel)
+//   // Get the shader name (currently the translation display mode doesn't map to the fragment type enum)
+//   String shaderName;
+//   if(mDisplayMode == TranslationDisplayMode::Pixel)
 //    shaderName = def->mShaderData[FragmentType::Pixel].mZilchClassName;
 //  if(mDisplayMode == TranslationDisplayMode::Vertex)
 //    shaderName = def->mShaderData[FragmentType::Vertex].mZilchClassName;
 //
-//  ShaderType* type =
-//  mTranslatedEditor->mShaderGenerator->mShaderLibraryRef->FindType(shaderName);
-//  mTranslatedEditor->mShaderGenerator->mTranslator->BuildFinalShader(type,
-//  shaderResult, true, true);
+//   ShaderType* type = mTranslatedEditor->mShaderGenerator->mShaderLibraryRef->FindType(shaderName);
+//   mTranslatedEditor->mShaderGenerator->mTranslator->BuildFinalShader(type, shaderResult, true, true);
 //}
 
 void MaterialSplitScriptEditor::SetResource(Material* material)
@@ -498,8 +464,7 @@ void MaterialSplitScriptEditor::SetDisplayMode(TranslationDisplayMode::Enum disp
   editor->SetDisplayMode(mDisplayMode);
 }
 
-// Tries to find a script window of a given name, if it cannot be found then it
-// is created.
+// Tries to find a script window of a given name, if it cannot be found then it is created.
 template <typename ScriptEditorType>
 ScriptEditorType* CreateScriptWindow(Editor* editor, StringParam name, uint lexerType)
 {
@@ -627,12 +592,9 @@ CodeTranslatorListener::CodeTranslatorListener()
   ConnectThisTo(Z::gEditor, "TranslateZilchGeometryMaterial", OnTranslateZilchGeometryFragment);
   ConnectThisTo(Z::gEditor, "TranslateZilchVertexMaterial", OnTranslateZilchVertexFragment);
 
-  // ConnectThisTo(Z::gEditor, "TranslateZilchFragment",
-  // OnTranslateZilchFragmentWithLineNumbers); ConnectThisTo(Z::gEditor,
-  // "TranslateZilchPixelMaterial",
-  // OnTranslateZilchPixelFragmentWithLineNumbers); ConnectThisTo(Z::gEditor,
-  // "TranslateZilchVertexMaterial",
-  // OnTranslateZilchVertexFragmentWithLineNumbers);
+  // ConnectThisTo(Z::gEditor, "TranslateZilchFragment", OnTranslateZilchFragmentWithLineNumbers);
+  // ConnectThisTo(Z::gEditor, "TranslateZilchPixelMaterial", OnTranslateZilchPixelFragmentWithLineNumbers);
+  // ConnectThisTo(Z::gEditor, "TranslateZilchVertexMaterial", OnTranslateZilchVertexFragmentWithLineNumbers);
 }
 
 template <typename EditorType>
