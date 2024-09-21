@@ -257,8 +257,7 @@ DataNode* ReadValue(DataTreeContext& c, Tokenizer& tokenizer, TempToken token, D
     return RaiseParseError(c, tokenizer, "End of file found trying to read value.");
   }
 
-  // If this is a single character symbol type, check which kind of bracket it
-  // is
+  // If this is a single character symbol type, check which kind of bracket it is
   if (token.Type == TempToken::Symbol)
   {
     if (token.Text == '[')

@@ -148,17 +148,15 @@ void OldDataTreeParser::StartRule(GrammarRule<Token>* rule)
   else if (ruleName == "Object")
   {
     // For properties, we had two choices for building the tree:
-    // 1. Make a 'Property' node with the property name, then the child node
-    // would be
+    // 1. Make a 'Property' node with the property name, then the child node would be
     //    either a 'Value' or 'Object' node with the type name / value text.
-    // 2. Only have the 'Value' or 'Object' node with the property name and type
-    // name / value text.
+    // 2. Only have the 'Value' or 'Object' node with the property name and type name / value text.
     //
-    // The old parser built the tree as described in option 2. For now, we're
-    // going to continue with option 2 as it doesn't require any other changes.
+    // The old parser built the tree as described in option 2. For now, we're going to continue
+    // with option 2 as it doesn't require any other changes.
 
-    // If our parent is a property, we're going to add our data to it instead of
-    // making a new node (this will reflect option 2 of building the tree)
+    // If our parent is a property, we're going to add our data to it instead of making
+    // a new node (this will reflect option 2 of building the tree)
     if (parent && parent->mNodeType == DataNodeType::Value)
     {
       // It's now an Object node
@@ -221,8 +219,8 @@ void AssignValue(DataNode* node, ParseNodeInfo<Token>* info)
   // Enum
   else if (valueToken.mRule == grammar.mEnum)
   {
-    // The enum comes in as 'Type.Value' (ie. 'LightType.PointLight'), so we
-    // need to separate the type name from the value
+    // The enum comes in as 'Type.Value' (ie. 'LightType.PointLight'), so we need
+    // to separate the type name from the value
     StringTokenRange r(valueToken.mString, '.');
     node->mTypeName = r.Front();
     r.PopFront();
@@ -277,8 +275,8 @@ void OldDataTreeParser::EndRule(ParseNodeInfo<Token>* info)
     {
       AssignValue(currentNode, info);
     }
-    // If our parent is an object, we're likely in an array or vector type
-    // (Vec3, etc..) In this case, we need to create a new node for this value
+    // If our parent is an object, we're likely in an array or vector type (Vec3, etc..)
+    // In this case, we need to create a new node for this value
     else
     {
       DataNode* dataValue = new DataNode(DataNodeType::Value, currentNode);

@@ -43,8 +43,7 @@ public:
   void SetNext(DataNode* node);
   void SetRoot(DataNode* node);
 
-  /// Takes ownership of the first child of the file root. Primarily used in
-  /// data tree patching.
+  /// Takes ownership of the first child of the file root. Primarily used in data tree patching.
   DataNode* TakeOwnershipOfFirstRoot();
 
   String DebugLocation() override;
@@ -56,8 +55,8 @@ public:
                   cstr fieldName,
                   ::byte* data,
                   ArrayType simpleTypeId,
-                  uint numberOfElements,
-                  uint sizeOftype) override;
+                  size_t numberOfElements,
+                  size_t sizeOftype) override;
   void ArraySize(uint& arraySize) override;
 
   /// Enum Serialization
@@ -85,8 +84,8 @@ public:
   DataAttributes mRootAttributes;
 
   /// If set to false, data inheritance will be ignored. This was added because
-  /// Archetypes need to load the file just to look at the root node's
-  /// inheritance id, the rest of the tree doesn't matter.
+  /// Archetypes need to load the file just to look at the root node's inheritance id,
+  /// the rest of the tree doesn't matter.
   bool mIgnoreDataInheritance;
 
 protected:

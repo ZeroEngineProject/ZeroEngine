@@ -65,8 +65,8 @@ bool DataTreeParser::Object()
     }
   */
 
-  // Object |= P("Identifier", P(Identifier)) << *Attribute << P(OpenCurley) <<
-  // *((Property | Value | Object) << ~P(Comma)) << P(CloseCurley);
+  // Object |= P("Identifier", P(Identifier)) << *Attribute << P(OpenCurley) << *((Property | Value | Object) <<
+  // ~P(Comma)) << P(CloseCurley);
 
   // Objects must start with the type name
   if (Accept(DataTokenType::Identifier) == false)
@@ -97,8 +97,7 @@ bool DataTreeParser::Object()
     if (lastNodeIsValue && !mLastPoppedNode->mFlags.IsSet(DataNodeFlags::Property))
       node->mFlags.SetFlag(DataNodeFlags::Array);
 
-    // We're adding an optional comma between each value to handle separated
-    // values in an array
+    // We're adding an optional comma between each value to handle separated values in an array
     Accept(DataTokenType::Comma);
   }
 
@@ -117,8 +116,8 @@ bool DataTreeParser::Attribute()
     [ChildId:52]
   */
 
-  // Attribute |= P(OpenBracket) << P("Name", P(Identifier)) << ~(P(Colon) <<
-  // (P("Value", Value) | Object)) << P(CloseBracket);
+  // Attribute |= P(OpenBracket) << P("Name", P(Identifier)) << ~(P(Colon) << (P("Value", Value) | Object)) <<
+  // P(CloseBracket);
 
   if (Accept(DataTokenType::OpenBracket) == false)
     return false;
@@ -183,8 +182,7 @@ bool DataTreeParser::Property()
     var Visible = true
   */
 
-  // Property |= P(Var) << P("Name", P(Identifier)) << P(Assignment) <<
-  // (P("Value", Value) | Object);
+  // Property |= P(Var) << P("Name", P(Identifier)) << P(Assignment) << (P("Value", Value) | Object);
 
   if (!Accept(DataTokenType::Var))
     return false;
@@ -212,8 +210,7 @@ bool DataTreeParser::Property()
 
 bool DataTreeParser::Value(bool createNode)
 {
-  // Value |= P("Value", P(Integer) | P(Float) | P(Hex) | P(StringLiteral) |
-  // P(Enum) | P(True) | P(False));
+  // Value |= P("Value", P(Integer) | P(Float) | P(Hex) | P(StringLiteral) | P(Enum) | P(True) | P(False));
   return AcceptValue(createNode, DataTokenType::Integer) || AcceptValue(createNode, DataTokenType::Float) ||
          AcceptValue(createNode, DataTokenType::Hex) || AcceptValue(createNode, DataTokenType::StringLiteral) ||
          AcceptValue(createNode, DataTokenType::Enumeration) || AcceptValue(createNode, DataTokenType::True) ||
@@ -300,8 +297,8 @@ bool DataTreeParser::AcceptValue(bool createNode, DataTokenType::Enum tokenType)
         text.PopFront();
 
         // Temporary solution, only do this extra step if the next character is
-        // either a slash or a quote (the special case we're trying to solve
-        // here) If we updated all text files, this check would not be needed
+        // either a slash or a quote (the special case we're trying to solve here)
+        // If we updated all text files, this check would not be needed
         Rune next = text.Front();
         if (next == '\\' || next == '\"')
         {
@@ -323,8 +320,8 @@ bool DataTreeParser::AcceptValue(bool createNode, DataTokenType::Enum tokenType)
   // Enum
   else if (token.mType == DataTokenType::Enumeration)
   {
-    // The enum comes in as 'Type.Value' (ie. 'LightType.PointLight'), so we
-    // need to separate the type name from the value
+    // The enum comes in as 'Type.Value' (ie. 'LightType.PointLight'), so we need
+    // to separate the type name from the value
     StringTokenRange r(token.mText, '.');
     node->mTypeName = r.Front();
     r.PopFront();

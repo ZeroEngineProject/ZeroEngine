@@ -56,9 +56,8 @@ void SerializeBits(
     // Serialize the number in binary ignoring the masked bits
     if (stream.GetMode() == SerializerMode::Loading)
     {
-      // We want to keep the state of everything in the mask and only override
-      // the new values. To do this clear the bits we are saving then "or" in
-      // the serialized data.
+      // We want to keep the state of everything in the mask and only override the new values.
+      // To do this clear the bits we are saving then "or" in the serialized data.
       u32 maskedField = field.Field & mask;
       field.U32Field = maskedField;
       stream.SerializeField("BitField", maskedField);

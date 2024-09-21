@@ -22,8 +22,7 @@ public:
   virtual bool SerializePrimitiveProperty(BoundType* propertyType, cstr fieldName, Any& value, Serializer& serializer);
   virtual bool SerializeReferenceProperty(BoundType* propertyType, cstr fieldName, Any& value, Serializer& serializer);
 
-  // The default serialize object assumes that the value inherits from Zero's
-  // Object class
+  // The default serialize object assumes that the value inherits from Zero's Object class
   virtual void SerializeObject(AnyParam object, Serializer& serializer);
 
   // Set the value of an any to a default value
@@ -100,8 +99,7 @@ bool SerializeAny(cstr fieldName, Any& value, Serializer& serializer);
 /// otherwise it will fail. If it's loading, the variant does not need to
 /// be initialized, but it must come from a source with type information (text).
 /// (NOTE: Currently, the given variant must be a basic native type.
-/// This needs to be extended to support all stored types with serialization
-/// capability.)
+/// This needs to be extended to support all stored types with serialization capability.)
 bool SerializeVariant(cstr fieldName, Variant& value, Serializer& serializer);
 
 /// Serialize a Meta Property on an object

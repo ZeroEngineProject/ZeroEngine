@@ -33,13 +33,12 @@ DeclareEnum2(DataVersion,
              // Data versioning was added at this release
              Current);
 
-const cstr cPolymorphicSerializationError = "Polymorphic serialization not "
+const cstr cPolymorphicSerializationError =
+    "Polymorphic serialization not "
                                             "supported on this serializer. When using polymorphic serialization "
                                             "you must separate saving and loading. When saving use Start Polymorphic / "
-                                            "End Polymorphic. When reading you must use Get Polymorphic, Create the "
-                                            "object "
-                                            "with the type specified in the polymorphic node, serialize the object and "
-                                            "then "
+    "End Polymorphic. When reading you must use Get Polymorphic, Create the object "
+    "with the type specified in the polymorphic node, serialize the object and then "
                                             "call End Polymorphic.";
 
 DeclareBitField4(PolymorphicFlags,
@@ -47,8 +46,8 @@ DeclareBitField4(PolymorphicFlags,
                  // (such as an Archetype)
                  Inherited,
                  // This means the node had a '-' in front of it, whatever that
-                 // means in the context of what is being serialized. This was
-                 // added as an optimization for loading Archetypes with local
+                 // means in the context of what is being serialized. This was added
+                 // as an optimization for loading Archetypes with local
                  // modifications in lieu of full data tree patching.
                  Subtractive,
                  ChildOrderOverride,
@@ -125,8 +124,8 @@ DeclareEnum7(SerializerClass,
 
 // Flags used to change how the polymorphic node is saved out
 DeclareBitField2(PolymorphicSaveFlags,
-                 // A polymorphic node can be set to LocallyAdded when saving out a data tree
-                 // patch. The polymorphic node will be added to the inherited data tree.
+                 // A polymorphic node can be set to LocallyAdded when saving out a data tree patch.
+                 // The polymorphic node will be added to the inherited data tree.
                  LocallyAdded,
                  // If set, the child order of this node will be used to override the order
                  // of the tree that's being patched.
@@ -172,7 +171,7 @@ public:
   Serializer();
   virtual ~Serializer();
 
-  virtual void Close(){};
+  virtual void Close() {};
 
   void* GetSerializationContext();
   void SetSerializationContext(void* context);
@@ -216,7 +215,7 @@ public:
   virtual bool EnumField(cstr enumTypeName, cstr fieldName, uint& enumValue, BoundType* type) = 0;
   virtual bool StringField(cstr typeName, cstr fieldName, StringRange& stringRange) = 0;
   virtual bool ArrayField(
-      cstr typeName, cstr fieldName, ::byte* data, ArrayType arrayType, uint numberOfElements, uint sizeOftype) = 0;
+      cstr typeName, cstr fieldName, ::byte* data, ArrayType arrayType, size_t numberOfElements, size_t sizeOftype) = 0;
 
   virtual DataBlock ExtractAsDataBlock();
 

@@ -276,8 +276,7 @@ String DataTreeLoader::DebugLocation()
 
 PatchResolveMethod::Enum DataTreeLoader::ResolveInheritedData(StringRange inheritId, DataNode*& result)
 {
-  Error("Data inheritance was found in data file, but not loaded with "
-        "appropriate loader");
+  Error("Data inheritance was found in data file, but not loaded with appropriate loader");
   return PatchResolveMethod::Error;
 }
 
@@ -322,7 +321,7 @@ void DataTreeLoader::ArraySize(uint& arraySize)
 }
 
 template <typename type>
-void ReadArray(DataNode* arrayNode, type* data, uint numberOfElements)
+void ReadArray(DataNode* arrayNode, type* data, size_t numberOfElements)
 {
   ErrorIf(arrayNode->mNodeType != DataNodeType::Object,
           "Node is not an array type. "
@@ -335,7 +334,7 @@ void ReadArray(DataNode* arrayNode, type* data, uint numberOfElements)
           arrayNode->GetNumberOfChildren());
 
   DataNode* curElem = &arrayNode->GetChildren().Front();
-  for (uint i = 0; i < numberOfElements && curElem; ++i)
+  for (size_t i = 0; i < numberOfElements && curElem; ++i)
   {
     DataNode* lit = curElem;
     ToValue(lit->mTextValue.All(), data[i]);
@@ -344,7 +343,7 @@ void ReadArray(DataNode* arrayNode, type* data, uint numberOfElements)
 }
 
 bool DataTreeLoader::ArrayField(
-    cstr typeName, cstr fieldName, ::byte* data, ArrayType arrayType, uint numberOfElements, uint sizeOftype)
+    cstr typeName, cstr fieldName, ::byte* data, ArrayType arrayType, size_t numberOfElements, size_t sizeOftype)
 {
   if (InnerStart(typeName, fieldName, StructureType::BasicArray))
   {

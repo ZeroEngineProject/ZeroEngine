@@ -30,9 +30,9 @@ void MetaSerialization::SerializeProperty(HandleParam instance, Property* proper
       value.DefaultConstruct(propertyType);
   }
 
-  // Checking to see if it's a serialization primitive or not is odd here.
-  // MetaSerialization should be split up into MetaPrimitiveSerialization and
-  // MetaObjectSerialization The String check is a hack until this change
+  // Checking to see if it's a serialization primitive or not is odd here. MetaSerialization
+  // should be split up into MetaPrimitiveSerialization and MetaObjectSerialization
+  // The String check is a hack until this change
   if (propertyType->CopyMode == TypeCopyMode::ReferenceType)
   {
     bool serialized = SerializeReferenceProperty(propertyType, property->Name.c_str(), value, serializer);
@@ -45,8 +45,7 @@ void MetaSerialization::SerializeProperty(HandleParam instance, Property* proper
   {
     bool serialized = SerializePrimitiveProperty(propertyType, property->Name.c_str(), value, serializer);
 
-    // If we failed to load the property, there are a few extra things we need
-    // to do
+    // If we failed to load the property, there are a few extra things we need to do
     if (mode == SerializerMode::Loading)
     {
       // Check if it has a rename
@@ -63,16 +62,15 @@ void MetaSerialization::SerializeProperty(HandleParam instance, Property* proper
         MetaSerializedProperty* metaDefault = property->Has<MetaSerializedProperty>();
         if (metaDefault)
         {
-          // Even though we failed to read the property, someone set up a valid
-          // default so set the property!
+          // Even though we failed to read the property, someone set up a valid default so set the property!
           value = metaDefault->mDefault;
           serialized = true;
         }
       }
 
-      // We only set the property if we properly read a value, or we had a valid
-      // default If neither is true, we actually just leave the property as it
-      // was (assuming it is already initialized to its own default)
+      // We only set the property if we properly read a value, or we had a valid default
+      // If neither is true, we actually just leave the property as it was
+      // (assuming it is already initialized to its own default)
       if (serialized)
         property->SetValue(instance, value);
     }
@@ -132,8 +130,8 @@ void MetaSerialization::SetDefault(Type* type, Any& any)
 
 String MetaSerialization::ConvertToString(AnyParam input)
 {
-  Error("Convert to string is required for serialization primitives. If a new "
-        "type was added, this must be implemented for that primitive type.");
+  Error("Convert to string is required for serialization primitives. If a new type was added, this must be implemented "
+        "for that primitive type.");
   return String();
 }
 
@@ -308,8 +306,7 @@ bool SerializeAny(cstr fieldName, Any& value, Serializer& serializer)
     MetaSerialization* meta = type->Has<MetaSerialization>();
     ReturnIf(meta == nullptr,
              false,
-             "The type '%s' being serialized does not have the "
-             "MetaSerialization component",
+             "The type '%s' being serialized does not have the MetaSerialization component",
              type->ToString().c_str());
 
     if (value.StoredType->IsValue())
@@ -335,8 +332,7 @@ bool SerializeAny(cstr fieldName, Any& value, Serializer& serializer)
     MetaSerialization* meta = type->Has<MetaSerialization>();
     ReturnIf(meta == nullptr,
              false,
-             "The type %s being serialized does not have the MetaSerialization "
-             "component",
+             "The type %s being serialized does not have the MetaSerialization component",
              value.StoredType->ToString().c_str());
 
     // Set up the any since SerializeAny expects it to initialized to a type
@@ -365,8 +361,7 @@ bool SerializeVariant(cstr fieldName, Variant& value, Serializer& serializer)
     value = ConvertBasicAnyToVariant(anyValue);
     if (value.IsEmpty()) // Unable?
     {
-      Error("The Variant being serialized (loading) was not a basic native "
-            "type, this is currently unsupported.");
+      Error("The Variant being serialized (loading) was not a basic native type, this is currently unsupported.");
       return false;
     }
   }
@@ -377,8 +372,7 @@ bool SerializeVariant(cstr fieldName, Variant& value, Serializer& serializer)
     anyValue = ConvertBasicVariantToAny(value);
     if (!anyValue.IsHoldingValue()) // Unable?
     {
-      Error("The Variant being serialized (saving) was not a basic native "
-            "type, this is currently unsupported.");
+      Error("The Variant being serialized (saving) was not a basic native type, this is currently unsupported.");
       return false;
     }
 
@@ -395,9 +389,8 @@ void SerializeProperty(HandleParam instance, Property* property, Serializer& ser
   BoundType* type = Type::GetBoundType(property->PropertyType);
 
   // This may be a non BoundType (for example, a DelegateType)
-  // Note that a Function marked as [Property] never goes through this code path
-  // because we only loop through Properties including Fields and GetterSetters,
-  // which does not include Function (methods).
+  // Note that a Function marked as [Property] never goes through this code path because we only
+  // loop through Properties including Fields and GetterSetters, which does not include Function (methods).
   if (type != nullptr)
   {
     MetaSerialization* meta = type->HasInherited<MetaSerialization>();
@@ -422,8 +415,7 @@ void MetaSerializeComponents(HandleParam instance, Serializer& serializer)
   MetaComposition* composition = type->Has<MetaComposition>();
 
   // Not a composition type
-  // Note: This should not be an error because we call it generically on any
-  // object
+  // Note: This should not be an error because we call it generically on any object
   if (composition == nullptr)
     return;
 

@@ -83,8 +83,12 @@ public:
   }
 
   // Serialization
-  bool ArrayField(
-      cstr typeName, cstr fieldName, ::byte* data, ArrayType arrayType, uint numberOfElements, uint sizeOftype) override
+  bool ArrayField(cstr typeName,
+                  cstr fieldName,
+                  ::byte* data,
+                  ArrayType arrayType,
+                  size_t numberOfElements,
+                  size_t sizeOftype) override
   {
     BinaryType()->Data((::byte*)data, sizeOftype * numberOfElements);
     return true;
@@ -180,8 +184,12 @@ public:
   }
 
   // Serialization
-  bool ArrayField(
-      cstr typeName, cstr fieldName, ::byte* data, ArrayType arrayType, uint numberOfElements, uint sizeOftype) override
+  bool ArrayField(cstr typeName,
+                  cstr fieldName,
+                  ::byte* data,
+                  ArrayType arrayType,
+                  size_t numberOfElements,
+                  size_t sizeOftype) override
   {
     BinaryType()->Data((::byte*)data, sizeOftype * numberOfElements);
     return true;
@@ -223,7 +231,7 @@ public:
   bool StringField(cstr typeName, cstr fieldName, StringRange& stringRange) override;
   bool OpenFile(Status& status, cstr filename);
   void Close();
-  void Data(::byte* data, uint size);
+  void Data(::byte* data, size_t size);
   bool TestForObjectEnd(BoundType** runtimeType);
 
 private:
@@ -236,7 +244,7 @@ class BinaryFileSaver : public BinarySaver<BinaryFileSaver>
 public:
   bool Open(Status& status, cstr filename);
   void Close();
-  void Data(::byte* data, uint size);
+  void Data(::byte* data, size_t size);
 
 private:
   File mFile;
@@ -249,14 +257,14 @@ public:
   ~BinaryBufferSaver();
 
   void Open();
-  uint GetSize();
+  size_t GetSize();
   void Deallocate();
 
-  void ExtractInto(::byte* data, uint size);
+  void ExtractInto(::byte* data, size_t size);
   void ExtractInto(DataBlock& block);
   DataBlock ExtractAsDataBlock() override;
 
-  void Data(::byte* data, uint size);
+  void Data(::byte* data, size_t size);
 
 private:
   ByteBuffer mBuffer;
@@ -266,14 +274,14 @@ class BinaryBufferLoader : public BinaryLoader<BinaryBufferLoader>
 {
 public:
   bool StringField(cstr typeName, cstr fieldName, StringRange& stringRange) override;
-  void SetBuffer(::byte* data, uint size);
+  void SetBuffer(::byte* data, size_t size);
   void SetBlock(DataBlock block);
 
-  void Data(::byte* data, uint size);
+  void Data(::byte* data, size_t size);
   bool TestForObjectEnd(BoundType** runtimeType);
 
 private:
-  uint mBufferSize;
+  size_t mBufferSize;
   ::byte* mCurrentPosition;
   ::byte* mBuffer;
 };

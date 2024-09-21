@@ -19,8 +19,7 @@ void DataNode::operator delete(void* pMem, size_t size)
 }
 
 DataNode::DataNode(DataNodeType::Enum nodeType, DataNode* parent) :
-    mNumberOfChildren(0),
-    mUniqueNodeId(PolymorphicNode::cInvalidUniqueNodeId)
+    mNumberOfChildren(0), mUniqueNodeId(PolymorphicNode::cInvalidUniqueNodeId)
 {
   mNodeType = nodeType;
   mPatchState = PatchState::None;
@@ -285,9 +284,8 @@ void DataNode::Patch(DataNode* patchNode, DataTreeContext& c)
       // If we didn't have that node, it must be being added
       else if (ourChild == nullptr)
       {
-        // If it's a property, it was either renamed from the inherited file, or
-        // it was newly added. In this case, we just want to attach the node to
-        // the parent node
+        // If it's a property, it was either renamed from the inherited file, or it was newly added.
+        // In this case, we just want to attach the node to the parent node
         bool isProperty = patchChild->IsProperty();
 
         // We have to check for dependencies before adding the node
@@ -297,8 +295,8 @@ void DataNode::Patch(DataNode* patchNode, DataTreeContext& c)
           Status addStatus;
           DataNode* toReplace = nullptr;
 
-          // I don't think we even have to do this step if childOrderOverride is
-          // set because All the dependencies will be
+          // I don't think we even have to do this step if childOrderOverride is set because
+          // All the dependencies will be
           DependencyAction::Enum action = c.Loader->ResolveDependencies(this, patchChild, &toReplace, addStatus);
 
           if (action == DependencyAction::Add)
@@ -308,8 +306,8 @@ void DataNode::Patch(DataNode* patchNode, DataTreeContext& c)
             {
               patchChild->AttachTo(this);
 
-              // We don't want properties to show up after polymorphic children,
-              // so move it to the front (property order doesn't matter)
+              // We don't want properties to show up after polymorphic children, so move it to
+              // the front (property order doesn't matter)
               if (patchChild->IsProperty())
                 patchChild->PlaceAfterSibling(nullptr);
             }
@@ -344,21 +342,15 @@ void DataNode::Patch(DataNode* patchNode, DataTreeContext& c)
         // If our tree didn't have this node, there are two cases:
         // 1. It was a locally added Component
         //    - We want to mark the node as 'Added'
-        //    - The child properties / objects shouldn't be marked as modified,
-        //    because they
+        //    - The child properties / objects shouldn't be marked as modified, because they
         //      are a child of a locally added object
-        // 2. It's a property but it was renamed and the data tree we're
-        // patching has the
-        //    old property name, or the property was added after the base data
-        //    tree was created
-        //    - It should mark child properties as added (or should it be
-        //    modified?), as well as
+        // 2. It's a property but it was renamed and the data tree we're patching has the
+        //    old property name, or the property was added after the base data tree was created
+        //    - It should mark child properties as added (or should it be modified?), as well as
         //      itself.
-        //    - This doesn't support inherited objects as children of
-        //    properties. We don't currently
-        //      do this anywhere in the engine, but should probably be updated
-        //      to only mark children as modified, until we hit another
-        //      inherited tree
+        //    - This doesn't support inherited objects as children of properties. We don't currently
+        //      do this anywhere in the engine, but should probably be updated to only mark
+        //      children as modified, until we hit another inherited tree
         if (isProperty)
           patchChild->SetPatchStateRecursive(PatchState::Added);
         else
@@ -367,12 +359,11 @@ void DataNode::Patch(DataNode* patchNode, DataTreeContext& c)
         mPatchState = PatchState::ChildPatched;
 
         // Custom logic for Cogs because of how Hierarchies work...
-        // This helps with the case of when the Archetype doesn't have any
-        // children (and therefor doesn't have the Hierarchy Component), and a
-        // child was locally added to the other Cog. The Hierarchy Component is
-        // the first node we see that's locally added, but we also want to mark
-        // the Cog node as locally added, so we're walking the children here to
-        // see if there are more locally added
+        // This helps with the case of when the Archetype doesn't have any children (and therefor
+        // doesn't have the Hierarchy Component), and a child was locally added to the
+        // other Cog. The Hierarchy Component is the first node we see that's locally added,
+        // but we also want to mark the Cog node as locally added, so we're walking the children
+        // here to see if there are more locally added
         forRange (DataNode& addedChild, patchChild->GetChildren())
         {
           if (addedChild.mFlags.IsSet(DataNodeFlags::LocallyAdded))
@@ -390,14 +381,13 @@ void DataNode::Patch(DataNode* patchNode, DataTreeContext& c)
         if (ourChild->IsPatched())
           mPatchState = PatchState::ChildPatched;
 
-        // If we're overriding the child order, we need move our node to the
-        // same location that the patch node is at. We do not want to re-order
-        // properties, only polymorphic children
+        // If we're overriding the child order, we need move our node to the same
+        // location that the patch node is at. We do not want to re-order properties,
+        // only polymorphic children
         if (childOrderOverride && !ourChild->IsProperty())
         {
           // We want to move the current child to be after the previous child
-          // If there was no previous child, the function will place it at the
-          // start
+          // If there was no previous child, the function will place it at the start
           ourChild->PlaceAfterSibling(ourPreviousValidChild);
         }
 

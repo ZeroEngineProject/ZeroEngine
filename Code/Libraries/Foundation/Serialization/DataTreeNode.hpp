@@ -107,15 +107,13 @@ public:
   /// Get the parent node in the tree.
   DataNode* GetParent();
 
-  /// Attaches this node to the given parent node. Removes it from the old
-  /// parent.
+  /// Attaches this node to the given parent node. Removes it from the old parent.
   void AttachTo(DataNode* newParent);
 
   /// Detaches ourself from our parent.
   void Detach();
 
-  /// Detaches the old child, and attaches the new child in the same place as
-  /// the old.
+  /// Detaches the old child, and attaches the new child in the same place as the old.
   void ReplaceChild(DataNode* oldChild, DataNode* newChild);
 
   /// Moves the given child in-front of the given location.
@@ -151,8 +149,8 @@ public:
   void Patch(DataNode* patchNode, DataTreeContext& c);
   void SetPatchStateRecursive(PatchState::Enum state);
 
-  /// Places this node after the given sibling node. If null is passed in, it
-  /// will place this node at the front of the children.
+  /// Places this node after the given sibling node. If null is passed in, it will place
+  /// this node at the front of the children.
   void PlaceAfterSibling(DataNode* sibling);
 
   /// Flags.

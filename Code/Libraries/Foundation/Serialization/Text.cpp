@@ -56,7 +56,7 @@ bool TextSaver::OpenBuffer(DataVersion::Enum version, FileMode::Enum fileMode)
   return true;
 }
 
-uint TextSaver::GetBufferSize()
+size_t TextSaver::GetBufferSize()
 {
   return mStream.GetSize();
 }
@@ -71,14 +71,14 @@ SerializerClass::Enum TextSaver::GetClass()
   return SerializerClass::TextSaver;
 }
 
-void TextSaver::ExtractInto(::byte* data, uint size)
+void TextSaver::ExtractInto(::byte* data, size_t size)
 {
   mStream.ExtractInto(data, size);
 }
 
 DataBlock TextSaver::ExtractAsDataBlock()
 {
-  uint size = mStream.GetSize();
+  size_t size = mStream.GetSize();
   DataBlock block = AllocateBlock(size);
   mStream.ExtractInto(block.Data, block.Size);
   return block;
@@ -213,7 +213,7 @@ bool TextSaver::InnerStart(cstr typeName, cstr fieldName, StructType structType,
 
 void TextSaver::Tabs()
 {
-  for (uint i = 0; i < mDepth; ++i)
+  for (size_t i = 0; i < mDepth; ++i)
     mStream << "\t";
 }
 
@@ -305,9 +305,9 @@ bool TextSaver::StringField(cstr typeName, cstr fieldName, StringRange& stringRa
 
   StringRange range = stringRange;
 
-  // Escape slashes and quotes. The data tree tokenizer needs an un-escaped
-  // quote at the end to properly detect the end of the string property We're
-  // only doing this for newer formats (we can't do older formats because the
+  // Escape slashes and quotes. The data tree tokenizer needs an un-escaped quote at the end to
+  // properly detect the end of the string property
+  // We're only doing this for newer formats (we can't do older formats because the
   // loader would need to handle it).
   if (mVersion != DataVersion::Legacy)
   {
@@ -379,8 +379,8 @@ void TextSaver::StartPolymorphicInternal(const PolymorphicInfo& info)
             "instead of an object instance.");
     mStream << info.mTypeName;
 
-    // Add a space to separate the type with attributes. This isn't really
-    // needed, but makes things look more visually appealing in the file
+    // Add a space to separate the type with attributes. This isn't really needed,
+    // but makes things look more visually appealing in the file
     mStream << " ";
 
     // Save out Attributes
@@ -464,11 +464,11 @@ bool TextSaver::GetPolymorphic(PolymorphicNode& node)
 }
 
 template <typename type>
-bool WriteArrayText(StringBuilder& os, type* data, uint numberOfElements)
+bool WriteArrayText(StringBuilder& os, type* data, size_t numberOfElements)
 {
   bool result = true;
 
-  for (uint i = 0; i < numberOfElements; ++i)
+  for (size_t i = 0; i < numberOfElements; ++i)
   {
     type& value = data[i];
 
@@ -484,7 +484,7 @@ bool WriteArrayText(StringBuilder& os, type* data, uint numberOfElements)
 }
 
 bool TextSaver::ArrayField(
-    cstr typeName, cstr fieldName, ::byte* data, ArrayType arrayType, uint numberOfElements, uint sizeOftype)
+    cstr typeName, cstr fieldName, ::byte* data, ArrayType arrayType, size_t numberOfElements, size_t sizeOftype)
 {
   bool result = true;
 

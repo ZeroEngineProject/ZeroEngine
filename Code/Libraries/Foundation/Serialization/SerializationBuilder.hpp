@@ -4,8 +4,8 @@
 namespace Zero
 {
 
-/// Mix in class used to implement serializers. Inherited serializes need to
-/// implement InnerStart, InnertEnd and FundamentalType.
+/// Mix in class used to implement serializers. Inherited serializes need to implement
+/// InnerStart, InnertEnd and FundamentalType.
 template <typename ConcreteType>
 class SerializerBuilder : public Serializer
 {

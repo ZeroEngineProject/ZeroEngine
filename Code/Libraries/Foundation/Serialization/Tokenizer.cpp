@@ -247,16 +247,15 @@ bool Tokenizer::ReadStringConstant(TempToken& token)
     // remove the quote
     text.PopFront();
 
-    // Create a temporary iterator starting at the beginning of the leftover
-    // text
+    // Create a temporary iterator starting at the beginning of the leftover text
     StringIterator it = text.Begin();
 
     // Loop until we hit the end of the text or until we reach an ending quote
     StringIterator textEnd = text.End();
     while (it != textEnd)
     {
-      // If the current character is a quote (note: we should be after the first
-      // quote by now, so this would either be the end or an escape sequence)
+      // If the current character is a quote (note: we should be after the first quote by now, so this would either be
+      // the end or an escape sequence)
       if (*it == '"')
       {
         StringIterator next = it + 1;
@@ -268,8 +267,7 @@ bool Tokenizer::ReadStringConstant(TempToken& token)
         }
         else
         {
-          // Otherwise, it's not a double quote (escape sequence) so it must be
-          // the end
+          // Otherwise, it's not a double quote (escape sequence) so it must be the end
           break;
         }
       }
