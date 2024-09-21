@@ -38,11 +38,7 @@ ZilchDefineType(SoundSpace, builder, type)
 }
 
 SoundSpace::SoundSpace() :
-    mPauseWithTimeSpace(true),
-    mPitchWithTimeSpace(true),
-    mPitchNode(nullptr),
-    mLevelPaused(false),
-    mEditorMode(false)
+    mPauseWithTimeSpace(true), mPitchWithTimeSpace(true), mPitchNode(nullptr), mLevelPaused(false), mEditorMode(false)
 {
 }
 
@@ -242,8 +238,7 @@ HandleOf<SoundNode> SoundSpace::GetOutputNode()
 
 void SoundSpace::Update()
 {
-  // If this sound space should pause when the level is paused, check for
-  // handling that
+  // If this sound space should pause when the level is paused, check for handling that
   if (mPauseWithTimeSpace)
   {
     bool spacePaused = GetOwner()->has(TimeSpace)->GetGloballyPaused();

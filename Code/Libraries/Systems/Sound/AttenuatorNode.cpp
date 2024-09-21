@@ -78,8 +78,7 @@ void AttenuatorNode::SetMinimumVolume(float volume)
 void AttenuatorNode::SetCurveType(const FalloffCurveType::Enum type, Array<Math::Vec3>* customCurveData)
 {
   if (customCurveData)
-    // Interpolator will delete curve on destruction or when replaced with
-    // another curve
+    // Interpolator will delete curve on destruction or when replaced with another curve
     Z::gSound->Mixer.AddTask(CreateFunctor(&InterpolatingObject::SetCustomCurve,
                                            &DistanceInterpolator,
                                            new Array<Math::Vec3>(*customCurveData)),
@@ -128,29 +127,25 @@ bool AttenuatorNode::GetOutputSamples(BufferType* outputBuffer,
   // Save the distance value
   float distance = relativePosition.Length();
 
-  // Account for the listener's attenuation scale (this is supposed to act like
-  // a multiplier on the start and end distances)
+  // Account for the listener's attenuation scale (this is supposed to act like a multiplier on the start and end
+  // distances)
   if (listener->GetAttenuationScale() <= 0.0f)
     distance = mAttenEndDist.Get(AudioThreads::MixThread);
   else
     distance /= listener->GetAttenuationScale();
 
-  // If we are outside the max distance and the minimum volume is zero, there is
-  // no audio
+  // If we are outside the max distance and the minimum volume is zero, there is no audio
   if (distance >= mAttenEndDist.Get(AudioThreads::MixThread) && mMinimumVolume.Get(AudioThreads::MixThread) == 0.0f)
     return false;
 
   float attenuatedVolume;
-  // If the distance is further than the attenuation end distance, the volume is
-  // the end volume
+  // If the distance is further than the attenuation end distance, the volume is the end volume
   if (distance >= mAttenEndDist.Get(AudioThreads::MixThread))
     attenuatedVolume = mMinimumVolume.Get(AudioThreads::MixThread);
-  // If the distance is less than the attenuation start distance, the volume is
-  // not attenuated
+  // If the distance is less than the attenuation start distance, the volume is not attenuated
   else if (distance <= mAttenStartDist.Get(AudioThreads::MixThread))
     attenuatedVolume = 1.0f;
-  // If the attenuation start and end are too close together than just use end
-  // volume
+  // If the attenuation start and end are too close together than just use end volume
   else if (mAttenEndDist.Get(AudioThreads::MixThread) - mAttenStartDist.Get(AudioThreads::MixThread) <= 0.1f)
     attenuatedVolume = mMinimumVolume.Get(AudioThreads::MixThread);
   // Otherwise, get the value using the falloff curve on the interpolator
@@ -181,8 +176,7 @@ bool AttenuatorNode::GetOutputSamples(BufferType* outputBuffer,
   // Check if using low pass filter
   if (mUseLowPass.Get(AudioThreads::MixThread) && distance > mLowPassDistance.Get(AudioThreads::MixThread))
   {
-    // Find cutoff frequency for this distance (will return end value if
-    // distance is past AttenEndDist)
+    // Find cutoff frequency for this distance (will return end value if distance is past AttenEndDist)
     float cutoffFreq = LowPassInterpolator.ValueAtDistance(distance - mLowPassDistance.Get(AudioThreads::MixThread));
 
     // Set the cutoff frequency on the filter

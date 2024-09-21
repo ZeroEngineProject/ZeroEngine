@@ -31,8 +31,7 @@ public:
   }
   // Resets the LastSamples buffer to zero
   void ResetLastSamples();
-  // Resets back to the start of the last mix (for evaluating multiple times per
-  // mix)
+  // Resets back to the start of the last mix (for evaluating multiple times per mix)
   void ResetToStartOfMix();
   // Returns true if the pitch is currently being interpolated
   bool Interpolating();

@@ -111,8 +111,7 @@ void SoundNode::RemoveInputNode(SoundNode* node)
 
   Z::gSound->Mixer.AddTask(CreateFunctor(&SoundNode::RemoveInputNodeThreaded, this, handle), this);
 
-  // If there are no more inputs and this node should collapse, call the
-  // collapse function
+  // If there are no more inputs and this node should collapse, call the collapse function
   if (mInputs[AudioThreads::MainThread].Empty() && mWillCollapse.Get() == cTrue)
     CollapseNode();
 
@@ -145,8 +144,7 @@ void SoundNode::InsertNodeBefore(SoundNode* node)
     return;
   }
 
-  // Add all of this node's inputs to the new node and remove them from this
-  // node
+  // Add all of this node's inputs to the new node and remove them from this node
   while (!mInputs[AudioThreads::MainThread].Empty())
   {
     node->AddInputNode(mInputs[AudioThreads::MainThread].Back());
@@ -393,8 +391,7 @@ bool SoundNode::Evaluate(BufferType* outputBuffer, const unsigned numberOfChanne
       return false;
     }
 
-    // If this node is saved, or if the listener matches the last mix, can
-    // simply copy data
+    // If this node is saved, or if the listener matches the last mix, can simply copy data
     if (mOkayToSaveThreaded || listener == mMixedListenerThreaded)
     {
       // Copy mixed samples to output buffer if there is real data

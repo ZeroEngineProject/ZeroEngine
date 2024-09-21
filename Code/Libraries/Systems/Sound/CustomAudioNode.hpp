@@ -40,8 +40,8 @@ public:
   float GetSampleAtIndex(int index);
   /// Removes all data from the buffer and resets it.
   void Reset();
-  /// Takes the AudioData from a MicrophoneUncompressedFloatData event and adds
-  /// all of the audio samples to the buffer
+  /// Takes the AudioData from a MicrophoneUncompressedFloatData event and adds all of
+  /// the audio samples to the buffer
   void AddMicUncompressedData(const HandleOf<ArrayClass<float>>& audioData);
 
   // Internals
@@ -59,8 +59,7 @@ public:
   CustomAudioNode(StringParam name, unsigned ID);
   ~CustomAudioNode();
 
-  /// The minimum number of samples that should be sent when a NeedMoreSamples
-  /// event is received.
+  /// The minimum number of samples that should be sent when a NeedMoreSamples event is received.
   int GetMinimumBufferSize();
   /// The sample rate currently being used by the audio system.
   int GetSystemSampleRate();
@@ -71,13 +70,12 @@ public:
   void SendBuffer(SoundBuffer* buffer);
   /// Sends a partial buffer of audio samples to the audio system for output.
   void SendPartialBuffer(SoundBuffer* buffer, int startAtIndex, int howManySamples);
-  /// Takes the AudioData from a MicrophoneUncompressedFloatData event and sends
-  /// all of the audio samples to the audio engine for output
+  /// Takes the AudioData from a MicrophoneUncompressedFloatData event and sends all of
+  /// the audio samples to the audio engine for output
   void SendMicUncompressedData(const HandleOf<ArrayClass<float>>& audioData);
-  /// Takes the AudioData from a MicrophoneCompressedByteData event,
-  /// decompresses the data, and sends all of the audio samples to the audio
-  /// engine for output
-  void SendMicCompressedData(const HandleOf<ArrayClass<::byte>>& audioData);
+  /// Takes the AudioData from a MicrophoneCompressedByteData event, decompresses the data,
+  /// and sends all of the audio samples to the audio engine for output
+  void SendMicCompressedData(const HandleOf<ArrayClass<byte>>& audioData);
 
 private:
   bool GetOutputSamples(BufferType* outputBuffer,

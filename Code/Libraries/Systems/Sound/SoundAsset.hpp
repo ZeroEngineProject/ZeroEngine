@@ -15,8 +15,7 @@ public:
   SoundAsset(const String& assetName, bool streaming);
   virtual ~SoundAsset();
 
-  // Appends the specified number of samples to the array, starting at the
-  // specified frame index.
+  // Appends the specified number of samples to the array, starting at the specified frame index.
   virtual void AppendSamplesThreaded(BufferType* buffer,
                                      const unsigned frameIndex,
                                      unsigned numberOfSamples,
@@ -64,8 +63,7 @@ public:
 
   DecompressedSoundAsset(Status& status, const String& fileName, const String& assetName);
 
-  // Appends the specified number of samples to the array, starting at the
-  // specified frame index.
+  // Appends the specified number of samples to the array, starting at the specified frame index.
   void AppendSamplesThreaded(BufferType* buffer,
                              const unsigned frameIndex,
                              unsigned numberOfSamples,
@@ -87,12 +85,10 @@ private:
 class StreamingDataPerInstance
 {
 public:
-  // The file object must be already open, and will not be closed by this
-  // decoder
+  // The file object must be already open, and will not be closed by this decoder
   StreamingDataPerInstance(
       Status& status, File* inputFile, ThreadLock* lock, unsigned channels, unsigned frames, unsigned instanceID);
-  // The input data buffer must already exist, and will not be deleted by this
-  // decoder
+  // The input data buffer must already exist, and will not be deleted by this decoder
   StreamingDataPerInstance(
       Status& status, ::byte* inputData, unsigned dataSize, unsigned channels, unsigned frames, unsigned instanceID);
 
@@ -128,8 +124,7 @@ public:
                       const String& assetName);
   ~StreamingSoundAsset();
 
-  // Appends the specified number of samples to the array, starting at the
-  // specified frame index.
+  // Appends the specified number of samples to the array, starting at the specified frame index.
   void AppendSamplesThreaded(BufferType* buffer,
                              const unsigned frameIndex,
                              unsigned numberOfSamples,
@@ -142,8 +137,7 @@ public:
   void OnRemoveInstanceThreaded(unsigned instanceID) override;
 
 private:
-  // Looks for a specific instance ID in the data list. Returns null if not
-  // found.
+  // Looks for a specific instance ID in the data list. Returns null if not found.
   StreamingDataPerInstance* GetInstanceData(unsigned instanceID);
   // Copies available decoded samples into the provided buffer
   void CopySamplesIntoBuffer(float* outputBuffer,

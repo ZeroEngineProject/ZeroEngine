@@ -16,23 +16,20 @@ public:
   VolumeNode(StringParam name, unsigned ID);
 
   /// The volume adjustment that will be applied to the node's input.
-  /// A value of 1 does not affect the sound; 2 will double the sound's volume,
-  /// 0.5 will halve it, and 0 will make the sound inaudible.
+  /// A value of 1 does not affect the sound; 2 will double the sound's volume, 0.5 will halve it,
+  /// and 0 will make the sound inaudible.
   float GetVolume();
   void SetVolume(float volume);
-  /// Interpolates the Volume property from its current value to the value
-  /// passed in as the first parameter, over the number of seconds passed in as
-  /// the second parameter.
+  /// Interpolates the Volume property from its current value to the value passed in
+  /// as the first parameter, over the number of seconds passed in as the second parameter.
   void InterpolateVolume(float volume, float interpolationTime);
-  /// The volume adjustment, in decibels, that will be applied to the node's
-  /// input. A value of 0 does not affect the sound; 6 will double the sound's
-  /// volume, -6 will halve it, and -100 is effectively the same as a Volume of
-  /// 0.
+  /// The volume adjustment, in decibels, that will be applied to the node's input.
+  /// A value of 0 does not affect the sound; 6 will double the sound's volume, -6 will halve it,
+  /// and -100 is effectively the same as a Volume of 0.
   float GetDecibels();
   void SetDecibels(float volume);
-  /// Interpolates the Decibels property from its current value to the value
-  /// passed in as the first parameter, over the number of seconds passed in as
-  /// the second parameter.
+  /// Interpolates the Decibels property from its current value to the value passed in
+  /// as the first parameter, over the number of seconds passed in as the second parameter.
   void InterpolateDecibels(float volumeDB, float interpolationTime);
 
 private:
@@ -67,8 +64,7 @@ private:
 
 // Panning Node
 
-/// Changes the left and right channel volumes of its input SoundNode's audio
-/// separately
+/// Changes the left and right channel volumes of its input SoundNode's audio separately
 class PanningNode : public SimpleCollapseNode
 {
 public:
@@ -77,29 +73,25 @@ public:
   PanningNode(StringParam name, unsigned ID);
 
   /// If this property is true, the audio will be combined into a single channel
-  /// before being split between the right and left channels. If it is false and
-  /// the audio has more than two channels, it will be combined into only two
-  /// channels before being processed.
+  /// before being split between the right and left channels. If it is false and the audio
+  /// has more than two channels, it will be combined into only two channels before being processed.
   bool GetSumToMono();
   void SetSumToMono(bool isMono);
   /// The volume multiplier applied to audio in the left channel.
   float GetLeftVolume();
   void SetLeftVolume(float volume);
-  /// Interpolates the LeftVolume property from its current value to the value
-  /// passed in as the first parameter, over the number of seconds passed in as
-  /// the second parameter.
+  /// Interpolates the LeftVolume property from its current value to the value passed in
+  /// as the first parameter, over the number of seconds passed in as the second parameter.
   void InterpolateLeftVolume(float volume, float time);
   /// The volume multiplier applied to audio in the right channel.
   float GetRightVolume();
   void SetRightVolume(float volume);
-  /// Interpolates the RightVolume property from its current value to the value
-  /// passed in as the first parameter, over the number of seconds passed in as
-  /// the second parameter.
+  /// Interpolates the RightVolume property from its current value to the value passed in
+  /// as the first parameter, over the number of seconds passed in as the second parameter.
   void InterpolateRightVolume(float volume, float time);
-  /// Interpolates both left and right volume properties at once. The first
-  /// parameter is the value to change the LeftVolume to, the second is the
-  /// RightVolume, and the third is the number of seconds to use for the
-  /// interpolation.
+  /// Interpolates both left and right volume properties at once. The first parameter
+  /// is the value to change the LeftVolume to, the second is the RightVolume,
+  /// and the third is the number of seconds to use for the interpolation.
   void InterpolateVolumes(float leftVolume, float rightVolume, float time);
 
 private:
@@ -134,8 +126,7 @@ private:
   InterpolatingObject LeftInterpolator;
   // Interpolates the right channel volume from one value to another
   InterpolatingObject RightInterpolator;
-  // If true, the volume is currently modified and the node will perform its
-  // calculations
+  // If true, the volume is currently modified and the node will perform its calculations
   Threaded<bool> mActive;
 
   Data CurrentData;
@@ -154,25 +145,21 @@ public:
 
   /// The pitch adjustment applied to the node's input.
   /// A value of 0 will not affect the sound's pitch; 1 will raise the pitch by
-  /// an octave and speed up the sound, and -1 will lower the sound by an octave
-  /// and slow it down. Large pitch changes will likely affect the quality of
-  /// the sound.
+  /// an octave and speed up the sound, and -1 will lower the sound by an octave and slow it down.
+  /// Large pitch changes will likely affect the quality of the sound.
   float GetPitch();
   void SetPitch(float pitchRatio);
-  /// Interpolates the Pitch property from its current value to the value passed
-  /// in as the first parameter, over the number of seconds passed in as the
-  /// second parameter.
+  /// Interpolates the Pitch property from its current value to the value passed in
+  /// as the first parameter, over the number of seconds passed in as the second parameter.
   void InterpolatePitch(float pitchRatio, float interpolationTime);
-  /// The pitch adjustment, in semitones (or half-steps), applied to the node's
-  /// input. A value of 0 will not affect the sound's pitch; 12 will raise the
-  /// pitch by an octave and speed up the sound, and -12 will lower the sound by
-  /// an octave and slow it down. Large pitch changes will likely affect the
-  /// quality of the sound.
+  /// The pitch adjustment, in semitones (or half-steps), applied to the node's input.
+  /// A value of 0 will not affect the sound's pitch; 12 will raise the pitch by an octave
+  /// and speed up the sound, and -12 will lower the sound by an octave and slow it down.
+  /// Large pitch changes will likely affect the quality of the sound.
   float GetSemitones();
   void SetSemitones(float pitchSemitones);
-  /// Interpolates the Semitones property from its current value to the value
-  /// passed in as the first parameter, over the number of seconds passed in as
-  /// the second parameter.
+  /// Interpolates the Semitones property from its current value to the value passed in
+  /// as the first parameter, over the number of seconds passed in as the second parameter.
   void InterpolateSemitones(float pitchSemitones, float interpolationTime);
 
 private:
@@ -189,8 +176,7 @@ private:
 
 // Low Pass Node
 
-/// Applies a low pass filter to audio generated by its input SoundNodes
-/// (removes high frequencies)
+/// Applies a low pass filter to audio generated by its input SoundNodes (removes high frequencies)
 class LowPassNode : public SimpleCollapseNode
 {
 public:
@@ -200,8 +186,7 @@ public:
   ~LowPassNode();
 
   /// Frequencies above this number in the node's input will be attenuated.
-  /// Setting this value to 20,000.00 or higher will skip all filter
-  /// calculations.
+  /// Setting this value to 20,000.00 or higher will skip all filter calculations.
   float GetCutoffFrequency();
   void SetCutoffFrequency(float frequency);
 
@@ -215,16 +200,14 @@ private:
 
   // The cutoff frequency for the low pass filter
   Threaded<float> mCutoffFrequency;
-  // The filter used for calculations (contains history so must have separate
-  // filters per listener)
+  // The filter used for calculations (contains history so must have separate filters per listener)
   typedef Zero::HashMap<ListenerNode*, LowPassFilter*> FilterMapType;
   FilterMapType FiltersPerListener;
 };
 
 // High Pass Node
 
-/// Applies a high pass filter to audio generated by its input SoundNodes
-/// (removes low frequencies)
+/// Applies a high pass filter to audio generated by its input SoundNodes (removes low frequencies)
 class HighPassNode : public SimpleCollapseNode
 {
 public:
@@ -255,8 +238,7 @@ private:
 
 // Band Pass Node
 
-/// Applies a band pass filter to audio generated by its input SoundNodes
-/// (removes low and high frequencies)
+/// Applies a band pass filter to audio generated by its input SoundNodes (removes low and high frequencies)
 class BandPassNode : public SimpleCollapseNode
 {
 public:
@@ -265,12 +247,11 @@ public:
   BandPassNode(StringParam name, unsigned ID);
   ~BandPassNode();
 
-  /// The center frequency of the band. Frequencies above and below this band
-  /// will be attenuated.
+  /// The center frequency of the band. Frequencies above and below this band will be attenuated.
   float GetCentralFrequency();
   void SetCentralFrequency(float frequency);
-  /// The Q number of the band pass filter: higher numbers make the band
-  /// smaller, while smaller numbers make it wider. The default value is 0.669.
+  /// The Q number of the band pass filter: higher numbers make the band smaller,
+  /// while smaller numbers make it wider. The default value is 0.669.
   float GetQualityFactor();
   void SetQualityFactor(float Q);
 
@@ -294,8 +275,7 @@ private:
 
 // Equalizer Node
 
-/// Applied volume changes to specific frequency bands in the audio generated by
-/// its input SoundNodes
+/// Applied volume changes to specific frequency bands in the audio generated by its input SoundNodes
 class EqualizerNode : public SimpleCollapseNode
 {
 public:
@@ -304,34 +284,28 @@ public:
   EqualizerNode(StringParam name, unsigned ID);
   ~EqualizerNode();
 
-  /// The volume adjustment applied to frequencies below 80 Hz in the node's
-  /// input. Values above 1.0 will boost these frequencies while values less
-  /// than 1.0 will reduce them.
+  /// The volume adjustment applied to frequencies below 80 Hz in the node's input.
+  /// Values above 1.0 will boost these frequencies while values less than 1.0 will reduce them.
   float GetLowPassGain();
   void SetLowPassGain(float gain);
-  /// The volume adjustment applied to frequencies above 5000 Hz in the node's
-  /// input. Values above 1.0 will boost these frequencies while values less
-  /// than 1.0 will reduce them.
+  /// The volume adjustment applied to frequencies above 5000 Hz in the node's input.
+  /// Values above 1.0 will boost these frequencies while values less than 1.0 will reduce them.
   float GetHighPassGain();
   void SetHighPassGain(float gain);
-  /// The volume adjustment applied to frequencies within the band centered at
-  /// 150 Hz in the node's input. Values above 1.0 will boost these frequencies
-  /// while values less than 1.0 will reduce them.
+  /// The volume adjustment applied to frequencies within the band centered at 150 Hz in the node's input.
+  /// Values above 1.0 will boost these frequencies while values less than 1.0 will reduce them.
   float GetBand1Gain();
   void SetBand1Gain(float gain);
-  /// The volume adjustment applied to frequencies within the band centered at
-  /// 600 Hz in the node's input. Values above 1.0 will boost these frequencies
-  /// while values less than 1.0 will reduce them.
+  /// The volume adjustment applied to frequencies within the band centered at 600 Hz in the node's input.
+  /// Values above 1.0 will boost these frequencies while values less than 1.0 will reduce them.
   float GetBand2Gain();
   void SetBand2Gain(float gain);
-  /// The volume adjustment applied to frequencies within the band centered at
-  /// 2500 Hz in the node's input. Values above 1.0 will boost these frequencies
-  /// while values less than 1.0 will reduce them.
+  /// The volume adjustment applied to frequencies within the band centered at 2500 Hz in the node's input.
+  /// Values above 1.0 will boost these frequencies while values less than 1.0 will reduce them.
   float GetBand3Gain();
   void SetBand3Gain(float gain);
-  /// Sets the volume adjustment of all bands (the parameters in order are low
-  /// pass, band 1, band 2, band 3, high pass) over the number of seconds passed
-  /// in as the final parameter.
+  /// Sets the volume adjustment of all bands (the parameters in order are low pass, band 1, band 2,
+  /// band 3, high pass) over the number of seconds passed in as the final parameter.
   void
   InterpolateAllBands(float lowPass, float band1, float band2, float band3, float highPass, float timeToInterpolate);
 
@@ -376,16 +350,14 @@ public:
   /// DEPRECATED The WetValue property should be used instead.
   float GetWetPercent();
   void SetWetPercent(float percent);
-  /// The percentage of the node's output (0 - 1.0) which has the reverb filter
-  /// applied to it. Setting this property to 0 will stop all reverb
-  /// calculations.
+  /// The percentage of the node's output (0 - 1.0) which has the reverb filter applied to it.
+  /// Setting this property to 0 will stop all reverb calculations.
   float GetWetValue();
   void SetWetValue(float value);
   /// DEPRECATED The InterpolateWetValue method should be used instead.
   void InterpolateWetPercent(float percent, float time);
-  /// Interpolates the WetValue property from its current value to the value
-  /// passed in as the first parameter, over the number of seconds passed in as
-  /// the second parameter.
+  /// Interpolates the WetValue property from its current value to the value passed in
+  /// as the first parameter, over the number of seconds passed in as the second parameter.
   void InterpolateWetValue(float value, float time);
 
 private:
@@ -426,22 +398,20 @@ public:
   /// DEPRECATED The FeedbackValue property should be used instead.
   float GetFeedbackPercent();
   void SetFeedbackPercent(float feedback);
-  /// The percentage of output (from 0 to 1.0f) which is fed back into the
-  /// filter as input, creating an echo-like effect.
+  /// The percentage of output (from 0 to 1.0f) which is fed back into the filter as input,
+  /// creating an echo-like effect.
   float GetFeedbackValue();
   void SetFeedbackValue(float feedback);
   /// DEPRECATED The WetValue property should be used instead.
   float GetWetPercent();
   void SetWetPercent(float wetLevel);
-  /// The percentage of the node's output (0 - 1.0) which has the delay filter
-  /// applied to it.
+  /// The percentage of the node's output (0 - 1.0) which has the delay filter applied to it.
   float GetWetValue();
   void SetWetValue(float wetLevel);
   /// DEPRECATED The InterpolateWetValue method should be used instead.
   void InterpolateWetPercent(float wetPercent, float time);
-  /// Interpolates the WetValue property from its current value to the value
-  /// passed in as the first parameter, over the number of seconds passed in as
-  /// the second parameter.
+  /// Interpolates the WetValue property from its current value to the value passed in
+  /// as the first parameter, over the number of seconds passed in as the second parameter.
   void InterpolateWetValue(float wetPercent, float time);
 
 private:
@@ -477,8 +447,8 @@ public:
   FlangerNode(StringParam name, unsigned ID);
   ~FlangerNode();
 
-  /// The maximum delay reached by the modulation. It will oscillate between 0
-  /// and this value at the frequency set by the ModulationFrequency property.
+  /// The maximum delay reached by the modulation. It will oscillate between 0 and this value
+  /// at the frequency set by the ModulationFrequency property.
   float GetMaxDelayMillisec();
   void SetMaxDelayMillisec(float delay);
   /// The frequency of the oscillator which varies the modulation.
@@ -487,8 +457,7 @@ public:
   /// DEPRECATED The FeedbackValue property should be used instead.
   float GetFeedbackPercent();
   void SetFeedbackPercent(float percent);
-  /// The percentage of output (0 - 1.0) which is fed back into the filter as
-  /// input.
+  /// The percentage of output (0 - 1.0) which is fed back into the filter as input.
   float GetFeedbackValue();
   void SetFeedbackValue(float value);
 
@@ -535,14 +504,12 @@ public:
   ChorusNode(StringParam name, unsigned ID);
   ~ChorusNode();
 
-  /// The maximum delay reached by the modulation. It will oscillate between the
-  /// MinDelayMillisec value and this value at the frequency set by the
-  /// ModulationFrequency property.
+  /// The maximum delay reached by the modulation. It will oscillate between the MinDelayMillisec
+  /// value and this value at the frequency set by the ModulationFrequency property.
   float GetMaxDelayMillisec();
   void SetMaxDelayMillisec(float delay);
-  /// The minimum delay reached by the modulation. It will oscillate between the
-  /// this value and the MaxDelayMillisec value at the frequency set by the
-  /// ModulationFrequency property.
+  /// The minimum delay reached by the modulation. It will oscillate between the this value and the
+  /// MaxDelayMillisec value at the frequency set by the ModulationFrequency property.
   float GetMinDelayMillisec();
   void SetMinDelayMillisec(float delay);
   /// The frequency of the oscillator which varies the modulation.
@@ -551,8 +518,7 @@ public:
   /// DEPRECATED The FeedbackValue property should be used instead.
   float GetFeedbackPercent();
   void SetFeedbackPercent(float percent);
-  /// The percentage of output (0 - 1.0) which is fed back into the filter as
-  /// input.
+  /// The percentage of output (0 - 1.0) which is fed back into the filter as input.
   float GetFeedbackValue();
   void SetFeedbackValue(float value);
   /// The offset value of the chorus filter, in milliseconds.
@@ -606,16 +572,13 @@ public:
   /// The volume adjustment applied to the audio input, in decibels.
   float GetInputGainDecibels();
   void SetInputGainDecibels(float gain);
-  /// The threshold, in decibels, at which the volume of the input is affected
-  /// by the compressor.
+  /// The threshold, in decibels, at which the volume of the input is affected by the compressor.
   float GetThresholdDecibels();
   void SetThresholdDecibels(float dB);
-  /// The time for the compressor to ramp to full effect after the input reaches
-  /// the threshold.
+  /// The time for the compressor to ramp to full effect after the input reaches the threshold.
   float GetAttackMillisec();
   void SetAttackMillisec(float attack);
-  /// The time for the compressor to ramp from full effect to off after the
-  /// input drops below the threshold.
+  /// The time for the compressor to ramp from full effect to off after the input drops below the threshold.
   float GetReleaseMillisec();
   void SetReleaseMillisec(float release);
   /// The ratio of the volume reduction applied by the compressor.
@@ -664,16 +627,13 @@ public:
   /// The volume adjustment applied to the audio input, in decibels.
   float GetInputGainDecibels();
   void SetInputGainDecibels(float gain);
-  /// The threshold, in decibels, at which the volume of the input is affected
-  /// by the expander.
+  /// The threshold, in decibels, at which the volume of the input is affected by the expander.
   float GetThresholdDecibels();
   void SetThresholdDecibels(float dB);
-  /// The time for the expander to ramp to full effect after the input reaches
-  /// the threshold.
+  /// The time for the expander to ramp to full effect after the input reaches the threshold.
   float GetAttackMillisec();
   void SetAttackMillisec(float attack);
-  /// The time for the expander to ramp from full effect to off after the input
-  /// goes above the threshold.
+  /// The time for the expander to ramp from full effect to off after the input goes above the threshold.
   float GetReleaseMillisec();
   void SetReleaseMillisec(float release);
   /// The ratio of the volume reduction applied by the expander.
@@ -761,8 +721,7 @@ private:
 
 // Modulation Node
 
-/// Applies either ring or amplitude modulation to audio generated by its input
-/// SoundNodes
+/// Applies either ring or amplitude modulation to audio generated by its input SoundNodes
 class ModulationNode : public SimpleCollapseNode
 {
 public:
@@ -771,10 +730,9 @@ public:
   ModulationNode(StringParam name, unsigned ID);
   ~ModulationNode();
 
-  /// If this property is true, the node will apply amplitude modulation
-  /// (multiply the audio input with a unipolar sine wave with values from 0.0
-  /// to 1.0). If false, the node will apply ring modulation (multiply the input
-  /// with a bipolar sine wave with values from -1.0 to 1.0).
+  /// If this property is true, the node will apply amplitude modulation (multiply the audio input
+  /// with a unipolar sine wave with values from 0.0 to 1.0). If false, the node will apply
+  /// ring modulation (multiply the input with a bipolar sine wave with values from -1.0 to 1.0).
   bool GetUseAmplitudeModulation();
   void SetUseAmplitudeModulation(bool useAmplitude);
   /// The frequency of the sine wave used for the modulation.
@@ -783,8 +741,7 @@ public:
   /// DEPRECATED The WetValue property should be used instead.
   float GetWetPercent();
   void SetWetPercent(float percent);
-  /// The percentage of the input (0 - 1.0) which should have the modulation
-  /// applied to it.
+  /// The percentage of the input (0 - 1.0) which should have the modulation applied to it.
   float GetWetValue();
   void SetWetValue(float value);
 

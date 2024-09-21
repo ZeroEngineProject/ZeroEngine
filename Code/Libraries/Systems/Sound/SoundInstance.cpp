@@ -84,13 +84,11 @@ void AudioFadeObject::ApplyFade(float* buffer, unsigned howManyFrames)
 
     for (unsigned channel = 0; channel < assetChannels; ++channel, ++sampleIndex, ++bufferIndex)
     {
-      // If cross-fading, apply the other volume to the current sample (goes
-      // from 0-1)
+      // If cross-fading, apply the other volume to the current sample (goes from 0-1)
       if (mCrossFade)
         buffer[bufferIndex] *= 1.0f - volume;
 
-      // Apply the volume to the faded sample and add to current sample (goes
-      // from 1-0)
+      // Apply the volume to the faded sample and add to current sample (goes from 1-0)
       buffer[bufferIndex] += FadeSamples[sampleIndex] * volume;
     }
 
@@ -132,8 +130,8 @@ void MusicNotificationObject::ProcessAndNotify(float currentTime, SoundInstance*
   // Check for beats
   if ((int)beats > mTotalBeats)
   {
-    // There should never be a jump in the time without calling ResetBeats, so
-    // we don't need to handle increases of more than one beat
+    // There should never be a jump in the time without calling ResetBeats, so we don't need
+    // to handle increases of more than one beat
     ++mTotalBeats;
     ++mBeatsCount;
 
@@ -156,8 +154,8 @@ void MusicNotificationObject::ProcessAndNotify(float currentTime, SoundInstance*
   // Check for eighth notes
   if ((int)eighths > mTotalEighths)
   {
-    // There should never be a jump in the time without calling ResetBeats, so
-    // we don't need to handle increases of more than one beat
+    // There should never be a jump in the time without calling ResetBeats, so we don't need
+    // to handle increases of more than one beat
     ++mTotalEighths;
     ++mEighthNoteCount;
 
@@ -449,8 +447,7 @@ void SoundInstance::SetTime(float seconds)
     Z::gSound->Mixer.AddTask(CreateFunctor(&SoundInstance::SetTimeThreaded, this, seconds), this);
   else
     DoNotifyWarning("Time Set on Streaming Sound",
-                    "You cannot set the time on a SoundInstance created from a "
-                    "streaming Sound resource.");
+                    "You cannot set the time on a SoundInstance created from a streaming Sound resource.");
 }
 
 float SoundInstance::GetFileLength()
@@ -474,8 +471,7 @@ void SoundInstance::SetEndTime(float seconds)
   mEndTime = seconds;
   int frame = (int)(mEndTime * cSystemSampleRate);
 
-  // If the end time is at zero or past the end of the file, set it to the
-  // length of the file
+  // If the end time is at zero or past the end of the file, set it to the length of the file
   if (mEndTime <= 0.0f || mEndTime >= mAssetObject->mFileLength)
   {
     mEndTime = mAssetObject->mFileLength;
@@ -498,8 +494,7 @@ void SoundInstance::SetLoopStartTime(float seconds)
   mLoopStartTime = seconds;
   int frame = (int)(seconds * cSystemSampleRate);
 
-  // If the loop start time is negative or past the end of the file, set it to
-  // zero
+  // If the loop start time is negative or past the end of the file, set it to zero
   if (mLoopStartTime < 0.0f || mLoopStartTime >= mAssetObject->mFileLength)
   {
     mLoopStartTime = 0.0f;
@@ -522,8 +517,7 @@ void SoundInstance::SetLoopEndTime(float seconds)
   mLoopEndTime = seconds;
   int frame = (int)(seconds * cSystemSampleRate);
 
-  // If the loop end time is negative or past the end of the file, set it to the
-  // length of the file
+  // If the loop end time is negative or past the end of the file, set it to the length of the file
   if (mLoopEndTime <= 0.0f || mLoopEndTime >= mAssetObject->mFileLength)
   {
     mLoopEndTime = mAssetObject->mFileLength;
@@ -600,8 +594,7 @@ void SoundInstance::Play(bool loop, SoundNode* outputNode, bool startPaused)
   // If there is an output node, add the instance as input
   if (outputNode)
     outputNode->AddInputNode(this);
-  // If there is no output node but there is a SoundSpace, add to direct output
-  // of space
+  // If there is no output node but there is a SoundSpace, add to direct output of space
   else if (mSpace)
     mSpace->GetInputNode()->AddInputNode(this);
 
@@ -843,8 +836,8 @@ void SoundInstance::AddSamplesToBufferThreaded(BufferType* buffer, unsigned outp
     // Move the samples back into the original buffer
     samples.Swap(pitchShiftedSamples);
 
-    // If interpolating the pitch (whether or not it finished) update the
-    // non-threaded object with the pitch factor
+    // If interpolating the pitch (whether or not it finished) update the non-threaded
+    // object with the pitch factor
     if (interpolating)
       mPitchSemitones.Set(12.0f * Math::Log2(Pitch.GetPitchFactor()), AudioThreads::MixThread);
   }
@@ -912,8 +905,7 @@ void SoundInstance::LoopThreaded()
   // Handle fading if we're not at the end of the audio
   if (mLoopEndFrameThreaded < mEndFrameThreaded)
   {
-    // Use the default cross fade size if streaming or if the variable hasn't
-    // been set
+    // Use the default cross fade size if streaming or if the variable hasn't been set
     int fadeSize = (int)Fade.mDefaultFrames;
     if (mLoopTailFramesThreaded > 0 && !mAssetObject->mStreaming)
       fadeSize = mLoopTailFramesThreaded;

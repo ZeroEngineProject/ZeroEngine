@@ -12,12 +12,7 @@ ZilchDefineType(SoundAsset, builder, Type)
 }
 
 SoundAsset::SoundAsset(const String& assetName, bool streaming) :
-    mStreaming(streaming),
-    mFileLength(0.0f),
-    mChannels(0),
-    mFrameCount(0),
-    mName(assetName),
-    mInstanceReferenceCount(0)
+    mStreaming(streaming), mFileLength(0.0f), mChannels(0), mFrameCount(0), mName(assetName), mInstanceReferenceCount(0)
 {
 }
 
@@ -95,7 +90,7 @@ void DecompressedSoundAsset::AppendSamplesThreaded(BufferType* buffer,
   // If not, copy what we can and set the rest to zero
   else
   {
-    int samplesToCopy = (int)samplesAvailable - (int)sampleIndex;
+    size_t samplesToCopy = (size_t)samplesAvailable - (size_t)sampleIndex;
 
     // Check if there are any samples to copy
     if (samplesToCopy > 0)
@@ -115,9 +110,8 @@ void DecompressedSoundAsset::AppendSamplesThreaded(BufferType* buffer,
 
 void DecompressedSoundAsset::DecodingCallback(DecodedPacket* packet)
 {
-  // At the end of a file the actual decoded samples could be smaller than the
-  // size of the array on the DecodedPacket object, so make sure we don't go
-  // past the size of mSamples
+  // At the end of a file the actual decoded samples could be smaller than the size of the array
+  // on the DecodedPacket object, so make sure we don't go past the size of mSamples
   unsigned samplesCopied =
       Math::Min((unsigned)packet->mSamples.Size(), (unsigned)(mSamples.Size() - mSamplesAvailableShared));
   // Copy the decoded samples into the array
@@ -176,8 +170,7 @@ StreamingSoundAsset::StreamingSoundAsset(Status& status,
                                          const String& fileName,
                                          AudioFileLoadType::Enum loadType,
                                          const String& assetName) :
-    SoundAsset(assetName, true),
-    mFileName(fileName)
+    SoundAsset(assetName, true), mFileName(fileName)
 {
   FileHeader header;
   unsigned fileSize = PacketDecoder::OpenAndReadHeader(status, fileName, &mInputFile, &header);
@@ -209,8 +202,8 @@ StreamingSoundAsset::StreamingSoundAsset(Status& status,
 
 StreamingSoundAsset::~StreamingSoundAsset()
 {
-  // Delete any existing instance data objects (though this shouldn't happen
-  // normally since assets shouldn't be deleted when there are any instances)
+  // Delete any existing instance data objects (though this shouldn't happen normally since assets
+  // shouldn't be deleted when there are any instances)
   while (!mDataPerInstanceList.Empty())
   {
     StreamingDataPerInstance* data = &mDataPerInstanceList.Front();
@@ -263,16 +256,14 @@ void StreamingSoundAsset::OnAddInstanceThreaded(unsigned instanceID)
   Zero::Status status;
   StreamingDataPerInstance* data = nullptr;
 
-  // If there is data in the buffer, create the instance data for streaming from
-  // memory
+  // If there is data in the buffer, create the instance data for streaming from memory
   if (!mInputFileData.Empty())
     data = new StreamingDataPerInstance(
         status, mInputFileData.Data(), mInputFileData.Size(), mChannels, mFrameCount, instanceID);
   // Otherwise, check if the file name is set
   else if (!mFileName.Empty())
   {
-    // If the input file is not open (because there are no current instances)
-    // open it
+    // If the input file is not open (because there are no current instances) open it
     if (!mInputFile.IsOpen())
     {
       mInputFile.Open(mFileName, Zero::FileMode::Read, Zero::FileAccessPattern::Sequential);
@@ -354,13 +345,11 @@ void StreamingSoundAsset::CopySamplesIntoBuffer(float* outputBuffer,
     data->mDecoder.DecodeNextSection();
   }
 
-  // Copy either the number of samples requested or the samples available,
-  // whichever is smaller
+  // Copy either the number of samples requested or the samples available, whichever is smaller
   unsigned samplesCopied = Math::Min(samplesRequested, (unsigned)(data->mSamples.Size() - sampleIndex));
   memcpy(outputBuffer, data->mSamples.Data() + sampleIndex, sizeof(float) * samplesCopied);
 
-  // If we did not copy enough samples, keep trying (in case there is another
-  // decoded buffer available)
+  // If we did not copy enough samples, keep trying (in case there is another decoded buffer available)
   if (samplesCopied < samplesRequested)
     CopySamplesIntoBuffer(
         outputBuffer + samplesCopied, sampleIndex + samplesCopied, samplesRequested - samplesCopied, data);

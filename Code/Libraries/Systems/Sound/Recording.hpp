@@ -27,8 +27,8 @@ public:
   /// When true, recording is paused, and can be resumed by setting to false
   bool GetPaused();
   void SetPaused(bool paused);
-  /// When false, audio data will be saved in a buffer and written to the file
-  /// when StopRecording is called. When true, data will be written to the file
+  /// When false, audio data will be saved in a buffer and written to the file when
+  /// StopRecording is called. When true, data will be written to the file
   /// constantly during every update frame, and nothing will be saved.
   bool GetStreamToDisk();
   void SetStreamToDisk(bool stream);
@@ -70,8 +70,7 @@ private:
 
 // Save Audio Node
 
-/// Saves audio from its input SoundNodes and then plays it. All audio from
-/// inputs is passed to outputs.
+/// Saves audio from its input SoundNodes and then plays it. All audio from inputs is passed to outputs.
 class SaveAudioNode : public SimpleCollapseNode
 {
 public:
@@ -79,8 +78,8 @@ public:
 
   SaveAudioNode(StringParam name, unsigned ID);
 
-  /// When true, audio from input SoundNodes will be saved. Setting this to true
-  /// will remove any existing saved audio before saving more.
+  /// When true, audio from input SoundNodes will be saved. Setting this to true will remove any
+  /// existing saved audio before saving more.
   bool GetSaveAudio();
   void SetSaveAudio(bool save);
   /// Plays the saved audio.

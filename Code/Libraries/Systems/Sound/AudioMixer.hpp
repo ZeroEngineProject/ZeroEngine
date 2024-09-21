@@ -40,8 +40,7 @@ public:
   void AddTaskThreaded(Functor* task, HandleOf<SoundNode> node);
   // Sets whether to use the high or low latency values
   void SetLatency(AudioLatency::Enum latency);
-  // Starts the input stream if it is not already started. Returns false if
-  // stream could not be started.
+  // Starts the input stream if it is not already started. Returns false if stream could not be started.
   bool StartInput();
   // Gets the overall system volume
   float GetVolume();
@@ -53,9 +52,8 @@ public:
   void SetMuteAllAudio(const bool muteAudio);
   // Returns the number of channels used in the system's output
   unsigned GetOutputChannels();
-  // Sets the number of channels that should be used to mix audio output. This
-  // will be translated to the channels needed by the system's audio output
-  // device.
+  // Sets the number of channels that should be used to mix audio output. This will be translated to
+  // the channels needed by the system's audio output device.
   void SetOutputChannels(const unsigned channels);
   // Returns the highest volume from the last audio mix.
   float GetPeakOutputVolume();
@@ -67,22 +65,18 @@ public:
   void SetSendUncompressedMicInput(const bool sendInput);
   // If true, events will be sent with compressed microphone input data as bytes
   void SetSendCompressedMicInput(const bool sendInput);
-  // If currently sending microphone input data, returns the highest peak volume
-  // in the last input
+  // If currently sending microphone input data, returns the highest peak volume in the last input
   float GetPeakInputVolume();
-  // Sends an event when a listener is removed so SoundNodes can remove stored
-  // information
+  // Sends an event when a listener is removed so SoundNodes can remove stored information
   void SendListenerRemovedEvent(ListenerNode* listener);
 
   // Number of channels used for the mixed output
   Threaded<int> mSystemChannels;
   // Current mix version number
   unsigned mMixVersionThreaded;
-  // If a SoundInstance is below this threshold it will keep its place but not
-  // process any audio.
+  // If a SoundInstance is below this threshold it will keep its place but not process any audio.
   float mMinimumVolumeThresholdThreaded;
-  // Audio input data for the current mix, matching the current output sample
-  // rate and channels
+  // Audio input data for the current mix, matching the current output sample rate and channels
   Array<float> InputBuffer;
   // If true, will send microphone input data to external system
   ThreadedInt mSendMicrophoneInputData;
@@ -97,8 +91,7 @@ public:
   AudioIOInterface AudioIO;
 
 private:
-  // Adds current sounds into the output buffer. Will return false when the
-  // system can shut down.
+  // Adds current sounds into the output buffer. Will return false when the system can shut down.
   bool MixCurrentInstancesThreaded();
   // Switches buffer pointers and executes all current tasks for the mix thread.
   void HandleTasksThreaded();
@@ -106,13 +99,11 @@ private:
   void HandleTasks();
   // Checks for resampling and resets variables if applicable
   void CheckForResamplingThreaded();
-  // Gets the current input data from the AudioIO and adjusts if necessary to
-  // match output settings
+  // Gets the current input data from the AudioIO and adjusts if necessary to match output settings
   void GetAudioInputDataThreaded(unsigned howManySamples);
   // Sets whether or not all audio should be muted
   void SetMutedThreaded(bool muteAudio);
-  // Gets microphone input data from the mix thread and sends it out via an
-  // event
+  // Gets microphone input data from the mix thread and sends it out via an event
   void DispatchMicrophoneInput();
   // Turns on and off sending microphone input
   void SetSendMicInput(bool turnOn);
@@ -167,11 +158,9 @@ private:
   float mPreviousPeakVolumeThreaded;
   // The RMS volume from the last mix, used to check whether to create a task
   unsigned mPreviousRMSVolumeThreaded;
-  // If true the output is being resampled to match the sample rate of the
-  // device
+  // If true the output is being resampled to match the sample rate of the device
   bool mResamplingThreaded;
-  // If true, audio will be processed normally but will not be sent to the
-  // output device
+  // If true, audio will be processed normally but will not be sent to the output device
   ThreadedInt mMuted;
   // Used to know when to set the Muted variable
   bool mMutingThreaded;
@@ -179,8 +168,7 @@ private:
   float mPeakInputVolume;
   // If true, will send the microphone input data event in a compressed format
   bool mSendMicrophoneInputCompressed;
-  // If true, will send the microphone input data event in an uncompressed
-  // format
+  // If true, will send the microphone input data event in an uncompressed format
   bool mSendMicrophoneInputUncompressed;
 };
 

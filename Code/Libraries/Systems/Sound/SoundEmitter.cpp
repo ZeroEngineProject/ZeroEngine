@@ -141,8 +141,7 @@ void SoundEmitter::Initialize(CogInitializer& initializer)
     // If directional, set directional information in audio engine
     if (mDirectional)
     {
-      // Okay to call the threaded functions directly because it's not attached
-      // to anything yet
+      // Okay to call the threaded functions directly because it's not attached to anything yet
       mEmitterObject->SetDirectionalAngleThreaded(mEmitAngle, mRearVolume);
 
       mEmitterObject->SetForwardDirectionThreaded(Math::ToVector3(mTransform->GetWorldMatrix().BasisZ()));
@@ -462,8 +461,7 @@ HandleOf<SoundInstance> SoundEmitter::PlayCueInternal(SoundCue* cue, bool startP
     return nullptr;
 
   HandleOf<SoundNode> outputNode;
-  // If the SoundCue has attenuation settings, get an attenuation node and store
-  // it
+  // If the SoundCue has attenuation settings, get an attenuation node and store it
   SoundAttenuator* attenuator = cue->GetAttenuator();
   if (attenuator && attenuator->Name != "DefaultNoAttenuation")
   {

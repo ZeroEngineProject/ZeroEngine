@@ -67,8 +67,7 @@ HandleOf<SoundInstance> SimpleSound::Play()
 
   if (mSpace)
   {
-    // Play the instance on the emitter (has dependency on SoundEmitter so will
-    // always be valid)
+    // Play the instance on the emitter (has dependency on SoundEmitter so will always be valid)
     if (mPositional)
       mInstance = GetOwner()->has(SoundEmitter)->PlayCue(mCue);
     // If not positional, play on the SoundSpace

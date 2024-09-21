@@ -143,9 +143,8 @@ bool RecordingNode::GetOutputSamples(BufferType* outputBuffer,
   if (isThereOutput)
     mInputSamplesThreaded.Swap(*outputBuffer);
 
-  // If we are recording, not paused, this is the first time input was
-  // requested, and we still have a sibling node, create a task to write the
-  // data to the file
+  // If we are recording, not paused, this is the first time input was requested, and we still
+  // have a sibling node, create a task to write the data to the file
   if (mRecording.Get() == cTrue && mPaused.Get() == cFalse && firstRequest)
   {
     // If there was no input data, set the buffer to zero
@@ -202,10 +201,7 @@ ZilchDefineType(SaveAudioNode, builder, type)
 }
 
 SaveAudioNode::SaveAudioNode(StringParam name, unsigned ID) :
-    SimpleCollapseNode(name, ID, false, false),
-    mSaveData(false),
-    mPlayData(false),
-    mPlaybackIndexThreaded(0)
+    SimpleCollapseNode(name, ID, false, false), mSaveData(false), mPlayData(false), mPlaybackIndexThreaded(0)
 {
 }
 

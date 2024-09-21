@@ -201,10 +201,7 @@ void Comb::ProcessAudio(const float input, float* output)
 // Low Pass Comb Filter
 
 LPComb::LPComb(const float maxDelayTime, const int sampleRate) :
-    mCombG(0),
-    mLPFg(0),
-    mPrevSample(0),
-    Delay(maxDelayTime, sampleRate)
+    mCombG(0), mLPFg(0), mPrevSample(0), Delay(maxDelayTime, sampleRate)
 {
 }
 
@@ -641,8 +638,7 @@ void DelayLine::ProcessBuffer(const float* input,
       float inputSample = input[frameIndex + channel];
       float delayedSample;
 
-      // If delay is less than 1 sample, interpolate between input(n) and
-      // input(n-1)
+      // If delay is less than 1 sample, interpolate between input(n) and input(n-1)
       if (mReadIndex == mWriteIndex && mDelaySamplesFractional < 1.0f)
         delayedSample = inputSample;
       // Otherwise, get delayed sample from buffer
@@ -696,8 +692,7 @@ void DelayLine::SetDelayMSec(float delay)
   }
   else if (mDelaySamplesFractional > 0.0f)
   {
-    // this will move the index forward if the delay is smaller, and backward if
-    // it is larger
+    // this will move the index forward if the delay is smaller, and backward if it is larger
     mReadIndex -= delayDifference;
 
     if (mReadIndex >= mBufferSize)
@@ -1659,8 +1654,7 @@ bool FFTConvolver::Initialize(int blockSize, const float* impulseResponse, int i
   //  return false;
 
   //// Remove zeros at end of impulse response
-  // while (irLength > 0 && Math::Abs(impulseResponse[irLength - 1]) <
-  // 0.000001f)
+  // while (irLength > 0 && Math::Abs(impulseResponse[irLength - 1]) < 0.000001f)
   //  --irLength;
 
   // if (irLength == 0)
@@ -1705,8 +1699,7 @@ void FFTConvolver::ProcessBuffer(const float* input, float* output, int length)
   int samplesProcessed = 0;
   while (samplesProcessed < length)
   {
-    // Process either the rest of the input or the amount that will fit in the
-    // stored input buffer
+    // Process either the rest of the input or the amount that will fit in the stored input buffer
     int processing = Math::Min(length - samplesProcessed, mBlockSize - mBufferPosition);
     // Copy input samples into the stored buffer
     memcpy(mStoredInputBuffer.Data() + mBufferPosition, input + samplesProcessed, sizeof(float) * processing);
@@ -1879,8 +1872,7 @@ void ADSR::Release()
   if (mCurrentState == ReleaseState)
     return;
 
-  // If current amplitude is not at the sustain level, reset the sustain level
-  // so release is smooth
+  // If current amplitude is not at the sustain level, reset the sustain level so release is smooth
   if (mCurrentState != SustainState)
     mSustainLevel = mLastAmplitude;
 
@@ -1899,8 +1891,7 @@ FMOperator::FMOperator() : mFrequency(0.0f), mVolume(0.0f), mPitchOffset(0.0f), 
 {
 }
 
-// void FMOperator::SetValues(float frequency, float volume, EnvelopeSettings&
-// envelope)
+// void FMOperator::SetValues(float frequency, float volume, EnvelopeSettings& envelope)
 //{
 //  mFrequency = frequency;
 //  mVolume = volume;

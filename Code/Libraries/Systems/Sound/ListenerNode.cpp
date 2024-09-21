@@ -87,8 +87,7 @@ bool ListenerNode::GetOutputSamples(BufferType* outputBuffer,
   // Move input to output buffer
   mInputSamplesThreaded.Swap(*outputBuffer);
 
-  // If we are interpolating between active/inactive, adjust with listener
-  // volume
+  // If we are interpolating between active/inactive, adjust with listener volume
   if (mInterpolatingVolumeThreaded)
   {
     // If no input, just move interpolator forward

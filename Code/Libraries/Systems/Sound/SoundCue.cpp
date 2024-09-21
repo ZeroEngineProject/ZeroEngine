@@ -579,8 +579,7 @@ HandleOf<SoundInstance> SoundCue::PlayCue(SoundSpace* space, HandleOf<SoundNode>
   else if (mSelectMode == SoundSelectMode::Random)
   {
     // Created weighted table to get a random sound
-    // (doing this every time because there isn't an easy way right now to
-    // update as sounds are added and removed)
+    // (doing this every time because there isn't an easy way right now to update as sounds are added and removed)
     Math::WeightedProbabilityTable<SoundEntry*> weightedtable;
     for (unsigned i = 0; i < Sounds.Size(); ++i)
       weightedtable.AddItem(&Sounds[i], Sounds[i].GetWeight());

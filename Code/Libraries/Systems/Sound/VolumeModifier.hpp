@@ -7,8 +7,7 @@ namespace Zero
 
 // Threaded Volume Modifier
 
-// Object to modify the volume of sound instances. Multiplies with the instance
-// volume.
+// Object to modify the volume of sound instances. Multiplies with the instance volume.
 class InstanceVolumeModifier
 {
 public:
@@ -32,8 +31,7 @@ private:
   float mCurrentVolume;
   // Used to interpolate between start and end volumes.
   InterpolatingObject Interpolator;
-  // Number of frames that this modifier should stay active. If zero, will be
-  // active indefinitely.
+  // Number of frames that this modifier should stay active. If zero, will be active indefinitely.
   unsigned mLifetimeFrames;
   // Keeps track of the number of frames this modifier has been active.
   unsigned mLifetimeFrameCounter;

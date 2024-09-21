@@ -10,12 +10,7 @@ using namespace AudioConstants;
 // Pitch Change Handler
 
 PitchChangeHandler::PitchChangeHandler() :
-    mPitchCents(0),
-    mPitchFactor(1.0f),
-    mFramesToInterpolate(0),
-    mInputFrameCount(0),
-    mInputSampleCount(0),
-    mChannels(0)
+    mPitchCents(0), mPitchFactor(1.0f), mFramesToInterpolate(0), mInputFrameCount(0), mInputSampleCount(0), mChannels(0)
 {
   ResetLastSamples();
 }
@@ -182,8 +177,7 @@ void PitchChangeHandler::SetPitchFactor(float factor, float timeToInterpolate)
   // Otherwise start interpolating
   else
   {
-    // If we are already interpolating, make sure the pitch factor is set
-    // correctly
+    // If we are already interpolating, make sure the pitch factor is set correctly
     if (CurrentData.mInterpolating)
       mPitchFactor = PitchInterpolator.ValueAtIndex(CurrentData.mInterpolationFramesProcessed);
     else
@@ -211,10 +205,7 @@ bool PitchChangeHandler::Interpolating()
 }
 
 PitchChangeHandler::Data::Data() :
-    mInterpolationFramesProcessed(0),
-    mInterpolating(false),
-    mPitchFrameIndex(0.0),
-    mBufferSizeFraction(0.0)
+    mInterpolationFramesProcessed(0), mInterpolating(false), mPitchFrameIndex(0.0), mBufferSizeFraction(0.0)
 {
   memset(LastSamples, 0, sizeof(float) * cMaxChannels);
 }

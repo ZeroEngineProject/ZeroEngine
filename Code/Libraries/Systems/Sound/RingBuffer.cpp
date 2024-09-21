@@ -37,19 +37,18 @@ void RingBuffer::ResetBuffer()
 
 unsigned RingBuffer::GetWriteAvailable()
 {
-  // Elements available for writing is the buffer size minus elements available
-  // for reading, limiting the elements written to no more than the buffer size.
+  // Elements available for writing is the buffer size minus elements available for reading,
+  // limiting the elements written to no more than the buffer size.
   return BufferSize - GetReadAvailable();
 }
 
 unsigned RingBuffer::GetReadAvailable()
 {
-  // Because of the limit in GetWriteAvailable, WriteIndex will never be more
-  // than BufferSize greater than ReadIndex, so this will never return more than
-  // the BufferSize. If WriteIndex - ReadIndex is negative, since the BigMask
-  // value is (BufferSize * 2) - 1, the indexes wrap using BigMask, and
-  // BufferSize is a power of 2, the mask will turn the value into the
-  // corresponding positive number, which will be less than BufferSize.
+  // Because of the limit in GetWriteAvailable, WriteIndex will never be more than BufferSize
+  // greater than ReadIndex, so this will never return more than the BufferSize.
+  // If WriteIndex - ReadIndex is negative, since the BigMask value is (BufferSize * 2) - 1,
+  // the indexes wrap using BigMask, and BufferSize is a power of 2, the mask will turn the value
+  // into the corresponding positive number, which will be less than BufferSize.
   return (WriteIndex - ReadIndex) & BigMask;
 }
 

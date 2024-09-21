@@ -261,8 +261,7 @@ float CustomCurve::GetValue(const float current, const float total, const float 
   // Adjust xPoint to be a 0-1 range
   xPoint = xPoint / total;
 
-  // If current x is less than the beginning of the curve, return the starting
-  // value
+  // If current x is less than the beginning of the curve, return the starting value
   if (xPoint <= 0.0f)
     return startValue;
   // If it's after the end, return the ending value

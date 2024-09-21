@@ -26,10 +26,7 @@ float GetNormalizeValue(const Math::Vec2& vector)
 // Speaker Info
 
 SpeakerInfo::SpeakerInfo(float radians, const Math::Vec2& vector, SpeakerInfo* neighbor, unsigned index) :
-    mAngleRadians(radians),
-    mVector(vector),
-    mLeftNeighbor(neighbor),
-    mChannelIndex(index)
+    mAngleRadians(radians), mVector(vector), mLeftNeighbor(neighbor), mChannelIndex(index)
 {
   if (Math::Abs(mVector.x) < 0.0001f)
     mVector.x = 0.0f;
@@ -213,8 +210,7 @@ void VBAP::ComputeGains(Math::Vec2 sourceVec, const float sourceExtent, float* g
     return;
   }
 
-  // If the source is directly above or below the listener, treat it as being in
-  // front
+  // If the source is directly above or below the listener, treat it as being in front
   if (sourceVec == Math::Vec2(0.0f, 0.0f))
     sourceVec.x = 1.0f;
 
@@ -238,8 +234,7 @@ void VBAP::ComputeGains(Math::Vec2 sourceVec, const float sourceExtent, float* g
     if (speaker->mAngleRadians >= 0.0f || speaker->mLeftNeighbor->mAngleRadians <= 0.0f)
       UpdateSpeaker(
           speaker, gainsOutput, minRadians, maxRadians, speaker->mLeftNeighbor->mAngleRadians, speaker->mAngleRadians);
-    // Otherwise, try adjusting both angles. The function performs the check for
-    // the correct angle value.
+    // Otherwise, try adjusting both angles. The function performs the check for the correct angle value.
     else
     {
       UpdateSpeaker(speaker,

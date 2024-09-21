@@ -316,8 +316,7 @@ float AudioMixer::GetPeakInputVolume()
   else
   {
     DoNotifyWarning("Audio Warning",
-                    "To get PeakInputVolume turn on sending microphone data, "
-                    "either uncompressed or compressed");
+                    "To get PeakInputVolume turn on sending microphone data, either uncompressed or compressed");
     return 0.0f;
   }
 }
@@ -359,8 +358,7 @@ bool AudioMixer::MixCurrentInstancesThreaded()
   // Get the audio input data
   GetAudioInputDataThreaded(samplesNeeded);
 
-  // If sending microphone input to the external system, add the input buffer to
-  // the queue
+  // If sending microphone input to the external system, add the input buffer to the queue
   if (mSendMicrophoneInputData.Get() != 0)
     InputDataBuffer.Write(InputBuffer.Data(), InputBuffer.Size());
 
@@ -392,8 +390,7 @@ bool AudioMixer::MixCurrentInstancesThreaded()
     // Step through each frame in the output buffer
     for (unsigned frameIndex = 0; frameIndex < outputFrames; ++frameIndex)
     {
-      // If not resampling, set the samples on the frame object from this frame
-      // in the mix
+      // If not resampling, set the samples on the frame object from this frame in the mix
       if (!mResamplingThreaded)
         frame.SetSamples(BufferForOutput.Data() + (frameIndex * mixChannels), mixChannels);
       // Otherwise, interpolate between two mix frames
@@ -561,8 +558,7 @@ void AudioMixer::GetAudioInputDataThreaded(unsigned howManySamples)
   }
   else
   {
-    // Save the number of frames of input to get, adjusting for resampling if
-    // necessary
+    // Save the number of frames of input to get, adjusting for resampling if necessary
     unsigned inputFrames = howManySamples / mixChannels;
     if (inputRate != cSystemSampleRate)
       inputFrames = (unsigned)(inputFrames * (float)inputRate / (float)cSystemSampleRate);
@@ -577,8 +573,7 @@ void AudioMixer::GetAudioInputDataThreaded(unsigned howManySamples)
       // Reset the InputBuffer
       InputBuffer.Clear();
 
-      // Translate the channels for each audio frame and add samples to
-      // InputBuffer
+      // Translate the channels for each audio frame and add samples to InputBuffer
       for (unsigned i = 0; i < inputSamples.Size(); i += inputChannels)
       {
         AudioFrame frame(inputSamples.Data() + i, inputChannels);
@@ -727,8 +722,7 @@ void AudioMixer::SetSendMicInput(bool turnOn)
 namespace AudioChannelTranslation
 {
 
-// Matrix columns are FrontLeft, FrontRight, Center, LowFreq, SideLeft,
-// SideRight, BackLeft, BackRight
+// Matrix columns are FrontLeft, FrontRight, Center, LowFreq, SideLeft, SideRight, BackLeft, BackRight
 
 const float cSqrt2Inv = 1.0f / Math::Sqrt(2.0f);
 

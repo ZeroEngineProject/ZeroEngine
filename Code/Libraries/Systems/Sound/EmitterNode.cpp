@@ -10,9 +10,7 @@ using namespace AudioConstants;
 // Emitter Data Per Listener
 
 EmitterDataPerListener::EmitterDataPerListener() :
-    mPreviousRelativePosition(Math::Vec3(FLT_MAX, FLT_MAX, FLT_MAX)),
-    mDirectionalVolume(1.0f),
-    mUseLowPass(false)
+    mPreviousRelativePosition(Math::Vec3(FLT_MAX, FLT_MAX, FLT_MAX)), mDirectionalVolume(1.0f), mUseLowPass(false)
 {
   memset(mPreviousGains, 0, sizeof(float) * cMaxChannels);
 }
@@ -86,8 +84,7 @@ bool EmitterNode::GetOutputSamples(BufferType* outputBuffer,
   if (!AccumulateInputSamples(bufferSize, numberOfChannels, listener))
     return false;
 
-  // If only one channel of output or no listener, no spatialization, so just
-  // return
+  // If only one channel of output or no listener, no spatialization, so just return
   if (numberOfChannels == 1 || !listener)
   {
     // Move the input samples to the output buffer
@@ -105,8 +102,7 @@ bool EmitterNode::GetOutputSamples(BufferType* outputBuffer,
   // Save reference for ease of use
   EmitterDataPerListener& listenerData = *DataPerListener[listener];
 
-  // Check if the listener or emitter has moved (don't care about up/down
-  // changes)
+  // Check if the listener or emitter has moved (don't care about up/down changes)
   bool valuesChanged = false;
   if (!IsWithinLimit(relativePosition.x, listenerData.mPreviousRelativePosition.x, cMinimumPositionChange) ||
       !IsWithinLimit(relativePosition.z, listenerData.mPreviousRelativePosition.z, cMinimumPositionChange))
@@ -210,8 +206,7 @@ void EmitterNode::CalculateData(EmitterDataPerListener* data,
     // Get the relative angle (facing should always be normalized)
     float angle = Math::ArcCos(Math::Dot(relativePosition.Normalized(), relativeFacing));
 
-    // If the angle to the listener is greater than the emitter's angle, reduce
-    // volume
+    // If the angle to the listener is greater than the emitter's angle, reduce volume
     if (angle > mDirectionalAngleRadians)
       listenerData.mDirectionalVolume = DirectionalInterpolator.ValueAtDistance(angle - mDirectionalAngleRadians);
   }
@@ -223,21 +218,18 @@ void EmitterNode::CalculateData(EmitterDataPerListener* data,
   {
     // Get the angle to the listener
     float angle = Math::ArcTan2(relativePosition.z, -relativePosition.x);
-    // Translate this to a percentage of a quarter circle (this value should
-    // be 1.0 when the emitter is directly behind the listener and 0.0 when off
-    // to the side)
+    // Translate this to a percentage of a quarter circle (this value should be 1.0 when the
+    // emitter is directly behind the listener and 0.0 when off to the side)
     float percent = Math::Abs(angle) / (Math::cPi / 2.0f);
 
-    // The low pass cutoff frequency ranges from min to max depending on the
-    // angle percentage, using a squared curve
+    // The low pass cutoff frequency ranges from min to max depending on the angle
+    // percentage, using a squared curve
     float frequency = cLowPassCutoffBase + (cLowPassCutoffAdditional * percent * percent);
 
-    // Check if the difference between this frequency and the last frequency
-    // used is large
+    // Check if the difference between this frequency and the last frequency used is large
     if (!IsWithinLimit(frequency, listenerData.LowPass.GetCutoffFrequency(), cMaxLowPassDifference))
     {
-      // Set frequency to be only maxDifferenceAllowed away from the last
-      // frequency used
+      // Set frequency to be only maxDifferenceAllowed away from the last frequency used
       if (frequency > listenerData.LowPass.GetCutoffFrequency())
         frequency = listenerData.LowPass.GetCutoffFrequency() + cMaxLowPassDifference;
       else

@@ -277,8 +277,7 @@ ZilchDefineType(AdditiveSynthNode, builder, type)
 }
 
 AdditiveSynthNode::AdditiveSynthNode(StringParam name, unsigned ID) :
-    SoundNode(name, ID, false, true),
-    mCurrentNoteCountThreaded(0)
+    SoundNode(name, ID, false, true), mCurrentNoteCountThreaded(0)
 {
 }
 
@@ -433,10 +432,7 @@ ZilchDefineType(MicrophoneInputNode, builder, type)
 }
 
 MicrophoneInputNode::MicrophoneInputNode(StringParam name, unsigned ID) :
-    SoundNode(name, ID, false, true),
-    mActive(false),
-    mVolume(1.0f),
-    mStopping(cFalse)
+    SoundNode(name, ID, false, true), mActive(false), mVolume(1.0f), mStopping(cFalse)
 {
 }
 
@@ -517,8 +513,7 @@ bool MicrophoneInputNode::GetOutputSamples(BufferType* outputBuffer,
   // Copy the samples from the input buffer to the output buffer
   memcpy(outputBuffer->Data(), Z::gSound->Mixer.InputBuffer.Data(), sizeof(float) * samplesToCopy);
 
-  // If we copied less samples than the output buffer size, fill the rest with
-  // zeros
+  // If we copied less samples than the output buffer size, fill the rest with zeros
   if (samplesToCopy < bufferSize)
     memset(outputBuffer->Data() + samplesToCopy, 0, sizeof(float) * (bufferSize - samplesToCopy));
 
@@ -535,8 +530,7 @@ bool MicrophoneInputNode::GetOutputSamples(BufferType* outputBuffer,
       {
         volume = VolumeInterpolatorThreaded.NextValue();
 
-        // If interpolation is now finished and we are stopping, mark as not
-        // active
+        // If interpolation is now finished and we are stopping, mark as not active
         if (VolumeInterpolatorThreaded.Finished() && mStopping.Get() == cTrue)
           mActive.Set(false, AudioThreads::MixThread);
       }
@@ -556,8 +550,7 @@ bool MicrophoneInputNode::GetOutputSamples(BufferType* outputBuffer,
 // Linear Grain Window
 
 LinearGrainWindow::LinearGrainWindow(unsigned length) :
-    GrainWindow(length, GranularSynthWindows::Linear),
-    mHalfLength(length / 2)
+    GrainWindow(length, GranularSynthWindows::Linear), mHalfLength(length / 2)
 {
 }
 
@@ -681,10 +674,7 @@ void RaisedCosineGrainWindow::CopySettings(GrainWindow* other)
 // Parabolic Window
 
 ParabolicGrainWindow::ParabolicGrainWindow(unsigned length) :
-    GrainWindow(length, GranularSynthWindows::Parabolic),
-    mLastAmplitude(0.0f),
-    mSlope(0.0f),
-    mCurve(0.0f)
+    GrainWindow(length, GranularSynthWindows::Parabolic), mLastAmplitude(0.0f), mSlope(0.0f), mCurve(0.0f)
 {
   Reset(length, 0, 0);
 }
@@ -903,7 +893,7 @@ void Grain::GetSamples(float* outputBuffer, unsigned outputFrames, unsigned outp
     if (mCurrentFrameIndex >= mSourceSamples->Size() - mSourceChannels)
       mCurrentFrameIndex = 0;
     else if (mCurrentFrameIndex < 0)
-      mCurrentFrameIndex = mSourceSamples->Size();
+      mCurrentFrameIndex = (double)mSourceSamples->Size();
 
     sample *= mWindow->GetNextValue() * mVolume;
 

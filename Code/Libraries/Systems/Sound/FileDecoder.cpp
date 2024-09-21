@@ -106,8 +106,7 @@ unsigned PacketDecoder::OpenAndReadHeader(Status& status, const String& fileName
     return 0;
   }
 
-  // If this isn't the right type of file, set the failed message, delete the
-  // buffer, and return
+  // If this isn't the right type of file, set the failed message, delete the buffer, and return
   if (header->Name[0] != 'Z' || header->Name[1] != 'E')
   {
     status.SetFailed(String::Format("Audio file %s is an incorrect format", fileName.c_str()));
@@ -261,8 +260,7 @@ void AudioFileDecoder::RunDecodingTask()
 
 void AudioFileDecoder::DecodeNextSection()
 {
-  // If the system is threaded, increment the semaphore to trigger another
-  // decode
+  // If the system is threaded, increment the semaphore to trigger another decode
   if (ThreadingEnabled)
     DecodingSemaphore.Increment();
   // Otherwise add this object to the list of tasks to be run on update
@@ -343,8 +341,7 @@ void AudioFileDecoder::StopDecodingThread()
   }
   else
   {
-    // Remove any existing decoding tasks (returns false if value was not found
-    // in the array)
+    // Remove any existing decoding tasks (returns false if value was not found in the array)
     while (Z::gSound->Mixer.DecodingTasks.EraseValue(this))
     {
     }
@@ -362,10 +359,7 @@ DecompressedDecoder::DecompressedDecoder(Status& status,
                                          const String& fileName,
                                          FileDecoderCallback callback,
                                          void* callbackData) :
-    AudioFileDecoder(0, 0, callback, callbackData),
-    mCompressedData(nullptr),
-    mDataIndex(0),
-    mDataSize(0)
+    AudioFileDecoder(0, 0, callback, callbackData), mCompressedData(nullptr), mDataIndex(0), mDataSize(0)
 {
   // If no valid callback was provided, don't do anything
   if (!callback)
@@ -408,8 +402,7 @@ void DecompressedDecoder::DecodingLoopThreaded()
     // Decode a packet and check if we should keep looping
     decoding = DecodePacketThreaded();
 
-    // We need to keep decoding until we get through everything so trigger
-    // another packet
+    // We need to keep decoding until we get through everything so trigger another packet
     if (decoding)
       DecodeNextSection();
   }
@@ -476,8 +469,7 @@ StreamingDecoder::StreamingDecoder(Status& status,
     mFilePosition(sizeof(FileHeader)),
     mLock(lock)
 {
-  // If no valid callback was provided or the file is not open, don't do
-  // anything
+  // If no valid callback was provided or the file is not open, don't do anything
   if (!callback || !inputFile->IsOpen())
     return;
 
@@ -553,8 +545,8 @@ void StreamingDecoder::Reset()
   mDataIndex = 0;
   mFilePosition = sizeof(FileHeader);
 
-  // Destroy the current decoders (since they rely on history for decoding, they
-  // can't continue from the beginning of the file)
+  // Destroy the current decoders (since they rely on history for decoding, they can't
+  // continue from the beginning of the file)
   ClearData();
 
   // Create new decoders

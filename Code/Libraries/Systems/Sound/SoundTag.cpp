@@ -120,8 +120,7 @@ void TagObject::InterpolateEQBandsThreaded(float* values, float timeToInterpolat
 
   memcpy(mEqualizerGainValuesThreaded, values, sizeof(float) * EqualizerBands::Count);
 
-  // Set the value on existing equalizers. If new ones are created they will
-  // copy settings.
+  // Set the value on existing equalizers. If new ones are created they will copy settings.
   forRange (InstanceData* data, DataPerInstanceThreaded.Values())
     data->mEqualizer->InterpolateBands(values, timeToInterpolate);
 
@@ -255,12 +254,11 @@ BufferType* TagObject::GetTotalInstanceOutputThreaded(unsigned howManyFrames, un
     {
       // Get the instance's attenuated volume (SoundEmitters, VolumeNodes, etc.)
       float attenuatedVolume = instance->GetAttenuationThisMixThreaded();
-      // Use the size of either the total output or instance output, whichever
-      // is smaller
+      // Use the size of either the total output or instance output, whichever is smaller
       unsigned limit = Math::Min(mTotalInstanceOutputThreaded.Size(), instanceBuffer.Size());
 
-      // Add the instance output into the total output, adjusting with tag
-      // volume and attenuated instance volume
+      // Add the instance output into the total output, adjusting with tag volume
+      // and attenuated instance volume
       for (unsigned i = 0; i < limit; ++i)
         mTotalInstanceOutputThreaded[i] += instanceBuffer[i] * attenuatedVolume * mVolume.Get(AudioThreads::MixThread);
     }
@@ -279,8 +277,7 @@ void TagObject::UpdateForMixThreaded(unsigned howManyFrames, unsigned channels)
   {
     BufferType* compressorInput;
 
-    // If we are not using another tag for the compressor input, get the output
-    // from this tag
+    // If we are not using another tag for the compressor input, get the output from this tag
     if (!mCompressorInputTag.Get(AudioThreads::MixThread))
       compressorInput = GetTotalInstanceOutputThreaded(howManyFrames, channels);
     // Otherwise get the output from the other tag
@@ -294,8 +291,8 @@ void TagObject::UpdateForMixThreaded(unsigned howManyFrames, unsigned channels)
     // Check if there was output from the tag
     if (!compressorInput->Empty())
     {
-      // Reset the volume buffer to all 1.0 (this will become volume multipliers
-      // when processed by the compressor filter)
+      // Reset the volume buffer to all 1.0 (this will become volume multipliers when
+      // processed by the compressor filter)
       mCompressorVolumesThreaded.Resize(compressorInput->Size(), 1.0f);
 
       // Run the compressor filter, using the tag output as the envelope input
@@ -314,8 +311,7 @@ void TagObject::SetVolumeThreaded(float volume, float time)
 {
   mModifyingVolumeThreaded = true;
 
-  // Determine how many frames to change the volume over, keeping a minimum
-  // value
+  // Determine how many frames to change the volume over, keeping a minimum value
   unsigned frames = Math::Max((unsigned)(time * cSystemSampleRate), cPropertyChangeFrames);
 
   // Set the volume modifier for each tagged instance
@@ -335,8 +331,7 @@ void TagObject::SetEQBandGainThreaded(EqualizerBands::Enum whichBand, float gain
 {
   mEqualizerGainValuesThreaded[whichBand] = gain;
 
-  // Set the value on existing equalizers. If new ones are created they will
-  // copy settings.
+  // Set the value on existing equalizers. If new ones are created they will copy settings.
   forRange (InstanceData* data, DataPerInstanceThreaded.Values())
     data->mEqualizer->SetBandGain(whichBand, gain);
 }
@@ -441,8 +436,7 @@ void SoundTag::TagSound(HandleOf<SoundInstance>& instanceHandle)
 
   SoundInstance* instance = instanceHandle;
 
-  // If we have an instance limit and we've reached it, stop the sound and
-  // return
+  // If we have an instance limit and we've reached it, stop the sound and return
   if (GetInstanceLimit() > 0 && SoundInstanceList.Size() >= GetInstanceLimit())
   {
     instance->Stop();

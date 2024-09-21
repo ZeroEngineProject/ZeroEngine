@@ -8,9 +8,7 @@ namespace Zero
 // Audio IO Interface
 
 AudioIOInterface::AudioIOInterface() :
-    MixedOutputBuffer(nullptr),
-    InputBuffer(nullptr),
-    mOutputStreamLatency(AudioLatency::Low)
+    MixedOutputBuffer(nullptr), InputBuffer(nullptr), mOutputStreamLatency(AudioLatency::Low)
 {
   memset(OutputBufferSizePerLatency, 0, sizeof(unsigned) * AudioLatency::Size);
 }
@@ -83,8 +81,7 @@ bool AudioIOInterface::StartStreams(bool startOutput, bool startInput)
   // Start output stream if requested
   if (startOutput)
   {
-    // Start the stream, passing in the IOCallback function and this object as
-    // the data
+    // Start the stream, passing in the IOCallback function and this object as the data
     StreamInfoList[StreamTypes::Output].mStatus =
         AudioIO.StartStream(StreamTypes::Output, &StreamInfoList[StreamTypes::Output].mErrorMessage, IOCallback, this);
 
@@ -96,8 +93,7 @@ bool AudioIOInterface::StartStreams(bool startOutput, bool startInput)
   // Start input stream if requested
   if (startInput)
   {
-    // Start the stream, passing in the IOCallback function and this object as
-    // the data
+    // Start the stream, passing in the IOCallback function and this object as the data
     StreamInfoList[StreamTypes::Input].mStatus =
         AudioIO.StartStream(StreamTypes::Input, &StreamInfoList[StreamTypes::Input].mErrorMessage, IOCallback, this);
 
@@ -224,11 +220,9 @@ unsigned AudioIOInterface::GetBufferSize(unsigned sampleRate, unsigned channels)
 {
   // Start at the BufferSizeStartValue
   unsigned size = BufferSizeStartValue;
-  // We need to get close to a value that accounts for the sample rate and
-  // channels
+  // We need to get close to a value that accounts for the sample rate and channels
   float checkValue = AudioIO.GetBufferSizeMultiplier() * sampleRate * channels;
-  // Continue multiplying by 2 until we get close enough (buffer must be
-  // multiple of 2)
+  // Continue multiplying by 2 until we get close enough (buffer must be multiple of 2)
   while (size < checkValue)
     size *= 2;
 
@@ -249,8 +243,7 @@ void AudioIOInterface::InitializeRingBuffer(RingBuffer& ringBuffer, float* buffe
 
 void AudioIOInterface::GetMixedOutputSamples(float* outputBuffer, const unsigned frames)
 {
-  // Note: remember this function is called asynchronously from the audio device
-  // thread
+  // Note: remember this function is called asynchronously from the audio device thread
 
   // Save the number of samples available to read
   unsigned available = OutputRingBuffer.GetReadAvailable();
@@ -274,8 +267,7 @@ void AudioIOInterface::GetMixedOutputSamples(float* outputBuffer, const unsigned
 
 void AudioIOInterface::SaveInputSamples(const float* inputBuffer, unsigned frames)
 {
-  // Note: remember this function is called asynchronously from the audio device
-  // thread
+  // Note: remember this function is called asynchronously from the audio device thread
 
   InputRingBuffer.Write(inputBuffer, frames * StreamInfoList[StreamTypes::Input].mChannels);
 }

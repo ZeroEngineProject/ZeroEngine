@@ -234,8 +234,7 @@ void SoundAttenuator::SetLowPassCutoffFreq(float frequency)
 
 void SoundAttenuator::UpdateCurve(Event* event)
 {
-  // We don't ever use the fallback or default resources... just roll back to
-  // 'none'
+  // We don't ever use the fallback or default resources... just roll back to 'none'
   SampleCurve* curve = mCustomFalloffCurve;
   if (curve)
   {

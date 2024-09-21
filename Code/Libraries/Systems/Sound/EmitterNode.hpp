@@ -45,8 +45,7 @@ public:
   void SetDirectionalAngleThreaded(const float angleInDegrees, const float reducedVolume);
 
 private:
-  // Note: all functions and data below should be accessed only on the mix
-  // thread
+  // Note: all functions and data below should be accessed only on the mix thread
 
   bool GetOutputSamples(BufferType* outputBuffer,
                         const unsigned numberOfChannels,
@@ -84,8 +83,7 @@ private:
   const float cMinimumVolume = 0.2f;
   // Minimum position change to recalculate data
   const float cMinimumPositionChange = 0.01f;
-  // The lowest value for the low pass cutoff frequency (for sounds behind
-  // listener)
+  // The lowest value for the low pass cutoff frequency (for sounds behind listener)
   const float cLowPassCutoffBase = 5000.0f;
   // The additional value added to the low pass cutoff depending on angle
   const float cLowPassCutoffAdditional = 15000.0f;

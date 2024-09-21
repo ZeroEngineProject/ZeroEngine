@@ -9,10 +9,9 @@ namespace Zero
 /// <param name="Linear">Volume reduces linearly with distance.</param>
 /// <param name="Squared">Volume reduces slowly at first then linearly.</param>
 /// <param name="Sine">Volume reduces linearly at first then slowly.</param>
-/// <param name="SquareRoot">Volume reduces quickly at first then
-/// linearly.</param> <param name="Log">Volume reduces logarithmically,
-/// mimicking sound in real life.</param> <param name="Custom">Sets the volume
-/// reduction using a SampleCurve resource.</param>
+/// <param name="SquareRoot">Volume reduces quickly at first then linearly.</param>
+/// <param name="Log">Volume reduces logarithmically, mimicking sound in real life.</param>
+/// <param name="Custom">Sets the volume reduction using a SampleCurve resource.</param>
 DeclareEnum6(FalloffCurveType, Linear, Squared, Sine, SquareRoot, Log, Custom);
 
 // Custom Curve
@@ -45,14 +44,11 @@ public:
   // Sets default values to 0. Uses LinearCurve by default.
   InterpolatingObject();
 
-  // Calculates the next sequential value in the interpolation. If past the end
-  // point, returns end value.
+  // Calculates the next sequential value in the interpolation. If past the end point, returns end value.
   float NextValue();
-  // Calculates the interpolated value at a specified index. If past the end,
-  // returns end value.
+  // Calculates the interpolated value at a specified index. If past the end, returns end value.
   float ValueAtIndex(const unsigned index);
-  // Calculates the interpolated value at a specified point. If past the total
-  // distance, returns end value.
+  // Calculates the interpolated value at a specified point. If past the total distance, returns end value.
   float ValueAtDistance(const float distance);
   // Moves sequential interpolation forward by a specified number.
   void JumpForward(const unsigned howManyFrames);
@@ -66,8 +62,7 @@ public:
   unsigned GetCurrentFrame();
   // Checks if the sequential interpolation has reached its end point.
   bool Finished();
-  // Checks if the sequential interpolation has reached its end point and sends
-  // notification if true.
+  // Checks if the sequential interpolation has reached its end point and sends notification if true.
   bool Finished(HandleOf<SoundNode> nodeForEvent);
   // Gets the end value of the interpolation.
   float GetEndValue() const;
@@ -77,13 +72,12 @@ public:
   const float GetCurrentValue();
   // Gets the type of curve currently being used.
   const FalloffCurveType::Enum GetCurveType() const;
-  // Sets a new custom curve for this interpolator. Relies on curves being in
-  // 0-1 range.
+  // Sets a new custom curve for this interpolator. Relies on curves being in 0-1 range.
   void SetCustomCurve(Array<Math::Vec3>* curveData);
   // Changes the curve type of this interpolator.
   void SetCurve(const FalloffCurveType::Enum curveType);
-  // Resets the object for sequential interpolation using NextValue or
-  // ValueAtIndex. If no start value is specified, will use the current value
+  // Resets the object for sequential interpolation using NextValue or ValueAtIndex.
+  // If no start value is specified, will use the current value
   void SetValues(const float startValue, const float endValue, const unsigned numberOfFrames);
   void SetValues(const float endValue, const unsigned numberOfFrames);
   // Resets the object for direct-access interpolation using ValueAtDistance.

@@ -149,11 +149,7 @@ ZilchDefineType(PanningNode, builder, type)
 }
 
 PanningNode::PanningNode(StringParam name, unsigned ID) :
-    SimpleCollapseNode(name, ID, false, false),
-    mSumToMono(false),
-    mLeftVolume(1.0f),
-    mRightVolume(1.0f),
-    mActive(false)
+    SimpleCollapseNode(name, ID, false, false), mSumToMono(false), mLeftVolume(1.0f), mRightVolume(1.0f), mActive(false)
 {
 }
 
@@ -315,8 +311,7 @@ bool PanningNode::GetOutputSamples(BufferType* outputBuffer,
 
     AddBypassThreaded(outputBuffer);
 
-    // Check for both volumes being at or near 1.0, and if true mark as not
-    // active
+    // Check for both volumes being at or near 1.0, and if true mark as not active
     if (!CurrentData.mInterpolating && !sumToMono && IsWithinLimit(1.0f - leftVolume, 0.0f, 0.01f) &&
         IsWithinLimit(1.0f - rightVolume, 0.0f, 0.01f))
       mActive.Set(false, AudioThreads::MixThread);
@@ -355,8 +350,7 @@ void PanningNode::SetVolumeThreaded(bool left, float newVolume, float time)
   if (left)
     interpolator = &LeftInterpolator;
 
-  // If the new volume is very close to the current one, or we have no outputs,
-  // just set it directly
+  // If the new volume is very close to the current one, or we have no outputs, just set it directly
   if ((time == 0 && !GetHasOutputs()) || IsWithinLimit(newVolume, volume->Get(AudioThreads::MixThread), 0.01f))
   {
     CurrentData.mInterpolating = false;
@@ -470,8 +464,7 @@ ZilchDefineType(LowPassNode, builder, type)
 }
 
 LowPassNode::LowPassNode(StringParam name, unsigned ID) :
-    SimpleCollapseNode(name, ID, false, false),
-    mCutoffFrequency(20001.0f)
+    SimpleCollapseNode(name, ID, false, false), mCutoffFrequency(20001.0f)
 {
 }
 
@@ -534,8 +527,7 @@ void LowPassNode::RemoveListenerThreaded(SoundEvent* event)
 
   if (FiltersPerListener.FindValue(listener, nullptr))
   {
-    // If there is still another listener, we need to combine the history of the
-    // filters to avoid clicks
+    // If there is still another listener, we need to combine the history of the filters to avoid clicks
     if (FiltersPerListener.Size() > 1)
     {
       LowPassFilter* filter = FiltersPerListener[listener];
@@ -565,8 +557,7 @@ ZilchDefineType(HighPassNode, builder, type)
 }
 
 HighPassNode::HighPassNode(StringParam name, unsigned ID) :
-    SimpleCollapseNode(name, ID, false, false),
-    mCutoffFrequency(10.0f)
+    SimpleCollapseNode(name, ID, false, false), mCutoffFrequency(10.0f)
 {
 }
 
@@ -630,8 +621,7 @@ void HighPassNode::RemoveListenerThreaded(SoundEvent* event)
 
   if (FiltersPerListener.FindValue(listener, nullptr))
   {
-    // If there is still another listener, we need to combine the history of the
-    // filters to avoid clicks
+    // If there is still another listener, we need to combine the history of the filters to avoid clicks
     if (FiltersPerListener.Size() > 1)
     {
       HighPassFilter* filter = FiltersPerListener[listener];
@@ -662,9 +652,7 @@ ZilchDefineType(BandPassNode, builder, type)
 }
 
 BandPassNode::BandPassNode(StringParam name, unsigned ID) :
-    SimpleCollapseNode(name, ID, false, false),
-    mCentralFrequency(0.0f),
-    mQuality(0.669f)
+    SimpleCollapseNode(name, ID, false, false), mCentralFrequency(0.0f), mQuality(0.669f)
 {
 }
 
@@ -732,8 +720,7 @@ void BandPassNode::RemoveListenerThreaded(SoundEvent* event)
 
   if (FiltersPerListener.FindValue(listener, nullptr))
   {
-    // If there is still another listener, we need to combine the history of the
-    // filters to avoid clicks
+    // If there is still another listener, we need to combine the history of the filters to avoid clicks
     if (FiltersPerListener.Size() > 1)
     {
       BandPassFilter* filter = FiltersPerListener[listener];
@@ -918,8 +905,7 @@ void EqualizerNode::RemoveListenerThreaded(SoundEvent* event)
 
   if (FiltersPerListener.FindValue(listener, nullptr))
   {
-    // If there is still another listener, we need to combine the history of the
-    // filters to avoid clicks
+    // If there is still another listener, we need to combine the history of the filters to avoid clicks
     if (FiltersPerListener.Size() > 1)
     {
       Equalizer* filter = FiltersPerListener[listener];
@@ -959,10 +945,7 @@ ZilchDefineType(ReverbNode, builder, type)
 }
 
 ReverbNode::ReverbNode(StringParam name, unsigned ID) :
-    SimpleCollapseNode(name, ID, false, false),
-    mTimeSec(1.0f),
-    mWetLevelValue(0.5f),
-    mOutputFinishedThreaded(true)
+    SimpleCollapseNode(name, ID, false, false), mTimeSec(1.0f), mWetLevelValue(0.5f), mOutputFinishedThreaded(true)
 {
 }
 
@@ -1104,10 +1087,7 @@ ZilchDefineType(DelayNode, builder, type)
 }
 
 DelayNode::DelayNode(StringParam name, unsigned ID) :
-    SimpleCollapseNode(name, ID, false, false),
-    mDelaySec(0.1f),
-    mFeedbackValue(0.0f),
-    mWetValue(0.5f)
+    SimpleCollapseNode(name, ID, false, false), mDelaySec(0.1f), mFeedbackValue(0.0f), mWetValue(0.5f)
 {
 }
 
@@ -1275,10 +1255,7 @@ ZilchDefineType(FlangerNode, builder, type)
 }
 
 FlangerNode::FlangerNode(StringParam name, unsigned ID) :
-    SimpleCollapseNode(name, ID, false, false),
-    mMaxDelayMS(5.0f),
-    mModFrequency(0.18f),
-    mFeedback(0.0f)
+    SimpleCollapseNode(name, ID, false, false), mMaxDelayMS(5.0f), mModFrequency(0.18f), mFeedback(0.0f)
 {
 }
 
@@ -1983,10 +1960,7 @@ ZilchDefineType(ModulationNode, builder, type)
 }
 
 ModulationNode::ModulationNode(StringParam name, unsigned ID) :
-    SimpleCollapseNode(name, ID, false, false),
-    mAmplitude(false),
-    mFrequency(10.0f),
-    mWetLevelValue(1.0f)
+    SimpleCollapseNode(name, ID, false, false), mAmplitude(false), mFrequency(10.0f), mWetLevelValue(1.0f)
 {
 }
 
@@ -2072,8 +2046,7 @@ bool ModulationNode::GetOutputSamples(BufferType* outputBuffer,
   {
     float waveValue = sineWave->GetNextSample();
 
-    // Multiply signal with modulator wave, taking into account gain and wet
-    // percent
+    // Multiply signal with modulator wave, taking into account gain and wet percent
     for (unsigned channel = 0; channel < numberOfChannels; ++channel, outputRange.PopFront(), inputRange.PopFront())
     {
       outputRange.Front() = (inputRange.Front() * waveValue * mWetLevelValue.Get(AudioThreads::MixThread)) +

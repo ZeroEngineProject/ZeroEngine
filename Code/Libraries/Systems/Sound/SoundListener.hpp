@@ -20,16 +20,14 @@ public:
   void Serialize(Serializer& stream) override;
   void DebugDraw() override;
 
-  /// If this property is set to false the SoundListener will not produce any
-  /// sound. All audio in the SoundSpace will continue to be processed, so this
-  /// is not the same as pausing the sounds.
+  /// If this property is set to false the SoundListener will not produce any sound.
+  /// All audio in the SoundSpace will continue to be processed, so this is not the same as pausing the sounds.
   bool GetActive();
   void SetActive(bool value);
   /// The SoundNode associated with this SoundListener.
   HandleOf<SoundNode> GetSoundNode();
-  /// The scale multiplier applied to the attenuation of sounds heard by this
-  /// listener. If a sound uses a SoundAttenuator StopDistance of 20, and this
-  /// value is 1.5, the attenuation will stop at 30.
+  /// The scale multiplier applied to the attenuation of sounds heard by this listener. If a sound uses
+  /// a SoundAttenuator StopDistance of 20, and this value is 1.5, the attenuation will stop at 30.
   float GetAttenuationScale();
   void SetAttenuationScale(float scale);
 

@@ -24,8 +24,7 @@ ZilchDefineType(Sound, builder, type)
 
 void Sound::CreateAsset(Status& status, StringParam assetName, StringParam fileName, AudioFileLoadType::Enum loadType)
 {
-  // If the load type is set to auto, determine the type based on the length of
-  // the file
+  // If the load type is set to auto, determine the type based on the length of the file
   if (loadType == AudioFileLoadType::Auto)
   {
     // Open the audio file

@@ -6,12 +6,7 @@ namespace Zero
 {
 
 Resampler::Resampler() :
-    ResampleFactor(0),
-    ResampleFrameIndex(0),
-    BufferFraction(0),
-    InputSamples(nullptr),
-    InputFrames(0),
-    InputChannels(0)
+    ResampleFactor(0), ResampleFrameIndex(0), BufferFraction(0), InputSamples(nullptr), InputFrames(0), InputChannels(0)
 {
   memset(PreviousFrame, 0, sizeof(float) * AudioConstants::cMaxChannels);
 }
@@ -56,8 +51,7 @@ bool Resampler::GetNextFrame(float* output)
   // Translate to the sample index
   unsigned sampleIndex = frameIndex * InputChannels;
 
-  // Get the pointer to the first frame. If the index is at 0, use the
-  // PreviousFrame values.
+  // Get the pointer to the first frame. If the index is at 0, use the PreviousFrame values.
   const float* firstFrame(PreviousFrame);
   if (ResampleFrameIndex > 1.0)
     firstFrame = InputSamples + (sampleIndex - InputChannels);

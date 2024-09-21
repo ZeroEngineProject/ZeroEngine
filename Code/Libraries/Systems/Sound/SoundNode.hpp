@@ -32,29 +32,24 @@ public:
   /// Removes the node passed in as a parameter from this node's inputs.
   void RemoveInputNode(SoundNode* node);
   /// Inserts the passed in node before this node in the signal path, placing it
-  /// between this node and any nodes which were connected to this node as
-  /// inputs.
+  /// between this node and any nodes which were connected to this node as inputs.
   void InsertNodeBefore(SoundNode* node);
   /// Inserts the passed in node after this node in the signal path, placing it
-  /// between this node and any nodes which were connected to this node's
-  /// output.
+  /// between this node and any nodes which were connected to this node's output.
   void InsertNodeAfter(SoundNode* node);
   /// Replaces this node in the graph with the node passed in as a parameter.
   /// This node will be deleted when it is no longer referenced.
   void ReplaceWith(SoundNode* node);
   /// Removes the connections between this node and all of its input nodes.
   void RemoveAllInputs();
-  /// Removes the connections between this node and all of its output nodes,
-  /// disconnecting this node from the graph. If this node has no inputs it will
-  /// be deleted when no longer referenced.
+  /// Removes the connections between this node and all of its output nodes, disconnecting this node from the graph.
+  /// If this node has no inputs it will be deleted when no longer referenced.
   void RemoveAllOutputs();
-  /// Removes this node from the graph by disconnecting it from all inputs and
-  /// outputs and attaching the input nodes to the output nodes, keeping the
-  /// rest of the graph intact. This node will be deleted when it is no longer
-  /// referenced.
+  /// Removes this node from the graph by disconnecting it from all inputs and outputs
+  /// and attaching the input nodes to the output nodes, keeping the rest of the graph intact.
+  /// This node will be deleted when it is no longer referenced.
   void RemoveAndAttachInputsToOutputs();
-  /// If true, this node will automatically remove itself from the graph when
-  /// its last input node is removed.
+  /// If true, this node will automatically remove itself from the graph when its last input node is removed.
   bool GetAutoCollapse();
   void SetAutoCollapse(bool willCollapse);
   /// Will be true if this node has any input nodes.
@@ -68,8 +63,7 @@ public:
   /// DEPRECATED The BypassValue property should be used instead.
   float GetBypassPercent();
   void SetBypassPercent(float percent);
-  /// The percentage of output (0 to 1.0) that should skip whatever processing
-  /// the node does.
+  /// The percentage of output (0 to 1.0) that should skip whatever processing the node does.
   float GetBypassValue();
   void SetBypassValue(float value);
 
@@ -97,24 +91,22 @@ public:
   virtual void RemoveListenerThreaded(SoundEvent* event)
   {
   }
-  // Returns the sum of all volumes from outputs. Will return 0.0 by default.
-  // The output node will return 1.0. Nodes which modify volume should implement
-  // this function and multiply their volume with the return value.
+  // Returns the sum of all volumes from outputs. Will return 0.0 by default. The output
+  // node will return 1.0. Nodes which modify volume should implement this function
+  // and multiply their volume with the return value.
   virtual float GetVolumeChangeFromOutputsThreaded();
   // Handles getting the output from the sound node
   bool Evaluate(BufferType* outputBuffer, const unsigned numberOfChannels, ListenerNode* listener);
   // Adds the output from all input nodes to the InputSamples buffer
   bool AccumulateInputSamples(const unsigned howManySamples, const unsigned numberOfChannels, ListenerNode* listener);
-  // Uses the BypassValue to add a portion of the InputSamples buffer to the
-  // passed-in buffer
+  // Uses the BypassValue to add a portion of the InputSamples buffer to the passed-in buffer
   void AddBypassThreaded(BufferType* outputBuffer);
 
   void AddInputNodeThreaded(HandleOf<SoundNode> newNode);
   void RemoveInputNodeThreaded(HandleOf<SoundNode> node);
 
 private:
-  // If false, this node's output should not be saved into the MixedOutput
-  // buffer
+  // If false, this node's output should not be saved into the MixedOutput buffer
   bool mOkayToSaveThreaded;
   // Array of nodes to use as inputs
   NodeListType mInputs[2];

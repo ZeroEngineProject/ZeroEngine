@@ -14,9 +14,7 @@ public:
   {
   }
   ListenerWorldPositionInfo(const Vec3& position, const Vec3& velocity, const Mat3& worldMatrix) :
-      mPosition(position),
-      mVelocity(velocity),
-      mWorldMatrix(worldMatrix)
+      mPosition(position), mVelocity(velocity), mWorldMatrix(worldMatrix)
   {
   }
 
@@ -37,13 +35,11 @@ public:
 
   // Updates the position and velocity of the listener
   void SetPositionData(ListenerWorldPositionInfo positionInfo);
-  // Sets whether this listener hears output or not (still processes sounds when
-  // inactive)
+  // Sets whether this listener hears output or not (still processes sounds when inactive)
   void SetActive(const bool active);
   // Returns true if currently active
   bool GetActive();
-  // Returns the current scale modifier applied to all attenuation heard by this
-  // listener
+  // Returns the current scale modifier applied to all attenuation heard by this listener
   float GetAttenuationScale();
   // Sets the scale modifier applied to all attenuation heard by this listener
   void SetAttenuationScale(float scale);
