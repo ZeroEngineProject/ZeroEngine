@@ -29,10 +29,7 @@ StringParam GetCoreVertexFragmentName(CoreVertexType::Enum type)
 }
 
 GraphicsDriverSupport::GraphicsDriverSupport() :
-    mTextureCompression(false),
-    mMultiTargetBlend(false),
-    mSamplerObjects(false),
-    mIntel(false)
+    mTextureCompression(false), mMultiTargetBlend(false), mSamplerObjects(false), mIntel(false)
 {
 }
 
@@ -117,9 +114,8 @@ void SamplerSettings::AddValue(u32& samplerSettings, u32 value)
 
 void SamplerSettings::FillDefaults(u32& samplerSettings, u32 defaultSettings)
 {
-  // Each value from defaults is multiplied by whether or not the check bit is
-  // already present in the settings If settings already has a particular value
-  // set then 0 is or'd, resulting in no change
+  // Each value from defaults is multiplied by whether or not the check bit is already present in the settings
+  // If settings already has a particular value set then 0 is or'd, resulting in no change
   samplerSettings |= (defaultSettings & 0x0000000F) * (u32)((samplerSettings & 0x00000008) == 0);
   samplerSettings |= (defaultSettings & 0x000000F0) * (u32)((samplerSettings & 0x00000080) == 0);
   samplerSettings |= (defaultSettings & 0x00000F00) * (u32)((samplerSettings & 0x00000800) == 0);
@@ -530,8 +526,7 @@ bool IsDepthStencilFormat(TextureFormat::Enum format)
 }
 
 // Compression utilities
-// BC6 documentation:
-// https://msdn.microsoft.com/en-us/library/windows/desktop/hh308952(v=vs.85).aspx
+// BC6 documentation: https://msdn.microsoft.com/en-us/library/windows/desktop/hh308952(v=vs.85).aspx
 class PartitionPattern
 {
 public:
@@ -654,8 +649,7 @@ void YInvertBC6Mode10Block(::byte* block)
   indices8_15 = ((indices8_15 & 0x00fff000) >> 12) | ((indices8_15 & 0x00000fff) << 12);
   Math::Swap(indices0_7, indices8_15);
 
-  // Determine which endpoints need to be swapped from partition flip and
-  // required implicit 0's
+  // Determine which endpoints need to be swapped from partition flip and required implicit 0's
   ::byte newPartition = cPartitionPatterns[partition].mInvertsTo;
   bool swapEndpoints01 = cPartitionPatterns[partition].mSwapEndpoints01;
   bool swapEndpoints0AB = indices0_7 & 0x00000004;
@@ -709,12 +703,10 @@ void YInvertBC6Mode10Block(::byte* block)
     // a. byte number
     // b. bit visualization
     // c. identifier and bit numbers
-    // a. |        9|         8|         7|           6|           5| 4| 3| 2|
-    // 1|        0| b.  xxx 00000 0 000000 0 000  00000 0 0000   000 000 0000 0
-    // 00000 0    0    0    0    000000 0    0    0    0    00000 0 0    00 0
-    // 000 000 xxxxx c.     |r1B5:0 |r1A5:0|b1A3:0|b0B5:0 |g1B3:0|g0B5:0
-    // |g1A3:0|r0B5:0 |b1B4|b1B5|b1B3|g1B5|b0A5:0|g1A4|b1B2|b1A5|g1A5|g0A5:0
-    // |b1A4|b1B1:0|g1B4|r0A5:0 |
+    // a. |        9|         8|         7|           6|           5|                   4|               3| 2| 1| 0| b.
+    // xxx 00000 0 000000 0 000  00000 0 0000   000 000 0000   0 00000 0    0    0    0    000000 0    0    0    0 00000
+    // 0 0    00     0    000 000 xxxxx c.     |r1B5:0 |r1A5:0|b1A3:0|b0B5:0 |g1B3:0|g0B5:0 |g1A3:0|r0B5:0
+    // |b1B4|b1B5|b1B3|g1B5|b0A5:0|g1A4|b1B2|b1A5|g1A5|g0A5:0 |b1A4|b1B1:0|g1B4|r0A5:0 |
 
     // Read all endpoints
     ::byte r0A = (block[1] & 0x07) << 3 | (block[0] & 0xe0) >> 5;
@@ -731,7 +723,7 @@ void YInvertBC6Mode10Block(::byte* block)
     ::byte b0B = (block[7] & 0x1f) << 1 | (block[6] & 0x80) >> 7;
     ::byte b1A = (block[2] & 0x40) >> 1 | (block[1] & 0x40) >> 2 | (block[8] & 0x01) << 3 | (block[7] & 0xe0) >> 5;
     ::byte b1B = (block[4] & 0x02) << 4 | (block[4] & 0x04) << 2 | (block[4] & 0x01) << 3 | (block[2] & 0x80) >> 5 |
-               (block[1] & 0x30) >> 4;
+                 (block[1] & 0x30) >> 4;
 
     // Other swaps assume this swap will happen first if it's needed
     if (swapEndpoints01)
@@ -954,8 +946,7 @@ void YInvertBlockCompressed(
         YInvertBC6Mode11Block(block);
       else
         ErrorIf(true,
-                "Only supporting BC6 block modes 10 & 11. Nvtt libraries must "
-                "be built to only output these formats.");
+                "Only supporting BC6 block modes 10 & 11. Nvtt libraries must be built to only output these formats.");
     }
   }
 }
@@ -1390,7 +1381,7 @@ void RenderQueues::AddStreamedLineRect(
   mStreamedVertices.PushBack(v3);
   mStreamedVertices.PushBack(v0);
 
-  viewNode.mStreamedVertexCount = mStreamedVertices.Size() - viewNode.mStreamedVertexStart;
+  viewNode.mStreamedVertexCount = static_cast<uint>(mStreamedVertices.Size()) - viewNode.mStreamedVertexStart;
   viewNode.mStreamedVertexType = PrimitiveType::Lines;
 }
 
@@ -1415,7 +1406,7 @@ void RenderQueues::AddStreamedQuad(
   mStreamedVertices.PushBack(v3);
   mStreamedVertices.PushBack(v0);
 
-  viewNode.mStreamedVertexCount = mStreamedVertices.Size() - viewNode.mStreamedVertexStart;
+  viewNode.mStreamedVertexCount = static_cast<uint>(mStreamedVertices.Size()) - viewNode.mStreamedVertexStart;
 }
 
 void RenderQueues::AddStreamedQuadTiled(
@@ -1516,8 +1507,8 @@ void RenderQueues::AddStreamedQuadNineSliced(ViewNode& viewNode,
     uvX.z = Math::Lerp(uvX.z, uvX.w, t2);
   }
 
-  // Because current ui also uses this method except with opposite y-axis
-  // direction, have to check slice clipping for either direction.
+  // Because current ui also uses this method except with opposite y-axis direction,
+  // have to check slice clipping for either direction.
   if (posY.z > posY.y && posY.x > posY.y || posY.y > posY.z && posY.y > posY.x)
   {
     float middle = (posY.w + posY.x) * 0.5f;
@@ -1574,7 +1565,7 @@ void RenderQueues::AddStreamedQuadNineSliced(ViewNode& viewNode,
     }
   }
 
-  viewNode.mStreamedVertexCount = mStreamedVertices.Size() - viewNode.mStreamedVertexStart;
+  viewNode.mStreamedVertexCount = static_cast<uint>(mStreamedVertices.Size()) - viewNode.mStreamedVertexStart;
 }
 
 void RenderQueues::AddStreamedQuadView(ViewNode& viewNode, Vec3 pos[4], Vec2 uv0, Vec2 uv1, Vec4 color)
@@ -1591,7 +1582,7 @@ void RenderQueues::AddStreamedQuadView(ViewNode& viewNode, Vec3 pos[4], Vec2 uv0
   mStreamedVertices.PushBack(v3);
   mStreamedVertices.PushBack(v0);
 
-  viewNode.mStreamedVertexCount = mStreamedVertices.Size() - viewNode.mStreamedVertexStart;
+  viewNode.mStreamedVertexCount = static_cast<uint>(mStreamedVertices.Size()) - viewNode.mStreamedVertexStart;
 }
 
 RenderTaskBuffer::RenderTaskBuffer() : mTaskCount(0), mCurrentIndex(0)
@@ -1601,8 +1592,7 @@ RenderTaskBuffer::RenderTaskBuffer() : mTaskCount(0), mCurrentIndex(0)
 
 void RenderTaskBuffer::Clear()
 {
-  // Have to manually destruct render tasks because they're stored in a generic
-  // buffer
+  // Have to manually destruct render tasks because they're stored in a generic buffer
   uint taskIndex = 0;
   while (taskIndex < mCurrentIndex)
   {

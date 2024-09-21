@@ -4,9 +4,8 @@
 namespace Zero
 {
 // These functions must be defined by the platform (as well as CreateRenderer)
-// These could be virtual functions on the OpenglRenderer, however there should
-// only be one implementation of OpenGL per platform, so we can avoid the
-// virtual overhead.
+// These could be virtual functions on the OpenglRenderer, however there should only be
+// one implementation of OpenGL per platform, so we can avoid the virtual overhead.
 class OpenglRenderer;
 extern void zglSetSwapInterval(OpenglRenderer* renderer, int interval);
 extern IntVec2 zglGetWindowRenderableSize(OpenglRenderer* renderer);
@@ -74,12 +73,10 @@ public:
 class OpenglRenderer : public Renderer
 {
 public:
-  // This must be called by the derived class after the OpenGL context has been
-  // created.
+  // This must be called by the derived class after the OpenGL context has been created.
   void Initialize(OsHandle windowHandle, OsHandle deviceContext, OsHandle renderContext, String& error);
 
-  // This must be called by the derived class before the OpenGL context has been
-  // destroyed.
+  // This must be called by the derived class before the OpenGL context has been destroyed.
   void Shutdown();
 
   void BuildOrthographicTransform(Mat4Ref matrix, float size, float aspect, float nearPlane, float farPlane) override;

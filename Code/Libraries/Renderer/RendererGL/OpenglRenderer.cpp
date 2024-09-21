@@ -17,11 +17,10 @@
 
 static const size_t cMaxDrawBuffers = 4;
 
-// As Of NVidia Driver 302 exporting this symbol will enable GPU hardware
-// accelerated graphics when using Optimus (Laptop NVidia gpu / Intel HD auto
-// switching). This is important for two reasons first is performance and second
-// is stability since Intel seems to have a fair amount of bugs and crashes in
-// their OpenGl drivers
+// As Of NVidia Driver 302 exporting this symbol will enable GPU hardware accelerated
+// graphics when using Optimus (Laptop NVidia gpu / Intel HD auto switching).
+// This is important for two reasons first is performance and second is stability
+// since Intel seems to have a fair amount of bugs and crashes in their OpenGl drivers
 extern "C"
 {
   ZeroExport int NvOptimusEnablement = 0x00000001;
@@ -107,8 +106,7 @@ GlTextureEnums gTextureEnums[] = {
 
 void WebglConvertTextureFormat(AddTextureInfo* info)
 {
-  // 16 integer formats are unsupported, fallback to half floats to preserve
-  // data size.
+  // 16 integer formats are unsupported, fallback to half floats to preserve data size.
   if (IsShortColorFormat(info->mFormat))
   {
     switch (info->mFormat)
@@ -148,9 +146,8 @@ void WebglConvertTextureFormat(AddTextureInfo* info)
 
 void WebglConvertRenderTargetFormat(AddTextureInfo* info)
 {
-  // For unsupported target formats, fallback to formats that do not drop any
-  // data. Formats are either converting to floats, adding an alpha channel, or
-  // both.
+  // For unsupported target formats, fallback to formats that do not drop any data.
+  // Formats are either converting to floats, adding an alpha channel, or both.
   switch (info->mFormat)
   {
   case TextureFormat::R16:
@@ -372,8 +369,8 @@ void CheckShader(GLuint shader, StringParam shaderCode)
     static size_t sMaxPrints = 4;
     if (sMaxPrints > 0)
     {
-      ZPrint("\n************************************************************\n%"
-             "s\n************************************************************\n",
+      ZPrint("\n************************************************************\n%s\n*************************************"
+             "***********************\n",
              shaderCode.c_str());
       --sMaxPrints;
     }
@@ -775,8 +772,7 @@ void SetMultiRenderTargets(GLuint fboId, TextureRenderData** colorTargets, Textu
     }
   }
 
-  // Set active buffers, some drivers do not work correctly if all are always
-  // active
+  // Set active buffers, some drivers do not work correctly if all are always active
   glDrawBuffers(cMaxDrawBuffers, drawBuffers);
 
   GlTextureRenderData* depthRenderData = (GlTextureRenderData*)depthTarget;
@@ -859,8 +855,7 @@ void StreamedVertexBuffer::AddVertices(StreamedVertex* vertices, uint count, Pri
   if (mCurrentBufferOffset + uploadSize > mBufferSize)
   {
     FlushBuffer(false);
-    // If upload size is larger than the entire buffer then break it into
-    // multiple draws
+    // If upload size is larger than the entire buffer then break it into multiple draws
     while (uploadSize > mBufferSize)
     {
       uint verticesPerPrimitive = primitiveType + 1;
@@ -871,8 +866,7 @@ void StreamedVertexBuffer::AddVertices(StreamedVertex* vertices, uint count, Pri
       mCurrentBufferOffset = maxByteCount;
       glBufferSubData(GL_ARRAY_BUFFER, 0, mCurrentBufferOffset, vertices);
       FlushBuffer(false);
-      // Move pointer forward by byte count, below condition will grab this new
-      // value
+      // Move pointer forward by byte count, below condition will grab this new value
       vertices = (StreamedVertex*)((char*)vertices + maxByteCount);
       uploadSize -= maxByteCount;
     }
@@ -952,8 +946,7 @@ void OpenglRenderer::Initialize(OsHandle windowHandle, OsHandle deviceContext, O
   if (gl_version == NULL)
   {
     error = "Unable to query OpenGL version. "
-            "Please update your computer's graphics drivers or verify that "
-            "your graphics card supports OpenGL 2.0.";
+            "Please update your computer's graphics drivers or verify that your graphics card supports OpenGL 2.0.";
     return;
   }
 
@@ -1010,8 +1003,8 @@ void OpenglRenderer::Initialize(OsHandle windowHandle, OsHandle deviceContext, O
     String failedExtensions =
         BuildString(version_2_0 ? "" : "GL_VERSION_2_0, ", framebuffer_object ? "" : "GL_ARB_framebuffer_object, ");
     error = String::Format("Required OpenGL extensions: %s are unsupported by the active driver. "
-                           "Please update your computer's graphics drivers or verify that your "
-                           "graphics card supports the listed features.",
+                           "Please update your computer's graphics drivers or verify that your graphics card supports "
+                           "the listed features.",
                            failedExtensions.c_str());
     return;
   }
@@ -1020,8 +1013,7 @@ void OpenglRenderer::Initialize(OsHandle windowHandle, OsHandle deviceContext, O
   mDriverSupport.mMultiTargetBlend = draw_buffers_blend;
   mDriverSupport.mSamplerObjects = sampler_objects;
 
-  // Intel integrated graphics does not render correctly with borderless
-  // Window's aero on OpenGL.
+  // Intel integrated graphics does not render correctly with borderless Window's aero on OpenGL.
   String vendorString = gl_vendor;
   if (vendorString.Contains("Intel"))
     mDriverSupport.mIntel = true;
@@ -1091,8 +1083,7 @@ void OpenglRenderer::Initialize(OsHandle windowHandle, OsHandle deviceContext, O
   glGenFramebuffers(1, &mSingleTargetFbo);
   glGenFramebuffers(1, &mMultiTargetFbo);
 
-  // Function invocations will fail if calling convention is not correct,
-  // currently using GLAPIENTRY
+  // Function invocations will fail if calling convention is not correct, currently using GLAPIENTRY
   mUniformFunctions[ShaderInputType::Invalid] = EmptyUniformFunc;
   mUniformFunctions[ShaderInputType::Bool] = (UniformFunction)glUniform1iv;
   mUniformFunctions[ShaderInputType::Int] = (UniformFunction)glUniform1iv;
@@ -1116,15 +1107,13 @@ void OpenglRenderer::Initialize(OsHandle windowHandle, OsHandle deviceContext, O
   // @Nate: This will most likley have to change to use uniform buffers
   String loadingShaderVertex = ZeroIfGl("#version 150\n") ZeroIfWebgl("#version 100\n")
       ZeroIfWebgl("precision mediump float;\n") "uniform mat4 Transform;\n"
-                                                "uniform mat3 "
-                                                "UvTransform;\n" ZeroGlVertexIn " vec3 LocalPosition;\n" ZeroGlVertexIn
-                                                " vec2 Uv;\n" ZeroGlVertexOut " vec2 psInUv;\n"
+                                                "uniform mat3 UvTransform;\n" ZeroGlVertexIn
+                                                " vec3 LocalPosition;\n" ZeroGlVertexIn " vec2 Uv;\n" ZeroGlVertexOut
+                                                " vec2 psInUv;\n"
                                                 "void main(void)\n"
                                                 "{\n"
-                                                "  psInUv = (vec3(Uv, 1.0) * "
-                                                "UvTransform).xy;\n"
-                                                "  gl_Position = vec4(LocalPosition, "
-                                                "1.0) * Transform;\n"
+                                                "  psInUv = (vec3(Uv, 1.0) * UvTransform).xy;\n"
+                                                "  gl_Position = vec4(LocalPosition, 1.0) * Transform;\n"
                                                 "}";
 
   String loadingShaderPixel = ZeroIfGl("#version 150\n") ZeroIfWebgl("#version 100\n")
@@ -1132,10 +1121,8 @@ void OpenglRenderer::Initialize(OsHandle windowHandle, OsHandle deviceContext, O
                                                 "uniform float Alpha;\n" ZeroGlPixelIn " vec2 psInUv;\n"
                                                 "void main(void)\n"
                                                 "{\n"
-                                                "  vec2 uv = vec2(psInUv.x, 1.0 - "
-                                                "psInUv.y);\n"
-                                                "  gl_FragColor = texture2D(Texture, "
-                                                "uv);\n"
+                                                "  vec2 uv = vec2(psInUv.x, 1.0 - psInUv.y);\n"
+                                                "  gl_FragColor = texture2D(Texture, uv);\n"
                                                 "  gl_FragColor.xyz *= Alpha;\n"
                                                 "}";
 
@@ -1459,7 +1446,7 @@ void OpenglRenderer::AddShaders(Array<ShaderEntry>& entries, uint forceCompileBa
   {
     uint processCount = Math::Min(forceCompileBatchCount, (uint)entries.Size());
     if (processCount == 0)
-      processCount = entries.Size();
+      processCount = static_cast<uint>(entries.Size());
 
     for (uint i = 0; i < processCount; ++i)
     {
@@ -1473,19 +1460,23 @@ void OpenglRenderer::AddShaders(Array<ShaderEntry>& entries, uint forceCompileBa
   }
 }
 
-GLint OpenglRenderer::GetUniformLocation(GlShader* shader, StringParam name) {
+GLint OpenglRenderer::GetUniformLocation(GlShader* shader, StringParam name)
+{
   // First look in our local cache
   GLint location = shader->mLocations.FindValue(name, -1);
-  if (location != -1) {
+  if (location != -1)
+  {
     return location;
   }
   location = glGetUniformLocation(shader->mId, name.c_str());
   shader->mLocations[name] = location;
   return location;
 }
-void OpenglRenderer::DeleteShaderByKey(const ShaderKey& shaderKey) {
+void OpenglRenderer::DeleteShaderByKey(const ShaderKey& shaderKey)
+{
   GlShader* shader = mGlShaders.FindValue(shaderKey, nullptr);
-  if (shader) {
+  if (shader)
+  {
     glDeleteProgram(shader->mId);
     delete shader;
   }
@@ -1736,8 +1727,8 @@ void OpenglRenderer::DoRenderTaskRange(RenderTaskRange& taskRange)
     {
       RenderTaskRenderPass* renderPass = (RenderTaskRenderPass*)task;
       DoRenderTaskRenderPass(renderPass);
-      // RenderPass tasks can have multiple following task entries for sub
-      // RenderGroup settings. Have to index past all sub tasks.
+      // RenderPass tasks can have multiple following task entries for sub RenderGroup settings.
+      // Have to index past all sub tasks.
       taskIndex += sizeof(RenderTaskRenderPass) * (renderPass->mSubRenderGroupCount + 1);
       i += renderPass->mSubRenderGroupCount;
     }
@@ -1785,8 +1776,7 @@ void OpenglRenderer::DoRenderTaskClearTarget(RenderTaskClearTarget* task)
 
 void OpenglRenderer::DoRenderTaskRenderPass(RenderTaskRenderPass* task)
 {
-  // Create a map of RenderGroup id to task memory index for every sub group
-  // entry.
+  // Create a map of RenderGroup id to task memory index for every sub group entry.
   HashMap<int, size_t> taskIndexMap;
   while (taskIndexMap.Size() < task->mSubRenderGroupCount)
   {
@@ -1796,7 +1786,7 @@ void OpenglRenderer::DoRenderTaskRenderPass(RenderTaskRenderPass* task)
   }
 
   // Initialize to invalid index so state is set for the first object.
-  int currentTaskIndex = -1;
+  size_t currentTaskIndex = static_cast<uint>(-1);
 
   // All ViewNodes under the base RenderGroup.
   IndexRange viewNodeRange = mViewBlock->mRenderGroupRanges[task->mRenderGroupIndex];
@@ -1806,19 +1796,18 @@ void OpenglRenderer::DoRenderTaskRenderPass(RenderTaskRenderPass* task)
     ViewNode& viewNode = mViewBlock->mViewNodes[i];
     FrameNode& frameNode = mFrameBlock->mFrameNodes[viewNode.mFrameNodeIndex];
 
-    // Get the index for this object's RenderGroup settings. Always default to
-    // the base task entry.
+    // Get the index for this object's RenderGroup settings. Always default to the base task entry.
     size_t index = taskIndexMap.FindValue(viewNode.mRenderGroupId, 0);
 
-    // Sub RenderGroups have unique render settings when a different task index
-    // is encountered. Or this is just the first set.
+    // Sub RenderGroups have unique render settings when a different task index is encountered.
+    // Or this is just the first set.
     if (index != currentTaskIndex)
     {
       // Offsets to sub RenderGroup settings or just the base task.
       RenderTaskRenderPass* subTask = task + index;
 
-      // Different RenderPass tasks are also made to denote RenderGroups to not
-      // render. Don't change state or render the object.
+      // Different RenderPass tasks are also made to denote RenderGroups to not render.
+      // Don't change state or render the object.
       if (subTask->mRender == false)
         continue;
 
@@ -2002,8 +1991,7 @@ void OpenglRenderer::DrawStatic(ViewNode& viewNode, FrameNode& frameNode)
     SetShaderParameters(cFragmentShaderInputsId, mShaderInputsId, mNextTextureSlot);
   }
 
-  // On change of materials, material inputs followed by global inputs have to
-  // be reset
+  // On change of materials, material inputs followed by global inputs have to be reset
   if (materialData->mResourceId != mActiveMaterial)
   {
     mNextTextureSlotMaterial = mNextTextureSlot;
@@ -2020,10 +2008,8 @@ void OpenglRenderer::DrawStatic(ViewNode& viewNode, FrameNode& frameNode)
   if (frameNode.mShaderInputRange.Count() != 0)
   {
     SetShaderParameters(frameNode.mShaderInputRange, textureSlot);
-    // Since object input overrides could apply to other fragments that aren't
-    // from the material (i.e. RenderPass) have to trigger a reset of all
-    // inputs, done by resetting active material, but shader does not have to be
-    // reset
+    // Since object input overrides could apply to other fragments that aren't from the material (i.e. RenderPass)
+    // have to trigger a reset of all inputs, done by resetting active material, but shader does not have to be reset
     mActiveMaterial = 0;
   }
 
@@ -2036,8 +2022,7 @@ void OpenglRenderer::DrawStatic(ViewNode& viewNode, FrameNode& frameNode)
 
   glBindVertexArray(meshData->mVertexArray);
   if (meshData->mIndexBuffer == 0)
-    // If nothing is bound, glDrawArrays will invoke the shader pipeline the
-    // given number of times
+    // If nothing is bound, glDrawArrays will invoke the shader pipeline the given number of times
     glDrawArrays(GlPrimitiveType(meshData->mPrimitiveType), 0, meshData->mIndexCount);
   else
     glDrawElements(GlPrimitiveType(meshData->mPrimitiveType), meshData->mIndexCount, GL_UNSIGNED_INT, (void*)0);
@@ -2114,8 +2099,7 @@ void OpenglRenderer::DrawStreamed(ViewNode& viewNode, FrameNode& frameNode)
     }
   }
 
-  // Have to force an independent draw call if object has individual shader
-  // inputs
+  // Have to force an independent draw call if object has individual shader inputs
   if (frameNode.mShaderInputRange.Count() != 0)
   {
     mStreamedVertexBuffer.FlushBuffer(false);
@@ -2253,14 +2237,12 @@ void OpenglRenderer::SetShaderParameters(IndexRange inputRange, uint& nextTextur
       BindTexture(textureData->mType, nextTextureSlot, textureData->mId, mDriverSupport.mSamplerObjects);
 
       // Check for custom sampler settings for this input
-      // If any sampler attributes were set on the shader input then
-      // mSamplerSettings will be non-zero If driver does not have sampler
-      // object support then this feature does nothing
+      // If any sampler attributes were set on the shader input then mSamplerSettings will be non-zero
+      // If driver does not have sampler object support then this feature does nothing
       if (input.mSamplerSettings != 0 && mDriverSupport.mSamplerObjects)
       {
         u32 samplerSettings = input.mSamplerSettings;
-        // Use texture settings as defaults so that only attributes specified on
-        // shader input differ from the texture
+        // Use texture settings as defaults so that only attributes specified on shader input differ from the texture
         SamplerSettings::FillDefaults(samplerSettings, textureData->mSamplerSettings);
         GLuint sampler = GetSampler(samplerSettings);
         glBindSampler(nextTextureSlot, sampler);
@@ -2311,8 +2293,7 @@ void OpenglRenderer::CreateShader(ShaderEntry& entry)
   // Shouldn't fail at this point. Not currently handling gl errors.
   ErrorIf(shaderId == 0, "Failed to compile or link shader.");
 
-  // Must delete old shader after new one is created or something is getting
-  // incorrectly cached/generated
+  // Must delete old shader after new one is created or something is getting  incorrectly cached/generated
   DeleteShaderByKey(shaderKey);
 
   GlShader* shader = new GlShader();
@@ -2332,7 +2313,7 @@ void OpenglRenderer::CreateShader(StringParam vertexSource,
   GLuint program = glCreateProgram();
 
   const GLchar* vertexSourceData = vertexSource.Data();
-  GLint vertexSourceSize = vertexSource.SizeInBytes();
+  GLint vertexSourceSize = static_cast<GLint>(vertexSource.SizeInBytes());
   GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
   glAttachShader(program, vertexShader);
   glShaderSource(vertexShader, 1, &vertexSourceData, &vertexSourceSize);
@@ -2343,7 +2324,7 @@ void OpenglRenderer::CreateShader(StringParam vertexSource,
   if (!geometrySource.Empty())
   {
     const GLchar* geometrySourceData = geometrySource.Data();
-    GLint geometrySourceSize = geometrySource.SizeInBytes();
+    GLint geometrySourceSize = static_cast<GLint>(geometrySource.SizeInBytes());
     geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
     glAttachShader(program, geometryShader);
     glShaderSource(geometryShader, 1, &geometrySourceData, &geometrySourceSize);
@@ -2352,7 +2333,7 @@ void OpenglRenderer::CreateShader(StringParam vertexSource,
   }
 
   const GLchar* pixelSourceData = pixelSource.Data();
-  GLint pixelSourceSize = pixelSource.SizeInBytes();
+  GLint pixelSourceSize = static_cast<GLint>(pixelSource.SizeInBytes());
   GLuint pixelShader = glCreateShader(GL_FRAGMENT_SHADER);
   glAttachShader(program, pixelShader);
   glShaderSource(pixelShader, 1, &pixelSourceData, &pixelSourceSize);
@@ -2407,12 +2388,9 @@ void OpenglRenderer::CreateShader(StringParam vertexSource,
     static size_t sMaxPrints = 4;
     if (sMaxPrints > 0)
     {
-      ZPrint("\n************************************************************"
-             "VERTEX\n%s"
-             "\n************************************************************"
-             "GEOMETRY\n%s"
-             "\n************************************************************"
-             "PIXEL\n%s"
+      ZPrint("\n************************************************************VERTEX\n%s"
+             "\n************************************************************GEOMETRY\n%s"
+             "\n************************************************************PIXEL\n%s"
              "\n************************************************************\n",
              vertexSource.c_str(),
              geometrySource.c_str(),
@@ -2422,8 +2400,8 @@ void OpenglRenderer::CreateShader(StringParam vertexSource,
   }
 #endif
 
-  // For now we always output the shader assuming that all of them compile and
-  // link. This is because requesting the link status is a blocking operation.
+  // For now we always output the shader assuming that all of them compile and link.
+  // This is because requesting the link status is a blocking operation.
   shader = program;
 
   glDetachShader(program, vertexShader);
@@ -2437,8 +2415,7 @@ void OpenglRenderer::CreateShader(StringParam vertexSource,
     glDeleteShader(geometryShader);
   }
 
-  // We don't currently do this because we don't want to check the status of the
-  // shader (blocking).
+  // We don't currently do this because we don't want to check the status of the shader (blocking).
   // if (status == GL_FALSE)
   //  glDeleteProgram(program);
 }
