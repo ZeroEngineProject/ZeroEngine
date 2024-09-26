@@ -1,8 +1,8 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
 
-#include "IndexPolicies.hpp"
-#include "ErrorCallbacks.hpp"
+#include "Math/IndexPolicies.hpp"
+#include "Math/ErrorCallbacks.hpp"
 
 namespace Math
 {

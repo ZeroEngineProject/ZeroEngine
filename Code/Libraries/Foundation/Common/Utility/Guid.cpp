@@ -1,7 +1,7 @@
 // MIT Licensed (see LICENSE.md).
 #include "Precompiled.hpp"
-#include "Hashing.hpp"
-#include "Guid.hpp"
+#include "Containers/Hashing.hpp"
+#include "Utility/Guid.hpp"
 
 namespace Zero
 {

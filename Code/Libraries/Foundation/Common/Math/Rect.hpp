@@ -1,6 +1,6 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
-#include "Math.hpp"
+#include "Math/Math.hpp"
 
 namespace Zero
 {

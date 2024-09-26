@@ -4,7 +4,7 @@
 #include "ContainerCommon.hpp"
 #include "Memory/Allocator.hpp"
 #include "Array.hpp"
-#include "Utility/Hashing.hpp"
+#include "Hashing.hpp"
 
 namespace Zero
 {

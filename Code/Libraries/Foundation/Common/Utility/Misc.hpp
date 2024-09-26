@@ -1,8 +1,8 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
 
-#include "Typedefs.hpp"
-#include "Time.hpp"
+#include "Utility/Typedefs.hpp"
+#include "Utility/Time.hpp"
 
 namespace Zero
 {

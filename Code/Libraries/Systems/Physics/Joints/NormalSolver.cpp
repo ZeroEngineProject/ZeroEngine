@@ -35,7 +35,7 @@ void NormalSolver::AddJoint(Joint* joint)
   // switch to determine which list to add the joint to
   switch (joint->GetJointType())
   {
-#include "JointList.hpp"
+#include "Physics/Joints/JointList.hpp"
   default:
     break;
   }
@@ -68,7 +68,7 @@ void NormalSolver::DebugDraw(uint debugFlags)
 
 #define JointType(type) DrawJointsFragmentList(m##type##List);
 
-#include "JointList.hpp"
+#include "Physics/Joints/JointList.hpp"
 
 #undef JointType
   DrawJointsFragmentList(mContacts);
@@ -80,7 +80,7 @@ void NormalSolver::Clear()
 {
 #define JointType(type) ClearFragmentList(m##type##List);
 
-#include "JointList.hpp"
+#include "Physics/Joints/JointList.hpp"
 
 #undef JointType
 
@@ -95,7 +95,7 @@ void NormalSolver::UpdateData()
 
 #define JointType(type) UpdateDataFragmentList(m##type##List, molecules);
 
-#include "JointList.hpp"
+#include "Physics/Joints/JointList.hpp"
 
 #undef JointType
 
@@ -111,7 +111,7 @@ void NormalSolver::WarmStart()
 
 #define JointType(type) WarmStartFragmentList(m##type##List, molecules);
 
-#include "JointList.hpp"
+#include "Physics/Joints/JointList.hpp"
 
 #undef JointType
 
@@ -131,7 +131,7 @@ void NormalSolver::IterateVelocities(uint iteration)
 
 #define JointType(type) IterateVelocitiesFragmentList(m##type##List, molecules, iteration);
 
-#include "JointList.hpp"
+#include "Physics/Joints/JointList.hpp"
 
 #undef JointType
 
@@ -145,7 +145,7 @@ void NormalSolver::SolvePositions()
   type##List type##ToSolve;                                                                                            \
   CollectJointsToSolve(m##type##List, type##ToSolve);
 
-#include "JointList.hpp"
+#include "Physics/Joints/JointList.hpp"
 #undef JointType
   // get a list of all contacts that need position correction (currently all or nothing)
   ContactList contactsToSolve;
@@ -156,7 +156,7 @@ void NormalSolver::SolvePositions()
     // solve each joint list
 #define JointType(type) BlockSolvePositions(type##ToSolve, EmptyUpdate<Joint>);
 
-#include "JointList.hpp"
+#include "Physics/Joints/JointList.hpp"
 #undef JointType
 
     BlockSolvePositions(contactsToSolve, ContactUpdate);
@@ -167,7 +167,7 @@ void NormalSolver::SolvePositions()
   if (!type##ToSolve.Empty())                                                                                          \
     m##type##List.Splice(m##type##List.End(), type##ToSolve.All());
 
-#include "JointList.hpp"
+#include "Physics/Joints/JointList.hpp"
 #undef JointType
 
   if (!contactsToSolve.Empty())
@@ -180,7 +180,7 @@ void NormalSolver::Commit()
 
 #define JointType(type) CommitFragmentList(m##type##List, molecules);
 
-#include "JointList.hpp"
+#include "Physics/Joints/JointList.hpp"
 
 #undef JointType
 
@@ -191,7 +191,7 @@ void NormalSolver::BatchEvents()
 {
 #define JointType(type) BatchEventsFragmentList(m##type##List);
 
-#include "JointList.hpp"
+#include "Physics/Joints/JointList.hpp"
 
 #undef JointType
 }

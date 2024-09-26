@@ -2,7 +2,7 @@
 #pragma once
 
 #include "Memory/Allocator.hpp"
-#include "Utility/Hashing.hpp"
+#include "Hashing.hpp"
 
 namespace Zero
 {

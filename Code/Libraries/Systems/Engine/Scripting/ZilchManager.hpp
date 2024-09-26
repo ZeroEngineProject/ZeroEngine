@@ -45,8 +45,7 @@ public:
   /// Constructor.
   ZilchManager();
 
-  /// Compiles all Scripts and Fragments and allow duplicate errors to
-  /// re-appear.
+  /// Compiles all Scripts and Fragments and allow duplicate errors to re-appear.
   void TriggerCompileExternally();
 
   /// Compiles all Scripts and Fragments.
@@ -73,22 +72,18 @@ public:
   LibraryRef mCurrentFragmentProjectLibrary;
   LibraryRef mPendingFragmentProjectLibrary;
 
-  // @TrevorS: We need to remove libraries from here if we remove them from the
-  // project.
+  // @TrevorS: We need to remove libraries from here if we remove them from the project.
   HashSet<ResourceLibrary*> mPendingLibraries;
 
-  // If any scripts, fragments, or plugins have been modified we should attempt
-  // to compile once on engine update
+  // If any scripts, fragments, or plugins have been modified we should attempt to compile once on engine update
   bool mShouldAttemptCompile;
 
-  // We need to store the last result because we don't always attempt to
-  // recompile
+  // We need to store the last result because we don't always attempt to recompile
   CompileResult::Enum mLastCompileResult;
 
   // Every time we recompile libraries we increment a version globally.
-  // This lets us know elsewhere that anything related to types or scripts have
-  // changed. For example: We prevent duplicate exceptions until this version
-  // changes.
+  // This lets us know elsewhere that anything related to types or scripts have changed.
+  // For example: We prevent duplicate exceptions until this version changes.
   int mVersion;
 
   // The debugger interface that we register states with

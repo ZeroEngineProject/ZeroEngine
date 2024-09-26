@@ -82,7 +82,7 @@ typedef double MaxAlignmentType;
 #include "Containers/Array.hpp"
 #include "Containers/BitStream.hpp"
 #include "Containers/ContainerCommon.hpp"
-#include "Utility/Hashing.hpp"
+#include "Containers/Hashing.hpp"
 #include "Containers/HashMap.hpp"
 #include "Containers/HashSet.hpp"
 #include "Containers/SlotMap.hpp"

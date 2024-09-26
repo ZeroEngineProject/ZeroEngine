@@ -59,7 +59,7 @@ private:
 #include "CogMeta.hpp"
 #include "Space.hpp"
 #include "DocumentResource.hpp"
-#include "Scripting/ZilchResource.hpp"
+#include "ZilchResource.hpp"
 #include "Resource/ResourceLibrary.hpp"
 #include "JobSystem.hpp"
 #include "EngineEvents.hpp"

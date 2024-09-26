@@ -87,7 +87,7 @@ struct ContactBlock : public ConstraintConfigBlock
       mJointId = Zero::JointEnums::jointType##Type;                                                                    \
     }                                                                                                                  \
   };
-#include "Joints/JointList.hpp"
+#include "Physics/Joints/JointList.hpp"
 #undef JointType
 
 /// Defines various configuration values used by physics to solve constraints.

@@ -1,4 +1,4 @@
 // MIT Licensed (see LICENSE.md).
-#include "RendererBase/RendererBaseStandard.hpp"
+#pragma once
 
-// #include "Renderer.hpp"
+#include "RendererBase/RendererBaseStandard.hpp"

@@ -1,9 +1,9 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
 
-#include "ContainerCommon.hpp"
+#include "Containers/ContainerCommon.hpp"
 #include "Memory/Allocator.hpp"
-#include "Algorithm.hpp"
+#include "Containers/Algorithm.hpp"
 
 namespace Zero
 {

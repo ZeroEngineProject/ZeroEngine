@@ -1,18 +1,18 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
 
-#include "Reals.hpp"
-#include "Vector2.hpp"
-#include "Vector3.hpp"
-#include "Vector4.hpp"
-#include "Matrix2.hpp"
-#include "Matrix3.hpp"
-#include "Matrix4.hpp"
-#include "Quaternion.hpp"
-#include "EulerAngles.hpp"
-#include "IntVector2.hpp"
-#include "IntVector3.hpp"
-#include "IntVector4.hpp"
+#include "Math/Reals.hpp"
+#include "Math/Vector2.hpp"
+#include "Math/Vector3.hpp"
+#include "Math/Vector4.hpp"
+#include "Math/Matrix2.hpp"
+#include "Math/Matrix3.hpp"
+#include "Math/Matrix4.hpp"
+#include "Math/Quaternion.hpp"
+#include "Math/EulerAngles.hpp"
+#include "Math/IntVector2.hpp"
+#include "Math/IntVector3.hpp"
+#include "Math/IntVector4.hpp"
 
 namespace Math
 {

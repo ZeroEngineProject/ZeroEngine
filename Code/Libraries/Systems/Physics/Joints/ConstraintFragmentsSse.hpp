@@ -1,9 +1,9 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
 
-#include "SimMath.hpp"
-#include "SimVectors.hpp"
-#include "SimMatrix3.hpp"
+#include "Math/SimMath.hpp"
+#include "Math/SimVectors.hpp"
+#include "Math/SimMatrix3.hpp"
 
 namespace Zero
 {

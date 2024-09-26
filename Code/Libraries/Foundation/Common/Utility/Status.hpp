@@ -1,8 +1,8 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
-// #include "String.hpp"
+// #include "String/String.hpp"
 #include "EnumDeclaration.hpp"
-// #include "StringBuilder.hpp"
+// #include "String/StringBuilder.hpp"
 
 namespace Zero
 {

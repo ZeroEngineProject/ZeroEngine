@@ -213,8 +213,7 @@ void ResourceSystem::ReloadPackage(ResourceLibrary* resourceLibrary, ResourcePac
 
 void ResourceSystem::UnloadAll()
 {
-  // Unload all libraries. We want to unload libraries that no one depends on
-  // first
+  // Unload all libraries. We want to unload libraries that no one depends on first
   while (!LoadedResourceLibraries.Empty())
   {
     // Find the next leaf library (doesn't have any dependents)

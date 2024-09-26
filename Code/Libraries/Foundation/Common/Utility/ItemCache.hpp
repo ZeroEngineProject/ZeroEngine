@@ -3,7 +3,7 @@
 
 // Includes
 #include "Containers/ArrayMap.hpp"
-#include "IdStore.hpp"
+#include "Utility/IdStore.hpp"
 
 namespace Zero
 {

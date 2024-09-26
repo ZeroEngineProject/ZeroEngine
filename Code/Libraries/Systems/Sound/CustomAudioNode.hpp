@@ -75,7 +75,7 @@ public:
   void SendMicUncompressedData(const HandleOf<ArrayClass<float>>& audioData);
   /// Takes the AudioData from a MicrophoneCompressedByteData event, decompresses the data,
   /// and sends all of the audio samples to the audio engine for output
-  void SendMicCompressedData(const HandleOf<ArrayClass<byte>>& audioData);
+  void SendMicCompressedData(const HandleOf<ArrayClass<::byte>>& audioData);
 
 private:
   bool GetOutputSamples(BufferType* outputBuffer,

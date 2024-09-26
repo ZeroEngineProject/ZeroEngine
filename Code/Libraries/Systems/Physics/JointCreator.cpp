@@ -449,7 +449,7 @@ void JointCreator::CallJointFunctions(Joint* joint, ConnectionInfo& info)
   // switch to determine the type of the joint
   switch (joint->GetJointType())
   {
-#include "Joints/JointList.hpp"
+#include "Physics/Joints/JointList.hpp"
   default:
     break;
   }

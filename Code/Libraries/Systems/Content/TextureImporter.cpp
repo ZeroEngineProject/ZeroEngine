@@ -270,8 +270,7 @@ void ToNvttSurface(nvtt::Surface& surface, uint width, uint height, TextureForma
   delete[] convertedImage;
 }
 
-void FromNvttSurface(
-    const nvtt::Surface& surface, uint& width, uint& height, TextureFormat::Enum format, ::byte*& image)
+void FromNvttSurface(const nvtt::Surface& surface, uint& width, uint& height, TextureFormat::Enum format, ::byte*& image)
 {
   const float* srcImage = surface.data();
   width = surface.width();
@@ -597,8 +596,7 @@ ImageProcessorCodes::Enum TextureImporter::ProcessTexture(Status& status)
       uint height = mMipHeaders[i].mHeight;
 
       // Compressed image must be a multiple of 4
-      // Pixel padding caused by compressing sizes 2 or 1 works correctly if
-      // image needs to be y inverted
+      // Pixel padding caused by compressing sizes 2 or 1 works correctly if image needs to be y inverted
       uint newWidth = width;
       uint newHeight = height;
       if (width >= 3 && width % 4 != 0)

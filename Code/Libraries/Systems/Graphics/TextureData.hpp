@@ -5,10 +5,9 @@
 namespace Zero
 {
 
-/// Modifiable texture data that can be used to upload to a runtime Texture
-/// resource. All formats use one interface for get/set, all values are
-/// converted to/from floats and unused channels are ignored. Integer formats
-/// are represented in the normalized range [0, 1].
+/// Modifiable texture data that can be used to upload to a runtime Texture resource.
+/// All formats use one interface for get/set, all values are converted to/from floats and unused channels are ignored.
+/// Integer formats are represented in the normalized range [0, 1].
 class TextureData
 {
 public:

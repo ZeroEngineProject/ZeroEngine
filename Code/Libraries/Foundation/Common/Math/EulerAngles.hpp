@@ -1,8 +1,8 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
 
-#include "EulerOrder.hpp"
-#include "Vector3.hpp"
+#include "Math/EulerOrder.hpp"
+#include "Math/Vector3.hpp"
 
 namespace Math
 {

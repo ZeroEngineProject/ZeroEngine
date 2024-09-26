@@ -11,8 +11,8 @@
 
 #if UseMemoryGraph
 
-#  include "Graph.hpp"
-#  include "Heap.hpp"
+#  include "Memory/Graph.hpp"
+#  include "Memory/Heap.hpp"
 
 #else
 

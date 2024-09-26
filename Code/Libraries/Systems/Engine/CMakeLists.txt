@@ -15,6 +15,8 @@ set(Engine_Action_Sources
     ${CMAKE_CURRENT_LIST_DIR}/Action/BasicActions.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Action/MetaAction.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Action/MetaAction.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Action/ZilchAction.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Action/ZilchAction.hpp
 )
 
 set(Engine_Animation_Sources
@@ -63,12 +65,8 @@ set(Engine_Resource_Sources
 set(Engine_Scripting_Sources
     ${CMAKE_CURRENT_LIST_DIR}/Scripting/ScriptEvents.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Scripting/ScriptEvents.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Scripting/ZilchAction.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Scripting/ZilchAction.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Scripting/ZilchManager.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Scripting/ZilchManager.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Scripting/ZilchResource.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Scripting/ZilchResource.hpp
 )
 
 target_sources(Engine
@@ -228,6 +226,8 @@ target_sources(Engine
     ${CMAKE_CURRENT_LIST_DIR}/Tweakables.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Tweakables.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Tweakables.inl
+    ${CMAKE_CURRENT_LIST_DIR}/ZilchResource.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/ZilchResource.hpp
 )
 
 target_link_libraries(Engine

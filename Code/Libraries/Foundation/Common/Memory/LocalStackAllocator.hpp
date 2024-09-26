@@ -1,7 +1,7 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
 
-#include "Graph.hpp"
+#include "Memory/Graph.hpp"
 
 namespace Zero
 {

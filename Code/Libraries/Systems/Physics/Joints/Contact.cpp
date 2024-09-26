@@ -2,9 +2,9 @@
 #include "Precompiled.hpp"
 
 #ifdef USESSE
-#  include "ConstraintFragmentsSse.hpp"
-#  include "SimVectors.hpp"
-#  include "SimMatrix3.hpp"
+#  include "Physics/Joints/ConstraintFragmentsSse.hpp"
+#  include "Math/SimVectors.hpp"
+#  include "Math/SimMatrix3.hpp"
 #endif
 /// C: dot(p2 - p1,n) = 0
 /// C: dot(c2 + r2 - c1 - r1,n) = 0

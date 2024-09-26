@@ -1,7 +1,7 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
 
-#include "Random.hpp"
+#include "Math/Random.hpp"
 
 namespace Math
 {

@@ -1643,7 +1643,8 @@ void OpenglRenderer::ShowProgress(ShowProgressInfo* info)
     {
       glUniformMatrix4fv(mLoadingTransformLoc, 1, cTransposeMatrices, textTransform.array);
       glBindTexture(GL_TEXTURE_2D, fontTexture->mId);
-      mStreamedVertexBuffer.AddVertices(&progressText[0], progressText.Size(), PrimitiveType::Triangles);
+      mStreamedVertexBuffer.AddVertices(
+      	&progressText[0], static_cast<uint>(progressText.Size()), PrimitiveType::Triangles);
       mStreamedVertexBuffer.FlushBuffer(true);
     }
 
@@ -2214,7 +2215,10 @@ void OpenglRenderer::SetShaderParameters(FrameNode* frameNode, ViewNode* viewNod
     GLint location = GetUniformLocation(mActiveShader, cBoneTransforms);
     if (location != -1)
     {
-      glUniformMatrix4fv(location, remappedBoneTransforms.Size(), cTransposeMatrices, remappedBoneTransforms[0].array);
+      glUniformMatrix4fv(location, 
+      	static_cast<uint>(remappedBoneTransforms.Size()), 
+      	cTransposeMatrices, 
+      	remappedBoneTransforms[0].array);
     }
   }
 

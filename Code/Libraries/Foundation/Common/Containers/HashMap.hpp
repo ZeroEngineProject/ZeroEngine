@@ -3,7 +3,7 @@
 #pragma once
 #include "TypeTraits.hpp"
 #include "ContainerCommon.hpp"
-#include "Utility/Hashing.hpp"
+#include "Hashing.hpp"
 #include "HashedContainer.hpp"
 #include "Memory/Allocator.hpp"
 

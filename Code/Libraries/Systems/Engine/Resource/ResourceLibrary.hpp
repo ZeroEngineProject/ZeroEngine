@@ -137,8 +137,8 @@ public:
 // Resource Library
 /// A Resource Library is a set of resources loaded from a
 /// resource package. Used to manage resource lifetimes.
-/// EventHandler is Zilch's EventObject and is needed for compilation events.
-/// This should be removed once we combine the two
+/// EventHandler is Zilch's EventObject and is needed for compilation events. This should be 
+/// removed once we combine the two
 class ResourceLibrary : public SafeId32EventObject, public EventHandler
 {
 public:

@@ -1,6 +1,6 @@
 // MIT Licensed (see LICENSE.md).
 #include "Precompiled.hpp"
-#include "Numerical.hpp"
+#include "Math/Numerical.hpp"
 
 namespace Math
 {

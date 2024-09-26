@@ -1,8 +1,8 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
 
-#include "Reals.hpp"
-#include "Vector2.hpp"
+#include "Math/Reals.hpp"
+#include "Math/Vector2.hpp"
 
 namespace Math
 {

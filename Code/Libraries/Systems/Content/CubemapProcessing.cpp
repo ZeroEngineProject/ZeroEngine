@@ -999,7 +999,7 @@ void MipmapCubemap(Array<MipHeader>& mipHeaders, Array<::byte*>& imageData, Text
   if (format != TextureFormat::RGB32f)
   {
     uint targetPixelSize = GetPixelSize(TextureFormat::RGBA8);
-    uint offset = 0;
+    uint dataOffset = 0;
 
     for (uint i = 0; i < mipHeaders.Size(); ++i)
     {
@@ -1021,8 +1021,8 @@ void MipmapCubemap(Array<MipHeader>& mipHeaders, Array<::byte*>& imageData, Text
       imageData[i] = targetFace;
 
       mipHeaders[i].mDataSize = faceSize;
-      mipHeaders[i].mDataOffset = offset;
-      offset += faceSize;
+      mipHeaders[i].mDataOffset = dataOffset;
+      dataOffset += faceSize;
     }
   }
 }

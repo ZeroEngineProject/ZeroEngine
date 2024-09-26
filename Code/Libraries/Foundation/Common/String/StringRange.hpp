@@ -1,8 +1,8 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
 
-#include "Utility/Hashing.hpp"
-#include "String.hpp"
+#include "Containers/Hashing.hpp"
+#include "String/String.hpp"
 
 namespace Zero
 {

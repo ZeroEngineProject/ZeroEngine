@@ -1,8 +1,8 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
 
-#include "Reals.hpp"
-#include "BoolVector4.hpp"
+#include "Math/Reals.hpp"
+#include "Math/BoolVector4.hpp"
 
 namespace Math
 {

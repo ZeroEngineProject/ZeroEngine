@@ -46,7 +46,7 @@ private:
   typedef BaseInList<Joint, type, &Joint::SolverLink> type##List;                                                      \
   type##List m##type##List;
 
-#include "JointList.hpp"
+#include "Physics/Joints/JointList.hpp"
 
 #undef JointType
 

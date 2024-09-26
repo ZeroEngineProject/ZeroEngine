@@ -24,6 +24,7 @@ set(Common_Containers_Sources
     ${CMAKE_CURRENT_LIST_DIR}/Containers/ContainerCommon.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Containers/CyclicArray.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Containers/HashedContainer.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Containers/Hashing.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Containers/HashMap.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Containers/HashSet.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Containers/InList.hpp
@@ -242,7 +243,6 @@ set(Common_Utility_Sources
     ${CMAKE_CURRENT_LIST_DIR}/Utility/Guid.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Utility/HalfFloat.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Utility/HalfFloat.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Utility/Hashing.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Utility/IdSequence.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Utility/IdStore.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Utility/Image.cpp

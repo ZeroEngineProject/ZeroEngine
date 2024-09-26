@@ -45,8 +45,7 @@ DeclareEnum2(CompletionConfidence, Unsure, Perfect);
 
 class ScriptEvent;
 
-/// Implemented by the script editor to provide functionality to the code
-/// inspector
+/// Implemented by the script editor to provide functionality to the code inspector
 class ICodeEditor
 {
 public:

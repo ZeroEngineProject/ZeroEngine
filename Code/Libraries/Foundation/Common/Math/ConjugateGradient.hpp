@@ -1,9 +1,9 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
 
-#include "Reals.hpp"
+#include "Math/Reals.hpp"
 #include "Utility/Typedefs.hpp"
-#include "ErrorCallbacks.hpp"
+#include "Math/ErrorCallbacks.hpp"
 
 namespace Math
 {
