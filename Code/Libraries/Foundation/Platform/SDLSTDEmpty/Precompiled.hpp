@@ -6,7 +6,7 @@
 
 #include "SDL.h"
 
-#ifdef ZeroTargetOsMac
+#ifdef ZERO_TARGETOS_MAC
 #  include <CoreServices/CoreServices.h>
 #  include <mach/mach.h>
 #  include <mach/mach_time.h>

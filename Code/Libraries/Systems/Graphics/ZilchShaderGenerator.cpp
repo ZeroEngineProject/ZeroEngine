@@ -585,7 +585,7 @@ bool ZilchShaderGenerator::BuildShaders(ShaderSet& shaders,
   ZeroZilchShaderGlslBackend* backend = new ZeroZilchShaderGlslBackend();
   pipelineDescription.mBackend = backend;
 
-#ifdef ZeroTargetOsEmscripten
+#ifdef ZERO_TARGETOS_EMSCRIPTEN
   backend->mTargetVersion = 300;
   backend->mTargetGlslEs = true;
 #endif

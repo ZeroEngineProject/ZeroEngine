@@ -1,4 +1,4 @@
-add_definitions(-DZeroCompilerClang=1 -DZeroCompilerName="Clang")
+add_definitions(-DZERO_COMPILER_CLANG=1 -DZERO_COMPILER_NAME="Clang")
 
 if (ZERO_EXCEPTIONS)
   set(CLANG_EXCEPTION_OPTION "-fexceptions")

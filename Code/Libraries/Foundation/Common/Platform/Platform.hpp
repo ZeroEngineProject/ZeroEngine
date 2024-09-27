@@ -8,7 +8,7 @@
 #  define ZeroDebug 1
 #endif
 
-#ifdef ZeroCompilerMsvc
+#ifdef ZERO_COMPILER_MSVC
 
 // Enable these warnings by setting them to level 3
 // Enable warning function does not override any base class virtual member function
@@ -166,7 +166,7 @@
 
 #endif
 
-#if defined(ZeroCompilerClang)
+#if defined(ZERO_COMPILER_CLANG)
 // Ignore unknown pragma warnings...
 #  pragma clang diagnostic ignored "-Wunknown-pragmas"
 #  pragma clang diagnostic ignored "-Wpragmas"
@@ -196,7 +196,7 @@
 // #  undef __STDC__
 #endif
 
-#if defined(ZeroCompilerGcc)
+#if defined(ZERO_COMPILER_GCC)
 // Ignore unknown pragma warnings...
 #  pragma GCC diagnostic ignored "-Wpragmas"
 
@@ -230,15 +230,14 @@
   (((::size_t) & reinterpret_cast<char const volatile&>((((structure*)(::uintptr_t)1)op member))) - 1)
 #define ZeroOffsetOf(structure, member) ZeroOffsetOfHelper(structure, ->, member)
 
-#if defined(ZeroTargetOsWindows)
+#if defined(ZERO_TARGETOS_WINDOWS)
 #  define ZeroThreadLocal __declspec(thread)
 #  define ZeroImport __declspec(dllimport)
 #  define ZeroExport __declspec(dllexport)
 #  define ZeroExportC extern "C" __declspec(dllexport)
 #  define ZeroDebugBreak() __debugbreak()
-#  define ZeroTodo(text) /* __pragma(message(__FILE__ "("                                                              \
-                            ZeroStringize(__LINE__) ") : Todo: " text)) */
-#  if defined(ZeroCompilerMsvc)
+#  define ZeroTodo(text) /* __pragma(message(__FILE__ "(" ZeroStringize(__LINE__) ") : Todo: " text)) */
+#  if defined(ZERO_COMPILER_MSVC)
 #    define ZeroForceInline inline __forceinline
 #  else
 #    define ZeroForceInline inline
@@ -250,7 +249,7 @@
 #  define ZeroExport __attribute__((visibility("default")))
 #  define ZeroExportC extern "C" __attribute__((visibility("default")))
 #  define ZeroTodo(text)
-#  if defined(ZeroTargetOsEmscripten)
+#  if defined(ZERO_TARGETOS_EMSCRIPTEN)
 #    define ZeroForceInline
 #    define ZeroDebugBreak()
 #  else
@@ -265,8 +264,11 @@
 #if defined(ZeroImportDll)
 #  define ZeroShared ZeroImport
 #  define ZeroSharedTemplate
-#else
+#elif defined(ZeroExportDll)
 #  define ZeroShared ZeroExport
+#  define ZeroSharedTemplate
+#else
+#  define ZeroShared
 #  define ZeroSharedTemplate
 #endif
 

@@ -145,7 +145,7 @@ void EditorScriptObjects<DataType>::CreateOrUpdateCog(DataType* object)
   {
     BoundType* componentType = object->mScriptComponentType;
     // Create an empty cog then add the component
-    archetype = ArchetypeManager::FindOrNull(CoreArchetypes::Empty);
+    Archetype* archetype = ArchetypeManager::FindOrNull(CoreArchetypes::Empty);
     Cog* cog = space->Create(archetype);
     cog->AddComponentByType(componentType);
     cog->SetName(componentType->Name);

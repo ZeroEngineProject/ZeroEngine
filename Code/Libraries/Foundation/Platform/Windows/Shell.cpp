@@ -1059,30 +1059,34 @@ LRESULT CALLBACK ShellWindowWndProc(ShellWindow* window, HWND hwnd, UINT msg, WP
   case WM_CHAR:
   {
     if (window->mOnTextTyped)
-      window->mOnTextTyped(Rune(Utf16ToUtf8(wParam)), window);
+      window->mOnTextTyped(Rune(Utf16ToUtf8(static_cast<int>(wParam))), window);
     return MessageHandled;
   }
 
+  // Key has been pressed
   case WM_KEYUP:
   case WM_SYSKEYUP:
   {
     if (window->mOnKeyUp)
     {
-      Keys::Enum key = VKToKey(wParam);
-      window->mOnKeyUp(key, wParam, window);
+      Keys::Enum key = VKToKey(static_cast<int>(wParam));
+      window->mOnKeyUp(key, static_cast<uint>(wParam), window);
     }
 
     return MessageHandled;
   }
 
+  // Key has been released
   case WM_KEYDOWN:
   case WM_SYSKEYDOWN:
   {
     bool repeated = (lParam & (1 << 30)) != 0;
 
-    Keys::Enum key = VKToKey(wParam);
+    Keys::Enum key = VKToKey(static_cast<int>(wParam));
     if (window->mOnKeyDown)
-      window->mOnKeyDown(key, wParam, repeated, window);
+    {
+      window->mOnKeyDown(key, static_cast<uint>(wParam), repeated, window);
+    }
 
     // Handle paste explicitly to be more like a browser platform
     if (shell->IsKeyDown(Keys::Control) && key == Keys::V && shell->mOnPaste)

@@ -1,6 +1,6 @@
 // MIT Licensed (see LICENSE.md).
 #include "Precompiled.hpp"
-#include "Common/Platform/Timer.hpp"
+#include "Platform/Timer.hpp"
 
 namespace Zero
 {

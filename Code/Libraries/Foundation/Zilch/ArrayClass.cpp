@@ -122,7 +122,7 @@ public:
     // Loop through all entries in the array
     for (size_t i = 0; i < self->NativeArray.Size(); ++i)
     {
-      // Get a pointer to the value at the given index (as a ::byte*)
+      // Get a pointer to the value at the given index (as a byte*)
       ::byte* valuePointer = (::byte*)&self->NativeArray[i];
 
       // Convert that value to a string generically
@@ -823,7 +823,7 @@ public:
     // Loop through all entries in the contained native array
     for (Integer i = self->Current; i < end; ++i)
     {
-      // Get a pointer to the value at the given index (as a ::byte*)
+      // Get a pointer to the value at the given index (as a byte*)
       ::byte* valuePointer = (::byte*)&array->NativeArray[i];
 
       // Convert that value to a string generically

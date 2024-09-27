@@ -2,7 +2,7 @@
 #pragma once
 
 #include "Common/CommonStandard.hpp"
-#include "Common/Platform/PlatformStandard.hpp"
+#include "Platform/PlatformStandard.hpp"
 
 #include "Urls.hpp"
 #include "FileSupport.hpp"

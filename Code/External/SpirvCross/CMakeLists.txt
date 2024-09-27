@@ -1,6 +1,6 @@
 add_library(SpirvCross)
 
-# This cmake option 'ZeroExceptions' needs to be setup somewhere for this to work
+# This cmake option 'ZERO_EXCEPTIONS' needs to be setup somewhere for this to work
 if (NOT ZERO_EXCEPTIONS)
   add_compile_definitions(SPIRV_CROSS_EXCEPTIONS_TO_ASSERTIONS)
 endif()

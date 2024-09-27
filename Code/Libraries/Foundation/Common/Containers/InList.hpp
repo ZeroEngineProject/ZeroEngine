@@ -36,11 +36,10 @@ public:
 };
 
 template <typename Parent, typename Member>
-#if defined(ZeroCompilerClang)
+#if defined(ZERO_COMPILER_CLANG)
 __attribute__((optnone))
 #endif
-inline ptrdiff_t
-PointerToMemberOffset(const Member Parent::*ptrToMember)
+inline ptrdiff_t PointerToMemberOffset(const Member Parent::*ptrToMember)
 {
   return (ptrdiff_t)ZeroOffsetOfHelper(Parent, ->*, ptrToMember);
 }

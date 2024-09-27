@@ -1,7 +1,7 @@
 // MIT Licensed (see LICENSE.md).
 
 #pragma once
-#ifdef ZeroExceptions
+#ifdef ZERO_EXCEPTIONS
 #  include <stdexcept>
 #endif
 
@@ -121,7 +121,7 @@ public:
     }
     if (num > MaxSize())
     {
-#ifdef ZeroExceptions
+#ifdef ZERO_EXCEPTIONS
       throw std::length_error("Zallocator Too Many Elements");
 #else
       return nullptr;
@@ -130,7 +130,7 @@ public:
     void* ptr = Zero::zAllocate(num * sizeof(T));
     if (!ptr)
     {
-#ifdef ZeroExceptions
+#ifdef ZERO_EXCEPTIONS
       throw std::bad_alloc();
 #else
       return nullptr;

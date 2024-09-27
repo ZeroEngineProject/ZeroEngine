@@ -16,7 +16,7 @@ SDL_HapticEffect cSDLHapticEffects[cMaxGamepads];
 
 bool AreGamepadsEnabled()
 {
-#if defined(ZeroTargetOsEmscripten)
+#if defined(ZERO_TARGETOS_EMSCRIPTEN)
   emscripten_sample_gamepad_data();
 #endif
 
@@ -63,7 +63,7 @@ SDL_GameController* GetGamePad(size_t gamepadIndex)
 
 bool GetGamepadState(size_t gamepadIndex, GamepadState* stateOut)
 {
-#if defined(ZeroTargetOsEmscripten)
+#if defined(ZERO_TARGETOS_EMSCRIPTEN)
   emscripten_sample_gamepad_data();
 #endif
 

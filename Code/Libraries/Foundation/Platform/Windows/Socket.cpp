@@ -1,7 +1,7 @@
 // MIT Licensed (see LICENSE.md).
 #include "Precompiled.hpp"
 
-#if defined(ZeroTargetOsWindows) && !defined(ZeroCompilerMsvc)
+#if defined(ZERO_TARGETOS_WINDOWS) && !defined(ZERO_COMPILER_MSVC)
 // This is not at all correct for GCC, but we just want it to
 // compile on GCC for Windows (POSIX takes a different path anyways)
 typedef int socklen_t;

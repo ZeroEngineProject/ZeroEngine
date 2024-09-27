@@ -1,7 +1,7 @@
 // MIT Licensed (see LICENSE.md).
 #include "Precompiled.hpp"
 
-#ifndef ZeroExceptions
+#ifndef ZERO_EXCEPTIONS
 #  define SPIRV_CROSS_EXCEPTIONS_TO_ASSERTIONS
 #endif
 #include "spirv_glsl.hpp"
@@ -48,7 +48,7 @@ bool ZeroZilchShaderGlslBackend::RunTranslationPass(ShaderTranslationPassResult&
     compiler.set_name(ubo.base_type_id, name.c_str());
   }
 
-#ifdef ZeroTargetOsEmscripten
+#ifdef ZERO_TARGETOS_EMSCRIPTEN
   // gles output is going to flatten input/output blocks and prepend the block name to each member.
   // Forcing block typenames to match.
   for (auto stageInput : resources.stage_inputs)
@@ -112,13 +112,13 @@ bool ZeroZilchShaderGlslBackend::RunTranslationPass(ShaderTranslationPassResult&
   outputData.mReflectionData.mShaderTypeName = inputData.mReflectionData.mShaderTypeName;
 
   bool success = true;
-#ifdef ZeroExceptions
+#ifdef ZERO_EXCEPTIONS
   try
   {
 #endif
     std::string source = compiler.compile();
     outputData.mByteStream.Load(source.c_str(), source.size());
-#ifdef ZeroExceptions
+#ifdef ZERO_EXCEPTIONS
   }
   catch (const std::exception& e)
   {

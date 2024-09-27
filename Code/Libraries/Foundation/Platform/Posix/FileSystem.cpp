@@ -8,7 +8,7 @@
 #include <errno.h>
 
 // This is only used to make it compile for easy testing
-#if defined(ZeroTargetOsWindows)
+#if defined(ZERO_TARGETOS_WINDOWS)
 #  include "FileSystemWindowsEmulation.inl"
 #else
 #  include <unistd.h>
@@ -29,7 +29,7 @@ static const String cParentDirectory("..");
 
 FileSystemInitializer::FileSystemInitializer(PopulateVirtualFileSystem callback, void* userData)
 {
-#if defined(ZeroTargetOsEmscripten)
+#if defined(ZERO_TARGETOS_EMSCRIPTEN)
   // Calling this will allow the outside product to populate the
   // virtual file system by calling 'AddVirtualFileSystemEntry'.
   if (callback)
@@ -86,7 +86,7 @@ void AddVirtualFileSystemEntry(StringParam absolutePath, DataBlock* stealData, T
 
 bool PersistFiles()
 {
-#if defined(ZeroTargetOsEmscripten)
+#if defined(ZERO_TARGETOS_EMSCRIPTEN)
   EM_ASM(FS.syncfs(false, console.log));
   ZPrint("Persisting files...\n");
   return true;

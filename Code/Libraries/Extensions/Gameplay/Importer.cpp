@@ -3,7 +3,7 @@
 #include "Importer.hpp"
 #include "Platform/FileSystem.hpp"
 #include "Platform/FilePath.hpp"
-#include "ToString.hpp"
+#include "String/ToString.hpp"
 #include "Support/Archive.hpp"
 #include "Platform/Utilities.hpp"
 

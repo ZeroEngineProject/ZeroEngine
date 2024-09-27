@@ -1,7 +1,7 @@
 // MIT Licensed (see LICENSE.md).
 #include "Precompiled.hpp"
 
-#if defined(ZeroTargetOsWindows)
+#if defined(ZERO_TARGETOS_WINDOWS)
 #  include <direct.h>
 #else
 #  include <unistd.h>
@@ -80,7 +80,7 @@ u64 GetMacAddress()
 
 bool DebugBreak()
 {
-#if defined(ZeroTargetOsEmscripten)
+#if defined(ZERO_TARGETOS_EMSCRIPTEN)
   emscripten_debugger();
 #else
   SDL_TriggerBreakpoint();
@@ -230,7 +230,7 @@ void OpenUrl(cstr url)
 
 void MarkAsExecutable(cstr fileName)
 {
-#if defined(ZeroTargetOsLinux) || defined(ZeroTargetOsMac)
+#if defined(ZERO_TARGETOS_LINUX) || defined(ZERO_TARGETOS_MAC)
   system(String::Format("chmod +x \"%s\"", fileName).c_str());
 #endif
 }

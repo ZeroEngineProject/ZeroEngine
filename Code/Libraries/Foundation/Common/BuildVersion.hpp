@@ -4,7 +4,7 @@
 namespace Zero
 {
 
-#define ZeroPlatform ZeroTargetOsName "_" ZeroArchitectureName
+#define ZeroPlatform ZERO_TARGETOS_NAME "_" ZeroArchitectureName
 
 extern const String sZeroOrganization;
 extern const String sEditorGuid;

@@ -1,9 +1,9 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
-// #include "Array.hpp"
-// #include "File.hpp"
-// #include "EnumDeclaration.hpp"
-// #include "Status.hpp"
+// #include "Containers/Array.hpp"
+// #include "Platform/File.hpp"
+// #include "Utility/EnumDeclaration.hpp"
+// #include "Utility/Status.hpp"
 
 namespace Zero
 {

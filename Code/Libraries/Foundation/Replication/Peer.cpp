@@ -890,7 +890,7 @@ bool Peer::IsValidRawPacket(RawPacket& rawPacket)
 
 OsInt Peer::Ipv4ReceiveThreadFn()
 {
-#ifdef ZeroExceptions
+#ifdef ZERO_EXCEPTIONS
   try
   {
 #endif
@@ -931,7 +931,7 @@ OsInt Peer::Ipv4ReceiveThreadFn()
 
     // Success
     return 0;
-#ifdef ZeroExceptions
+#ifdef ZERO_EXCEPTIONS
   }
   catch (const std::exception& error)
   {
@@ -949,7 +949,7 @@ OsInt Peer::Ipv4ReceiveThreadFn()
 }
 OsInt Peer::Ipv6ReceiveThreadFn()
 {
-#ifdef ZeroExceptions
+#ifdef ZERO_EXCEPTIONS
   try
   {
 #endif
@@ -988,7 +988,7 @@ OsInt Peer::Ipv6ReceiveThreadFn()
 
     // Success
     return 0;
-#ifdef ZeroExceptions
+#ifdef ZERO_EXCEPTIONS
   }
   catch (const std::exception& error)
   {

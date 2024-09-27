@@ -300,7 +300,7 @@ void ZilchPluginSource::WriteCurrentVersionFile()
   if (mContentItem == nullptr)
     return;
 
-#if defined(ZeroTargetOsWindows)
+#if defined(ZERO_TARGETOS_WINDOWS)
   String revisionNumber = GetRevisionNumberString();
   String propsFile =
       BuildString("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
@@ -340,7 +340,7 @@ void ZilchPluginSource::OpenIde()
   CopyPluginDependenciesOnce();
   String codeDir = GetCodeDirectory();
 
-#if defined(ZeroTargetOsWindows)
+#if defined(ZERO_TARGETOS_WINDOWS)
 
   if (CheckIdeAndInformUser() == false)
     return;
@@ -356,7 +356,7 @@ void ZilchPluginSource::OpenIde()
 
 void ZilchPluginSource::OnEngineUpdate(UpdateEvent* event)
 {
-#if defined(ZeroTargetOsWindows)
+#if defined(ZERO_TARGETOS_WINDOWS)
   if (mOpenIdeAfterToolsInstallCounter > 0)
   {
     // If the installer process is finally stopped
@@ -379,7 +379,7 @@ void ZilchPluginSource::InstallIdeTools()
 {
   MarkAttemptedIdeToolsInstAll();
 
-#if defined(ZeroTargetOsWindows)
+#if defined(ZERO_TARGETOS_WINDOWS)
   String extensionPath = FilePath::Combine(Z::gContentSystem->ToolPath, "ZeroZilchPlugins.vsix");
   Os::ShellOpenFile(extensionPath);
 #else
@@ -419,7 +419,7 @@ bool ZilchPluginSource::CheckIdeAndInformUser()
   {
     DoNotifyWarning("Zilch Plugin", "No IDE was detected, you must first install a C++ IDE for your platform");
 
-#if defined(ZeroTargetOsWindows)
+#if defined(ZERO_TARGETOS_WINDOWS)
     Os::OpenUrl("https://www.visualstudio.com/"
                 "post-download-vs?sku=community&clcid=0x409");
 #endif
@@ -430,7 +430,7 @@ bool ZilchPluginSource::CheckIdeAndInformUser()
 
 void ZilchPluginSource::Clean()
 {
-#if defined(ZeroTargetOsWindows)
+#if defined(ZERO_TARGETOS_WINDOWS)
   String codeDir = GetCodeDirectory();
   String ideFile = FilePath::Combine(codeDir, BuildString(Name, "Clean.bat"));
   Os::ShellOpenFile(ideFile);
@@ -450,7 +450,7 @@ void ZilchPluginSource::CompileConfiguration(StringParam configuration)
   String codeDir = GetCodeDirectory();
   String taskName = BuildString("Compiling ", configuration, " ", Name);
 
-#if defined(ZeroTargetOsWindows)
+#if defined(ZERO_TARGETOS_WINDOWS)
   String configurationBatchFileName = BuildString(Name, "Build", configuration);
   String configurationBatchFilePath = FilePath::CombineWithExtension(codeDir, configurationBatchFileName, ".bat");
   String process = BuildString("cmd /C \"", configurationBatchFilePath, "\"");

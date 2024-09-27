@@ -66,7 +66,7 @@
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>RESOURCE_NAME_Precompiled.hpp</PrecompiledHeaderFile>
-      <PreprocessorDefinitions>ZeroCompilerMsvc;ZeroTargetOsWindows;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ZERO_COMPILER_MSVC;ZERO_TARGETOS_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -101,7 +101,7 @@ EXIT 0
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>RESOURCE_NAME_Precompiled.hpp</PrecompiledHeaderFile>
-      <PreprocessorDefinitions>ZeroCompilerMsvc;ZeroTargetOsWindows;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ZERO_COMPILER_MSVC;ZERO_TARGETOS_WINDOWS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

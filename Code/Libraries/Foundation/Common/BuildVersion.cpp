@@ -181,7 +181,7 @@ cstr GetPlatformString()
 //   builder.AppendFormat("%d.", GetRevisionNumber());          // Revision [1501]
 //   builder.AppendFormat("%s.", GetShortChangeSetString());    // ShortChangeset [fb02756c46a4]
 //   builder.AppendFormat("%llu.", ZeroMsSinceEpoch);         // MsSinceEpoch [1574702096290]
-//   builder.AppendFormat("%s.", ZeroTargetOsName);           // TargetOs [Windows]
+//   builder.AppendFormat("%s.", ZERO_TARGETOS_NAME);           // TargetOs [Windows]
 //   builder.AppendFormat("%s.", ZeroArchitectureName);       // Architecture [x86]
 //   builder.AppendFormat("%s.", ZeroConfigName);             // Config [Release]
 //   builder.Append("zip");
@@ -206,7 +206,7 @@ String GetBuildVersionName()
   builder.AppendFormat("%d.", GetRevisionNumber()); // Revision [1501]
   // builder.AppendFormat("%s.", GetShortChangeSetString());    // ShortChangeset [fb02756c46a4]
   // builder.AppendFormat("%llu.", ZeroMsSinceEpoch);         // MsSinceEpoch [1574702096290]
-  // builder.AppendFormat("%s.", ZeroTargetOsName);           // TargetOs [Windows]
+  // builder.AppendFormat("%s.", ZERO_TARGETOS_NAME);           // TargetOs [Windows]
   // builder.AppendFormat("%s.", ZeroArchitectureName);       // Architecture [x86]
   // builder.AppendFormat("%s.", ZeroConfigName);             // Config [Release]
   builder.Append("zip");

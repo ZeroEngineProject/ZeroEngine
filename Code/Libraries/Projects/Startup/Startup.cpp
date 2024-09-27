@@ -195,7 +195,7 @@ void ZeroStartup::Initialize()
   Zilch::Module module;
   mState = module.Link();
 
-#if !defined(ZeroDebug) && !defined(ZeroTargetOsEmscripten)
+#if !defined(ZeroDebug) && !defined(ZERO_TARGETOS_EMSCRIPTEN)
   mState->SetTimeout(5);
 #endif
 
@@ -326,7 +326,7 @@ void ZeroStartup::Startup()
   // On Emscripten, the window full screen can only be done by a user
   // action. Setting it on startup causes an abrupt change the first time
   // the user click or hits a button.
-#if !defined(ZeroTargetOsEmscripten)
+#if !defined(ZERO_TARGETOS_EMSCRIPTEN)
   if (state == WindowState::Fullscreen)
     state = WindowState::Maximized;
 #endif

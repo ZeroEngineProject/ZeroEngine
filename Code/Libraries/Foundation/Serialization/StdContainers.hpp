@@ -8,8 +8,8 @@
 #include <algorithm>
 #include <utility>
 
-#include "Graph.hpp"
-#include "StdString.hpp"
+#include "Memory/Graph.hpp"
+#include "StlBinding/StdString.hpp"
 #include "Serialization\SerializationTraits.hpp"
 #include "Serialization\Serialization.hpp"
 

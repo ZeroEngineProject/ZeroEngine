@@ -69,7 +69,7 @@ BuildId BuildId::GetCurrentApplicationId()
   id.mRevisionId = GetRevisionNumber();               // Revision [1501]
   id.mShortChangeSet = GetShortChangeSetString();     // ShortChangeset [fb02756c46a4]
   id.mMsSinceEpoch = ZeroMsSinceEpoch;                // MsSinceEpoch [1574702096290]
-  id.mTargetOs = ZeroTargetOsName;                    // TargetOs [Windows]
+  id.mTargetOs = ZERO_TARGETOS_NAME;                    // TargetOs [Windows]
   id.mArchitecture = ZeroArchitectureName;            // Architecture [x86]
   id.mConfig = ZeroConfigName;                        // Config [Release]
   id.mPackageExtension = "zip";                       // Extension [zip]
@@ -278,13 +278,13 @@ bool BuildId::IsPlatformEmpty() const
 
 bool BuildId::IsForThisPlatform() const
 {
-  // return mTargetOs == ZeroTargetOsName && mArchitecture == ZeroArchitectureName && mConfig == ZeroConfigName;
+  // return mTargetOs == ZERO_TARGETOS_NAME && mArchitecture == ZeroArchitectureName && mConfig == ZeroConfigName;
   return true;
 }
 
 void BuildId::SetToThisPlatform()
 {
-  mTargetOs = ZeroTargetOsName;
+  mTargetOs = ZERO_TARGETOS_NAME;
   mArchitecture = ZeroArchitectureName;
   mConfig = ZeroConfigName;
 }

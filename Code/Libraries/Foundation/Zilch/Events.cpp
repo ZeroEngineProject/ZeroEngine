@@ -11,7 +11,7 @@ namespace Zilch
 
 // When we attempt to 'get an event handler' from a type that is actually an EventHandler
 // then we really don't need to do anything except return ourself
-EventHandler* EventHandlerGetEventHandlerFunction(const BoundType* type, const byte* data)
+EventHandler* EventHandlerGetEventHandlerFunction(const BoundType* type, const ::byte* data)
 {
   return (EventHandler*)data;
 }

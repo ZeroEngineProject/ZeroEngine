@@ -1,4 +1,4 @@
-add_definitions(-DZeroCompilerMsvc=1 -DZeroCompilerName="Msvc")
+add_definitions(-DZERO_COMPILER_MSVC=1 -DZERO_COMPILER_NAME="Msvc")
 
 if (ZERO_EXCEPTIONS)
   set(MSVC_EXCEPTION_OPTION "-EHsc")
