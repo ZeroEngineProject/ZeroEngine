@@ -101,8 +101,7 @@ void VersionSelector::FindInstalledVersions(StringParam searchPath)
     {
       // Add checksum logic to validate installs here?
 
-      // If this folder contains an exe (a build) then load the version,
-      // otherwise recurse.
+      // If this folder contains an exe (a build) then load the version, otherwise recurse.
       String executablePath = FilePath::Combine(fullDirName, GetEditorExecutableFileName());
       if (FileExists(executablePath) == false)
         FindInstalledVersions(fullDirName);

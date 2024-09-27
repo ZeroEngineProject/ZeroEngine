@@ -420,8 +420,7 @@ bool ZilchPluginSource::CheckIdeAndInformUser()
     DoNotifyWarning("Zilch Plugin", "No IDE was detected, you must first install a C++ IDE for your platform");
 
 #if defined(ZERO_TARGETOS_WINDOWS)
-    Os::OpenUrl("https://www.visualstudio.com/"
-                "post-download-vs?sku=community&clcid=0x409");
+    Os::OpenUrl("https://www.visualstudio.com/post-download-vs?sku=community&clcid=0x409");
 #endif
     return false;
   }
