@@ -1,0 +1,298 @@
+add_library(EEPPUI)
+
+zero_setup_library(EEPPUI ${CMAKE_CURRENT_LIST_DIR} TRUE)
+zero_use_precompiled_header(EEPPUI ${CMAKE_CURRENT_LIST_DIR})
+
+set(EEPPUI_SRC_ABSTRACT
+    ${CMAKE_CURRENT_LIST_DIR}/abstract/uiabstracttableview.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/abstract/uiabstracttableview.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/abstract/uiabstractview.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/abstract/uiabstractview.hpp
+)
+
+set(EEPPUI_SRC_CSS
+    ${CMAKE_CURRENT_LIST_DIR}/css/animationdefinition.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/animationdefinition.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/drawableimageparser.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/drawableimageparser.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/elementdefinition.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/elementdefinition.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/keyframesdefinition.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/keyframesdefinition.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/mediaquery.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/mediaquery.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/propertydefinition.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/propertydefinition.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/propertyidset.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/propertyspecification.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/propertyspecification.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/shorthanddefinition.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/shorthanddefinition.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheet.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheet.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetlength.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetlength.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetparser.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetparser.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetpropertiesparser.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetpropertiesparser.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetproperty.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetproperty.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetpropertyanimation.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetpropertyanimation.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetselector.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetselector.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetselectorparser.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetselectorparser.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetselectorrule.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetselectorrule.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetspecification.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetspecification.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetstyle.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetstyle.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetvariable.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/stylesheetvariable.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/timingfunction.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/timingfunction.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/transitiondefinition.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/css/transitiondefinition.hpp
+
+)
+
+set(EEPPUI_SRC_DOC
+    ${CMAKE_CURRENT_LIST_DIR}/doc/documentview.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/documentview.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/foldrangeservice.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/foldrangeservice.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/foldrangetype.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/syntaxcolorscheme.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/syntaxcolorscheme.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/syntaxdefinition.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/syntaxdefinition.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/syntaxdefinitionmanager.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/syntaxdefinitionmanager.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/syntaxhighlighter.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/syntaxhighlighter.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/syntaxtokenizer.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/syntaxtokenizer.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/textdocument.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/textdocument.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/textdocumentline.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/textformat.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/textformat.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/textposition.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/textrange.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/textundostack.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/doc/textundostack.hpp
+
+)
+
+set(EEPPUI_SRC_MODELS 
+    ${CMAKE_CURRENT_LIST_DIR}/models/csspropertiesmodel.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/filesystemmodel.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/filesystemmodel.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/itemlistmodel.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/model.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/model.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/modeleditingdelegate.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/modelindex.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/modelindex.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/modelrole.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/modelselection.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/modelselection.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/persistentmodelindex.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/persistentmodelindex.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/sortingproxymodel.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/sortingproxymodel.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/variant.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/widgettreemodel.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/models/widgettreemodel.hpp
+
+)
+
+set(EEPPUI_SRC
+    ${CMAKE_CURRENT_LIST_DIR}/border.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/border.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/keyboardshortcut.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/keyboardshortcut.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiapplication.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiapplication.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uibackgrounddrawable.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uibackgrounddrawable.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiborderdrawable.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiborderdrawable.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uicheckbox.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uicheckbox.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiclip.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiclip.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uicodeeditor.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uicodeeditor.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uicombobox.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uicombobox.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiconsole.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiconsole.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uidatabind.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uidropdownlist.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uidropdownlist.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uieventdispatcher.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uieventdispatcher.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uifiledialog.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uifiledialog.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uifontstyleconfig.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uigridlayout.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uigridlayout.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uihelper.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiicon.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiicon.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiicontheme.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiicontheme.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiiconthememanager.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiiconthememanager.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiimage.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiimage.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiitemcontainer.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uilayout.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uilayout.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uilinearlayout.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uilinearlayout.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uilistbox.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uilistbox.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uilistboxitem.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uilistboxitem.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uilistview.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uilistview.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiloader.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiloader.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimenu.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimenu.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimenubar.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimenubar.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimenucheckbox.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimenucheckbox.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimenuitem.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimenuitem.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimenuradiobutton.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimenuradiobutton.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimenuseparator.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimenuseparator.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimenusubmenu.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimenusubmenu.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimessagebox.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimessagebox.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimultimodelview.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uimultimodelview.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uinode.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uinode.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uinodedrawable.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uinodedrawable.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uipopupmenu.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uipopupmenu.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiprogressbar.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiprogressbar.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uipushbutton.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uipushbutton.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiradiobutton.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiradiobutton.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uirelativelayout.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uirelativelayout.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiroot.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiroot.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiscenenode.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiscenenode.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiscrollablewidget.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiscrollablewidget.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiscrollbar.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiscrollbar.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiscrollview.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiscrollview.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiselectbutton.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiselectbutton.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiskin.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiskin.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiskinstate.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiskinstate.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uislider.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uislider.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uispinbox.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uispinbox.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uisplitter.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uisplitter.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uisprite.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uisprite.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uistacklayout.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uistacklayout.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uistackwidget.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uistackwidget.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uistate.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uistate.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uistyle.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uistyle.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitab.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitab.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitablecell.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitableheadercolumn.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitableheadercolumn.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitablerow.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitableview.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitableview.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitabwidget.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitabwidget.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitextedit.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitextedit.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitextinput.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitextinput.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitextinputpassword.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitextinputpassword.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitextureregion.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitextureregion.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitextview.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitextview.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitheme.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitheme.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uithememanager.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uithememanager.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitooltip.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitooltip.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitouchdraggablewidget.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitouchdraggablewidget.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitreeview.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uitreeview.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiviewpager.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiviewpager.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiwidget.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiwidget.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiwidgetcreator.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiwidgetcreator.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiwidgettable.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiwidgettable.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiwidgettablerow.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiwidgettablerow.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiwindow.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/uiwindow.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/undostack.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/undostack.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/widgetcommandexecuter.hpp
+
+)
+
+target_sources(EEPPUI
+  PRIVATE
+
+  ${EEPPUI_SRC_ABSTRACT}
+  ${EEPPUI_SRC_CSS}
+  ${EEPPUI_SRC_DOC}
+  ${EEPPUI_SRC_MODELS}
+  ${EEPPUI_SRC}
+  ${CMAKE_CURRENT_LIST_DIR}/Precompiled.cpp
+  ${CMAKE_CURRENT_LIST_DIR}/Precompiled.hpp
+  ${CMAKE_CURRENT_LIST_DIR}/EEPPUIStandard.cpp
+  ${CMAKE_CURRENT_LIST_DIR}/EEPPUIStandard.hpp
+)
+
+target_link_libraries(EEPPUI
+  PUBLIC
+    Foundation
+    Engine
+    Graphics
+    ZilchShaders
+)
