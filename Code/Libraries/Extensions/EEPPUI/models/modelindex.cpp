@@ -1,7 +1,7 @@
 #include <eepp/ui/models/model.hpp>
 #include <eepp/ui/models/modelindex.hpp>
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 ModelIndex ModelIndex::sibling( int row, int column ) const {
 	if ( !isValid() )
@@ -32,4 +32,4 @@ ModelIndex ModelIndex::parent() const {
 	return mModel ? mModel->parentIndex( *this ) : ModelIndex();
 }
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models

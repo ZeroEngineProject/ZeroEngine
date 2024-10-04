@@ -7,9 +7,9 @@
 #include <eepp/ui/uimenuradiobutton.hpp>
 #include <eepp/ui/uimenuseparator.hpp>
 #include <eepp/ui/uimenusubmenu.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIMenu : public UIWidget {
   public:
@@ -74,7 +74,7 @@ class ZeroShared UIMenu : public UIWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	UINode* getOwnerNode() const;
 
@@ -160,6 +160,6 @@ class ZeroShared UIMenu : public UIWidget {
 	void unselectSelected();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

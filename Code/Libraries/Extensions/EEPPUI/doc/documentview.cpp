@@ -8,7 +8,7 @@
 #define EE_VERIFY_STRUCTURAL_CONSISTENCY
 #endif
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 LineWrapMode DocumentView::toLineWrapMode( String mode ) {
 	String::toLowerInPlace( mode );
@@ -407,8 +407,8 @@ bool DocumentView::isLineVisible( Int64 docIdx ) const {
 			 mDocLineToVisibleIndex[docIdx] != static_cast<Int64>( VisibleIndex::invalid ) );
 }
 
-std::vector<TextRange> DocumentView::intersectsFoldedRegions( const TextRange& range ) const {
-	std::vector<TextRange> folds;
+Array<TextRange> DocumentView::intersectsFoldedRegions( const TextRange& range ) const {
+	Array<TextRange> folds;
 	for ( const auto& fold : mFoldedRegions ) {
 		if ( fold.intersectsLineRange( range ) )
 			folds.push_back( fold );
@@ -544,7 +544,7 @@ void DocumentView::ensureCursorVisibility() {
 	if ( mFoldedRegions.empty() )
 		return;
 	const auto& selections = mDoc->getSelections();
-	std::vector<TextRange> ranges;
+	Array<TextRange> ranges;
 	for ( const auto& selection : selections ) {
 		auto res = isInFoldedRange( selection, true );
 		if ( res && std::find( ranges.begin(), ranges.end(), *res ) == ranges.end() ) {
@@ -562,7 +562,7 @@ void DocumentView::onFoldRegionsUpdated() {
 	if ( mUpdatingFoldRegions )
 		return;
 	BoolScopedOp op( mUpdatingFoldRegions, true );
-	std::vector<TextRange> add;
+	Array<TextRange> add;
 	for ( const auto& region : mFoldedRegions ) {
 		if ( !mDoc->getFoldRangeService().isFoldingRegionInLine( region.start().line() ) )
 			add.push_back( region );
@@ -736,4 +736,4 @@ void DocumentView::verifyStructuralConsistency() {
 #endif
 }
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc

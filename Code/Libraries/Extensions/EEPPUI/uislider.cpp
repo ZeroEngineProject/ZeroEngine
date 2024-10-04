@@ -5,7 +5,7 @@
 #include <eepp/ui/uislider.hpp>
 #include <eepp/ui/uithememanager.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UISlider* UISlider::New() {
 	return NewWithTag( "slider", UIOrientation::Vertical );
@@ -587,7 +587,7 @@ String UISlider::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UISlider::getPropertiesImplemented() const {
+Array<PropertyId> UISlider::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::Orientation, PropertyId::MinValue,		 PropertyId::MaxValue,
 				   PropertyId::Value,		PropertyId::ClickStep,		 PropertyId::PageStep,
@@ -672,4 +672,4 @@ void UISlider::onAutoSize() {
 	}
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

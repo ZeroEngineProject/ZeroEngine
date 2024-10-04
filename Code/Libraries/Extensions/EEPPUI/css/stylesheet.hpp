@@ -7,7 +7,7 @@
 #include <eepp/ui/css/stylesheetstyle.hpp>
 #include <memory>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 class ZeroShared StyleSheet {
   public:
@@ -26,9 +26,9 @@ class ZeroShared StyleSheet {
 	std::shared_ptr<ElementDefinition> getElementStyles( UIWidget* element,
 														 const bool& applyPseudo = false ) const;
 
-	const std::vector<std::shared_ptr<StyleSheetStyle>>& getStyles() const;
+	const Array<std::shared_ptr<StyleSheetStyle>>& getStyles() const;
 
-	std::vector<std::shared_ptr<StyleSheetStyle>>
+	Array<std::shared_ptr<StyleSheetStyle>>
 	getStylesFromSelector( const String& selector ) const;
 
 	std::shared_ptr<StyleSheetStyle> getStyleFromSelector( const String& selector,
@@ -62,10 +62,10 @@ class ZeroShared StyleSheet {
 
 	StyleSheet getAllWithMarker( const Uint32& marker ) const;
 
-	std::vector<std::shared_ptr<StyleSheetStyle>>
+	Array<std::shared_ptr<StyleSheetStyle>>
 	findStyleFromSelectorName( const String& selector ) const;
 
-	bool refreshCacheFromStyles( const std::vector<std::shared_ptr<StyleSheetStyle>>& styles );
+	bool refreshCacheFromStyles( const Array<std::shared_ptr<StyleSheetStyle>>& styles );
 
 	const Uint64& getVersion() const;
 
@@ -74,7 +74,7 @@ class ZeroShared StyleSheet {
   protected:
 	Uint64 mVersion{ 1 };
 	Uint32 mMarker{ 0 };
-	std::vector<std::shared_ptr<StyleSheetStyle>> mNodes;
+	Array<std::shared_ptr<StyleSheetStyle>> mNodes;
 	HashMap<size_t, StyleSheetStyleVector> mNodeIndex;
 	MediaQueryList::vector mMediaQueryList;
 	KeyframesDefinitionMap mKeyframesMap;
@@ -88,6 +88,6 @@ class ZeroShared StyleSheet {
 	bool addStyleToNodeIndex( StyleSheetStyle* style );
 };
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif

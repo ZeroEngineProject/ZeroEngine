@@ -1,10 +1,10 @@
 #include <eepp/ui/uieventdispatcher.hpp>
 #include <eepp/ui/uiscenenode.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 #include <eepp/window/inputevent.hpp>
 #include <eepp/window/window.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIEventDispatcher* UIEventDispatcher::New( SceneNode* sceneNode ) {
 	return eeNew( UIEventDispatcher, ( sceneNode ) );
@@ -59,4 +59,4 @@ void UIEventDispatcher::checkTabPress( const Uint32& KeyCode, const Uint32& mod 
 	}
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

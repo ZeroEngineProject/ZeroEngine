@@ -3,7 +3,7 @@
 
 #include <eepp/ui/uitableview.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIListView : public UITableView {
   public:
@@ -19,6 +19,6 @@ class ZeroShared UIListView : public UITableView {
 	UIListView();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UILISTVIEW_HPP

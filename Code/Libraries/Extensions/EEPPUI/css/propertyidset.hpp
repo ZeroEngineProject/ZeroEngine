@@ -5,7 +5,7 @@
 #include <eepp/ui/css/propertydefinition.hpp>
 #include <set>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 class PropertyIdSetIterator;
 
@@ -113,6 +113,6 @@ PropertyIdSetIterator PropertyIdSet::erase( const PropertyIdSetIterator& it_in )
 	return it;
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif // EE_UI_CSS_PROPERTYIDSET_HPP

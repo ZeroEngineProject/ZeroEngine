@@ -2,7 +2,7 @@
 #include <eepp/ui/uimenuradiobutton.hpp>
 #include <eepp/ui/uitheme.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIMenuRadioButton* UIMenuRadioButton::New() {
 	return eeNew( UIMenuRadioButton, () );
@@ -149,7 +149,7 @@ String UIMenuRadioButton::getPropertyString( const PropertyDefinition* propertyD
 	}
 }
 
-std::vector<PropertyId> UIMenuRadioButton::getPropertiesImplemented() const {
+Array<PropertyId> UIMenuRadioButton::getPropertiesImplemented() const {
 	auto props = UIMenuItem::getPropertiesImplemented();
 	auto local = { PropertyId::Selected };
 	props.insert( props.end(), local.begin(), local.end() );
@@ -172,4 +172,4 @@ bool UIMenuRadioButton::applyProperty( const StyleSheetProperty& attribute ) {
 	return true;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

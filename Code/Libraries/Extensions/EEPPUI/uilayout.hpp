@@ -1,9 +1,9 @@
 #ifndef EE_GRAPHICS_UILAYOUT_HPP
 #define EE_GRAPHICS_UILAYOUT_HPP
 
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UILayout : public UIWidget {
   public:
@@ -54,6 +54,6 @@ class ZeroShared UILayout : public UIWidget {
 	Float getMatchParentHeight() const;
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

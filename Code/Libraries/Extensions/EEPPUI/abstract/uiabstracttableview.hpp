@@ -8,14 +8,14 @@
 #include <eepp/ui/uitablerow.hpp>
 #include <unordered_map>
 
-using namespace EE::Math;
+using Zero::Math;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 class UIPushButton;
 class UILinearLayout;
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
-namespace EE { namespace UI { namespace Abstract {
+namespace Zero { namespace UI { namespace Abstract {
 
 class ZeroShared UIAbstractTableView : public UIAbstractView {
   public:
@@ -37,7 +37,7 @@ class ZeroShared UIAbstractTableView : public UIAbstractView {
 
 	void setColumnHidden( const size_t& column, bool hidden );
 
-	void setColumnsHidden( const std::vector<size_t>& columns, bool hidden );
+	void setColumnsHidden( const Array<size_t>& columns, bool hidden );
 
 	virtual void selectAll();
 
@@ -83,14 +83,14 @@ class ZeroShared UIAbstractTableView : public UIAbstractView {
 
 	void setSortIconSize( const size_t& sortIconSize );
 
-	void setColumnsVisible( const std::vector<size_t>& columns );
+	void setColumnsVisible( const Array<size_t>& columns );
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	bool getRowSearchByName() const;
 
@@ -145,9 +145,9 @@ class ZeroShared UIAbstractTableView : public UIAbstractView {
 
 	Float mRowHeight{ 0 };
 	Float mHeaderHeight{ 16 };
-	mutable std::vector<UITableRow*> mRows;
-	mutable std::vector<ColumnData> mColumn;
-	mutable std::vector<HashMap<int, UIWidget*>> mWidgets;
+	mutable Array<UITableRow*> mRows;
+	mutable Array<ColumnData> mColumn;
+	mutable Array<HashMap<int, UIWidget*>> mWidgets;
 	UILinearLayout* mHeader{ nullptr };
 	UILinearLayout* mRowHeader{ nullptr };
 	Float mDragBorderDistance{ 8 };
@@ -161,7 +161,7 @@ class ZeroShared UIAbstractTableView : public UIAbstractView {
 	Action* mSearchTextAction{ nullptr };
 	String mSearchText;
 	size_t mMainColumn{ 0 };
-	std::unordered_map<UIWidget*, std::vector<Uint32>> mWidgetsClickCbId;
+	std::unordered_map<UIWidget*, Array<Uint32>> mWidgetsClickCbId;
 	Float mRowHeaderWidth{ 0 };
 
 	virtual ~UIAbstractTableView();
@@ -226,6 +226,6 @@ class ZeroShared UIAbstractTableView : public UIAbstractView {
 	void updateRowHeader( int realRowIndex, const ModelIndex& index, Float yOffset );
 };
 
-}}} // namespace EE::UI::Abstract
+}}} // namespace Zero::UI::Abstract
 
 #endif // EE_UI_UIABSTRACTTABLEVIEW_HPP

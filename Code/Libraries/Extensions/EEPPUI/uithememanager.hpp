@@ -4,7 +4,7 @@
 #include <eepp/ui/base.hpp>
 #include <eepp/ui/uitheme.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UINode;
 
@@ -76,6 +76,6 @@ class ZeroShared UIThemeManager : public ResourceManager<UITheme> {
 	UIThemeManager();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

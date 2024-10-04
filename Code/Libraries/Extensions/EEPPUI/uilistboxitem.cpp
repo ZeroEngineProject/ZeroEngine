@@ -2,7 +2,7 @@
 #include <eepp/ui/uilistboxitem.hpp>
 #include <eepp/ui/uiskinstate.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIListBoxItem* UIListBoxItem::New() {
 	return eeNew( UIListBoxItem, () );
@@ -151,4 +151,4 @@ void UIListBoxItem::onStateChange() {
 	UITextView::onStateChange();
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

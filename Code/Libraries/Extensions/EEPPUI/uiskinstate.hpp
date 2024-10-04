@@ -3,7 +3,7 @@
 
 #include <eepp/ui/uistate.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UISkin;
 
@@ -38,6 +38,6 @@ class ZeroShared UISkinState : public UIState {
 	void onStateChange();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

@@ -4,7 +4,7 @@
 #include <eepp/ui/uitextinputpassword.hpp>
 #include <eepp/ui/uithememanager.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UITextInputPassword* UITextInputPassword::New() {
 	return eeNew( UITextInputPassword, () );
@@ -133,4 +133,4 @@ const String& UITextInputPassword::getText() const {
 	return UITextView::getText();
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

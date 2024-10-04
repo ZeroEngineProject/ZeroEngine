@@ -4,7 +4,7 @@
 #include <eepp/config.hpp>
 #include <eepp/core/string.hpp>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 enum class PropertyId : Uint32 {
 	Id = String::hash( "id" ),
@@ -300,8 +300,8 @@ class ZeroShared PropertyDefinition {
   protected:
 	String mName;
 	String::HashType mId;
-	std::vector<String> mAliases;
-	std::vector<Uint32> mAliasesHash;
+	Array<String> mAliases;
+	Array<Uint32> mAliasesHash;
 	String mDefaultValue;
 	bool mInherited;
 	bool mIndexed;
@@ -309,6 +309,6 @@ class ZeroShared PropertyDefinition {
 	PropertyType mPropertyType;
 };
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif

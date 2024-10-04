@@ -7,15 +7,15 @@
 #include <map>
 #include <vector>
 
-using namespace EE::Math;
-using namespace EE::System;
+using Zero::Math;
+using Zero::System;
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 class ZeroShared TransitionDefinition {
   public:
 	static HashMap<String, TransitionDefinition>
-	parseTransitionProperties( const std::vector<const StyleSheetProperty*>& styleSheetProperties );
+	parseTransitionProperties( const Array<const StyleSheetProperty*>& styleSheetProperties );
 
 	TransitionDefinition() : timingFunction( Ease::Linear ) {}
 
@@ -23,7 +23,7 @@ class ZeroShared TransitionDefinition {
 
 	Ease::Interpolation getTimingFunction() const { return timingFunction; }
 
-	std::vector<double> getTimingFunctionParameters() const { return timingFunctionParameters; }
+	Array<double> getTimingFunctionParameters() const { return timingFunctionParameters; }
 
 	const Time& getDelay() const { return delay; }
 
@@ -31,13 +31,13 @@ class ZeroShared TransitionDefinition {
 
 	String property;
 	Ease::Interpolation timingFunction = Ease::Interpolation::Linear;
-	std::vector<double> timingFunctionParameters{};
+	Array<double> timingFunctionParameters{};
 	Time delay = Time::Zero;
 	Time duration = Time::Zero;
 };
 
 typedef HashMap<String, TransitionDefinition> TransitionsMap;
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif

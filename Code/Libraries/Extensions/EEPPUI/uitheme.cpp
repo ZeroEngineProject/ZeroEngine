@@ -16,9 +16,9 @@
 #include <eepp/ui/uitheme.hpp>
 #include <eepp/ui/uithememanager.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
-static String elemNameFromSkin( const std::vector<String>& nameParts ) {
+static String elemNameFromSkin( const Array<String>& nameParts ) {
 	String str;
 	int lPart = (int)nameParts.size() - 1;
 
@@ -84,7 +84,7 @@ UITheme* UITheme::loadFromTextureAtlas( UITheme* tTheme, Graphics::TextureAtlas*
 			icon->setSize( textureRegion->getPixelsSize().getWidth(), textureRegion );
 			tTheme->getIconTheme()->add( icon );
 		} else if ( String::startsWith( name, sAbbr ) ) {
-			std::vector<String> dotParts = String::split( name, '.' );
+			Array<String> dotParts = String::split( name, '.' );
 
 			if ( dotParts.size() >= 3 && dotParts[dotParts.size() - 1] == "9" ) {
 				String realName;
@@ -97,9 +97,9 @@ UITheme* UITheme::loadFromTextureAtlas( UITheme* tTheme, Graphics::TextureAtlas*
 					}
 				}
 
-				std::vector<String> nameParts = String::split( realName, '_' );
+				Array<String> nameParts = String::split( realName, '_' );
 
-				std::vector<String> srcRect =
+				Array<String> srcRect =
 					String::split( dotParts[dotParts.size() - 2], '_' );
 				int l = 0, t = 0, r = 0, b = 0;
 
@@ -123,7 +123,7 @@ UITheme* UITheme::loadFromTextureAtlas( UITheme* tTheme, Graphics::TextureAtlas*
 				if ( -1 != stateNum )
 					skins[skinName]->setStateDrawable( stateNum, drawable );
 			} else {
-				std::vector<String> nameParts = String::split( name, '_' );
+				Array<String> nameParts = String::split( name, '_' );
 
 				if ( nameParts.size() >= 3 ) {
 					int lPart = nameParts.size() - 1;
@@ -164,8 +164,8 @@ UITheme* UITheme::loadFromDirectroy( UITheme* tTheme, const String& Path,
 
 	tTheme->setTextureAtlas( tSG );
 
-	std::vector<String> resources = FileSystem::filesGetInPath( RPath );
-	std::vector<String>::iterator it;
+	Array<String> resources = FileSystem::filesGetInPath( RPath );
+	Array<String>::iterator it;
 	String sAbbr( tTheme->getAbbr() + "_" );
 	String sAbbrIcon( tTheme->getAbbr() + "_icon_" );
 	std::map<String, UISkin*> skins;
@@ -183,7 +183,7 @@ UITheme* UITheme::loadFromDirectroy( UITheme* tTheme, const String& Path,
 				icon->setSize( drawable->getPixelsSize().getWidth(), drawable );
 				tTheme->getIconTheme()->add( icon );
 			} else if ( String::startsWith( name, sAbbr ) ) {
-				std::vector<String> dotParts = String::split( name, '.' );
+				Array<String> dotParts = String::split( name, '.' );
 
 				if ( dotParts.size() >= 3 && dotParts[dotParts.size() - 1] == "9" ) {
 					String realName;
@@ -196,9 +196,9 @@ UITheme* UITheme::loadFromDirectroy( UITheme* tTheme, const String& Path,
 						}
 					}
 
-					std::vector<String> nameParts = String::split( realName, '_' );
+					Array<String> nameParts = String::split( realName, '_' );
 
-					std::vector<String> srcRect =
+					Array<String> srcRect =
 						String::split( dotParts[dotParts.size() - 2], '_' );
 					int l = 0, t = 0, r = 0, b = 0;
 
@@ -223,7 +223,7 @@ UITheme* UITheme::loadFromDirectroy( UITheme* tTheme, const String& Path,
 					if ( -1 != stateNum )
 						skins[skinName]->setStateDrawable( stateNum, drawable );
 				} else {
-					std::vector<String> nameParts = String::split( name, '_' );
+					Array<String> nameParts = String::split( name, '_' );
 
 					if ( nameParts.size() >= 3 ) {
 						int lPart = nameParts.size() - 1;
@@ -373,4 +373,4 @@ void UITheme::setDefaultFont( Font* font ) {
 	mDefaultFont = font;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

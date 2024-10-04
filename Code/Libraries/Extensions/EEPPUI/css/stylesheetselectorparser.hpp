@@ -3,7 +3,7 @@
 
 #include <eepp/ui/css/stylesheetselector.hpp>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 class ZeroShared StyleSheetSelectorParser {
   public:
@@ -11,8 +11,8 @@ class ZeroShared StyleSheetSelectorParser {
 
 	explicit StyleSheetSelectorParser( String name );
 
-	std::vector<StyleSheetSelector> selectors;
+	Array<StyleSheetSelector> selectors;
 };
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 #endif

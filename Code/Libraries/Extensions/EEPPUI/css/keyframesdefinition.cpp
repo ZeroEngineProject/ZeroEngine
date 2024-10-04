@@ -1,9 +1,9 @@
 #include <eepp/ui/css/keyframesdefinition.hpp>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 KeyframesDefinition KeyframesDefinition::parseKeyframes(
-	const String& name, const std::vector<std::shared_ptr<StyleSheetStyle>>& keyframeBlocks ) {
+	const String& name, const Array<std::shared_ptr<StyleSheetStyle>>& keyframeBlocks ) {
 	KeyframesDefinition def;
 	def.name = name;
 
@@ -60,4 +60,4 @@ const String& KeyframesDefinition::getName() const {
 	return name;
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

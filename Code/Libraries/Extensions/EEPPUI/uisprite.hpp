@@ -1,14 +1,14 @@
 #ifndef EE_UICUISPRITE_HPP
 #define EE_UICUISPRITE_HPP
 
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace Graphics {
+Zero { namespace Graphics {
 class Sprite;
 class TextureRegion;
-}} // namespace EE::Graphics
+}} // namespace Zero::Graphics
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UISprite : public UIWidget {
   public:
@@ -51,7 +51,7 @@ class ZeroShared UISprite : public UIWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
   protected:
 	Graphics::Sprite* mSprite;
@@ -71,6 +71,6 @@ class ZeroShared UISprite : public UIWidget {
 	Uint32 deallocSprite();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

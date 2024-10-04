@@ -3,9 +3,9 @@
 
 #include <eepp/graphics/text.hpp>
 #include <eepp/ui/uifontstyleconfig.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UITextView : public UIWidget {
   public:
@@ -90,7 +90,7 @@ class ZeroShared UITextView : public UIWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	void setTextAlign( const Uint32& align );
 
@@ -135,7 +135,7 @@ class ZeroShared UITextView : public UIWidget {
 		Vector2f initPos;
 		Vector2f endPos;
 	};
-	std::vector<SelPosCache> mSelPosCache;
+	Array<SelPosCache> mSelPosCache;
 	Int32 mLastSelCurInit;
 	Int32 mLastSelCurEnd;
 	bool mSelecting;
@@ -204,7 +204,7 @@ class ZeroShared UIAnchor : public UITextView {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	void setHref( const String& href );
 
@@ -216,6 +216,6 @@ class ZeroShared UIAnchor : public UITextView {
 	virtual Uint32 onKeyDown( const KeyEvent& event );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

@@ -3,7 +3,7 @@
 
 #include <eepp/ui/uidropdownlist.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIComboBox : public UIWidget {
   public:
@@ -34,7 +34,7 @@ class ZeroShared UIComboBox : public UIWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	void loadFromXmlNode( const pugi::xml_node& node );
 
@@ -55,6 +55,6 @@ class ZeroShared UIComboBox : public UIWidget {
 	virtual void onAutoSize();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

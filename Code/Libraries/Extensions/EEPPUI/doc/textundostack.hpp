@@ -7,9 +7,9 @@
 #include <eepp/system/time.hpp>
 #include <eepp/ui/doc/textrange.hpp>
 
-using namespace EE::System;
+using Zero::System;
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 class TextDocument;
 class TextUndoCommand;
@@ -78,6 +78,6 @@ class ZeroShared TextUndoStack {
 	void popUndo( UndoStackContainer& undoStack, UndoStackContainer& redoStack );
 };
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc
 
 #endif // EE_UI_DOC_UNDOSTACK_HPP

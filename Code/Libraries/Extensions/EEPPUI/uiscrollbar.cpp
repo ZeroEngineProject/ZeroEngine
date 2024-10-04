@@ -2,7 +2,7 @@
 #include <eepp/ui/css/propertydefinition.hpp>
 #include <eepp/ui/uiscrollbar.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIScrollBar* UIScrollBar::New() {
 	return eeNew( UIScrollBar, () );
@@ -384,7 +384,7 @@ String UIScrollBar::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIScrollBar::getPropertiesImplemented() const {
+Array<PropertyId> UIScrollBar::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::Orientation,		PropertyId::MinValue,  PropertyId::MaxValue,
 				   PropertyId::Value,			PropertyId::ClickStep, PropertyId::PageStep,
@@ -504,4 +504,4 @@ void UIScrollBar::onPaddingChange() {
 	UIWidget::onPaddingChange();
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

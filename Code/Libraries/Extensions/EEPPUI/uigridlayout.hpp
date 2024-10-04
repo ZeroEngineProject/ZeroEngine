@@ -3,7 +3,7 @@
 
 #include <eepp/ui/uilayout.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIGridLayout : public UILayout {
   public:
@@ -48,7 +48,7 @@ class ZeroShared UIGridLayout : public UILayout {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
@@ -70,6 +70,6 @@ class ZeroShared UIGridLayout : public UILayout {
 	Sizef getTargetElementSize() const;
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

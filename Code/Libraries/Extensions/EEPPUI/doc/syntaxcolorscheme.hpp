@@ -6,9 +6,9 @@
 #include <eepp/system/pack.hpp>
 #include <vector>
 
-using namespace EE::System;
+using Zero::System;
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 using SyntaxStyleType = String::HashType;
 
@@ -256,14 +256,14 @@ class ZeroShared SyntaxColorScheme {
   public:
 	static SyntaxColorScheme getDefault();
 
-	static std::vector<SyntaxColorScheme> loadFromStream( IOStream& stream );
+	static Array<SyntaxColorScheme> loadFromStream( IOStream& stream );
 
-	static std::vector<SyntaxColorScheme> loadFromFile( const String& path );
+	static Array<SyntaxColorScheme> loadFromFile( const String& path );
 
-	static std::vector<SyntaxColorScheme> loadFromMemory( const void* data,
+	static Array<SyntaxColorScheme> loadFromMemory( const void* data,
 														  std::size_t sizeInBytes );
 
-	static std::vector<SyntaxColorScheme> loadFromPack( Pack* pack, String filePackPath );
+	static Array<SyntaxColorScheme> loadFromPack( Pack* pack, String filePackPath );
 
 	struct Style {
 		Style(){};
@@ -313,6 +313,6 @@ class ZeroShared SyntaxColorScheme {
 	const SyntaxColorScheme::Style& getSyntaxStyleFromCache( const SyntaxStyleType& type ) const;
 };
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc
 
 #endif // EE_UI_DOC_SYNTAXCOLORSCHEME_HPP

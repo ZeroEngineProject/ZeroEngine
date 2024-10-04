@@ -17,9 +17,9 @@
 
 using namespace std::literals;
 
-using namespace EE::Network;
+using Zero::Network;
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 // Text document is loosely based on the SerenityOS (https://github.com/SerenityOS/serenity)
 // TextDocument and the lite editor (https://github.com/rxi/lite) implementations.
@@ -1042,7 +1042,7 @@ String TextDocument::getText( const TextRange& range ) const {
 		return mLines[nrange.start().line()].substr(
 			nrange.start().column(), nrange.end().column() - nrange.start().column() );
 	}
-	std::vector<String> lines = { mLines[nrange.start().line()].substr( nrange.start().column() ) };
+	Array<String> lines = { mLines[nrange.start().line()].substr( nrange.start().column() ) };
 	for ( auto i = nrange.start().line() + 1; i <= nrange.end().line() - 1; i++ ) {
 		lines.emplace_back( mLines[i].getText() );
 	}
@@ -1067,8 +1067,8 @@ String TextDocument::getAllSelectedText() const {
 	return text;
 }
 
-std::vector<String> TextDocument::getCommandList() const {
-	std::vector<String> cmds;
+Array<String> TextDocument::getCommandList() const {
+	Array<String> cmds;
 	for ( const auto& cmd : mCommands )
 		cmds.push_back( cmd.first );
 	return cmds;
@@ -1151,7 +1151,7 @@ TextPosition TextDocument::insert( const size_t& cursorIdx, TextPosition positio
 
 	String before = mLines[position.line()].substr( 0, position.column() );
 	String after = mLines[position.line()].substr( position.column() );
-	std::vector<String> lines = text.split( '\n', true );
+	Array<String> lines = text.split( '\n', true );
 	Int64 linesAdd = eemax<Int64>( 0, static_cast<Int64>( lines.size() ) - 1 );
 	for ( auto i = 0; i < linesAdd; i++ )
 		lines[i] = lines[i] + "\n";
@@ -1593,8 +1593,8 @@ void TextDocument::moveTo( const size_t& cursorIdx, int columnOffset ) {
 	setSelection( cursorIdx, positionOffset( getSelection().start(), columnOffset ) );
 }
 
-std::vector<bool> TextDocument::autoCloseBrackets( const String& text ) {
-	static std::vector<std::pair<String::StringBaseType, String::StringBaseType>>
+Array<bool> TextDocument::autoCloseBrackets( const String& text ) {
+	static Array<std::pair<String::StringBaseType, String::StringBaseType>>
 		sAutoCloseBracketsPairs = { { '(', ')' }, { '{', '}' },	  { '[', ']' },
 									{ '"', '"' }, { '\'', '\'' }, { '`', '`' } };
 
@@ -1617,7 +1617,7 @@ std::vector<bool> TextDocument::autoCloseBrackets( const String& text ) {
 	if ( pos == std::numeric_limits<size_t>::max() )
 		return {};
 
-	std::vector<bool> inserted;
+	Array<bool> inserted;
 	inserted.reserve( mSelection.size() );
 	for ( size_t i = 0; i < mSelection.size(); ++i ) {
 		auto& sel = mSelection[i];
@@ -1716,7 +1716,7 @@ void TextDocument::pasteText( String&& text ) {
 	if ( std::count( text.begin(), text.end(), '\n' ) ==
 			 static_cast<Int64>( mSelection.size() ) - 1 &&
 		 text.back() != '\n' ) {
-		std::vector<String> textLines = text.split( '\n', true, false );
+		Array<String> textLines = text.split( '\n', true, false );
 		if ( textLines.size() == mSelection.size() ) {
 			BoolScopedOp op( mDoingTextInput, true );
 			BoolScopedOp op2( mInsertingText, true );
@@ -2316,13 +2316,13 @@ void TextDocument::setAutoCloseBrackets( bool autoCloseBrackets ) {
 	mAutoCloseBrackets = autoCloseBrackets;
 }
 
-const std::vector<std::pair<String::StringBaseType, String::StringBaseType>>&
+const Array<std::pair<String::StringBaseType, String::StringBaseType>>&
 TextDocument::getAutoCloseBracketsPairs() const {
 	return mAutoCloseBracketsPairs;
 }
 
 void TextDocument::setAutoCloseBracketsPairs(
-	const std::vector<std::pair<String::StringBaseType, String::StringBaseType>>&
+	const Array<std::pair<String::StringBaseType, String::StringBaseType>>&
 		autoCloseBracketsPairs ) {
 	mAutoCloseBracketsPairs = autoCloseBracketsPairs;
 }
@@ -2452,7 +2452,7 @@ static constexpr auto MAX_CAPTURES = 12;
 struct FindTypeResult {
 	size_t start{ String::StringType::npos };
 	size_t end{ String::StringType::npos };
-	std::vector<PatternMatcher::Range> captures{};
+	Array<PatternMatcher::Range> captures{};
 };
 
 static FindTypeResult findType( const String& str, const String& findStr,
@@ -2471,7 +2471,7 @@ static FindTypeResult findType( const String& str, const String& findStr,
 				FindTypeResult result{ static_cast<size_t>( matches[0].start ),
 									   static_cast<size_t>( matches[0].end ) };
 				if ( words.getNumMatches() > 1 ) {
-					std::vector<TextPosition> captures;
+					Array<TextPosition> captures;
 					captures.reserve( words.getNumMatches() - 1 );
 					for ( size_t i = 1; i < words.getNumMatches(); i++ ) {
 						result.captures.emplace_back( PatternMatcher::Range{
@@ -2490,7 +2490,7 @@ static FindTypeResult findType( const String& str, const String& findStr,
 				FindTypeResult result{ static_cast<size_t>( matches[0].start ),
 									   static_cast<size_t>( matches[0].end ) };
 				if ( words.getNumMatches() > 1 ) {
-					std::vector<TextPosition> captures;
+					Array<TextPosition> captures;
 					captures.reserve( words.getNumMatches() - 1 );
 					for ( size_t i = 1; i < words.getNumMatches(); i++ ) {
 						result.captures.emplace_back( PatternMatcher::Range{
@@ -2527,7 +2527,7 @@ static FindTypeResult findLastType( const String& str, const String& findStr,
 				FindTypeResult result{ static_cast<size_t>( matches[0].start ),
 									   static_cast<size_t>( matches[0].end ) };
 				if ( words.getNumMatches() > 1 ) {
-					std::vector<TextPosition> captures;
+					Array<TextPosition> captures;
 					captures.reserve( words.getNumMatches() - 1 );
 					for ( size_t i = 1; i < words.getNumMatches(); i++ ) {
 						result.captures.emplace_back(
@@ -2547,7 +2547,7 @@ static FindTypeResult findLastType( const String& str, const String& findStr,
 				FindTypeResult result{ static_cast<size_t>( matches[0].start ),
 									   static_cast<size_t>( matches[0].end ) };
 				if ( words.getNumMatches() > 1 ) {
-					std::vector<TextPosition> captures;
+					Array<TextPosition> captures;
 					captures.reserve( words.getNumMatches() - 1 );
 					for ( size_t i = 1; i < words.getNumMatches(); i++ ) {
 						result.captures.emplace_back(
@@ -2709,7 +2709,7 @@ TextDocument::SearchResult TextDocument::findTextLast( String text, TextPosition
 TextDocument::SearchResult TextDocument::find( const String& text, TextPosition from,
 											   bool caseSensitive, bool wholeWord,
 											   FindReplaceType type, TextRange restrictRange ) {
-	std::vector<String> textLines = text.split( '\n', true, true );
+	Array<String> textLines = text.split( '\n', true, true );
 
 	if ( textLines.empty() || textLines.size() > mLines.size() )
 		return {};
@@ -2791,7 +2791,7 @@ TextDocument::SearchResult TextDocument::find( const String& text, TextPosition 
 TextDocument::SearchResult TextDocument::findLast( const String& text, TextPosition from,
 												   bool caseSensitive, bool wholeWord,
 												   FindReplaceType type, TextRange restrictRange ) {
-	std::vector<String> textLines = text.split( '\n', true, true );
+	Array<String> textLines = text.split( '\n', true, true );
 
 	if ( textLines.empty() || textLines.size() > mLines.size() )
 		return {};
@@ -3094,11 +3094,11 @@ FoldRangeServive& TextDocument::getFoldRangeService() {
 	return mFoldRangeService;
 }
 
-std::vector<TextDocumentLine> TextDocument::getLines() const {
+Array<TextDocumentLine> TextDocument::getLines() const {
 	return mLines;
 }
 
-void TextDocument::setLines( std::vector<TextDocumentLine>&& lines ) {
+void TextDocument::setLines( Array<TextDocumentLine>&& lines ) {
 	mLines = std::move( lines );
 }
 
@@ -3616,4 +3616,4 @@ bool TextSearchParams::isEmpty() {
 	return text.empty();
 }
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc

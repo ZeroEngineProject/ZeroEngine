@@ -8,12 +8,12 @@
 #include <unordered_map>
 #include <vector>
 
-using namespace EE::Window;
-namespace EE { namespace Window {
+using Zero::Window;
+Zero { namespace Window {
 class Input;
-}} // namespace EE::Window
+}} // namespace Zero::Window
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UIWidget;
 
@@ -70,7 +70,7 @@ class ZeroShared KeyBindings {
 
 	void removeCommandKeybind( const String& command );
 
-	void removeCommandsKeybind( const std::vector<String>& command );
+	void removeCommandsKeybind( const Array<String>& command );
 
 	String getCommandFromKeyBind( const Shortcut& keys );
 
@@ -90,7 +90,7 @@ class ZeroShared KeyBindings {
 	std::map<String, Uint64> mKeybindingsInvert;
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 template <> struct std::hash<EE::UI::KeyBindings::Shortcut> {
 	std::size_t operator()( EE::UI::KeyBindings::Shortcut const& s ) const noexcept {

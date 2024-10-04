@@ -1,9 +1,9 @@
 #include <eepp/system/functionstring.hpp>
 #include <eepp/ui/css/timingfunction.hpp>
 
-using namespace EE::System;
+using Zero::System;
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 TimingFunction TimingFunction::parse( String timingFunction ) {
 	String::trimInPlace( timingFunction );
@@ -26,4 +26,4 @@ TimingFunction TimingFunction::parse( String timingFunction ) {
 	}
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

@@ -8,11 +8,11 @@
 #include <eepp/ui/css/shorthanddefinition.hpp>
 #include <functional>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 class UIWidget;
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 class PropertySpecification;
 
@@ -44,7 +44,7 @@ class ZeroShared StyleSheetSpecification {
 	const PropertyDefinition* getProperty( const String& name ) const;
 
 	ShorthandDefinition& registerShorthand( const String& name,
-											const std::vector<String>& properties,
+											const Array<String>& properties,
 											const String& shorthandFuncName );
 
 	const ShorthandDefinition* getShorthand( const Uint32& id ) const;
@@ -79,6 +79,6 @@ class ZeroShared StyleSheetSpecification {
 	void registerDefaultNodeSelectors();
 };
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif

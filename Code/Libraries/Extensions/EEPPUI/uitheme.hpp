@@ -8,14 +8,14 @@
 #include <eepp/ui/uihelper.hpp>
 #include <eepp/ui/uiskin.hpp>
 
-namespace EE { namespace Graphics {
+Zero { namespace Graphics {
 class Sprite;
 class TextureAtlas;
 class Font;
 class Drawable;
-}} // namespace EE::Graphics
+}} // namespace Zero::Graphics
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UIIcon;
 class UIIconTheme;
@@ -102,6 +102,6 @@ class ZeroShared UITheme : protected ResourceManagerMulti<UISkin> {
 	UITheme( const String& name, const String& abbr, Graphics::Font* defaultFont = NULL );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

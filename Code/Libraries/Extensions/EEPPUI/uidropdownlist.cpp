@@ -8,7 +8,7 @@
 #define PUGIXML_HEADER_ONLY
 #include <pugixml/pugixml.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIDropDownList* UIDropDownList::NewWithTag( const String& tag ) {
 	return eeNew( UIDropDownList, ( tag ) );
@@ -394,7 +394,7 @@ String UIDropDownList::getPropertyString( const PropertyDefinition* propertyDef,
 	return "";
 }
 
-std::vector<PropertyId> UIDropDownList::getPropertiesImplemented() const {
+Array<PropertyId> UIDropDownList::getPropertiesImplemented() const {
 	auto props = UITextInput::getPropertiesImplemented();
 	auto local = { PropertyId::PopUpToRoot,	 PropertyId::MaxVisibleItems, PropertyId::SelectedIndex,
 				   PropertyId::SelectedText, PropertyId::ScrollBarStyle,  PropertyId::RowHeight,
@@ -414,4 +414,4 @@ void UIDropDownList::loadFromXmlNode( const pugi::xml_node& node ) {
 	endAttributesTransaction();
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

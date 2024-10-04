@@ -3,7 +3,7 @@
 
 #include <eepp/ui/uiwindow.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UITextEdit;
 class UITextInput;
@@ -72,6 +72,6 @@ class ZeroShared UIMessageBox : public UIWindow {
 
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

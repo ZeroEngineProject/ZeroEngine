@@ -2,7 +2,7 @@
 #include <eepp/ui/uimenucheckbox.hpp>
 #include <eepp/ui/uitheme.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIMenuCheckBox* UIMenuCheckBox::New() {
 	return eeNew( UIMenuCheckBox, () );
@@ -159,11 +159,11 @@ String UIMenuCheckBox::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIMenuCheckBox::getPropertiesImplemented() const {
+Array<PropertyId> UIMenuCheckBox::getPropertiesImplemented() const {
 	auto props = UIPushButton::getPropertiesImplemented();
 	auto local = { PropertyId::Checked };
 	props.insert( props.end(), local.begin(), local.end() );
 	return props;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

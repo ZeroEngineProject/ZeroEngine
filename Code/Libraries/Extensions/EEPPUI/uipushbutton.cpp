@@ -6,7 +6,7 @@
 #include <eepp/ui/uiscenenode.hpp>
 #include <eepp/ui/uithememanager.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 InnerWidgetOrientation UIPushButton::innerWidgetOrientationFromString( String iwo ) {
 	String::toLowerInPlace( iwo );
@@ -160,7 +160,7 @@ void UIPushButton::onAutoSize() {
 	}
 }
 
-Vector2f UIPushButton::calcLayoutSize( const std::vector<UIWidget*>& widgets,
+Vector2f UIPushButton::calcLayoutSize( const Array<UIWidget*>& widgets,
 									   const Rectf& padding ) const {
 	Vector2f totSize{ padding.Left, padding.Top + padding.Bottom };
 	UIWidget* widget;
@@ -182,8 +182,8 @@ Vector2f UIPushButton::calcLayoutSize( const std::vector<UIWidget*>& widgets,
 	return totSize;
 }
 
-Vector2f UIPushButton::packLayout( const std::vector<UIWidget*>& widgets, const Rectf& padding ) {
-	std::vector<Vector2f> pos( widgets.size() );
+Vector2f UIPushButton::packLayout( const Array<UIWidget*>& widgets, const Rectf& padding ) {
+	Array<Vector2f> pos( widgets.size() );
 	Vector2f totSize{ padding.Left, padding.Top + padding.Bottom };
 	UIWidget* widget;
 	for ( size_t i = 0; i < widgets.size(); i++ ) {
@@ -566,7 +566,7 @@ String UIPushButton::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIPushButton::getPropertiesImplemented() const {
+Array<PropertyId> UIPushButton::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::Text,
 				   PropertyId::Icon,
@@ -667,4 +667,4 @@ bool UIPushButton::applyProperty( const StyleSheetProperty& attribute ) {
 	return attributeSet;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

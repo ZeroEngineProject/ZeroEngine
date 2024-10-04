@@ -4,18 +4,18 @@
 #include <eepp/ui/css/shorthanddefinition.hpp>
 #include <eepp/ui/css/stylesheetspecification.hpp>
 
-using namespace EE::System;
+using Zero::System;
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 ShorthandDefinition* ShorthandDefinition::New( const String& name,
-											   const std::vector<String>& properties,
+											   const Array<String>& properties,
 											   const String& shorthandParserName ) {
 	return eeNew( ShorthandDefinition, ( name, properties, shorthandParserName ) );
 }
 
 ShorthandDefinition::ShorthandDefinition( const String& name,
-										  const std::vector<String>& properties,
+										  const Array<String>& properties,
 										  const String& shorthandParserName ) :
 	mName( name ),
 	mFuncName( shorthandParserName ),
@@ -30,7 +30,7 @@ ShorthandDefinition::ShorthandDefinition( const String& name,
 	}
 }
 
-std::vector<StyleSheetProperty> ShorthandDefinition::parse( String value ) const {
+Array<StyleSheetProperty> ShorthandDefinition::parse( String value ) const {
 	return StyleSheetSpecification::instance()->getShorthandParser( mFuncName )( this, value );
 }
 
@@ -46,7 +46,7 @@ ShorthandId ShorthandDefinition::getShorthandId() const {
 	return static_cast<ShorthandId>( mId );
 }
 
-const std::vector<String>& ShorthandDefinition::getProperties() const {
+const Array<String>& ShorthandDefinition::getProperties() const {
 	return mProperties;
 }
 
@@ -72,4 +72,4 @@ bool ShorthandDefinition::isDefinition( const String::HashType& id ) const {
 	return mId == id || isAlias( id );
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

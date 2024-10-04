@@ -24,7 +24,7 @@
 #include <eepp/ui/uiwindow.hpp>
 #include <eepp/window/engine.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UINode* UINode::New() {
 	return eeNew( UINode, () );
@@ -1759,4 +1759,4 @@ Rectf UINode::getLocalDpBounds() const {
 	return Rectf( 0, 0, mDpSize.getWidth(), mDpSize.getHeight() );
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

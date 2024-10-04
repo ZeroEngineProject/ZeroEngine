@@ -4,7 +4,7 @@
 #include <eepp/graphics/statelistdrawable.hpp>
 #include <eepp/ui/base.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UISkin : public StateListDrawable {
   public:
@@ -31,6 +31,6 @@ class ZeroShared UISkin : public StateListDrawable {
 	virtual Rectf getBorderSize();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

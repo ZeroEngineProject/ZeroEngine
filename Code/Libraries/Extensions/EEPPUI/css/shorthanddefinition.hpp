@@ -6,7 +6,7 @@
 #include <eepp/ui/css/stylesheetproperty.hpp>
 #include <functional>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 enum class ShorthandId : Uint32 {
 	Margin = String::hash( "margin" ),
@@ -27,20 +27,20 @@ enum class ShorthandId : Uint32 {
 	MaxSize = String::hash( "max-size" )
 };
 
-typedef std::function<std::vector<StyleSheetProperty>( const ShorthandDefinition* shorthand,
+typedef std::function<Array<StyleSheetProperty>( const ShorthandDefinition* shorthand,
 													   String value )>
 	ShorthandParserFunc;
 
 class ZeroShared ShorthandDefinition {
   public:
 	static ShorthandDefinition* New( const String& name,
-									 const std::vector<String>& properties,
+									 const Array<String>& properties,
 									 const String& shorthandParserName );
 
-	ShorthandDefinition( const String& name, const std::vector<String>& properties,
+	ShorthandDefinition( const String& name, const Array<String>& properties,
 						 const String& shorthandFuncName );
 
-	std::vector<StyleSheetProperty> parse( String value ) const;
+	Array<StyleSheetProperty> parse( String value ) const;
 
 	const String& getName() const;
 
@@ -58,17 +58,17 @@ class ZeroShared ShorthandDefinition {
 
 	ShorthandId getShorthandId() const;
 
-	const std::vector<String>& getProperties() const;
+	const Array<String>& getProperties() const;
 
   protected:
 	String mName;
 	String mFuncName;
 	String::HashType mId;
-	std::vector<String> mAliases;
-	std::vector<String::HashType> mAliasesHash;
-	std::vector<String> mProperties;
+	Array<String> mAliases;
+	Array<String::HashType> mAliasesHash;
+	Array<String> mProperties;
 };
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif

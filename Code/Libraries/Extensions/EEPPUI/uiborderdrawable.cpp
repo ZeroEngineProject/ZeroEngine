@@ -4,7 +4,7 @@
 #include <eepp/ui/uiborderdrawable.hpp>
 #include <eepp/ui/uinode.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIBorderDrawable* UIBorderDrawable::New( const UINode* owner ) {
 	return eeNew( UIBorderDrawable, ( owner ) );
@@ -380,4 +380,4 @@ void UIBorderDrawable::updateBorders() {
 				 mBorders.left.width > 0;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

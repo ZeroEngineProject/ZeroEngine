@@ -3,7 +3,7 @@
 
 #include <eepp/ui/uitouchdraggablewidget.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UIScrollBar;
 
@@ -42,7 +42,7 @@ class ZeroShared UIScrollView : public UITouchDraggableWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
   protected:
 	ScrollViewType mViewType;
@@ -80,6 +80,6 @@ class ZeroShared UIScrollView : public UITouchDraggableWidget {
 	virtual bool isTouchOverAllowedChilds();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

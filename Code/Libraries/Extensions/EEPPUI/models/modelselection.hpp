@@ -5,13 +5,13 @@
 #include <eepp/ui/models/modelindex.hpp>
 #include <functional>
 
-namespace EE { namespace UI { namespace Abstract {
+namespace Zero { namespace UI { namespace Abstract {
 class UIAbstractView;
-}}} // namespace EE::UI::Abstract
+}}} // namespace Zero::UI::Abstract
 
-using namespace EE::UI::Abstract;
+using Zero::UI::Abstract;
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 class ZeroShared ModelSelection {
   public:
@@ -31,7 +31,7 @@ class ZeroShared ModelSelection {
 	}
 
 	void set( const ModelIndex& );
-	void set( const std::vector<ModelIndex>& indexes, bool notify = true );
+	void set( const Array<ModelIndex>& indexes, bool notify = true );
 	void add( const ModelIndex& );
 	void toggle( const ModelIndex& );
 	bool remove( const ModelIndex& );
@@ -47,8 +47,8 @@ class ZeroShared ModelSelection {
 			callback( index );
 	}
 
-	std::vector<ModelIndex> indexes() const {
-		std::vector<ModelIndex> indexes;
+	Array<ModelIndex> indexes() const {
+		Array<ModelIndex> indexes;
 		for ( auto& index : mIndexes )
 			indexes.push_back( index );
 		return indexes;
@@ -75,12 +75,12 @@ class ZeroShared ModelSelection {
 
   protected:
 	UIAbstractView* mView;
-	std::vector<ModelIndex> mIndexes;
+	Array<ModelIndex> mIndexes;
 	bool mDisableNotify{ false };
 	bool mNotifyPending{ false };
 	void notifySelectionChanged();
 };
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models
 
 #endif // EE_UI_MODEL_MODELSELECTION_HPP

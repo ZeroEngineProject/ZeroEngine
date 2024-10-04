@@ -4,9 +4,9 @@
 #include <eepp/ui/base.hpp>
 #include <eepp/ui/uipopupmenu.hpp>
 #include <eepp/ui/uiselectbutton.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIMenuBar : public UIWidget {
   public:
@@ -59,7 +59,7 @@ class ZeroShared UIMenuBar : public UIWidget {
   protected:
 	UIMenuBar();
 
-	typedef std::vector<std::pair<UISelectButton*, UIPopUpMenu*>> MenuBarList;
+	typedef Array<std::pair<UISelectButton*, UIPopUpMenu*>> MenuBarList;
 
 	Uint32 mMenuHeight;
 	UIPopUpMenu* mCurrentMenu;
@@ -85,6 +85,6 @@ class ZeroShared UIMenuBar : public UIWidget {
 	void autoHeight();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

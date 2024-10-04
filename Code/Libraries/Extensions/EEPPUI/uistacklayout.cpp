@@ -1,7 +1,7 @@
 #include <eepp/ui/uiscenenode.hpp>
 #include <eepp/ui/uistacklayout.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIStackLayout* UIStackLayout::NewWithTag( const String& tag ) {
 	return eeNew( UIStackLayout, ( tag ) );
@@ -150,7 +150,7 @@ String UIStackLayout::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIStackLayout::getPropertiesImplemented() const {
+Array<PropertyId> UIStackLayout::getPropertiesImplemented() const {
 	auto props = UILayout::getPropertiesImplemented();
 	auto local = { PropertyId::GravityOwner, PropertyId::RowValign };
 	props.insert( props.end(), local.begin(), local.end() );
@@ -189,7 +189,7 @@ Uint32 UIStackLayout::onMessage( const NodeMessage* Msg ) {
 }
 
 struct NodeLine {
-	std::vector<UIWidget*> nodes;
+	Array<UIWidget*> nodes;
 	Float maxY{ 0 };
 	Float width{ 0 };
 };
@@ -219,7 +219,7 @@ void UIStackLayout::updateLayout() {
 
 	Float curX = mPaddingPx.Left;
 	Node* child = mChild;
-	std::vector<NodeLine> lines = { {} };
+	Array<NodeLine> lines = { {} };
 	Uint32 curLine = 0;
 	bool addedLine = false;
 
@@ -378,4 +378,4 @@ void UIStackLayout::setRowValign( const RowValign& rowValign ) {
 	mRowValign = rowValign;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

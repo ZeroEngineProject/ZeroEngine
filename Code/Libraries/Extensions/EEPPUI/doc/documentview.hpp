@@ -6,10 +6,10 @@
 #include <eepp/ui/doc/textposition.hpp>
 #include <optional>
 
-using namespace EE::Graphics;
-using namespace EE::UI::Doc;
+using Zero::Graphics;
+using Zero::UI::Doc;
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 enum class LineWrapMode { NoWrap, Letter, Word };
 
@@ -44,14 +44,14 @@ class ZeroShared DocumentView {
 	};
 
 	struct LineWrapInfo {
-		std::vector<Int64> wraps;
+		Array<Int64> wraps;
 		Float paddingStart{ 0 };
 	};
 
 	struct VisibleLineInfo {
 		VisibleIndex visibleIndex{ VisibleIndex::invalid };
 		Float paddingStart{ 0 };
-		std::vector<TextPosition> visualLines;
+		Array<TextPosition> visualLines;
 	};
 
 	struct VisibleLineRange {
@@ -141,14 +141,14 @@ class ZeroShared DocumentView {
 
 	bool isOneToOne() const;
 
-	std::vector<TextRange> intersectsFoldedRegions( const TextRange& range ) const;
+	Array<TextRange> intersectsFoldedRegions( const TextRange& range ) const;
 
 	Float getWhiteSpaceWidth() const;
 
 	/* Unfolds any folded region that contains a current non-visible cursor */
 	void ensureCursorVisibility();
 
-	const std::vector<TextRange> getFoldedRegions() const { return mFoldedRegions; }
+	const Array<TextRange> getFoldedRegions() const { return mFoldedRegions; }
 
 	void onFoldRegionsUpdated();
 
@@ -158,10 +158,10 @@ class ZeroShared DocumentView {
 	Config mConfig;
 	Float mMaxWidth{ 0 };
 	Float mWhiteSpaceWidth{ 0 };
-	std::vector<TextPosition> mVisibleLines;
-	std::vector<Float> mVisibleLinesOffset;
-	std::vector<Int64> mDocLineToVisibleIndex;
-	std::vector<TextRange> mFoldedRegions;
+	Array<TextPosition> mVisibleLines;
+	Array<Float> mVisibleLinesOffset;
+	Array<Int64> mDocLineToVisibleIndex;
+	Array<TextRange> mFoldedRegions;
 	bool mPendingReconstruction{ false };
 	bool mUnderConstruction{ false };
 	bool mUpdatingFoldRegions{ false };
@@ -183,6 +183,6 @@ class ZeroShared DocumentView {
 	void moveCursorToVisibleArea();
 };
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc
 
 #endif

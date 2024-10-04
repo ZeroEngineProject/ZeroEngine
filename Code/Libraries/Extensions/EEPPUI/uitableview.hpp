@@ -3,9 +3,9 @@
 
 #include <eepp/ui/abstract/uiabstracttableview.hpp>
 
-using namespace EE::UI::Abstract;
+using Zero::UI::Abstract;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UITableView : public UIAbstractTableView {
   public:
@@ -40,6 +40,6 @@ class ZeroShared UITableView : public UIAbstractTableView {
 	virtual Uint32 onKeyDown( const KeyEvent& event );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UITABLEVIEW_HPP

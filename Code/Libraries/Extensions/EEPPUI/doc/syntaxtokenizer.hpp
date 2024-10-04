@@ -8,9 +8,9 @@
 #include <eepp/ui/doc/syntaxdefinition.hpp>
 #include <string>
 
-using namespace EE::Graphics;
+using Zero::Graphics;
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 using SyntaxTokenLen = Uint32;
 
@@ -67,16 +67,16 @@ struct SyntaxState {
 
 class ZeroShared SyntaxTokenizer {
   public:
-	static std::pair<std::vector<SyntaxToken>, SyntaxState>
+	static std::pair<Array<SyntaxToken>, SyntaxState>
 	tokenize( const SyntaxDefinition& syntax, const String& text, const SyntaxState& state,
 			  const size_t& startIndex = 0, bool skipSubSyntaxSeparator = false );
 
-	static std::pair<std::vector<SyntaxTokenPosition>, SyntaxState>
+	static std::pair<Array<SyntaxTokenPosition>, SyntaxState>
 	tokenizePosition( const SyntaxDefinition& syntax, const String& text,
 					  const SyntaxState& state, const size_t& startIndex = 0,
 					  bool skipSubSyntaxSeparator = false );
 
-	static std::pair<std::vector<SyntaxTokenComplete>, SyntaxState>
+	static std::pair<Array<SyntaxTokenComplete>, SyntaxState>
 	tokenizeComplete( const SyntaxDefinition& syntax, const String& text,
 					  const SyntaxState& state, const size_t& startIndex = 0,
 					  bool skipSubSyntaxSeparator = false );
@@ -91,6 +91,6 @@ class ZeroShared SyntaxTokenizer {
 													const SyntaxState& state );
 };
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc
 
 #endif // EE_UI_DOC_SYNTAXTOKENIZER_HPP

@@ -1,7 +1,7 @@
 #include <eepp/ui/css/stylesheetselector.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 StyleSheetSelector::StyleSheetSelector() : mName( "*" ), mSpecificity( 0 ), mCacheable( true ) {
 	parseSelector( mName );
@@ -209,10 +209,10 @@ bool StyleSheetSelector::select( UIWidget* element, const bool& applyPseudo ) co
 	return true;
 }
 
-std::vector<UIWidget*> StyleSheetSelector::getRelatedElements( UIWidget* element,
+Array<UIWidget*> StyleSheetSelector::getRelatedElements( UIWidget* element,
 															   bool applyPseudo ) const {
-	static std::vector<UIWidget*> EMPTY_ELEMENTS;
-	std::vector<UIWidget*> elements;
+	static Array<UIWidget*> EMPTY_ELEMENTS;
+	Array<UIWidget*> elements;
 	if ( mSelectorRules.empty() )
 		return elements;
 
@@ -347,4 +347,4 @@ const String& StyleSheetSelector::getSelectorTagName() const {
 	return mSelectorRules[0].getTagName();
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

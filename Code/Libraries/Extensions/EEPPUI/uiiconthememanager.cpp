@@ -3,7 +3,7 @@
 #include <eepp/ui/uiiconthememanager.hpp>
 #include <eepp/ui/uithememanager.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 String UIIconThemeManager::getIconNameFromFileName( const String& fileName,
 														 bool retOnlyWithExtension ) {
@@ -105,4 +105,4 @@ bool UIIconThemeManager::isPresent( UIIconTheme* iconTheme ) {
 	return std::find( mIconThemes.begin(), mIconThemes.end(), iconTheme ) != mIconThemes.end();
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

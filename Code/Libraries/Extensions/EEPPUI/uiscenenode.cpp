@@ -25,9 +25,9 @@
 #define PUGIXML_HEADER_ONLY
 #include <pugixml/pugixml.hpp>
 
-using namespace EE::Network;
+using Zero::Network;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UISceneNode* UISceneNode::New( EE::Window::Window* window ) {
 	return eeNew( UISceneNode, ( window ) );
@@ -251,9 +251,9 @@ bool UISceneNode::windowExists( UIWindow* win ) {
 	return mWindowsList.end() != std::find( mWindowsList.begin(), mWindowsList.end(), win );
 }
 
-std::vector<UIWidget*> UISceneNode::loadNode( pugi::xml_node node, Node* parent,
+Array<UIWidget*> UISceneNode::loadNode( pugi::xml_node node, Node* parent,
 											  const Uint32& marker ) {
-	std::vector<UIWidget*> rootWidgets;
+	Array<UIWidget*> rootWidgets;
 
 	if ( NULL == parent )
 		parent = this;
@@ -314,7 +314,7 @@ UIWidget* UISceneNode::loadLayoutNodes( pugi::xml_node node, Node* parent, const
 	String id( node.attribute( "id" ).as_string() );
 	mIsLoading = true;
 	Clock innerClock;
-	std::vector<UIWidget*> widgets = loadNode( node, parent, marker );
+	Array<UIWidget*> widgets = loadNode( node, parent, marker );
 
 	if ( mVerbose ) {
 		std::sort(
@@ -681,7 +681,7 @@ void UISceneNode::invalidateStyle( UIWidget* node, bool tryReinsert ) {
 		if ( NULL != dirtyNode && dirtyNode->isParentOf( node ) )
 			return;
 
-	std::vector<UIWidget*> eraseList;
+	Array<UIWidget*> eraseList;
 
 	for ( auto widget : mDirtyStyle )
 		if ( NULL == widget || node->isParentOf( widget ) )
@@ -711,7 +711,7 @@ void UISceneNode::invalidateStyleState( UIWidget* node, bool disableCSSAnimation
 		if ( NULL != dirtyNode && dirtyNode->isParentOf( node ) )
 			return;
 
-	std::vector<UIWidget*> eraseList;
+	Array<UIWidget*> eraseList;
 
 	for ( auto widget : mDirtyStyleState )
 		if ( NULL == widget || node->isParentOf( widget ) )
@@ -738,7 +738,7 @@ void UISceneNode::invalidateLayout( UILayout* node ) {
 			if ( NULL != dirtyNode && dirtyNode->isParentOf( node ) )
 				return;
 
-		std::vector<UILayout*> eraseList;
+		Array<UILayout*> eraseList;
 
 		for ( auto layout : mDirtyLayouts )
 			if ( NULL == layout ||
@@ -1084,4 +1084,4 @@ void UISceneNode::setMaxInvalidationDepth( const Uint32& maxInvalidationDepth ) 
 	mMaxInvalidationDepth = maxInvalidationDepth;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

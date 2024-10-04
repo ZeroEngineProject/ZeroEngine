@@ -13,7 +13,7 @@
 #define PUGIXML_HEADER_ONLY
 #include <pugixml/pugixml.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIListBox* UIListBox::New() {
 	return eeNew( UIListBox, () );
@@ -124,7 +124,7 @@ UIScrollBar* UIListBox::getHorizontalScrollBar() const {
 	return mHScrollBar;
 }
 
-void UIListBox::addListBoxItems( std::vector<String> texts ) {
+void UIListBox::addListBoxItems( Array<String> texts ) {
 	mItems.reserve( mItems.size() + texts.size() );
 	mTexts.reserve( mTexts.size() + texts.size() );
 
@@ -188,7 +188,7 @@ Uint32 UIListBox::removeListBoxItem( UIListBoxItem* Item ) {
 	return removeListBoxItem( getListBoxItemIndex( Item ) );
 }
 
-void UIListBox::removeListBoxItems( std::vector<Uint32> ItemsIndex ) {
+void UIListBox::removeListBoxItems( Array<Uint32> ItemsIndex ) {
 	if ( ItemsIndex.empty() || eeINDEX_NOT_FOUND == ItemsIndex[0] )
 		return;
 
@@ -730,17 +730,17 @@ String UIListBox::getItemSelectedText() const {
 	return tstr;
 }
 
-const std::vector<String>& UIListBox::getItemsText() const {
+const Array<String>& UIListBox::getItemsText() const {
 	return mTexts;
 }
 
-std::vector<Uint32> UIListBox::getItemsSelectedIndex() const {
+Array<Uint32> UIListBox::getItemsSelectedIndex() const {
 	return mSelected;
 }
 
-std::vector<UIListBoxItem*> UIListBox::getItemsSelected() {
-	std::vector<UIListBoxItem*> tItems;
-	std::vector<Uint32>::iterator it;
+Array<UIListBoxItem*> UIListBox::getItemsSelected() {
+	Array<UIListBoxItem*> tItems;
+	Array<Uint32>::iterator it;
 
 	for ( it = mSelected.begin(); it != mSelected.end(); ++it ) {
 		if ( NULL == mItems[*it] )
@@ -1058,7 +1058,7 @@ String UIListBox::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIListBox::getPropertiesImplemented() const {
+Array<PropertyId> UIListBox::getPropertiesImplemented() const {
 	auto props = UITouchDraggableWidget::getPropertiesImplemented();
 	auto local = { PropertyId::RowHeight,	 PropertyId::VScrollMode,
 				   PropertyId::HScrollMode,	 PropertyId::SelectedIndex,
@@ -1148,7 +1148,7 @@ void UIListBox::loadFromXmlNode( const pugi::xml_node& node ) {
 void UIListBox::loadItemsFromXmlNode( const pugi::xml_node& node ) {
 	beginAttributesTransaction();
 
-	std::vector<String> items;
+	Array<String> items;
 	for ( pugi::xml_node item = node.child( "item" ); item; item = item.next_sibling( "item" ) ) {
 		String data( item.text().as_string() );
 		items.push_back( getTranslatorString( data ) );
@@ -1161,4 +1161,4 @@ void UIListBox::loadItemsFromXmlNode( const pugi::xml_node& node ) {
 	endAttributesTransaction();
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

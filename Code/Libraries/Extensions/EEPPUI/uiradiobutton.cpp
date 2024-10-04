@@ -3,7 +3,7 @@
 #include <eepp/ui/css/propertydefinition.hpp>
 #include <eepp/ui/uiradiobutton.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIRadioButton* UIRadioButton::New() {
 	return eeNew( UIRadioButton, () );
@@ -290,7 +290,7 @@ String UIRadioButton::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIRadioButton::getPropertiesImplemented() const {
+Array<PropertyId> UIRadioButton::getPropertiesImplemented() const {
 	auto props = UITextView::getPropertiesImplemented();
 	auto local = { PropertyId::Selected };
 	props.insert( props.end(), local.begin(), local.end() );
@@ -332,4 +332,4 @@ void UIRadioButton::onAlphaChange() {
 	mInactiveButton->setAlpha( mAlpha );
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

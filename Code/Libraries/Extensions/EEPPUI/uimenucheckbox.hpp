@@ -3,7 +3,7 @@
 
 #include <eepp/ui/uimenuitem.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIMenuCheckBox : public UIMenuItem {
   public:
@@ -30,7 +30,7 @@ class ZeroShared UIMenuCheckBox : public UIMenuItem {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
   protected:
 	bool mActive;
@@ -42,6 +42,6 @@ class ZeroShared UIMenuCheckBox : public UIMenuItem {
 	virtual void onStateChange();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

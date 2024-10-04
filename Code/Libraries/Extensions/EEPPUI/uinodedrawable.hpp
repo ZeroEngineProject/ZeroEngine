@@ -7,10 +7,10 @@
 #include <eepp/ui/uibackgrounddrawable.hpp>
 #include <map>
 
-using namespace EE::Graphics;
-using namespace EE::Scene;
+using Zero::Graphics;
+using Zero::Scene;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UINode;
 
@@ -189,6 +189,6 @@ class ZeroShared UINodeDrawable : public Drawable {
 	void update();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

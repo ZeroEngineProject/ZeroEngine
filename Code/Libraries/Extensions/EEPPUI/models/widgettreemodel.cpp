@@ -1,7 +1,7 @@
 #include <eepp/ui/models/widgettreemodel.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 std::shared_ptr<WidgetTreeModel> WidgetTreeModel::New( Node* node ) {
 	return std::shared_ptr<WidgetTreeModel>( new WidgetTreeModel( node ) );
@@ -108,4 +108,4 @@ ModelIndex WidgetTreeModel::getModelIndex( const Node* node ) const {
 	return createIndex( node->getNodeIndex(), 0, node );
 }
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models

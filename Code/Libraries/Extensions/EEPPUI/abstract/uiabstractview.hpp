@@ -8,9 +8,9 @@
 #include <eepp/ui/uiscrollablewidget.hpp>
 #include <memory>
 
-using namespace EE::UI::Models;
+using Zero::UI::Models;
 
-namespace EE { namespace UI { namespace Abstract {
+namespace Zero { namespace UI { namespace Abstract {
 
 enum class ModelEventType { Open, OpenTree, CloseTree, OpenMenu };
 
@@ -98,9 +98,9 @@ class ZeroShared UIAbstractView : public UIScrollableWidget {
 
 	void setEditTriggers( Uint32 editTriggers );
 
-	std::vector<KeyBindings::Shortcut> getEditShortcuts() const;
+	Array<KeyBindings::Shortcut> getEditShortcuts() const;
 
-	void setEditShortcuts( const std::vector<KeyBindings::Shortcut>& editShortcut );
+	void setEditShortcuts( const Array<KeyBindings::Shortcut>& editShortcut );
 
 	void beginEditing( const ModelIndex& index, UIWidget* editedWidget );
 
@@ -144,13 +144,13 @@ class ZeroShared UIAbstractView : public UIScrollableWidget {
 	std::function<void( const ModelIndex& )> mOnSelection;
 
 	Uint32 mEditTriggers{ EditTrigger::None };
-	std::vector<KeyBindings::Shortcut> mEditShortcuts{ { KEY_F2 } };
+	Array<KeyBindings::Shortcut> mEditShortcuts{ { KEY_F2 } };
 	SelectionType mSelectionType{ SelectionType::Row };
 	SelectionKind mSelectionKind{ SelectionKind::Single };
 
 	virtual void editingWidgetDidChange( const ModelIndex& ) {}
 };
 
-}}} // namespace EE::UI::Abstract
+}}} // namespace Zero::UI::Abstract
 
 #endif // EE_UI_UIABSTRACTVIEW_HPP

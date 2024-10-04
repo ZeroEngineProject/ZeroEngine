@@ -3,7 +3,7 @@
 
 #include <eepp/ui/uitextinput.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UITextInputPassword : public UITextInput {
   public:
@@ -45,6 +45,6 @@ class ZeroShared UITextInputPassword : public UITextInput {
 	virtual Text* getVisibleTextCache() const;
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

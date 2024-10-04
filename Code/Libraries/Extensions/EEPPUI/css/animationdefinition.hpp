@@ -6,15 +6,15 @@
 #include "stylesheetproperty.hpp"
 #include <vector>
 
-using namespace EE::Math;
-using namespace EE::System;
+using Zero::Math;
+using Zero::System;
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 class ZeroShared AnimationDefinition {
   public:
 	static HashMap<String, AnimationDefinition>
-	parseAnimationProperties( const std::vector<const StyleSheetProperty*>& stylesheetProperties );
+	parseAnimationProperties( const Array<const StyleSheetProperty*>& stylesheetProperties );
 
 	/* https://developer.mozilla.org/en-US/docs/Web/CSS/animation-direction */
 	enum AnimationDirection {
@@ -56,7 +56,7 @@ class ZeroShared AnimationDefinition {
 
 	const Ease::Interpolation& getTimingFunction() const;
 
-	const std::vector<double>& getTimingFunctionParameters() const;
+	const Array<double>& getTimingFunctionParameters() const;
 
 	const AnimationFillMode& getFillMode() const;
 
@@ -70,7 +70,7 @@ class ZeroShared AnimationDefinition {
 
 	void setTimingFunction( const Ease::Interpolation& value );
 
-	void setTimingFunctionParameters( const std::vector<double>& timingFunctionParameters );
+	void setTimingFunctionParameters( const Array<double>& timingFunctionParameters );
 
 	void setDirection( const AnimationDirection& value );
 
@@ -87,7 +87,7 @@ class ZeroShared AnimationDefinition {
 	Time mDuration = Time::Zero;
 	Int32 mIterations = 1; /* -1 == "infinite" */
 	Ease::Interpolation mTimingFunction = Ease::Interpolation::Linear;
-	std::vector<double> mTimingFunctionParameters{};
+	Array<double> mTimingFunctionParameters{};
 	AnimationDirection mDirection = Normal;
 	AnimationFillMode mFillMode = None;
 	bool mPaused = false;
@@ -107,6 +107,6 @@ inline bool operator!=( const AnimationDefinition& a, const AnimationDefinition&
 
 typedef HashMap<String, AnimationDefinition> AnimationsMap;
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif // EE_UI_CSS_ANIMATIONDEFINITION_HPP

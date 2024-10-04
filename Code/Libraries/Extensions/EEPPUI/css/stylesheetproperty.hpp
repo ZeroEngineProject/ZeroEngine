@@ -12,22 +12,22 @@
 #include <eepp/ui/css/stylesheetlength.hpp>
 #include <string>
 
-using namespace EE::System;
-using namespace EE::Math;
-using namespace EE::Graphics;
+using Zero::System;
+using Zero::Math;
+using Zero::Graphics;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 class UINode;
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 class PropertyDefinition;
 class ShorthandDefinition;
 
 struct VariableFunctionCache {
 	String definition;
-	std::vector<String> variableList;
+	Array<String> variableList;
 };
 
 class ZeroShared StyleSheetProperty {
@@ -175,7 +175,7 @@ class ZeroShared StyleSheetProperty {
 
 	const String::HashType& getValueHash() const;
 
-	const std::vector<VariableFunctionCache>& getVarCache() const;
+	const Array<VariableFunctionCache>& getVarCache() const;
 
   protected:
 	String mName;
@@ -189,8 +189,8 @@ class ZeroShared StyleSheetProperty {
 	bool mIsVarValue;
 	const PropertyDefinition* mPropertyDefinition;
 	const ShorthandDefinition* mShorthandDefinition;
-	std::vector<StyleSheetProperty> mIndexedProperty;
-	std::vector<VariableFunctionCache> mVarCache;
+	Array<StyleSheetProperty> mIndexedProperty;
+	Array<VariableFunctionCache> mVarCache;
 
 	explicit StyleSheetProperty( const bool& isVolatile, const PropertyDefinition* definition,
 								 const String& value, const Uint32& specificity = 0,
@@ -200,11 +200,11 @@ class ZeroShared StyleSheetProperty {
 	void checkImportant();
 	void createIndexed();
 	void checkVars();
-	std::vector<VariableFunctionCache> checkVars( const String& value );
+	Array<VariableFunctionCache> checkVars( const String& value );
 };
 
 typedef HashMap<Uint32, StyleSheetProperty> StyleSheetProperties;
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif

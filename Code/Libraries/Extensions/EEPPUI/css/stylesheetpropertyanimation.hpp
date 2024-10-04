@@ -7,14 +7,14 @@
 #include <eepp/ui/css/keyframesdefinition.hpp>
 #include <eepp/ui/css/propertydefinition.hpp>
 
-using namespace EE::Math;
-using namespace EE::Scene;
+using Zero::Math;
+using Zero::Scene;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 class UIWidget;
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 enum class AnimationOrigin : uint8_t { User, Animation, Transition };
 
@@ -26,7 +26,7 @@ class ZeroShared StyleSheetPropertyAnimation : public Action {
 							   const PropertyDefinition* property, const String& startValue,
 							   const String& endValue,
 							   const Ease::Interpolation& timingFunction,
-							   const std::vector<double> timingFunctionParameters,
+							   const Array<double> timingFunctionParameters,
 							   const Uint32& propertyIndex, const bool& isDone );
 
 	static StyleSheetPropertyAnimation* fromAnimationKeyframes(
@@ -38,14 +38,14 @@ class ZeroShared StyleSheetPropertyAnimation : public Action {
 
 	static StyleSheetPropertyAnimation*
 	New( const AnimationDefinition& animation, const PropertyDefinition* propertyDef,
-		 std::vector<String> states, std::vector<Float> animationStepsTime,
+		 Array<String> states, Array<Float> animationStepsTime,
 		 const Uint32& propertyIndex, const AnimationOrigin& animationOrigin );
 
 	static StyleSheetPropertyAnimation*
 	New( const PropertyDefinition* property, const String& startValue,
 		 const String& endValue, const Uint32& propertyIndex, const Time& duration,
 		 const Time& delay, const Ease::Interpolation& timingFunction,
-		 const std::vector<double>& timingFunctionParameters,
+		 const Array<double>& timingFunctionParameters,
 		 const AnimationOrigin& animationOrigin );
 
 	void start() override;
@@ -87,8 +87,8 @@ class ZeroShared StyleSheetPropertyAnimation : public Action {
   protected:
 	AnimationDefinition mAnimation;
 	const PropertyDefinition* mPropertyDef;
-	std::vector<String> mStates;
-	std::vector<Float> mAnimationStepsTime;
+	Array<String> mStates;
+	Array<Float> mAnimationStepsTime;
 	Time mRealElapsed;
 	Time mElapsed;
 	Int32 mPendingIterations;
@@ -99,8 +99,8 @@ class ZeroShared StyleSheetPropertyAnimation : public Action {
 
 	StyleSheetPropertyAnimation( const AnimationDefinition& animation,
 								 const PropertyDefinition* propertyDef,
-								 std::vector<String> states,
-								 std::vector<Float> animationStepsTime, const Uint32& propertyIndex,
+								 Array<String> states,
+								 Array<Float> animationStepsTime, const Uint32& propertyIndex,
 								 const AnimationOrigin& animationOrigin );
 
 	void onStart() override;
@@ -114,6 +114,6 @@ class ZeroShared StyleSheetPropertyAnimation : public Action {
 	void reverseAnimation();
 };
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif // EE_UI_CSS_STYLESHEETPROPERTYANIMATION_HPP

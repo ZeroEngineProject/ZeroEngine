@@ -23,10 +23,10 @@
 #include <eepp/window/input.hpp>
 #include <eepp/window/window.hpp>
 
-using namespace EE::Window;
-using namespace EE::Scene;
+using Zero::Window;
+using Zero::Scene;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIConsole* UIConsole::New() {
 	return eeNew( UIConsole, ( nullptr, true, true, 8192 ) );
@@ -245,7 +245,7 @@ String UIConsole::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIConsole::getPropertiesImplemented() const {
+Array<PropertyId> UIConsole::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = {
 		PropertyId::Color,			PropertyId::TextShadowColor,	PropertyId::TextShadowOffset,
@@ -587,7 +587,7 @@ void UIConsole::createDefaultCommands() {
 		for ( const auto& env : envVars )
 			privPushText( env.first + "=" + env.second );
 	} );
-	addCommand( "exec", [this]( const std::vector<String>& params ) {
+	addCommand( "exec", [this]( const Array<String>& params ) {
 		auto executeArr = params;
 		executeArr.erase( executeArr.begin() );
 		String execute = String::join( executeArr );
@@ -617,7 +617,7 @@ void UIConsole::cmdCmdList() {
 		privPushText( "\t" + itr->first );
 }
 
-void UIConsole::cmdShowCursor( const std::vector<String>& params ) {
+void UIConsole::cmdShowCursor( const Array<String>& params ) {
 	if ( params.size() >= 2 ) {
 		Int32 tInt = 0;
 
@@ -632,7 +632,7 @@ void UIConsole::cmdShowCursor( const std::vector<String>& params ) {
 	}
 }
 
-void UIConsole::cmdFrameLimit( const std::vector<String>& params ) {
+void UIConsole::cmdFrameLimit( const Array<String>& params ) {
 	if ( params.size() >= 2 ) {
 		Int32 tInt = 0;
 
@@ -648,7 +648,7 @@ void UIConsole::cmdFrameLimit( const std::vector<String>& params ) {
 }
 
 void UIConsole::cmdGetLog() {
-	std::vector<String> tvec =
+	Array<String> tvec =
 		String::split( String( String::toString( Log::instance()->getBuffer() ) ) );
 	if ( tvec.size() > 0 ) {
 		for ( unsigned int i = 0; i < tvec.size(); i++ )
@@ -657,14 +657,14 @@ void UIConsole::cmdGetLog() {
 }
 
 void UIConsole::cmdGetGpuExtensions() {
-	std::vector<String> tvec = String::split( String( GLi->getExtensions() ), ' ' );
+	Array<String> tvec = String::split( String( GLi->getExtensions() ), ' ' );
 	if ( tvec.size() > 0 ) {
 		for ( unsigned int i = 0; i < tvec.size(); i++ )
 			privPushText( std::move( tvec[i] ) );
 	}
 }
 
-void UIConsole::cmdGrep( const std::vector<String>& params ) {
+void UIConsole::cmdGrep( const Array<String>& params ) {
 	if ( params.empty() )
 		return;
 	bool caseSensitive = !std::any_of( params.begin(), params.end(),
@@ -684,7 +684,7 @@ void UIConsole::cmdGrep( const std::vector<String>& params ) {
 	}
 }
 
-void UIConsole::cmdSetGamma( const std::vector<String>& params ) {
+void UIConsole::cmdSetGamma( const Array<String>& params ) {
 	if ( params.size() >= 2 ) {
 		Float tFloat = 0.f;
 		bool Res = String::fromString<Float>( tFloat, params[1] );
@@ -698,7 +698,7 @@ void UIConsole::cmdSetGamma( const std::vector<String>& params ) {
 	privPushText( "Valid parameters are between 0.1 and 10." );
 }
 
-void UIConsole::cmdSetVolume( const std::vector<String>& params ) {
+void UIConsole::cmdSetVolume( const Array<String>& params ) {
 	if ( params.size() >= 2 ) {
 		Float tFloat = 0.f;
 
@@ -713,7 +713,7 @@ void UIConsole::cmdSetVolume( const std::vector<String>& params ) {
 	privPushText( "Valid parameters are between 0 and 100." );
 }
 
-void UIConsole::cmdDir( const std::vector<String>& params ) {
+void UIConsole::cmdDir( const Array<String>& params ) {
 	if ( params.size() >= 2 ) {
 		String Slash( FileSystem::getOSSlash() );
 		String myPath = params[1];
@@ -726,14 +726,14 @@ void UIConsole::cmdDir( const std::vector<String>& params ) {
 		if ( FileSystem::isDirectory( myPath ) ) {
 			unsigned int i;
 
-			std::vector<String> mFiles = FileSystem::filesGetInPath( myPath );
+			Array<String> mFiles = FileSystem::filesGetInPath( myPath );
 			std::sort( mFiles.begin(), mFiles.end() );
 
 			privPushText( "Directory: " + myPath );
 
 			if ( myOrder == "ff" ) {
-				std::vector<String> mFolders;
-				std::vector<String> mFile;
+				Array<String> mFolders;
+				Array<String> mFile;
 
 				for ( i = 0; i < mFiles.size(); i++ ) {
 					if ( FileSystem::isDirectory( myPath + Slash + mFiles[i] ) ) {
@@ -771,7 +771,7 @@ void UIConsole::cmdDir( const std::vector<String>& params ) {
 	}
 }
 
-void UIConsole::cmdShowFps( const std::vector<String>& params ) {
+void UIConsole::cmdShowFps( const Array<String>& params ) {
 	if ( params.size() >= 2 ) {
 		Int32 tInt = 0;
 
@@ -787,7 +787,7 @@ void UIConsole::cmdShowFps( const std::vector<String>& params ) {
 }
 
 void UIConsole::writeLog( const String_view& text ) {
-	std::vector<String_view> strings = String::split( text );
+	Array<String_view> strings = String::split( text );
 	for ( size_t i = 0; i < strings.size(); i++ )
 		privPushText( strings[i] );
 }
@@ -1276,11 +1276,11 @@ void UIConsole::onSelectionChange() {
 	invalidateDraw();
 }
 
-String UIConsole::getLastCommonSubStr( std::vector<String>& cmds ) {
+String UIConsole::getLastCommonSubStr( Array<String>& cmds ) {
 	String lastCommon( mDoc.getCurrentLine().getTextWithoutNewLine() );
 	String strTry( lastCommon );
 
-	std::vector<String>::iterator ite;
+	Array<String>::iterator ite;
 
 	bool found = false;
 
@@ -1313,7 +1313,7 @@ String UIConsole::getLastCommonSubStr( std::vector<String>& cmds ) {
 }
 
 void UIConsole::printCommandsStartingWith( const String& start ) {
-	std::vector<String> cmds;
+	Array<String> cmds;
 
 	for ( auto it = mCallbacks.begin(); it != mCallbacks.end(); ++it ) {
 		if ( String::startsWith( it->first, start ) )
@@ -1366,12 +1366,12 @@ void UIConsole::getFilesFrom( String txt, const Uint32& curPos ) {
 
 		if ( FileSystem::isDirectory( dir ) ) {
 			size_t count = 0, lasti = 0;
-			std::vector<String> files = FileSystem::filesGetInPath( dir, true, true );
+			Array<String> files = FileSystem::filesGetInPath( dir, true, true );
 			String res;
 			bool again = false;
 
 			do {
-				std::vector<String> foundFiles;
+				Array<String> foundFiles;
 				res = "";
 				count = 0;
 				again = false;
@@ -1442,7 +1442,7 @@ void UIConsole::getFilesFrom( String txt, const Uint32& curPos ) {
 
 void UIConsole::pushText( const String& str ) {
 	if ( String::npos != str.find_first_of( '\n' ) ) {
-		std::vector<String> Strings = String::split( String( str ) );
+		Array<String> Strings = String::split( String( str ) );
 
 		for ( Uint32 i = 0; i < Strings.size(); i++ ) {
 			privPushText( std::move( Strings[i] ) );
@@ -1542,9 +1542,9 @@ void UIConsole::setQuakeModeHeightPercent( const Float& quakeModeHeightPercent )
 	mQuakeModeHeightPercent = quakeModeHeightPercent;
 }
 
-static std::vector<String> splitCommandParams( String str ) {
-	std::vector<String> params = String::split( str, ' ' );
-	std::vector<String> rparams;
+static Array<String> splitCommandParams( String str ) {
+	Array<String> params = String::split( str, ' ' );
+	Array<String> rparams;
 	String tstr;
 
 	for ( size_t i = 0; i < params.size(); i++ ) {
@@ -1576,7 +1576,7 @@ static std::vector<String> splitCommandParams( String str ) {
 
 void UIConsole::processLine() {
 	String str( mDoc.getCurrentLine().getTextWithoutNewLine() );
-	std::vector<String> params = splitCommandParams( str );
+	Array<String> params = splitCommandParams( str );
 
 	mLastCommands.push_back( str );
 	mLastLogPos = (int)mLastCommands.size();
@@ -1597,4 +1597,4 @@ void UIConsole::processLine() {
 	invalidateDraw();
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

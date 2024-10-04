@@ -8,7 +8,7 @@
 #include <eepp/window/input.hpp>
 #include <eepp/window/window.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UITab* UITab::New() {
 	return eeNew( UITab, () );
@@ -297,7 +297,7 @@ String UITab::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UITab::getPropertiesImplemented() const {
+Array<PropertyId> UITab::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::Text, PropertyId::Owns };
 	props.insert( props.end(), local.begin(), local.end() );
@@ -462,4 +462,4 @@ void UITab::setTabSelected() {
 		getTabWidget()->setTabSelected( this );
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

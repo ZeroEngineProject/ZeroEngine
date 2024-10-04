@@ -7,10 +7,10 @@
 #include <eepp/ui/css/stylesheetspecification.hpp>
 #include <eepp/ui/uinode.hpp>
 #include <eepp/ui/uinodedrawable.hpp>
-#include <eepp/ui/uiwidget.hpp>
-using namespace EE::Math::easing;
+#include "uiwidget.hpp"
+using Zero::Math::easing;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UINodeDrawable::Repeat UINodeDrawable::repeatFromText( const String& text ) {
 	if ( "repeat" == text )
@@ -528,7 +528,7 @@ Sizef UINodeDrawable::LayerDrawable::calcDrawableSize( const String& drawableSiz
 		Scale1 = eemax( Scale1, Scale2 );
 		size = Sizef( drawableSize.getWidth() * Scale1, drawableSize.getHeight() * Scale1 );
 	} else {
-		std::vector<String> sizePart = String::split( drawableSizeEq, ' ' );
+		Array<String> sizePart = String::split( drawableSizeEq, ' ' );
 
 		if ( sizePart.size() == 1 ) {
 			sizePart.push_back( "auto" );
@@ -695,4 +695,4 @@ void UINodeDrawable::LayerDrawable::update() {
 	mNeedsUpdate = false;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

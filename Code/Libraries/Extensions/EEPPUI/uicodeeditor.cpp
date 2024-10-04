@@ -23,9 +23,9 @@
 #include <eepp/window/input.hpp>
 #include <eepp/window/window.hpp>
 
-using namespace EE::UI::Tools;
+using Zero::UI::Tools;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UICodeEditor* UICodeEditor::New() {
 	return eeNew( UICodeEditor, ( true, true ) );
@@ -2458,7 +2458,7 @@ void UICodeEditor::addUnlockedCommand( const String& command ) {
 	mUnlockedCmd.insert( command );
 }
 
-void UICodeEditor::addUnlockedCommands( const std::vector<String>& commands ) {
+void UICodeEditor::addUnlockedCommands( const Array<String>& commands ) {
 	mUnlockedCmd.insert( commands.begin(), commands.end() );
 }
 
@@ -2663,7 +2663,7 @@ String UICodeEditor::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UICodeEditor::getPropertiesImplemented() const {
+Array<PropertyId> UICodeEditor::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = {
 		PropertyId::Locked,			  PropertyId::Color,		   PropertyId::TextShadowColor,
@@ -2765,8 +2765,8 @@ const SyntaxDefinition& UICodeEditor::getSyntaxDefinition() const {
 void UICodeEditor::checkMatchingBrackets() {
 	if ( !mHighlightMatchingBracket )
 		return;
-	static const std::vector<String::StringBaseType> open{ '{', '(', '[' };
-	static const std::vector<String::StringBaseType> close{ '}', ')', ']' };
+	static const Array<String::StringBaseType> open{ '{', '(', '[' };
+	static const Array<String::StringBaseType> close{ '}', ')', ']' };
 	mMatchingBrackets = TextRange();
 	TextPosition pos = mDoc->sanitizePosition( mDoc->getSelection().start() );
 	TextDocumentLine& line = mDoc->line( pos.line() );
@@ -3705,12 +3705,12 @@ void UICodeEditor::drawLineText( const Int64& line, Vector2f position, const Flo
 	}
 }
 
-std::vector<Rectf>
+Array<Rectf>
 UICodeEditor::getTextRangeRectangles( const TextRange& range, const Vector2f& startScroll,
 									  std::optional<const DocumentLineRange> lineRange,
 									  std::optional<Float> lineHeight,
 									  std::optional<DocumentViewLineRange> visibleLineRange ) {
-	std::vector<Rectf> rects;
+	Array<Rectf> rects;
 	Float lh = lineHeight ? *lineHeight : getLineHeight();
 	Int64 startLine =
 		eemax<Int64>( lineRange ? lineRange->first : range.start().line(), range.start().line() );
@@ -4273,7 +4273,7 @@ String UICodeEditor::checkMouseOverLink( const Vector2i& position ) {
 	String linkStr( partialLine.toUtf8() );
 
 	int offset = 0;
-	std::vector<std::pair<int, int>> links;
+	Array<std::pair<int, int>> links;
 	do {
 		if ( words.find( linkStr, start, end, offset ) ) {
 			links.emplace_back( std::make_pair( start, end ) );
@@ -4940,4 +4940,4 @@ void UICodeEditor::setTabIndentAlignment( CharacterAlignment alignment ) {
 	}
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

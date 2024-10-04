@@ -2,7 +2,7 @@
 #include <eepp/ui/border.hpp>
 #include <eepp/ui/uinode.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 static void borderAddArc( VertexBuffer* vbo, Vector2f pos, Float radiW, Float radiH,
 						  double arcStartAngle, double arcEndAngle, Color color, Float lineW,
@@ -423,4 +423,4 @@ void Borders::createBackground( VertexBuffer* vbo, const BorderRadiuses& radius,
 	vbo->addColor( color );
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

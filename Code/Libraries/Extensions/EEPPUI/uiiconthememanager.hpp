@@ -4,7 +4,7 @@
 #include <eepp/ui/uiicontheme.hpp>
 #include <vector>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UIThemeManager;
 
@@ -36,7 +36,7 @@ class ZeroShared UIIconThemeManager {
 	void remove( UIIconTheme* iconTheme );
 
   protected:
-	std::vector<UIIconTheme*> mIconThemes;
+	Array<UIIconTheme*> mIconThemes;
 	UIIconTheme* mCurrentTheme{ nullptr };
 	UIIconTheme* mFallbackTheme{ nullptr };
 	UIThemeManager* mFallbackThemeManager{ nullptr };
@@ -46,6 +46,6 @@ class ZeroShared UIIconThemeManager {
 	bool isPresent( UIIconTheme* iconTheme );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UIICONTHEMEMANAGER_HPP

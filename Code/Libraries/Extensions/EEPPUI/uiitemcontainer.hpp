@@ -2,9 +2,9 @@
 #define EE_UITUIITEMCONTAINER_HPP
 
 #include <eepp/scene/scenenode.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 template <class TContainer> class UIItemContainer : public UIWidget {
   public:
@@ -95,6 +95,6 @@ template <class TContainer> Node* UIItemContainer<TContainer>::overFind( const V
 	return pOver;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

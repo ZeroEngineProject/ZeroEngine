@@ -2,7 +2,7 @@
 #include <eepp/ui/uiselectbutton.hpp>
 #include <eepp/ui/uistyle.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UISelectButton* UISelectButton::New() {
 	return eeNew( UISelectButton, () );
@@ -113,7 +113,7 @@ String UISelectButton::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UISelectButton::getPropertiesImplemented() const {
+Array<PropertyId> UISelectButton::getPropertiesImplemented() const {
 	auto props = UIPushButton::getPropertiesImplemented();
 	auto local = { PropertyId::SelectOnClick, PropertyId::Selected };
 	props.insert( props.end(), local.begin(), local.end() );
@@ -143,4 +143,4 @@ bool UISelectButton::hasSelectOnClick() const {
 	return 0 != mSelectOnClickCbId;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

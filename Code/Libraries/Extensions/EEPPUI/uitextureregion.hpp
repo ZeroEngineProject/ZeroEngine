@@ -1,13 +1,13 @@
 #ifndef EE_UICUIGFX_H
 #define EE_UICUIGFX_H
 
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace Graphics {
+Zero { namespace Graphics {
 class TextureRegion;
-}} // namespace EE::Graphics
+}} // namespace Zero::Graphics
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UITextureRegion : public UIWidget {
   public:
@@ -48,7 +48,7 @@ class ZeroShared UITextureRegion : public UIWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
   protected:
 	UIScaleType mScaleType;
@@ -68,6 +68,6 @@ class ZeroShared UITextureRegion : public UIWidget {
 	void drawTextureRegion();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

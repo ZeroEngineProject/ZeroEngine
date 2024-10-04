@@ -4,7 +4,7 @@
 #include <eepp/ui/uilistbox.hpp>
 #include <eepp/ui/uitextinput.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIDropDownList : public UITextInput {
   public:
@@ -49,7 +49,7 @@ class ZeroShared UIDropDownList : public UITextInput {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	virtual void loadFromXmlNode( const pugi::xml_node& node );
 
@@ -96,6 +96,6 @@ class ZeroShared UIDropDownList : public UITextInput {
 	void destroyListBox();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

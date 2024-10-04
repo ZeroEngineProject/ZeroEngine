@@ -2,9 +2,9 @@
 #define EE_UI_UIWIDGETCREATOR_HPP
 
 #include <eepp/core.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIWidgetCreator {
   public:
@@ -31,7 +31,7 @@ class ZeroShared UIWidgetCreator {
 
 	static const RegisteredWidgetCallbackMap& getRegisteredWidgets();
 
-	static std::vector<String> getWidgetNames();
+	static Array<String> getWidgetNames();
 
   protected:
 	static RegisteredWidgetCallbackMap registeredWidget;
@@ -41,6 +41,6 @@ class ZeroShared UIWidgetCreator {
 	static void createBaseWidgetList();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

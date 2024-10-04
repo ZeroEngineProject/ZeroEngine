@@ -99,12 +99,12 @@
 #include <eepp/ui/doc/syntaxdefinitionmanager.hpp>
 #include <nlohmann/json.hpp>
 
-using namespace EE::System;
-using namespace EE::UI::Doc::Language;
+using Zero::System;
+using Zero::UI::Doc::Language;
 
 using json = nlohmann::json;
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 SINGLETON_DECLARE_IMPLEMENTATION( SyntaxDefinitionManager )
 
@@ -217,7 +217,7 @@ SyntaxDefinitionManager::SyntaxDefinitionManager() {
 	addZig();
 }
 
-const std::vector<SyntaxDefinition>& SyntaxDefinitionManager::getDefinitions() const {
+const Array<SyntaxDefinition>& SyntaxDefinitionManager::getDefinitions() const {
 	return mDefinitions;
 }
 
@@ -268,7 +268,7 @@ static json toJson( const SyntaxDefinition& def ) {
 }
 
 bool SyntaxDefinitionManager::save( const String& path,
-									const std::vector<SyntaxDefinition>& def ) {
+									const Array<SyntaxDefinition>& def ) {
 	if ( def.size() == 1 ) {
 		return FileSystem::fileWrite( path, toJson( def[0] ).dump( 2 ) );
 	} else if ( !def.empty() ) {
@@ -310,7 +310,7 @@ static String str( String s, const String& prepend = "",
 	return prepend + "\"" + String::escape( s ) + "\"" + append;
 }
 
-static String join( std::vector<String> const& vec, bool createCont = true,
+static String join( Array<String> const& vec, bool createCont = true,
 						 bool allowReduce = false, String delim = ", " ) {
 	if ( vec.empty() )
 		return "{}";
@@ -336,13 +336,13 @@ std::pair<String, String> SyntaxDefinitionManager::toCPP( const SyntaxDefinition
 	String lang( def.getLanguageNameForFileSystem() );
 	String func( funcName( lang ) );
 	String header = "#ifndef EE_UI_DOC_" + func + "\n#define EE_UI_DOC_" + func +
-						 "\n\nnamespace EE { namespace UI { namespace "
+						 "\n\nnamespace Zero { namespace UI { namespace "
 						 "Doc { namespace Language {\n\nextern void add" +
 						 func + "();\n\n}}}}\n\n#endif\n";
 	String buf = String::format( R"cpp(#include <eepp/ui/doc/languages/%s.hpp>
 #include <eepp/ui/doc/syntaxdefinitionmanager.hpp>
 
-namespace EE { namespace UI { namespace Doc { namespace Language {
+namespace Zero { namespace UI { namespace Doc { namespace Language {
 )cpp",
 									  lang.c_str() );
 	buf += "\nvoid add" + func + "() {\n";
@@ -382,7 +382,7 @@ namespace EE { namespace UI { namespace Doc { namespace Language {
 	if ( def.getAutoCloseXMLTags() )
 		buf += ".setAutoCloseXMLTags( true )";
 	buf += ";\n}\n";
-	buf += "\n}}}} // namespace EE::UI::Doc::Language\n";
+	buf += "\n}}}} // namespace Zero::UI::Doc::Language\n";
 	return std::make_pair( std::move( header ), std::move( buf ) );
 }
 
@@ -445,8 +445,8 @@ SyntaxDefinition& SyntaxDefinitionManager::getByLanguageNameRef( const String& n
 	return const_cast<SyntaxDefinition&>( getByLanguageName( name ) );
 }
 
-std::vector<String> SyntaxDefinitionManager::getLanguageNames() const {
-	std::vector<String> names;
+Array<String> SyntaxDefinitionManager::getLanguageNames() const {
+	Array<String> names;
 	for ( auto& style : mDefinitions ) {
 		if ( style.isVisible() )
 			names.push_back( style.getLanguageName() );
@@ -455,8 +455,8 @@ std::vector<String> SyntaxDefinitionManager::getLanguageNames() const {
 	return names;
 }
 
-std::vector<String> SyntaxDefinitionManager::getExtensionsPatternsSupported() const {
-	std::vector<String> exts;
+Array<String> SyntaxDefinitionManager::getExtensionsPatternsSupported() const {
+	Array<String> exts;
 	for ( auto& style : mDefinitions )
 		for ( auto& pattern : style.getFiles() )
 			exts.emplace_back( pattern );
@@ -509,7 +509,7 @@ static SyntaxDefinition loadLanguage( const nlohmann::json& json ) {
 		if ( json.contains( "patterns" ) && json["patterns"].is_array() ) {
 			const auto& patterns = json["patterns"];
 			for ( const auto& pattern : patterns ) {
-				std::vector<String> type;
+				Array<String> type;
 				if ( pattern.contains( "type" ) ) {
 					if ( pattern["type"].is_array() ) {
 						for ( const auto& t : pattern["type"] ) {
@@ -525,7 +525,7 @@ static SyntaxDefinition loadLanguage( const nlohmann::json& json ) {
 				auto syntax = !pattern.contains( "syntax" ) || !pattern["syntax"].is_string()
 								  ? ""
 								  : pattern.value( "syntax", "" );
-				std::vector<String> ptrns;
+				Array<String> ptrns;
 				bool isRegEx = false;
 				if ( pattern.contains( "pattern" ) ) {
 					if ( pattern["pattern"].is_array() ) {
@@ -565,7 +565,7 @@ static SyntaxDefinition loadLanguage( const nlohmann::json& json ) {
 		}
 		if ( json.contains( "headers" ) && json["headers"].is_array() ) {
 			const auto& headers = json["headers"];
-			std::vector<String> hds;
+			Array<String> hds;
 			if ( headers.is_array() ) {
 				for ( const auto& header : headers ) {
 					if ( header.is_string() )
@@ -592,7 +592,7 @@ static SyntaxDefinition loadLanguage( const nlohmann::json& json ) {
 }
 
 bool SyntaxDefinitionManager::loadFromStream( IOStream& stream,
-											  std::vector<String>* addedLangs ) {
+											  Array<String>* addedLangs ) {
 	if ( stream.getSize() == 0 )
 		return false;
 	String buffer;
@@ -685,9 +685,9 @@ void SyntaxDefinitionManager::loadFromFolder( const String& folderPath ) {
 	}
 }
 
-std::vector<const SyntaxDefinition*>
+Array<const SyntaxDefinition*>
 SyntaxDefinitionManager::languagesThatSupportExtension( String extension ) const {
-	std::vector<const SyntaxDefinition*> langs;
+	Array<const SyntaxDefinition*> langs;
 	if ( extension.empty() )
 		return {};
 
@@ -834,4 +834,4 @@ const SyntaxDefinition& SyntaxDefinitionManager::findFromString( const String& l
 	return getPlainDefinition();
 }
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc

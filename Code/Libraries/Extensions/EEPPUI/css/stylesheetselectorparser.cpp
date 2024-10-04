@@ -1,11 +1,11 @@
 #include <eepp/ui/css/stylesheetselectorparser.hpp>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 StyleSheetSelectorParser::StyleSheetSelectorParser() {}
 
 StyleSheetSelectorParser::StyleSheetSelectorParser( String name ) {
-	std::vector<String> sels = String::split( name, ',' );
+	Array<String> sels = String::split( name, ',' );
 
 	for ( auto it = sels.begin(); it != sels.end(); ++it ) {
 		String cur = String::trim( *it );
@@ -16,4 +16,4 @@ StyleSheetSelectorParser::StyleSheetSelectorParser( String name ) {
 	}
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

@@ -5,10 +5,10 @@
 #include <eepp/core/string.hpp>
 #include <eepp/system/iostream.hpp>
 
-using namespace EE;
-using namespace EE::System;
+using Zero;
+using Zero::System;
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 class ZeroShared TextFormat {
   public:
@@ -26,7 +26,7 @@ class ZeroShared TextFormat {
 	LineEnding newLine = LineEnding::LF;
 	bool bom = false;
 
-	static std::vector<std::pair<Encoding, String>> encodings();
+	static Array<std::pair<Encoding, String>> encodings();
 
 	static String lineEndingToString( const TextFormat::LineEnding& le );
 
@@ -39,6 +39,6 @@ class ZeroShared TextFormat {
 	static TextFormat autodetect( IOStream& ins );
 };
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc
 
 #endif // EE_UI_DOC_TEXTFORMAT_HPP

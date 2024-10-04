@@ -41,7 +41,7 @@
 #include <eepp/ui/uiwidgettablerow.hpp>
 #include <eepp/ui/uiwindow.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 static bool sBaseListCreated = false;
 
@@ -166,8 +166,8 @@ const UIWidgetCreator::RegisteredWidgetCallbackMap& UIWidgetCreator::getRegister
 	return registeredWidget;
 }
 
-std::vector<String> UIWidgetCreator::getWidgetNames() {
-	std::vector<String> names;
+Array<String> UIWidgetCreator::getWidgetNames() {
+	Array<String> names;
 	names.reserve( registeredWidget.size() );
 	createBaseWidgetList();
 	for ( const auto& widgetIt : registeredWidget )
@@ -175,4 +175,4 @@ std::vector<String> UIWidgetCreator::getWidgetNames() {
 	return names;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

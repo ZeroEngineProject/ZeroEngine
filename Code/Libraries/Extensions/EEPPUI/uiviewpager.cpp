@@ -1,7 +1,7 @@
 #include <eepp/scene/actions/move.hpp>
 #include <eepp/ui/uiviewpager.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIViewPager* UIViewPager::New() {
 	return eeNew( UIViewPager, () );
@@ -309,7 +309,7 @@ String UIViewPager::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIViewPager::getPropertiesImplemented() const {
+Array<PropertyId> UIViewPager::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::Orientation,
 				   PropertyId::DragResistance,
@@ -383,4 +383,4 @@ void UIViewPager::setLocked( bool locked ) {
 	}
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

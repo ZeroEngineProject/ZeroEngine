@@ -2,7 +2,7 @@
 #include <eepp/graphics/texturefactory.hpp>
 #include <eepp/ui/uiicon.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIIcon* UIIcon::New( const String& name ) {
 	return eeNew( UIIcon, ( name ) );
@@ -102,4 +102,4 @@ Drawable* UISVGIcon::getSize( const int& size ) const {
 UISVGIcon::UISVGIcon( const String& name, const String& svgXML ) :
 	UIIcon( name ), mSVGXml( svgXML ) {}
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

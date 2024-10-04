@@ -22,10 +22,10 @@
 #include <functional>
 #include <vector>
 
-using namespace EE::System;
-using namespace EE::Network;
+using Zero::System;
+using Zero::Network;
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 class SyntaxHighlighter;
 
@@ -46,14 +46,14 @@ class ZeroShared TextDocument {
 
 	struct SearchResult {
 		TextRange result{};
-		std::vector<TextRange> captures{};
+		Array<TextRange> captures{};
 		bool isValid() const { return result.isValid(); }
 		bool operator==( const SearchResult& other ) {
 			return result == other.result && captures == other.captures;
 		}
 	};
 
-	class SearchResults : public std::vector<SearchResult> {
+	class SearchResults : public Array<SearchResult> {
 	  public:
 		bool isSorted() const { return mIsSorted; }
 
@@ -495,11 +495,11 @@ class ZeroShared TextDocument {
 
 	void setAutoCloseBrackets( bool autoCloseBrackets );
 
-	const std::vector<std::pair<String::StringBaseType, String::StringBaseType>>&
+	const Array<std::pair<String::StringBaseType, String::StringBaseType>>&
 	getAutoCloseBracketsPairs() const;
 
 	void setAutoCloseBracketsPairs(
-		const std::vector<std::pair<String::StringBaseType, String::StringBaseType>>&
+		const Array<std::pair<String::StringBaseType, String::StringBaseType>>&
 			autoCloseBracketsPairs );
 
 	bool isDirtyOnFileSystem() const;
@@ -582,7 +582,7 @@ class ZeroShared TextDocument {
 
 	String getAllSelectedText() const;
 
-	std::vector<String> getCommandList() const;
+	Array<String> getCommandList() const;
 
 	bool isRunningTransaction() const;
 
@@ -635,9 +635,9 @@ class ZeroShared TextDocument {
 
 	FoldRangeServive& getFoldRangeService();
 
-	std::vector<TextDocumentLine> getLines() const;
+	Array<TextDocumentLine> getLines() const;
 
-	void setLines( std::vector<TextDocumentLine>&& lines );
+	void setLines( Array<TextDocumentLine>&& lines );
 
 	String serializeUndoRedo( bool inverted );
 
@@ -661,7 +661,7 @@ class ZeroShared TextDocument {
 	URI mFileURI;
 	URI mLoadingFileURI;
 	FileInfo mFileRealPath;
-	std::vector<TextDocumentLine> mLines;
+	Array<TextDocumentLine> mLines;
 	TextRanges mSelection;
 	UnorderedSet<Client*> mClients;
 	Mutex mClientsMutex;
@@ -684,7 +684,7 @@ class ZeroShared TextDocument {
 	bool mLastCursorChangeWasInteresting{ false };
 	bool mDoingTextInput{ false };
 	bool mInsertingText{ false };
-	std::vector<std::pair<String::StringBaseType, String::StringBaseType>> mAutoCloseBracketsPairs;
+	Array<std::pair<String::StringBaseType, String::StringBaseType>> mAutoCloseBracketsPairs;
 	Uint32 mIndentWidth{ 4 };
 	IndentType mIndentType{ IndentType::IndentTabs };
 	Clock mTimer;
@@ -760,7 +760,7 @@ class ZeroShared TextDocument {
 
 	void guessIndentType();
 
-	std::vector<bool> autoCloseBrackets( const String& text );
+	Array<bool> autoCloseBrackets( const String& text );
 
 	LoadStatus loadFromStream( IOStream& file, String path, bool callReset );
 
@@ -800,6 +800,6 @@ struct TextSearchParams {
 	}
 };
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc
 
 #endif

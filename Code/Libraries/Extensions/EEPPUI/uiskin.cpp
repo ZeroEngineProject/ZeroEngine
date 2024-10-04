@@ -3,7 +3,7 @@
 #include <eepp/ui/uiskin.hpp>
 #include <eepp/ui/uistate.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UISkin* UISkin::New( const String& name ) {
 	return eeNew( UISkin, ( name ) );
@@ -68,4 +68,4 @@ Rectf UISkin::getBorderSize( const Uint32& state ) {
 	return Rectf();
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

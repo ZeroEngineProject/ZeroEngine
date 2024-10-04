@@ -4,7 +4,7 @@
 #include <eepp/ui/uiitemcontainer.hpp>
 #include <eepp/ui/uitextview.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UIListBox;
 
@@ -44,6 +44,6 @@ class ZeroShared UIListBoxItem : public UITextView {
 	virtual Uint32 onMouseLeave( const Vector2i& position, const Uint32& flags );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

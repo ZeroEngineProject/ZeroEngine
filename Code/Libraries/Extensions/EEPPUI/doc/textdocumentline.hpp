@@ -3,7 +3,7 @@
 
 #include <eepp/core/string.hpp>
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 class ZeroShared TextDocumentLine {
   public:
@@ -75,6 +75,6 @@ class ZeroShared TextDocumentLine {
 	}
 };
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc
 
 #endif // EE_UI_DOC_TEXTDOCUMENTLINE_HPP

@@ -1,8 +1,8 @@
 #include <algorithm>
 #include <eepp/ui/css/stylesheetselectorrule.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 static const char* StatePseudoClasses[] = { "focus",	"selected",		"hover", "pressed",
 											"disabled", "focus-within", "active" };
@@ -212,7 +212,7 @@ bool StyleSheetSelectorRule::hasPseudoClass( const String& cls ) const {
 	return std::find( mPseudoClasses.begin(), mPseudoClasses.end(), cls ) != mPseudoClasses.end();
 }
 
-const std::vector<String>& StyleSheetSelectorRule::getPseudoClasses() const {
+const Array<String>& StyleSheetSelectorRule::getPseudoClasses() const {
 	return mPseudoClasses;
 }
 
@@ -220,7 +220,7 @@ bool StyleSheetSelectorRule::hasStructuralPseudoClasses() const {
 	return !mStructuralPseudoClasses.empty();
 }
 
-const std::vector<String>& StyleSheetSelectorRule::getStructuralPseudoClasses() const {
+const Array<String>& StyleSheetSelectorRule::getStructuralPseudoClasses() const {
 	return mStructuralPseudoClasses;
 }
 
@@ -266,7 +266,7 @@ bool StyleSheetSelectorRule::matches( UIWidget* element, const bool& applyPseudo
 
 	if ( !mClasses.empty() && !element->getStyleSheetClasses().empty() ) {
 		bool hasClasses = true;
-		const std::vector<String>& elClasses = element->getStyleSheetClasses();
+		const Array<String>& elClasses = element->getStyleSheetClasses();
 
 		for ( const auto& cls : mClasses ) {
 			if ( std::find( elClasses.begin(), elClasses.end(), cls ) == elClasses.end() ) {
@@ -317,4 +317,4 @@ bool StyleSheetSelectorRule::matches( UIWidget* element, const bool& applyPseudo
 	return ( mRequirementFlags & ~PseudoClass & ~StructuralPseudoClass ) == flags;
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

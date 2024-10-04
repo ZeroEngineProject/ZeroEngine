@@ -3,7 +3,7 @@
 
 #include <eepp/ui/uipushbutton.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 namespace Abstract {
 class UIAbstractTableView;
@@ -43,6 +43,6 @@ class ZeroShared UITableHeaderColumn : public UIPushButton {
 	virtual void updateSortIconPosition();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UITABLEHEADERCOLUMN_HPP

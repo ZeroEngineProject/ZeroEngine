@@ -6,9 +6,9 @@
 #include <eepp/scene/scenenode.hpp>
 #include <string>
 
-using namespace EE::Math;
+using Zero::Math;
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 class ZeroShared StyleSheetLength {
   public:
@@ -78,6 +78,6 @@ class ZeroShared StyleSheetLength {
 	Float mValue;
 };
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif

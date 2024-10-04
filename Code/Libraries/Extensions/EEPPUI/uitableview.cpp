@@ -7,7 +7,7 @@
 
 #include <cmath>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UITableView* UITableView::New() {
 	return eeNew( UITableView, () );
@@ -403,4 +403,4 @@ ModelIndex UITableView::findRowWithText( const String& text, const bool& caseSen
 	return {};
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

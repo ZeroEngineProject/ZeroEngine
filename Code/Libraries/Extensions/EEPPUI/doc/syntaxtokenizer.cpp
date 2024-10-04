@@ -5,9 +5,9 @@
 #include <eepp/ui/doc/syntaxtokenizer.hpp>
 #include <variant>
 
-using namespace EE::System;
+using Zero::System;
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 // This tokenizer was a direct conversion to C++ from the lite (https://github.com/rxi/lite)
 // tokenizer. This allows eepp to support the same color schemes and syntax definitions from
@@ -33,7 +33,7 @@ static int isInMultiByteCodePoint( const char* text, const size_t& textSize, con
 }
 
 template <typename T>
-static void pushToken( std::vector<T>& tokens, const SyntaxStyleType& type,
+static void pushToken( Array<T>& tokens, const SyntaxStyleType& type,
 					   const String_view& text ) {
 	if ( !tokens.empty() && ( tokens[tokens.size() - 1].type == type ) ) {
 		size_t tpos = tokens.size() - 1;
@@ -185,10 +185,10 @@ static inline void popSubsyntax( SyntaxStateRestored& curState, SyntaxState& ret
 };
 
 template <typename T>
-static inline std::pair<std::vector<T>, SyntaxState>
+static inline std::pair<Array<T>, SyntaxState>
 _tokenize( const SyntaxDefinition& syntax, const String& text, const SyntaxState& state,
 		   const size_t& startIndex, bool skipSubSyntaxSeparator ) {
-	std::vector<T> tokens;
+	Array<T> tokens;
 
 	if ( syntax.getPatterns().empty() ) {
 		pushToken( tokens, SyntaxStyleTypes::Normal, text );
@@ -411,14 +411,14 @@ _tokenize( const SyntaxDefinition& syntax, const String& text, const SyntaxState
 	return std::make_pair( std::move( tokens ), retState );
 }
 
-std::pair<std::vector<SyntaxToken>, SyntaxState>
+std::pair<Array<SyntaxToken>, SyntaxState>
 SyntaxTokenizer::tokenize( const SyntaxDefinition& syntax, const String& text,
 						   const SyntaxState& state, const size_t& startIndex,
 						   bool skipSubSyntaxSeparator ) {
 	return _tokenize<SyntaxToken>( syntax, text, state, startIndex, skipSubSyntaxSeparator );
 }
 
-std::pair<std::vector<SyntaxTokenPosition>, SyntaxState>
+std::pair<Array<SyntaxTokenPosition>, SyntaxState>
 SyntaxTokenizer::tokenizePosition( const SyntaxDefinition& syntax, const String& text,
 								   const SyntaxState& state, const size_t& startIndex,
 								   bool skipSubSyntaxSeparator ) {
@@ -426,7 +426,7 @@ SyntaxTokenizer::tokenizePosition( const SyntaxDefinition& syntax, const String&
 										   skipSubSyntaxSeparator );
 }
 
-std::pair<std::vector<SyntaxTokenComplete>, SyntaxState>
+std::pair<Array<SyntaxTokenComplete>, SyntaxState>
 SyntaxTokenizer::tokenizeComplete( const SyntaxDefinition& syntax, const String& text,
 								   const SyntaxState& state, const size_t& startIndex,
 								   bool skipSubSyntaxSeparator ) {
@@ -488,4 +488,4 @@ Text& SyntaxTokenizer::tokenizeText( const SyntaxDefinition& syntax,
 	return text;
 }
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc

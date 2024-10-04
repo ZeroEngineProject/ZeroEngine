@@ -7,7 +7,7 @@
 #define PUGIXML_HEADER_ONLY
 #include <pugixml/pugixml.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIMenuBar* UIMenuBar::New() {
 	return eeNew( UIMenuBar, () );
@@ -416,4 +416,4 @@ void UIMenuBar::loadFromXmlNode( const pugi::xml_node& node ) {
 	endAttributesTransaction();
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

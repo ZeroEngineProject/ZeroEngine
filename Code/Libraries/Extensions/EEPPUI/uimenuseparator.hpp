@@ -1,9 +1,9 @@
 #ifndef EE_UICUISEPARATOR
 #define EE_UICUISEPARATOR
 
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIMenuSeparator : public UIWidget {
   public:
@@ -22,6 +22,6 @@ class ZeroShared UIMenuSeparator : public UIWidget {
   protected:
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

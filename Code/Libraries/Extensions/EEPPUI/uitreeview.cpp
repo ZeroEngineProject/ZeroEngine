@@ -10,7 +10,7 @@
 #include <eepp/ui/uitreeview.hpp>
 #include <stack>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UITreeView* UITreeView::New() {
 	return eeNew( UITreeView, () );
@@ -445,7 +445,7 @@ bool UITreeView::isExpanded( const ModelIndex& index ) const {
 	return getIndexMetadata( index ).open;
 }
 
-void UITreeView::setExpanded( const std::vector<ModelIndex>& indexes, bool expanded ) {
+void UITreeView::setExpanded( const Array<ModelIndex>& indexes, bool expanded ) {
 	if ( !getModel() )
 		return;
 	Model& model = *getModel();
@@ -460,7 +460,7 @@ void UITreeView::setExpanded( const std::vector<ModelIndex>& indexes, bool expan
 }
 
 void UITreeView::setExpanded( const ModelIndex& index, bool expanded ) {
-	setExpanded( std::vector{ index }, expanded );
+	setExpanded( Array{ index }, expanded );
 }
 
 void UITreeView::setAllExpanded( const ModelIndex& index, bool expanded ) {
@@ -782,7 +782,7 @@ ModelIndex UITreeView::findRowWithText( const String& text, const bool& caseSens
 	return foundIndex;
 }
 
-ModelIndex UITreeView::selectRowWithPath( const std::vector<String>& pathTree ) {
+ModelIndex UITreeView::selectRowWithPath( const Array<String>& pathTree ) {
 	const Model* model = getModel();
 	if ( !model || model->rowCount() == 0 )
 		return {};
@@ -955,4 +955,4 @@ UIWidget* UITreeViewCell::getExtraInnerWidget() const {
 	return mImage;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

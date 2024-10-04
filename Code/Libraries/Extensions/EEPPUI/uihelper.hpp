@@ -4,9 +4,9 @@
 #include <eepp/graphics/font.hpp>
 #include <eepp/ui/base.hpp>
 
-using namespace EE::Graphics;
+using Zero::Graphics;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 #define UI_HALIGN_LEFT TEXT_ALIGN_LEFT
 #define UI_HALIGN_MASK TEXT_HALIGN_MASK
@@ -137,6 +137,6 @@ enum class HintDisplay {
 	Focus
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

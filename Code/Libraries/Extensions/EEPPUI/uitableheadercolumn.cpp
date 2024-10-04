@@ -2,7 +2,7 @@
 #include <eepp/ui/uiscenenode.hpp>
 #include <eepp/ui/uitableheadercolumn.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UITableHeaderColumn::UITableHeaderColumn( const String& parentTag, UIAbstractTableView* view,
 										  const size_t& colIndex ) :
@@ -127,4 +127,4 @@ UIWidget* UITableHeaderColumn::getExtraInnerWidget() const {
 	return mImage;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

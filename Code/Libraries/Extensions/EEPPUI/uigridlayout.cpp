@@ -1,7 +1,7 @@
 #include <eepp/ui/css/propertydefinition.hpp>
 #include <eepp/ui/uigridlayout.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIGridLayout* UIGridLayout::New() {
 	return eeNew( UIGridLayout, () );
@@ -263,7 +263,7 @@ String UIGridLayout::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIGridLayout::getPropertiesImplemented() const {
+Array<PropertyId> UIGridLayout::getPropertiesImplemented() const {
 	auto props = UILayout::getPropertiesImplemented();
 	auto local = { PropertyId::ColumnMargin, PropertyId::RowMargin,	   PropertyId::ColumnMode,
 				   PropertyId::RowMode,		 PropertyId::ColumnWeight, PropertyId::RowWeight,
@@ -317,4 +317,4 @@ bool UIGridLayout::applyProperty( const StyleSheetProperty& attribute ) {
 	return true;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

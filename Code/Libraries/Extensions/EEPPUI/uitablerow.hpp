@@ -2,11 +2,11 @@
 #define EE_UI_UITABLEROW_HPP
 
 #include <eepp/ui/models/modelindex.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-using namespace EE::UI::Models;
+using Zero::UI::Models;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UITableRow : public UIWidget {
   public:
@@ -59,6 +59,6 @@ class ZeroShared UITableRow : public UIWidget {
 	ModelIndex mCurIndex;
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UITABLEROW_HPP

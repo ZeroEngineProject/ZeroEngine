@@ -5,11 +5,11 @@
 #include <eepp/ui/css/stylesheetspecification.hpp>
 #include <stdint.h>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 class UIWidget;
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 class ZeroShared StyleSheetSelectorRule {
   public:
@@ -68,11 +68,11 @@ class ZeroShared StyleSheetSelectorRule {
 
 	bool hasPseudoClass( const String& cls ) const;
 
-	const std::vector<String>& getPseudoClasses() const;
+	const Array<String>& getPseudoClasses() const;
 
 	bool hasStructuralPseudoClasses() const;
 
-	const std::vector<String>& getStructuralPseudoClasses() const;
+	const Array<String>& getStructuralPseudoClasses() const;
 
 	bool hasStructuralPseudoClass( const String& cls ) const;
 
@@ -85,13 +85,13 @@ class ZeroShared StyleSheetSelectorRule {
 	PatternMatch mPatternMatch;
 	String mTagName;
 	String mId;
-	std::vector<String> mClasses;
-	std::vector<String> mPseudoClasses;
-	std::vector<String> mStructuralPseudoClasses;
-	std::vector<StructuralSelector> mStructuralSelectors;
+	Array<String> mClasses;
+	Array<String> mPseudoClasses;
+	Array<String> mStructuralPseudoClasses;
+	Array<StructuralSelector> mStructuralSelectors;
 	Uint32 mRequirementFlags;
 };
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif

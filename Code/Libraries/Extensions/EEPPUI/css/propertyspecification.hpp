@@ -7,7 +7,7 @@
 #include <memory>
 #include <unordered_map>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 class ZeroShared PropertySpecification {
 	SINGLETON_DECLARE_HEADERS( PropertySpecification )
@@ -22,7 +22,7 @@ class ZeroShared PropertySpecification {
 	const PropertyDefinition* getProperty( const String& name ) const;
 
 	ShorthandDefinition& registerShorthand( const String& name,
-											const std::vector<String>& properties,
+											const Array<String>& properties,
 											const String& shorthandParserName );
 
 	const ShorthandDefinition* getShorthand( const String::HashType& id ) const;
@@ -41,6 +41,6 @@ class ZeroShared PropertySpecification {
 	const PropertyDefinition* addPropertyAlias( Uint32 aliasId, const PropertyDefinition* propDef );
 };
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif

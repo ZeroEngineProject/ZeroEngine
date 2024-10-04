@@ -5,7 +5,7 @@
 #include <eepp/math/rect.hpp>
 #include <eepp/ui/border.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UINode;
 
@@ -108,6 +108,6 @@ class ZeroShared UIBorderDrawable : public Drawable {
 	void updateBorders();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UIBORDERDRAWABLE_HPP

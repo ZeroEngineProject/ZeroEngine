@@ -5,9 +5,9 @@
 #include <eepp/ui/uiicon.hpp>
 #include <eepp/ui/uitablerow.hpp>
 
-using namespace EE::UI::Abstract;
+using Zero::UI::Abstract;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UITableRow;
 
@@ -56,7 +56,7 @@ class ZeroShared UITreeView : public UIAbstractTableView {
 
 	bool isExpanded( const ModelIndex& index ) const;
 
-	void setExpanded( const std::vector<ModelIndex>& index, bool expanded );
+	void setExpanded( const Array<ModelIndex>& index, bool expanded );
 
 	void setExpanded( const ModelIndex& index, bool expanded );
 
@@ -91,7 +91,7 @@ class ZeroShared UITreeView : public UIAbstractTableView {
 
 	ModelIndex selectRowWithPath( String path );
 
-	virtual ModelIndex selectRowWithPath( const std::vector<String>& pathTree );
+	virtual ModelIndex selectRowWithPath( const Array<String>& pathTree );
 
 	virtual void setSelection( const ModelIndex& index, bool scrollToSelection = true,
 							   bool openModelIndexTree = true );
@@ -170,6 +170,6 @@ class ZeroShared UITreeView : public UIAbstractTableView {
 	virtual void bindNavigationClick( UIWidget* widget );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UITREEVIEW_HPP

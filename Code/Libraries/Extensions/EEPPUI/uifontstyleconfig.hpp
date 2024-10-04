@@ -5,11 +5,11 @@
 #include <eepp/ui/base.hpp>
 #include <eepp/ui/uihelper.hpp>
 
-namespace EE { namespace Graphics {
+Zero { namespace Graphics {
 class Font;
-}} // namespace EE::Graphics
+}} // namespace Zero::Graphics
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UIFontStyleConfig : public FontStyleConfig {
   public:
@@ -36,6 +36,6 @@ class UIFontStyleConfig : public FontStyleConfig {
 	Color FontSelectionBackColor = Color( 50, 50, 50, 255 );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

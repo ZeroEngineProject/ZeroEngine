@@ -6,7 +6,7 @@
 #include <eepp/core/string.hpp>
 #include <unordered_map>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 class ZeroShared StyleSheetVariable {
   public:
@@ -46,6 +46,6 @@ class ZeroShared StyleSheetVariable {
 
 typedef HashMap<Uint32, StyleSheetVariable> StyleSheetVariables;
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif // EE_UI_CSS_STYLESHEETVARIABLE_HPP

@@ -1,7 +1,7 @@
 #include <eepp/ui/uirelativelayout.hpp>
 #include <eepp/ui/uiscenenode.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIRelativeLayout* UIRelativeLayout::New() {
 	return eeNew( UIRelativeLayout, () );
@@ -179,4 +179,4 @@ Uint32 UIRelativeLayout::onMessage( const NodeMessage* Msg ) {
 	return 0;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

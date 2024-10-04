@@ -3,7 +3,7 @@
 #include <eepp/ui/css/propertydefinition.hpp>
 #include <eepp/ui/uiloader.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UILoader* UILoader::New() {
 	return eeNew( UILoader, () );
@@ -255,7 +255,7 @@ String UILoader::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UILoader::getPropertiesImplemented() const {
+Array<PropertyId> UILoader::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::Indeterminate,  PropertyId::MaxProgress,
 				   PropertyId::Progress,	   PropertyId::FillColor,
@@ -313,4 +313,4 @@ UILoader* UILoader::setArcStartAngle( const Float& arcStartAngle ) {
 	return this;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

@@ -8,13 +8,13 @@
 #include <eepp/ui/doc/textdocument.hpp>
 #include <eepp/ui/keyboardshortcut.hpp>
 #include <eepp/ui/uifontstyleconfig.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-using namespace EE::Graphics;
-using namespace EE::System;
-using namespace EE::UI::Doc;
+using Zero::Graphics;
+using Zero::System;
+using Zero::UI::Doc;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UIPopUpMenu;
 class UIMenuItem;
@@ -24,7 +24,7 @@ class ZeroShared UIConsole : public UIWidget,
 						 public TextDocument::Client {
   public:
 	//! The Console Callback return a vector of parameters ( String )
-	typedef std::function<void( const std::vector<String>& )> ConsoleCallback;
+	typedef std::function<void( const Array<String>& )> ConsoleCallback;
 
 	static UIConsole* New();
 
@@ -158,7 +158,7 @@ class ZeroShared UIConsole : public UIWidget,
 	std::map<String, ConsoleCallback> mCallbacks;
 	std::deque<CommandLogCache> mCmdLog;
 	std::deque<String> mLastCommands;
-	std::vector<TextCache> mTextCache;
+	Array<TextCache> mTextCache;
 	UIFontStyleConfig mFontStyleConfig;
 	Uint32 mMaxLogLines{ 8192 };
 	TextDocument mDoc;
@@ -200,7 +200,7 @@ class ZeroShared UIConsole : public UIWidget,
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	void updateCacheSize();
 
@@ -274,22 +274,22 @@ class ZeroShared UIConsole : public UIWidget,
 	void cmdCmdList();
 
 	/** Internal Callback for default command ( showcursor ) */
-	void cmdShowCursor( const std::vector<String>& params );
+	void cmdShowCursor( const Array<String>& params );
 
 	/** Internal Callback for default command ( setfpslimit ) */
-	void cmdFrameLimit( const std::vector<String>& params );
+	void cmdFrameLimit( const Array<String>& params );
 
 	/** Internal Callback for default command ( setgamma ) */
-	void cmdSetGamma( const std::vector<String>& params );
+	void cmdSetGamma( const Array<String>& params );
 
 	/** Internal Callback for default command ( setvolume ) */
-	void cmdSetVolume( const std::vector<String>& params );
+	void cmdSetVolume( const Array<String>& params );
 
 	/** Internal Callback for default command ( dir and ls ) */
-	void cmdDir( const std::vector<String>& params );
+	void cmdDir( const Array<String>& params );
 
 	/** Internal Callback for default command ( showfps ) */
-	void cmdShowFps( const std::vector<String>& params );
+	void cmdShowFps( const Array<String>& params );
 
 	/** Internal Callback for default command ( gettexturememory ) */
 	void cmdGetTextureMemory();
@@ -307,7 +307,7 @@ class ZeroShared UIConsole : public UIWidget,
 	void cmdGetGpuExtensions();
 
 	/** Add command to grep the console log */
-	void cmdGrep( const std::vector<String>& params );
+	void cmdGrep( const Array<String>& params );
 
 	void privPushText( String&& str );
 
@@ -319,7 +319,7 @@ class ZeroShared UIConsole : public UIWidget,
 
 	void printCommandsStartingWith( const String& start );
 
-	String getLastCommonSubStr( std::vector<String>& cmds );
+	String getLastCommonSubStr( Array<String>& cmds );
 
 	void processLine();
 
@@ -339,6 +339,6 @@ class ZeroShared UIConsole : public UIWidget,
 	void updateIMELocation( const Rectf& loc );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

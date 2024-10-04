@@ -10,7 +10,7 @@
 #include <eepp/ui/uistyle.hpp>
 #include <eepp/ui/uithememanager.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 #define FDLG_MIN_WIDTH 640
 #define FDLG_MIN_HEIGHT 400
@@ -338,10 +338,10 @@ void UIFileDialog::refreshFolder( bool resetScroll ) {
 		mMultiView->getTableView()->setColumnsVisible( { FileSystemModel::Name } );
 		mMultiView->setModel( SortingProxyModel::New( mDiskDrivesModel ) );
 	} else {
-		std::vector<String> flist = FileSystem::filesGetInPath(
+		Array<String> flist = FileSystem::filesGetInPath(
 			String( mCurPath ), getSortAlphabetically(), getFoldersFirst(), !getShowHidden() );
-		std::vector<String> files;
-		std::vector<String> patterns;
+		Array<String> files;
+		Array<String> patterns;
 
 		if ( "*" != mFiletype->getText() ) {
 			patterns = String::split( mFiletype->getText().toUtf8(), ';' );
@@ -404,10 +404,10 @@ void UIFileDialog::setCurPath( const String& path ) {
 	refreshFolder( true );
 }
 
-std::vector<ModelIndex> UIFileDialog::getSelectionModelIndex() const {
+Array<ModelIndex> UIFileDialog::getSelectionModelIndex() const {
 	if ( mMultiView->getSelection().isEmpty() )
 		return {};
-	std::vector<ModelIndex> indexes;
+	Array<ModelIndex> indexes;
 	mMultiView->getSelection().forEachIndex( [this, &indexes]( const ModelIndex& index ) {
 		auto* filterModel = (SortingProxyModel*)mMultiView->getModel().get();
 		auto localIndex = filterModel->mapToSource( index );
@@ -416,11 +416,11 @@ std::vector<ModelIndex> UIFileDialog::getSelectionModelIndex() const {
 	return indexes;
 }
 
-std::vector<const FileSystemModel::Node*> UIFileDialog::getSelectionNodes() const {
+Array<const FileSystemModel::Node*> UIFileDialog::getSelectionNodes() const {
 	if ( mMultiView->getSelection().isEmpty() || mDisplayingDrives )
 		return {};
 	auto localIndexes = getSelectionModelIndex();
-	std::vector<const FileSystemModel::Node*> nodes;
+	Array<const FileSystemModel::Node*> nodes;
 	nodes.reserve( localIndexes.size() );
 	for ( const auto& localIndex : localIndexes ) {
 		const FileSystemModel::Node& node = mModel->node( localIndex );
@@ -709,11 +709,11 @@ String UIFileDialog::getFullPath() const {
 	return getFullPath( 0 );
 }
 
-std::vector<String> UIFileDialog::getFullPaths() const {
+Array<String> UIFileDialog::getFullPaths() const {
 	if ( mDisplayingDrives )
 		return { getCurFile() };
 
-	std::vector<String> paths;
+	Array<String> paths;
 	auto nodes = getSelectionNodes();
 
 	for ( size_t i = 0; i < nodes.size(); i++ ) {
@@ -843,4 +843,4 @@ void UIFileDialog::setSingleClickNavigation( bool singleClickNavigation ) {
 	mMultiView->setSingleClickNavigation( singleClickNavigation );
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

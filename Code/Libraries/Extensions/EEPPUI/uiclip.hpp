@@ -4,7 +4,7 @@
 #include <eepp/config.hpp>
 #include <string>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 enum class ClipType : Uint32 { None, ContentBox, PaddingBox, BorderBox };
 
@@ -26,6 +26,6 @@ class UIClip {
 	ClipType mClipType{ ClipType::None };
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UICLIP_HPP

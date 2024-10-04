@@ -3,7 +3,7 @@
 #include <eepp/ui/css/propertydefinition.hpp>
 #include <eepp/ui/css/propertyspecification.hpp>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 PropertyDefinition* PropertyDefinition::New( const String& name,
 											 const String& defaultValue,
@@ -98,4 +98,4 @@ const bool& PropertyDefinition::isIndexed() const {
 	return mIndexed;
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

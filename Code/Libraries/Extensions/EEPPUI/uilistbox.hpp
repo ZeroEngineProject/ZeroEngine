@@ -7,7 +7,7 @@
 #include <eepp/ui/uiscrollbar.hpp>
 #include <eepp/ui/uitouchdraggablewidget.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIListBox : public UITouchDraggableWidget {
   public:
@@ -27,7 +27,7 @@ class ZeroShared UIListBox : public UITouchDraggableWidget {
 
 	void clear();
 
-	void addListBoxItems( std::vector<String> texts );
+	void addListBoxItems( Array<String> texts );
 
 	Uint32 addListBoxItem( const String& Text );
 
@@ -39,7 +39,7 @@ class ZeroShared UIListBox : public UITouchDraggableWidget {
 
 	Uint32 removeListBoxItem( Uint32 ItemIndex );
 
-	void removeListBoxItems( std::vector<Uint32> ItemsIndex );
+	void removeListBoxItems( Array<Uint32> ItemsIndex );
 
 	virtual void setTheme( UITheme* Theme );
 
@@ -59,15 +59,15 @@ class ZeroShared UIListBox : public UITouchDraggableWidget {
 
 	String getItemSelectedText() const;
 
-	const std::vector<String>& getItemsText() const;
+	const Array<String>& getItemsText() const;
 
 	Uint32 getItemSelectedIndex() const;
 
 	bool hasSelection() const;
 
-	std::vector<Uint32> getItemsSelectedIndex() const;
+	Array<Uint32> getItemsSelectedIndex() const;
 
-	std::vector<UIListBoxItem*> getItemsSelected();
+	Array<UIListBoxItem*> getItemsSelected();
 
 	Rectf getContainerPadding() const;
 
@@ -108,7 +108,7 @@ class ZeroShared UIListBox : public UITouchDraggableWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	Uint32 getMaxTextWidth() const;
 
@@ -136,9 +136,9 @@ class ZeroShared UIListBox : public UITouchDraggableWidget {
 
 	bool mSmoothScroll;
 
-	std::vector<Uint32> mSelected;
-	std::vector<UIListBoxItem*> mItems;
-	std::vector<String> mTexts;
+	Array<Uint32> mSelected;
+	Array<UIListBoxItem*> mItems;
+	Array<String> mTexts;
 
 	void updateScroll( bool fromScrollChange = false );
 
@@ -197,6 +197,6 @@ class ZeroShared UIListBox : public UITouchDraggableWidget {
 	virtual bool isTouchOverAllowedChilds();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

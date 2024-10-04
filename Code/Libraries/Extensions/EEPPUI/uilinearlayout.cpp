@@ -2,7 +2,7 @@
 #include <eepp/ui/uilinearlayout.hpp>
 #include <eepp/ui/uiscenenode.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UILinearLayout* UILinearLayout::NewWithTag( const String& tag,
 											const UIOrientation& orientation ) {
@@ -467,7 +467,7 @@ String UILinearLayout::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UILinearLayout::getPropertiesImplemented() const {
+Array<PropertyId> UILinearLayout::getPropertiesImplemented() const {
 	auto props = UILayout::getPropertiesImplemented();
 	auto local = { PropertyId::Orientation, PropertyId::GravityOwner };
 	props.insert( props.end(), local.begin(), local.end() );
@@ -511,4 +511,4 @@ Uint32 UILinearLayout::onMessage( const NodeMessage* Msg ) {
 	return 0;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

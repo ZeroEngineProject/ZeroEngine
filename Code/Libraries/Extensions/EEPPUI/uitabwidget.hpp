@@ -3,9 +3,9 @@
 
 #include <deque>
 #include <eepp/ui/uitab.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UIPopUpMenu;
 class UIScrollBar;
@@ -131,7 +131,7 @@ class ZeroShared UITabWidget : public UIWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	virtual bool isDrawInvalidator() const;
 
@@ -256,6 +256,6 @@ class ZeroShared UITabWidget : public UIWidget {
 	void eraseFocusHistory( UITab* tab );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

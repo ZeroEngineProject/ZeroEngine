@@ -7,7 +7,7 @@
 #include <map>
 #include <vector>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 class ZeroShared StyleSheetPropertiesParser {
   public:
@@ -42,6 +42,6 @@ class ZeroShared StyleSheetPropertiesParser {
 	void addProperty( String name, String value );
 };
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif

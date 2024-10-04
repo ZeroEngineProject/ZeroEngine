@@ -2,7 +2,7 @@
 #include <eepp/core/memorymanager.hpp>
 #include <eepp/ui/undostack.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UndoCommand::UndoCommand( const String& text, UndoCommand* parent ) : UndoCommand( parent ) {
 	setText( text );
@@ -492,4 +492,4 @@ void UndoStack::redoTextChanged( const String& redoText ) {
 	sendEvent( &event );
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

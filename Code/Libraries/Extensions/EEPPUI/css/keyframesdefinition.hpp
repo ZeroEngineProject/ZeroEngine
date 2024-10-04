@@ -8,10 +8,10 @@
 #include <map>
 #include <vector>
 
-using namespace EE::Math;
-using namespace EE::System;
+using Zero::Math;
+using Zero::System;
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 class ZeroShared KeyframesDefinition {
   public:
@@ -22,7 +22,7 @@ class ZeroShared KeyframesDefinition {
 
 	static KeyframesDefinition
 	parseKeyframes( const String& name,
-					const std::vector<std::shared_ptr<StyleSheetStyle>>& keyframeBlocks );
+					const Array<std::shared_ptr<StyleSheetStyle>>& keyframeBlocks );
 
 	const String& getName() const;
 
@@ -42,6 +42,6 @@ class ZeroShared KeyframesDefinition {
 
 typedef std::map<String, KeyframesDefinition> KeyframesDefinitionMap;
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif // EE_UI_CSS_KEYFRAMESDEFINITION_HPP

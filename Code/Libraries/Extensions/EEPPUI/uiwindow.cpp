@@ -21,7 +21,7 @@
 #define PUGIXML_HEADER_ONLY
 #include <pugixml/pugixml.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIWindow* UIWindow::NewOpt( UIWindow::WindowBaseContainerType type,
 							const StyleConfig& windowStyleConfig ) {
@@ -1267,7 +1267,7 @@ void UIWindow::nodeDraw() {
 
 		ClippingMask* clippingMask = GLi->getClippingMask();
 
-		const std::vector<Rectf>& clips = clippingMask->getPlanesClipped();
+		const Array<Rectf>& clips = clippingMask->getPlanesClipped();
 
 		if ( !clips.empty() )
 			clippingMask->clipPlaneDisable();
@@ -1558,7 +1558,7 @@ void UIWindow::resizeCursor() {
 }
 
 String UIWindow::getWindowFlagsString() const {
-	std::vector<String> flags;
+	Array<String> flags;
 	if ( getWinFlags() & UI_WIN_DEFAULT_FLAGS )
 		flags.push_back( "default" );
 	if ( getWinFlags() & UI_WIN_CLOSE_BUTTON )
@@ -1627,7 +1627,7 @@ String UIWindow::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIWindow::getPropertiesImplemented() const {
+Array<PropertyId> UIWindow::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::Width,
 				   PropertyId::Height,
@@ -1670,7 +1670,7 @@ bool UIWindow::applyProperty( const StyleSheetProperty& attribute ) {
 		case PropertyId::WindowFlags: {
 			String flagsStr = attribute.asString();
 			String::toLowerInPlace( flagsStr );
-			std::vector<String> strings = String::split( flagsStr, '|' );
+			Array<String> strings = String::split( flagsStr, '|' );
 			Uint32 winflags = 0;
 
 			if ( strings.size() ) {
@@ -1825,4 +1825,4 @@ void UIWindow::checkEphemeralClose() {
 		closeWindow();
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

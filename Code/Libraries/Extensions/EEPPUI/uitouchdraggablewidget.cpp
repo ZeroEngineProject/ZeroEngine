@@ -2,7 +2,7 @@
 #include <eepp/ui/css/propertydefinition.hpp>
 #include <eepp/ui/uitouchdraggablewidget.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UITouchDraggableWidget* UITouchDraggableWidget::New() {
 	return eeNew( UITouchDraggableWidget, () );
@@ -162,7 +162,7 @@ String UITouchDraggableWidget::getPropertyString( const PropertyDefinition* prop
 	}
 }
 
-std::vector<PropertyId> UITouchDraggableWidget::getPropertiesImplemented() const {
+Array<PropertyId> UITouchDraggableWidget::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::TouchDrag, PropertyId::TouchDragDeceleration };
 	props.insert( props.end(), local.begin(), local.end() );
@@ -187,4 +187,4 @@ bool UITouchDraggableWidget::applyProperty( const StyleSheetProperty& attribute 
 	return true;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

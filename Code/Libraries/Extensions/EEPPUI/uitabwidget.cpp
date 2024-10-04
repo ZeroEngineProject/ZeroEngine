@@ -9,7 +9,7 @@
 #include <eepp/ui/uitabwidget.hpp>
 #include <eepp/ui/uithememanager.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UITabWidget* UITabWidget::New() {
 	return eeNew( UITabWidget, () );
@@ -188,7 +188,7 @@ String UITabWidget::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UITabWidget::getPropertiesImplemented() const {
+Array<PropertyId> UITabWidget::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::MaxTextLength,
 				   PropertyId::MinTabWidth,
@@ -1097,4 +1097,4 @@ void UITabWidget::updateScroll( bool updateFocus ) {
 	}
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

@@ -1,7 +1,7 @@
 #include <eepp/core/core.hpp>
 #include <eepp/ui/uiicontheme.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIIconTheme* UIIconTheme::New( const String& name ) {
 	return eeNew( UIIconTheme, ( name ) );
@@ -36,4 +36,4 @@ UIIcon* UIIconTheme::getIcon( const String& name ) const {
 	return it != mIcons.end() ? it->second : nullptr;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

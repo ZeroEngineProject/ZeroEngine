@@ -3,7 +3,7 @@
 
 #include <eepp/ui/uimenu.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIPopUpMenu : public UIMenu {
   public:
@@ -57,6 +57,6 @@ class ZeroShared ContextMenuEvent : public MouseEvent {
 	UIPopUpMenu* menu;
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

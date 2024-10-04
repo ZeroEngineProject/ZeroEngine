@@ -4,7 +4,7 @@
 #include <eepp/ui/uipushbutton.hpp>
 #include <eepp/ui/uitextview.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIRadioButton : public UITextView {
   public:
@@ -37,7 +37,7 @@ class ZeroShared UIRadioButton : public UITextView {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
   protected:
 	UIWidget* mActiveButton;
@@ -69,6 +69,6 @@ class ZeroShared UIRadioButton : public UITextView {
 	virtual void alignFix();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

@@ -1,9 +1,9 @@
 #ifndef EE_UI_UISTACKWIDGET_HPP
 #define EE_UI_UISTACKWIDGET_HPP
 
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIStackWidget : public UIWidget {
   public:
@@ -25,6 +25,6 @@ class ZeroShared UIStackWidget : public UIWidget {
 	virtual void onChildCountChange( Node* child, const bool& removed );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UISTACKWIDGET_HPP

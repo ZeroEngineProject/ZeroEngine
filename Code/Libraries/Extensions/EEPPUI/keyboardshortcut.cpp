@@ -1,9 +1,9 @@
 #include <eepp/ui/keyboardshortcut.hpp>
 #include <eepp/window/input.hpp>
 
-using namespace EE::Window;
+using Zero::Window;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 KeyBindings::Shortcut KeyBindings::sanitizeShortcut( const KeyBindings::Shortcut& shortcut ) {
 	KeyBindings::Shortcut sanitized( shortcut.key, 0 );
@@ -119,7 +119,7 @@ void KeyBindings::removeCommandKeybind( const String& command ) {
 	}
 }
 
-void KeyBindings::removeCommandsKeybind( const std::vector<String>& commands ) {
+void KeyBindings::removeCommandsKeybind( const Array<String>& commands ) {
 	for ( auto& cmd : commands )
 		removeCommandKeybind( cmd );
 }
@@ -170,7 +170,7 @@ const std::map<String, Uint64> KeyBindings::getKeybindings() const {
 
 String KeyBindings::fromShortcut( const Window::Input* input, KeyBindings::Shortcut shortcut,
 									   bool format ) {
-	std::vector<String> mods;
+	Array<String> mods;
 	String keyname( String::toLower( input->getKeyName( shortcut.key ) ) );
 	const auto& MOD_MAP = KeyMod::getModMap();
 	if ( shortcut.mod & MOD_MAP.at( "mod" ) )
@@ -195,4 +195,4 @@ String KeyBindings::getShortcutString( KeyBindings::Shortcut shortcut, bool form
 	return fromShortcut( mInput, shortcut, format );
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

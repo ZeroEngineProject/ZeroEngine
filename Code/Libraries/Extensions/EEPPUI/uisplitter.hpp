@@ -3,7 +3,7 @@
 
 #include <eepp/ui/uilayout.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UISplitter : public UILayout {
   public:
@@ -42,7 +42,7 @@ class ZeroShared UISplitter : public UILayout {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	virtual void updateLayout();
 
@@ -65,6 +65,6 @@ class ZeroShared UISplitter : public UILayout {
 	void updateSplitterDragFlags();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UISPLITTER_HPP

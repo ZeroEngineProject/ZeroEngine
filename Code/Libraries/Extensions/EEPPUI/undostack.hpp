@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 // Absolutely inspired by Qt implementation
 
@@ -40,7 +40,7 @@ class ZeroShared UndoCommand : public NonCopyable {
   protected:
 	friend class UndoStack;
 
-	std::vector<UndoCommand*> mChilds;
+	Array<UndoCommand*> mChilds;
 	String mText;
 	String mActionText;
 	int mId{ -1 };
@@ -233,6 +233,6 @@ class ZeroShared UndoStack : public NonCopyable {
 	void redoTextChanged( const String& redoText );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UNDOSTACK_HPP

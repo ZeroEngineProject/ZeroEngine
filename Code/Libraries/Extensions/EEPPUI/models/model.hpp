@@ -12,16 +12,16 @@
 #include <string>
 #include <unordered_set>
 
-using namespace EE::Graphics;
-using namespace EE::Math;
+using Zero::Graphics;
+using Zero::Math;
 
-namespace EE { namespace UI { namespace Abstract {
+namespace Zero { namespace UI { namespace Abstract {
 class UIAbstractView;
-}}} // namespace EE::UI::Abstract
+}}} // namespace Zero::UI::Abstract
 
-using namespace EE::UI::Abstract;
+using Zero::UI::Abstract;
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 class PersistentHandle;
 
@@ -211,7 +211,7 @@ class ZeroShared Model {
 	// actually happens, because we can't figure out which persistent handles
 	// belong to us in end_delete_rows/columns (because accessing the parents of
 	// the indices might be impossible).
-	std::stack<std::vector<ModelIndex>> mDeletedIndicesStack;
+	std::stack<Array<ModelIndex>> mDeletedIndicesStack;
 	std::unordered_set<UIAbstractView*> mViews;
 	std::unordered_set<Client*> mClients;
 	std::function<void()> mOnUpdate;
@@ -220,6 +220,6 @@ class ZeroShared Model {
 	std::unordered_map<Uint32, ModelStyler> mStylers;
 };
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models
 
 #endif // EE_UI_MODELS_MODEL_HPP

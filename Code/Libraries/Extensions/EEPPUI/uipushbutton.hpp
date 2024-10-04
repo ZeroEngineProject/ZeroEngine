@@ -3,9 +3,9 @@
 
 #include <eepp/ui/uiimage.hpp>
 #include <eepp/ui/uitextview.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 enum class InnerWidgetOrientation {
 	WidgetIconTextBox,
@@ -59,7 +59,7 @@ class ZeroShared UIPushButton : public UIWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	UIWidget* setTextAlign( const Uint32& align );
 
@@ -115,11 +115,11 @@ class ZeroShared UIPushButton : public UIWidget {
 
 	void updateTextBox();
 
-	Vector2f packLayout( const std::vector<UIWidget*>& widgets, const Rectf& padding );
+	Vector2f packLayout( const Array<UIWidget*>& widgets, const Rectf& padding );
 
-	Vector2f calcLayoutSize( const std::vector<UIWidget*>& widgets, const Rectf& padding ) const;
+	Vector2f calcLayoutSize( const Array<UIWidget*>& widgets, const Rectf& padding ) const;
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

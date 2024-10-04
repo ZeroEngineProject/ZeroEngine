@@ -5,15 +5,15 @@
 #include <memory>
 #include <vector>
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 template <typename T> class ItemListModel final : public Model {
   public:
-	static std::shared_ptr<ItemListModel> create( const std::vector<T>& data ) {
+	static std::shared_ptr<ItemListModel> create( const Array<T>& data ) {
 		return std::make_shared<ItemListModel<T>>( data );
 	}
 
-	explicit ItemListModel( const std::vector<T>& data ) : mData( data ) {}
+	explicit ItemListModel( const Array<T>& data ) : mData( data ) {}
 
 	virtual ~ItemListModel() {}
 
@@ -36,16 +36,16 @@ template <typename T> class ItemListModel final : public Model {
 	}
 
   private:
-	const std::vector<T>& mData;
+	const Array<T>& mData;
 };
 
 template <typename K, typename V> class ItemPairListModel final : public Model {
   public:
-	static std::shared_ptr<ItemPairListModel> create( std::vector<std::pair<K, V>>& data ) {
+	static std::shared_ptr<ItemPairListModel> create( Array<std::pair<K, V>>& data ) {
 		return std::make_shared<ItemPairListModel<K, V>>( data );
 	}
 
-	explicit ItemPairListModel( std::vector<std::pair<K, V>>& data ) : mData( data ) {}
+	explicit ItemPairListModel( Array<std::pair<K, V>>& data ) : mData( data ) {}
 
 	virtual ~ItemPairListModel() {}
 
@@ -98,18 +98,18 @@ template <typename K, typename V> class ItemPairListModel final : public Model {
 	}
 
   private:
-	std::vector<std::pair<K, V>>& mData;
-	std::vector<String> mColumnNames{ "Title", "Description" };
+	Array<std::pair<K, V>>& mData;
+	Array<String> mColumnNames{ "Title", "Description" };
 	bool mIsEditable{ false };
 };
 
 template <typename T> class ItemListOwnerModel final : public Model {
   public:
-	static std::shared_ptr<ItemListOwnerModel> create( const std::vector<T>& data ) {
+	static std::shared_ptr<ItemListOwnerModel> create( const Array<T>& data ) {
 		return std::make_shared<ItemListOwnerModel<T>>( data );
 	}
 
-	explicit ItemListOwnerModel( const std::vector<T>& data ) : mData( data ) {}
+	explicit ItemListOwnerModel( const Array<T>& data ) : mData( data ) {}
 
 	virtual ~ItemListOwnerModel() {}
 
@@ -142,18 +142,18 @@ template <typename T> class ItemListOwnerModel final : public Model {
 	}
 
   private:
-	std::vector<T> mData;
+	Array<T> mData;
 	bool mIsEditable{ false };
 };
 
 template <typename K, typename V> class ItemPairListOwnerModel final : public Model {
   public:
 	static std::shared_ptr<ItemPairListOwnerModel>
-	create( const std::vector<std::pair<K, V>>& data ) {
+	create( const Array<std::pair<K, V>>& data ) {
 		return std::make_shared<ItemPairListOwnerModel<K, V>>( data );
 	}
 
-	explicit ItemPairListOwnerModel( const std::vector<std::pair<K, V>>& data ) : mData( data ) {}
+	explicit ItemPairListOwnerModel( const Array<std::pair<K, V>>& data ) : mData( data ) {}
 
 	virtual ~ItemPairListOwnerModel() {}
 
@@ -206,20 +206,20 @@ template <typename K, typename V> class ItemPairListOwnerModel final : public Mo
 	}
 
   private:
-	std::vector<std::pair<K, V>> mData;
-	std::vector<String> mColumnNames{ "Title", "Description" };
+	Array<std::pair<K, V>> mData;
+	Array<String> mColumnNames{ "Title", "Description" };
 	bool mIsEditable{ false };
 };
 
 template <typename V> class ItemVectorListOwnerModel final : public Model {
   public:
 	static std::shared_ptr<ItemVectorListOwnerModel>
-	create( const size_t& columnCount, const std::vector<std::vector<V>>& data ) {
+	create( const size_t& columnCount, const Array<Array<V>>& data ) {
 		return std::make_shared<ItemVectorListOwnerModel<V>>( columnCount, data );
 	}
 
 	explicit ItemVectorListOwnerModel( const size_t& columnCount,
-									   const std::vector<std::vector<V>>& data ) :
+									   const Array<Array<V>>& data ) :
 		mData( data ) {
 		mColumnNames.resize( columnCount );
 	}
@@ -272,11 +272,11 @@ template <typename V> class ItemVectorListOwnerModel final : public Model {
 	}
 
   private:
-	std::vector<std::vector<V>> mData;
-	std::vector<String> mColumnNames;
+	Array<Array<V>> mData;
+	Array<String> mColumnNames;
 	bool mIsEditable{ false };
 };
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models
 
 #endif // EE_UI_MODELS_ITEMLISTMODEL_HPP

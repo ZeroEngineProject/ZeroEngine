@@ -1,9 +1,9 @@
 #ifndef EE_UITOUCHDRAGGABLEWIDGET_HPP
 #define EE_UITOUCHDRAGGABLEWIDGET_HPP
 
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UITouchDraggableWidget : public UIWidget {
   public:
@@ -34,7 +34,7 @@ class ZeroShared UITouchDraggableWidget : public UIWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
   protected:
 	Vector2f mTouchDragPoint;
@@ -52,6 +52,6 @@ class ZeroShared UITouchDraggableWidget : public UIWidget {
 	virtual Uint32 onMessage( const NodeMessage* msg );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

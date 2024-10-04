@@ -10,9 +10,9 @@
 #define INDEX_ALREADY_EXISTS eeINDEX_NOT_FOUND
 #endif
 
-using namespace EE::Scene;
+using Zero::Scene;
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 FileSystemModel::Node::Node( const String& rootPath, const FileSystemModel& model ) :
 	mInfo( FileSystem::getRealPath( rootPath ) ) {
@@ -146,7 +146,7 @@ FileSystemModel::Node* FileSystemModel::Node::childWithPathExists( const String&
 	return nullptr;
 }
 
-static bool isAcceptedExtension( const std::vector<String>& acceptedExtensions,
+static bool isAcceptedExtension( const Array<String>& acceptedExtensions,
 								 const FileInfo& file ) {
 	if ( !acceptedExtensions.empty() && file.isRegularFile() ) {
 		for ( size_t z = 0; z < acceptedExtensions.size(); z++ )
@@ -168,7 +168,7 @@ void FileSystemModel::Node::refresh( const FileSystemModel& model ) {
 	auto files = FileSystem::filesInfoGetInPath( mInfo.getFilepath(), false, displayCfg.sortByName,
 												 displayCfg.foldersFirst, displayCfg.ignoreHidden );
 
-	std::vector<Node*> newChildren;
+	Array<Node*> newChildren;
 	Node* node = nullptr;
 
 	for ( auto file : files ) {
@@ -542,7 +542,7 @@ void FileSystemModel::setPreviouslySelectedIndex( const ModelIndex& previouslySe
 }
 
 size_t FileSystemModel::getFileIndex( Node* parent, const FileInfo& file ) {
-	std::vector<FileInfo> files;
+	Array<FileInfo> files;
 
 	for ( Node* nodeFile : parent->mChildren ) {
 		files.emplace_back( nodeFile->info() );
@@ -559,8 +559,8 @@ size_t FileSystemModel::getFileIndex( Node* parent, const FileInfo& file ) {
 	} );
 
 	if ( getDisplayConfig().foldersFirst ) {
-		std::vector<FileInfo> folders;
-		std::vector<FileInfo> file;
+		Array<FileInfo> folders;
+		Array<FileInfo> file;
 		for ( size_t i = 0; i < files.size(); i++ ) {
 			if ( files[i].isDirectory() ) {
 				folders.push_back( files[i] );
@@ -638,7 +638,7 @@ bool FileSystemModel::handleFileEventLocked( const FileEvent& event ) {
 			endInsertRows();
 
 			forEachView( [&]( UIAbstractView* view ) {
-				std::vector<ModelIndex> newIndexes;
+				Array<ModelIndex> newIndexes;
 				view->getSelection().forEachIndex( [&]( const ModelIndex& selectedIndex ) {
 					Node* curNode = static_cast<Node*>( selectedIndex.internalData() );
 					if ( curNode->getParent() == parent ) {
@@ -691,7 +691,7 @@ bool FileSystemModel::handleFileEventLocked( const FileEvent& event ) {
 			}
 
 			forEachView( [&]( UIAbstractView* view ) {
-				std::vector<ModelIndex> newIndexes;
+				Array<ModelIndex> newIndexes;
 				view->getSelection().forEachIndex( [&]( const ModelIndex& selectedIndex ) {
 					if ( !selectedIndex.isValid() )
 						return;
@@ -757,9 +757,9 @@ bool FileSystemModel::handleFileEventLocked( const FileEvent& event ) {
 				return false;
 			}
 
-			std::map<UIAbstractView*, std::vector<ModelIndex>> keptSelections;
-			std::map<UIAbstractView*, std::vector<String>> prevSelections;
-			std::map<UIAbstractView*, std::vector<ModelIndex>> prevSelectionsModelIndex;
+			std::map<UIAbstractView*, Array<ModelIndex>> keptSelections;
+			std::map<UIAbstractView*, Array<String>> prevSelections;
+			std::map<UIAbstractView*, Array<ModelIndex>> prevSelectionsModelIndex;
 
 			forEachView( [&]( UIAbstractView* view ) {
 				view->getSelection().forEachIndex( [&]( const ModelIndex& selectedIndex ) {
@@ -786,8 +786,8 @@ bool FileSystemModel::handleFileEventLocked( const FileEvent& event ) {
 			endMoveRows();
 
 			forEachView( [&]( UIAbstractView* view ) {
-				std::vector<String> names = prevSelections[view];
-				std::vector<ModelIndex> newIndexes = keptSelections[view];
+				Array<String> names = prevSelections[view];
+				Array<ModelIndex> newIndexes = keptSelections[view];
 				int i = 0;
 				for ( const auto& name : names ) {
 					Int64 row = parent->findChildRowFromName( name, *this );
@@ -846,7 +846,7 @@ bool FileSystemModel::handleFileEvent( const FileEvent& event ) {
 	return ret;
 }
 
-std::shared_ptr<DiskDrivesModel> DiskDrivesModel::create( const std::vector<String>& data ) {
+std::shared_ptr<DiskDrivesModel> DiskDrivesModel::create( const Array<String>& data ) {
 	return std::shared_ptr<DiskDrivesModel>( new DiskDrivesModel( data ) );
 }
 
@@ -882,4 +882,4 @@ Variant DiskDrivesModel::data( const ModelIndex& index, ModelRole role ) const {
 	return {};
 }
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models

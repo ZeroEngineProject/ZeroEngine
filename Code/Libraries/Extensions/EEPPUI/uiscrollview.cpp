@@ -2,7 +2,7 @@
 #include <eepp/ui/uiscrollbar.hpp>
 #include <eepp/ui/uiscrollview.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIScrollView* UIScrollView::New() {
 	return eeNew( UIScrollView, () );
@@ -280,7 +280,7 @@ String UIScrollView::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIScrollView::getPropertiesImplemented() const {
+Array<PropertyId> UIScrollView::getPropertiesImplemented() const {
 	auto props = UITouchDraggableWidget::getPropertiesImplemented();
 	auto local = { PropertyId::VScrollMode, PropertyId::HScrollMode, PropertyId::ScrollBarStyle,
 				   PropertyId::ScrollBarMode };
@@ -365,4 +365,4 @@ Uint32 UIScrollView::onMessage( const NodeMessage* Msg ) {
 	return UITouchDraggableWidget::onMessage( Msg );
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

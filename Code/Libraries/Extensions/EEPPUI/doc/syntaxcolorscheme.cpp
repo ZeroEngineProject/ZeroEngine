@@ -11,9 +11,9 @@
 #include <eepp/ui/doc/syntaxcolorscheme.hpp>
 #include <eepp/ui/doc/syntaxdefinition.hpp>
 
-using namespace EE::Graphics;
+using Zero::Graphics;
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 // Color schemes are compatible with the lite (https://github.com/rxi/lite) color schemes.
 // But I also added:
@@ -146,9 +146,9 @@ SyntaxColorScheme::Style parseStyle(
 	return style;
 }
 
-std::vector<SyntaxColorScheme> SyntaxColorScheme::loadFromStream( IOStream& stream ) {
+Array<SyntaxColorScheme> SyntaxColorScheme::loadFromStream( IOStream& stream ) {
 	Clock clock;
-	std::vector<SyntaxColorScheme> colorSchemes;
+	Array<SyntaxColorScheme> colorSchemes;
 	SyntaxColorScheme refColorScheme( getDefault() );
 	IniFile ini( stream );
 	for ( size_t keyIdx = 0; keyIdx < ini.getNumKeys(); keyIdx++ ) {
@@ -176,7 +176,7 @@ std::vector<SyntaxColorScheme> SyntaxColorScheme::loadFromStream( IOStream& stre
 	return colorSchemes;
 }
 
-std::vector<SyntaxColorScheme> SyntaxColorScheme::loadFromFile( const String& path ) {
+Array<SyntaxColorScheme> SyntaxColorScheme::loadFromFile( const String& path ) {
 	if ( !FileSystem::fileExists( path ) && PackManager::instance()->isFallbackToPacksActive() ) {
 		String pathFix( path );
 		Pack* pack = PackManager::instance()->exists( pathFix );
@@ -189,13 +189,13 @@ std::vector<SyntaxColorScheme> SyntaxColorScheme::loadFromFile( const String& pa
 	return loadFromStream( stream );
 }
 
-std::vector<SyntaxColorScheme> SyntaxColorScheme::loadFromMemory( const void* data,
+Array<SyntaxColorScheme> SyntaxColorScheme::loadFromMemory( const void* data,
 																  std::size_t sizeInBytes ) {
 	IOStreamMemory stream( (const char*)data, sizeInBytes );
 	return loadFromStream( stream );
 }
 
-std::vector<SyntaxColorScheme> SyntaxColorScheme::loadFromPack( Pack* pack,
+Array<SyntaxColorScheme> SyntaxColorScheme::loadFromPack( Pack* pack,
 																String filePackPath ) {
 	if ( NULL == pack )
 		return {};
@@ -329,4 +329,4 @@ SyntaxColorScheme::getSyntaxStyleFromCache( const SyntaxStyleType& type ) const 
 	return mStyleCache[type];
 }
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc

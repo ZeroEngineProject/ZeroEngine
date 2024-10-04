@@ -5,9 +5,9 @@
 
 #include <optional>
 
-using namespace EE::Window;
+using Zero::Window;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UISceneNode;
 
@@ -56,6 +56,6 @@ class ZeroShared UIApplication {
 	bool mDidRun{ false };
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

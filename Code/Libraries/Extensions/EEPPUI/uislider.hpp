@@ -1,9 +1,9 @@
 #ifndef EE_UIUISlider_HPP
 #define EE_UIUISlider_HPP
 
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UISlider : public UIWidget {
   public:
@@ -77,7 +77,7 @@ class ZeroShared UISlider : public UIWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	Sizef getMinimumSize();
 
@@ -119,6 +119,6 @@ class ZeroShared UISlider : public UIWidget {
 	virtual Uint32 onMessage( const NodeMessage* Msg );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

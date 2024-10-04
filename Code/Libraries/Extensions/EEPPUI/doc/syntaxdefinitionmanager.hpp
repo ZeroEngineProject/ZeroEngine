@@ -9,9 +9,9 @@
 #include <optional>
 #include <vector>
 
-using namespace EE::System;
+using Zero::System;
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 class ZeroShared SyntaxDefinitionManager {
 	SINGLETON_DECLARE_HEADERS( SyntaxDefinitionManager )
@@ -22,7 +22,7 @@ class ZeroShared SyntaxDefinitionManager {
 
 	const SyntaxDefinition& getPlainDefinition() const;
 
-	std::vector<const SyntaxDefinition*>
+	Array<const SyntaxDefinition*>
 	languagesThatSupportExtension( String extension ) const;
 
 	bool extensionCanRepresentManyLanguages( String extension ) const;
@@ -51,9 +51,9 @@ class ZeroShared SyntaxDefinitionManager {
 
 	SyntaxDefinition& getByLanguageNameRef( const String& name );
 
-	std::vector<String> getLanguageNames() const;
+	Array<String> getLanguageNames() const;
 
-	std::vector<String> getExtensionsPatternsSupported() const;
+	Array<String> getExtensionsPatternsSupported() const;
 
 	const SyntaxDefinition* getPtrByLanguageName( const String& name ) const;
 
@@ -61,7 +61,7 @@ class ZeroShared SyntaxDefinitionManager {
 
 	const SyntaxDefinition* getPtrByLanguageId( const String::HashType& id ) const;
 
-	bool loadFromStream( IOStream& stream, std::vector<String>* addedLangs );
+	bool loadFromStream( IOStream& stream, Array<String>* addedLangs );
 
 	bool loadFromStream( IOStream& stream );
 
@@ -73,10 +73,10 @@ class ZeroShared SyntaxDefinitionManager {
 
 	void loadFromFolder( const String& folderPath );
 
-	const std::vector<SyntaxDefinition>& getDefinitions() const;
+	const Array<SyntaxDefinition>& getDefinitions() const;
 
 	/* empty = all */
-	bool save( const String& path, const std::vector<SyntaxDefinition>& def = {} );
+	bool save( const String& path, const Array<SyntaxDefinition>& def = {} );
 
 	void setLanguageExtensionsPriority( const std::map<String, String>& priorities );
 
@@ -87,12 +87,12 @@ class ZeroShared SyntaxDefinitionManager {
   protected:
 	SyntaxDefinitionManager();
 
-	std::vector<SyntaxDefinition> mDefinitions;
+	Array<SyntaxDefinition> mDefinitions;
 	std::map<String, String> mPriorities;
 
 	std::optional<size_t> getLanguageIndex( const String& langName );
 };
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc
 
 #endif // EE_UI_DOC_SYNTAXSTYLEMANAGER_HPP

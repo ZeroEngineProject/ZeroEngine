@@ -6,9 +6,9 @@
 #include <eepp/ui/uiscenenode.hpp>
 #include <eepp/window/window.hpp>
 
-using namespace EE::UI::Models;
+using Zero::UI::Models;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UITableCell : public UIPushButton {
   public:
@@ -69,6 +69,6 @@ class ZeroShared UITableCell : public UIPushButton {
 	}
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UITABLECELL_HPP

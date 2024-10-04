@@ -7,7 +7,7 @@
 #include <eepp/ui/uitouchdraggablewidget.hpp>
 #include <eepp/ui/uiwidgettablerow.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIWidgetTable : public UITouchDraggableWidget {
   public:
@@ -25,7 +25,7 @@ class ZeroShared UIWidgetTable : public UITouchDraggableWidget {
 
 	void remove( UIWidgetTableRow* row );
 
-	void remove( std::vector<Uint32> itemsIndex );
+	void remove( Array<Uint32> itemsIndex );
 
 	void remove( Uint32 itemIndex );
 
@@ -80,7 +80,7 @@ class ZeroShared UIWidgetTable : public UITouchDraggableWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
   protected:
 	friend class UIItemContainer<UIWidgetTable>;
@@ -92,11 +92,11 @@ class ZeroShared UIWidgetTable : public UITouchDraggableWidget {
 	UIScrollBar* mHScrollBar;
 	ScrollBarMode mVScrollMode;
 	ScrollBarMode mHScrollMode;
-	std::vector<UIWidgetTableRow*> mItems;
+	Array<UIWidgetTableRow*> mItems;
 	Uint32 mColumnsCount;
 	Uint32 mRowHeight;
-	std::vector<Uint32> mColumnsWidth;
-	std::vector<Uint32> mColumnsPos;
+	Array<Uint32> mColumnsWidth;
+	Array<Uint32> mColumnsPos;
 	Uint32 mTotalWidth;
 	Uint32 mTotalHeight;
 	Uint32 mLastPos;
@@ -149,6 +149,6 @@ class ZeroShared UIWidgetTable : public UITouchDraggableWidget {
 	void updatePageStep();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

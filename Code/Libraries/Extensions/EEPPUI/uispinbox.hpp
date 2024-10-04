@@ -4,7 +4,7 @@
 #include <eepp/ui/uipushbutton.hpp>
 #include <eepp/ui/uitextinput.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UISpinBox : public UIWidget {
   public:
@@ -59,7 +59,7 @@ class ZeroShared UISpinBox : public UIWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
   protected:
 	UITextInput* mInput;
@@ -84,6 +84,6 @@ class ZeroShared UISpinBox : public UIWidget {
 	virtual void onBufferChange( const Event* event );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

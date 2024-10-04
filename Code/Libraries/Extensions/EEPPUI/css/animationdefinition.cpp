@@ -3,24 +3,24 @@
 #include <eepp/ui/css/propertydefinition.hpp>
 #include <eepp/ui/css/timingfunction.hpp>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 inline bool isTimingFunction( const String& str ) {
 	return Ease::Interpolation::None != Ease::fromName( str, Ease::Interpolation::None );
 }
 
 HashMap<String, AnimationDefinition> AnimationDefinition::parseAnimationProperties(
-	const std::vector<const StyleSheetProperty*>& stylesheetProperties ) {
+	const Array<const StyleSheetProperty*>& stylesheetProperties ) {
 	AnimationsMap animations;
-	std::vector<String> names;
-	std::vector<Time> durations;
-	std::vector<Time> delays;
-	std::vector<Int32> iterations;
-	std::vector<Ease::Interpolation> timingFunctions;
-	std::vector<std::vector<double>> timingFunctionParameters;
-	std::vector<AnimationDirection> directions;
-	std::vector<AnimationFillMode> fillModes;
-	std::vector<bool> pausedStates;
+	Array<String> names;
+	Array<Time> durations;
+	Array<Time> delays;
+	Array<Int32> iterations;
+	Array<Ease::Interpolation> timingFunctions;
+	Array<Array<double>> timingFunctionParameters;
+	Array<AnimationDirection> directions;
+	Array<AnimationFillMode> fillModes;
+	Array<bool> pausedStates;
 
 	for ( auto& prop : stylesheetProperties ) {
 		if ( prop->getPropertyDefinition() == NULL )
@@ -255,12 +255,12 @@ const String::HashType& AnimationDefinition::getId() const {
 	return mId;
 }
 
-const std::vector<double>& AnimationDefinition::getTimingFunctionParameters() const {
+const Array<double>& AnimationDefinition::getTimingFunctionParameters() const {
 	return mTimingFunctionParameters;
 }
 
 void AnimationDefinition::setTimingFunctionParameters(
-	const std::vector<double>& timingFunctionParameters ) {
+	const Array<double>& timingFunctionParameters ) {
 	mTimingFunctionParameters = timingFunctionParameters;
 }
 
@@ -288,4 +288,4 @@ void AnimationDefinition::setDelay( const Time& value ) {
 	mDelay = value;
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

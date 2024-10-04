@@ -5,9 +5,9 @@
 #include <eepp/ui/keyboardshortcut.hpp>
 #include <functional>
 
-using namespace EE::Scene;
+using Zero::Scene;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared WidgetCommandExecuter {
   public:
@@ -39,12 +39,12 @@ class ZeroShared WidgetCommandExecuter {
 
 	KeyBindings& getKeyBindings() { return mKeyBindings; }
 
-	const std::vector<String>& getCommandList() const { return mCommandList; }
+	const Array<String>& getCommandList() const { return mCommandList; }
 
   protected:
 	KeyBindings mKeyBindings;
 	std::unordered_map<String, std::function<void()>> mCommands;
-	std::vector<String> mCommandList;
+	Array<String> mCommandList;
 
 	Uint32 onKeyDown( const KeyEvent& event ) {
 		String cmd =
@@ -60,6 +60,6 @@ class ZeroShared WidgetCommandExecuter {
 	}
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_WIDGETCOMMANDEXECUTER_HPP

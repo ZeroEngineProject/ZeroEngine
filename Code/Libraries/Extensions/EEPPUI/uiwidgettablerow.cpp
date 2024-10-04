@@ -1,7 +1,7 @@
 #include <eepp/ui/uiwidgettable.hpp>
 #include <eepp/ui/uiwidgettablerow.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIWidgetTableRow* UIWidgetTableRow::New() {
 	return eeNew( UIWidgetTableRow, () );
@@ -185,4 +185,4 @@ void UIWidgetTableRow::onAlphaChange() {
 	}
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

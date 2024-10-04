@@ -3,14 +3,14 @@
 
 #include <eepp/graphics/texttransform.hpp>
 #include <eepp/ui/uifontstyleconfig.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace Graphics {
+Zero { namespace Graphics {
 class Text;
 class Font;
-}} // namespace EE::Graphics
+}} // namespace Zero::Graphics
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UITooltip : public UIWidget {
   public:
@@ -95,7 +95,7 @@ class ZeroShared UITooltip : public UIWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	const String& getStringBuffer() const;
 
@@ -155,6 +155,6 @@ class ZeroShared UITooltip : public UIWidget {
 	void transformText();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

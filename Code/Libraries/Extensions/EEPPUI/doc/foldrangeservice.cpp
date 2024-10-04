@@ -5,11 +5,11 @@
 
 #include <stack>
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
-static std::vector<TextRange> findFoldingRangesBraces( TextDocument* doc ) {
+static Array<TextRange> findFoldingRangesBraces( TextDocument* doc ) {
 	Clock c;
-	std::vector<TextRange> regions;
+	Array<TextRange> regions;
 	if ( doc->linesCount() <= 2 )
 		return regions;
 	const auto& braces = doc->getSyntaxDefinition().getFoldBraces();
@@ -59,10 +59,10 @@ static int countLeadingSpaces( const String& line ) {
 	return count;
 }
 
-static std::vector<TextRange> findFoldingRangesIndentation( TextDocument* doc ) {
+static Array<TextRange> findFoldingRangesIndentation( TextDocument* doc ) {
 	Clock c;
 	std::stack<TextPosition> indentStack;
-	std::vector<TextRange> regions;
+	Array<TextRange> regions;
 	if ( doc->linesCount() <= 2 )
 		return regions;
 	const auto& braces = doc->getSyntaxDefinition().getFoldBraces();
@@ -149,7 +149,7 @@ std::optional<TextRange> FoldRangeServive::find( Int64 docIdx ) {
 	return foldRegionIt->second;
 }
 
-void FoldRangeServive::addFoldRegions( std::vector<TextRange> regions ) {
+void FoldRangeServive::addFoldRegions( Array<TextRange> regions ) {
 	size_t newCount;
 	size_t oldCount;
 	{
@@ -185,7 +185,7 @@ void FoldRangeServive::shiftFoldingRegions( Int64 fromLine, Int64 numLines ) {
 	mFoldingRegions = foldingRegions;
 }
 
-void FoldRangeServive::setFoldingRegions( std::vector<TextRange> regions ) {
+void FoldRangeServive::setFoldingRegions( Array<TextRange> regions ) {
 	size_t newCount = regions.size();
 	size_t oldCount;
 	{
@@ -224,4 +224,4 @@ void FoldRangeServive::setEnabled( bool enabled ) {
 	mEnabled = enabled;
 }
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc

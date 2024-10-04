@@ -1,9 +1,9 @@
 #ifndef EE_UI_UIVIEWPAGER_HPP
 #define EE_UI_UIVIEWPAGER_HPP
 
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIViewPager : public UIWidget {
   public:
@@ -56,7 +56,7 @@ class ZeroShared UIViewPager : public UIWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	const Int32& getTotalPages() const;
 
@@ -109,6 +109,6 @@ class ZeroShared UIViewPager : public UIWidget {
 	void onMouseUpEvent();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UIVIEWPAGER_HPP

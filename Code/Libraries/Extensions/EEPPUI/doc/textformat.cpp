@@ -2,7 +2,7 @@
 #include <eepp/system/scopedop.hpp>
 #include <eepp/ui/doc/textformat.hpp>
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 static constexpr Uint32 NumBytesForAutodetect = 16000;
 
@@ -547,8 +547,8 @@ String TextFormat::encodingToString( TextFormat::Encoding enc ) {
 	return "UTF-8";
 }
 
-std::vector<std::pair<TextFormat::Encoding, String>> TextFormat::encodings() {
-	std::vector<std::pair<TextFormat::Encoding, String>> encs;
+Array<std::pair<TextFormat::Encoding, String>> TextFormat::encodings() {
+	Array<std::pair<TextFormat::Encoding, String>> encs;
 	encs.emplace_back( Encoding::UTF8, encodingToString( Encoding::UTF8 ) );
 	encs.emplace_back( Encoding::UTF16BE, encodingToString( Encoding::UTF16BE ) );
 	encs.emplace_back( Encoding::UTF16LE, encodingToString( Encoding::UTF16LE ) );
@@ -557,4 +557,4 @@ std::vector<std::pair<TextFormat::Encoding, String>> TextFormat::encodings() {
 	return encs;
 }
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc

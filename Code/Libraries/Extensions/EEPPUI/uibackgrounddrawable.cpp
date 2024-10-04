@@ -4,7 +4,7 @@
 #include <eepp/ui/uibackgrounddrawable.hpp>
 #include <eepp/ui/uinode.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIBackgroundDrawable* UIBackgroundDrawable::New( const UINode* owner ) {
 	return eeNew( UIBackgroundDrawable, ( owner ) );
@@ -202,4 +202,4 @@ void UIBackgroundDrawable::updateRadiuses() {
 	mNeedsRadiusUpdate = false;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

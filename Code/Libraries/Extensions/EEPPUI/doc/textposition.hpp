@@ -5,7 +5,7 @@
 #include <eepp/core/string.hpp>
 #include <string>
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 class ZeroShared TextPosition {
   public:
@@ -86,6 +86,6 @@ class ZeroShared TextPosition {
 	Int64 mColumn{ 0xffffffff };
 };
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc
 
 #endif // EE_UI_DOC_TEXTPOSITION_HPP

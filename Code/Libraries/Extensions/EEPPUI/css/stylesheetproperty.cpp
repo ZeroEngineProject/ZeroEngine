@@ -11,7 +11,7 @@
 #include <eepp/ui/uihelper.hpp>
 #include <eepp/ui/uinode.hpp>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 StyleSheetProperty::StyleSheetProperty() :
 	mSpecificity( 0 ), mVolatile( false ), mImportant( false ) {}
@@ -229,8 +229,8 @@ static void varToVal( VariableFunctionCache& varCache, const String& varDef ) {
 	}
 }
 
-std::vector<VariableFunctionCache> StyleSheetProperty::checkVars( const String& value ) {
-	std::vector<VariableFunctionCache> vars;
+Array<VariableFunctionCache> StyleSheetProperty::checkVars( const String& value ) {
+	Array<VariableFunctionCache> vars;
 	String::size_type tokenStart = 0;
 	String::size_type tokenEnd = 0;
 
@@ -322,7 +322,7 @@ static OriginPoint toOriginPoint( String val ) {
 	} else if ( "topleft" == val ) {
 		return OriginPoint::OriginTopLeft;
 	} else {
-		std::vector<String> parts = String::split( val, ' ' );
+		Array<String> parts = String::split( val, ' ' );
 
 		if ( parts.size() == 2 ) {
 			Float x = 0;
@@ -665,8 +665,8 @@ const String::HashType& StyleSheetProperty::getValueHash() const {
 	return mValueHash;
 }
 
-const std::vector<VariableFunctionCache>& StyleSheetProperty::getVarCache() const {
+const Array<VariableFunctionCache>& StyleSheetProperty::getVarCache() const {
 	return mVarCache;
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <eepp/ui/css/stylesheetstyle.hpp>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 StyleSheetStyle::StyleSheetStyle() {}
 
@@ -113,7 +113,7 @@ void StyleSheetStyle::setProperty( const StyleSheetProperty& property ) {
 		// If the property being set is indexed we need to merge any other index set to the new
 		// property set.
 		const StyleSheetProperty* currentProperty = getPropertyById( property.getId() );
-		std::vector<String> values;
+		Array<String> values;
 		if ( nullptr == currentProperty ) {
 			if ( property.getIndex() > 0 ) {
 				for ( size_t i = 0; i < property.getIndex(); i++ ) {
@@ -225,4 +225,4 @@ AtRuleType StyleSheetStyle::checkAtRule() {
 	return AtRuleType::None;
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

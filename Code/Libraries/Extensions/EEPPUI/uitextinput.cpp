@@ -16,7 +16,7 @@
 #define PUGIXML_HEADER_ONLY
 #include <pugixml/pugixml.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UITextInput* UITextInput::New() {
 	return eeNew( UITextInput, () );
@@ -473,7 +473,7 @@ String UITextInput::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UITextInput::getPropertiesImplemented() const {
+Array<PropertyId> UITextInput::getPropertiesImplemented() const {
 	auto props = UITextView::getPropertiesImplemented();
 	auto local = { PropertyId::Text,
 				   PropertyId::AllowEditing,
@@ -953,4 +953,4 @@ void UITextInput::setSelectAllDocOnTabNavigate( bool selectAllDocOnTabNavigate )
 	mSelectAllDocOnTabNavigate = selectAllDocOnTabNavigate;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

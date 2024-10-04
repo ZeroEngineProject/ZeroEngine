@@ -11,7 +11,7 @@
 #include <eepp/ui/uitextview.hpp>
 #include <eepp/ui/uitheme.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIMessageBox* UIMessageBox::New( const Type& type, const String& message,
 								 const Uint32& windowFlags ) {
@@ -276,4 +276,4 @@ void UIMessageBox::onWindowReady() {
 	sendCommonEvent( Event::OnWindowReady );
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

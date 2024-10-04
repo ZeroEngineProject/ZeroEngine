@@ -3,7 +3,7 @@
 
 #include <eepp/ui/uipushbutton.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIMenuItem : public UIPushButton {
   public:
@@ -48,6 +48,6 @@ class ZeroShared UIMenuItem : public UIPushButton {
 	void createShortcutView();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

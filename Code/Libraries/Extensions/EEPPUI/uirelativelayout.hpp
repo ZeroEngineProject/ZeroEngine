@@ -3,7 +3,7 @@
 
 #include <eepp/ui/uilayout.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIRelativeLayout : public UILayout {
   public:
@@ -29,6 +29,6 @@ class ZeroShared UIRelativeLayout : public UILayout {
 	void fixChildSize( UIWidget* widget );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

@@ -3,10 +3,10 @@
 
 #include <eepp/ui/models/model.hpp>
 #include <eepp/ui/uitextinput.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 #include <memory>
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 class ZeroShared ModelEditingDelegate {
   public:
@@ -125,6 +125,6 @@ class ZeroShared StringModelEditingDelegate : public ModelEditingDelegate {
 	}
 };
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models
 
 #endif // EE_UI_MODELEDITINGDELEGATE_HPP

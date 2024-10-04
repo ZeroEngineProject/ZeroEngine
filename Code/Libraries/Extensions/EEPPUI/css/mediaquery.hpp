@@ -4,7 +4,7 @@
 #include <eepp/core.hpp>
 #include <memory>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 /** Media Queries support is based on the litehtml implementation:
  * https://github.com/litehtml/litehtml licensed under the New BSD License.
@@ -108,7 +108,7 @@ struct MediaFeatures {
 };
 
 struct ZeroShared MediaQueryExpression {
-	typedef std::vector<MediaQueryExpression> vector;
+	typedef Array<MediaQueryExpression> vector;
 
 	MediaFeature feature;
 	int val{ 0 };
@@ -126,7 +126,7 @@ struct ZeroShared MediaQueryExpression {
 class ZeroShared MediaQuery {
   public:
 	typedef std::shared_ptr<MediaQuery> ptr;
-	typedef std::vector<MediaQuery::ptr> vector;
+	typedef Array<MediaQuery::ptr> vector;
 
 	MediaQuery();
 
@@ -145,7 +145,7 @@ class ZeroShared MediaQuery {
 class ZeroShared MediaQueryList {
   public:
 	typedef std::shared_ptr<MediaQueryList> ptr;
-	typedef std::vector<MediaQueryList::ptr> vector;
+	typedef Array<MediaQueryList::ptr> vector;
 
 	MediaQueryList();
 
@@ -170,6 +170,6 @@ class ZeroShared MediaQueryList {
 	String mQueryStr;
 };
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif // EE_UI_CSS_MEDIAQUERY_HPP

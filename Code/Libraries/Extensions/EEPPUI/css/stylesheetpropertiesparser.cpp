@@ -2,15 +2,15 @@
 #include <eepp/ui/css/stylesheetpropertiesparser.hpp>
 #include <eepp/ui/css/stylesheetspecification.hpp>
 
-using namespace EE::UI;
+using Zero::UI;
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 StyleSheetPropertiesParser::StyleSheetPropertiesParser() : mPrevRs( ReadingPropertyName ) {}
 
 StyleSheetPropertiesParser::StyleSheetPropertiesParser( const String& propsstr ) :
 	mPrevRs( ReadingPropertyName ) {
-	std::vector<String> props = String::split( propsstr, ';' );
+	Array<String> props = String::split( propsstr, ';' );
 
 	if ( !props.empty() ) {
 		parse( propsstr );
@@ -150,7 +150,7 @@ void StyleSheetPropertiesParser::addProperty( String name, String value ) {
 	String::trimInPlace( name );
 
 	if ( StyleSheetSpecification::instance()->isShorthand( name ) ) {
-		std::vector<StyleSheetProperty> properties =
+		Array<StyleSheetProperty> properties =
 			StyleSheetSpecification::instance()->getShorthand( name )->parse( value );
 
 		for ( auto& property : properties )
@@ -165,4 +165,4 @@ void StyleSheetPropertiesParser::addProperty( String name, String value ) {
 	}
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

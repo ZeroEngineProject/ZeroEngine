@@ -1,7 +1,7 @@
 #include <eepp/ui/uilayout.hpp>
 #include <eepp/ui/uiscenenode.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UILayout::UILayout( const String& tag ) : UIWidget( tag ) {
 	mNodeFlags |= NODE_FLAG_LAYOUT;
@@ -152,4 +152,4 @@ void UILayout::updateLayoutTree() {
 	onLayoutUpdate();
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

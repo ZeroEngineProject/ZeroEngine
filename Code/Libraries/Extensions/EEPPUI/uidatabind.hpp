@@ -2,12 +2,12 @@
 #define EE_UI_UIDATABIND_HPP
 
 #include <eepp/system/log.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 #include <memory>
 #include <set>
 #include <variant>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 template <typename T> class UIDataBind {
   public:
@@ -267,7 +267,7 @@ template <typename... Ts> class UIDataBindHolder {
 	void clear() { mHolder.clear(); }
 
   protected:
-	std::vector<UIDataBindVariant> mHolder;
+	Array<UIDataBindVariant> mHolder;
 };
 
 template <typename... Ts> class UIDataBindHolderKV {
@@ -290,6 +290,6 @@ template <typename... Ts> class UIDataBindHolderKV {
 	HashMap<String, UIDataBindVariant> mHolder;
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UIDATABIND_HPP

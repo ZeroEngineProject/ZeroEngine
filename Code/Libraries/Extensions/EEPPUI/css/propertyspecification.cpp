@@ -2,7 +2,7 @@
 #include <eepp/system/log.hpp>
 #include <eepp/ui/css/propertyspecification.hpp>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 SINGLETON_DECLARE_IMPLEMENTATION( PropertySpecification )
 
@@ -48,7 +48,7 @@ const PropertyDefinition* PropertySpecification::getProperty( const String& name
 
 ShorthandDefinition&
 PropertySpecification::registerShorthand( const String& name,
-										  const std::vector<String>& properties,
+										  const Array<String>& properties,
 										  const String& shorthandParserName ) {
 	ShorthandDefinition* shorthand = const_cast<ShorthandDefinition*>( getShorthand( name ) );
 
@@ -97,4 +97,4 @@ PropertySpecification::addPropertyAlias( Uint32 aliasId, const PropertyDefinitio
 	return propDef;
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

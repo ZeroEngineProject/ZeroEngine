@@ -4,7 +4,7 @@
 #include <eepp/ui/models/model.hpp>
 #include <memory>
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 class ZeroShared SortingProxyModel final : public Model, private Model::Client {
   public:
@@ -59,8 +59,8 @@ class ZeroShared SortingProxyModel final : public Model, private Model::Client {
   private:
 	// NOTE: The data() of indexes points to the corresponding Mapping object for that index.
 	struct Mapping {
-		std::vector<int> sourceRows;
-		std::vector<int> proxyRows;
+		Array<int> sourceRows;
+		Array<int> proxyRows;
 		ModelIndex sourceParent;
 	};
 
@@ -92,6 +92,6 @@ class ZeroShared SortingProxyModel final : public Model, private Model::Client {
 	bool mSortingCaseSensitive{ false };
 };
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models
 
 #endif // EE_UI_MODELS_SORTINGPROXYMODEL_HPP

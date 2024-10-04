@@ -4,7 +4,7 @@
 #include <eepp/ui/models/model.hpp>
 #include <eepp/ui/models/modelindex.hpp>
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 /// A PersistentHandle is an internal data structure used to keep track of the
 /// target of multiple PersistentModelIndex instances.
@@ -54,6 +54,6 @@ class PersistentModelIndex {
 	std::weak_ptr<PersistentHandle> mHandle;
 };
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models
 
 #endif // EE_UI_MODEL_PERSISTENTMODELINDEX_HPP

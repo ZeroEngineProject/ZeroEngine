@@ -2,7 +2,7 @@
 #include <eepp/ui/abstract/uiabstractview.hpp>
 #include <eepp/window/engine.hpp>
 
-namespace EE { namespace UI { namespace Abstract {
+namespace Zero { namespace UI { namespace Abstract {
 
 UIAbstractView::UIAbstractView( const String& tag ) :
 	UIScrollableWidget( tag ), mSelection( this ) {}
@@ -48,11 +48,11 @@ Uint32 UIAbstractView::onModelEvent( const std::function<void( const ModelEvent*
 		} );
 }
 
-std::vector<KeyBindings::Shortcut> UIAbstractView::getEditShortcuts() const {
+Array<KeyBindings::Shortcut> UIAbstractView::getEditShortcuts() const {
 	return mEditShortcuts;
 }
 
-void UIAbstractView::setEditShortcuts( const std::vector<KeyBindings::Shortcut>& editShortcuts ) {
+void UIAbstractView::setEditShortcuts( const Array<KeyBindings::Shortcut>& editShortcuts ) {
 	mEditShortcuts = editShortcuts;
 }
 
@@ -207,4 +207,4 @@ void UIAbstractView::stopEditing() {
 		setFocus();
 }
 
-}}} // namespace EE::UI::Abstract
+}}} // namespace Zero::UI::Abstract

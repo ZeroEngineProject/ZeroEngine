@@ -5,7 +5,7 @@
 #include <eepp/core/debug.hpp>
 #include <eepp/ui/doc/textposition.hpp>
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 class ZeroShared TextRange {
   public:
@@ -166,13 +166,13 @@ class ZeroShared TextRange {
 	TextPosition normalizedEnd() const { return mStart < mEnd ? mEnd : mStart; }
 };
 
-class ZeroShared TextRanges : public std::vector<TextRange> {
+class ZeroShared TextRanges : public Array<TextRange> {
   public:
 	TextRanges() {}
 
-	TextRanges( const std::vector<TextRange>& ranges ) : std::vector<TextRange>( ranges ) {}
+	TextRanges( const Array<TextRange>& ranges ) : Array<TextRange>( ranges ) {}
 
-	TextRanges( const TextRange& ranges ) : std::vector<TextRange>( { ranges } ) {}
+	TextRanges( const TextRange& ranges ) : Array<TextRange>( { ranges } ) {}
 
 	bool isSorted() const { return mIsSorted; }
 
@@ -249,6 +249,6 @@ class ZeroShared TextRanges : public std::vector<TextRange> {
 	bool mIsSorted{ false };
 };
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc
 
 #endif // EE_UI_DOC_TEXTRANGE_HPP

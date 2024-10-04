@@ -2,7 +2,7 @@
 #include <eepp/ui/models/model.hpp>
 #include <eepp/ui/models/persistentmodelindex.hpp>
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 void Model::onModelUpdate( unsigned flags ) {
 	if ( mOnUpdate )
@@ -131,7 +131,7 @@ std::weak_ptr<PersistentHandle> Model::registerPersistentIndex( ModelIndex const
 
 template <bool IsRow>
 void Model::saveDeletedIndices( ModelIndex const& parent, int first, int last ) {
-	std::vector<ModelIndex> deletedIndices;
+	Array<ModelIndex> deletedIndices;
 
 	for ( auto& entry : mPersistentHandles ) {
 		auto currentIndex = entry.first;
@@ -232,7 +232,7 @@ void Model::endDeleteColumns() {
 
 void Model::handleInsert( Operation const& operation ) {
 	bool isRow = operation.direction == Direction::Row;
-	std::vector<const ModelIndex*> toShift;
+	Array<const ModelIndex*> toShift;
 
 	for ( auto& entry : mPersistentHandles ) {
 		if ( entry.first.parent() == operation.sourceParent ) {
@@ -263,9 +263,9 @@ void Model::handleInsert( Operation const& operation ) {
 
 void Model::handleDelete( Operation const& operation ) {
 	bool isRow = operation.direction == Direction::Row;
-	std::vector<ModelIndex> deletedIndices = mDeletedIndicesStack.top();
+	Array<ModelIndex> deletedIndices = mDeletedIndicesStack.top();
 	mDeletedIndicesStack.pop();
-	std::vector<const ModelIndex*> toShift;
+	Array<const ModelIndex*> toShift;
 
 	// Get rid of all persistent handles which have been marked for death
 	for ( auto& deletedIndex : deletedIndices ) {
@@ -350,9 +350,9 @@ void Model::handleMove( Operation const& operation ) {
 	}
 
 	// NOTE: to_shift_down is used as a generic "to shift" when move_within is true.
-	std::vector<const ModelIndex*> toMove;		// Items to be moved between the source and target
-	std::vector<const ModelIndex*> toShiftDown; // Items to be shifted down after a move-to
-	std::vector<const ModelIndex*> toShiftUp;	// Items to be shifted up after a move-from
+	Array<const ModelIndex*> toMove;		// Items to be moved between the source and target
+	Array<const ModelIndex*> toShiftDown; // Items to be shifted down after a move-to
+	Array<const ModelIndex*> toShiftUp;	// Items to be shifted up after a move-from
 
 	int count = operation.last - operation.first + 1;
 	// [start, end)
@@ -433,4 +433,4 @@ void Model::handleMove( Operation const& operation ) {
 	}
 }
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models

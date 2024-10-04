@@ -1,7 +1,7 @@
 #include <eepp/ui/uinode.hpp>
 #include <eepp/ui/uithememanager.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIThemeManager* UIThemeManager::New() {
 	return eeNew( UIThemeManager, () );
@@ -133,4 +133,4 @@ const Sizei& UIThemeManager::getCursorSize() const {
 	return mCursorSize;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

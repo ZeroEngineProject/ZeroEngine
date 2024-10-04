@@ -4,15 +4,15 @@
 #include <eepp/ui/css/timingfunction.hpp>
 #include <eepp/ui/css/transitiondefinition.hpp>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 HashMap<String, TransitionDefinition> TransitionDefinition::parseTransitionProperties(
-	const std::vector<const StyleSheetProperty*>& styleSheetProperties ) {
-	std::vector<String> properties;
-	std::vector<Time> durations;
-	std::vector<Time> delays;
-	std::vector<Ease::Interpolation> timingFunctions;
-	std::vector<std::vector<double>> timingFunctionParameters;
+	const Array<const StyleSheetProperty*>& styleSheetProperties ) {
+	Array<String> properties;
+	Array<Time> durations;
+	Array<Time> delays;
+	Array<Ease::Interpolation> timingFunctions;
+	Array<Array<double>> timingFunctionParameters;
 	TransitionsMap transitions;
 
 	for ( auto& prop : styleSheetProperties ) {
@@ -124,4 +124,4 @@ HashMap<String, TransitionDefinition> TransitionDefinition::parseTransitionPrope
 	return transitions;
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

@@ -4,7 +4,7 @@
 #include <eepp/window/input.hpp>
 #include <eepp/window/window.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIMenuItem* UIMenuItem::New() {
 	return eeNew( UIMenuItem, () );
@@ -104,4 +104,4 @@ void UIMenuItem::createShortcutView() {
 	mShortcutView->addEventListener( Event::OnSizeChange, cb );
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

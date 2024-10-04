@@ -10,7 +10,7 @@
 #define PUGIXML_HEADER_ONLY
 #include <pugixml/pugixml.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIMenu* UIMenu::New() {
 	return eeNew( UIMenu, () );
@@ -619,7 +619,7 @@ String UIMenu::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIMenu::getPropertiesImplemented() const {
+Array<PropertyId> UIMenu::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::MinIconSize };
 	props.insert( props.end(), local.begin(), local.end() );
@@ -822,4 +822,4 @@ void UIMenu::findBestMenuPos( Vector2f& pos, UIMenu* menu, UIMenu* parent,
 	}
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

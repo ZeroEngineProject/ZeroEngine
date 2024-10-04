@@ -6,7 +6,7 @@
 #include <eepp/ui/css/stylesheetproperty.hpp>
 #include <eepp/ui/css/stylesheetstyle.hpp>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 class ZeroShared ElementDefinition : NonCopyable {
   public:
@@ -18,9 +18,9 @@ class ZeroShared ElementDefinition : NonCopyable {
 
 	const StyleSheetProperties& getProperties() const;
 
-	const std::vector<const CSS::StyleSheetProperty*>& getTransitionProperties() const;
+	const Array<const CSS::StyleSheetProperty*>& getTransitionProperties() const;
 
-	const std::vector<const CSS::StyleSheetProperty*>& getAnimationProperties() const;
+	const Array<const CSS::StyleSheetProperty*>& getAnimationProperties() const;
 
 	const StyleSheetVariables& getVariables() const;
 
@@ -35,13 +35,13 @@ class ZeroShared ElementDefinition : NonCopyable {
 	StyleSheetProperties mProperties;
 	StyleSheetVariables mVariables;
 	PropertyIdSet mPropertyIds;
-	std::vector<const CSS::StyleSheetProperty*> mTransitionProperties;
-	std::vector<const CSS::StyleSheetProperty*> mAnimationProperties;
+	Array<const CSS::StyleSheetProperty*> mTransitionProperties;
+	Array<const CSS::StyleSheetProperty*> mAnimationProperties;
 	bool mStructurallyVolatile;
 
 	void findVariables( const CSS::StyleSheetStyle* style );
 };
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif // EE_UI_CSS_ELEMENTDEFINITION_HPP

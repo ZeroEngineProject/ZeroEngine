@@ -3,7 +3,7 @@
 
 #include <eepp/ui/uilayout.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIStackLayout : public UILayout {
   public:
@@ -24,7 +24,7 @@ class ZeroShared UIStackLayout : public UILayout {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	void updateLayout();
 
@@ -58,6 +58,6 @@ class ZeroShared UIStackLayout : public UILayout {
 	void clearListeners();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UISTACKLAYOUT_HPP

@@ -4,7 +4,7 @@
 #include <eepp/graphics/text.hpp>
 #include <eepp/ui/uicodeeditor.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UITextEdit : public UICodeEditor {
   public:
@@ -33,6 +33,6 @@ class ZeroShared UITextEdit : public UICodeEditor {
 							 const TextPosition& cursor );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

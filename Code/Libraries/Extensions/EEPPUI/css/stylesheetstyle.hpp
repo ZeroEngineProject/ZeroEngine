@@ -7,7 +7,7 @@
 #include <eepp/ui/css/stylesheetselector.hpp>
 #include <eepp/ui/css/stylesheetvariable.hpp>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 enum class AtRuleType : Uint32 { None, FontFace, GlyphIcon };
 
@@ -78,8 +78,8 @@ class ZeroShared StyleSheetStyle {
 	AtRuleType checkAtRule();
 };
 
-typedef std::vector<StyleSheetStyle*> StyleSheetStyleVector;
+typedef Array<StyleSheetStyle*> StyleSheetStyleVector;
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif

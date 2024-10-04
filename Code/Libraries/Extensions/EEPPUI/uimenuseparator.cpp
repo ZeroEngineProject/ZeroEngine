@@ -1,7 +1,7 @@
 #include <eepp/graphics/textureregion.hpp>
 #include <eepp/ui/uimenuseparator.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIMenuSeparator* UIMenuSeparator::New() {
 	return eeNew( UIMenuSeparator, () );
@@ -32,4 +32,4 @@ void UIMenuSeparator::setTheme( UITheme* Theme ) {
 	onThemeLoaded();
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

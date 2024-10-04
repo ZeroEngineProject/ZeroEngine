@@ -1,7 +1,7 @@
 #include <eepp/ui/uiskin.hpp>
 #include <eepp/ui/uiskinstate.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UISkinState* UISkinState::New( UISkin* skin ) {
 	return eeNew( UISkinState, ( skin ) );
@@ -81,4 +81,4 @@ void UISkinState::onStateChange() {
 	mCurrentColor = getStateColor( mCurrentState );
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

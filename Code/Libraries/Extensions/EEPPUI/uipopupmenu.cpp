@@ -6,7 +6,7 @@
 #include <eepp/window/input.hpp>
 #include <eepp/window/window.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIPopUpMenu* UIPopUpMenu::New() {
 	return eeNew( UIPopUpMenu, () );
@@ -126,4 +126,4 @@ void UIPopUpMenu::setCloseSubMenusOnClose( bool closeSubMenusOnClose ) {
 	mCloseSubMenusOnClose = closeSubMenusOnClose;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

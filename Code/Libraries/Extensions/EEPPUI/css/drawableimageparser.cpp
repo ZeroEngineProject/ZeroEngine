@@ -12,9 +12,9 @@
 #include <eepp/ui/uinode.hpp>
 #include <eepp/ui/uiscenenode.hpp>
 
-using namespace EE::Scene;
+using Zero::Scene;
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 DrawableImageParser::DrawableImageParser() {
 	registerBaseParsers();
@@ -66,7 +66,7 @@ void DrawableImageParser::registerBaseParsers() {
 
 		RectangleDrawable* drawable = RectangleDrawable::New();
 		RectColors rectColors;
-		const std::vector<String>& params( functionType.getParameters() );
+		const Array<String>& params( functionType.getParameters() );
 
 		if ( Color::isColorString( params.at( 0 ) ) && params.size() >= 2 ) {
 			rectColors.TopLeft = rectColors.TopRight = Color::fromString( params.at( 0 ) );
@@ -112,7 +112,7 @@ void DrawableImageParser::registerBaseParsers() {
 
 		CircleDrawable* drawable = CircleDrawable::New();
 
-		const std::vector<String>& params( functionType.getParameters() );
+		const Array<String>& params( functionType.getParameters() );
 
 		CSS::StyleSheetLength length( params[0] );
 		drawable->setRadius( node->convertLength( length, size.getWidth() / 2.f ) );
@@ -143,9 +143,9 @@ void DrawableImageParser::registerBaseParsers() {
 
 		RectangleDrawable* drawable = RectangleDrawable::New();
 		RectColors rectColors;
-		std::vector<Color> colors;
+		Array<Color> colors;
 
-		const std::vector<String>& params( functionType.getParameters() );
+		const Array<String>& params( functionType.getParameters() );
 
 		for ( size_t i = 0; i < params.size(); i++ ) {
 			String param( String::toLower( params[i] ) );
@@ -155,7 +155,7 @@ void DrawableImageParser::registerBaseParsers() {
 			} else if ( String::startsWith( param, "line" ) ) {
 				drawable->setFillMode( DRAW_LINE );
 
-				std::vector<String> parts( String::split( param, ' ' ) );
+				Array<String> parts( String::split( param, ' ' ) );
 
 				if ( parts.size() >= 2 ) {
 					CSS::StyleSheetLength length( parts[1] );
@@ -204,10 +204,10 @@ void DrawableImageParser::registerBaseParsers() {
 		}
 
 		TriangleDrawable* drawable = TriangleDrawable::New();
-		std::vector<Color> colors;
-		std::vector<Vector2f> vertices;
+		Array<Color> colors;
+		Array<Vector2f> vertices;
 
-		const std::vector<String>& params( functionType.getParameters() );
+		const Array<String>& params( functionType.getParameters() );
 		Float lineWidth = PixelDensity::dpToPx( 1.f );
 
 		for ( size_t i = 0; i < params.size(); i++ ) {
@@ -223,12 +223,12 @@ void DrawableImageParser::registerBaseParsers() {
 						StyleSheetLength::isLength( param ) ) {
 				lineWidth = node->convertLength( StyleSheetLength( param ), size.getWidth() );
 			} else {
-				std::vector<String> vertex( String::split( param, ',' ) );
+				Array<String> vertex( String::split( param, ',' ) );
 
 				if ( vertex.size() == 3 ) {
 					for ( size_t v = 0; v < vertex.size(); v++ ) {
 						String::trimInPlace( vertex[v] );
-						std::vector<String> coords( String::split( vertex[v], ' ' ) );
+						Array<String> coords( String::split( vertex[v], ' ' ) );
 
 						if ( coords.size() == 2 ) {
 							CSS::StyleSheetLength posX( coords[0] );
@@ -274,10 +274,10 @@ void DrawableImageParser::registerBaseParsers() {
 		}
 
 		ConvexShapeDrawable* drawable = ConvexShapeDrawable::New();
-		std::vector<Color> colors;
-		std::vector<Vector2f> vertices;
+		Array<Color> colors;
+		Array<Vector2f> vertices;
 
-		const std::vector<String>& params( functionType.getParameters() );
+		const Array<String>& params( functionType.getParameters() );
 		Float lineWidth = PixelDensity::dpToPx( 1.f );
 
 		for ( size_t i = 0; i < params.size(); i++ ) {
@@ -293,11 +293,11 @@ void DrawableImageParser::registerBaseParsers() {
 						StyleSheetLength::isLength( param ) ) {
 				lineWidth = node->convertLength( StyleSheetLength( param ), size.getWidth() );
 			} else {
-				std::vector<String> vertex( String::split( param, ',' ) );
+				Array<String> vertex( String::split( param, ',' ) );
 
 				for ( size_t v = 0; v < vertex.size(); v++ ) {
 					vertex[v] = String::trim( vertex[v] );
-					std::vector<String> coords( String::split( vertex[v], ' ' ) );
+					Array<String> coords( String::split( vertex[v], ' ' ) );
 
 					if ( coords.size() == 2 ) {
 						CSS::StyleSheetLength posX( coords[0] );
@@ -372,4 +372,4 @@ void DrawableImageParser::registerBaseParsers() {
 	};
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

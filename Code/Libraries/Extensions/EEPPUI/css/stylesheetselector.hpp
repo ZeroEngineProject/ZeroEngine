@@ -3,11 +3,11 @@
 
 #include <eepp/ui/css/stylesheetselectorrule.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 class UIWidget;
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 class ZeroShared StyleSheetSelector {
   public:
@@ -25,7 +25,7 @@ class ZeroShared StyleSheetSelector {
 
 	bool hasPseudoClasses() const;
 
-	std::vector<UIWidget*> getRelatedElements( UIWidget* element, bool applyPseudo = true ) const;
+	Array<UIWidget*> getRelatedElements( UIWidget* element, bool applyPseudo = true ) const;
 
 	bool isStructurallyVolatile() const;
 
@@ -38,7 +38,7 @@ class ZeroShared StyleSheetSelector {
   protected:
 	String mName;
 	Uint32 mSpecificity;
-	std::vector<StyleSheetSelectorRule> mSelectorRules;
+	Array<StyleSheetSelectorRule> mSelectorRules;
 	bool mCacheable;
 	bool mStructurallyVolatile;
 
@@ -49,6 +49,6 @@ class ZeroShared StyleSheetSelector {
 	void parseSelector( String selector );
 };
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif

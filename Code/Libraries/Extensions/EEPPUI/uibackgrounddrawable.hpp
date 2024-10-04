@@ -4,9 +4,9 @@
 #include <eepp/graphics/drawable.hpp>
 #include <eepp/ui/border.hpp>
 
-using namespace EE::Graphics;
+using Zero::Graphics;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UINode;
 
@@ -82,6 +82,6 @@ class ZeroShared UIBackgroundDrawable : public Drawable {
 	void updateRadiuses();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UIBACKGROUNDDRAWABLE_HPP

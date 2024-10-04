@@ -4,11 +4,11 @@
 #include <eepp/ui/css/propertydefinition.hpp>
 #include <eepp/ui/css/stylesheetspecification.hpp>
 #include <eepp/ui/models/model.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-using namespace EE::UI::CSS;
+using Zero::UI::CSS;
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 class CSSPropertiesModel final : public Model {
   public:
@@ -62,7 +62,7 @@ class CSSPropertiesModel final : public Model {
 		if ( mWidget && mCloseCb )
 			mWidget->removeEventListener( mCloseCb );
 		mWidget = widget;
-		mData = widget ? widget->getPropertiesImplemented() : std::vector<PropertyId>();
+		mData = widget ? widget->getPropertiesImplemented() : Array<PropertyId>();
 		for ( const auto& prop : mData ) {
 			const auto* def = StyleSheetSpecification::instance()->getProperty( (Uint32)prop );
 			if ( !def )
@@ -80,11 +80,11 @@ class CSSPropertiesModel final : public Model {
 
   protected:
 	UIWidget* mWidget{ nullptr };
-	std::vector<PropertyId> mData;
+	Array<PropertyId> mData;
 	std::map<PropertyId, const PropertyDefinition*> mProps;
 	Uint32 mCloseCb{ 0 };
 };
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models
 
 #endif // EE_UI_MODELS_CSSPROPERTIESMODEL_HPP

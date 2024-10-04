@@ -3,7 +3,7 @@
 
 #include <eepp/ui/uimenuitem.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UIMenu;
 
@@ -56,6 +56,6 @@ class ZeroShared UIMenuSubMenu : public UIMenuItem {
 	void onSubMenuFocusLoss( const Event* Event );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

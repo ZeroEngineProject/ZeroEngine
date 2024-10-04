@@ -8,18 +8,18 @@
 #include <eepp/ui/doc/textdocument.hpp>
 #include <eepp/ui/keyboardshortcut.hpp>
 #include <eepp/ui/uifontstyleconfig.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 #include <unordered_map>
 #include <unordered_set>
 
-using namespace EE::Graphics;
-using namespace EE::UI::Doc;
+using Zero::Graphics;
+using Zero::UI::Doc;
 
-namespace EE { namespace Graphics {
+Zero { namespace Graphics {
 class Font;
-}} // namespace EE::Graphics
+}} // namespace Zero::Graphics
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 namespace Tools {
 class UIDocFindReplace;
@@ -372,7 +372,7 @@ class ZeroShared UICodeEditor : public UIWidget, public TextDocument::Client {
 
 	void addUnlockedCommand( const String& command );
 
-	void addUnlockedCommands( const std::vector<String>& commands );
+	void addUnlockedCommands( const Array<String>& commands );
 
 	bool isUnlockedCommand( const String& command );
 
@@ -381,7 +381,7 @@ class ZeroShared UICodeEditor : public UIWidget, public TextDocument::Client {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	const bool& getHighlightMatchingBracket() const;
 
@@ -507,7 +507,7 @@ class ZeroShared UICodeEditor : public UIWidget, public TextDocument::Client {
 
 	virtual Int64 getColFromXOffset( VisibleIndex visibleIndex, const Float& x ) const;
 
-	std::vector<Rectf>
+	Array<Rectf>
 	getTextRangeRectangles( const TextRange& range, const Vector2f& startScroll,
 							std::optional<const DocumentLineRange> lineRange = {},
 							std::optional<Float> lineHeight = {},
@@ -848,7 +848,7 @@ class ZeroShared UICodeEditor : public UIWidget, public TextDocument::Client {
 	TextRange mHighlightTextRange;
 	Color mPreviewColor;
 	TextRange mPreviewColorRange;
-	std::vector<UICodeEditorPlugin*> mPlugins;
+	Array<UICodeEditorPlugin*> mPlugins;
 	UILoader* mLoader{ nullptr };
 	Float mGlyphWidth{ 0 };
 	size_t mMenuIconSize{ 16 };
@@ -862,9 +862,9 @@ class ZeroShared UICodeEditor : public UIWidget, public TextDocument::Client {
 		Float space;
 		int order;
 	};
-	std::vector<PluginRequestedSpace> mPluginGutterSpaces;
+	Array<PluginRequestedSpace> mPluginGutterSpaces;
 	Float mPluginsGutterSpace{ 0 };
-	std::vector<PluginRequestedSpace> mPluginTopSpaces;
+	Array<PluginRequestedSpace> mPluginTopSpaces;
 	Float mPluginsTopSpace{ 0 };
 	Uint64 mLastExecuteEventId{ 0 };
 	Text mLineTextCache;
@@ -1080,6 +1080,6 @@ class ZeroShared UICodeEditor : public UIWidget, public TextDocument::Client {
 	bool isNotMonospace() const;
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UICODEEDIT_HPP

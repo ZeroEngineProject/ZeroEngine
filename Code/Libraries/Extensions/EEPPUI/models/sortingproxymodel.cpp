@@ -4,9 +4,9 @@
 #include <eepp/ui/models/sortingproxymodel.hpp>
 #include <eepp/ui/models/variant.hpp>
 
-using namespace EE::UI::Abstract;
+using Zero::UI::Abstract;
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 SortingProxyModel::SortingProxyModel( std::shared_ptr<Model> target ) :
 	mSource( target ), mKeyColumn( -1 ) {
@@ -261,8 +261,8 @@ void SortingProxyModel::sortMapping( SortingProxyModel::Mapping& mapping, int co
 	forEachView( [&]( UIAbstractView* view ) {
 		// Update the view's selection.
 		view->getSelection().changeFromModel( [&]( ModelSelection& selection ) {
-			std::vector<ModelIndex> selectedIndexesInSource;
-			std::vector<ModelIndex> staleIndexesInSelection;
+			Array<ModelIndex> selectedIndexesInSource;
+			Array<ModelIndex> staleIndexesInSelection;
 			selection.forEachIndex( [&]( const ModelIndex& index ) {
 				if ( index.parent() == mapping.sourceParent ) {
 					staleIndexesInSelection.push_back( index );
@@ -288,4 +288,4 @@ void SortingProxyModel::sortMapping( SortingProxyModel::Mapping& mapping, int co
 	} );
 }
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models

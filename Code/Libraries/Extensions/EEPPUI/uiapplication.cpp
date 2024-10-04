@@ -6,15 +6,15 @@
 #include <eepp/ui/uiscenenode.hpp>
 #include <eepp/ui/uitheme.hpp>
 #include <eepp/ui/uithememanager.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 #include <eepp/window/engine.hpp>
 #include <eepp/window/input.hpp>
 
-using namespace EE::Graphics;
-using namespace EE::System;
-using namespace EE::Scene;
+using Zero::Graphics;
+using Zero::System;
+using Zero::Scene;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIApplication::UIApplication( const WindowSettings& windowSettings, const Settings& appSettings,
 							  const ContextSettings& contextSettings ) {
@@ -110,4 +110,4 @@ UIApplication::Settings::Settings( std::optional<Float> pixelDensity, bool loadB
 	baseStyleSheetPath( baseStyleSheetPath ),
 	emojiFont( emojiFont ) {}
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

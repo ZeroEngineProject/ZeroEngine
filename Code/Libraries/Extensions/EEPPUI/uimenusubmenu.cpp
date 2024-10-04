@@ -3,7 +3,7 @@
 #include <eepp/ui/uimenu.hpp>
 #include <eepp/ui/uimenusubmenu.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIMenuSubMenu* UIMenuSubMenu::New() {
 	return eeNew( UIMenuSubMenu, () );
@@ -144,4 +144,4 @@ void UIMenuSubMenu::setMouseOverTimeShowMenu( const Time& maxTime ) {
 	mMaxTime = maxTime;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

@@ -1,22 +1,22 @@
 #ifndef EE_UIUIWIDGET_HPP
 #define EE_UIUIWIDGET_HPP
 
-#include <eepp/ui/css/propertydefinition.hpp>
-#include <eepp/ui/css/stylesheetproperty.hpp>
-#include <eepp/ui/css/stylesheetselector.hpp>
-#include <eepp/ui/uinode.hpp>
+#include "css/propertydefinition.hpp"
+#include "css/stylesheetproperty.hpp"
+#include "css/stylesheetselector.hpp"
+#include "uinode.hpp"
 
 namespace pugi {
 class xml_node;
 }
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 class PropertyDefinition;
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
-using namespace EE::UI::CSS;
+using Zero::UI::CSS;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UITooltip;
 class UIStyle;
@@ -151,7 +151,7 @@ class ZeroShared UIWidget : public UINode {
 
 	const String& getStyleSheetId() const;
 
-	const std::vector<String>& getStyleSheetClasses() const;
+	const Array<String>& getStyleSheetClasses() const;
 
 	UIWidget* getStyleSheetParentElement() const;
 
@@ -159,7 +159,7 @@ class ZeroShared UIWidget : public UINode {
 
 	UIWidget* getStyleSheetNextSiblingElement() const;
 
-	const std::vector<String>& getStyleSheetPseudoClasses() const;
+	const Array<String>& getStyleSheetPseudoClasses() const;
 
 	UIWidget* resetClass();
 
@@ -167,15 +167,15 @@ class ZeroShared UIWidget : public UINode {
 	UIWidget* setClass( const String& cls );
 
 	/** Resets all classes and assign vector of classes */
-	UIWidget* setClasses( const std::vector<String>& classes );
+	UIWidget* setClasses( const Array<String>& classes );
 
 	UIWidget* addClass( const String& cls );
 
-	UIWidget* addClasses( const std::vector<String>& classes );
+	UIWidget* addClasses( const Array<String>& classes );
 
 	UIWidget* removeClass( const String& cls );
 
-	UIWidget* removeClasses( const std::vector<String>& classes );
+	UIWidget* removeClasses( const Array<String>& classes );
 
 	bool hasClass( const String& cls ) const;
 
@@ -183,7 +183,7 @@ class ZeroShared UIWidget : public UINode {
 
 	void setElementTag( const String& tag );
 
-	const std::vector<String> getClasses() const;
+	const Array<String> getClasses() const;
 
 	const String& getElementTag() const;
 
@@ -205,9 +205,9 @@ class ZeroShared UIWidget : public UINode {
 
 	const Uint32& getStylePreviousState() const;
 
-	std::vector<UIWidget*> findAllByClass( const String& className );
+	Array<UIWidget*> findAllByClass( const String& className );
 
-	std::vector<UIWidget*> findAllByTag( const String& tag );
+	Array<UIWidget*> findAllByTag( const String& tag );
 
 	UIWidget* findByClass( const String& className );
 
@@ -229,16 +229,16 @@ class ZeroShared UIWidget : public UINode {
 		return reinterpret_cast<T*>( querySelector( selector ) );
 	}
 
-	std::vector<UIWidget*> querySelectorAll( const CSS::StyleSheetSelector& selector );
+	Array<UIWidget*> querySelectorAll( const CSS::StyleSheetSelector& selector );
 
-	std::vector<UIWidget*> querySelectorAll( const String& selector );
+	Array<UIWidget*> querySelectorAll( const String& selector );
 
 	String getPropertyString( const String& property ) const;
 
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	bool isSceneNodeLoading() const;
 
@@ -303,8 +303,8 @@ class ZeroShared UIWidget : public UINode {
 	UIWidget* mLayoutPositionPolicyWidget;
 	int mAttributesTransactionCount;
 	String mSkinName;
-	std::vector<String> mClasses;
-	std::vector<String> mPseudoClasses;
+	Array<String> mClasses;
+	Array<String> mPseudoClasses;
 	String mTooltipText;
 
 	explicit UIWidget( const String& tag );
@@ -382,6 +382,6 @@ class ZeroShared UIWidget : public UINode {
 	void reloadFontFamily();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

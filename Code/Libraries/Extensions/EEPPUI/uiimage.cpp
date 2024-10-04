@@ -7,7 +7,7 @@
 #include <eepp/ui/uiimage.hpp>
 #include <eepp/ui/uiscenenode.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIImage* UIImage::New() {
 	return eeNew( UIImage, () );
@@ -235,7 +235,7 @@ String UIImage::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIImage::getPropertiesImplemented() const {
+Array<PropertyId> UIImage::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::ScaleType, PropertyId::Tint };
 	props.insert( props.end(), local.begin(), local.end() );
@@ -311,4 +311,4 @@ UIImage* UIImage::setScaleType( const UIScaleType& scaleType ) {
 	return this;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

@@ -5,9 +5,9 @@
 #include <eepp/ui/models/model.hpp>
 #include <memory>
 
-using namespace EE::UI;
+using Zero::UI;
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 class ZeroShared WidgetTreeModel : public Model {
   public:
@@ -44,6 +44,6 @@ class ZeroShared WidgetTreeModel : public Model {
 	WidgetTreeModel( Node* node );
 };
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models
 
 #endif // EE_UI_MODELS_WIDGETTREEMODEL_HPP

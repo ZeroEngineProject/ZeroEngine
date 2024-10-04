@@ -5,18 +5,18 @@
 #include <eepp/ui/doc/textdocument.hpp>
 #include <unordered_map>
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 struct ZeroShared TokenizedLine {
 	SyntaxState initState;
 	String::HashType hash{ 0 };
-	std::vector<SyntaxTokenPosition> tokens;
+	Array<SyntaxTokenPosition> tokens;
 	SyntaxState state;
 	Uint64 signature{ 0 };
 
 	void updateSignature();
 
-	static Uint64 calcSignature( const std::vector<SyntaxTokenPosition>& tokens );
+	static Uint64 calcSignature( const Array<SyntaxTokenPosition>& tokens );
 };
 
 class ZeroShared SyntaxHighlighter {
@@ -31,7 +31,7 @@ class ZeroShared SyntaxHighlighter {
 
 	void invalidate( Int64 lineIndex );
 
-	const std::vector<SyntaxTokenPosition>& getLine( const size_t& index,
+	const Array<SyntaxTokenPosition>& getLine( const size_t& index,
 													 bool mustTokenize = true );
 
 	Int64 getFirstInvalidLine() const;
@@ -83,6 +83,6 @@ class ZeroShared SyntaxHighlighter {
 	bool mStopTokenizing{ false };
 };
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc
 
 #endif // EE_UI_DOC_SYNTAXHIGHLIGHTER_HPP

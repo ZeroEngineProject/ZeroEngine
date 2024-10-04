@@ -7,14 +7,14 @@
 #include <eepp/ui/css/stylesheet.hpp>
 #include <eepp/ui/css/stylesheetpropertiesparser.hpp>
 #include <string>
-using namespace EE;
-using namespace EE::System;
+using Zero;
+using Zero::System;
 
-namespace EE { namespace System {
+Zero { namespace System {
 class Pack;
-}} // namespace EE::System
+}} // namespace Zero::System
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 class ZeroShared StyleSheetParser {
   public:
@@ -43,11 +43,11 @@ class ZeroShared StyleSheetParser {
 
 	String mCSS;
 	StyleSheet mStyleSheet;
-	std::vector<String> mComments;
+	Array<String> mComments;
 	MediaQueryList::ptr mMediaQueryList;
 	bool mLoaded;
 
-	bool parse( String& css, std::vector<String>& importedList );
+	bool parse( String& css, Array<String>& importedList );
 
 	int readSelector( const String& css, ReadState& rs, std::size_t pos, String& buffer );
 
@@ -55,17 +55,17 @@ class ZeroShared StyleSheetParser {
 
 	int readProperty( const String& css, ReadState& rs, std::size_t pos, String& buffer );
 
-	String importCSS( String path, std::vector<String>& importedList );
+	String importCSS( String path, Array<String>& importedList );
 
 	void mediaParse( String& css, ReadState& rs, std::size_t& pos, String& buffer,
-					 std::vector<String>& importedList );
+					 Array<String>& importedList );
 
 	void importParse( String& css, std::size_t& pos, String& buffer,
-					  std::vector<String>& importedList );
+					  Array<String>& importedList );
 
 	void keyframesParse( String& css, ReadState& rs, std::size_t& pos, String& buffer );
 };
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif

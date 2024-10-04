@@ -4,7 +4,7 @@
 #include <eepp/ui/uipushbutton.hpp>
 #include <eepp/ui/uitextview.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UICheckBox : public UITextView {
   public:
@@ -41,7 +41,7 @@ class ZeroShared UICheckBox : public UITextView {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	bool getCheckMode() const;
 
@@ -80,6 +80,6 @@ class ZeroShared UICheckBox : public UITextView {
 	virtual void alignFix();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

@@ -2,7 +2,7 @@
 #include <eepp/ui/uiscrollablewidget.hpp>
 #include <eepp/ui/uiscrollbar.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIScrollableWidget::UIScrollableWidget( const String& tag ) :
 	UIWidget( tag ),
@@ -264,7 +264,7 @@ String UIScrollableWidget::getPropertyString( const PropertyDefinition* property
 	}
 }
 
-std::vector<PropertyId> UIScrollableWidget::getPropertiesImplemented() const {
+Array<PropertyId> UIScrollableWidget::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::VScrollMode, PropertyId::HScrollMode, PropertyId::ScrollBarStyle,
 				   PropertyId::ScrollBarMode };
@@ -395,4 +395,4 @@ Uint32 UIScrollableWidget::onMessage( const NodeMessage* Msg ) {
 	return UIWidget::onMessage( Msg );
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

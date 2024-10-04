@@ -4,9 +4,9 @@
 #include <eepp/window/engine.hpp>
 #include <eepp/window/window.hpp>
 
-using namespace EE::Window;
+using Zero::Window;
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 #define MediaOrientationStrings "portrait;landscape"
 
@@ -38,7 +38,7 @@ MediaQuery::ptr MediaQuery::parse( const String& str ) {
 	Float dpi = currentDisplay->getDPI();
 	MediaQuery::ptr query = std::make_shared<MediaQuery>();
 
-	std::vector<String> tokens = String::split( str, " \t\r\n", "", "(" );
+	Array<String> tokens = String::split( str, " \t\r\n", "", "(" );
 
 	for ( auto& tok : tokens ) {
 		if ( tok == "not" ) {
@@ -51,7 +51,7 @@ MediaQuery::ptr MediaQuery::parse( const String& str ) {
 			}
 
 			MediaQueryExpression expr;
-			std::vector<String> exprTokens = String::split( tok, ':' );
+			Array<String> exprTokens = String::split( tok, ':' );
 			if ( !exprTokens.empty() ) {
 				String::trimInPlace( exprTokens[0] );
 
@@ -142,7 +142,7 @@ bool MediaQuery::check( const MediaFeatures& features ) const {
 MediaQueryList::ptr MediaQueryList::parse( const String& str ) {
 	MediaQueryList::ptr list = std::make_shared<MediaQueryList>();
 
-	std::vector<String> tokens = String::split( str, "," );
+	Array<String> tokens = String::split( str, "," );
 
 	for ( auto& tok : tokens ) {
 		String::trimInPlace( tok );
@@ -438,4 +438,4 @@ bool MediaQueryList::isUsed() const {
 	return mUsed;
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

@@ -17,7 +17,7 @@
 
 using namespace std::literals;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UITextView* UITextView::New() {
 	return eeNew( UITextView, () );
@@ -821,7 +821,7 @@ String UITextView::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UITextView::getPropertiesImplemented() const {
+Array<PropertyId> UITextView::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::Text,
 				   PropertyId::TextTransform,
@@ -1001,11 +1001,11 @@ String UIAnchor::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIAnchor::getPropertiesImplemented() const {
+Array<PropertyId> UIAnchor::getPropertiesImplemented() const {
 	auto props = UITextView::getPropertiesImplemented();
 	auto local = { PropertyId::Href };
 	props.insert( props.end(), local.begin(), local.end() );
 	return props;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

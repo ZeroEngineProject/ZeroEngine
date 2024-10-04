@@ -6,9 +6,9 @@
 #include <eepp/ui/uiscenenode.hpp>
 #include <eepp/ui/uithememanager.hpp>
 #include <eepp/ui/uitooltip.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UITooltip* UITooltip::New() {
 	return eeNew( UITooltip, () );
@@ -455,7 +455,7 @@ String UITooltip::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UITooltip::getPropertiesImplemented() const {
+Array<PropertyId> UITooltip::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = {
 		PropertyId::TextTransform,	  PropertyId::Color,		   PropertyId::TextShadowColor,
@@ -636,4 +636,4 @@ bool UITooltip::isWordWrap() const {
 	return mFlags & UI_WORD_WRAP;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

@@ -7,11 +7,11 @@
 #include <eepp/ui/css/stylesheet.hpp>
 #include <eepp/ui/keyboardshortcut.hpp>
 
-namespace EE { namespace Graphics {
+Zero { namespace Graphics {
 class Font;
-}} // namespace EE::Graphics
+}} // namespace Zero::Graphics
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UITheme;
 class UIThemeManager;
@@ -173,20 +173,20 @@ class ZeroShared UISceneNode : public SceneNode {
 	Sizef mDpSize;
 	Uint32 mFlags;
 	Translator mTranslator;
-	std::vector<UIWindow*> mWindowsList;
+	Array<UIWindow*> mWindowsList;
 	CSS::StyleSheet mStyleSheet;
 	bool mIsLoading{ false };
 	bool mUpdatingLayouts{ false };
 	UIThemeManager* mUIThemeManager{ nullptr };
 	UIIconThemeManager* mUIIconThemeManager{ nullptr };
-	std::vector<Font*> mFontFaces;
+	Array<Font*> mFontFaces;
 	KeyBindings mKeyBindings;
 	std::map<String, KeyBindingCommand> mKeyBindingCommands;
 	UnorderedSet<UIWidget*> mDirtyStyle;
 	UnorderedSet<UIWidget*> mDirtyStyleState;
 	HashMap<UIWidget*, bool> mDirtyStyleStateCSSAnimations;
 	UnorderedSet<UILayout*> mDirtyLayouts;
-	std::vector<std::pair<Float, String>> mTimes;
+	Array<std::pair<Float, String>> mTimes;
 	ColorSchemePreference mColorSchemePreference{ ColorSchemePreference::Dark };
 	Uint32 mMaxInvalidationDepth{ 2 };
 	Node* mCurParent{ nullptr };
@@ -235,11 +235,11 @@ class ZeroShared UISceneNode : public SceneNode {
 
 	CSS::MediaFeatures getMediaFeatures() const;
 
-	std::vector<UIWidget*> loadNode( pugi::xml_node node, Node* parent, const Uint32& marker );
+	Array<UIWidget*> loadNode( pugi::xml_node node, Node* parent, const Uint32& marker );
 
 	void setTheme( UITheme* theme, Node* to );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

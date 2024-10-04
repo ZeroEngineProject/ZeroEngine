@@ -1,7 +1,7 @@
 #include <eepp/core/string.hpp>
 #include <eepp/ui/uiclip.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 ClipType UIClip::fromString( String str ) {
 	String::toLowerInPlace( str );
@@ -40,4 +40,4 @@ void UIClip::setClipType( const ClipType& clipType ) {
 	mClipType = clipType;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

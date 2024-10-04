@@ -4,10 +4,10 @@
 #include <eepp/math/math.hpp>
 #include <eepp/ui/css/stylesheetlength.hpp>
 
-using namespace EE::Graphics;
+using Zero::Graphics;
 using namespace std::literals;
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 enum UnitHashes : String::HashType {
 	Percentage = String::hash( "%" ),
@@ -332,4 +332,4 @@ String StyleSheetLength::toString() const {
 	return res;
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

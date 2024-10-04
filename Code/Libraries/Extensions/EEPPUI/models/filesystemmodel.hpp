@@ -10,7 +10,7 @@
 #include <eepp/ui/models/model.hpp>
 #include <eepp/ui/uiicon.hpp>
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 enum FileSystemEventType {
 	/// Sent when a file is created or renamed
@@ -42,7 +42,7 @@ class ZeroShared FileSystemModel : public Model {
 		DisplayConfig() {}
 		DisplayConfig(
 			bool sortByName, bool foldersFirst, bool ignoreHidden,
-			const std::vector<String>& acceptedExtensions = {},
+			const Array<String>& acceptedExtensions = {},
 			std::function<bool( const String& filepath )> fileIsVisibleFn = nullptr ) :
 			sortByName( sortByName ),
 			foldersFirst( foldersFirst ),
@@ -52,7 +52,7 @@ class ZeroShared FileSystemModel : public Model {
 		bool sortByName{ true };
 		bool foldersFirst{ true };
 		bool ignoreHidden{ false };
-		std::vector<String> acceptedExtensions;
+		Array<String> acceptedExtensions;
 		std::function<bool( const String& filepath )> fileIsVisibleFn;
 		bool operator==( const DisplayConfig& other ) {
 			return sortByName == other.sortByName && foldersFirst == other.foldersFirst &&
@@ -134,7 +134,7 @@ class ZeroShared FileSystemModel : public Model {
 		String mMimeType;
 		Node* mParent{ nullptr };
 		FileInfo mInfo;
-		std::vector<Node*> mChildren;
+		Array<Node*> mChildren;
 		bool mHasTraversed{ false };
 		bool mInfoDirty{ true };
 		Uint32 mHash{ 0 };
@@ -231,7 +231,7 @@ class ZeroShared DiskDrivesModel : public Model {
 		Count,
 	};
 
-	static std::shared_ptr<DiskDrivesModel> create( const std::vector<String>& data );
+	static std::shared_ptr<DiskDrivesModel> create( const Array<String>& data );
 
 	static std::shared_ptr<DiskDrivesModel> create();
 
@@ -250,11 +250,11 @@ class ZeroShared DiskDrivesModel : public Model {
 	virtual Variant data( const ModelIndex& index, ModelRole role = ModelRole::Display ) const;
 
   private:
-	explicit DiskDrivesModel( const std::vector<String>& data ) : mData( data ) {}
+	explicit DiskDrivesModel( const Array<String>& data ) : mData( data ) {}
 
-	std::vector<String> mData;
+	Array<String> mData;
 };
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models
 
 #endif // EE_UI_MODELS_FILESYSTEMMODEL_HPP

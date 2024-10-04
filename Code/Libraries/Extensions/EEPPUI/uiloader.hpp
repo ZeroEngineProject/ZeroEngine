@@ -3,9 +3,9 @@
 
 #include <eepp/graphics/arcdrawable.hpp>
 #include <eepp/graphics/circledrawable.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UILoader : public UIWidget {
   public:
@@ -56,7 +56,7 @@ class ZeroShared UILoader : public UIWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	Float getArcStartAngle() const;
 
@@ -85,6 +85,6 @@ class ZeroShared UILoader : public UIWidget {
 	void updateRadius();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

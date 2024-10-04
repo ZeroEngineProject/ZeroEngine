@@ -5,7 +5,7 @@
 #include <eepp/ui/uistackwidget.hpp>
 #include <eepp/ui/uitableview.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIMultiModelView : public UIStackWidget {
   public:
@@ -59,6 +59,6 @@ class ZeroShared UIMultiModelView : public UIStackWidget {
 	std::function<void( const ModelIndex& )> mOnSelection;
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UIMULTIMODELVIEW_HPP

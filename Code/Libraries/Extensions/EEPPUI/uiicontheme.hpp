@@ -5,9 +5,9 @@
 #include <eepp/ui/uiicon.hpp>
 #include <unordered_map>
 
-using namespace EE::Graphics;
+using Zero::Graphics;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIIconTheme {
   public:
@@ -30,6 +30,6 @@ class ZeroShared UIIconTheme {
 	UIIconTheme( const String& name );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UIICONTHEME_HPP

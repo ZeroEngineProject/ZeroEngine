@@ -4,7 +4,7 @@
 #include <eepp/ui/uiprogressbar.hpp>
 #include <eepp/ui/uithememanager.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UIProgressBarFiller : public UIWidget {
   public:
@@ -247,7 +247,7 @@ String UIProgressBar::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIProgressBar::getPropertiesImplemented() const {
+Array<PropertyId> UIProgressBar::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::TotalSteps, PropertyId::Progress, PropertyId::VerticalExpand,
 				   PropertyId::DisplayPercent, PropertyId::MovementSpeed };
@@ -292,4 +292,4 @@ void UIProgressBar::onAlphaChange() {
 	mTextBox->setAlpha( mAlpha );
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

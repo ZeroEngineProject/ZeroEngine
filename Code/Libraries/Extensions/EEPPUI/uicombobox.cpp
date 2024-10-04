@@ -1,7 +1,7 @@
 #include <eepp/graphics/textureregion.hpp>
 #include <eepp/ui/uicombobox.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIComboBox* UIComboBox::New() {
 	return eeNew( UIComboBox, () );
@@ -235,7 +235,7 @@ String UIComboBox::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIComboBox::getPropertiesImplemented() const {
+Array<PropertyId> UIComboBox::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = {
 		PropertyId::Color,
@@ -279,4 +279,4 @@ std::vector<PropertyId> UIComboBox::getPropertiesImplemented() const {
 	return props;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

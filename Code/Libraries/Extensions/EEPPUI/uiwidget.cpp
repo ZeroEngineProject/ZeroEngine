@@ -13,15 +13,15 @@
 #include <eepp/ui/uistyle.hpp>
 #include <eepp/ui/uithememanager.hpp>
 #include <eepp/ui/uitooltip.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 #include <eepp/window/engine.hpp>
 #include <eepp/window/window.hpp>
 #define PUGIXML_HEADER_ONLY
 #include <pugixml/pugixml.hpp>
 
-using namespace EE::Window;
+using Zero::Window;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIWidget* UIWidget::New() {
 	return eeNew( UIWidget, () );
@@ -786,7 +786,7 @@ const String& UIWidget::getStyleSheetTag() const {
 	return mTag;
 }
 
-const std::vector<String>& UIWidget::getStyleSheetClasses() const {
+const Array<String>& UIWidget::getStyleSheetClasses() const {
 	return mClasses;
 }
 
@@ -802,7 +802,7 @@ UIWidget* UIWidget::getStyleSheetNextSiblingElement() const {
 	return NULL != mNext && mNext->isWidget() ? mNext->asType<UIWidget>() : NULL;
 }
 
-const std::vector<String>& UIWidget::getStyleSheetPseudoClasses() const {
+const Array<String>& UIWidget::getStyleSheetPseudoClasses() const {
 	return mPseudoClasses;
 }
 
@@ -858,7 +858,7 @@ UIWidget* UIWidget::setClass( const String& cls ) {
 	return this;
 }
 
-UIWidget* UIWidget::setClasses( const std::vector<String>& classes ) {
+UIWidget* UIWidget::setClasses( const Array<String>& classes ) {
 	if ( mClasses != classes ) {
 		mClasses = classes;
 
@@ -886,7 +886,7 @@ UIWidget* UIWidget::addClass( const String& cls ) {
 	return this;
 }
 
-UIWidget* UIWidget::addClasses( const std::vector<String>& classes ) {
+UIWidget* UIWidget::addClasses( const Array<String>& classes ) {
 	if ( !classes.empty() ) {
 		for ( auto cit = classes.begin(); cit != classes.end(); ++cit ) {
 			const String& cls = *cit;
@@ -920,7 +920,7 @@ UIWidget* UIWidget::removeClass( const String& cls ) {
 	return this;
 }
 
-UIWidget* UIWidget::removeClasses( const std::vector<String>& classes ) {
+UIWidget* UIWidget::removeClasses( const Array<String>& classes ) {
 	if ( !classes.empty() ) {
 		for ( auto cit = classes.begin(); cit != classes.end(); ++cit ) {
 			const String& cls = *cit;
@@ -988,7 +988,7 @@ void UIWidget::setElementTag( const String& tag ) {
 	}
 }
 
-const std::vector<String> UIWidget::getClasses() const {
+const Array<String> UIWidget::getClasses() const {
 	return mClasses;
 }
 
@@ -1146,8 +1146,8 @@ const Uint32& UIWidget::getStylePreviousState() const {
 	return NULL != mStyle ? mStyle->getPreviousState() : mState;
 }
 
-std::vector<UIWidget*> UIWidget::findAllByClass( const String& className ) {
-	std::vector<UIWidget*> widgets;
+Array<UIWidget*> UIWidget::findAllByClass( const String& className ) {
+	Array<UIWidget*> widgets;
 
 	if ( !isClosing() && hasClass( className ) ) {
 		widgets.push_back( this );
@@ -1157,7 +1157,7 @@ std::vector<UIWidget*> UIWidget::findAllByClass( const String& className ) {
 
 	while ( NULL != child ) {
 		if ( child->isWidget() ) {
-			std::vector<UIWidget*> foundWidgets =
+			Array<UIWidget*> foundWidgets =
 				child->asType<UIWidget>()->findAllByClass( className );
 
 			if ( !foundWidgets.empty() )
@@ -1170,8 +1170,8 @@ std::vector<UIWidget*> UIWidget::findAllByClass( const String& className ) {
 	return widgets;
 }
 
-std::vector<UIWidget*> UIWidget::findAllByTag( const String& tag ) {
-	std::vector<UIWidget*> widgets;
+Array<UIWidget*> UIWidget::findAllByTag( const String& tag ) {
+	Array<UIWidget*> widgets;
 
 	if ( !isClosing() && getElementTag() == tag ) {
 		widgets.push_back( this );
@@ -1181,7 +1181,7 @@ std::vector<UIWidget*> UIWidget::findAllByTag( const String& tag ) {
 
 	while ( NULL != child ) {
 		if ( child->isWidget() ) {
-			std::vector<UIWidget*> foundWidgets = child->asType<UIWidget>()->findAllByTag( tag );
+			Array<UIWidget*> foundWidgets = child->asType<UIWidget>()->findAllByTag( tag );
 
 			if ( !foundWidgets.empty() )
 				widgets.insert( widgets.end(), foundWidgets.begin(), foundWidgets.end() );
@@ -1256,8 +1256,8 @@ UIWidget* UIWidget::querySelector( const CSS::StyleSheetSelector& selector ) {
 	return NULL;
 }
 
-std::vector<UIWidget*> UIWidget::querySelectorAll( const CSS::StyleSheetSelector& selector ) {
-	std::vector<UIWidget*> widgets;
+Array<UIWidget*> UIWidget::querySelectorAll( const CSS::StyleSheetSelector& selector ) {
+	Array<UIWidget*> widgets;
 
 	if ( !isClosing() && selector.select( this ) ) {
 		widgets.push_back( this );
@@ -1267,7 +1267,7 @@ std::vector<UIWidget*> UIWidget::querySelectorAll( const CSS::StyleSheetSelector
 
 	while ( NULL != child ) {
 		if ( child->isWidget() ) {
-			std::vector<UIWidget*> foundWidgets =
+			Array<UIWidget*> foundWidgets =
 				child->asType<UIWidget>()->querySelectorAll( selector );
 
 			if ( !foundWidgets.empty() )
@@ -1303,11 +1303,11 @@ UIWidget* UIWidget::querySelector( const String& selector ) {
 	return querySelector( CSS::StyleSheetSelector( selector ) );
 }
 
-std::vector<UIWidget*> UIWidget::querySelectorAll( const String& selector ) {
+Array<UIWidget*> UIWidget::querySelectorAll( const String& selector ) {
 	return querySelectorAll( CSS::StyleSheetSelector( selector ) );
 }
 
-std::vector<PropertyId> UIWidget::getPropertiesImplemented() const {
+Array<PropertyId> UIWidget::getPropertiesImplemented() const {
 	return { PropertyId::X,
 			 PropertyId::Y,
 			 PropertyId::Width,
@@ -1637,7 +1637,7 @@ bool UIWidget::applyProperty( const StyleSheetProperty& attribute ) {
 		case PropertyId::Gravity: {
 			String gravity = attribute.asString();
 			String::toLowerInPlace( gravity );
-			std::vector<String> strings = String::split( gravity, '|' );
+			Array<String> strings = String::split( gravity, '|' );
 
 			if ( strings.empty() ) {
 				strings = String::split( gravity, ' ' );
@@ -1673,7 +1673,7 @@ bool UIWidget::applyProperty( const StyleSheetProperty& attribute ) {
 		case PropertyId::Flags: {
 			String flags = attribute.asString();
 			String::toLowerInPlace( flags );
-			std::vector<String> strings = String::split( flags, '|' );
+			Array<String> strings = String::split( flags, '|' );
 
 			if ( strings.size() ) {
 				for ( std::size_t i = 0; i < strings.size(); i++ ) {
@@ -1723,7 +1723,7 @@ bool UIWidget::applyProperty( const StyleSheetProperty& attribute ) {
 		case PropertyId::LayoutGravity: {
 			String gravityStr = attribute.asString();
 			String::toLowerInPlace( gravityStr );
-			std::vector<String> strings = String::split( gravityStr, '|' );
+			Array<String> strings = String::split( gravityStr, '|' );
 			Uint32 gravity = 0;
 			if ( strings.size() ) {
 				for ( std::size_t i = 0; i < strings.size(); i++ ) {
@@ -1998,7 +1998,7 @@ String UIWidget::getLayoutHeightPolicyString() const {
 }
 
 static String getGravityStringFromUint( const Uint32& gravity ) {
-	std::vector<String> gravec;
+	Array<String> gravec;
 
 	if ( Font::getHorizontalAlign( gravity ) == UI_HALIGN_RIGHT ) {
 		gravec.push_back( "right" );
@@ -2028,7 +2028,7 @@ String UIWidget::getGravityString() const {
 }
 
 String UIWidget::getFlagsString() const {
-	std::vector<String> flagvec;
+	Array<String> flagvec;
 
 	if ( mFlags & UI_AUTO_SIZE )
 		flagvec.push_back( "autosize" );
@@ -2238,4 +2238,4 @@ void UIWidget::onFocusNextWidget() {
 	}
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

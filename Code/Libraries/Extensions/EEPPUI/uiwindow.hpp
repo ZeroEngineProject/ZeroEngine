@@ -2,13 +2,13 @@
 #define EE_UICUIWINDOW_HPP
 
 #include <eepp/ui/keyboardshortcut.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace Graphics {
+Zero { namespace Graphics {
 class FrameBuffer;
-}} // namespace EE::Graphics
+}} // namespace Zero::Graphics
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UITextView;
 class UISceneNode;
@@ -157,7 +157,7 @@ class ZeroShared UIWindow : public UIWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	String getWindowFlagsString() const;
 
@@ -304,6 +304,6 @@ class ZeroShared UIWindow : public UIWidget {
 	void checkEphemeralClose();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

@@ -9,7 +9,7 @@
 #include <eepp/window/engine.hpp>
 #include <eepp/window/input.hpp>
 
-namespace EE { namespace UI { namespace Abstract {
+namespace Zero { namespace UI { namespace Abstract {
 
 UIAbstractTableView::UIAbstractTableView( const String& tag ) :
 	UIAbstractView( tag ),
@@ -390,13 +390,13 @@ void UIAbstractTableView::setColumnHidden( const size_t& column, bool hidden ) {
 	}
 }
 
-void UIAbstractTableView::setColumnsHidden( const std::vector<size_t>& columns, bool hidden ) {
+void UIAbstractTableView::setColumnsHidden( const Array<size_t>& columns, bool hidden ) {
 	for ( auto col : columns )
 		columnData( col ).visible = !hidden;
 	createOrUpdateColumns( false );
 }
 
-void UIAbstractTableView::setColumnsVisible( const std::vector<size_t>& columns ) {
+void UIAbstractTableView::setColumnsVisible( const Array<size_t>& columns ) {
 	if ( !getModel() )
 		return;
 
@@ -417,8 +417,8 @@ void UIAbstractTableView::setColumnsVisible( const std::vector<size_t>& columns 
 				return;
 		} else {
 			// Should use a dynamic_bitset
-			std::vector<bool> colFlags( mColumn.size() );
-			std::vector<bool> newColFlags( mColumn.size() );
+			Array<bool> colFlags( mColumn.size() );
+			Array<bool> newColFlags( mColumn.size() );
 
 			for ( size_t i = 0; i < mColumn.size(); ++i )
 				colFlags[i] = mColumn[i].visible;
@@ -884,7 +884,7 @@ String UIAbstractTableView::getPropertyString( const PropertyDefinition* propert
 	}
 }
 
-std::vector<PropertyId> UIAbstractTableView::getPropertiesImplemented() const {
+Array<PropertyId> UIAbstractTableView::getPropertiesImplemented() const {
 	auto props = UIAbstractView::getPropertiesImplemented();
 	props.push_back( PropertyId::RowHeight );
 	return props;
@@ -957,4 +957,4 @@ UITableCell* UIAbstractTableView::getCellFromIndex( const ModelIndex& index ) co
 	return nullptr;
 }
 
-}}} // namespace EE::UI::Abstract
+}}} // namespace Zero::UI::Abstract

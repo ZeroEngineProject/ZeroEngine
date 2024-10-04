@@ -10,16 +10,16 @@
 #include <eepp/ui/css/transitiondefinition.hpp>
 #include <eepp/ui/uistate.hpp>
 
-namespace EE { namespace Graphics {
+Zero { namespace Graphics {
 class Font;
-}} // namespace EE::Graphics
+}} // namespace Zero::Graphics
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 class StyleSheetPropertyAnimation;
 class StyleSheet;
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UIWidget;
 
@@ -134,6 +134,6 @@ class ZeroShared UIStyle : public UIState {
 	void removeStructurallyVolatileWidgetFromParent();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

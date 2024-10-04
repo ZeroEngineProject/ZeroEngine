@@ -4,7 +4,7 @@
 #include <eepp/ui/css/propertydefinition.hpp>
 #include <eepp/ui/uitextureregion.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UITextureRegion* UITextureRegion::New() {
 	return eeNew( UITextureRegion, () );
@@ -222,7 +222,7 @@ String UITextureRegion::getPropertyString( const PropertyDefinition* propertyDef
 	}
 }
 
-std::vector<PropertyId> UITextureRegion::getPropertiesImplemented() const {
+Array<PropertyId> UITextureRegion::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::Src, PropertyId::ScaleType, PropertyId::Tint };
 	props.insert( props.end(), local.begin(), local.end() );
@@ -282,4 +282,4 @@ UITextureRegion* UITextureRegion::setScaleType( const UIScaleType& scaleType ) {
 	return this;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

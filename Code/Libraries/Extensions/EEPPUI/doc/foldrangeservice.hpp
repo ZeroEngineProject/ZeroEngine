@@ -7,9 +7,9 @@
 #include <optional>
 #include <unordered_map>
 
-using namespace EE::System;
+using Zero::System;
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 class TextDocument;
 
@@ -34,7 +34,7 @@ class ZeroShared FoldRangeServive {
 
 	std::optional<TextRange> find( Int64 docIdx );
 
-	void addFoldRegions( std::vector<TextRange> regions );
+	void addFoldRegions( Array<TextRange> regions );
 
 	bool isFoldingRegionInLine( Int64 docIdx );
 
@@ -42,7 +42,7 @@ class ZeroShared FoldRangeServive {
 
 	void shiftFoldingRegions( Int64 fromLine, Int64 numLines );
 
-	void setFoldingRegions( std::vector<TextRange> regions );
+	void setFoldingRegions( Array<TextRange> regions );
 
 	FoldRangeProvider* getProvider() const;
 
@@ -62,6 +62,6 @@ class ZeroShared FoldRangeServive {
 	bool mEnabled{ true };
 };
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc
 
 #endif // EE_UI_DOC_FOLDRANGESERVICE_HPP

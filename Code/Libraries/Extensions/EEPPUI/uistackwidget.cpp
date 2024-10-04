@@ -1,6 +1,6 @@
 #include <eepp/ui/uistackwidget.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIStackWidget* UIStackWidget::New() {
 	return NewWithTag( "stackwidget" );
@@ -77,4 +77,4 @@ void UIStackWidget::onChildCountChange( Node* child, const bool& removed ) {
 	}
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

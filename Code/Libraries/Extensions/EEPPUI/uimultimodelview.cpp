@@ -1,6 +1,6 @@
 #include <eepp/ui/uimultimodelview.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIMultiModelView* UIMultiModelView::New() {
 	return NewWithTag( "multimodelview" );
@@ -108,4 +108,4 @@ void UIMultiModelView::setMultiSelect( bool enable ) {
 	mTable->setSelectionKind( kind );
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

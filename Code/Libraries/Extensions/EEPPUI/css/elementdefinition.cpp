@@ -1,6 +1,6 @@
 #include <eepp/ui/css/elementdefinition.hpp>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 ElementDefinition::ElementDefinition( const StyleSheetStyleVector& styleSheetStyles ) :
 	mStyles( styleSheetStyles ), mStructurallyVolatile( false ) {
@@ -20,11 +20,11 @@ const StyleSheetProperties& ElementDefinition::getProperties() const {
 	return mProperties;
 }
 
-const std::vector<const StyleSheetProperty*>& ElementDefinition::getTransitionProperties() const {
+const Array<const StyleSheetProperty*>& ElementDefinition::getTransitionProperties() const {
 	return mTransitionProperties;
 }
 
-const std::vector<const StyleSheetProperty*>& ElementDefinition::getAnimationProperties() const {
+const Array<const StyleSheetProperty*>& ElementDefinition::getAnimationProperties() const {
 	return mAnimationProperties;
 }
 
@@ -85,4 +85,4 @@ void ElementDefinition::findVariables( const StyleSheetStyle* style ) {
 	}
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

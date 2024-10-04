@@ -3,7 +3,7 @@
 #include <eepp/ui/css/propertydefinition.hpp>
 #include <eepp/ui/uicheckbox.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UICheckBox* UICheckBox::New() {
 	return eeNew( UICheckBox, () );
@@ -246,7 +246,7 @@ String UICheckBox::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UICheckBox::getPropertiesImplemented() const {
+Array<PropertyId> UICheckBox::getPropertiesImplemented() const {
 	auto props = UITextView::getPropertiesImplemented();
 	props.push_back( PropertyId::Checked );
 	props.push_back( PropertyId::CheckMode );
@@ -307,4 +307,4 @@ void UICheckBox::onAlphaChange() {
 	mInactiveButton->setAlpha( mAlpha );
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

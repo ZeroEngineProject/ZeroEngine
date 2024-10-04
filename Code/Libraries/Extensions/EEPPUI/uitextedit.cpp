@@ -8,7 +8,7 @@
 #include <eepp/ui/uitextedit.hpp>
 #include <eepp/ui/uithememanager.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UITextEdit* UITextEdit::New() {
 	return eeNew( UITextEdit, () );
@@ -114,4 +114,4 @@ void UITextEdit::drawCursor( const Vector2f& startScroll, const Float& lineHeigh
 	}
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

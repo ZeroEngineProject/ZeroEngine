@@ -1,7 +1,7 @@
 #include <eepp/ui/uiskin.hpp>
 #include <eepp/ui/uistate.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 static const char* UIStatesNames[] = { "normal",  "focus",		   "selected",		  "hover",
 									   "pressed", "selectedhover", "selectedpressed", "disabled",
@@ -109,4 +109,4 @@ const Uint32& UIState::getPreviousState() const {
 
 void UIState::onStateChange() {}
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

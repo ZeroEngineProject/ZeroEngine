@@ -5,7 +5,7 @@
 #include <eepp/ui/css/propertydefinition.hpp>
 #include <eepp/ui/uisprite.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UISprite* UISprite::New() {
 	return eeNew( UISprite, () );
@@ -208,7 +208,7 @@ String UISprite::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UISprite::getPropertiesImplemented() const {
+Array<PropertyId> UISprite::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::Src };
 	props.insert( props.end(), local.begin(), local.end() );
@@ -249,4 +249,4 @@ bool UISprite::applyProperty( const StyleSheetProperty& attribute ) {
 	return true;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

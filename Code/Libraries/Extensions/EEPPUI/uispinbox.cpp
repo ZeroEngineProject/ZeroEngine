@@ -4,7 +4,7 @@
 #include <eepp/ui/uispinbox.hpp>
 #include <limits>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UISpinBox* UISpinBox::New() {
 	return eeNew( UISpinBox, () );
@@ -326,7 +326,7 @@ String UISpinBox::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UISpinBox::getPropertiesImplemented() const {
+Array<PropertyId> UISpinBox::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::MinValue, PropertyId::MaxValue, PropertyId::Value,
 				   PropertyId::ClickStep };
@@ -419,4 +419,4 @@ bool UISpinBox::applyProperty( const StyleSheetProperty& attribute ) {
 	return attributeSet;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

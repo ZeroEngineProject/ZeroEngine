@@ -2,9 +2,9 @@
 #define EE_UI_UIWIDGETTABLEROW_HPP
 
 #include <eepp/ui/uiitemcontainer.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UIWidgetTable;
 
@@ -36,7 +36,7 @@ class ZeroShared UIWidgetTableRow : public UIWidget {
 	friend class UIItemContainer<UIWidgetTable>;
 	friend class UIWidgetTable;
 
-	std::vector<UINode*> mCells;
+	Array<UINode*> mCells;
 
 	UIWidgetTableRow();
 
@@ -55,6 +55,6 @@ class ZeroShared UIWidgetTableRow : public UIWidget {
 	virtual void onAutoSize();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

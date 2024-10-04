@@ -2,10 +2,10 @@
 #include <eepp/ui/abstract/uiabstractview.hpp>
 #include <eepp/ui/models/modelselection.hpp>
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 void ModelSelection::removeAllMatching( std::function<bool( const ModelIndex& )> filter ) {
-	std::vector<ModelIndex> notMatching;
+	Array<ModelIndex> notMatching;
 	for ( auto& index : mIndexes ) {
 		if ( !filter( index ) )
 			notMatching.emplace_back( index );
@@ -25,7 +25,7 @@ void ModelSelection::set( const ModelIndex& index ) {
 	mView->notifySelectionChange();
 }
 
-void ModelSelection::set( const std::vector<ModelIndex>& indexes, bool notify ) {
+void ModelSelection::set( const Array<ModelIndex>& indexes, bool notify ) {
 #ifdef EE_DEBUG
 	for ( auto& index : indexes )
 		eeASSERT( index.isValid() );
@@ -82,4 +82,4 @@ void ModelSelection::notifySelectionChanged() {
 	}
 }
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models

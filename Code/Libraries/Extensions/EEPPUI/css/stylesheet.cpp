@@ -4,9 +4,9 @@
 #include <eepp/ui/css/stylesheet.hpp>
 #include <eepp/ui/css/stylesheetproperty.hpp>
 #include <eepp/ui/css/stylesheetselector.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 StyleSheet::StyleSheet() {}
 
@@ -57,15 +57,15 @@ void StyleSheet::setMarker( const Uint32& marker ) {
 }
 
 void StyleSheet::removeAllWithMarker( const Uint32& marker ) {
-	std::vector<std::shared_ptr<StyleSheetStyle>> removeNodes;
+	Array<std::shared_ptr<StyleSheetStyle>> removeNodes;
 
 	for ( auto& node : mNodes )
 		if ( node->getMarker() == marker )
 			removeNodes.emplace_back( node );
 
-	std::vector<size_t> deprecatedNodeIndex;
+	Array<size_t> deprecatedNodeIndex;
 	for ( auto& nodeIndex : mNodeIndex ) {
-		std::vector<StyleSheetStyle*> removeNodesIndex;
+		Array<StyleSheetStyle*> removeNodesIndex;
 		for ( auto node : nodeIndex.second ) {
 			if ( node->getMarker() == marker ) {
 				removeNodesIndex.emplace_back( node );
@@ -84,7 +84,7 @@ void StyleSheet::removeAllWithMarker( const Uint32& marker ) {
 	for ( auto removeIndex : deprecatedNodeIndex )
 		mNodeIndex.erase( removeIndex );
 
-	std::vector<MediaQueryList::ptr> removeMediaQueries;
+	Array<MediaQueryList::ptr> removeMediaQueries;
 	for ( auto& mediaQueryList : mMediaQueryList ) {
 		if ( mediaQueryList->getMarker() == marker )
 			removeMediaQueries.emplace_back( mediaQueryList );
@@ -98,7 +98,7 @@ void StyleSheet::removeAllWithMarker( const Uint32& marker ) {
 		}
 	}
 
-	std::vector<String> removeKeys;
+	Array<String> removeKeys;
 	for ( auto& keyFrame : mKeyframesMap ) {
 		if ( keyFrame.second.getMarker() == marker )
 			removeKeys.emplace_back( keyFrame.first );
@@ -111,7 +111,7 @@ void StyleSheet::removeAllWithMarker( const Uint32& marker ) {
 
 StyleSheet StyleSheet::getAllWithMarker( const Uint32& marker ) const {
 	StyleSheet style;
-	std::vector<std::shared_ptr<StyleSheetStyle>> hits;
+	Array<std::shared_ptr<StyleSheetStyle>> hits;
 	for ( auto node : mNodes ) {
 		if ( node->getMarker() == marker )
 			style.addStyle( node );
@@ -127,9 +127,9 @@ bool StyleSheet::markerExists( const Uint32& marker ) const {
 	return false;
 }
 
-std::vector<std::shared_ptr<StyleSheetStyle>>
+Array<std::shared_ptr<StyleSheetStyle>>
 StyleSheet::findStyleFromSelectorName( const String& selector ) const {
-	std::vector<std::shared_ptr<StyleSheetStyle>> found;
+	Array<std::shared_ptr<StyleSheetStyle>> found;
 	for ( const auto& node : mNodes ) {
 		if ( selector == node->getSelector().getName() )
 			found.push_back( node );
@@ -138,7 +138,7 @@ StyleSheet::findStyleFromSelectorName( const String& selector ) const {
 }
 
 bool StyleSheet::refreshCacheFromStyles(
-	const std::vector<std::shared_ptr<StyleSheetStyle>>& styles ) {
+	const Array<std::shared_ptr<StyleSheetStyle>>& styles ) {
 	bool refreshed = false;
 	for ( const auto& style : styles ) {
 		for ( auto& node : mNodeCache ) {
@@ -200,7 +200,7 @@ bool StyleSheet::isEmpty() const {
 
 String StyleSheet::print() {
 	String str;
-	std::map<MediaQueryList::ptr, std::vector<StyleSheetStyle*>> byMQ;
+	std::map<MediaQueryList::ptr, Array<StyleSheetStyle*>> byMQ;
 
 	for ( size_t i = 0; i < mNodes.size(); ++i ) {
 		auto node = mNodes[i];
@@ -285,13 +285,13 @@ std::shared_ptr<ElementDefinition> StyleSheet::getElementStyles( UIWidget* eleme
 	return newDefinition;
 }
 
-const std::vector<std::shared_ptr<StyleSheetStyle>>& StyleSheet::getStyles() const {
+const Array<std::shared_ptr<StyleSheetStyle>>& StyleSheet::getStyles() const {
 	return mNodes;
 }
 
-std::vector<std::shared_ptr<StyleSheetStyle>>
+Array<std::shared_ptr<StyleSheetStyle>>
 StyleSheet::getStylesFromSelector( const String& selector ) const {
-	std::vector<std::shared_ptr<StyleSheetStyle>> found;
+	Array<std::shared_ptr<StyleSheetStyle>> found;
 	for ( const auto& node : mNodes )
 		if ( node->isMediaValid() && node->getSelector().getName() == selector )
 			found.push_back( node );
@@ -305,7 +305,7 @@ StyleSheet::getStyleFromSelector( const String& selector, bool searchBySpecifici
 			if ( node->getSelector().getName() == selector )
 				return node;
 	} else {
-		std::vector<std::shared_ptr<StyleSheetStyle>> found;
+		Array<std::shared_ptr<StyleSheetStyle>> found;
 		for ( const auto& node : mNodes )
 			if ( node->isMediaValid() && node->getSelector().getName() == selector )
 				found.push_back( node );
@@ -409,4 +409,4 @@ const KeyframesDefinitionMap& StyleSheet::getKeyframes() const {
 	return mKeyframesMap;
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

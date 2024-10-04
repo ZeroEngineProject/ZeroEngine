@@ -2,9 +2,9 @@
 #define EE_UIEVENTDISPATCHER_HPP
 
 #include <eepp/scene/eventdispatcher.hpp>
-using namespace EE::Scene;
+using Zero::Scene;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIEventDispatcher : public EventDispatcher {
   public:
@@ -23,6 +23,6 @@ class ZeroShared UIEventDispatcher : public EventDispatcher {
 	void checkTabPress( const Uint32& KeyCode, const Uint32& mod );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

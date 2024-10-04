@@ -1,9 +1,9 @@
 #ifndef EE_UI_UIIMAGE_HPP
 #define EE_UI_UIIMAGE_HPP
 
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIImage : public UIWidget {
   public:
@@ -40,7 +40,7 @@ class ZeroShared UIImage : public UIWidget {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	const UIScaleType& getScaleType() const;
 
@@ -70,6 +70,6 @@ class ZeroShared UIImage : public UIWidget {
 	void onDrawableResourceEvent( DrawableResource::Event event, DrawableResource* );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

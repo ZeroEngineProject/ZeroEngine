@@ -5,9 +5,9 @@
 
 #include <nlohmann/json.hpp>
 
-using namespace EE::System;
+using Zero::System;
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
 using json = nlohmann::json;
 
@@ -380,4 +380,4 @@ UndoStackContainer& TextUndoStack::getRedoStackContainer() {
 	return mRedoStack;
 }
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc

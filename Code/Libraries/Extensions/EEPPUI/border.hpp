@@ -5,14 +5,14 @@
 #include <eepp/math/size.hpp>
 #include <eepp/system/color.hpp>
 
-namespace EE { namespace Graphics {
+Zero { namespace Graphics {
 class VertexBuffer;
-}} // namespace EE::Graphics
-using namespace EE::Graphics;
-using namespace EE::System;
-using namespace EE::Math;
+}} // namespace Zero::Graphics
+using Zero::Graphics;
+using Zero::System;
+using Zero::Math;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 class UINode;
 
 enum class BorderType : Uint32 { Inside, Outside, Outline };
@@ -71,6 +71,6 @@ struct BorderStr {
 	BorderRadiuseStr radius;
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_BORDER_HPP

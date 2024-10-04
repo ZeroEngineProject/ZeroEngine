@@ -1,6 +1,6 @@
 #include <eepp/ui/models/persistentmodelindex.hpp>
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 PersistentModelIndex::PersistentModelIndex( ModelIndex const& index ) {
 	if ( !index.isValid() )
@@ -76,4 +76,4 @@ bool PersistentModelIndex::operator!=( ModelIndex const& other ) const {
 	return !( *this == other );
 }
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models

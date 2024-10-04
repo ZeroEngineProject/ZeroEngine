@@ -2,7 +2,7 @@
 #include <eepp/ui/uiscenenode.hpp>
 #include <eepp/ui/uisplitter.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UISplitter* UISplitter::New() {
 	return eeNew( UISplitter, () );
@@ -157,7 +157,7 @@ String UISplitter::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UISplitter::getPropertiesImplemented() const {
+Array<PropertyId> UISplitter::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	auto local = { PropertyId::SplitterPartition, PropertyId::SplitterAlwaysShow,
 				   PropertyId::Orientation };
@@ -440,4 +440,4 @@ Uint32 UISplitter::onMessage( const NodeMessage* Msg ) {
 	return 0;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

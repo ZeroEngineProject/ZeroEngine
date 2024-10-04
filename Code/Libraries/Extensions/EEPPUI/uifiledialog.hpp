@@ -10,10 +10,10 @@
 #include <eepp/ui/uipushbutton.hpp>
 #include <eepp/ui/uiselectbutton.hpp>
 #include <eepp/ui/uitextinput.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 #include <eepp/ui/uiwindow.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIFileDialog : public UIWindow {
   public:
@@ -57,7 +57,7 @@ class ZeroShared UIFileDialog : public UIWindow {
 
 	String getFullPath() const;
 
-	std::vector<String> getFullPaths() const;
+	Array<String> getFullPaths() const;
 
 	UIPushButton* getButtonOpen() const;
 
@@ -174,15 +174,15 @@ class ZeroShared UIFileDialog : public UIWindow {
 
 	void setCurPath( const String& path );
 
-	std::vector<const FileSystemModel::Node*> getSelectionNodes() const;
+	Array<const FileSystemModel::Node*> getSelectionNodes() const;
 
-	std::vector<ModelIndex> getSelectionModelIndex() const;
+	Array<ModelIndex> getSelectionModelIndex() const;
 
 	String getSelectedDrive() const;
 
 	String getFullPath( size_t index ) const;
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

@@ -3,9 +3,9 @@
 #include <eepp/ui/doc/syntaxhighlighter.hpp>
 #include <eepp/ui/doc/syntaxtokenizer.hpp>
 
-namespace EE { namespace UI { namespace Doc {
+namespace Zero { namespace UI { namespace Doc {
 
-Uint64 TokenizedLine::calcSignature( const std::vector<SyntaxTokenPosition>& tokens ) {
+Uint64 TokenizedLine::calcSignature( const Array<SyntaxTokenPosition>& tokens ) {
 	if ( !tokens.empty() ) {
 		return String::hash( reinterpret_cast<const char*>( tokens.data() ),
 							 sizeof( SyntaxTokenPosition ) * tokens.size() );
@@ -147,9 +147,9 @@ void SyntaxHighlighter::tokenizeAsync( std::shared_ptr<ThreadPool> pool,
 	} );
 }
 
-const std::vector<SyntaxTokenPosition>& SyntaxHighlighter::getLine( const size_t& index,
+const Array<SyntaxTokenPosition>& SyntaxHighlighter::getLine( const size_t& index,
 																	bool mustTokenize ) {
-	static std::vector<SyntaxTokenPosition> noHighlightVector = {
+	static Array<SyntaxTokenPosition> noHighlightVector = {
 		{ SyntaxStyleTypes::Normal, 0, 0 } };
 	if ( mDoc->getSyntaxDefinition().getPatterns().empty() ) {
 		noHighlightVector[0].len = mDoc->line( index ).size();
@@ -356,4 +356,4 @@ void SyntaxHighlighter::mergeLine( const size_t& line, const TokenizedLine& toke
 	mLines[line] = std::move( tline );
 }
 
-}}} // namespace EE::UI::Doc
+}}} // namespace Zero::UI::Doc

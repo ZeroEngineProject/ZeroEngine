@@ -1,6 +1,6 @@
 #include <eepp/ui/uiroot.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIRoot* UIRoot::New() {
 	return eeNew( UIRoot, () );
@@ -36,10 +36,10 @@ bool UIRoot::applyProperty( const StyleSheetProperty& attribute ) {
 	return true;
 }
 
-std::vector<PropertyId> UIRoot::getPropertiesImplemented() const {
+Array<PropertyId> UIRoot::getPropertiesImplemented() const {
 	auto props = UIWidget::getPropertiesImplemented();
 	props.push_back( PropertyId::DroppableHoveringColor );
 	return props;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

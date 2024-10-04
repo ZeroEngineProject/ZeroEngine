@@ -6,12 +6,12 @@
 #include <eepp/ui/uiscenenode.hpp>
 #include <eepp/ui/uistyle.hpp>
 #include <eepp/ui/uithememanager.hpp>
-#include <eepp/ui/uiwidget.hpp>
+#include "uiwidget.hpp"
 
-using namespace EE::UI::CSS;
-using namespace EE::Scene;
+using Zero::UI::CSS;
+using Zero::Scene;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIStyle* UIStyle::New( UIWidget* widget ) {
 	return eeNew( UIStyle, ( widget ) );
@@ -40,7 +40,7 @@ bool UIStyle::stateExists( const EE::Uint32& ) const {
 
 void UIStyle::setStyleSheetProperty( const StyleSheetProperty& property ) {
 	if ( StyleSheetSpecification::instance()->isShorthand( property.getName() ) ) {
-		std::vector<StyleSheetProperty> properties;
+		Array<StyleSheetProperty> properties;
 
 		properties = StyleSheetSpecification::instance()
 						 ->getShorthand( property.getName() )
@@ -92,7 +92,7 @@ bool UIStyle::hasTransition( const String& propertyName ) {
 }
 
 StyleSheetPropertyAnimation* UIStyle::getAnimation( const PropertyDefinition* propertyDef ) {
-	std::vector<Action*> actions = mWidget->getActionsByTag( propertyDef->getId() );
+	Array<Action*> actions = mWidget->getActionsByTag( propertyDef->getId() );
 	if ( !actions.empty() ) {
 		for ( auto& action : actions ) {
 			if ( action->getId() == StyleSheetPropertyAnimation::ID ) {
@@ -368,7 +368,7 @@ void UIStyle::subscribeNonCacheableStyles() {
 		return;
 	for ( auto& style : mGlobalDefinition->getStyles() ) {
 		if ( !style->getSelector().isCacheable() ) {
-			std::vector<UIWidget*> elements =
+			Array<UIWidget*> elements =
 				style->getSelector().getRelatedElements( mWidget, false );
 
 			if ( !elements.empty() ) {
@@ -457,9 +457,9 @@ void UIStyle::applyStyleSheetProperty( const StyleSheetProperty& property,
 
 			TransitionDefinition transitionInfo( getTransition( property.getName() ) );
 
-			std::vector<Action*> previousTransitions =
+			Array<Action*> previousTransitions =
 				mWidget->getActionsByTag( propertyDefinition->getId() );
-			std::vector<Action*> removeTransitions;
+			Array<Action*> removeTransitions;
 			StyleSheetPropertyAnimation* prevTransition = NULL;
 
 			if ( !previousTransitions.empty() ) {
@@ -562,7 +562,7 @@ void UIStyle::updateAnimations() {
 void UIStyle::updateAnimationsPlayState() {
 	if ( mAnimations.empty() || nullptr == mDefinition )
 		return;
-	std::vector<Action*> actions = mWidget->getActions();
+	Array<Action*> actions = mWidget->getActions();
 	for ( auto& action : actions ) {
 		if ( action->getId() == StyleSheetPropertyAnimation::ID ) {
 			StyleSheetPropertyAnimation* animation =
@@ -662,8 +662,8 @@ void UIStyle::startAnimations( const CSS::AnimationsMap& animations ) {
 }
 
 void UIStyle::removeAllAnimations() {
-	std::vector<Action*> actions = mWidget->getActions();
-	std::vector<Action*> removeList;
+	Array<Action*> actions = mWidget->getActions();
+	Array<Action*> removeList;
 	for ( auto& action : actions ) {
 		if ( action->getId() == StyleSheetPropertyAnimation::ID ) {
 			StyleSheetPropertyAnimation* animation =
@@ -683,9 +683,9 @@ void UIStyle::removeAllAnimations() {
 
 void UIStyle::removeAnimation( const PropertyDefinition* propertyDefinition,
 							   const Uint32& propertyIndex ) {
-	std::vector<Action*> previousTransitions =
+	Array<Action*> previousTransitions =
 		mWidget->getActionsByTag( propertyDefinition->getId() );
-	std::vector<Action*> removeTransitions;
+	Array<Action*> removeTransitions;
 	StyleSheetPropertyAnimation* prevTransition = NULL;
 
 	if ( !previousTransitions.empty() ) {
@@ -738,4 +738,4 @@ void UIStyle::removeStructurallyVolatileWidgetFromParent() {
 	}
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

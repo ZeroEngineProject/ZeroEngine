@@ -6,9 +6,9 @@
 #include <eepp/ui/uinode.hpp>
 #include <eepp/ui/uitextview.hpp>
 
-using namespace EE::UI::Doc;
+using Zero::UI::Doc;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UIPopUpMenu;
 class UIMenuItem;
@@ -54,7 +54,7 @@ class ZeroShared UITextInput : public UITextView, public TextDocument::Client {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	virtual UIWidget* setPadding( const Rectf& padding );
 
@@ -245,6 +245,6 @@ class ZeroShared UITextInput : public UITextView, public TextDocument::Client {
 	Drawable* findIcon( const String& name );
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif

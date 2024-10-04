@@ -1,6 +1,6 @@
 #include <eepp/ui/uilistview.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIListView* UIListView::New() {
 	return eeNew( UIListView, () );
@@ -26,4 +26,4 @@ void UIListView::setTheme( UITheme* Theme ) {
 	onThemeLoaded();
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

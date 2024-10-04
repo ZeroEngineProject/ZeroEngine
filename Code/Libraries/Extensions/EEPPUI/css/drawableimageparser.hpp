@@ -7,18 +7,18 @@
 #include <functional>
 #include <map>
 
-namespace EE { namespace Graphics {
+Zero { namespace Graphics {
 class Drawable;
-}} // namespace EE::Graphics
-namespace EE { namespace UI {
+}} // namespace Zero::Graphics
+namespace Zero { namespace UI {
 class UINode;
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
-using namespace EE::Graphics;
-using namespace EE::Math;
-using namespace EE::System;
+using Zero::Graphics;
+using Zero::Math;
+using Zero::System;
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 typedef std::function<Drawable*( const FunctionString& functionType, const Sizef& size, bool& ownIt,
 								 UINode* node )>
@@ -41,6 +41,6 @@ class ZeroShared DrawableImageParser {
 	void registerBaseParsers();
 };
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS
 
 #endif // EE_UI_CSS_DRAWABLEIMAGEPARSER_HPP

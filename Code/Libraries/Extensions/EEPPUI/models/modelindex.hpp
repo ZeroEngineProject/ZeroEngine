@@ -3,10 +3,10 @@
 
 #include <eepp/config.hpp>
 #include <eepp/core/core.hpp>
-#include <eepp/ui/models/modelrole.hpp>
-#include <eepp/ui/models/variant.hpp>
+#include "models/modelrole.hpp"
+#include "models/variant.hpp"
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 class Model;
 
@@ -68,7 +68,7 @@ class ZeroShared ModelIndex {
 		mInternalId( internalId ) {}
 };
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models
 
 template <> struct std::hash<EE::UI::Models::ModelIndex> {
 	std::size_t operator()( EE::UI::Models::ModelIndex const& modelIndex ) const noexcept {

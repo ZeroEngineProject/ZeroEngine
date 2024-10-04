@@ -2,7 +2,7 @@
 #include <eepp/core/string.hpp>
 #include <eepp/ui/css/stylesheetvariable.hpp>
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 StyleSheetVariable::StyleSheetVariable() : mNameHash( 0 ), mSpecificity( 0 ) {}
 
@@ -60,4 +60,4 @@ const String::HashType& StyleSheetVariable::getNameHash() const {
 	return mNameHash;
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

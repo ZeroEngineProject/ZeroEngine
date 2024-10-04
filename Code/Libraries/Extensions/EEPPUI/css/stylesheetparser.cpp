@@ -16,16 +16,16 @@
 #include <eepp/ui/css/stylesheetselectorparser.hpp>
 #include <iostream>
 
-using namespace EE::Network;
-using namespace EE::System;
+using Zero::Network;
+using Zero::System;
 
-namespace EE { namespace UI { namespace CSS {
+namespace Zero { namespace UI { namespace CSS {
 
 StyleSheetParser::StyleSheetParser() : mLoaded( false ) {}
 
 bool StyleSheetParser::loadFromStream( IOStream& stream ) {
 	Clock elapsed;
-	std::vector<String> importedList;
+	Array<String> importedList;
 	mCSS.resize( stream.getSize() );
 	stream.read( &mCSS[0], stream.getSize() );
 	bool ok = parse( mCSS, importedList );
@@ -103,7 +103,7 @@ const bool& StyleSheetParser::isLoaded() const {
 	return mLoaded;
 }
 
-bool StyleSheetParser::parse( String& css, std::vector<String>& importedList ) {
+bool StyleSheetParser::parse( String& css, Array<String>& importedList ) {
 	ReadState rs = ReadingSelector;
 	std::size_t pos = 0;
 	String buffer;
@@ -240,7 +240,7 @@ int StyleSheetParser::readProperty( const String& css, ReadState& rs, std::size_
 }
 
 String StyleSheetParser::importCSS( String path,
-										 std::vector<String>& importedList ) {
+										 Array<String>& importedList ) {
 	if ( String::startsWith( path, "file://" ) ) {
 		path = path.substr( 7 );
 	}
@@ -286,7 +286,7 @@ String StyleSheetParser::importCSS( String path,
 }
 
 void StyleSheetParser::mediaParse( String& css, ReadState& rs, std::size_t& pos,
-								   String& buffer, std::vector<String>& importedList ) {
+								   String& buffer, Array<String>& importedList ) {
 	std::size_t mediaClosePos = String::findCloseBracket( css, pos - 1, '{', '}' );
 
 	if ( mediaClosePos != String::npos ) {
@@ -301,7 +301,7 @@ void StyleSheetParser::mediaParse( String& css, ReadState& rs, std::size_t& pos,
 }
 
 void StyleSheetParser::importParse( String& css, std::size_t& pos, String& buffer,
-									std::vector<String>& importedList ) {
+									Array<String>& importedList ) {
 	String::size_type endImport = css.find_first_of( ";", pos );
 
 	if ( endImport == String::npos ) {
@@ -312,7 +312,7 @@ void StyleSheetParser::importParse( String& css, std::size_t& pos, String& buffe
 	}
 
 	String import( css.substr( pos, endImport - pos ) );
-	std::vector<String> tokens = String::split( import, " " );
+	Array<String> tokens = String::split( import, " " );
 
 	if ( tokens.size() >= 2 ) {
 		String path( tokens[1] );
@@ -365,7 +365,7 @@ void StyleSheetParser::keyframesParse( String& css, ReadState& rs, std::size_t& 
 		StyleSheetParser keyframeParser;
 		keyframeParser.loadFromMemory( reinterpret_cast<const Uint8*>( &css[pos] ),
 									   keyframesClosePos - pos );
-		const std::vector<std::shared_ptr<StyleSheetStyle>>& styles =
+		const Array<std::shared_ptr<StyleSheetStyle>>& styles =
 			keyframeParser.getStyleSheet().getStyles();
 
 		String name(
@@ -378,4 +378,4 @@ void StyleSheetParser::keyframesParse( String& css, ReadState& rs, std::size_t& 
 	pos = keyframesClosePos + 1;
 }
 
-}}} // namespace EE::UI::CSS
+}}} // namespace Zero::UI::CSS

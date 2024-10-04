@@ -8,10 +8,10 @@
 #include <eepp/ui/uiicon.hpp>
 #include <string>
 
-using namespace EE::Graphics;
-using namespace EE::Math;
+using Zero::Graphics;
+using Zero::Math;
 
-namespace EE { namespace UI { namespace Models {
+namespace Zero { namespace UI { namespace Models {
 
 class ZeroShared Variant {
   public:
@@ -285,6 +285,6 @@ class ZeroShared Variant {
 	bool mOwnsObject{ false };
 };
 
-}}} // namespace EE::UI::Models
+}}} // namespace Zero::UI::Models
 
 #endif // EE_UI_MODEL_VARIANT_HPP

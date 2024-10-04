@@ -3,7 +3,7 @@
 #define PUGIXML_HEADER_ONLY
 #include <pugixml/pugixml.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 UIWidgetTable* UIWidgetTable::New() {
 	return eeNew( UIWidgetTable, () );
@@ -386,9 +386,9 @@ void UIWidgetTable::remove( UIWidgetTableRow* row ) {
 	return remove( getItemIndex( row ) );
 }
 
-void UIWidgetTable::remove( std::vector<Uint32> itemsIndex ) {
+void UIWidgetTable::remove( Array<Uint32> itemsIndex ) {
 	if ( itemsIndex.size() && eeINDEX_NOT_FOUND != itemsIndex[0] ) {
-		std::vector<UIWidgetTableRow*> ItemsCpy;
+		Array<UIWidgetTableRow*> ItemsCpy;
 		bool erase;
 
 		for ( Uint32 i = 0; i < mItems.size(); i++ ) {
@@ -426,7 +426,7 @@ void UIWidgetTable::remove( std::vector<Uint32> itemsIndex ) {
 }
 
 void UIWidgetTable::remove( Uint32 itemIndex ) {
-	remove( std::vector<Uint32>( 1, itemIndex ) );
+	remove( Array<Uint32>( 1, itemIndex ) );
 }
 
 UIWidgetTable* UIWidgetTable::setColumnWidth( const Uint32& columnIndex,
@@ -679,7 +679,7 @@ String UIWidgetTable::getPropertyString( const PropertyDefinition* propertyDef,
 	}
 }
 
-std::vector<PropertyId> UIWidgetTable::getPropertiesImplemented() const {
+Array<PropertyId> UIWidgetTable::getPropertiesImplemented() const {
 	auto props = UITouchDraggableWidget::getPropertiesImplemented();
 	auto local = { PropertyId::RowHeight, PropertyId::VScrollMode, PropertyId::HScrollMode,
 				   PropertyId::ScrollBarStyle };
@@ -735,4 +735,4 @@ bool UIWidgetTable::applyProperty( const StyleSheetProperty& attribute ) {
 	return true;
 }
 
-}} // namespace EE::UI
+}} // namespace Zero::UI

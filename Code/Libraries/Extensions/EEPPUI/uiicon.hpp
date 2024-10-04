@@ -5,12 +5,12 @@
 #include <eepp/graphics/drawable.hpp>
 #include <eepp/graphics/texture.hpp>
 
-namespace EE { namespace Graphics {
+Zero { namespace Graphics {
 class FontTrueType;
-}} // namespace EE::Graphics
-using namespace EE::Graphics;
+}} // namespace Zero::Graphics
+using Zero::Graphics;
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class ZeroShared UIIcon {
   public:
@@ -64,6 +64,6 @@ class ZeroShared UISVGIcon : public UIIcon {
 	mutable int mOriChannels{ 0 };
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif // EE_UI_UIICON_HPP

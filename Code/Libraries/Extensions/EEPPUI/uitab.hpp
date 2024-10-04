@@ -3,7 +3,7 @@
 
 #include <eepp/ui/uiselectbutton.hpp>
 
-namespace EE { namespace UI {
+namespace Zero { namespace UI {
 
 class UITabWidget;
 
@@ -36,7 +36,7 @@ class ZeroShared UITab : public UISelectButton {
 	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
-	virtual std::vector<PropertyId> getPropertiesImplemented() const;
+	virtual Array<PropertyId> getPropertiesImplemented() const;
 
 	UITabWidget* getTabWidget() const;
 
@@ -83,6 +83,6 @@ class ZeroShared UITab : public UISelectButton {
 	void updateTab();
 };
 
-}} // namespace EE::UI
+}} // namespace Zero::UI
 
 #endif
