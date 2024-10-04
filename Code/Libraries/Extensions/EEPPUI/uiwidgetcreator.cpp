@@ -120,10 +120,10 @@ void UIWidgetCreator::createBaseWidgetList() {
 	}
 }
 
-UIWidget* UIWidgetCreator::createFromName( const std::string& widgetName ) {
+UIWidget* UIWidgetCreator::createFromName( const String& widgetName ) {
 	createBaseWidgetList();
 
-	std::string lwidgetName( String::toLower( widgetName ) );
+	String lwidgetName( String::toLower( widgetName ) );
 
 	if ( registeredWidget.find( lwidgetName ) != registeredWidget.end() ) {
 		return registeredWidget[lwidgetName]();
@@ -136,29 +136,29 @@ UIWidget* UIWidgetCreator::createFromName( const std::string& widgetName ) {
 	return NULL;
 }
 
-void UIWidgetCreator::addCustomWidgetCallback( const std::string& widgetName,
+void UIWidgetCreator::addCustomWidgetCallback( const String& widgetName,
 											   const UIWidgetCreator::CustomWidgetCb& cb ) {
 	widgetCallback[String::toLower( widgetName )] = cb;
 }
 
-void UIWidgetCreator::removeCustomWidgetCallback( const std::string& widgetName ) {
+void UIWidgetCreator::removeCustomWidgetCallback( const String& widgetName ) {
 	widgetCallback.erase( String::toLower( widgetName ) );
 }
 
-bool UIWidgetCreator::existsCustomWidgetCallback( const std::string& widgetName ) {
+bool UIWidgetCreator::existsCustomWidgetCallback( const String& widgetName ) {
 	return widgetCallback.find( String::toLower( widgetName ) ) != widgetCallback.end();
 }
 
-void UIWidgetCreator::registerWidget( const std::string& widgetName,
+void UIWidgetCreator::registerWidget( const String& widgetName,
 									  const UIWidgetCreator::RegisterWidgetCb& cb ) {
 	registeredWidget[String::toLower( widgetName )] = cb;
 }
 
-void UIWidgetCreator::unregisterWidget( const std::string& widgetName ) {
+void UIWidgetCreator::unregisterWidget( const String& widgetName ) {
 	registeredWidget.erase( String::toLower( widgetName ) );
 }
 
-bool UIWidgetCreator::isWidgetRegistered( const std::string& widgetName ) {
+bool UIWidgetCreator::isWidgetRegistered( const String& widgetName ) {
 	return registeredWidget.find( String::toLower( widgetName ) ) != registeredWidget.end();
 }
 
@@ -166,8 +166,8 @@ const UIWidgetCreator::RegisteredWidgetCallbackMap& UIWidgetCreator::getRegister
 	return registeredWidget;
 }
 
-std::vector<std::string> UIWidgetCreator::getWidgetNames() {
-	std::vector<std::string> names;
+std::vector<String> UIWidgetCreator::getWidgetNames() {
+	std::vector<String> names;
 	names.reserve( registeredWidget.size() );
 	createBaseWidgetList();
 	for ( const auto& widgetIt : registeredWidget )

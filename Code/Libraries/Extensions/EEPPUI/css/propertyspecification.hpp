@@ -9,27 +9,27 @@
 
 namespace EE { namespace UI { namespace CSS {
 
-class EE_API PropertySpecification {
+class ZeroShared PropertySpecification {
 	SINGLETON_DECLARE_HEADERS( PropertySpecification )
   public:
 	~PropertySpecification();
 
-	PropertyDefinition& registerProperty( const std::string& propertyVame,
-										  const std::string& defaultValue, bool inherited );
+	PropertyDefinition& registerProperty( const String& propertyVame,
+										  const String& defaultValue, bool inherited );
 
 	const PropertyDefinition* getProperty( const Uint32& id ) const;
 
-	const PropertyDefinition* getProperty( const std::string& name ) const;
+	const PropertyDefinition* getProperty( const String& name ) const;
 
-	ShorthandDefinition& registerShorthand( const std::string& name,
-											const std::vector<std::string>& properties,
-											const std::string& shorthandParserName );
+	ShorthandDefinition& registerShorthand( const String& name,
+											const std::vector<String>& properties,
+											const String& shorthandParserName );
 
 	const ShorthandDefinition* getShorthand( const String::HashType& id ) const;
 
-	const ShorthandDefinition* getShorthand( const std::string& name ) const;
+	const ShorthandDefinition* getShorthand( const String& name ) const;
 
-	bool isShorthand( const std::string& name ) const;
+	bool isShorthand( const String& name ) const;
 
 	bool isShorthand( const Uint32& id ) const;
 

@@ -6,32 +6,32 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIWidgetCreator {
+class ZeroShared UIWidgetCreator {
   public:
-	typedef std::function<UIWidget*( const std::string& )> CustomWidgetCb;
+	typedef std::function<UIWidget*( const String& )> CustomWidgetCb;
 	typedef std::function<UIWidget*()> RegisterWidgetCb;
 
-	typedef std::unordered_map<std::string, UIWidgetCreator::CustomWidgetCb> WidgetCallbackMap;
-	typedef std::unordered_map<std::string, UIWidgetCreator::RegisterWidgetCb>
+	typedef std::unordered_map<String, UIWidgetCreator::CustomWidgetCb> WidgetCallbackMap;
+	typedef std::unordered_map<String, UIWidgetCreator::RegisterWidgetCb>
 		RegisteredWidgetCallbackMap;
 
-	static UIWidget* createFromName( const std::string& widgetName );
+	static UIWidget* createFromName( const String& widgetName );
 
-	static void addCustomWidgetCallback( const std::string& widgetName, const CustomWidgetCb& cb );
+	static void addCustomWidgetCallback( const String& widgetName, const CustomWidgetCb& cb );
 
-	static void removeCustomWidgetCallback( const std::string& widgetName );
+	static void removeCustomWidgetCallback( const String& widgetName );
 
-	static bool existsCustomWidgetCallback( const std::string& widgetName );
+	static bool existsCustomWidgetCallback( const String& widgetName );
 
-	static void registerWidget( const std::string& widgetName, const RegisterWidgetCb& cb );
+	static void registerWidget( const String& widgetName, const RegisterWidgetCb& cb );
 
-	static void unregisterWidget( const std::string& widgetName );
+	static void unregisterWidget( const String& widgetName );
 
-	static bool isWidgetRegistered( const std::string& widgetName );
+	static bool isWidgetRegistered( const String& widgetName );
 
 	static const RegisteredWidgetCallbackMap& getRegisteredWidgets();
 
-	static std::vector<std::string> getWidgetNames();
+	static std::vector<String> getWidgetNames();
 
   protected:
 	static RegisteredWidgetCallbackMap registeredWidget;

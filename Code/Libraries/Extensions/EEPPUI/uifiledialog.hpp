@@ -15,7 +15,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIFileDialog : public UIWindow {
+class ZeroShared UIFileDialog : public UIWindow {
   public:
 	enum Flags {
 		SaveDialog = ( 1 << 0 ),
@@ -32,8 +32,8 @@ class EE_API UIFileDialog : public UIWindow {
 									   UIFileDialog::Flags::ShowHidden;
 
 	static UIFileDialog* New( Uint32 dialogFlags = UIFileDialog::DefaultFlags,
-							  const std::string& defaultFilePattern = "*",
-							  const std::string& defaultDirectory = Sys::getProcessPath() );
+							  const String& defaultFilePattern = "*",
+							  const String& defaultDirectory = Sys::getProcessPath() );
 
 	virtual ~UIFileDialog();
 
@@ -51,13 +51,13 @@ class EE_API UIFileDialog : public UIWindow {
 
 	virtual void save();
 
-	std::string getCurPath() const;
+	String getCurPath() const;
 
-	std::string getCurFile( size_t index = 0 ) const;
+	String getCurFile( size_t index = 0 ) const;
 
-	std::string getFullPath() const;
+	String getFullPath() const;
 
-	std::vector<std::string> getFullPaths() const;
+	std::vector<String> getFullPaths() const;
 
 	UIPushButton* getButtonOpen() const;
 
@@ -73,7 +73,7 @@ class EE_API UIFileDialog : public UIWindow {
 
 	UIDropDownList* getFileTypeList() const;
 
-	void addFilePattern( std::string pattern, bool select = false );
+	void addFilePattern( String pattern, bool select = false );
 
 	bool isSaveDialog() const;
 
@@ -103,7 +103,7 @@ class EE_API UIFileDialog : public UIWindow {
 
 	const KeyBindings::Shortcut& getCloseShortcut() const;
 
-	void setFileName( const std::string& name );
+	void setFileName( const String& name );
 
 	void setCloseShortcut( const KeyBindings::Shortcut& closeWithKey );
 
@@ -130,7 +130,7 @@ class EE_API UIFileDialog : public UIWindow {
 	void setSingleClickNavigation( bool singleClickNavigation );
 
   protected:
-	std::string mCurPath;
+	String mCurPath;
 	UIPushButton* mButtonOpen;
 	UIPushButton* mButtonCancel;
 	UIPushButton* mButtonUp;
@@ -149,8 +149,8 @@ class EE_API UIFileDialog : public UIWindow {
 	bool mDisplayingDrives{ false };
 
 	UIFileDialog( Uint32 dialogFlags = UIFileDialog::DefaultFlags,
-				  const std::string& defaultFilePattern = "*",
-				  const std::string& defaultDirectory = Sys::getProcessPath() );
+				  const String& defaultFilePattern = "*",
+				  const String& defaultDirectory = Sys::getProcessPath() );
 
 	virtual void onWindowReady();
 
@@ -172,15 +172,15 @@ class EE_API UIFileDialog : public UIWindow {
 
 	void updateClickStep();
 
-	void setCurPath( const std::string& path );
+	void setCurPath( const String& path );
 
 	std::vector<const FileSystemModel::Node*> getSelectionNodes() const;
 
 	std::vector<ModelIndex> getSelectionModelIndex() const;
 
-	std::string getSelectedDrive() const;
+	String getSelectedDrive() const;
 
-	std::string getFullPath( size_t index ) const;
+	String getFullPath( size_t index ) const;
 };
 
 }} // namespace EE::UI

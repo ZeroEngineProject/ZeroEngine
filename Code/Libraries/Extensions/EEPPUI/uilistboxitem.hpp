@@ -8,15 +8,15 @@ namespace EE { namespace UI {
 
 class UIListBox;
 
-class EE_API UIListBoxItem : public UITextView {
+class ZeroShared UIListBoxItem : public UITextView {
   public:
 	static UIListBoxItem* New();
 
-	static UIListBoxItem* NewWithTag( const std::string& tag );
+	static UIListBoxItem* NewWithTag( const String& tag );
 
 	UIListBoxItem();
 
-	UIListBoxItem( const std::string& tag );
+	UIListBoxItem( const String& tag );
 
 	virtual ~UIListBoxItem();
 

@@ -13,7 +13,7 @@ using namespace EE::UI::Abstract;
 
 namespace EE { namespace UI { namespace Models {
 
-class EE_API ModelSelection {
+class ZeroShared ModelSelection {
   public:
 	ModelSelection( UIAbstractView* view ) : mView( view ) {}
 

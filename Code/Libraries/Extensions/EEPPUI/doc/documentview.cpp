@@ -10,7 +10,7 @@
 
 namespace EE { namespace UI { namespace Doc {
 
-LineWrapMode DocumentView::toLineWrapMode( std::string mode ) {
+LineWrapMode DocumentView::toLineWrapMode( String mode ) {
 	String::toLowerInPlace( mode );
 	if ( mode == "word" )
 		return LineWrapMode::Word;
@@ -19,7 +19,7 @@ LineWrapMode DocumentView::toLineWrapMode( std::string mode ) {
 	return LineWrapMode::NoWrap;
 }
 
-std::string DocumentView::fromLineWrapMode( LineWrapMode mode ) {
+String DocumentView::fromLineWrapMode( LineWrapMode mode ) {
 	switch ( mode ) {
 		case LineWrapMode::Letter:
 			return "letter";
@@ -31,14 +31,14 @@ std::string DocumentView::fromLineWrapMode( LineWrapMode mode ) {
 	}
 }
 
-LineWrapType DocumentView::toLineWrapType( std::string type ) {
+LineWrapType DocumentView::toLineWrapType( String type ) {
 	String::toLowerInPlace( type );
 	if ( "line_breaking_column" == type )
 		return LineWrapType::LineBreakingColumn;
 	return LineWrapType::Viewport;
 }
 
-std::string DocumentView::fromLineWrapType( LineWrapType type ) {
+String DocumentView::fromLineWrapType( LineWrapType type ) {
 	switch ( type ) {
 		case LineWrapType::LineBreakingColumn:
 			return "line_breaking_column";

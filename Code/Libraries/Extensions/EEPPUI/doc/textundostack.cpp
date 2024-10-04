@@ -58,9 +58,9 @@ class TextUndoCommandInsert : public TextUndoCommand {
 	}
 
 	static TextUndoCommandInsert* fromJSON( json j, Uint64 id ) {
-		auto timestamp = Time::fromString( j["timestamp"].get<std::string>() );
-		auto text = String::fromUtf8( j["text"].get<std::string>() );
-		auto position = TextPosition::fromString( j["position"].get<std::string>() );
+		auto timestamp = Time::fromString( j["timestamp"].get<String>() );
+		auto text = String::fromUtf8( j["text"].get<String>() );
+		auto position = TextPosition::fromString( j["position"].get<String>() );
 		auto cursorIdx = j["cursorIdx"].get<size_t>();
 		return eeNew( TextUndoCommandInsert, ( id, cursorIdx, text, position, timestamp ) );
 	}
@@ -88,8 +88,8 @@ class TextUndoCommandRemove : public TextUndoCommand {
 	}
 
 	static TextUndoCommandRemove* fromJSON( json j, Uint64 id ) {
-		auto timestamp = Time::fromString( j["timestamp"].get<std::string>() );
-		auto range = TextRange::fromString( j["range"].get<std::string>() );
+		auto timestamp = Time::fromString( j["timestamp"].get<String>() );
+		auto range = TextRange::fromString( j["range"].get<String>() );
 		auto cursorIdx = j["cursorIdx"].get<size_t>();
 		return eeNew( TextUndoCommandRemove, ( id, cursorIdx, range, timestamp ) );
 	}
@@ -116,8 +116,8 @@ class TextUndoCommandSelection : public TextUndoCommand {
 	}
 
 	static TextUndoCommandSelection* fromJSON( json j, Uint64 id ) {
-		auto timestamp = Time::fromString( j["timestamp"].get<std::string>() );
-		auto range = TextRange::fromString( j["range"].get<std::string>() );
+		auto timestamp = Time::fromString( j["timestamp"].get<String>() );
+		auto range = TextRange::fromString( j["range"].get<String>() );
 		auto cursorIdx = j["cursorIdx"].get<size_t>();
 		return eeNew( TextUndoCommandSelection, ( id, cursorIdx, range, timestamp ) );
 	}
@@ -321,7 +321,7 @@ Uint64 TextUndoStack::getCurrentChangeId() const {
 	return mUndoStack.back()->getId();
 }
 
-std::string TextUndoStack::toJSON( bool inverted ) {
+String TextUndoStack::toJSON( bool inverted ) {
 	json j = json::array();
 	if ( inverted ) {
 		while ( hasUndo() )
@@ -343,7 +343,7 @@ std::string TextUndoStack::toJSON( bool inverted ) {
 	return j.dump();
 }
 
-void TextUndoStack::fromJSON( const std::string& jsonString ) {
+void TextUndoStack::fromJSON( const String& jsonString ) {
 	json j;
 	try {
 		j = json::parse( jsonString, nullptr, true, true );

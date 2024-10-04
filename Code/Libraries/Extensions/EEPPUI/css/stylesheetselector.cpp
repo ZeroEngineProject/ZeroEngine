@@ -7,7 +7,7 @@ StyleSheetSelector::StyleSheetSelector() : mName( "*" ), mSpecificity( 0 ), mCac
 	parseSelector( mName );
 }
 
-StyleSheetSelector::StyleSheetSelector( const std::string& selectorName ) :
+StyleSheetSelector::StyleSheetSelector( const String& selectorName ) :
 	mName( String::toLower( selectorName ) ),
 	mSpecificity( 0 ),
 	mCacheable( true ),
@@ -15,7 +15,7 @@ StyleSheetSelector::StyleSheetSelector( const std::string& selectorName ) :
 	parseSelector( mName );
 }
 
-const std::string& StyleSheetSelector::getName() const {
+const String& StyleSheetSelector::getName() const {
 	return mName;
 }
 
@@ -23,7 +23,7 @@ const Uint32& StyleSheetSelector::getSpecificity() const {
 	return mSpecificity;
 }
 
-void removeExtraSpaces( std::string& string ) {
+void removeExtraSpaces( String& string ) {
 	// TODO: Optimize this
 	String::trimInPlace( string );
 	String::replaceAll( string, "   ", " " );
@@ -35,7 +35,7 @@ void removeExtraSpaces( std::string& string ) {
 }
 
 void StyleSheetSelector::addSelectorRule(
-	std::string& buffer, StyleSheetSelectorRule::PatternMatch& curPatternMatch,
+	String& buffer, StyleSheetSelectorRule::PatternMatch& curPatternMatch,
 	const StyleSheetSelectorRule::PatternMatch& newPatternMatch ) {
 	StyleSheetSelectorRule selectorRule( buffer, curPatternMatch );
 	mSelectorRules.push_back( selectorRule );
@@ -44,7 +44,7 @@ void StyleSheetSelector::addSelectorRule(
 	mSpecificity += selectorRule.getSpecificity();
 }
 
-void StyleSheetSelector::parseSelector( std::string selector ) {
+void StyleSheetSelector::parseSelector( String selector ) {
 	if ( !selector.empty() ) {
 		// Remove spaces that means nothing to the selector logic
 		// for example:
@@ -53,7 +53,7 @@ void StyleSheetSelector::parseSelector( std::string selector ) {
 		// Element>.class #id
 		removeExtraSpaces( selector );
 
-		std::string buffer;
+		String buffer;
 		StyleSheetSelectorRule::PatternMatch curPatternMatch = StyleSheetSelectorRule::ANY;
 
 		for ( auto charIt = selector.rbegin(); charIt != selector.rend(); ++charIt ) {
@@ -339,11 +339,11 @@ const StyleSheetSelectorRule& StyleSheetSelector::getRule( const Uint32& index )
 	return mSelectorRules[index];
 }
 
-const std::string& StyleSheetSelector::getSelectorId() const {
+const String& StyleSheetSelector::getSelectorId() const {
 	return mSelectorRules[0].getId();
 }
 
-const std::string& StyleSheetSelector::getSelectorTagName() const {
+const String& StyleSheetSelector::getSelectorTagName() const {
 	return mSelectorRules[0].getTagName();
 }
 

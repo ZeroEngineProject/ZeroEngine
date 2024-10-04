@@ -8,7 +8,7 @@ namespace EE { namespace UI {
 
 class UIWidgetTable;
 
-class EE_API UIWidgetTableRow : public UIWidget {
+class ZeroShared UIWidgetTableRow : public UIWidget {
   public:
 	static UIWidgetTableRow* New();
 

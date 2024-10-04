@@ -11,7 +11,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIMenu : public UIWidget {
+class ZeroShared UIMenu : public UIWidget {
   public:
 	static UIMenu* New();
 
@@ -43,7 +43,7 @@ class EE_API UIMenu : public UIWidget {
 
 	UIMenuItem* getItem( const String& text );
 
-	UIMenuItem* getItemId( const std::string& id );
+	UIMenuItem* getItemId( const String& id );
 
 	Uint32 getItemIndex( UIWidget* item );
 
@@ -71,7 +71,7 @@ class EE_API UIMenu : public UIWidget {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

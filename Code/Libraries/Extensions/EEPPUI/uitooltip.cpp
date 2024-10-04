@@ -418,7 +418,7 @@ void UITooltip::setFontStyleConfig( const UIFontStyleConfig& styleConfig ) {
 	mTextCache->setOutlineColor( mStyleConfig.OutlineColor );
 }
 
-std::string UITooltip::getPropertyString( const PropertyDefinition* propertyDef,
+String UITooltip::getPropertyString( const PropertyDefinition* propertyDef,
 										  const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -574,7 +574,7 @@ bool UITooltip::applyProperty( const StyleSheetProperty& attribute ) {
 				setOutlineColor( attribute.asColor() );
 			break;
 		case PropertyId::TextAlign: {
-			std::string align = String::toLower( attribute.value() );
+			String align = String::toLower( attribute.value() );
 			if ( align == "center" )
 				setFlags( UI_HALIGN_CENTER );
 			else if ( align == "left" )

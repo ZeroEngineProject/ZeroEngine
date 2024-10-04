@@ -8,33 +8,33 @@ using namespace EE::System;
 
 namespace EE { namespace UI { namespace CSS {
 
-ShorthandDefinition* ShorthandDefinition::New( const std::string& name,
-											   const std::vector<std::string>& properties,
-											   const std::string& shorthandParserName ) {
+ShorthandDefinition* ShorthandDefinition::New( const String& name,
+											   const std::vector<String>& properties,
+											   const String& shorthandParserName ) {
 	return eeNew( ShorthandDefinition, ( name, properties, shorthandParserName ) );
 }
 
-ShorthandDefinition::ShorthandDefinition( const std::string& name,
-										  const std::vector<std::string>& properties,
-										  const std::string& shorthandParserName ) :
+ShorthandDefinition::ShorthandDefinition( const String& name,
+										  const std::vector<String>& properties,
+										  const String& shorthandParserName ) :
 	mName( name ),
 	mFuncName( shorthandParserName ),
 	mId( String::hash( name ) ),
 	mProperties( properties ) {
 	for ( auto& sep : {"-", "_"} ) {
-		if ( mName.find( sep ) != std::string::npos ) {
-			std::string alias( name );
+		if ( mName.find( sep ) != String::npos ) {
+			String alias( name );
 			String::replaceAll( alias, sep, "" );
 			addAlias( alias );
 		}
 	}
 }
 
-std::vector<StyleSheetProperty> ShorthandDefinition::parse( std::string value ) const {
+std::vector<StyleSheetProperty> ShorthandDefinition::parse( String value ) const {
 	return StyleSheetSpecification::instance()->getShorthandParser( mFuncName )( this, value );
 }
 
-const std::string& ShorthandDefinition::getName() const {
+const String& ShorthandDefinition::getName() const {
 	return mName;
 }
 
@@ -46,17 +46,17 @@ ShorthandId ShorthandDefinition::getShorthandId() const {
 	return static_cast<ShorthandId>( mId );
 }
 
-const std::vector<std::string>& ShorthandDefinition::getProperties() const {
+const std::vector<String>& ShorthandDefinition::getProperties() const {
 	return mProperties;
 }
 
-ShorthandDefinition& ShorthandDefinition::addAlias( const std::string& alias ) {
+ShorthandDefinition& ShorthandDefinition::addAlias( const String& alias ) {
 	mAliases.push_back( alias );
 	mAliasesHash.push_back( String::hash( alias ) );
 	return *this;
 }
 
-bool ShorthandDefinition::isAlias( const std::string& alias ) const {
+bool ShorthandDefinition::isAlias( const String& alias ) const {
 	return isAlias( String::hash( alias ) );
 }
 
@@ -64,7 +64,7 @@ bool ShorthandDefinition::isAlias( const String::HashType& id ) const {
 	return std::find( mAliasesHash.begin(), mAliasesHash.end(), id ) != mAliasesHash.end();
 }
 
-bool ShorthandDefinition::isDefinition( const std::string& name ) const {
+bool ShorthandDefinition::isDefinition( const String& name ) const {
 	return isDefinition( String::hash( name ) );
 }
 

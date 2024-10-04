@@ -13,15 +13,15 @@ namespace EE { namespace UI {
 class UIPopUpMenu;
 class UIMenuItem;
 
-class EE_API UITextInput : public UITextView, public TextDocument::Client {
+class ZeroShared UITextInput : public UITextView, public TextDocument::Client {
   public:
 	static UITextInput* New();
 
-	static UITextInput* NewWithTag( const std::string& tag );
+	static UITextInput* NewWithTag( const String& tag );
 
 	UITextInput();
 
-	explicit UITextInput( const std::string& tag );
+	explicit UITextInput( const String& tag );
 
 	virtual ~UITextInput();
 
@@ -51,7 +51,7 @@ class EE_API UITextInput : public UITextView, public TextDocument::Client {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;
@@ -239,10 +239,10 @@ class EE_API UITextInput : public UITextView, public TextDocument::Client {
 
 	virtual bool onCreateContextMenu( const Vector2i& position, const Uint32& flags );
 
-	UIMenuItem* menuAdd( UIPopUpMenu* menu, const String& translateString, const std::string& icon,
-						 const std::string& cmd );
+	UIMenuItem* menuAdd( UIPopUpMenu* menu, const String& translateString, const String& icon,
+						 const String& cmd );
 
-	Drawable* findIcon( const std::string& name );
+	Drawable* findIcon( const String& name );
 };
 
 }} // namespace EE::UI

@@ -17,7 +17,7 @@ class UILinearLayout;
 
 namespace EE { namespace UI { namespace Abstract {
 
-class EE_API UIAbstractTableView : public UIAbstractView {
+class ZeroShared UIAbstractTableView : public UIAbstractView {
   public:
 	Uint32 getType() const;
 
@@ -87,7 +87,7 @@ class EE_API UIAbstractTableView : public UIAbstractView {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;
@@ -147,7 +147,7 @@ class EE_API UIAbstractTableView : public UIAbstractView {
 	Float mHeaderHeight{ 16 };
 	mutable std::vector<UITableRow*> mRows;
 	mutable std::vector<ColumnData> mColumn;
-	mutable std::vector<UnorderedMap<int, UIWidget*>> mWidgets;
+	mutable std::vector<HashMap<int, UIWidget*>> mWidgets;
 	UILinearLayout* mHeader{ nullptr };
 	UILinearLayout* mRowHeader{ nullptr };
 	Float mDragBorderDistance{ 8 };
@@ -159,14 +159,14 @@ class EE_API UIAbstractTableView : public UIAbstractView {
 	bool mSingleClickNavigation{ false };
 	bool mFitAllColumnsToWidget{ false };
 	Action* mSearchTextAction{ nullptr };
-	std::string mSearchText;
+	String mSearchText;
 	size_t mMainColumn{ 0 };
 	std::unordered_map<UIWidget*, std::vector<Uint32>> mWidgetsClickCbId;
 	Float mRowHeaderWidth{ 0 };
 
 	virtual ~UIAbstractTableView();
 
-	UIAbstractTableView( const std::string& tag );
+	UIAbstractTableView( const String& tag );
 
 	ColumnData& columnData( const size_t& column ) const;
 

@@ -13,7 +13,7 @@ using namespace EE::System;
 
 namespace EE { namespace UI { namespace CSS {
 
-class EE_API KeyframesDefinition {
+class ZeroShared KeyframesDefinition {
   public:
 	struct KeyframeBlock {
 		Float normalizedTime;
@@ -21,10 +21,10 @@ class EE_API KeyframesDefinition {
 	};
 
 	static KeyframesDefinition
-	parseKeyframes( const std::string& name,
+	parseKeyframes( const String& name,
 					const std::vector<std::shared_ptr<StyleSheetStyle>>& keyframeBlocks );
 
-	const std::string& getName() const;
+	const String& getName() const;
 
 	const std::map<Float, KeyframeBlock>& getKeyframeBlocks() const;
 
@@ -36,11 +36,11 @@ class EE_API KeyframesDefinition {
 	void setMarker( const Uint32& marker );
 
 	Uint32 marker{ 0 };
-	std::string name;
+	String name;
 	std::map<Float, KeyframeBlock> keyframeBlocks;
 };
 
-typedef std::map<std::string, KeyframesDefinition> KeyframesDefinitionMap;
+typedef std::map<String, KeyframesDefinition> KeyframesDefinitionMap;
 
 }}} // namespace EE::UI::CSS
 

@@ -9,7 +9,7 @@
 
 namespace EE { namespace UI { namespace CSS {
 
-class EE_API StyleSheet {
+class ZeroShared StyleSheet {
   public:
 	StyleSheet();
 
@@ -19,7 +19,7 @@ class EE_API StyleSheet {
 
 	bool isEmpty() const;
 
-	std::string print();
+	String print();
 
 	void combineStyleSheet( const StyleSheet& styleSheet );
 
@@ -29,9 +29,9 @@ class EE_API StyleSheet {
 	const std::vector<std::shared_ptr<StyleSheetStyle>>& getStyles() const;
 
 	std::vector<std::shared_ptr<StyleSheetStyle>>
-	getStylesFromSelector( const std::string& selector ) const;
+	getStylesFromSelector( const String& selector ) const;
 
-	std::shared_ptr<StyleSheetStyle> getStyleFromSelector( const std::string& selector,
+	std::shared_ptr<StyleSheetStyle> getStyleFromSelector( const String& selector,
 														   bool searchBySpecificity = false ) const;
 
 	bool updateMediaLists( const MediaFeatures& features );
@@ -40,9 +40,9 @@ class EE_API StyleSheet {
 
 	StyleSheetStyleVector getStyleSheetStyleByAtRule( const AtRuleType& atRuleType ) const;
 
-	bool isKeyframesDefined( const std::string& keyframesName ) const;
+	bool isKeyframesDefined( const String& keyframesName ) const;
 
-	const KeyframesDefinition& getKeyframesDefinition( const std::string& keyframesName ) const;
+	const KeyframesDefinition& getKeyframesDefinition( const String& keyframesName ) const;
 
 	void addKeyframes( const KeyframesDefinition& keyframes );
 
@@ -63,7 +63,7 @@ class EE_API StyleSheet {
 	StyleSheet getAllWithMarker( const Uint32& marker ) const;
 
 	std::vector<std::shared_ptr<StyleSheetStyle>>
-	findStyleFromSelectorName( const std::string& selector ) const;
+	findStyleFromSelectorName( const String& selector ) const;
 
 	bool refreshCacheFromStyles( const std::vector<std::shared_ptr<StyleSheetStyle>>& styles );
 
@@ -75,13 +75,13 @@ class EE_API StyleSheet {
 	Uint64 mVersion{ 1 };
 	Uint32 mMarker{ 0 };
 	std::vector<std::shared_ptr<StyleSheetStyle>> mNodes;
-	UnorderedMap<size_t, StyleSheetStyleVector> mNodeIndex;
+	HashMap<size_t, StyleSheetStyleVector> mNodeIndex;
 	MediaQueryList::vector mMediaQueryList;
 	KeyframesDefinitionMap mKeyframesMap;
-	using ElementDefinitionCache = UnorderedMap<size_t, std::shared_ptr<ElementDefinition>>;
+	using ElementDefinitionCache = HashMap<size_t, std::shared_ptr<ElementDefinition>>;
 	mutable ElementDefinitionCache mNodeCache;
 
-	static size_t nodeHash( const std::string& tag, const std::string& id );
+	static size_t nodeHash( const String& tag, const String& id );
 
 	void addMediaQueryList( MediaQueryList::ptr list );
 

@@ -266,11 +266,11 @@ const Sizef& UINode::getCurMinSize() const {
 	return mMinSize;
 }
 
-const std::string& UINode::getMinWidthEq() const {
+const String& UINode::getMinWidthEq() const {
 	return mMinWidthEq;
 }
 
-void UINode::setMinSizeEq( const std::string& minWidthEq, const std::string& minHeightEq ) {
+void UINode::setMinSizeEq( const String& minWidthEq, const String& minHeightEq ) {
 	if ( mMinWidthEq != minWidthEq || mMinHeightEq != minHeightEq ) {
 		mMinWidthEq = minWidthEq;
 		mMinHeightEq = minHeightEq;
@@ -289,7 +289,7 @@ void UINode::setMinSizeEq( const std::string& minWidthEq, const std::string& min
 	}
 }
 
-void UINode::setMinWidthEq( const std::string& minWidthEq ) {
+void UINode::setMinWidthEq( const String& minWidthEq ) {
 	if ( mMinWidthEq != minWidthEq ) {
 		mMinWidthEq = minWidthEq;
 
@@ -302,11 +302,11 @@ void UINode::setMinWidthEq( const std::string& minWidthEq ) {
 	}
 }
 
-const std::string& UINode::getMinHeightEq() const {
+const String& UINode::getMinHeightEq() const {
 	return mMinHeightEq;
 }
 
-void UINode::setMinHeightEq( const std::string& minHeightEq ) {
+void UINode::setMinHeightEq( const String& minHeightEq ) {
 	if ( mMinHeightEq != minHeightEq ) {
 		mMinHeightEq = minHeightEq;
 
@@ -319,11 +319,11 @@ void UINode::setMinHeightEq( const std::string& minHeightEq ) {
 	}
 }
 
-const std::string& UINode::getMaxWidthEq() const {
+const String& UINode::getMaxWidthEq() const {
 	return mMaxWidthEq;
 }
 
-void UINode::setMaxSizeEq( const std::string& maxWidthEq, const std::string& maxHeightEq ) {
+void UINode::setMaxSizeEq( const String& maxWidthEq, const String& maxHeightEq ) {
 	if ( mMaxWidthEq != maxWidthEq || mMaxHeightEq != maxHeightEq ) {
 		mMaxWidthEq = maxWidthEq;
 		mMaxHeightEq = maxHeightEq;
@@ -331,18 +331,18 @@ void UINode::setMaxSizeEq( const std::string& maxWidthEq, const std::string& max
 	}
 }
 
-void UINode::setMaxWidthEq( const std::string& maxWidthEq ) {
+void UINode::setMaxWidthEq( const String& maxWidthEq ) {
 	if ( mMaxWidthEq != maxWidthEq ) {
 		mMaxWidthEq = maxWidthEq;
 		setSize( mDpSize );
 	}
 }
 
-const std::string& UINode::getMaxHeightEq() const {
+const String& UINode::getMaxHeightEq() const {
 	return mMaxHeightEq;
 }
 
-void UINode::setMaxHeightEq( const std::string& maxHeightEq ) {
+void UINode::setMaxHeightEq( const String& maxHeightEq ) {
 	if ( mMaxHeightEq != maxHeightEq ) {
 		mMaxHeightEq = maxHeightEq;
 		setSize( mDpSize );
@@ -572,7 +572,7 @@ void UINode::drawDroppableHovering() {
 	Color color = Color::fromString( def->getDefaultValue() );
 	if ( isWidget() ) {
 		UIWidget* widget = asType<UIWidget>();
-		std::string colorString = widget->getPropertyString( def );
+		String colorString = widget->getPropertyString( def );
 		if ( !colorString.empty() ) {
 			color = Color::fromString( colorString );
 		} else {
@@ -770,7 +770,7 @@ UINode* UINode::setBackgroundDrawable( Drawable* drawable, bool ownIt, int index
 	return this;
 }
 
-UINode* UINode::setBackgroundDrawable( const std::string& drawable, int index ) {
+UINode* UINode::setBackgroundDrawable( const String& drawable, int index ) {
 	setBackgroundFillEnabled( true )->setDrawable( index, drawable );
 	return this;
 }
@@ -785,22 +785,22 @@ UINode* UINode::setBackgroundTint( const Color& color, int index ) {
 	return this;
 }
 
-UINode* UINode::setBackgroundPositionX( const std::string& positionX, int index ) {
+UINode* UINode::setBackgroundPositionX( const String& positionX, int index ) {
 	setBackgroundFillEnabled( true )->setDrawablePositionX( index, positionX );
 	return this;
 }
 
-UINode* UINode::setBackgroundPositionY( const std::string& positionY, int index ) {
+UINode* UINode::setBackgroundPositionY( const String& positionY, int index ) {
 	setBackgroundFillEnabled( true )->setDrawablePositionY( index, positionY );
 	return this;
 }
 
-UINode* UINode::setBackgroundRepeat( const std::string& repeatRule, int index ) {
+UINode* UINode::setBackgroundRepeat( const String& repeatRule, int index ) {
 	setBackgroundFillEnabled( true )->setDrawableRepeat( index, repeatRule );
 	return this;
 }
 
-UINode* UINode::setBackgroundSize( const std::string& size, int index ) {
+UINode* UINode::setBackgroundSize( const String& size, int index ) {
 	setBackgroundFillEnabled( true )->setDrawableSize( index, size );
 	return this;
 }
@@ -819,25 +819,25 @@ UINode* UINode::setBorderRadius( const unsigned int& corners ) {
 	return this;
 }
 
-UINode* UINode::setTopLeftRadius( const std::string& radius ) {
+UINode* UINode::setTopLeftRadius( const String& radius ) {
 	setBorderEnabled( true )->setTopLeftRadius( radius );
 	setBackgroundFillEnabled( true )->getBackgroundDrawable().setTopLeftRadius( radius );
 	return this;
 }
 
-UINode* UINode::setTopRightRadius( const std::string& radius ) {
+UINode* UINode::setTopRightRadius( const String& radius ) {
 	setBorderEnabled( true )->setTopRightRadius( radius );
 	setBackgroundFillEnabled( true )->getBackgroundDrawable().setTopRightRadius( radius );
 	return this;
 }
 
-UINode* UINode::setBottomLeftRadius( const std::string& radius ) {
+UINode* UINode::setBottomLeftRadius( const String& radius ) {
 	setBorderEnabled( true )->setBottomLeftRadius( radius );
 	setBackgroundFillEnabled( true )->getBackgroundDrawable().setBottomLeftRadius( radius );
 	return this;
 }
 
-UINode* UINode::setBottomRightRadius( const std::string& radius ) {
+UINode* UINode::setBottomRightRadius( const String& radius ) {
 	setBorderEnabled( true )->setBottomRightRadius( radius );
 	setBackgroundFillEnabled( true )->getBackgroundDrawable().setBottomRightRadius( radius );
 	return this;
@@ -864,7 +864,7 @@ UINode* UINode::setForegroundDrawable( Drawable* drawable, bool ownIt, int index
 	return this;
 }
 
-UINode* UINode::setForegroundDrawable( const std::string& drawable, int index ) {
+UINode* UINode::setForegroundDrawable( const String& drawable, int index ) {
 	setForegroundFillEnabled( true )->setDrawable( index, drawable );
 	return this;
 }
@@ -887,22 +887,22 @@ UINode* UINode::setForegroundTint( const Color& color, int index ) {
 	return this;
 }
 
-UINode* UINode::setForegroundPositionX( const std::string& positionX, int index ) {
+UINode* UINode::setForegroundPositionX( const String& positionX, int index ) {
 	setForegroundFillEnabled( true )->setDrawablePositionX( index, positionX );
 	return this;
 }
 
-UINode* UINode::setForegroundPositionY( const std::string& positionY, int index ) {
+UINode* UINode::setForegroundPositionY( const String& positionY, int index ) {
 	setForegroundFillEnabled( true )->setDrawablePositionY( index, positionY );
 	return this;
 }
 
-UINode* UINode::setForegroundRepeat( const std::string& repeatRule, int index ) {
+UINode* UINode::setForegroundRepeat( const String& repeatRule, int index ) {
 	setForegroundFillEnabled( true )->setDrawableRepeat( index, repeatRule );
 	return this;
 }
 
-UINode* UINode::setForegroundSize( const std::string& size, int index ) {
+UINode* UINode::setForegroundSize( const String& size, int index ) {
 	setForegroundFillEnabled( true )->setDrawableSize( index, size );
 	return this;
 }
@@ -1184,7 +1184,7 @@ UIBorderDrawable* UINode::getBorder() const {
 	return mBorder;
 }
 
-void UINode::setThemeByName( const std::string& Theme ) {
+void UINode::setThemeByName( const String& Theme ) {
 	setTheme( getUISceneNode()->getUIThemeManager()->getByName( Theme ) );
 }
 
@@ -1192,11 +1192,11 @@ void UINode::setTheme( UITheme* Theme ) {
 	setThemeSkin( Theme, "widget" );
 }
 
-UINode* UINode::setThemeSkin( const std::string& skinName ) {
+UINode* UINode::setThemeSkin( const String& skinName ) {
 	return setThemeSkin( getUISceneNode()->getUIThemeManager()->getDefaultTheme(), skinName );
 }
 
-UINode* UINode::setThemeSkin( UITheme* Theme, const std::string& skinName ) {
+UINode* UINode::setThemeSkin( UITheme* Theme, const String& skinName ) {
 	if ( NULL != Theme ) {
 		setSkin( Theme->getSkin( skinName ) );
 	}
@@ -1616,7 +1616,7 @@ Float UINode::getPropertyRelativeTargetContainerLength(
 	return containerLength;
 }
 
-Float UINode::lengthFromValue( const std::string& value,
+Float UINode::lengthFromValue( const String& value,
 							   const PropertyRelativeTarget& relativeTarget,
 							   const Float& defaultValue, const Uint32& propertyIndex ) const {
 	Float containerLength =
@@ -1631,7 +1631,7 @@ Float UINode::lengthFromValue( const CSS::StyleSheetProperty& property,
 							property.getIndex() );
 }
 
-Float UINode::lengthFromValueAsDp( const std::string& value,
+Float UINode::lengthFromValueAsDp( const String& value,
 								   const PropertyRelativeTarget& relativeTarget,
 								   const Float& defaultValue, const Uint32& propertyIndex ) const {
 	Float containerLength =
@@ -1673,7 +1673,7 @@ Float UINode::convertLength( const CSS::StyleSheetLength& length,
 
 	if ( length.getUnit() == CSS::StyleSheetLength::Unit::Rem ) {
 		if ( getUISceneNode() != NULL ) {
-			std::string fontSizeStr( getUISceneNode()->getRoot()->getPropertyString(
+			String fontSizeStr( getUISceneNode()->getRoot()->getPropertyString(
 				CSS::StyleSheetSpecification::instance()->getProperty(
 					(Uint32)PropertyId::FontSize ) ) );
 			if ( !fontSizeStr.empty() ) {
@@ -1696,7 +1696,7 @@ Float UINode::convertLength( const CSS::StyleSheetLength& length,
 		}
 	} else if ( length.getUnit() == CSS::StyleSheetLength::Unit::Em ) {
 		if ( isWidget() ) {
-			std::string fontSizeStr( asConstType<UIWidget>()->getPropertyString(
+			String fontSizeStr( asConstType<UIWidget>()->getPropertyString(
 				CSS::StyleSheetSpecification::instance()->getProperty(
 					(Uint32)PropertyId::FontSize ) ) );
 			if ( !fontSizeStr.empty() ) {

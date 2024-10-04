@@ -4,7 +4,7 @@
 
 namespace EE { namespace UI { namespace Abstract {
 
-UIAbstractView::UIAbstractView( const std::string& tag ) :
+UIAbstractView::UIAbstractView( const String& tag ) :
 	UIScrollableWidget( tag ), mSelection( this ) {}
 
 UIAbstractView::~UIAbstractView() {
@@ -158,7 +158,7 @@ void UIAbstractView::notifySelectionChange() {
 		mOnSelectionChange();
 }
 
-ModelIndex UIAbstractView::findRowWithText( const std::string&, const bool&, const bool& ) const {
+ModelIndex UIAbstractView::findRowWithText( const String&, const bool&, const bool& ) const {
 	return {};
 }
 

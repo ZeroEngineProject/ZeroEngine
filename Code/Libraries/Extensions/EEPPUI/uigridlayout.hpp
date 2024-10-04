@@ -5,7 +5,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIGridLayout : public UILayout {
+class ZeroShared UIGridLayout : public UILayout {
   public:
 	enum ElementMode { Size, Weight };
 
@@ -45,7 +45,7 @@ class EE_API UIGridLayout : public UILayout {
 
 	UIGridLayout* setRowWeight( const Float& rowWeight );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

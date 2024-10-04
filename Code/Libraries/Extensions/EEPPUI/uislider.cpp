@@ -11,7 +11,7 @@ UISlider* UISlider::New() {
 	return NewWithTag( "slider", UIOrientation::Vertical );
 }
 
-UISlider* UISlider::NewWithTag( const std::string& tag, const UIOrientation& orientation ) {
+UISlider* UISlider::NewWithTag( const String& tag, const UIOrientation& orientation ) {
 	return eeNew( UISlider, ( tag, orientation ) );
 }
 
@@ -23,15 +23,15 @@ UISlider* UISlider::NewHorizontal() {
 	return NewHorizontalWithTag( "slider" );
 }
 
-UISlider* UISlider::NewVerticalWithTag( const std::string& tag ) {
+UISlider* UISlider::NewVerticalWithTag( const String& tag ) {
 	return eeNew( UISlider, ( tag, UIOrientation::Vertical ) );
 }
 
-UISlider* UISlider::NewHorizontalWithTag( const std::string& tag ) {
+UISlider* UISlider::NewHorizontalWithTag( const String& tag ) {
 	return eeNew( UISlider, ( tag, UIOrientation::Horizontal ) );
 }
 
-UISlider::UISlider( const std::string& tag, const UIOrientation& orientation ) :
+UISlider::UISlider( const String& tag, const UIOrientation& orientation ) :
 	UIWidget( tag ),
 	mOrientation( orientation ),
 	mAllowHalfSliderOut( false ),
@@ -462,7 +462,7 @@ UIOrientation UISlider::getOrientation() const {
 	return mOrientation;
 }
 
-UISlider* UISlider::setOrientation( const UIOrientation& orientation, std::string childsBaseTag ) {
+UISlider* UISlider::setOrientation( const UIOrientation& orientation, String childsBaseTag ) {
 	if ( orientation != mOrientation ) {
 		if ( childsBaseTag.empty() )
 			childsBaseTag = mTag;
@@ -560,7 +560,7 @@ Uint32 UISlider::onMessage( const NodeMessage* Msg ) {
 	return 0;
 }
 
-std::string UISlider::getPropertyString( const PropertyDefinition* propertyDef,
+String UISlider::getPropertyString( const PropertyDefinition* propertyDef,
 										 const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -602,7 +602,7 @@ bool UISlider::applyProperty( const StyleSheetProperty& attribute ) {
 
 	switch ( attribute.getPropertyDefinition()->getPropertyId() ) {
 		case PropertyId::Orientation: {
-			std::string val = attribute.asString();
+			String val = attribute.asString();
 			String::toLowerInPlace( val );
 
 			if ( "horizontal" == val )

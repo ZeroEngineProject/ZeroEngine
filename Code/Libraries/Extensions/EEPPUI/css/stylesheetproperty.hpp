@@ -26,34 +26,34 @@ class PropertyDefinition;
 class ShorthandDefinition;
 
 struct VariableFunctionCache {
-	std::string definition;
-	std::vector<std::string> variableList;
+	String definition;
+	std::vector<String> variableList;
 };
 
-class EE_API StyleSheetProperty {
+class ZeroShared StyleSheetProperty {
   public:
 	StyleSheetProperty();
 
-	explicit StyleSheetProperty( const PropertyDefinition* definition, const std::string& value,
+	explicit StyleSheetProperty( const PropertyDefinition* definition, const String& value,
 								 const Uint32& index = 0, bool trimValue = true );
 
-	explicit StyleSheetProperty( const std::string& name, const std::string& value,
+	explicit StyleSheetProperty( const String& name, const String& value,
 								 const bool& trimValue = true, const Uint32& specificity = 0,
 								 const Uint32& index = 0 );
 
-	explicit StyleSheetProperty( const std::string& name, const std::string& value,
+	explicit StyleSheetProperty( const String& name, const String& value,
 								 const Uint32& specificity, const bool& isVolatile = false,
 								 const Uint32& index = 0 );
 
 	Uint32 getId() const;
 
-	const std::string& getName() const;
+	const String& getName() const;
 
 	const String::HashType& getNameHash() const;
 
-	const std::string& getValue() const;
+	const String& getValue() const;
 
-	const std::string& value() const;
+	const String& value() const;
 
 	const Uint32& getSpecificity() const;
 
@@ -61,9 +61,9 @@ class EE_API StyleSheetProperty {
 
 	bool isEmpty() const;
 
-	void setName( const std::string& name );
+	void setName( const String& name );
 
-	void setValue( const std::string& value, bool updateHash = false );
+	void setValue( const String& value, bool updateHash = false );
 
 	const bool& isVolatile() const;
 
@@ -73,7 +73,7 @@ class EE_API StyleSheetProperty {
 
 	bool operator!=( const StyleSheetProperty& property ) const;
 
-	std::string asString( const std::string& defaultValue = "" ) const;
+	String asString( const String& defaultValue = "" ) const;
 
 	template <typename Type> Type asType( Type defaultValue ) const {
 		Type val = defaultValue;
@@ -96,11 +96,11 @@ class EE_API StyleSheetProperty {
 
 	Color asColor() const;
 
-	Float asDpDimension( const std::string& defaultValue = "" ) const;
+	Float asDpDimension( const String& defaultValue = "" ) const;
 
-	int asDpDimensionI( const std::string& defaultValue = "" ) const;
+	int asDpDimensionI( const String& defaultValue = "" ) const;
 
-	Uint32 asDpDimensionUint( const std::string& defaultValue = "" ) const;
+	Uint32 asDpDimensionUint( const String& defaultValue = "" ) const;
 
 	OriginPoint asOriginPoint() const;
 
@@ -147,11 +147,11 @@ class EE_API StyleSheetProperty {
 
 	const Uint32& getIndex() const;
 
-	Float asDpDimension( UINode* node, const std::string& defaultValue = "" ) const;
+	Float asDpDimension( UINode* node, const String& defaultValue = "" ) const;
 
-	int asDpDimensionI( UINode* node, const std::string& defaultValue = "" ) const;
+	int asDpDimensionI( UINode* node, const String& defaultValue = "" ) const;
 
-	Uint32 asDpDimensionUint( UINode* node, const std::string& defaultValue = "" ) const;
+	Uint32 asDpDimensionUint( UINode* node, const String& defaultValue = "" ) const;
 
 	Vector2f asDpDimensionVector2f( UINode* node,
 									const Vector2f& defaultValue = Vector2f::Zero ) const;
@@ -178,9 +178,9 @@ class EE_API StyleSheetProperty {
 	const std::vector<VariableFunctionCache>& getVarCache() const;
 
   protected:
-	std::string mName;
+	String mName;
 	String::HashType mNameHash;
-	std::string mValue;
+	String mValue;
 	String::HashType mValueHash;
 	Uint32 mSpecificity;
 	Uint32 mIndex;
@@ -193,17 +193,17 @@ class EE_API StyleSheetProperty {
 	std::vector<VariableFunctionCache> mVarCache;
 
 	explicit StyleSheetProperty( const bool& isVolatile, const PropertyDefinition* definition,
-								 const std::string& value, const Uint32& specificity = 0,
+								 const String& value, const Uint32& specificity = 0,
 								 const Uint32& index = 0 );
 
 	void cleanValue();
 	void checkImportant();
 	void createIndexed();
 	void checkVars();
-	std::vector<VariableFunctionCache> checkVars( const std::string& value );
+	std::vector<VariableFunctionCache> checkVars( const String& value );
 };
 
-typedef UnorderedMap<Uint32, StyleSheetProperty> StyleSheetProperties;
+typedef HashMap<Uint32, StyleSheetProperty> StyleSheetProperties;
 
 }}} // namespace EE::UI::CSS
 

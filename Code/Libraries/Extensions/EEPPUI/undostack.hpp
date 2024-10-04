@@ -14,10 +14,10 @@ namespace EE { namespace UI {
 
 // Absolutely inspired by Qt implementation
 
-class EE_API UndoCommand : public NonCopyable {
+class ZeroShared UndoCommand : public NonCopyable {
   public:
 	explicit UndoCommand( UndoCommand* parent = nullptr );
-	explicit UndoCommand( const std::string& text, UndoCommand* parent = nullptr );
+	explicit UndoCommand( const String& text, UndoCommand* parent = nullptr );
 	virtual ~UndoCommand();
 
 	virtual void undo();
@@ -27,9 +27,9 @@ class EE_API UndoCommand : public NonCopyable {
 	virtual int id() const;
 	virtual bool mergeWith( const UndoCommand* other );
 
-	std::string text() const;
-	std::string actionText() const;
-	void setText( const std::string& text );
+	String text() const;
+	String actionText() const;
+	void setText( const String& text );
 
 	bool isObsolete() const;
 	void setObsolete( bool obsolete );
@@ -41,13 +41,13 @@ class EE_API UndoCommand : public NonCopyable {
 	friend class UndoStack;
 
 	std::vector<UndoCommand*> mChilds;
-	std::string mText;
-	std::string mActionText;
+	String mText;
+	String mActionText;
 	int mId{ -1 };
 	bool mObsolete{ false };
 };
 
-class EE_API UndoStack : public NonCopyable {
+class ZeroShared UndoStack : public NonCopyable {
   public:
 	UndoStack() : mIndex( 0 ), mCleanIndex( 0 ), mUndoLimit( 0 ) {}
 
@@ -59,17 +59,17 @@ class EE_API UndoStack : public NonCopyable {
 
 	bool canUndo() const;
 	bool canRedo() const;
-	std::string undoText() const;
-	std::string redoText() const;
+	String undoText() const;
+	String redoText() const;
 
 	int count() const;
 	int index() const;
-	std::string text( int idx ) const;
+	String text( int idx ) const;
 
 	bool isClean() const;
 	int cleanIndex() const;
 
-	void beginMacro( const std::string& text );
+	void beginMacro( const String& text );
 	void endMacro();
 
 	void setUndoLimit( int limit );
@@ -183,24 +183,24 @@ class EE_API UndoStack : public NonCopyable {
 
 	class EventUndoTextChanged : public Event {
 	  public:
-		EventUndoTextChanged( const std::string& undoText ) :
+		EventUndoTextChanged( const String& undoText ) :
 			Event( EventType::UndoTextChanged ), mUndoText( undoText ) {}
 
-		const std::string& undoText() const { return mUndoText; }
+		const String& undoText() const { return mUndoText; }
 
 	  protected:
-		std::string mUndoText;
+		String mUndoText;
 	};
 
 	class EventRedoTextChanged : public Event {
 	  public:
-		EventRedoTextChanged( const std::string& RedoText ) :
+		EventRedoTextChanged( const String& RedoText ) :
 			Event( EventType::RedoTextChanged ), mRedoText( RedoText ) {}
 
-		const std::string& RedoText() const { return mRedoText; }
+		const String& RedoText() const { return mRedoText; }
 
 	  protected:
-		std::string mRedoText;
+		String mRedoText;
 	};
 
 	using EventCb = std::function<void( const Event* event )>;
@@ -214,7 +214,7 @@ class EE_API UndoStack : public NonCopyable {
   protected:
 	std::deque<UndoCommand*> mCommands;
 	std::deque<UndoCommand*> mMacroStack;
-	UnorderedMap<EventType, std::map<EventId, EventCb>> mEventsCbs;
+	HashMap<EventType, std::map<EventId, EventCb>> mEventsCbs;
 	EventId mNextEventId{ 0 };
 	int mIndex;
 	int mCleanIndex;
@@ -229,8 +229,8 @@ class EE_API UndoStack : public NonCopyable {
 	void cleanChanged( bool clean );
 	void canUndoChanged( bool canUndo );
 	void canRedoChanged( bool canRedo );
-	void undoTextChanged( const std::string& undoText );
-	void redoTextChanged( const std::string& redoText );
+	void undoTextChanged( const String& undoText );
+	void redoTextChanged( const String& redoText );
 };
 
 }} // namespace EE::UI

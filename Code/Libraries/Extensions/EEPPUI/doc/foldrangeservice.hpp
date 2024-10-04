@@ -20,7 +20,7 @@ class FoldRangeProvider {
 		virtual void requestFoldRange() = 0;
 };
 
-class EE_API FoldRangeServive {
+class ZeroShared FoldRangeServive {
   public:
 	FoldRangeServive( TextDocument* doc );
 

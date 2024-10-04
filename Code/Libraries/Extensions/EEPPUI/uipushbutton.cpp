@@ -8,7 +8,7 @@
 
 namespace EE { namespace UI {
 
-InnerWidgetOrientation UIPushButton::innerWidgetOrientationFromString( std::string iwo ) {
+InnerWidgetOrientation UIPushButton::innerWidgetOrientationFromString( String iwo ) {
 	String::toLowerInPlace( iwo );
 	if ( iwo == "widgeticontextbox" )
 		return InnerWidgetOrientation::WidgetIconTextBox;
@@ -25,7 +25,7 @@ InnerWidgetOrientation UIPushButton::innerWidgetOrientationFromString( std::stri
 	return InnerWidgetOrientation::WidgetIconTextBox;
 }
 
-std::string
+String
 UIPushButton::innerWidgetOrientationToString( const InnerWidgetOrientation& orientation ) {
 	switch ( orientation ) {
 		case InnerWidgetOrientation::WidgetIconTextBox:
@@ -48,19 +48,19 @@ UIPushButton* UIPushButton::New() {
 	return eeNew( UIPushButton, () );
 }
 
-UIPushButton* UIPushButton::NewWithTag( const std::string& tag ) {
+UIPushButton* UIPushButton::NewWithTag( const String& tag ) {
 	return eeNew( UIPushButton, ( tag ) );
 }
 
 UIPushButton*
-UIPushButton::NewWithOpt( const std::string& tag,
+UIPushButton::NewWithOpt( const String& tag,
 						  const std::function<UITextView*( UIPushButton* )>& newTextViewCb ) {
 	return eeNew( UIPushButton, ( tag, newTextViewCb ) );
 }
 
-UIPushButton::UIPushButton( const std::string& tag ) : UIPushButton( tag, nullptr ) {}
+UIPushButton::UIPushButton( const String& tag ) : UIPushButton( tag, nullptr ) {}
 
-UIPushButton::UIPushButton( const std::string& tag,
+UIPushButton::UIPushButton( const String& tag,
 							const std::function<UITextView*( UIPushButton* )>& newTextViewCb ) :
 	UIWidget( tag ), mIcon( NULL ), mTextBox( NULL ) {
 	mFlags |= ( UI_AUTO_SIZE | UI_VALIGN_CENTER | UI_HALIGN_CENTER );
@@ -518,7 +518,7 @@ void UIPushButton::setInnerWidgetOrientation(
 	}
 }
 
-std::string UIPushButton::getPropertyString( const PropertyDefinition* propertyDef,
+String UIPushButton::getPropertyString( const PropertyDefinition* propertyDef,
 											 const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -608,7 +608,7 @@ bool UIPushButton::applyProperty( const StyleSheetProperty& attribute ) {
 				setText( getUISceneNode()->getTranslatorString( attribute.value() ) );
 			break;
 		case PropertyId::Icon: {
-			const std::string& val = attribute.value();
+			const String& val = attribute.value();
 			Drawable* icon = NULL;
 			bool ownIt;
 			UIIcon* iconF = getUISceneNode()->findIcon( val );
@@ -628,7 +628,7 @@ bool UIPushButton::applyProperty( const StyleSheetProperty& attribute ) {
 			setIconMinimumSize( attribute.asSizei() );
 			break;
 		case PropertyId::TextAlign: {
-			std::string align = String::toLower( attribute.value() );
+			String align = String::toLower( attribute.value() );
 			if ( align == "center" )
 				setTextAlign( UI_HALIGN_CENTER );
 			else if ( align == "left" )

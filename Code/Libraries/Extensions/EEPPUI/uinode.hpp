@@ -29,7 +29,7 @@ class UITheme;
 class UINodeDrawable;
 class UIBorderDrawable;
 
-class EE_API UINode : public Node {
+class ZeroShared UINode : public Node {
   public:
 	static UINode* New();
 
@@ -97,19 +97,19 @@ class EE_API UINode : public Node {
 
 	UINode* setBackgroundDrawable( Drawable* drawable, bool ownIt = false, int index = 0 );
 
-	UINode* setBackgroundDrawable( const std::string& drawable, int index );
+	UINode* setBackgroundDrawable( const String& drawable, int index );
 
 	UINode* setBackgroundColor( const Color& color );
 
 	UINode* setBackgroundTint( const Color& color, int index );
 
-	UINode* setBackgroundPositionX( const std::string& positionX, int index = 0 );
+	UINode* setBackgroundPositionX( const String& positionX, int index = 0 );
 
-	UINode* setBackgroundPositionY( const std::string& positionY, int index = 0 );
+	UINode* setBackgroundPositionY( const String& positionY, int index = 0 );
 
-	UINode* setBackgroundRepeat( const std::string& repeatRule, int index = 0 );
+	UINode* setBackgroundRepeat( const String& repeatRule, int index = 0 );
 
-	UINode* setBackgroundSize( const std::string& size, int index = 0 );
+	UINode* setBackgroundSize( const String& size, int index = 0 );
 
 	Color getBackgroundColor() const;
 
@@ -117,13 +117,13 @@ class EE_API UINode : public Node {
 
 	UINode* setBorderRadius( const unsigned int& corners );
 
-	UINode* setTopLeftRadius( const std::string& radius );
+	UINode* setTopLeftRadius( const String& radius );
 
-	UINode* setTopRightRadius( const std::string& radius );
+	UINode* setTopRightRadius( const String& radius );
 
-	UINode* setBottomLeftRadius( const std::string& radius );
+	UINode* setBottomLeftRadius( const String& radius );
 
-	UINode* setBottomRightRadius( const std::string& radius );
+	UINode* setBottomRightRadius( const String& radius );
 
 	Uint32 getBorderRadius() const;
 
@@ -131,19 +131,19 @@ class EE_API UINode : public Node {
 
 	UINode* setForegroundDrawable( Drawable* drawable, bool ownIt = false, int index = 0 );
 
-	UINode* setForegroundDrawable( const std::string& drawable, int index = 0 );
+	UINode* setForegroundDrawable( const String& drawable, int index = 0 );
 
 	UINode* setForegroundColor( const Color& color );
 
 	UINode* setForegroundTint( const Color& color, int index );
 
-	UINode* setForegroundPositionX( const std::string& positionX, int index = 0 );
+	UINode* setForegroundPositionX( const String& positionX, int index = 0 );
 
-	UINode* setForegroundPositionY( const std::string& positionY, int index = 0 );
+	UINode* setForegroundPositionY( const String& positionY, int index = 0 );
 
-	UINode* setForegroundRepeat( const std::string& repeatRule, int index = 0 );
+	UINode* setForegroundRepeat( const String& repeatRule, int index = 0 );
 
-	UINode* setForegroundSize( const std::string& size, int index = 0 );
+	UINode* setForegroundSize( const String& size, int index = 0 );
 
 	Color getForegroundColor() const;
 
@@ -181,13 +181,13 @@ class EE_API UINode : public Node {
 
 	UIBorderDrawable* getBorder() const;
 
-	void setThemeByName( const std::string& Theme );
+	void setThemeByName( const String& Theme );
 
 	virtual void setTheme( UITheme* Theme );
 
-	virtual UINode* setThemeSkin( UITheme* Theme, const std::string& skinName );
+	virtual UINode* setThemeSkin( UITheme* Theme, const String& skinName );
 
-	virtual UINode* setThemeSkin( const std::string& skinName );
+	virtual UINode* setThemeSkin( const String& skinName );
 
 	void setThemeToChilds( UITheme* Theme );
 
@@ -248,13 +248,13 @@ class EE_API UINode : public Node {
 	Float convertLengthAsDp( const CSS::StyleSheetLength& length,
 							 const Float& containerLength ) const;
 
-	Float lengthFromValue( const std::string& value,
+	Float lengthFromValue( const String& value,
 						   const CSS::PropertyRelativeTarget& relativeTarget,
 						   const Float& defaultValue = 0, const Uint32& propertyIndex = 0 ) const;
 
 	Float lengthFromValue( const CSS::StyleSheetProperty& property, const Float& defaultValue = 0 );
 
-	Float lengthFromValueAsDp( const std::string& value,
+	Float lengthFromValueAsDp( const String& value,
 							   const CSS::PropertyRelativeTarget& relativeTarget,
 							   const Float& defaultValue = 0,
 							   const Uint32& propertyIndex = 0 ) const;
@@ -288,25 +288,25 @@ class EE_API UINode : public Node {
 
 	virtual const Rectf& getPixelsPadding() const;
 
-	const std::string& getMinWidthEq() const;
+	const String& getMinWidthEq() const;
 
-	void setMinSizeEq( const std::string& minWidthEq, const std::string& minHeightEq );
+	void setMinSizeEq( const String& minWidthEq, const String& minHeightEq );
 
-	void setMinWidthEq( const std::string& minWidthEq );
+	void setMinWidthEq( const String& minWidthEq );
 
-	const std::string& getMinHeightEq() const;
+	const String& getMinHeightEq() const;
 
-	void setMinHeightEq( const std::string& minHeightEq );
+	void setMinHeightEq( const String& minHeightEq );
 
-	const std::string& getMaxWidthEq() const;
+	const String& getMaxWidthEq() const;
 
-	void setMaxSizeEq( const std::string& maxWidthEq, const std::string& maxHeightEq );
+	void setMaxSizeEq( const String& maxWidthEq, const String& maxHeightEq );
 
-	void setMaxWidthEq( const std::string& maxWidthEq );
+	void setMaxWidthEq( const String& maxWidthEq );
 
-	const std::string& getMaxHeightEq() const;
+	const String& getMaxHeightEq() const;
 
-	void setMaxHeightEq( const std::string& maxHeightEq );
+	void setMaxHeightEq( const String& maxHeightEq );
 
 	Sizef getMinSize() const;
 
@@ -339,10 +339,10 @@ class EE_API UINode : public Node {
 	Rectf mPadding;
 	Rectf mPaddingPx;
 	UIClip mClip;
-	std::string mMinWidthEq;
-	std::string mMinHeightEq;
-	std::string mMaxWidthEq;
-	std::string mMaxHeightEq;
+	String mMinWidthEq;
+	String mMinHeightEq;
+	String mMaxWidthEq;
+	String mMaxHeightEq;
 
 	virtual Uint32 onMouseDown( const Vector2i& position, const Uint32& flags );
 

@@ -10,7 +10,7 @@ namespace EE { namespace UI {
 
 class UINode;
 
-class EE_API UIBackgroundDrawable : public Drawable {
+class ZeroShared UIBackgroundDrawable : public Drawable {
   public:
 	static UIBackgroundDrawable* New( const UINode* owner );
 
@@ -44,17 +44,17 @@ class EE_API UIBackgroundDrawable : public Drawable {
 
 	void invalidate();
 
-	void setTopWidth( const std::string& topWidth );
+	void setTopWidth( const String& topWidth );
 
-	void setBottomWidth( const std::string& bottomWidth );
+	void setBottomWidth( const String& bottomWidth );
 
-	void setTopLeftRadius( const std::string& radius );
+	void setTopLeftRadius( const String& radius );
 
-	void setTopRightRadius( const std::string& radius );
+	void setTopRightRadius( const String& radius );
 
-	void setBottomLeftRadius( const std::string& radius );
+	void setBottomLeftRadius( const String& radius );
 
-	void setBottomRightRadius( const std::string& radius );
+	void setBottomRightRadius( const String& radius );
 
 	bool isSmooth() const;
 

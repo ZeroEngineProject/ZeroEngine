@@ -5,15 +5,15 @@
 
 namespace EE { namespace UI {
 
-class EE_API UISelectButton : public UIPushButton {
+class ZeroShared UISelectButton : public UIPushButton {
   public:
 	static UISelectButton* New();
 
-	static UISelectButton* NewWithTag( const std::string& tag );
+	static UISelectButton* NewWithTag( const String& tag );
 
 	UISelectButton();
 
-	explicit UISelectButton( const std::string& tag );
+	explicit UISelectButton( const String& tag );
 
 	virtual ~UISelectButton();
 
@@ -31,7 +31,7 @@ class EE_API UISelectButton : public UIPushButton {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

@@ -22,7 +22,7 @@ size_t WidgetTreeModel::columnCount( const ModelIndex& ) const {
 	return Column::Count;
 }
 
-std::string WidgetTreeModel::columnName( const size_t& col ) const {
+String WidgetTreeModel::columnName( const size_t& col ) const {
 	switch ( col ) {
 		case Column::PseudoClasses:
 			return "Pseudo Classes";

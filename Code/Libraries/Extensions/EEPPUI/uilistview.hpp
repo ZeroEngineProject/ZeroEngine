@@ -5,7 +5,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIListView : public UITableView {
+class ZeroShared UIListView : public UITableView {
   public:
 	static UIListView* New();
 

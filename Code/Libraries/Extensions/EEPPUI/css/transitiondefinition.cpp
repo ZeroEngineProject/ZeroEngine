@@ -6,9 +6,9 @@
 
 namespace EE { namespace UI { namespace CSS {
 
-UnorderedMap<std::string, TransitionDefinition> TransitionDefinition::parseTransitionProperties(
+HashMap<String, TransitionDefinition> TransitionDefinition::parseTransitionProperties(
 	const std::vector<const StyleSheetProperty*>& styleSheetProperties ) {
-	std::vector<std::string> properties;
+	std::vector<String> properties;
 	std::vector<Time> durations;
 	std::vector<Time> delays;
 	std::vector<Ease::Interpolation> timingFunctions;
@@ -32,7 +32,7 @@ UnorderedMap<std::string, TransitionDefinition> TransitionDefinition::parseTrans
 					TransitionDefinition transitionDef;
 
 					if ( splitTransition.size() >= 2 ) {
-						std::string property = String::trim( splitTransition[0] );
+						String property = String::trim( splitTransition[0] );
 						String::toLowerInPlace( property );
 
 						Time duration = StyleSheetProperty( prop->getName(),
@@ -69,7 +69,7 @@ UnorderedMap<std::string, TransitionDefinition> TransitionDefinition::parseTrans
 			auto strDurations = String::split( prop->getValue(), ',' );
 
 			for ( auto dit = strDurations.begin(); dit != strDurations.end(); ++dit ) {
-				std::string duration( String::trim( *dit ) );
+				String duration( String::trim( *dit ) );
 				String::toLowerInPlace( duration );
 				durations.push_back( StyleSheetProperty( prop->getName(), duration ).asTime() );
 			}
@@ -77,7 +77,7 @@ UnorderedMap<std::string, TransitionDefinition> TransitionDefinition::parseTrans
 			auto strDelays = String::split( prop->getValue(), ',' );
 
 			for ( auto dit = strDelays.begin(); dit != strDelays.end(); ++dit ) {
-				std::string delay( String::trim( *dit ) );
+				String delay( String::trim( *dit ) );
 				String::toLowerInPlace( delay );
 				delays.push_back( StyleSheetProperty( prop->getName(), delay ).asTime() );
 			}
@@ -93,7 +93,7 @@ UnorderedMap<std::string, TransitionDefinition> TransitionDefinition::parseTrans
 			auto strProperties = String::split( prop->getValue(), ',' );
 
 			for ( auto dit = strProperties.begin(); dit != strProperties.end(); ++dit ) {
-				std::string property( String::trim( *dit ) );
+				String property( String::trim( *dit ) );
 				String::toLowerInPlace( property );
 				properties.push_back( property );
 			}
@@ -101,7 +101,7 @@ UnorderedMap<std::string, TransitionDefinition> TransitionDefinition::parseTrans
 	}
 
 	for ( size_t i = 0; i < properties.size(); i++ ) {
-		const std::string& property = properties.at( i );
+		const String& property = properties.at( i );
 		TransitionDefinition transitionDef;
 
 		transitionDef.property = property;

@@ -28,45 +28,45 @@ enum class ShorthandId : Uint32 {
 };
 
 typedef std::function<std::vector<StyleSheetProperty>( const ShorthandDefinition* shorthand,
-													   std::string value )>
+													   String value )>
 	ShorthandParserFunc;
 
-class EE_API ShorthandDefinition {
+class ZeroShared ShorthandDefinition {
   public:
-	static ShorthandDefinition* New( const std::string& name,
-									 const std::vector<std::string>& properties,
-									 const std::string& shorthandParserName );
+	static ShorthandDefinition* New( const String& name,
+									 const std::vector<String>& properties,
+									 const String& shorthandParserName );
 
-	ShorthandDefinition( const std::string& name, const std::vector<std::string>& properties,
-						 const std::string& shorthandFuncName );
+	ShorthandDefinition( const String& name, const std::vector<String>& properties,
+						 const String& shorthandFuncName );
 
-	std::vector<StyleSheetProperty> parse( std::string value ) const;
+	std::vector<StyleSheetProperty> parse( String value ) const;
 
-	const std::string& getName() const;
+	const String& getName() const;
 
 	const String::HashType& getId() const;
 
-	ShorthandDefinition& addAlias( const std::string& alias );
+	ShorthandDefinition& addAlias( const String& alias );
 
-	bool isAlias( const std::string& alias ) const;
+	bool isAlias( const String& alias ) const;
 
 	bool isAlias( const String::HashType& id ) const;
 
-	bool isDefinition( const std::string& name ) const;
+	bool isDefinition( const String& name ) const;
 
 	bool isDefinition( const String::HashType& id ) const;
 
 	ShorthandId getShorthandId() const;
 
-	const std::vector<std::string>& getProperties() const;
+	const std::vector<String>& getProperties() const;
 
   protected:
-	std::string mName;
-	std::string mFuncName;
+	String mName;
+	String mFuncName;
 	String::HashType mId;
-	std::vector<std::string> mAliases;
+	std::vector<String> mAliases;
 	std::vector<String::HashType> mAliasesHash;
-	std::vector<std::string> mProperties;
+	std::vector<String> mProperties;
 };
 
 }}} // namespace EE::UI::CSS

@@ -5,15 +5,15 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIImage : public UIWidget {
+class ZeroShared UIImage : public UIWidget {
   public:
 	static UIImage* New();
 
-	static UIImage* NewWithTag( const std::string& tag );
+	static UIImage* NewWithTag( const String& tag );
 
 	UIImage();
 
-	explicit UIImage( const std::string& tag );
+	explicit UIImage( const String& tag );
 
 	virtual ~UIImage();
 
@@ -37,7 +37,7 @@ class EE_API UIImage : public UIWidget {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

@@ -5,11 +5,11 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIStackWidget : public UIWidget {
+class ZeroShared UIStackWidget : public UIWidget {
   public:
 	static UIStackWidget* New();
 
-	static UIStackWidget* NewWithTag( const std::string& tag = "stackwidget" );
+	static UIStackWidget* NewWithTag( const String& tag = "stackwidget" );
 
 	void setActiveWidget( UIWidget* widget );
 
@@ -18,7 +18,7 @@ class EE_API UIStackWidget : public UIWidget {
   protected:
 	UIWidget* mActiveWidget{ nullptr };
 
-	UIStackWidget( const std::string& tag = "stackwidget" );
+	UIStackWidget( const String& tag = "stackwidget" );
 
 	virtual void onSizeChange();
 

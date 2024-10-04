@@ -7,13 +7,13 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIMultiModelView : public UIStackWidget {
+class ZeroShared UIMultiModelView : public UIStackWidget {
   public:
 	enum ViewMode { List, Table };
 
 	static UIMultiModelView* New();
 
-	static UIMultiModelView* NewWithTag( const std::string& tag );
+	static UIMultiModelView* NewWithTag( const String& tag );
 
 	const ViewMode& getViewMode() const;
 
@@ -48,7 +48,7 @@ class EE_API UIMultiModelView : public UIStackWidget {
 	void setMultiSelect( bool enable );
 
   protected:
-	UIMultiModelView( const std::string& tag );
+	UIMultiModelView( const String& tag );
 
 	std::shared_ptr<Model> mModel;
 	ViewMode mMode{ List };

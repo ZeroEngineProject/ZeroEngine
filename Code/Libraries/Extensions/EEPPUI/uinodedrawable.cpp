@@ -12,7 +12,7 @@ using namespace EE::Math::easing;
 
 namespace EE { namespace UI {
 
-UINodeDrawable::Repeat UINodeDrawable::repeatFromText( const std::string& text ) {
+UINodeDrawable::Repeat UINodeDrawable::repeatFromText( const String& text ) {
 	if ( "repeat" == text )
 		return UINodeDrawable::Repeat::RepeatXY;
 	if ( "repeat-x" == text )
@@ -76,21 +76,21 @@ void UINodeDrawable::setDrawable( int index, Drawable* drawable, bool ownIt ) {
 	}
 }
 
-void UINodeDrawable::setDrawable( int index, const std::string& drawable ) {
+void UINodeDrawable::setDrawable( int index, const String& drawable ) {
 	if ( drawable != getLayer( index )->getDrawableRef() ) {
 		getLayer( index )->setDrawable( drawable );
 	}
 }
 
-void UINodeDrawable::setDrawablePositionX( int index, const std::string& positionX ) {
+void UINodeDrawable::setDrawablePositionX( int index, const String& positionX ) {
 	getLayer( index )->setPositionX( positionX );
 }
 
-void UINodeDrawable::setDrawablePositionY( int index, const std::string& positionY ) {
+void UINodeDrawable::setDrawablePositionY( int index, const String& positionY ) {
 	getLayer( index )->setPositionY( positionY );
 }
 
-void UINodeDrawable::setDrawableRepeat( int index, const std::string& repeatRule ) {
+void UINodeDrawable::setDrawableRepeat( int index, const String& repeatRule ) {
 	getLayer( index )->setRepeat( repeatFromText( repeatRule ) );
 
 	for ( auto& layIt : mGroup ) {
@@ -101,7 +101,7 @@ void UINodeDrawable::setDrawableRepeat( int index, const std::string& repeatRule
 	}
 }
 
-void UINodeDrawable::setDrawableSize( int index, const std::string& sizeEq ) {
+void UINodeDrawable::setDrawableSize( int index, const String& sizeEq ) {
 	getLayer( index )->setSizeEq( sizeEq );
 }
 
@@ -410,7 +410,7 @@ Drawable* UINodeDrawable::LayerDrawable::getDrawable() const {
 	return mDrawable;
 }
 
-const std::string& UINodeDrawable::LayerDrawable::getDrawableRef() const {
+const String& UINodeDrawable::LayerDrawable::getDrawableRef() const {
 	return mDrawableRef;
 }
 
@@ -449,7 +449,7 @@ void UINodeDrawable::LayerDrawable::setDrawable( Drawable* drawable, const bool&
 	}
 }
 
-void UINodeDrawable::LayerDrawable::setDrawable( const std::string& drawableRef ) {
+void UINodeDrawable::LayerDrawable::setDrawable( const String& drawableRef ) {
 	bool ownIt;
 	Drawable* drawable = createDrawable( drawableRef, mSize, ownIt );
 
@@ -458,7 +458,7 @@ void UINodeDrawable::LayerDrawable::setDrawable( const std::string& drawableRef 
 	mDrawableRef = drawableRef;
 }
 
-Drawable* UINodeDrawable::LayerDrawable::createDrawable( const std::string& value,
+Drawable* UINodeDrawable::LayerDrawable::createDrawable( const String& value,
 														 const Sizef& size, bool& ownIt ) {
 	return CSS::StyleSheetSpecification::instance()->getDrawableImageParser().createDrawable(
 		value, size, ownIt, mContainer->getOwner() );
@@ -497,7 +497,7 @@ void UINodeDrawable::LayerDrawable::setDrawableSize( const Sizef& drawableSize )
 	mDrawableSize = drawableSize;
 }
 
-Sizef UINodeDrawable::LayerDrawable::calcDrawableSize( const std::string& drawableSizeEq ) {
+Sizef UINodeDrawable::LayerDrawable::calcDrawableSize( const String& drawableSizeEq ) {
 	Sizef size;
 
 	if ( NULL == mDrawable )
@@ -528,7 +528,7 @@ Sizef UINodeDrawable::LayerDrawable::calcDrawableSize( const std::string& drawab
 		Scale1 = eemax( Scale1, Scale2 );
 		size = Sizef( drawableSize.getWidth() * Scale1, drawableSize.getHeight() * Scale1 );
 	} else {
-		std::vector<std::string> sizePart = String::split( drawableSizeEq, ' ' );
+		std::vector<String> sizePart = String::split( drawableSizeEq, ' ' );
 
 		if ( sizePart.size() == 1 ) {
 			sizePart.push_back( "auto" );
@@ -569,8 +569,8 @@ Sizef UINodeDrawable::LayerDrawable::calcDrawableSize( const std::string& drawab
 	return size;
 }
 
-Vector2f UINodeDrawable::LayerDrawable::calcPosition( std::string positionXEq,
-													  std::string positionYEq ) {
+Vector2f UINodeDrawable::LayerDrawable::calcPosition( String positionXEq,
+													  String positionYEq ) {
 	Vector2f position( Vector2f::Zero );
 
 	if ( positionXEq.empty() )
@@ -631,33 +631,33 @@ Vector2f UINodeDrawable::LayerDrawable::calcPosition( std::string positionXEq,
 	return position;
 }
 
-const std::string& UINodeDrawable::LayerDrawable::getSizeEq() const {
+const String& UINodeDrawable::LayerDrawable::getSizeEq() const {
 	return mSizeEq;
 }
 
-void UINodeDrawable::LayerDrawable::setSizeEq( const std::string& sizeEq ) {
+void UINodeDrawable::LayerDrawable::setSizeEq( const String& sizeEq ) {
 	if ( mSizeEq != sizeEq ) {
 		mSizeEq = sizeEq;
 		invalidate();
 	}
 }
 
-const std::string& UINodeDrawable::LayerDrawable::getPositionY() const {
+const String& UINodeDrawable::LayerDrawable::getPositionY() const {
 	return mPositionY;
 }
 
-void UINodeDrawable::LayerDrawable::setPositionY( const std::string& positionY ) {
+void UINodeDrawable::LayerDrawable::setPositionY( const String& positionY ) {
 	if ( mPositionY != positionY ) {
 		mPositionY = positionY;
 		invalidate();
 	}
 }
 
-const std::string& UINodeDrawable::LayerDrawable::getPositionX() const {
+const String& UINodeDrawable::LayerDrawable::getPositionX() const {
 	return mPositionX;
 }
 
-void UINodeDrawable::LayerDrawable::setPositionX( const std::string& positionX ) {
+void UINodeDrawable::LayerDrawable::setPositionX( const String& positionX ) {
 	if ( mPositionX != positionX ) {
 		mPositionX = positionX;
 		invalidate();
@@ -668,7 +668,7 @@ void UINodeDrawable::LayerDrawable::setOffset( const Vector2f& offset ) {
 	mOffset = offset;
 }
 
-std::string UINodeDrawable::LayerDrawable::getOffsetEq() {
+String UINodeDrawable::LayerDrawable::getOffsetEq() {
 	return String::fromFloat( mOffset.x, "px" ) + " " + String::fromFloat( mOffset.y, "px" );
 }
 

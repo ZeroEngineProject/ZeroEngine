@@ -92,7 +92,7 @@ static void borderAddArc( VertexBuffer* vbo, Vector2f pos, Float radiW, Float ra
 	}
 }
 
-std::string Borders::fromBorderType( const BorderType& borderType ) {
+String Borders::fromBorderType( const BorderType& borderType ) {
 	switch ( borderType ) {
 		case BorderType::Outside:
 			return "outside";
@@ -104,7 +104,7 @@ std::string Borders::fromBorderType( const BorderType& borderType ) {
 	}
 }
 
-BorderType Borders::toBorderType( const std::string& borderType ) {
+BorderType Borders::toBorderType( const String& borderType ) {
 	if ( borderType == "outside" ) {
 		return BorderType::Outside;
 	} else if ( borderType == "outline" ) {
@@ -113,7 +113,7 @@ BorderType Borders::toBorderType( const std::string& borderType ) {
 	return BorderType::Inside;
 }
 
-Sizef Borders::radiusFromString( const UINode* node, const std::string& val ) {
+Sizef Borders::radiusFromString( const UINode* node, const String& val ) {
 	auto split = String::split( val, ' ' );
 	Sizef size;
 	size.x = node->lengthFromValue( split[0], CSS::PropertyRelativeTarget::LocalBlockRadiusWidth );

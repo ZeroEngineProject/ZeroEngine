@@ -168,7 +168,7 @@ Translator& UISceneNode::getTranslator() {
 	return mTranslator;
 }
 
-String UISceneNode::getTranslatorString( const std::string& str ) {
+String UISceneNode::getTranslatorString( const String& str ) {
 	if ( str.size() >= 8 && String::startsWith( str, "@string" ) ) {
 		if ( str[7] == '/' ) {
 			String tstr = mTranslator.getString( str.substr( 8 ) );
@@ -189,7 +189,7 @@ String UISceneNode::getTranslatorString( const std::string& str ) {
 	return String( str );
 }
 
-String UISceneNode::getTranslatorString( const std::string& str, const String& defaultValue ) {
+String UISceneNode::getTranslatorString( const String& str, const String& defaultValue ) {
 	if ( str.size() >= 8 && String::startsWith( str, "@string" ) ) {
 		if ( str[7] == '/' ) {
 			return mTranslator.getString( str.substr( 8 ), defaultValue );
@@ -206,12 +206,12 @@ String UISceneNode::getTranslatorString( const std::string& str, const String& d
 	return defaultValue;
 }
 
-String UISceneNode::getTranslatorStringFromKey( const std::string& key,
+String UISceneNode::getTranslatorStringFromKey( const String& key,
 												const String& defaultValue ) {
 	return mTranslator.getString( key, defaultValue );
 }
 
-String UISceneNode::i18n( const std::string& key, const String& defaultValue ) {
+String UISceneNode::i18n( const String& key, const String& defaultValue ) {
 	return getTranslatorStringFromKey( key, defaultValue );
 }
 
@@ -271,22 +271,22 @@ std::vector<UIWidget*> UISceneNode::loadNode( pugi::xml_node node, Node* parent,
 			uiwidget->loadFromXmlNode( widget );
 
 			if ( mVerbose ) {
-				std::string name( widget.name() );
+				String name( widget.name() );
 				pugi::xml_attribute idAttr( widget.attribute( "id" ) );
 				pugi::xml_attribute classAttr( widget.attribute( "class" ) );
 
 				if ( !idAttr.empty() ) {
-					name += "#" + std::string( idAttr.as_string() );
+					name += "#" + String( idAttr.as_string() );
 				}
 
 				if ( !classAttr.empty() ) {
-					std::string classes( String::trim( std::string( classAttr.as_string() ) ) );
+					String classes( String::trim( String( classAttr.as_string() ) ) );
 					String::replaceAll( classes, " ", "." );
 					name += "." + classes;
 				}
 
-				mTimes.push_back( std::make_pair<Float, std::string>(
-					clock.getElapsedTime().asMilliseconds(), std::string( name ) ) );
+				mTimes.push_back( std::make_pair<Float, String>(
+					clock.getElapsedTime().asMilliseconds(), String( name ) ) );
 			}
 
 			if ( widget.first_child() ) {
@@ -294,10 +294,10 @@ std::vector<UIWidget*> UISceneNode::loadNode( pugi::xml_node node, Node* parent,
 			}
 
 			uiwidget->onWidgetCreated();
-		} else if ( String::toLower( std::string( widget.name() ) ) == "style" ) {
+		} else if ( String::toLower( String( widget.name() ) ) == "style" ) {
 			CSS::StyleSheetParser parser;
 
-			if ( parser.loadFromString( std::string_view{ widget.text().as_string() } ) ) {
+			if ( parser.loadFromString( String_view{ widget.text().as_string() } ) ) {
 				parser.getStyleSheet().setMarker( marker );
 				combineStyleSheet( parser.getStyleSheet(), false );
 			}
@@ -311,7 +311,7 @@ UIWidget* UISceneNode::loadLayoutNodes( pugi::xml_node node, Node* parent, const
 	Clock clock;
 	UISceneNode* prevUISceneNode = SceneManager::instance()->getUISceneNode();
 	SceneManager::instance()->setCurrentUISceneNode( this );
-	std::string id( node.attribute( "id" ).as_string() );
+	String id( node.attribute( "id" ).as_string() );
 	mIsLoading = true;
 	Clock innerClock;
 	std::vector<UIWidget*> widgets = loadNode( node, parent, marker );
@@ -319,8 +319,8 @@ UIWidget* UISceneNode::loadLayoutNodes( pugi::xml_node node, Node* parent, const
 	if ( mVerbose ) {
 		std::sort(
 			mTimes.begin(), mTimes.end(),
-			[]( const std::pair<Float, std::string>& left,
-				const std::pair<Float, std::string>& right ) { return left.first < right.first; } );
+			[]( const std::pair<Float, String>& left,
+				const std::pair<Float, String>& right ) { return left.first < right.first; } );
 
 		for ( auto& time : mTimes ) {
 			Log::debug( "Widget %s created in %.2f ms", time.second.c_str(), time.first );
@@ -329,7 +329,7 @@ UIWidget* UISceneNode::loadLayoutNodes( pugi::xml_node node, Node* parent, const
 		mTimes.clear();
 
 		Log::debug( "UISceneNode::loadLayoutNodes loaded nodes%s in: %.2f ms",
-					id.empty() ? "" : std::string( " (id=" + id + ")" ).c_str(),
+					id.empty() ? "" : String( " (id=" + id + ")" ).c_str(),
 					innerClock.getElapsedTimeAndReset().asMilliseconds() );
 	}
 
@@ -359,7 +359,7 @@ void UISceneNode::setStyleSheet( const CSS::StyleSheet& styleSheet ) {
 	reloadStyle();
 }
 
-void UISceneNode::setStyleSheet( const std::string& inlineStyleSheet ) {
+void UISceneNode::setStyleSheet( const String& inlineStyleSheet ) {
 	CSS::StyleSheetParser parser;
 
 	if ( parser.loadFromString( inlineStyleSheet ) )
@@ -375,7 +375,7 @@ void UISceneNode::combineStyleSheet( const CSS::StyleSheet& styleSheet,
 		reloadStyle();
 }
 
-void UISceneNode::combineStyleSheet( const std::string& inlineStyleSheet,
+void UISceneNode::combineStyleSheet( const String& inlineStyleSheet,
 									 const bool& forceReloadStyle, const Uint32& marker ) {
 	CSS::StyleSheetParser parser;
 
@@ -421,7 +421,7 @@ void UISceneNode::setThreadPool( const std::shared_ptr<ThreadPool>& threadPool )
 	mThreadPool = threadPool;
 }
 
-UIWidget* UISceneNode::loadLayoutFromFile( const std::string& layoutPath, Node* parent,
+UIWidget* UISceneNode::loadLayoutFromFile( const String& layoutPath, Node* parent,
 										   const Uint32& marker ) {
 	if ( FileSystem::fileExists( layoutPath ) ) {
 		pugi::xml_document doc;
@@ -435,7 +435,7 @@ UIWidget* UISceneNode::loadLayoutFromFile( const std::string& layoutPath, Node* 
 			Log::error( "Error offset: %d", result.offset );
 		}
 	} else if ( PackManager::instance()->isFallbackToPacksActive() ) {
-		std::string path( layoutPath );
+		String path( layoutPath );
 		Pack* pack = PackManager::instance()->exists( path );
 
 		if ( NULL != pack ) {
@@ -462,7 +462,7 @@ UIWidget* UISceneNode::loadLayoutFromString( const char* layoutString, Node* par
 	return NULL;
 }
 
-UIWidget* UISceneNode::loadLayoutFromString( const std::string& layoutString, Node* parent,
+UIWidget* UISceneNode::loadLayoutFromString( const String& layoutString, Node* parent,
 											 const Uint32& marker ) {
 	return loadLayoutFromString( layoutString.c_str(), parent, marker );
 }
@@ -506,7 +506,7 @@ UIWidget* UISceneNode::loadLayoutFromStream( IOStream& stream, Node* parent,
 	return NULL;
 }
 
-UIWidget* UISceneNode::loadLayoutFromPack( Pack* pack, const std::string& FilePackPath,
+UIWidget* UISceneNode::loadLayoutFromPack( Pack* pack, const String& FilePackPath,
 										   Node* parent ) {
 	ScopedBuffer buffer;
 
@@ -809,11 +809,11 @@ UIIconThemeManager* UISceneNode::getUIIconThemeManager() const {
 	return mUIIconThemeManager;
 }
 
-UIIcon* UISceneNode::findIcon( const std::string& iconName ) {
+UIIcon* UISceneNode::findIcon( const String& iconName ) {
 	return getUIIconThemeManager()->findIcon( iconName );
 }
 
-Drawable* UISceneNode::findIconDrawable( const std::string& iconName, const size_t& drawableSize ) {
+Drawable* UISceneNode::findIconDrawable( const String& iconName, const size_t& drawableSize ) {
 	UIIcon* icon = findIcon( iconName );
 	if ( icon )
 		return icon->getSize( drawableSize );
@@ -886,7 +886,7 @@ void UISceneNode::loadGlyphIcon( const StyleSheetStyleVector& styles ) {
 				break;
 
 			Uint32 codePoint = 0;
-			std::string buffer( glyphProp.asString() );
+			String buffer( glyphProp.asString() );
 			Uint32 value;
 			if ( String::startsWith( buffer, "0x" ) ) {
 				if ( String::fromString( value, buffer, std::hex ) )
@@ -903,7 +903,7 @@ void UISceneNode::loadGlyphIcon( const StyleSheetStyleVector& styles ) {
 }
 
 void UISceneNode::loadFontFaces( const StyleSheetStyleVector& styles ) {
-	auto loadFont = [this]( const std::string& familyName, const CSS::StyleSheetProperty& srcProp,
+	auto loadFont = [this]( const String& familyName, const CSS::StyleSheetProperty& srcProp,
 							Font* fontFamily, Uint32 fontStyle ) {
 		auto trySetFontFamily = []( Font* fontFamily, Uint32 fontStyle, FontTrueType* font ) {
 			if ( fontFamily && fontFamily->getType() == FontType::TTF && fontStyle ) {
@@ -918,14 +918,14 @@ void UISceneNode::loadFontFaces( const StyleSheetStyleVector& styles ) {
 			}
 		};
 
-		std::string path( srcProp.getValue() );
+		String path( srcProp.getValue() );
 		FunctionString func( FunctionString::parse( path ) );
 
 		if ( !func.getParameters().empty() && func.getName() == "url" )
 			path = func.getParameters().at( 0 );
 
 		if ( String::startsWith( path, "file://" ) ) {
-			std::string filePath( path.substr( 7 ) );
+			String filePath( path.substr( 7 ) );
 
 			FontTrueType* font = FontTrueType::New( familyName );
 
@@ -976,7 +976,7 @@ void UISceneNode::loadFontFaces( const StyleSheetStyleVector& styles ) {
 			return;
 
 		Font* fontSearch = FontManager::instance()->getByName( familyProp.getValue() );
-		std::string fontFamily( String::trim( familyProp.getValue(), '"' ) );
+		String fontFamily( String::trim( familyProp.getValue(), '"' ) );
 		if ( fontStyle )
 			fontFamily += "#" + Text::styleFlagToString( fontStyle );
 
@@ -1001,7 +1001,7 @@ void UISceneNode::setInternalPixelsSize( const Sizef& size ) {
 }
 
 Uint32 UISceneNode::onKeyDown( const KeyEvent& event ) {
-	std::string cmd = mKeyBindings.getCommandFromKeyBind( { event.getKeyCode(), event.getMod() } );
+	String cmd = mKeyBindings.getCommandFromKeyBind( { event.getKeyCode(), event.getMod() } );
 	if ( !cmd.empty() ) {
 		executeKeyBindingCommand( cmd );
 		return 0;
@@ -1017,39 +1017,39 @@ void UISceneNode::setKeyBindings( const KeyBindings& keyBindings ) {
 	mKeyBindings = keyBindings;
 }
 
-void UISceneNode::addKeyBindingString( const std::string& shortcut, const std::string& command ) {
+void UISceneNode::addKeyBindingString( const String& shortcut, const String& command ) {
 	mKeyBindings.addKeybindString( shortcut, command );
 }
 
 void UISceneNode::addKeyBinding( const KeyBindings::Shortcut& shortcut,
-								 const std::string& command ) {
+								 const String& command ) {
 	mKeyBindings.addKeybind( shortcut, command );
 }
 
-void UISceneNode::replaceKeyBindingString( const std::string& shortcut,
-										   const std::string& command ) {
+void UISceneNode::replaceKeyBindingString( const String& shortcut,
+										   const String& command ) {
 	mKeyBindings.replaceKeybindString( shortcut, command );
 }
 
 void UISceneNode::replaceKeyBinding( const KeyBindings::Shortcut& shortcut,
-									 const std::string& command ) {
+									 const String& command ) {
 	mKeyBindings.replaceKeybind( shortcut, command );
 }
 
-void UISceneNode::addKeyBindsString( const std::map<std::string, std::string>& binds ) {
+void UISceneNode::addKeyBindsString( const std::map<String, String>& binds ) {
 	mKeyBindings.addKeybindsString( binds );
 }
 
-void UISceneNode::addKeyBinds( const std::map<KeyBindings::Shortcut, std::string>& binds ) {
+void UISceneNode::addKeyBinds( const std::map<KeyBindings::Shortcut, String>& binds ) {
 	mKeyBindings.addKeybinds( binds );
 }
 
-void UISceneNode::setKeyBindingCommand( const std::string& command,
+void UISceneNode::setKeyBindingCommand( const String& command,
 										UISceneNode::KeyBindingCommand func ) {
 	mKeyBindingCommands[command] = func;
 }
 
-void UISceneNode::executeKeyBindingCommand( const std::string& command ) {
+void UISceneNode::executeKeyBindingCommand( const String& command ) {
 	auto cmdIt = mKeyBindingCommands.find( command );
 	if ( cmdIt != mKeyBindingCommands.end() ) {
 		cmdIt->second();

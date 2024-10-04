@@ -11,7 +11,7 @@ namespace EE { namespace UI {
 
 class UITableRow;
 
-class EE_API UITreeViewCell : public UITableCell {
+class ZeroShared UITreeViewCell : public UITableCell {
   public:
 	static UITreeViewCell* New() { return eeNew( UITreeViewCell, () ); }
 
@@ -36,7 +36,7 @@ class EE_API UITreeViewCell : public UITableCell {
 	virtual UIWidget* getExtraInnerWidget() const;
 };
 
-class EE_API UITreeView : public UIAbstractTableView {
+class ZeroShared UITreeView : public UIAbstractTableView {
   public:
 	static UITreeView* New();
 
@@ -68,13 +68,13 @@ class EE_API UITreeView : public UIAbstractTableView {
 
 	void setExpandedIcon( EE::UI::UIIcon* expandIcon );
 
-	void setExpandedIcon( const std::string& expandIcon );
+	void setExpandedIcon( const String& expandIcon );
 
 	UIIcon* getContractIcon() const;
 
 	void setContractedIcon( EE::UI::UIIcon* contractIcon );
 
-	void setContractedIcon( const std::string& contractIcon );
+	void setContractedIcon( const String& contractIcon );
 
 	bool getExpandersAsIcons() const;
 
@@ -86,12 +86,12 @@ class EE_API UITreeView : public UIAbstractTableView {
 
 	void setExpanderIconSize( const size_t& expanderSize );
 
-	virtual ModelIndex findRowWithText( const std::string& text, const bool& caseSensitive = false,
+	virtual ModelIndex findRowWithText( const String& text, const bool& caseSensitive = false,
 										const bool& exactMatch = false ) const;
 
-	ModelIndex selectRowWithPath( std::string path );
+	ModelIndex selectRowWithPath( String path );
 
-	virtual ModelIndex selectRowWithPath( const std::vector<std::string>& pathTree );
+	virtual ModelIndex selectRowWithPath( const std::vector<String>& pathTree );
 
 	virtual void setSelection( const ModelIndex& index, bool scrollToSelection = true,
 							   bool openModelIndexTree = true );

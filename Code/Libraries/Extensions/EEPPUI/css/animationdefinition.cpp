@@ -5,14 +5,14 @@
 
 namespace EE { namespace UI { namespace CSS {
 
-inline bool isTimingFunction( const std::string& str ) {
+inline bool isTimingFunction( const String& str ) {
 	return Ease::Interpolation::None != Ease::fromName( str, Ease::Interpolation::None );
 }
 
-UnorderedMap<std::string, AnimationDefinition> AnimationDefinition::parseAnimationProperties(
+HashMap<String, AnimationDefinition> AnimationDefinition::parseAnimationProperties(
 	const std::vector<const StyleSheetProperty*>& stylesheetProperties ) {
 	AnimationsMap animations;
-	std::vector<std::string> names;
+	std::vector<String> names;
 	std::vector<Time> durations;
 	std::vector<Time> delays;
 	std::vector<Int32> iterations;
@@ -41,7 +41,7 @@ UnorderedMap<std::string, AnimationDefinition> AnimationDefinition::parseAnimati
 						AnimationDefinition animationDef;
 
 						for ( auto& part : parts ) {
-							std::string val( String::trim( String::toLower( part ) ) );
+							String val( String::trim( String::toLower( part ) ) );
 
 							if ( isDirectionString( val ) ) {
 								animationDef.setDirection( directionFromString( val ) );
@@ -90,7 +90,7 @@ UnorderedMap<std::string, AnimationDefinition> AnimationDefinition::parseAnimati
 			case PropertyId::AnimationTimingFunction: {
 				for ( size_t i = 0; i < prop->getPropertyIndexCount(); i++ ) {
 					const StyleSheetProperty& iProp = prop->getPropertyIndex( i );
-					std::string val( String::trim( String::toLower( iProp.getValue() ) ) );
+					String val( String::trim( String::toLower( iProp.getValue() ) ) );
 					switch ( propDef->getPropertyId() ) {
 						case PropertyId::AnimationName:
 							names.push_back( iProp.getValue() );
@@ -165,13 +165,13 @@ UnorderedMap<std::string, AnimationDefinition> AnimationDefinition::parseAnimati
 	return animations;
 }
 
-bool AnimationDefinition::isDirectionString( const std::string str ) {
+bool AnimationDefinition::isDirectionString( const String str ) {
 	String::HashType id = String::hash( str );
 	return id == AlternateReverse || id == Alternate || id == Reverse || id == Normal;
 }
 
 AnimationDefinition::AnimationDirection
-AnimationDefinition::directionFromString( std::string str ) {
+AnimationDefinition::directionFromString( String str ) {
 	String::trimInPlace( str );
 	String::toLowerInPlace( str );
 	switch ( String::hash( str ) ) {
@@ -187,12 +187,12 @@ AnimationDefinition::directionFromString( std::string str ) {
 	}
 }
 
-bool AnimationDefinition::isAnimationFillModeString( const std::string& str ) {
+bool AnimationDefinition::isAnimationFillModeString( const String& str ) {
 	Uint32 id = String::hash( str );
 	return id == None || id == Forwards || id == Backwards || id == Both;
 }
 
-AnimationDefinition::AnimationFillMode AnimationDefinition::fillModeFromString( std::string str ) {
+AnimationDefinition::AnimationFillMode AnimationDefinition::fillModeFromString( String str ) {
 	String::trimInPlace( str );
 	String::toLowerInPlace( str );
 	switch ( String::hash( str ) ) {
@@ -222,7 +222,7 @@ const Int32& AnimationDefinition::getIterations() const {
 	return mIterations;
 }
 
-const std::string& AnimationDefinition::getName() const {
+const String& AnimationDefinition::getName() const {
 	return mName;
 }
 
@@ -238,7 +238,7 @@ const Ease::Interpolation& AnimationDefinition::getTimingFunction() const {
 	return mTimingFunction;
 }
 
-void AnimationDefinition::setName( const std::string& value ) {
+void AnimationDefinition::setName( const String& value ) {
 	mName = value;
 	mId = String::hash( mName );
 }

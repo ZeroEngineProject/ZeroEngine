@@ -8,7 +8,7 @@ UITouchDraggableWidget* UITouchDraggableWidget::New() {
 	return eeNew( UITouchDraggableWidget, () );
 }
 
-UITouchDraggableWidget::UITouchDraggableWidget( const std::string& tag ) :
+UITouchDraggableWidget::UITouchDraggableWidget( const String& tag ) :
 	UIWidget( tag ), mTouchDragDeceleration( 5.f, 5.f ) {
 	subscribeScheduledUpdate();
 }
@@ -146,7 +146,7 @@ Uint32 UITouchDraggableWidget::onMessage( const NodeMessage* msg ) {
 	return 0;
 }
 
-std::string UITouchDraggableWidget::getPropertyString( const PropertyDefinition* propertyDef,
+String UITouchDraggableWidget::getPropertyString( const PropertyDefinition* propertyDef,
 													   const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";

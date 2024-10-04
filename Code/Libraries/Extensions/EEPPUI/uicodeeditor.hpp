@@ -44,14 +44,14 @@ using DrawTextRangesFn = std::function<void(
 class UICodeEditorPlugin {
   public:
 	typedef std::function<void( UICodeEditorPlugin*, const Uint32& )> OnReadyCb;
-	virtual std::string getId() = 0;
-	virtual std::string getTitle() = 0;
-	virtual std::string getDescription() = 0;
+	virtual String getId() = 0;
+	virtual String getTitle() = 0;
+	virtual String getDescription() = 0;
 	virtual bool isReady() const = 0;
 	virtual bool hasGUIConfig() { return false; }
 	virtual bool hasFileConfig() { return false; }
 	virtual UIWindow* getGUIConfig() { return nullptr; }
-	virtual std::string getFileConfigPath() { return ""; }
+	virtual String getFileConfigPath() { return ""; }
 
 	virtual ~UICodeEditorPlugin() {}
 
@@ -126,7 +126,7 @@ class UICodeEditorPlugin {
 	}
 };
 
-class EE_API DocEvent : public Event {
+class ZeroShared DocEvent : public Event {
   public:
 	DocEvent( Node* node, TextDocument* doc, const Uint32& eventType ) :
 		Event( node, eventType ), doc( doc ) {}
@@ -136,7 +136,7 @@ class EE_API DocEvent : public Event {
 	TextDocument* doc;
 };
 
-class EE_API DocChangedEvent : public DocEvent {
+class ZeroShared DocChangedEvent : public DocEvent {
   public:
 	DocChangedEvent( Node* node, TextDocument* doc, const Uint32& eventType, URI oldDocURI ) :
 		DocEvent( node, doc, eventType ), mOldDocURI( oldDocURI ) {}
@@ -148,20 +148,20 @@ class EE_API DocChangedEvent : public DocEvent {
 	URI mOldDocURI;
 };
 
-class EE_API DocSyntaxDefEvent : public DocEvent {
+class ZeroShared DocSyntaxDefEvent : public DocEvent {
   public:
 	DocSyntaxDefEvent( Node* node, TextDocument* doc, const Uint32& eventType,
-					   const std::string& oldLang, const std::string& newLang ) :
+					   const String& oldLang, const String& newLang ) :
 		DocEvent( node, doc, eventType ), oldLang( oldLang ), newLang( newLang ) {}
-	const std::string& getOldLang() const { return oldLang; }
-	const std::string& getNewLang() const { return newLang; }
+	const String& getOldLang() const { return oldLang; }
+	const String& getNewLang() const { return newLang; }
 
   protected:
-	std::string oldLang;
-	std::string newLang;
+	String oldLang;
+	String newLang;
 };
 
-class EE_API UICodeEditor : public UIWidget, public TextDocument::Client {
+class ZeroShared UICodeEditor : public UIWidget, public TextDocument::Client {
   public:
 	struct MinimapConfig {
 		Float width{ 100 }; // dp width
@@ -179,7 +179,7 @@ class EE_API UICodeEditor : public UIWidget, public TextDocument::Client {
 	static UICodeEditor* NewOpt( const bool& autoRegisterBaseCommands,
 								 const bool& autoRegisterBaseKeybindings );
 
-	static const std::map<KeyBindings::Shortcut, std::string> getDefaultKeybindings();
+	static const std::map<KeyBindings::Shortcut, String> getDefaultKeybindings();
 
 	UICodeEditor( const bool& autoRegisterBaseCommands = true,
 				  const bool& autoRegisterBaseKeybindings = true );
@@ -198,24 +198,24 @@ class EE_API UICodeEditor : public UIWidget, public TextDocument::Client {
 
 	void reset();
 
-	TextDocument::LoadStatus loadFromFile( const std::string& path );
+	TextDocument::LoadStatus loadFromFile( const String& path );
 
-	bool loadAsyncFromFile( const std::string& path, std::shared_ptr<ThreadPool> pool,
+	bool loadAsyncFromFile( const String& path, std::shared_ptr<ThreadPool> pool,
 							std::function<void( std::shared_ptr<TextDocument>, bool )> onLoaded =
 								std::function<void( std::shared_ptr<TextDocument>, bool )>() );
 
 	TextDocument::LoadStatus loadFromURL(
-		const std::string& url,
+		const String& url,
 		const EE::Network::Http::Request::FieldTable& headers = Http::Request::FieldTable() );
 
-	bool loadAsyncFromURL( const std::string& url,
+	bool loadAsyncFromURL( const String& url,
 						   const Http::Request::FieldTable& headers = Http::Request::FieldTable(),
 						   std::function<void( std::shared_ptr<TextDocument>, bool )> onLoaded =
 							   std::function<void( std::shared_ptr<TextDocument>, bool )>() );
 
 	bool save();
 
-	bool save( const std::string& path );
+	bool save( const String& path );
 
 	bool save( IOStreamFile& stream );
 
@@ -343,22 +343,22 @@ class EE_API UICodeEditor : public UIWidget, public TextDocument::Client {
 
 	void setKeyBindings( const KeyBindings& keyBindings );
 
-	void addKeyBindingString( const std::string& shortcut, const std::string& command,
+	void addKeyBindingString( const String& shortcut, const String& command,
 							  const bool& allowLocked = false );
 
-	void addKeyBinding( const KeyBindings::Shortcut& shortcut, const std::string& command,
+	void addKeyBinding( const KeyBindings::Shortcut& shortcut, const String& command,
 						const bool& allowLocked = false );
 
-	void replaceKeyBindingString( const std::string& shortcut, const std::string& command,
+	void replaceKeyBindingString( const String& shortcut, const String& command,
 								  const bool& allowLocked = false );
 
-	void replaceKeyBinding( const KeyBindings::Shortcut& shortcut, const std::string& command,
+	void replaceKeyBinding( const KeyBindings::Shortcut& shortcut, const String& command,
 							const bool& allowLocked = false );
 
-	void addKeyBindsString( const std::map<std::string, std::string>& binds,
+	void addKeyBindsString( const std::map<String, String>& binds,
 							const bool& allowLocked = false );
 
-	void addKeyBinds( const std::map<KeyBindings::Shortcut, std::string>& binds,
+	void addKeyBinds( const std::map<KeyBindings::Shortcut, String>& binds,
 					  const bool& allowLocked = false );
 
 	const bool& getHighlightCurrentLine() const;
@@ -370,15 +370,15 @@ class EE_API UICodeEditor : public UIWidget, public TextDocument::Client {
 	/** Set to 0 to hide. */
 	void setLineBreakingColumn( const Uint32& lineBreakingColumn );
 
-	void addUnlockedCommand( const std::string& command );
+	void addUnlockedCommand( const String& command );
 
-	void addUnlockedCommands( const std::vector<std::string>& commands );
+	void addUnlockedCommands( const std::vector<String>& commands );
 
-	bool isUnlockedCommand( const std::string& command );
+	bool isUnlockedCommand( const String& command );
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;
@@ -697,9 +697,9 @@ class EE_API UICodeEditor : public UIWidget, public TextDocument::Client {
 
 	void setJumpLinesLength( size_t jumpLinesLength );
 
-	std::string getFileLockIconName() const;
+	String getFileLockIconName() const;
 
-	void setFileLockIconName( const std::string& fileLockIconName );
+	void setFileLockIconName( const String& fileLockIconName );
 
 	bool getDisplayLockedIcon() const;
 
@@ -831,9 +831,9 @@ class EE_API UICodeEditor : public UIWidget, public TextDocument::Client {
 	SyntaxColorScheme mColorScheme;
 	UIScrollBar* mVScrollBar;
 	UIScrollBar* mHScrollBar;
-	UnorderedMap<size_t, LastXOffset> mLastXOffset;
+	HashMap<size_t, LastXOffset> mLastXOffset;
 	KeyBindings mKeyBindings;
-	std::unordered_set<std::string> mUnlockedCmd;
+	std::unordered_set<String> mUnlockedCmd;
 	Clock mLastDoubleClick;
 	Uint32 mLineBreakingColumn{ 100 };
 	TextRange mMatchingBrackets;
@@ -870,7 +870,7 @@ class EE_API UICodeEditor : public UIWidget, public TextDocument::Client {
 	Text mLineTextCache;
 	size_t mJumpLinesLength{ 5 };
 	UIIcon* mFileLockIcon{ nullptr };
-	std::string mFileLockIconName{ "file-lock-fill" };
+	String mFileLockIconName{ "file-lock-fill" };
 	LineWrapType mLineWrapType{ LineWrapType::Viewport };
 	Drawable* mFoldDrawable{ nullptr };
 	Drawable* mFoldedDrawable{ nullptr };
@@ -878,7 +878,7 @@ class EE_API UICodeEditor : public UIWidget, public TextDocument::Client {
 	Uint32 mTabIndentCharacter{ 187 /*'»'*/ };
 	CharacterAlignment mTabIndentAlignment{ CharacterAlignment::Center };
 
-	UICodeEditor( const std::string& elementTag, const bool& autoRegisterBaseCommands = true,
+	UICodeEditor( const String& elementTag, const bool& autoRegisterBaseCommands = true,
 				  const bool& autoRegisterBaseKeybindings = true );
 
 	void checkMatchingBrackets();
@@ -1031,12 +1031,12 @@ class EE_API UICodeEditor : public UIWidget, public TextDocument::Client {
 
 	void udpateGlyphWidth();
 
-	Drawable* findIcon( const std::string& name );
+	Drawable* findIcon( const String& name );
 
 	void createDefaultContextMenuOptions( UIPopUpMenu* menu );
 
-	UIMenuItem* menuAdd( UIPopUpMenu* menu, const String& translateString, const std::string& icon,
-						 const std::string& cmd );
+	UIMenuItem* menuAdd( UIPopUpMenu* menu, const String& translateString, const String& icon,
+						 const String& cmd );
 
 	void drawMinimap( const Vector2f& start, const DocumentLineRange& docLineRange,
 					  const DocumentViewLineRange& visibleLineRange );

@@ -256,7 +256,7 @@ bool UIScrollView::isTouchOverAllowedChilds() {
 	return isMouseOverMeOrChilds() && mScrollView->isMouseOverMeOrChilds() && ret;
 }
 
-std::string UIScrollView::getPropertyString( const PropertyDefinition* propertyDef,
+String UIScrollView::getPropertyString( const PropertyDefinition* propertyDef,
 											 const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -294,7 +294,7 @@ bool UIScrollView::applyProperty( const StyleSheetProperty& attribute ) {
 
 	switch ( attribute.getPropertyDefinition()->getPropertyId() ) {
 		case PropertyId::ScrollBarMode: {
-			std::string val( attribute.asString() );
+			String val( attribute.asString() );
 			String::toLowerInPlace( val );
 			if ( "inclusive" == val || "inside" == val )
 				setViewType( Inclusive );
@@ -303,7 +303,7 @@ bool UIScrollView::applyProperty( const StyleSheetProperty& attribute ) {
 			break;
 		}
 		case PropertyId::VScrollMode: {
-			std::string val( attribute.asString() );
+			String val( attribute.asString() );
 			String::toLowerInPlace( val );
 
 			if ( "on" == val )
@@ -315,7 +315,7 @@ bool UIScrollView::applyProperty( const StyleSheetProperty& attribute ) {
 			break;
 		}
 		case PropertyId::HScrollMode: {
-			std::string val( attribute.asString() );
+			String val( attribute.asString() );
 			String::toLowerInPlace( val );
 
 			if ( "on" == val )
@@ -327,7 +327,7 @@ bool UIScrollView::applyProperty( const StyleSheetProperty& attribute ) {
 			break;
 		}
 		case PropertyId::ScrollBarStyle: {
-			std::string val( attribute.asString() );
+			String val( attribute.asString() );
 			String::toLowerInPlace( val );
 
 			if ( "no-buttons" == val || "nobuttons" == val ) {

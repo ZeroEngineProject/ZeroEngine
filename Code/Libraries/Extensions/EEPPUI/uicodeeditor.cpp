@@ -36,7 +36,7 @@ UICodeEditor* UICodeEditor::NewOpt( const bool& autoRegisterBaseCommands,
 	return eeNew( UICodeEditor, ( autoRegisterBaseCommands, autoRegisterBaseKeybindings ) );
 }
 
-const std::map<KeyBindings::Shortcut, std::string> UICodeEditor::getDefaultKeybindings() {
+const std::map<KeyBindings::Shortcut, String> UICodeEditor::getDefaultKeybindings() {
 	return {
 		{ { KEY_BACKSPACE, KeyMod::getDefaultModifier() }, "delete-to-previous-word" },
 		{ { KEY_BACKSPACE, KEYMOD_SHIFT }, "delete-to-previous-char" },
@@ -114,7 +114,7 @@ const std::map<KeyBindings::Shortcut, std::string> UICodeEditor::getDefaultKeybi
 	};
 }
 
-UICodeEditor::UICodeEditor( const std::string& elementTag, const bool& autoRegisterBaseCommands,
+UICodeEditor::UICodeEditor( const String& elementTag, const bool& autoRegisterBaseCommands,
 							const bool& autoRegisterBaseKeybindings ) :
 	UIWidget( elementTag ),
 	mFont( FontManager::instance()->getByName( "monospace" ) ),
@@ -471,7 +471,7 @@ void UICodeEditor::reset() {
 	invalidateDraw();
 }
 
-TextDocument::LoadStatus UICodeEditor::loadFromFile( const std::string& path ) {
+TextDocument::LoadStatus UICodeEditor::loadFromFile( const String& path ) {
 	auto ret = mDoc->loadFromFile( path );
 	if ( ret == TextDocument::LoadStatus::Loaded ) {
 		onDocumentLoaded();
@@ -480,7 +480,7 @@ TextDocument::LoadStatus UICodeEditor::loadFromFile( const std::string& path ) {
 }
 
 bool UICodeEditor::loadAsyncFromFile(
-	const std::string& path, std::shared_ptr<ThreadPool> pool,
+	const String& path, std::shared_ptr<ThreadPool> pool,
 	std::function<void( std::shared_ptr<TextDocument>, bool )> onLoaded ) {
 	bool wasLocked = isLocked();
 	if ( !wasLocked )
@@ -518,7 +518,7 @@ bool UICodeEditor::loadAsyncFromFile(
 	return ret;
 }
 
-TextDocument::LoadStatus UICodeEditor::loadFromURL( const std::string& url,
+TextDocument::LoadStatus UICodeEditor::loadFromURL( const String& url,
 													const Http::Request::FieldTable& headers ) {
 	auto ret = mDoc->loadFromURL( url, headers );
 	if ( ret == TextDocument::LoadStatus::Loaded ) {
@@ -528,7 +528,7 @@ TextDocument::LoadStatus UICodeEditor::loadFromURL( const std::string& url,
 }
 
 bool UICodeEditor::loadAsyncFromURL(
-	const std::string& url, const Http::Request::FieldTable& headers,
+	const String& url, const Http::Request::FieldTable& headers,
 	std::function<void( std::shared_ptr<TextDocument>, bool )> onLoaded ) {
 	bool wasLocked = isLocked();
 	if ( !wasLocked )
@@ -566,7 +566,7 @@ bool UICodeEditor::save() {
 	return mDoc->save();
 }
 
-bool UICodeEditor::save( const std::string& path ) {
+bool UICodeEditor::save( const String& path ) {
 	return mDoc->save( path );
 }
 
@@ -1120,7 +1120,7 @@ Uint32 UICodeEditor::onKeyDown( const KeyEvent& event ) {
 		if ( plugin->onKeyDown( this, event ) )
 			return 1;
 
-	std::string cmd = mKeyBindings.getCommandFromKeyBind( { event.getKeyCode(), event.getMod() } );
+	String cmd = mKeyBindings.getCommandFromKeyBind( { event.getKeyCode(), event.getMod() } );
 	if ( !cmd.empty() ) {
 		// Allow copy selection on locked mode
 		if ( !mLocked || mUnlockedCmd.find( cmd ) != mUnlockedCmd.end() ) {
@@ -1200,7 +1200,7 @@ Sizef UICodeEditor::getMaxScroll() const {
 }
 
 UIMenuItem* UICodeEditor::menuAdd( UIPopUpMenu* menu, const String& translateString,
-								   const std::string& icon, const std::string& cmd ) {
+								   const String& icon, const String& cmd ) {
 	UIMenuItem* menuItem =
 		menu->add( translateString, findIcon( icon ), mKeyBindings.getCommandKeybindString( cmd ) );
 	menuItem->setId( cmd );
@@ -1291,7 +1291,7 @@ bool UICodeEditor::onCreateContextMenu( const Vector2i& position, const Uint32& 
 			if ( !event->getNode()->isType( UI_TYPE_MENUITEM ) )
 				return;
 			UIMenuItem* item = event->getNode()->asType<UIMenuItem>();
-			std::string txt( item->getId() );
+			String txt( item->getId() );
 			mDoc->execute( txt, editor );
 			menu->hide();
 		} );
@@ -2378,21 +2378,21 @@ void UICodeEditor::setKeyBindings( const KeyBindings& keyBindings ) {
 	mKeyBindings = keyBindings;
 }
 
-void UICodeEditor::addKeyBindingString( const std::string& shortcut, const std::string& command,
+void UICodeEditor::addKeyBindingString( const String& shortcut, const String& command,
 										const bool& allowLocked ) {
 	mKeyBindings.addKeybindString( shortcut, command );
 	if ( allowLocked )
 		mUnlockedCmd.insert( command );
 }
 
-void UICodeEditor::addKeyBinding( const KeyBindings::Shortcut& shortcut, const std::string& command,
+void UICodeEditor::addKeyBinding( const KeyBindings::Shortcut& shortcut, const String& command,
 								  const bool& allowLocked ) {
 	mKeyBindings.addKeybind( shortcut, command );
 	if ( allowLocked )
 		mUnlockedCmd.insert( command );
 }
 
-void UICodeEditor::replaceKeyBindingString( const std::string& shortcut, const std::string& command,
+void UICodeEditor::replaceKeyBindingString( const String& shortcut, const String& command,
 											const bool& allowLocked ) {
 	mKeyBindings.replaceKeybindString( shortcut, command );
 	if ( allowLocked )
@@ -2400,13 +2400,13 @@ void UICodeEditor::replaceKeyBindingString( const std::string& shortcut, const s
 }
 
 void UICodeEditor::replaceKeyBinding( const KeyBindings::Shortcut& shortcut,
-									  const std::string& command, const bool& allowLocked ) {
+									  const String& command, const bool& allowLocked ) {
 	mKeyBindings.replaceKeybind( shortcut, command );
 	if ( allowLocked )
 		mUnlockedCmd.insert( command );
 }
 
-void UICodeEditor::addKeyBindsString( const std::map<std::string, std::string>& binds,
+void UICodeEditor::addKeyBindsString( const std::map<String, String>& binds,
 									  const bool& allowLocked ) {
 	mKeyBindings.addKeybindsString( binds );
 	for ( const auto& bind : binds ) {
@@ -2416,7 +2416,7 @@ void UICodeEditor::addKeyBindsString( const std::map<std::string, std::string>& 
 	}
 }
 
-void UICodeEditor::addKeyBinds( const std::map<KeyBindings::Shortcut, std::string>& binds,
+void UICodeEditor::addKeyBinds( const std::map<KeyBindings::Shortcut, String>& binds,
 								const bool& allowLocked ) {
 	mKeyBindings.addKeybinds( binds );
 	for ( const auto& bind : binds ) {
@@ -2454,15 +2454,15 @@ void UICodeEditor::setLineBreakingColumn( const Uint32& lineBreakingColumn ) {
 	}
 }
 
-void UICodeEditor::addUnlockedCommand( const std::string& command ) {
+void UICodeEditor::addUnlockedCommand( const String& command ) {
 	mUnlockedCmd.insert( command );
 }
 
-void UICodeEditor::addUnlockedCommands( const std::vector<std::string>& commands ) {
+void UICodeEditor::addUnlockedCommands( const std::vector<String>& commands ) {
 	mUnlockedCmd.insert( commands.begin(), commands.end() );
 }
 
-bool UICodeEditor::isUnlockedCommand( const std::string& command ) {
+bool UICodeEditor::isUnlockedCommand( const String& command ) {
 	return mUnlockedCmd.find( command ) != mUnlockedCmd.end();
 }
 
@@ -2625,7 +2625,7 @@ bool UICodeEditor::applyProperty( const StyleSheetProperty& attribute ) {
 	return true;
 }
 
-std::string UICodeEditor::getPropertyString( const PropertyDefinition* propertyDef,
+String UICodeEditor::getPropertyString( const PropertyDefinition* propertyDef,
 											 const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -2731,7 +2731,7 @@ void UICodeEditor::setEnableColorPickerOnSelection( const bool& enableColorPicke
 void UICodeEditor::setSyntaxDefinition( const SyntaxDefinition& definition ) {
 	if ( &definition == &mDoc->getSyntaxDefinition() )
 		return;
-	std::string oldLang( mDoc->getSyntaxDefinition().getLanguageName() );
+	String oldLang( mDoc->getSyntaxDefinition().getLanguageName() );
 	mDoc->getHighlighter()->reset();
 	mDoc->setSyntaxDefinition( definition );
 	if ( mMinimapEnabled && getUISceneNode()->hasThreadPool() ) {
@@ -2747,7 +2747,7 @@ void UICodeEditor::setSyntaxDefinition( const SyntaxDefinition& definition ) {
 }
 
 void UICodeEditor::resetSyntaxDefinition() {
-	std::string oldLang( mDoc->getSyntaxDefinition().getLanguageName() );
+	String oldLang( mDoc->getSyntaxDefinition().getLanguageName() );
 	mDoc->resetSyntax();
 	if ( oldLang != mDoc->getSyntaxDefinition().getLanguageName() ) {
 		mDoc->getHighlighter()->reset();
@@ -2961,7 +2961,7 @@ void UICodeEditor::udpateGlyphWidth() {
 	invalidateLongestLineWidth();
 }
 
-Drawable* UICodeEditor::findIcon( const std::string& name ) {
+Drawable* UICodeEditor::findIcon( const String& name ) {
 	UIIcon* icon = getUISceneNode()->findIcon( name );
 	if ( icon )
 		return icon->getSize( mMenuIconSize );
@@ -3154,11 +3154,11 @@ void UICodeEditor::setJumpLinesLength( size_t jumpLinesLength ) {
 	mJumpLinesLength = jumpLinesLength;
 }
 
-std::string UICodeEditor::getFileLockIconName() const {
+String UICodeEditor::getFileLockIconName() const {
 	return mFileLockIconName;
 }
 
-void UICodeEditor::setFileLockIconName( const std::string& fileLockIconName ) {
+void UICodeEditor::setFileLockIconName( const String& fileLockIconName ) {
 	if ( mFileLockIconName != fileLockIconName ) {
 		mFileLockIconName = fileLockIconName;
 		mFileLockIcon = nullptr;
@@ -4036,7 +4036,7 @@ static Int64 getLineSpaces( TextDocument& doc, int line, int dir, int indentSize
 	if ( text.size() <= 1 )
 		return -1;
 	auto s = text.find_first_not_of( " \t\n" );
-	if ( s == std::string::npos )
+	if ( s == String::npos )
 		return -getLineSpaces( doc, line + dir, dir, indentSize );
 	int n = 0;
 	for ( size_t i = 0; i < s; ++i )
@@ -4045,7 +4045,7 @@ static Int64 getLineSpaces( TextDocument& doc, int line, int dir, int indentSize
 }
 
 static Int64 getLineIndentGuideSpaces( TextDocument& doc, int line, int indentSize ) {
-	if ( doc.line( line ).getText().find_first_not_of( " \t\n" ) == std::string::npos )
+	if ( doc.line( line ).getText().find_first_not_of( " \t\n" ) == String::npos )
 		return eemax( getLineSpaces( doc, line - 1, -1, indentSize ),
 					  getLineSpaces( doc, line + 1, 1, indentSize ) );
 	return getLineSpaces( doc, line, 0, indentSize );
@@ -4183,7 +4183,7 @@ void UICodeEditor::onCursorPosChange() {
 		mDocView.ensureCursorVisibility();
 }
 
-static bool checkHexa( const std::string& hexStr ) {
+static bool checkHexa( const String& hexStr ) {
 	for ( size_t i = 1; i < hexStr.size(); ++i )
 		if ( !isxdigit( hexStr[i] ) )
 			return false;
@@ -4218,7 +4218,7 @@ void UICodeEditor::checkMouseOverColor( const Vector2i& position ) {
 				   "hsla" == word || "hsva" == word ) ) {
 				const String& text = mDoc->line( start.line() ).getText();
 				size_t endFun = String::findCloseBracket( text, end.column(), '(', ')' );
-				if ( endFun != std::string::npos ) {
+				if ( endFun != String::npos ) {
 					word = word + text.substr( end.column(), endFun - end.column() + 1 );
 					if ( word.find( "--" ) == String::InvalidPos ) {
 						found = true;
@@ -4270,7 +4270,7 @@ String UICodeEditor::checkMouseOverLink( const Vector2i& position ) {
 
 	LuaPattern words( LuaPattern::getURIPattern() );
 	int start, end = 0;
-	std::string linkStr( partialLine.toUtf8() );
+	String linkStr( partialLine.toUtf8() );
 
 	int offset = 0;
 	std::vector<std::pair<int, int>> links;
@@ -4852,7 +4852,7 @@ bool UICodeEditor::checkAutoCloseXMLTag( const String& text ) {
 	size_t foundOpenPos = line.find_last_of( "<", start.column() - 1 );
 	if ( foundOpenPos == String::InvalidPos || start.column() - foundOpenPos < 1 )
 		return false;
-	std::string tag( line.substr( foundOpenPos, start.column() - foundOpenPos ).toUtf8() );
+	String tag( line.substr( foundOpenPos, start.column() - foundOpenPos ).toUtf8() );
 	LuaPattern pattern( "<([%w_%-]+).*>" );
 	auto match = pattern.gmatch( tag );
 	if ( match.matches() && !isAlreadyClosedTag( mDoc.get(), start ) ) {

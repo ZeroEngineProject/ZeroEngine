@@ -6,7 +6,7 @@
 
 namespace EE { namespace UI { namespace Models {
 
-class EE_API SortingProxyModel final : public Model, private Model::Client {
+class ZeroShared SortingProxyModel final : public Model, private Model::Client {
   public:
 	template <typename T>
 	static std::shared_ptr<SortingProxyModel> New( std::shared_ptr<T> model ) {
@@ -20,7 +20,7 @@ class EE_API SortingProxyModel final : public Model, private Model::Client {
 
 	virtual size_t columnCount( const ModelIndex& = ModelIndex() ) const;
 
-	virtual std::string columnName( const size_t& ) const;
+	virtual String columnName( const size_t& ) const;
 
 	virtual Variant data( const ModelIndex& proxyIndex, ModelRole role = ModelRole::Display ) const;
 
@@ -64,7 +64,7 @@ class EE_API SortingProxyModel final : public Model, private Model::Client {
 		ModelIndex sourceParent;
 	};
 
-	using InternalMapIterator = UnorderedMap<ModelIndex, std::shared_ptr<Mapping>>::iterator;
+	using InternalMapIterator = HashMap<ModelIndex, std::shared_ptr<Mapping>>::iterator;
 
 	SortingProxyModel( std::shared_ptr<Model> );
 
@@ -85,7 +85,7 @@ class EE_API SortingProxyModel final : public Model, private Model::Client {
 	bool isSortingCaseSensitive();
 
 	std::shared_ptr<Model> mSource;
-	UnorderedMap<ModelIndex, std::shared_ptr<Mapping>> mMappings;
+	HashMap<ModelIndex, std::shared_ptr<Mapping>> mMappings;
 	int mKeyColumn{ -1 };
 	SortOrder mSortOrder{ SortOrder::Ascending };
 	ModelRole mSortRole{ ModelRole::Sort };

@@ -5,10 +5,10 @@ using namespace EE::System;
 
 namespace EE { namespace UI { namespace CSS {
 
-TimingFunction TimingFunction::parse( std::string timingFunction ) {
+TimingFunction TimingFunction::parse( String timingFunction ) {
 	String::trimInPlace( timingFunction );
 	String::toLowerInPlace( timingFunction );
-	if ( timingFunction.find_first_of( '(' ) == std::string::npos ) {
+	if ( timingFunction.find_first_of( '(' ) == String::npos ) {
 		return { Ease::fromName( timingFunction ), {} };
 	} else {
 		TimingFunction tf;

@@ -29,48 +29,48 @@ struct StructuralSelector {
 	FunctionString data;
 };
 
-class EE_API StyleSheetSpecification {
+class ZeroShared StyleSheetSpecification {
 	SINGLETON_DECLARE_HEADERS( StyleSheetSpecification )
   public:
 	StyleSheetSpecification();
 
 	~StyleSheetSpecification();
 
-	PropertyDefinition& registerProperty( const std::string& propertyVame,
-										  const std::string& defaultValue, bool inherited = false );
+	PropertyDefinition& registerProperty( const String& propertyVame,
+										  const String& defaultValue, bool inherited = false );
 
 	const PropertyDefinition* getProperty( const Uint32& id ) const;
 
-	const PropertyDefinition* getProperty( const std::string& name ) const;
+	const PropertyDefinition* getProperty( const String& name ) const;
 
-	ShorthandDefinition& registerShorthand( const std::string& name,
-											const std::vector<std::string>& properties,
-											const std::string& shorthandFuncName );
+	ShorthandDefinition& registerShorthand( const String& name,
+											const std::vector<String>& properties,
+											const String& shorthandFuncName );
 
 	const ShorthandDefinition* getShorthand( const Uint32& id ) const;
 
-	const ShorthandDefinition* getShorthand( const std::string& name ) const;
+	const ShorthandDefinition* getShorthand( const String& name ) const;
 
 	bool isShorthand( const Uint32& id ) const;
 
-	bool isShorthand( const std::string& name ) const;
+	bool isShorthand( const String& name ) const;
 
-	void registerNodeSelector( const std::string& name, StyleSheetNodeSelector nodeSelector );
+	void registerNodeSelector( const String& name, StyleSheetNodeSelector nodeSelector );
 
-	StructuralSelector getStructuralSelector( const std::string& name );
+	StructuralSelector getStructuralSelector( const String& name );
 
-	void registerShorthandParser( const std::string& name,
+	void registerShorthandParser( const String& name,
 								  ShorthandParserFunc shorthandParserFunc );
 
-	ShorthandParserFunc getShorthandParser( const std::string& name );
+	ShorthandParserFunc getShorthandParser( const String& name );
 
 	DrawableImageParser& getDrawableImageParser();
 
   protected:
 	PropertySpecification* mPropertySpecification;
 	DrawableImageParser mDrawableImageParser;
-	UnorderedMap<std::string, ShorthandParserFunc> mShorthandParsers;
-	UnorderedMap<std::string, StyleSheetNodeSelector> mNodeSelectors;
+	HashMap<String, ShorthandParserFunc> mShorthandParsers;
+	HashMap<String, StyleSheetNodeSelector> mNodeSelectors;
 
 	void registerDefaultShorthandParsers();
 

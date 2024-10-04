@@ -7,7 +7,7 @@ namespace EE { namespace UI {
 
 class UISkin;
 
-class EE_API UISkinState : public UIState {
+class ZeroShared UISkinState : public UIState {
   public:
 	static UISkinState* New( UISkin* skin );
 

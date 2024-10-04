@@ -18,13 +18,13 @@ namespace EE { namespace UI { namespace CSS {
 
 enum class AnimationOrigin : uint8_t { User, Animation, Transition };
 
-class EE_API StyleSheetPropertyAnimation : public Action {
+class ZeroShared StyleSheetPropertyAnimation : public Action {
   public:
 	static constexpr String::HashType ID = String::hash( "StyleSheetPropertyAnimation" );
 
 	static void tweenProperty( UIWidget* widget, const Float& normalizedProgress,
-							   const PropertyDefinition* property, const std::string& startValue,
-							   const std::string& endValue,
+							   const PropertyDefinition* property, const String& startValue,
+							   const String& endValue,
 							   const Ease::Interpolation& timingFunction,
 							   const std::vector<double> timingFunctionParameters,
 							   const Uint32& propertyIndex, const bool& isDone );
@@ -38,12 +38,12 @@ class EE_API StyleSheetPropertyAnimation : public Action {
 
 	static StyleSheetPropertyAnimation*
 	New( const AnimationDefinition& animation, const PropertyDefinition* propertyDef,
-		 std::vector<std::string> states, std::vector<Float> animationStepsTime,
+		 std::vector<String> states, std::vector<Float> animationStepsTime,
 		 const Uint32& propertyIndex, const AnimationOrigin& animationOrigin );
 
 	static StyleSheetPropertyAnimation*
-	New( const PropertyDefinition* property, const std::string& startValue,
-		 const std::string& endValue, const Uint32& propertyIndex, const Time& duration,
+	New( const PropertyDefinition* property, const String& startValue,
+		 const String& endValue, const Uint32& propertyIndex, const Time& duration,
 		 const Time& delay, const Ease::Interpolation& timingFunction,
 		 const std::vector<double>& timingFunctionParameters,
 		 const AnimationOrigin& animationOrigin );
@@ -66,9 +66,9 @@ class EE_API StyleSheetPropertyAnimation : public Action {
 
 	const Uint32& getPropertyIndex() const;
 
-	const std::string& getStartValue() const;
+	const String& getStartValue() const;
 
-	const std::string& getEndValue() const;
+	const String& getEndValue() const;
 
 	const Time& getElapsed() const;
 
@@ -87,19 +87,19 @@ class EE_API StyleSheetPropertyAnimation : public Action {
   protected:
 	AnimationDefinition mAnimation;
 	const PropertyDefinition* mPropertyDef;
-	std::vector<std::string> mStates;
+	std::vector<String> mStates;
 	std::vector<Float> mAnimationStepsTime;
 	Time mRealElapsed;
 	Time mElapsed;
 	Int32 mPendingIterations;
 	Uint32 mPropertyIndex;
-	std::string mFillModeValue;
+	String mFillModeValue;
 	AnimationOrigin mAnimationOrigin;
 	bool mPaused;
 
 	StyleSheetPropertyAnimation( const AnimationDefinition& animation,
 								 const PropertyDefinition* propertyDef,
-								 std::vector<std::string> states,
+								 std::vector<String> states,
 								 std::vector<Float> animationStepsTime, const Uint32& propertyIndex,
 								 const AnimationOrigin& animationOrigin );
 

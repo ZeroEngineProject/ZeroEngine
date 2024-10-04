@@ -284,7 +284,7 @@ void UIViewPager::onMouseUpEvent() {
 	}
 }
 
-std::string UIViewPager::getPropertyString( const PropertyDefinition* propertyDef,
+String UIViewPager::getPropertyString( const PropertyDefinition* propertyDef,
 											const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -328,7 +328,7 @@ bool UIViewPager::applyProperty( const StyleSheetProperty& attribute ) {
 
 	switch ( attribute.getPropertyDefinition()->getPropertyId() ) {
 		case PropertyId::Orientation: {
-			std::string val = attribute.asString();
+			String val = attribute.asString();
 			String::toLowerInPlace( val );
 
 			if ( "horizontal" == val )

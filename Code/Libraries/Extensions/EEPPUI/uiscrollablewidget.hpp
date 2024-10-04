@@ -7,7 +7,7 @@ namespace EE { namespace UI {
 
 class UIScrollBar;
 
-class EE_API UIScrollableWidget : public UIWidget {
+class ZeroShared UIScrollableWidget : public UIWidget {
   public:
 	enum ScrollViewType { Inclusive, Exclusive };
 
@@ -35,7 +35,7 @@ class EE_API UIScrollableWidget : public UIWidget {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;
@@ -74,7 +74,7 @@ class EE_API UIScrollableWidget : public UIWidget {
 	Vector2f mScrollOffset;
 	bool mAutoSetClipStep{ true };
 
-	UIScrollableWidget( const std::string& tag );
+	UIScrollableWidget( const String& tag );
 
 	virtual Uint32 onMessage( const NodeMessage* Msg );
 

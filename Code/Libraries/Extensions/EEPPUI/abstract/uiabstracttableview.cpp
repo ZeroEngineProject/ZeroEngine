@@ -11,7 +11,7 @@
 
 namespace EE { namespace UI { namespace Abstract {
 
-UIAbstractTableView::UIAbstractTableView( const std::string& tag ) :
+UIAbstractTableView::UIAbstractTableView( const String& tag ) :
 	UIAbstractView( tag ),
 	mDragBorderDistance( PixelDensity::dpToPx( 4 ) ),
 	mIconSize( PixelDensity::dpToPxI( 12 ) ),
@@ -587,7 +587,7 @@ UIWidget* UIAbstractTableView::updateCell( const Vector2<Int64>& posIndex, const
 			Variant cls( getModel()->data( index, ModelRole::Class ) );
 			cell->setLoadingState( true );
 			if ( cls.isValid() ) {
-				std::string clsStr( cls.toString() );
+				String clsStr( cls.toString() );
 				needsReloadStyle = cell->getClasses().empty() || cell->getClasses().size() != 1 ||
 								   clsStr != cell->getClasses()[0];
 				cell->setClass( clsStr );
@@ -773,7 +773,7 @@ void UIAbstractTableView::onSortColumn( const size_t& colIndex ) {
 																		 : SortOrder::Ascending;
 		UIPushButton* button = columnData( colIndex ).widget;
 		UIImage* image = button->getExtraInnerWidget()->asType<UIImage>();
-		std::string tag = button->getElementTag() + "::arrow";
+		String tag = button->getElementTag() + "::arrow";
 		image->setElementTag( sortOrder == SortOrder::Ascending ? tag + "-up" : tag + "-down" );
 		image->setForegroundFillEnabled( true );
 		image->reloadStyle();
@@ -871,7 +871,7 @@ bool UIAbstractTableView::applyProperty( const StyleSheetProperty& attribute ) {
 	return true;
 }
 
-std::string UIAbstractTableView::getPropertyString( const PropertyDefinition* propertyDef,
+String UIAbstractTableView::getPropertyString( const PropertyDefinition* propertyDef,
 													const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";

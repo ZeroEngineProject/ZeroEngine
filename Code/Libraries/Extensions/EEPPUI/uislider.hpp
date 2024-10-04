@@ -5,21 +5,21 @@
 
 namespace EE { namespace UI {
 
-class EE_API UISlider : public UIWidget {
+class ZeroShared UISlider : public UIWidget {
   public:
 	static UISlider* New();
 
-	static UISlider* NewWithTag( const std::string& tag, const UIOrientation& orientation );
+	static UISlider* NewWithTag( const String& tag, const UIOrientation& orientation );
 
 	static UISlider* NewVertical();
 
 	static UISlider* NewHorizontal();
 
-	static UISlider* NewVerticalWithTag( const std::string& tag );
+	static UISlider* NewVerticalWithTag( const String& tag );
 
-	static UISlider* NewHorizontalWithTag( const std::string& tag );
+	static UISlider* NewHorizontalWithTag( const String& tag );
 
-	UISlider( const std::string& tag,
+	UISlider( const String& tag,
 			  const UIOrientation& orientation = UIOrientation::Horizontal );
 
 	virtual ~UISlider();
@@ -58,7 +58,7 @@ class EE_API UISlider : public UIWidget {
 
 	UIOrientation getOrientation() const;
 
-	UISlider* setOrientation( const UIOrientation& orientation, std::string childsBaseTag = "" );
+	UISlider* setOrientation( const UIOrientation& orientation, String childsBaseTag = "" );
 
 	bool getAllowHalfSliderOut() const;
 
@@ -74,7 +74,7 @@ class EE_API UISlider : public UIWidget {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

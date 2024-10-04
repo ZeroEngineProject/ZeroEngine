@@ -5,7 +5,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UILayout : public UIWidget {
+class ZeroShared UILayout : public UIWidget {
   public:
 	virtual Uint32 getType() const;
 
@@ -29,7 +29,7 @@ class EE_API UILayout : public UIWidget {
 	bool mPacking{ false };
 	bool mGravityOwner{ false };
 
-	explicit UILayout( const std::string& tag );
+	explicit UILayout( const String& tag );
 
 	virtual void onSizeChange();
 

@@ -86,7 +86,7 @@ void UIStyle::setStyleSheetProperties( const CSS::StyleSheetProperties& properti
 	}
 }
 
-bool UIStyle::hasTransition( const std::string& propertyName ) {
+bool UIStyle::hasTransition( const String& propertyName ) {
 	return mTransitions.find( propertyName ) != mTransitions.end() ||
 		   mTransitions.find( "all" ) != mTransitions.end();
 }
@@ -111,7 +111,7 @@ bool UIStyle::hasAnimation( const PropertyDefinition* propertyDef ) {
 	return NULL != getAnimation( propertyDef );
 }
 
-TransitionDefinition UIStyle::getTransition( const std::string& propertyName ) {
+TransitionDefinition UIStyle::getTransition( const String& propertyName ) {
 	auto propertyTransitionIt = mTransitions.find( propertyName );
 
 	if ( propertyTransitionIt != mTransitions.end() ) {
@@ -127,7 +127,7 @@ const bool& UIStyle::isChangingState() const {
 	return mChangingState;
 }
 
-StyleSheetVariable UIStyle::getVariable( const std::string& variable ) {
+StyleSheetVariable UIStyle::getVariable( const String& variable ) {
 	if ( NULL != mGlobalDefinition ) {
 		auto it = mGlobalDefinition->getVariables().find( String::hash( variable ) );
 
@@ -205,9 +205,9 @@ void UIStyle::unsubscribeRelated( UIWidget* widget ) {
 	mRelatedWidgets.erase( widget );
 }
 
-void UIStyle::setVariableFromValue( StyleSheetProperty* property, const std::string& value ) {
+void UIStyle::setVariableFromValue( StyleSheetProperty* property, const String& value ) {
 	if ( !property->getVarCache().empty() ) {
-		std::string newValue( value );
+		String newValue( value );
 		for ( auto& var : property->getVarCache() ) {
 			for ( auto& val : var.variableList ) {
 				StyleSheetVariable variable( getVariable( val ) );
@@ -419,7 +419,7 @@ void UIStyle::applyStyleSheetProperty( const StyleSheetProperty& property,
 		 ( mCurrentState == UIState::StateFlagNormal && property.isVolatile() ) ) {
 		const StyleSheetProperty* oldAttribute = getStatelessStyleSheetProperty( property.getId() );
 		if ( nullptr == oldAttribute && getPreviousState() == UIState::StateFlagNormal ) {
-			std::string value(
+			String value(
 				mWidget->getPropertyString( propertyDefinition, property.getIndex() ) );
 			if ( !value.empty() ) {
 				setStyleSheetProperty(
@@ -433,9 +433,9 @@ void UIStyle::applyStyleSheetProperty( const StyleSheetProperty& property,
 		 StyleSheetPropertyAnimation::animationSupported( propertyDefinition->getType() ) &&
 		 hasTransition( property.getName() ) &&
 		 !hasAnimation( property.getPropertyDefinition() ) ) {
-		std::string currentValue =
+		String currentValue =
 			mWidget->getPropertyString( propertyDefinition, property.getIndex() );
-		std::string startValue( currentValue );
+		String startValue( currentValue );
 
 		if ( !startValue.empty() ) {
 			// Get the real start value

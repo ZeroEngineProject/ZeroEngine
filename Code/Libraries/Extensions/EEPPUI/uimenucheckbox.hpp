@@ -5,7 +5,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIMenuCheckBox : public UIMenuItem {
+class ZeroShared UIMenuCheckBox : public UIMenuItem {
   public:
 	static UIMenuCheckBox* New();
 
@@ -27,7 +27,7 @@ class EE_API UIMenuCheckBox : public UIMenuItem {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

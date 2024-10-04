@@ -20,11 +20,11 @@ DrawableImageParser::DrawableImageParser() {
 	registerBaseParsers();
 }
 
-bool DrawableImageParser::exists( const std::string& name ) const {
+bool DrawableImageParser::exists( const String& name ) const {
 	return mFuncs.find( name ) != mFuncs.end();
 }
 
-Drawable* DrawableImageParser::createDrawable( const std::string& value, const Sizef& size,
+Drawable* DrawableImageParser::createDrawable( const String& value, const Sizef& size,
 											   bool& ownIt, UINode* node ) {
 	FunctionString functionType = FunctionString::parse( value );
 	Drawable* res = NULL;
@@ -45,7 +45,7 @@ Drawable* DrawableImageParser::createDrawable( const std::string& value, const S
 	return res;
 }
 
-void DrawableImageParser::addParser( const std::string& name,
+void DrawableImageParser::addParser( const String& name,
 									 const DrawableImageParserFunc& func ) {
 	if ( exists( name ) ) {
 		Log::warning(
@@ -66,13 +66,13 @@ void DrawableImageParser::registerBaseParsers() {
 
 		RectangleDrawable* drawable = RectangleDrawable::New();
 		RectColors rectColors;
-		const std::vector<std::string>& params( functionType.getParameters() );
+		const std::vector<String>& params( functionType.getParameters() );
 
 		if ( Color::isColorString( params.at( 0 ) ) && params.size() >= 2 ) {
 			rectColors.TopLeft = rectColors.TopRight = Color::fromString( params.at( 0 ) );
 			rectColors.BottomLeft = rectColors.BottomRight = Color::fromString( params.at( 1 ) );
 		} else if ( params.size() >= 3 ) {
-			std::string direction = params.at( 0 );
+			String direction = params.at( 0 );
 			String::toLowerInPlace( direction );
 
 			if ( direction == "to bottom" ) {
@@ -112,7 +112,7 @@ void DrawableImageParser::registerBaseParsers() {
 
 		CircleDrawable* drawable = CircleDrawable::New();
 
-		const std::vector<std::string>& params( functionType.getParameters() );
+		const std::vector<String>& params( functionType.getParameters() );
 
 		CSS::StyleSheetLength length( params[0] );
 		drawable->setRadius( node->convertLength( length, size.getWidth() / 2.f ) );
@@ -122,7 +122,7 @@ void DrawableImageParser::registerBaseParsers() {
 		}
 
 		if ( params.size() >= 3 ) {
-			std::string fillMode( String::toLower( params[2] ) );
+			String fillMode( String::toLower( params[2] ) );
 			if ( fillMode == "line" || fillMode == "solid" || fillMode == "fill" )
 				drawable->setFillMode( fillMode == "line" ? DRAW_LINE : DRAW_FILL );
 
@@ -145,23 +145,23 @@ void DrawableImageParser::registerBaseParsers() {
 		RectColors rectColors;
 		std::vector<Color> colors;
 
-		const std::vector<std::string>& params( functionType.getParameters() );
+		const std::vector<String>& params( functionType.getParameters() );
 
 		for ( size_t i = 0; i < params.size(); i++ ) {
-			std::string param( String::toLower( params[i] ) );
+			String param( String::toLower( params[i] ) );
 
 			if ( param == "solid" || param == "fill" ) {
 				drawable->setFillMode( DRAW_FILL );
 			} else if ( String::startsWith( param, "line" ) ) {
 				drawable->setFillMode( DRAW_LINE );
 
-				std::vector<std::string> parts( String::split( param, ' ' ) );
+				std::vector<String> parts( String::split( param, ' ' ) );
 
 				if ( parts.size() >= 2 ) {
 					CSS::StyleSheetLength length( parts[1] );
 					drawable->setLineWidth( node->convertLength( length, size.getWidth() ) );
 				}
-			} else if ( param.find( "º" ) != std::string::npos ) {
+			} else if ( param.find( "º" ) != String::npos ) {
 				String::replaceAll( param, "º", "" );
 				Float floatVal;
 				if ( String::fromString( floatVal, param ) ) {
@@ -207,11 +207,11 @@ void DrawableImageParser::registerBaseParsers() {
 		std::vector<Color> colors;
 		std::vector<Vector2f> vertices;
 
-		const std::vector<std::string>& params( functionType.getParameters() );
+		const std::vector<String>& params( functionType.getParameters() );
 		Float lineWidth = PixelDensity::dpToPx( 1.f );
 
 		for ( size_t i = 0; i < params.size(); i++ ) {
-			std::string param( String::toLower( params[i] ) );
+			String param( String::toLower( params[i] ) );
 
 			if ( param == "solid" || param == "fill" ) {
 				drawable->setFillMode( DRAW_FILL );
@@ -223,12 +223,12 @@ void DrawableImageParser::registerBaseParsers() {
 						StyleSheetLength::isLength( param ) ) {
 				lineWidth = node->convertLength( StyleSheetLength( param ), size.getWidth() );
 			} else {
-				std::vector<std::string> vertex( String::split( param, ',' ) );
+				std::vector<String> vertex( String::split( param, ',' ) );
 
 				if ( vertex.size() == 3 ) {
 					for ( size_t v = 0; v < vertex.size(); v++ ) {
 						String::trimInPlace( vertex[v] );
-						std::vector<std::string> coords( String::split( vertex[v], ' ' ) );
+						std::vector<String> coords( String::split( vertex[v], ' ' ) );
 
 						if ( coords.size() == 2 ) {
 							CSS::StyleSheetLength posX( coords[0] );
@@ -277,11 +277,11 @@ void DrawableImageParser::registerBaseParsers() {
 		std::vector<Color> colors;
 		std::vector<Vector2f> vertices;
 
-		const std::vector<std::string>& params( functionType.getParameters() );
+		const std::vector<String>& params( functionType.getParameters() );
 		Float lineWidth = PixelDensity::dpToPx( 1.f );
 
 		for ( size_t i = 0; i < params.size(); i++ ) {
-			std::string param( String::toLower( params[i] ) );
+			String param( String::toLower( params[i] ) );
 
 			if ( param == "solid" || param == "fill" ) {
 				drawable->setFillMode( DRAW_FILL );
@@ -293,11 +293,11 @@ void DrawableImageParser::registerBaseParsers() {
 						StyleSheetLength::isLength( param ) ) {
 				lineWidth = node->convertLength( StyleSheetLength( param ), size.getWidth() );
 			} else {
-				std::vector<std::string> vertex( String::split( param, ',' ) );
+				std::vector<String> vertex( String::split( param, ',' ) );
 
 				for ( size_t v = 0; v < vertex.size(); v++ ) {
 					vertex[v] = String::trim( vertex[v] );
-					std::vector<std::string> coords( String::split( vertex[v], ' ' ) );
+					std::vector<String> coords( String::split( vertex[v], ' ' ) );
 
 					if ( coords.size() == 2 ) {
 						CSS::StyleSheetLength posX( coords[0] );
@@ -355,7 +355,7 @@ void DrawableImageParser::registerBaseParsers() {
 		if ( font == nullptr )
 			return nullptr;
 		Uint32 codePoint = 0;
-		std::string buffer( params[1] );
+		String buffer( params[1] );
 		Uint32 value;
 		if ( functionType.parameterWasString( 2 ) ) {
 			String unicodeChar = String::fromUtf8( params[2] );

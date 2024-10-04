@@ -5,7 +5,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UITouchDraggableWidget : public UIWidget {
+class ZeroShared UITouchDraggableWidget : public UIWidget {
   public:
 	static UITouchDraggableWidget* New();
 
@@ -31,7 +31,7 @@ class EE_API UITouchDraggableWidget : public UIWidget {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;
@@ -41,7 +41,7 @@ class EE_API UITouchDraggableWidget : public UIWidget {
 	Vector2f mTouchDragAcceleration;
 	Vector2f mTouchDragDeceleration;
 
-	UITouchDraggableWidget( const std::string& tag );
+	UITouchDraggableWidget( const String& tag );
 
 	virtual void onTouchDragValueChange( Vector2f diff );
 

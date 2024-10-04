@@ -22,46 +22,46 @@ KeyBindings::Shortcut KeyBindings::sanitizeShortcut( const KeyBindings::Shortcut
 
 KeyBindings::KeyBindings( const Window::Input* input ) : mInput( input ) {}
 
-void KeyBindings::addKeybindsString( const std::map<std::string, std::string>& binds ) {
+void KeyBindings::addKeybindsString( const std::map<String, String>& binds ) {
 	for ( auto& bind : binds ) {
 		addKeybindString( bind.first, bind.second );
 	}
 }
 
-void KeyBindings::addKeybinds( const std::map<KeyBindings::Shortcut, std::string>& binds ) {
+void KeyBindings::addKeybinds( const std::map<KeyBindings::Shortcut, String>& binds ) {
 	for ( auto& bind : binds ) {
 		addKeybind( bind.first, bind.second );
 	}
 }
 
 void KeyBindings::addKeybindsStringUnordered(
-	const std::unordered_map<std::string, std::string>& binds ) {
+	const std::unordered_map<String, String>& binds ) {
 	for ( auto& bind : binds ) {
 		addKeybindString( bind.first, bind.second );
 	}
 }
 
 void KeyBindings::addKeybindsUnordered(
-	const std::unordered_map<KeyBindings::Shortcut, std::string>& binds ) {
+	const std::unordered_map<KeyBindings::Shortcut, String>& binds ) {
 	for ( auto& bind : binds ) {
 		addKeybind( bind.first, bind.second );
 	}
 }
 
-void KeyBindings::addKeybindString( const std::string& key, const std::string& command ) {
+void KeyBindings::addKeybindString( const String& key, const String& command ) {
 	addKeybind( getShortcutFromString( key ), command );
 }
 
-void KeyBindings::addKeybind( const KeyBindings::Shortcut& key, const std::string& command ) {
+void KeyBindings::addKeybind( const KeyBindings::Shortcut& key, const String& command ) {
 	mShortcuts[sanitizeShortcut( key )] = command;
 	mKeybindingsInvert[command] = sanitizeShortcut( key );
 }
 
-void KeyBindings::replaceKeybindString( const std::string& keys, const std::string& command ) {
+void KeyBindings::replaceKeybindString( const String& keys, const String& command ) {
 	replaceKeybind( getShortcutFromString( keys ), command );
 }
 
-void KeyBindings::replaceKeybind( const KeyBindings::Shortcut& keys, const std::string& command ) {
+void KeyBindings::replaceKeybind( const KeyBindings::Shortcut& keys, const String& command ) {
 	bool erased;
 	do {
 		erased = false;
@@ -77,14 +77,14 @@ void KeyBindings::replaceKeybind( const KeyBindings::Shortcut& keys, const std::
 }
 
 KeyBindings::Shortcut KeyBindings::toShortcut( const Window::Input* input,
-											   const std::string& keys ) {
+											   const String& keys ) {
 	Shortcut shortcut;
 	Uint32 mod = 0;
 	auto keysSplit = String::split( keys, '+' );
 	if ( keysSplit.size() == 1 && KeyMod::getKeyMod( keysSplit[0] ) && keys.find( "++" ) )
 		keysSplit.emplace_back( "+" );
 	if ( keysSplit.size() == 2 && KeyMod::getKeyMod( keysSplit[0] ) &&
-		 keys.find( " +" ) != std::string::npos )
+		 keys.find( " +" ) != String::npos )
 		keysSplit[1] += "+";
 	for ( auto& part : keysSplit ) {
 		if ( ( mod = KeyMod::getKeyMod( part ) ) ) {
@@ -96,7 +96,7 @@ KeyBindings::Shortcut KeyBindings::toShortcut( const Window::Input* input,
 	return shortcut;
 }
 
-KeyBindings::Shortcut KeyBindings::getShortcutFromString( const std::string& keys ) {
+KeyBindings::Shortcut KeyBindings::getShortcutFromString( const String& keys ) {
 	return toShortcut( mInput, keys );
 }
 
@@ -111,7 +111,7 @@ bool KeyBindings::existsKeybind( const KeyBindings::Shortcut& keys ) {
 	return mShortcuts.find( keys.toUint64() ) != mShortcuts.end();
 }
 
-void KeyBindings::removeCommandKeybind( const std::string& command ) {
+void KeyBindings::removeCommandKeybind( const String& command ) {
 	auto kbIt = mKeybindingsInvert.find( command );
 	if ( kbIt != mKeybindingsInvert.end() ) {
 		removeKeybind( kbIt->second );
@@ -119,12 +119,12 @@ void KeyBindings::removeCommandKeybind( const std::string& command ) {
 	}
 }
 
-void KeyBindings::removeCommandsKeybind( const std::vector<std::string>& commands ) {
+void KeyBindings::removeCommandsKeybind( const std::vector<String>& commands ) {
 	for ( auto& cmd : commands )
 		removeCommandKeybind( cmd );
 }
 
-std::string KeyBindings::getCommandFromKeyBind( const KeyBindings::Shortcut& keys ) {
+String KeyBindings::getCommandFromKeyBind( const KeyBindings::Shortcut& keys ) {
 	auto it = mShortcuts.find( sanitizeShortcut( keys ) );
 	if ( it != mShortcuts.end() ) {
 		return it->second;
@@ -132,12 +132,12 @@ std::string KeyBindings::getCommandFromKeyBind( const KeyBindings::Shortcut& key
 	return "";
 }
 
-std::string KeyBindings::keybindFormat( std::string str ) {
+String KeyBindings::keybindFormat( String str ) {
 	if ( !str.empty() ) {
 		String::replace( str, "mod", KeyMod::getDefaultModifierString() );
 		str[0] = std::toupper( str[0] );
 		size_t found = str.find_first_of( '+' );
-		while ( found != std::string::npos ) {
+		while ( found != String::npos ) {
 			if ( found + 1 < str.size() ) {
 				str[found + 1] = std::toupper( str[found + 1] );
 			}
@@ -148,7 +148,7 @@ std::string KeyBindings::keybindFormat( std::string str ) {
 	return "";
 }
 
-std::string KeyBindings::getCommandKeybindString( const std::string& command ) const {
+String KeyBindings::getCommandKeybindString( const String& command ) const {
 	auto it = mKeybindingsInvert.find( command );
 	if ( it == mKeybindingsInvert.end() )
 		return "";
@@ -164,14 +164,14 @@ const ShortcutMap& KeyBindings::getShortcutMap() const {
 	return mShortcuts;
 }
 
-const std::map<std::string, Uint64> KeyBindings::getKeybindings() const {
+const std::map<String, Uint64> KeyBindings::getKeybindings() const {
 	return mKeybindingsInvert;
 }
 
-std::string KeyBindings::fromShortcut( const Window::Input* input, KeyBindings::Shortcut shortcut,
+String KeyBindings::fromShortcut( const Window::Input* input, KeyBindings::Shortcut shortcut,
 									   bool format ) {
-	std::vector<std::string> mods;
-	std::string keyname( String::toLower( input->getKeyName( shortcut.key ) ) );
+	std::vector<String> mods;
+	String keyname( String::toLower( input->getKeyName( shortcut.key ) ) );
 	const auto& MOD_MAP = KeyMod::getModMap();
 	if ( shortcut.mod & MOD_MAP.at( "mod" ) )
 		mods.emplace_back( "mod" );
@@ -191,7 +191,7 @@ std::string KeyBindings::fromShortcut( const Window::Input* input, KeyBindings::
 	return format ? keybindFormat( ret ) : ret;
 }
 
-std::string KeyBindings::getShortcutString( KeyBindings::Shortcut shortcut, bool format ) const {
+String KeyBindings::getShortcutString( KeyBindings::Shortcut shortcut, bool format ) const {
 	return fromShortcut( mInput, shortcut, format );
 }
 

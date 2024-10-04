@@ -16,13 +16,13 @@ namespace EE { namespace UI {
 #define FDLG_MIN_HEIGHT 400
 #define FDLG_DRIVE_PATH "drives://"
 
-UIFileDialog* UIFileDialog::New( Uint32 dialogFlags, const std::string& defaultFilePattern,
-								 const std::string& defaultDirectory ) {
+UIFileDialog* UIFileDialog::New( Uint32 dialogFlags, const String& defaultFilePattern,
+								 const String& defaultDirectory ) {
 	return eeNew( UIFileDialog, ( dialogFlags, defaultFilePattern, defaultDirectory ) );
 }
 
-UIFileDialog::UIFileDialog( Uint32 dialogFlags, const std::string& defaultFilePattern,
-							const std::string& defaultDirectory ) :
+UIFileDialog::UIFileDialog( Uint32 dialogFlags, const String& defaultFilePattern,
+							const String& defaultDirectory ) :
 	UIWindow(),
 	mCurPath( FileSystem::getRealPath( defaultDirectory ) ),
 	mDialogFlags( dialogFlags ),
@@ -188,7 +188,7 @@ UIFileDialog::UIFileDialog( Uint32 dialogFlags, const std::string& defaultFilePa
 				setFileName( node->getName() );
 			}
 		} else {
-			std::string names;
+			String names;
 			for ( size_t i = 0; i < nodes.size(); i++ ) {
 				auto node = nodes[i];
 				names += node->getName() + ( ( i != nodes.size() - 1 ) ? "; " : "" );
@@ -341,7 +341,7 @@ void UIFileDialog::refreshFolder( bool resetScroll ) {
 		std::vector<String> flist = FileSystem::filesGetInPath(
 			String( mCurPath ), getSortAlphabetically(), getFoldersFirst(), !getShowHidden() );
 		std::vector<String> files;
-		std::vector<std::string> patterns;
+		std::vector<String> patterns;
 
 		if ( "*" != mFiletype->getText() ) {
 			patterns = String::split( mFiletype->getText().toUtf8(), ';' );
@@ -395,7 +395,7 @@ void UIFileDialog::updateClickStep() {
 	}
 }
 
-void UIFileDialog::setCurPath( const std::string& path ) {
+void UIFileDialog::setCurPath( const String& path ) {
 	mCurPath = path;
 	FileSystem::dirAddSlashAtEnd( mCurPath );
 	mPath->setText( mCurPath );
@@ -459,7 +459,7 @@ void UIFileDialog::disableButtons() {
 	mCloseShortcut = {};
 }
 
-std::string UIFileDialog::getSelectedDrive() const {
+String UIFileDialog::getSelectedDrive() const {
 	if ( !mDisplayingDrives )
 		return "";
 	auto indexes = getSelectionModelIndex();
@@ -488,7 +488,7 @@ void UIFileDialog::openFileOrFolder( bool shouldOpenFolder = false ) {
 		Log::error( "UIFileDialog::getSelectionNode() was empty, shouldn't be empty" );
 		return;
 	}
-	std::string newPath = mCurPath + node->getName();
+	String newPath = mCurPath + node->getName();
 
 	if ( FileSystem::isDirectory( newPath ) ) {
 		if ( shouldOpenFolder ) {
@@ -504,8 +504,8 @@ void UIFileDialog::openFileOrFolder( bool shouldOpenFolder = false ) {
 void UIFileDialog::goFolderUp() {
 	if ( mCurPath == FDLG_DRIVE_PATH )
 		return;
-	std::string prevFolderName( FileSystem::fileNameFromPath( mCurPath ) );
-	std::string newPath( FileSystem::removeLastFolderFromPath( mCurPath ) );
+	String prevFolderName( FileSystem::fileNameFromPath( mCurPath ) );
+	String newPath( FileSystem::removeLastFolderFromPath( mCurPath ) );
 	if ( newPath == mCurPath ) {
 		auto drives = Sys::getLogicalDrives();
 		if ( !drives.empty() ) {
@@ -627,7 +627,7 @@ void UIFileDialog::onPressEnter( const Event* ) {
 	}
 }
 
-void UIFileDialog::addFilePattern( std::string pattern, bool select ) {
+void UIFileDialog::addFilePattern( String pattern, bool select ) {
 	Uint32 index = mFiletype->getListBox()->addListBoxItem( pattern );
 
 	if ( select ) {
@@ -695,29 +695,29 @@ void UIFileDialog::setAllowsMultiFileSelect( bool allow ) {
 	mFile->setEnabled( !allow );
 }
 
-std::string UIFileDialog::getFullPath( size_t index ) const {
+String UIFileDialog::getFullPath( size_t index ) const {
 	if ( mDisplayingDrives )
 		return getCurFile();
 
-	std::string tPath = mCurPath;
+	String tPath = mCurPath;
 	FileSystem::dirAddSlashAtEnd( tPath );
 	tPath += getCurFile( index );
 	return tPath;
 }
 
-std::string UIFileDialog::getFullPath() const {
+String UIFileDialog::getFullPath() const {
 	return getFullPath( 0 );
 }
 
-std::vector<std::string> UIFileDialog::getFullPaths() const {
+std::vector<String> UIFileDialog::getFullPaths() const {
 	if ( mDisplayingDrives )
 		return { getCurFile() };
 
-	std::vector<std::string> paths;
+	std::vector<String> paths;
 	auto nodes = getSelectionNodes();
 
 	for ( size_t i = 0; i < nodes.size(); i++ ) {
-		std::string tPath( mCurPath );
+		String tPath( mCurPath );
 		FileSystem::dirAddSlashAtEnd( tPath );
 		tPath += nodes[i]->getName();
 		paths.emplace_back( std::move( tPath ) );
@@ -726,11 +726,11 @@ std::vector<std::string> UIFileDialog::getFullPaths() const {
 	return paths;
 }
 
-std::string UIFileDialog::getCurPath() const {
+String UIFileDialog::getCurPath() const {
 	return mCurPath;
 }
 
-std::string UIFileDialog::getCurFile( size_t index ) const {
+String UIFileDialog::getCurFile( size_t index ) const {
 	if ( mDialogFlags & SaveDialog )
 		return mFile->getText();
 	if ( mMultiView->getSelection().isEmpty() )
@@ -803,7 +803,7 @@ const KeyBindings::Shortcut& UIFileDialog::getCloseShortcut() const {
 	return mCloseShortcut;
 }
 
-void UIFileDialog::setFileName( const std::string& name ) {
+void UIFileDialog::setFileName( const String& name ) {
 	if ( mFile )
 		mFile->setText( name );
 }

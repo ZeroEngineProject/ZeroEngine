@@ -242,7 +242,7 @@ UIWidget* UITreeView::updateCell( const Vector2<Int64>& posIndex, const ModelInd
 			Variant cls( getModel()->data( index, ModelRole::Class ) );
 			cell->setLoadingState( true );
 			if ( cls.isValid() ) {
-				std::string clsStr( cls.toString() );
+				String clsStr( cls.toString() );
 				needsReloadStyle = cell->getClasses().empty() || cell->getClasses().size() != 1 ||
 								   clsStr != cell->getClasses()[0];
 				cell->setClass( clsStr );
@@ -499,7 +499,7 @@ void UITreeView::setExpandedIcon( UIIcon* expandIcon ) {
 	}
 }
 
-void UITreeView::setExpandedIcon( const std::string& expandIcon ) {
+void UITreeView::setExpandedIcon( const String& expandIcon ) {
 	setExpandedIcon( mUISceneNode->findIcon( expandIcon ) );
 }
 
@@ -514,7 +514,7 @@ void UITreeView::setContractedIcon( UIIcon* contractIcon ) {
 	}
 }
 
-void UITreeView::setContractedIcon( const std::string& contractIcon ) {
+void UITreeView::setContractedIcon( const String& contractIcon ) {
 	setContractedIcon( mUISceneNode->findIcon( contractIcon ) );
 }
 
@@ -759,7 +759,7 @@ void UITreeView::onSortColumn( const size_t& ) {
 	return;
 }
 
-ModelIndex UITreeView::findRowWithText( const std::string& text, const bool& caseSensitive,
+ModelIndex UITreeView::findRowWithText( const String& text, const bool& caseSensitive,
 										const bool& exactMatch ) const {
 	const Model* model = getModel();
 	ConditionalLock l( getModel() != nullptr,
@@ -782,7 +782,7 @@ ModelIndex UITreeView::findRowWithText( const std::string& text, const bool& cas
 	return foundIndex;
 }
 
-ModelIndex UITreeView::selectRowWithPath( const std::vector<std::string>& pathTree ) {
+ModelIndex UITreeView::selectRowWithPath( const std::vector<String>& pathTree ) {
 	const Model* model = getModel();
 	if ( !model || model->rowCount() == 0 )
 		return {};
@@ -819,7 +819,7 @@ ModelIndex UITreeView::selectRowWithPath( const std::vector<std::string>& pathTr
 	return {};
 }
 
-ModelIndex UITreeView::selectRowWithPath( std::string path ) {
+ModelIndex UITreeView::selectRowWithPath( String path ) {
 	String::replaceAll( path, "\\", "/" );
 	auto pathTree = String::split( path, "/" );
 	if ( pathTree.empty() )

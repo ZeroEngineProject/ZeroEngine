@@ -21,11 +21,11 @@ namespace EE { namespace UI {
 class UITooltip;
 class UIStyle;
 
-class EE_API UIWidget : public UINode {
+class ZeroShared UIWidget : public UINode {
   public:
 	static UIWidget* New();
 
-	static UIWidget* NewWithTag( const std::string& tag );
+	static UIWidget* NewWithTag( const String& tag );
 
 	UIWidget();
 
@@ -43,11 +43,11 @@ class EE_API UIWidget : public UINode {
 
 	virtual void setTheme( UITheme* Theme );
 
-	virtual UINode* setThemeSkin( const std::string& skinName );
+	virtual UINode* setThemeSkin( const String& skinName );
 
-	virtual UINode* setThemeSkin( UITheme* Theme, const std::string& skinName );
+	virtual UINode* setThemeSkin( UITheme* Theme, const String& skinName );
 
-	virtual Node* setId( const std::string& id );
+	virtual Node* setId( const String& id );
 
 	virtual bool acceptsDropOfWidget( const UIWidget* widget );
 
@@ -117,7 +117,7 @@ class EE_API UIWidget : public UINode {
 
 	void notifyLayoutAttrChangeParent();
 
-	void setStyleSheetInlineProperty( const std::string& name, const std::string& value,
+	void setStyleSheetInlineProperty( const String& name, const String& value,
 									  const Uint32& specificity = UINT32_MAX -
 																  1 /*SpecificityInline*/ );
 
@@ -147,11 +147,11 @@ class EE_API UIWidget : public UINode {
 
 	UIWidget* setPaddingPixelsBottom( const Float& paddingBottom );
 
-	const std::string& getStyleSheetTag() const;
+	const String& getStyleSheetTag() const;
 
-	const std::string& getStyleSheetId() const;
+	const String& getStyleSheetId() const;
 
-	const std::vector<std::string>& getStyleSheetClasses() const;
+	const std::vector<String>& getStyleSheetClasses() const;
 
 	UIWidget* getStyleSheetParentElement() const;
 
@@ -159,33 +159,33 @@ class EE_API UIWidget : public UINode {
 
 	UIWidget* getStyleSheetNextSiblingElement() const;
 
-	const std::vector<std::string>& getStyleSheetPseudoClasses() const;
+	const std::vector<String>& getStyleSheetPseudoClasses() const;
 
 	UIWidget* resetClass();
 
 	/** Resets all classes and assign a class */
-	UIWidget* setClass( const std::string& cls );
+	UIWidget* setClass( const String& cls );
 
 	/** Resets all classes and assign vector of classes */
-	UIWidget* setClasses( const std::vector<std::string>& classes );
+	UIWidget* setClasses( const std::vector<String>& classes );
 
-	UIWidget* addClass( const std::string& cls );
+	UIWidget* addClass( const String& cls );
 
-	UIWidget* addClasses( const std::vector<std::string>& classes );
+	UIWidget* addClasses( const std::vector<String>& classes );
 
-	UIWidget* removeClass( const std::string& cls );
+	UIWidget* removeClass( const String& cls );
 
-	UIWidget* removeClasses( const std::vector<std::string>& classes );
+	UIWidget* removeClasses( const std::vector<String>& classes );
 
-	bool hasClass( const std::string& cls ) const;
+	bool hasClass( const String& cls ) const;
 
-	void toggleClass( const std::string& cls );
+	void toggleClass( const String& cls );
 
-	void setElementTag( const std::string& tag );
+	void setElementTag( const String& tag );
 
-	const std::vector<std::string> getClasses() const;
+	const std::vector<String> getClasses() const;
 
-	const std::string& getElementTag() const;
+	const String& getElementTag() const;
 
 	virtual void pushState( const Uint32& State, bool emitEvent = true );
 
@@ -205,37 +205,37 @@ class EE_API UIWidget : public UINode {
 
 	const Uint32& getStylePreviousState() const;
 
-	std::vector<UIWidget*> findAllByClass( const std::string& className );
+	std::vector<UIWidget*> findAllByClass( const String& className );
 
-	std::vector<UIWidget*> findAllByTag( const std::string& tag );
+	std::vector<UIWidget*> findAllByTag( const String& tag );
 
-	UIWidget* findByClass( const std::string& className );
+	UIWidget* findByClass( const String& className );
 
-	template <typename T> T* findByClass( const std::string& className ) {
+	template <typename T> T* findByClass( const String& className ) {
 		return reinterpret_cast<T*>( findByClass( className ) );
 	}
 
-	UIWidget* findByTag( const std::string& tag );
+	UIWidget* findByTag( const String& tag );
 
-	template <typename T> T* findByTag( const std::string& tag ) {
+	template <typename T> T* findByTag( const String& tag ) {
 		return reinterpret_cast<T*>( findByTag( tag ) );
 	}
 
 	UIWidget* querySelector( const CSS::StyleSheetSelector& selector );
 
-	UIWidget* querySelector( const std::string& selector );
+	UIWidget* querySelector( const String& selector );
 
-	template <typename T> T* querySelector( const std::string& selector ) {
+	template <typename T> T* querySelector( const String& selector ) {
 		return reinterpret_cast<T*>( querySelector( selector ) );
 	}
 
 	std::vector<UIWidget*> querySelectorAll( const CSS::StyleSheetSelector& selector );
 
-	std::vector<UIWidget*> querySelectorAll( const std::string& selector );
+	std::vector<UIWidget*> querySelectorAll( const String& selector );
 
-	std::string getPropertyString( const std::string& property ) const;
+	String getPropertyString( const String& property ) const;
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;
@@ -263,7 +263,7 @@ class EE_API UIWidget : public UINode {
 
 	UIWidget* getNextTabWidget() const;
 
-	bool hasPseudoClass( const std::string& pseudoCls ) const;
+	bool hasPseudoClass( const String& pseudoCls ) const;
 
 	bool isTooltipEnabled() const;
 
@@ -273,20 +273,20 @@ class EE_API UIWidget : public UINode {
 
 	UIWidget* getNextWidget() const;
 
-	String getTranslatorString( const std::string& str );
+	String getTranslatorString( const String& str );
 
-	String getTranslatorString( const std::string& str, const String& defaultValue );
+	String getTranslatorString( const String& str, const String& defaultValue );
 
-	String i18n( const std::string& str );
+	String i18n( const String& str );
 
-	String i18n( const std::string& str, const String& defaultValue );
+	String i18n( const String& str, const String& defaultValue );
 
   protected:
 	friend class UIManager;
 	friend class UISceneNode;
 	friend class UIEventDispatcher;
 
-	std::string mTag;
+	String mTag;
 	UITheme* mTheme;
 	UIStyle* mStyle;
 	UITooltip* mTooltip;
@@ -302,12 +302,12 @@ class EE_API UIWidget : public UINode {
 	PositionPolicy mLayoutPositionPolicy;
 	UIWidget* mLayoutPositionPolicyWidget;
 	int mAttributesTransactionCount;
-	std::string mSkinName;
-	std::vector<std::string> mClasses;
-	std::vector<std::string> mPseudoClasses;
+	String mSkinName;
+	std::vector<String> mClasses;
+	std::vector<String> mPseudoClasses;
 	String mTooltipText;
 
-	explicit UIWidget( const std::string& tag );
+	explicit UIWidget( const String& tag );
 
 	void updatePseudoClasses();
 
@@ -359,15 +359,15 @@ class EE_API UIWidget : public UINode {
 
 	void reportStyleStateChange( bool disableAnimations = false, bool forceReApplyStyles = false );
 
-	std::string getLayoutWidthPolicyString() const;
+	String getLayoutWidthPolicyString() const;
 
-	std::string getLayoutHeightPolicyString() const;
+	String getLayoutHeightPolicyString() const;
 
-	std::string getLayoutGravityString() const;
+	String getLayoutGravityString() const;
 
-	std::string getGravityString() const;
+	String getGravityString() const;
 
-	std::string getFlagsString() const;
+	String getFlagsString() const;
 
 	bool checkPropertyDefinition( const StyleSheetProperty& property );
 

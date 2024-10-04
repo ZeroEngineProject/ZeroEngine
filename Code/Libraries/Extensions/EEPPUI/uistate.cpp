@@ -18,7 +18,7 @@ const char* UIState::getStateName( const Uint32& State ) {
 	return UIStatesNames[State];
 }
 
-int UIState::getStateNumber( const std::string& State ) {
+int UIState::getStateNumber( const String& State ) {
 	for ( int i = 0; i < UIState::StateCount; i++ ) {
 		if ( State == UIStatesNames[i] ) {
 			return UIStateFlags[i];
@@ -42,7 +42,7 @@ const Uint32& UIState::getStateFlag( const Uint32& stateIndex ) {
 	return UIStateFlags[stateIndex];
 }
 
-Uint32 UIState::getStateFlagFromName( const std::string& name ) {
+Uint32 UIState::getStateFlagFromName( const String& name ) {
 	if ( name.empty() )
 		return UIStateFlags[0];
 
@@ -54,7 +54,7 @@ Uint32 UIState::getStateFlagFromName( const std::string& name ) {
 	return eeINDEX_NOT_FOUND;
 }
 
-bool UIState::isStateName( const std::string& State ) {
+bool UIState::isStateName( const String& State ) {
 	for ( int i = 0; i < UIState::StateCount; i++ ) {
 		if ( State == UIStatesNames[i] ) {
 			return true;

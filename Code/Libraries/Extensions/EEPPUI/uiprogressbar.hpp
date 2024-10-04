@@ -9,7 +9,7 @@ namespace EE { namespace UI {
 
 class UIProgressBarFiller;
 
-class EE_API UIProgressBar : public UIWidget {
+class ZeroShared UIProgressBar : public UIWidget {
   public:
 	class StyleConfig {
 	  public:
@@ -56,7 +56,7 @@ class EE_API UIProgressBar : public UIWidget {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

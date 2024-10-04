@@ -10,7 +10,7 @@ static constexpr Uint32 NumBytesForAutodetect = 16000;
 // MIT Licensed
 struct TextDecodeResult {
 	enum class Status : Uint8 {
-		Truncated, // std::string_view wasn't long enough to read a valid point. A (invalid) point
+		Truncated, // String_view wasn't long enough to read a valid point. A (invalid) point
 				   // may be available anyway, such as when flushing the last few bytes of a UTF-8
 				   // file.
 		Invalid, // Invalid byte sequence was encountered. Such sequences are typically decoded one
@@ -29,7 +29,7 @@ struct TextDecodeResult {
 // Enc_Bytes
 //-------------------------------------------------------------------
 struct Enc_Bytes {
-	static inline TextDecodeResult decodePoint( std::string_view view ) {
+	static inline TextDecodeResult decodePoint( String_view view ) {
 		return view.empty()
 				   ? TextDecodeResult{}
 				   : TextDecodeResult{ (Uint8)view[0], TextDecodeResult::Status::Valid, 1 };
@@ -40,9 +40,9 @@ struct Enc_Bytes {
 // UTF8
 //-------------------------------------------------------------------
 struct UTF8 {
-	static TextDecodeResult decodePointSlowPath( std::string_view view );
+	static TextDecodeResult decodePointSlowPath( String_view view );
 
-	static inline TextDecodeResult decodePoint( std::string_view view ) {
+	static inline TextDecodeResult decodePoint( String_view view ) {
 		if ( view.size() > 0 ) {
 			Uint8 first = view[0];
 			if ( first < 0x80 ) {
@@ -65,7 +65,7 @@ template <bool BigEndian> struct UTF16 {
 		}
 	}
 
-	static inline TextDecodeResult decodePoint( std::string_view view ) {
+	static inline TextDecodeResult decodePoint( String_view view ) {
 		if ( view.size() < 2 ) {
 			return {};
 		}
@@ -99,7 +99,7 @@ struct ShiftJIS {
 		return Uint8( src[0] ) | ( Uint16( Uint8( src[1] ) ) << 8 );
 	}
 
-	static inline TextDecodeResult decodePoint( std::string_view view ) {
+	static inline TextDecodeResult decodePoint( String_view view ) {
 		// Shift JIS ranges for single-byte and double-byte characters
 		static constexpr std::pair<unsigned char, unsigned char> firstByteRange1( 0x81, 0x9F );
 		static constexpr std::pair<unsigned char, unsigned char> firstByteRange2( 0xE0, 0xEF );
@@ -135,7 +135,7 @@ struct ShiftJIS {
 //-------------------------------------------------------------------
 // UTF8
 //-------------------------------------------------------------------
-TextDecodeResult UTF8::decodePointSlowPath( std::string_view view ) {
+TextDecodeResult UTF8::decodePointSlowPath( String_view view ) {
 	if ( view.size() == 0 ) {
 		return {};
 	}
@@ -213,7 +213,7 @@ consume1Byte:
 // TextEncoding helper objects
 //-------------------------------------------------------------------
 struct TextEncoding {
-	TextDecodeResult ( *decodePoint )( std::string_view view ) = nullptr;
+	TextDecodeResult ( *decodePoint )( String_view view ) = nullptr;
 	Uint32 unitSize = 0;
 
 	template <typename> struct Wrapper;
@@ -336,7 +336,7 @@ static Uint32 scanTextFile( TextFileStats& stats, IOStream& ins, const TextEncod
 		if ( 0 == read )
 			break;
 
-		TextDecodeResult decoded = encoding->decodePoint( std::string_view{ buf, read } );
+		TextDecodeResult decoded = encoding->decodePoint( String_view{ buf, read } );
 		if ( decoded.status == TextDecodeResult::Status::Truncated && decoded.numBytes == 0 )
 			break; // EOF/error
 
@@ -494,7 +494,7 @@ TextFormat TextFormat::autodetect( IOStream& ins ) {
 	return tff;
 }
 
-std::string TextFormat::lineEndingToString( const LineEnding& le ) {
+String TextFormat::lineEndingToString( const LineEnding& le ) {
 	switch ( le ) {
 		case TextFormat::LineEnding::CRLF:
 			return "CRLF";
@@ -506,7 +506,7 @@ std::string TextFormat::lineEndingToString( const LineEnding& le ) {
 	}
 }
 
-TextFormat::LineEnding TextFormat::stringToLineEnding( const std::string& str ) {
+TextFormat::LineEnding TextFormat::stringToLineEnding( const String& str ) {
 	if ( "CR" == str )
 		return TextFormat::LineEnding::CR;
 	if ( "CRLF" == str )
@@ -514,7 +514,7 @@ TextFormat::LineEnding TextFormat::stringToLineEnding( const std::string& str ) 
 	return TextFormat::LineEnding::LF;
 }
 
-TextFormat::Encoding TextFormat::encodingFromString( const std::string& str ) {
+TextFormat::Encoding TextFormat::encodingFromString( const String& str ) {
 	switch ( String::hash( str ) ) {
 		case static_cast<String::HashType>( TextFormat::Encoding::UTF16LE ):
 			return TextFormat::Encoding::UTF16LE;
@@ -530,7 +530,7 @@ TextFormat::Encoding TextFormat::encodingFromString( const std::string& str ) {
 	}
 }
 
-std::string TextFormat::encodingToString( TextFormat::Encoding enc ) {
+String TextFormat::encodingToString( TextFormat::Encoding enc ) {
 	switch ( enc ) {
 		case TextFormat::Encoding::UTF16LE:
 			return "UTF-16 LE";
@@ -547,8 +547,8 @@ std::string TextFormat::encodingToString( TextFormat::Encoding enc ) {
 	return "UTF-8";
 }
 
-std::vector<std::pair<TextFormat::Encoding, std::string>> TextFormat::encodings() {
-	std::vector<std::pair<TextFormat::Encoding, std::string>> encs;
+std::vector<std::pair<TextFormat::Encoding, String>> TextFormat::encodings() {
+	std::vector<std::pair<TextFormat::Encoding, String>> encs;
 	encs.emplace_back( Encoding::UTF8, encodingToString( Encoding::UTF8 ) );
 	encs.emplace_back( Encoding::UTF16BE, encodingToString( Encoding::UTF16BE ) );
 	encs.emplace_back( Encoding::UTF16LE, encodingToString( Encoding::UTF16LE ) );

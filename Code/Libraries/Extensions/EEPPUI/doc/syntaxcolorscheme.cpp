@@ -86,9 +86,9 @@ SyntaxColorScheme SyntaxColorScheme::getDefault() {
 }
 
 SyntaxColorScheme::Style parseStyle(
-	const std::string& value, bool* colorWasSet = nullptr,
-	const UnorderedMap<SyntaxStyleType, SyntaxColorScheme::Style>* syntaxColors = nullptr ) {
-	static const std::string outline = "outline";
+	const String& value, bool* colorWasSet = nullptr,
+	const HashMap<SyntaxStyleType, SyntaxColorScheme::Style>* syntaxColors = nullptr ) {
+	static const String outline = "outline";
 	auto values = String::split( value, ",", "", "()" );
 	SyntaxColorScheme::Style style;
 	bool colorSet = false;
@@ -153,12 +153,12 @@ std::vector<SyntaxColorScheme> SyntaxColorScheme::loadFromStream( IOStream& stre
 	IniFile ini( stream );
 	for ( size_t keyIdx = 0; keyIdx < ini.getNumKeys(); keyIdx++ ) {
 		SyntaxColorScheme colorScheme;
-		std::string name( ini.getKeyName( keyIdx ) );
+		String name( ini.getKeyName( keyIdx ) );
 		colorScheme.setName( name );
 		size_t numValues = ini.getNumValues( keyIdx );
 		for ( size_t valueIdx = 0; valueIdx < numValues; valueIdx++ ) {
-			std::string valueName( String::toLower( ini.getValueName( keyIdx, valueIdx ) ) );
-			std::string value( ini.getValue( keyIdx, valueIdx ) );
+			String valueName( String::toLower( ini.getValueName( keyIdx, valueIdx ) ) );
+			String value( ini.getValue( keyIdx, valueIdx ) );
 			if ( !value.empty() ) {
 				SyntaxColorScheme::Style style = parseStyle( value );
 				if ( refColorScheme.mSyntaxColors.find( toSyntaxStyleType( valueName ) ) !=
@@ -176,9 +176,9 @@ std::vector<SyntaxColorScheme> SyntaxColorScheme::loadFromStream( IOStream& stre
 	return colorSchemes;
 }
 
-std::vector<SyntaxColorScheme> SyntaxColorScheme::loadFromFile( const std::string& path ) {
+std::vector<SyntaxColorScheme> SyntaxColorScheme::loadFromFile( const String& path ) {
 	if ( !FileSystem::fileExists( path ) && PackManager::instance()->isFallbackToPacksActive() ) {
-		std::string pathFix( path );
+		String pathFix( path );
 		Pack* pack = PackManager::instance()->exists( pathFix );
 		if ( NULL != pack ) {
 			return loadFromPack( pack, pathFix );
@@ -196,7 +196,7 @@ std::vector<SyntaxColorScheme> SyntaxColorScheme::loadFromMemory( const void* da
 }
 
 std::vector<SyntaxColorScheme> SyntaxColorScheme::loadFromPack( Pack* pack,
-																std::string filePackPath ) {
+																String filePackPath ) {
 	if ( NULL == pack )
 		return {};
 	ScopedBuffer buffer;
@@ -208,9 +208,9 @@ std::vector<SyntaxColorScheme> SyntaxColorScheme::loadFromPack( Pack* pack,
 
 SyntaxColorScheme::SyntaxColorScheme() {}
 
-SyntaxColorScheme::SyntaxColorScheme( const std::string& name,
-									  const UnorderedMap<SyntaxStyleType, Style>& syntaxColors,
-									  const UnorderedMap<SyntaxStyleType, Style>& editorColors ) :
+SyntaxColorScheme::SyntaxColorScheme( const String& name,
+									  const HashMap<SyntaxStyleType, Style>& syntaxColors,
+									  const HashMap<SyntaxStyleType, Style>& editorColors ) :
 	mName( name ), mSyntaxColors( syntaxColors ), mEditorColors( editorColors ) {}
 
 static const SyntaxColorScheme::Style StyleEmpty = { Color::Transparent };
@@ -240,7 +240,7 @@ bool SyntaxColorScheme::hasSyntaxStyle( const SyntaxStyleType& type ) const {
 	return mSyntaxColors.find( type ) != mSyntaxColors.end();
 }
 
-void SyntaxColorScheme::setSyntaxStyles( const UnorderedMap<SyntaxStyleType, Style>& styles ) {
+void SyntaxColorScheme::setSyntaxStyles( const HashMap<SyntaxStyleType, Style>& styles ) {
 	mSyntaxColors.insert( styles.begin(), styles.end() );
 }
 
@@ -290,7 +290,7 @@ const Color& SyntaxColorScheme::getEditorColor( const SyntaxStyleType& type ) co
 }
 
 void SyntaxColorScheme::setEditorSyntaxStyles(
-	const EE::UnorderedMap<SyntaxStyleType, SyntaxColorScheme::Style>& styles ) {
+	const EE::HashMap<SyntaxStyleType, SyntaxColorScheme::Style>& styles ) {
 	mEditorColors.insert( styles.begin(), styles.end() );
 }
 
@@ -299,11 +299,11 @@ void SyntaxColorScheme::setEditorSyntaxStyle( const SyntaxStyleType& type,
 	mEditorColors[type] = style;
 }
 
-const std::string& SyntaxColorScheme::getName() const {
+const String& SyntaxColorScheme::getName() const {
 	return mName;
 }
 
-void SyntaxColorScheme::setName( const std::string& name ) {
+void SyntaxColorScheme::setName( const String& name ) {
 	mName = name;
 }
 
@@ -311,7 +311,7 @@ template <typename SyntaxStyleType>
 const SyntaxColorScheme::Style&
 SyntaxColorScheme::getSyntaxStyleFromCache( const SyntaxStyleType& type ) const {
 	bool colorWasSet = false;
-	if constexpr ( std::is_same_v<SyntaxStyleType, std::string> )
+	if constexpr ( std::is_same_v<SyntaxStyleType, String> )
 		mStyleCache[type] = parseStyle( type, &colorWasSet, &mSyntaxColors );
 	else {
 		auto cache = SyntaxPattern::SyntaxStyleTypeCache.find( type );

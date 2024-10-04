@@ -11,7 +11,7 @@ class UIWidget;
 
 namespace EE { namespace UI { namespace CSS {
 
-class EE_API StyleSheetSelectorRule {
+class ZeroShared StyleSheetSelectorRule {
   public:
 	enum TypeIdentifier {
 		TAG = 0,
@@ -50,11 +50,11 @@ class EE_API StyleSheetSelectorRule {
 		PREVIOUS_SIBLING = '|',
 	};
 
-	StyleSheetSelectorRule( const std::string& selectorFragment, PatternMatch mPatternMatch );
+	StyleSheetSelectorRule( const String& selectorFragment, PatternMatch mPatternMatch );
 
-	void pushSelectorTypeIdentifier( TypeIdentifier selectorTypeIdentifier, std::string name );
+	void pushSelectorTypeIdentifier( TypeIdentifier selectorTypeIdentifier, String name );
 
-	void parseFragment( const std::string& selectorFragment );
+	void parseFragment( const String& selectorFragment );
 
 	const PatternMatch& getPatternMatch() const { return mPatternMatch; }
 
@@ -62,32 +62,32 @@ class EE_API StyleSheetSelectorRule {
 
 	bool matches( UIWidget* element, const bool& applyPseudo = true ) const;
 
-	bool hasClass( const std::string& cls ) const;
+	bool hasClass( const String& cls ) const;
 
 	bool hasPseudoClasses() const;
 
-	bool hasPseudoClass( const std::string& cls ) const;
+	bool hasPseudoClass( const String& cls ) const;
 
-	const std::vector<std::string>& getPseudoClasses() const;
+	const std::vector<String>& getPseudoClasses() const;
 
 	bool hasStructuralPseudoClasses() const;
 
-	const std::vector<std::string>& getStructuralPseudoClasses() const;
+	const std::vector<String>& getStructuralPseudoClasses() const;
 
-	bool hasStructuralPseudoClass( const std::string& cls ) const;
+	bool hasStructuralPseudoClass( const String& cls ) const;
 
-	const std::string& getTagName() const;
+	const String& getTagName() const;
 
-	const std::string& getId() const;
+	const String& getId() const;
 
   protected:
 	int mSpecificity;
 	PatternMatch mPatternMatch;
-	std::string mTagName;
-	std::string mId;
-	std::vector<std::string> mClasses;
-	std::vector<std::string> mPseudoClasses;
-	std::vector<std::string> mStructuralPseudoClasses;
+	String mTagName;
+	String mId;
+	std::vector<String> mClasses;
+	std::vector<String> mPseudoClasses;
+	std::vector<String> mStructuralPseudoClasses;
 	std::vector<StructuralSelector> mStructuralSelectors;
 	Uint32 mRequirementFlags;
 };

@@ -27,11 +27,11 @@ class PersistentHandle;
 
 enum class SortOrder { None, Ascending, Descending };
 
-class EE_API Model {
+class ZeroShared Model {
   public:
 	using ModelStyler = std::function<Variant( const ModelIndex&, const void* data )>;
 
-	class EE_API Client {
+	class ZeroShared Client {
 	  public:
 		virtual ~Client() {}
 
@@ -68,9 +68,9 @@ class EE_API Model {
 
 	virtual size_t columnCount( const ModelIndex& = ModelIndex() ) const = 0;
 
-	virtual std::string columnName( const size_t& /*column*/ ) const { return {}; }
+	virtual String columnName( const size_t& /*column*/ ) const { return {}; }
 
-	virtual std::string rowName( const size_t& /*row*/ ) const { return {}; }
+	virtual String rowName( const size_t& /*row*/ ) const { return {}; }
 
 	virtual Variant data( const ModelIndex&, ModelRole = ModelRole::Display ) const = 0;
 
@@ -88,11 +88,11 @@ class EE_API Model {
 
 	virtual size_t treeColumn() const { return 0; }
 
-	virtual bool acceptsDrag( const ModelIndex&, const std::string& dataType );
+	virtual bool acceptsDrag( const ModelIndex&, const String& dataType );
 
 	virtual bool isColumnSortable( const size_t& /*columnIndex*/ ) const { return true; }
 
-	virtual std::string dragDataType() const { return {}; }
+	virtual String dragDataType() const { return {}; }
 
 	virtual bool isEditable( const ModelIndex& ) const { return false; }
 
@@ -205,7 +205,7 @@ class EE_API Model {
 
 	Variant stylizeModel( const ModelIndex& index, const void* data = nullptr ) const;
 
-	UnorderedMap<ModelIndex, std::shared_ptr<PersistentHandle>> mPersistentHandles;
+	HashMap<ModelIndex, std::shared_ptr<PersistentHandle>> mPersistentHandles;
 	std::stack<Operation> mOperationStack;
 	// NOTE: We need to save which indices have been deleted before the delete
 	// actually happens, because we can't figure out which persistent handles

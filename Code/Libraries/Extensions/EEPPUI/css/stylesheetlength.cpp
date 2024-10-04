@@ -41,7 +41,7 @@ enum PercentagePositions : String::HashType {
 	None = 0,
 };
 
-static std::string positionToPercentage( const PercentagePositions& pos ) {
+static String positionToPercentage( const PercentagePositions& pos ) {
 	switch ( pos ) {
 		case Center:
 			return "50%";
@@ -73,7 +73,7 @@ static PercentagePositions isPercentagePosition( const String::HashType& strHash
 	return PercentagePositions::None;
 }
 
-StyleSheetLength::Unit StyleSheetLength::unitFromString( std::string unitStr ) {
+StyleSheetLength::Unit StyleSheetLength::unitFromString( String unitStr ) {
 	String::toLowerInPlace( unitStr );
 	switch ( String::hash( unitStr ) ) {
 		case UnitHashes::Percentage:
@@ -120,7 +120,7 @@ StyleSheetLength::Unit StyleSheetLength::unitFromString( std::string unitStr ) {
 	return Unit::Px;
 }
 
-std::string StyleSheetLength::unitToString( const StyleSheetLength::Unit& unit ) {
+String StyleSheetLength::unitToString( const StyleSheetLength::Unit& unit ) {
 	switch ( unit ) {
 		case Unit::Percentage:
 			return "%";
@@ -166,12 +166,12 @@ std::string StyleSheetLength::unitToString( const StyleSheetLength::Unit& unit )
 	return "px";
 }
 
-bool StyleSheetLength::isLength( const std::string& unitStr ) {
+bool StyleSheetLength::isLength( const String& unitStr ) {
 	LuaPattern ptrn( "(-?%d+[%d%.eE]*)(%w*)" );
 	PatternMatcher::Range matches[4];
 	if ( ptrn.matches( unitStr, matches ) ) {
 		if ( matches[2].isValid() ) {
-			std::string unit =
+			String unit =
 				unitStr.substr( matches[2].start, matches[2].end - matches[2].start );
 			auto unitType = unitFromString( unit );
 			if ( unitType != StyleSheetLength::Unit::Px || unit == "px" )
@@ -188,7 +188,7 @@ StyleSheetLength::StyleSheetLength() : mUnit( Px ), mValue( 0 ) {}
 StyleSheetLength::StyleSheetLength( const Float& val, const StyleSheetLength::Unit& unit ) :
 	mUnit( unit ), mValue( val ) {}
 
-StyleSheetLength::StyleSheetLength( const std::string& val, const Float& defaultValue ) :
+StyleSheetLength::StyleSheetLength( const String& val, const Float& defaultValue ) :
 	StyleSheetLength( fromString( val, defaultValue ) ) {}
 
 StyleSheetLength::StyleSheetLength( const StyleSheetLength& val ) {
@@ -295,15 +295,15 @@ StyleSheetLength& StyleSheetLength::operator=( const StyleSheetLength& val ) {
 	return *this;
 }
 
-StyleSheetLength StyleSheetLength::fromString( const std::string& str, const Float& defaultValue ) {
+StyleSheetLength StyleSheetLength::fromString( const String& str, const Float& defaultValue ) {
 	PercentagePositions isPercentage = isPercentagePosition( String::hash( str ) );
 	if ( PercentagePositions::None != isPercentage )
 		return fromString( positionToPercentage( isPercentage ), defaultValue );
 
 	StyleSheetLength length;
 	length.setValue( defaultValue, Unit::Px );
-	std::string num;
-	std::string unit;
+	String num;
+	String unit;
 
 	for ( std::size_t i = 0; i < str.size(); i++ ) {
 		if ( String::isNumber( str[i], true ) || ( '-' == str[i] && i == 0 ) ||
@@ -324,8 +324,8 @@ StyleSheetLength StyleSheetLength::fromString( const std::string& str, const Flo
 	return length;
 }
 
-std::string StyleSheetLength::toString() const {
-	std::string res( String::format( "%.2f", mValue ) );
+String StyleSheetLength::toString() const {
+	String res( String::format( "%.2f", mValue ) );
 	String::replace( res, ",", "." );
 	String::numberCleanInPlace( res );
 	res += unitToString( mUnit );

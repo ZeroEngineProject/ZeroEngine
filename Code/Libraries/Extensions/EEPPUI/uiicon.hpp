@@ -12,54 +12,54 @@ using namespace EE::Graphics;
 
 namespace EE { namespace UI {
 
-class EE_API UIIcon {
+class ZeroShared UIIcon {
   public:
-	static UIIcon* New( const std::string& name );
+	static UIIcon* New( const String& name );
 
 	virtual ~UIIcon();
 
-	const std::string& getName() const;
+	const String& getName() const;
 
 	virtual Drawable* getSize( const int& size ) const;
 
 	virtual void setSize( const int& size, Drawable* drawable );
 
   protected:
-	UIIcon( const std::string& name );
+	UIIcon( const String& name );
 
-	std::string mName;
-	mutable UnorderedMap<int, Drawable*> mSizes;
+	String mName;
+	mutable HashMap<int, Drawable*> mSizes;
 };
 
-class EE_API UIGlyphIcon : public UIIcon {
+class ZeroShared UIGlyphIcon : public UIIcon {
   public:
-	static UIIcon* New( const std::string& name, FontTrueType* font, const Uint32& codePoint );
+	static UIIcon* New( const String& name, FontTrueType* font, const Uint32& codePoint );
 
 	virtual ~UIGlyphIcon();
 
 	virtual Drawable* getSize( const int& size ) const;
 
   protected:
-	UIGlyphIcon( const std::string& name, FontTrueType* font, const Uint32& codePoint );
+	UIGlyphIcon( const String& name, FontTrueType* font, const Uint32& codePoint );
 
 	mutable FontTrueType* mFont;
 	Uint32 mCodePoint;
 	Uint32 mCloseCb{ 0 };
 };
 
-class EE_API UISVGIcon : public UIIcon {
+class ZeroShared UISVGIcon : public UIIcon {
   public:
-	static UIIcon* New( const std::string& name, const std::string& svgXML );
+	static UIIcon* New( const String& name, const String& svgXML );
 
 	virtual ~UISVGIcon();
 
 	virtual Drawable* getSize( const int& size ) const;
 
   protected:
-	UISVGIcon( const std::string& name, const std::string& svgXML );
+	UISVGIcon( const String& name, const String& svgXML );
 
-	std::string mSVGXml;
-	mutable UnorderedMap<int, Texture*> mSVGs;
+	String mSVGXml;
+	mutable HashMap<int, Texture*> mSVGs;
 	mutable Sizei mOriSize;
 	mutable int mOriChannels{ 0 };
 };

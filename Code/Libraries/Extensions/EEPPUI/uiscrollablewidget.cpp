@@ -4,7 +4,7 @@
 
 namespace EE { namespace UI {
 
-UIScrollableWidget::UIScrollableWidget( const std::string& tag ) :
+UIScrollableWidget::UIScrollableWidget( const String& tag ) :
 	UIWidget( tag ),
 	mScrollViewType( Exclusive ),
 	mVScrollMode( ScrollBarMode::Auto ),
@@ -240,7 +240,7 @@ void UIScrollableWidget::onValueChangeCb( const Event* ) {
 	updateScroll();
 }
 
-std::string UIScrollableWidget::getPropertyString( const PropertyDefinition* propertyDef,
+String UIScrollableWidget::getPropertyString( const PropertyDefinition* propertyDef,
 												   const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -311,7 +311,7 @@ bool UIScrollableWidget::applyProperty( const StyleSheetProperty& attribute ) {
 
 	switch ( attribute.getPropertyDefinition()->getPropertyId() ) {
 		case PropertyId::ScrollBarMode: {
-			std::string val( attribute.asString() );
+			String val( attribute.asString() );
 			String::toLowerInPlace( val );
 			if ( "inclusive" == val || "inside" == val )
 				setScrollViewType( Inclusive );
@@ -320,7 +320,7 @@ bool UIScrollableWidget::applyProperty( const StyleSheetProperty& attribute ) {
 			break;
 		}
 		case PropertyId::VScrollMode: {
-			std::string val( attribute.asString() );
+			String val( attribute.asString() );
 			String::toLowerInPlace( val );
 
 			if ( "on" == val )
@@ -332,7 +332,7 @@ bool UIScrollableWidget::applyProperty( const StyleSheetProperty& attribute ) {
 			break;
 		}
 		case PropertyId::HScrollMode: {
-			std::string val( attribute.asString() );
+			String val( attribute.asString() );
 			String::toLowerInPlace( val );
 
 			if ( "on" == val )
@@ -344,7 +344,7 @@ bool UIScrollableWidget::applyProperty( const StyleSheetProperty& attribute ) {
 			break;
 		}
 		case PropertyId::ScrollBarStyle: {
-			std::string val( attribute.asString() );
+			String val( attribute.asString() );
 			String::toLowerInPlace( val );
 
 			if ( "no-buttons" == val || "nobuttons" == val ) {

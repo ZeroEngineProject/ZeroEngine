@@ -9,13 +9,13 @@ using namespace EE::Scene;
 
 namespace EE { namespace UI {
 
-class EE_API WidgetCommandExecuter {
+class ZeroShared WidgetCommandExecuter {
   public:
 	typedef std::function<void()> CommandCallback;
 
 	WidgetCommandExecuter( const KeyBindings& keybindings ) : mKeyBindings( keybindings ) {}
 
-	void setCommand( const std::string& name, const CommandCallback& cb ) {
+	void setCommand( const String& name, const CommandCallback& cb ) {
 		auto cmdIt = mCommands.find( name );
 		if ( cmdIt == mCommands.end() ) {
 			mCommands[name] = cb;
@@ -25,11 +25,11 @@ class EE_API WidgetCommandExecuter {
 		}
 	}
 
-	bool hasCommand( const std::string& name ) const {
+	bool hasCommand( const String& name ) const {
 		return mCommands.find( name ) != mCommands.end();
 	}
 
-	void execute( const std::string& command ) {
+	void execute( const String& command ) {
 		auto cmdIt = mCommands.find( command );
 		if ( cmdIt != mCommands.end() )
 			cmdIt->second();
@@ -39,15 +39,15 @@ class EE_API WidgetCommandExecuter {
 
 	KeyBindings& getKeyBindings() { return mKeyBindings; }
 
-	const std::vector<std::string>& getCommandList() const { return mCommandList; }
+	const std::vector<String>& getCommandList() const { return mCommandList; }
 
   protected:
 	KeyBindings mKeyBindings;
-	std::unordered_map<std::string, std::function<void()>> mCommands;
-	std::vector<std::string> mCommandList;
+	std::unordered_map<String, std::function<void()>> mCommands;
+	std::vector<String> mCommandList;
 
 	Uint32 onKeyDown( const KeyEvent& event ) {
-		std::string cmd =
+		String cmd =
 			mKeyBindings.getCommandFromKeyBind( { event.getKeyCode(), event.getMod() } );
 		if ( !cmd.empty() ) {
 			auto cmdIt = mCommands.find( cmd );

@@ -12,7 +12,7 @@ class Font;
 
 namespace EE { namespace UI {
 
-class EE_API UITooltip : public UIWidget {
+class ZeroShared UITooltip : public UIWidget {
   public:
 	static UITooltip* New();
 
@@ -92,7 +92,7 @@ class EE_API UITooltip : public UIWidget {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

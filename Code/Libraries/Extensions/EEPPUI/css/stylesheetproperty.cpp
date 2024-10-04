@@ -17,7 +17,7 @@ StyleSheetProperty::StyleSheetProperty() :
 	mSpecificity( 0 ), mVolatile( false ), mImportant( false ) {}
 
 StyleSheetProperty::StyleSheetProperty( const PropertyDefinition* definition,
-										const std::string& value, const Uint32& index,
+										const String& value, const Uint32& index,
 										bool trimValue ) :
 	mName( definition->getName() ),
 	mNameHash( definition->getId() ),
@@ -43,7 +43,7 @@ StyleSheetProperty::StyleSheetProperty( const PropertyDefinition* definition,
 
 StyleSheetProperty::StyleSheetProperty( const bool& isVolatile,
 										const PropertyDefinition* definition,
-										const std::string& value, const Uint32& /*specificity*/,
+										const String& value, const Uint32& /*specificity*/,
 										const Uint32& index ) :
 	mName( definition->getName() ),
 	mNameHash( definition->getId() ),
@@ -65,7 +65,7 @@ StyleSheetProperty::StyleSheetProperty( const bool& isVolatile,
 	}
 }
 
-StyleSheetProperty::StyleSheetProperty( const std::string& name, const std::string& value,
+StyleSheetProperty::StyleSheetProperty( const String& name, const String& value,
 										const bool& trimValue, const Uint32& specificity,
 										const Uint32& index ) :
 	mName( String::toLower( String::trim( name ) ) ),
@@ -91,7 +91,7 @@ StyleSheetProperty::StyleSheetProperty( const std::string& name, const std::stri
 	}
 }
 
-StyleSheetProperty::StyleSheetProperty( const std::string& name, const std::string& value,
+StyleSheetProperty::StyleSheetProperty( const String& name, const String& value,
 										const Uint32& specificity, const bool& isVolatile,
 										const Uint32& index ) :
 	mName( String::toLower( String::trim( name ) ) ),
@@ -123,15 +123,15 @@ Uint32 StyleSheetProperty::getId() const {
 			   : ( NULL != mShorthandDefinition ? mShorthandDefinition->getId() : 0 );
 }
 
-const std::string& StyleSheetProperty::getName() const {
+const String& StyleSheetProperty::getName() const {
 	return mName;
 }
 
-const std::string& StyleSheetProperty::getValue() const {
+const String& StyleSheetProperty::getValue() const {
 	return mValue;
 }
 
-const std::string& StyleSheetProperty::value() const {
+const String& StyleSheetProperty::value() const {
 	return mValue;
 }
 
@@ -151,12 +151,12 @@ bool StyleSheetProperty::isEmpty() const {
 	return mName.empty();
 }
 
-void StyleSheetProperty::setName( const std::string& name ) {
+void StyleSheetProperty::setName( const String& name ) {
 	mName = name;
 	mNameHash = String::hash( mName );
 }
 
-void StyleSheetProperty::setValue( const std::string& value, bool updateHash ) {
+void StyleSheetProperty::setValue( const String& value, bool updateHash ) {
 	mValue = value;
 	if ( updateHash )
 		mValueHash = String::hash( value );
@@ -216,7 +216,7 @@ void StyleSheetProperty::checkVars() {
 	}
 }
 
-static void varToVal( VariableFunctionCache& varCache, const std::string& varDef ) {
+static void varToVal( VariableFunctionCache& varCache, const String& varDef ) {
 	FunctionString functionType = FunctionString::parse( varDef );
 	if ( !functionType.getParameters().empty() ) {
 		for ( auto& val : functionType.getParameters() ) {
@@ -229,16 +229,16 @@ static void varToVal( VariableFunctionCache& varCache, const std::string& varDef
 	}
 }
 
-std::vector<VariableFunctionCache> StyleSheetProperty::checkVars( const std::string& value ) {
+std::vector<VariableFunctionCache> StyleSheetProperty::checkVars( const String& value ) {
 	std::vector<VariableFunctionCache> vars;
-	std::string::size_type tokenStart = 0;
-	std::string::size_type tokenEnd = 0;
+	String::size_type tokenStart = 0;
+	String::size_type tokenEnd = 0;
 
 	while ( true ) {
 		tokenStart = value.find( "var(", tokenStart );
-		if ( tokenStart != std::string::npos ) {
+		if ( tokenStart != String::npos ) {
 			tokenEnd = String::findCloseBracket( value, tokenStart, '(', ')' );
-			if ( tokenEnd != std::string::npos ) {
+			if ( tokenEnd != String::npos ) {
 				mIsVarValue = true;
 				VariableFunctionCache variableFuncCache;
 				variableFuncCache.definition =
@@ -257,7 +257,7 @@ std::vector<VariableFunctionCache> StyleSheetProperty::checkVars( const std::str
 	return vars;
 }
 
-std::string StyleSheetProperty::asString( const std::string& defaultValue ) const {
+String StyleSheetProperty::asString( const String& defaultValue ) const {
 	return mValue.empty() ? defaultValue : mValue;
 }
 
@@ -300,21 +300,21 @@ Color StyleSheetProperty::asColor() const {
 	return Color::fromString( mValue );
 }
 
-Float StyleSheetProperty::asDpDimension( const std::string& defaultValue ) const {
+Float StyleSheetProperty::asDpDimension( const String& defaultValue ) const {
 	return PixelDensity::toDpFromString( asString( defaultValue ) );
 }
 
-int StyleSheetProperty::asDpDimensionI( const std::string& defaultValue ) const {
+int StyleSheetProperty::asDpDimensionI( const String& defaultValue ) const {
 	return PixelDensity::toDpFromStringI( asString( defaultValue ) );
 }
 
-Uint32 StyleSheetProperty::asDpDimensionUint( const std::string& defaultValue ) const {
+Uint32 StyleSheetProperty::asDpDimensionUint( const String& defaultValue ) const {
 	int attrInt = asDpDimensionI( defaultValue );
 
 	return attrInt >= 0 ? attrInt : 0;
 }
 
-static OriginPoint toOriginPoint( std::string val ) {
+static OriginPoint toOriginPoint( String val ) {
 	String::toLowerInPlace( val );
 
 	if ( "center" == val ) {
@@ -322,7 +322,7 @@ static OriginPoint toOriginPoint( std::string val ) {
 	} else if ( "topleft" == val ) {
 		return OriginPoint::OriginTopLeft;
 	} else {
-		std::vector<std::string> parts = String::split( val, ' ' );
+		std::vector<String> parts = String::split( val, ' ' );
 
 		if ( parts.size() == 2 ) {
 			Float x = 0;
@@ -340,7 +340,7 @@ static OriginPoint toOriginPoint( std::string val ) {
 	return OriginPoint::OriginCenter;
 }
 
-static BlendMode toBlendMode( std::string val ) {
+static BlendMode toBlendMode( String val ) {
 	String::toLowerInPlace( val );
 
 	BlendMode blendMode;
@@ -568,16 +568,16 @@ void StyleSheetProperty::cleanValue() {
 	}
 }
 
-Float StyleSheetProperty::asDpDimension( UINode* node, const std::string& defaultValue ) const {
+Float StyleSheetProperty::asDpDimension( UINode* node, const String& defaultValue ) const {
 	return node->lengthFromValueAsDp( asString( defaultValue ), CSS::PropertyRelativeTarget::None );
 }
 
-int StyleSheetProperty::asDpDimensionI( UINode* node, const std::string& defaultValue ) const {
+int StyleSheetProperty::asDpDimensionI( UINode* node, const String& defaultValue ) const {
 	return static_cast<int>( asDpDimension( node, defaultValue ) );
 }
 
 Uint32 StyleSheetProperty::asDpDimensionUint( UINode* node,
-											  const std::string& defaultValue ) const {
+											  const String& defaultValue ) const {
 	int attrInt = asDpDimensionI( node, defaultValue );
 	return attrInt >= 0 ? attrInt : 0;
 }

@@ -116,7 +116,7 @@ void TextDocument::resetCursor() {
 	notifySelectionChanged();
 }
 
-String shiftJISToUTF32( const std::string_view& shiftJISString ) {
+String shiftJISToUTF32( const String_view& shiftJISString ) {
 	String string;
 	auto* ret = Window::Engine::instance()->getPlatformHelper()->iconv(
 		"UTF-32LE", "SHIFT-JIS", shiftJISString.data(), shiftJISString.size() );
@@ -140,7 +140,7 @@ static constexpr int codepointSize( TextFormat::Encoding enc ) {
 }
 
 static inline void searchSubstr( char* data, const size_t& size, size_t& position,
-								 const std::string_view& substr, const std::string_view& substrfb,
+								 const String_view& substr, const String_view& substrfb,
 								 int codepointSize ) {
 	position = 0;
 	const char* found =
@@ -191,7 +191,7 @@ static String ptrGetLine( char* data, const size_t& size, size_t& position,
 	}
 
 	if ( enc == TextFormat::Encoding::Shift_JIS )
-		return shiftJISToUTF32( std::string_view{ data, position } );
+		return shiftJISToUTF32( String_view{ data, position } );
 	else if ( enc == TextFormat::Encoding::Latin1 )
 		return String::fromLatin1( data, position );
 
@@ -202,7 +202,7 @@ TextDocument::LoadStatus TextDocument::loadFromStream( IOStream& file ) {
 	return loadFromStream( file, "untitled", true );
 }
 
-TextDocument::LoadStatus TextDocument::loadFromStream( IOStream& file, std::string path,
+TextDocument::LoadStatus TextDocument::loadFromStream( IOStream& file, String path,
 													   bool callReset ) {
 	mLoading = true;
 	Lock l( mLoadingMutex );
@@ -354,7 +354,7 @@ void TextDocument::guessIndentType() {
 		int guessCountdown = 10;
 		for ( size_t i = start; i < end; i++ ) {
 			const String& text = mLines[i].getText();
-			std::string match =
+			String match =
 				LuaPattern::match( text.size() > 128 ? text.substr( 0, 12 ) : text, "^  +" );
 			if ( !match.empty() ) {
 				guessSpaces++;
@@ -411,7 +411,7 @@ const SyntaxDefinition& TextDocument::guessSyntax() const {
 
 void TextDocument::resetSyntax() {
 	String header( getText( { { 0, 0 }, positionOffset( { 0, 0 }, 128 ) } ) );
-	std::string oldDef = mSyntaxDefinition.getLSPName();
+	String oldDef = mSyntaxDefinition.getLSPName();
 	mSyntaxDefinition = SyntaxDefinitionManager::instance()->find( mFilePath, header, mHAsCpp );
 	if ( mSyntaxDefinition.getLSPName() != oldDef )
 		notifySyntaxDefinitionChange();
@@ -467,7 +467,7 @@ bool TextDocument::isBOM() const {
 	return mIsBOM;
 }
 
-void TextDocument::notifyDocumentMoved( const std::string& path ) {
+void TextDocument::notifyDocumentMoved( const String& path ) {
 	changeFilePath( path, false );
 	notifyDocumentMoved();
 }
@@ -494,7 +494,7 @@ void TextDocument::toLowerSelection() {
 	}
 }
 
-std::string TextDocument::getLoadingFilePath() const {
+String TextDocument::getLoadingFilePath() const {
 	Lock l( mLoadingFilePathMutex );
 	return mLoadingFilePath;
 }
@@ -504,10 +504,10 @@ URI TextDocument::getLoadingFileURI() const {
 	return mLoadingFileURI;
 }
 
-TextDocument::LoadStatus TextDocument::loadFromFile( const std::string& path ) {
+TextDocument::LoadStatus TextDocument::loadFromFile( const String& path ) {
 	mLoading = true;
 	if ( !FileSystem::fileExists( path ) && PackManager::instance()->isFallbackToPacksActive() ) {
-		std::string pathFix( path );
+		String pathFix( path );
 		Pack* pack = PackManager::instance()->exists( pathFix );
 		if ( NULL != pack ) {
 			changeFilePath( pathFix, false );
@@ -525,7 +525,7 @@ TextDocument::LoadStatus TextDocument::loadFromFile( const std::string& path ) {
 	return ret;
 }
 
-bool TextDocument::loadAsyncFromFile( const std::string& path, std::shared_ptr<ThreadPool> pool,
+bool TextDocument::loadAsyncFromFile( const String& path, std::shared_ptr<ThreadPool> pool,
 									  std::function<void( TextDocument*, bool )> onLoaded ) {
 	mLoading = true;
 	mLoadingAsync = true;
@@ -555,7 +555,7 @@ TextDocument::LoadStatus TextDocument::loadFromMemory( const Uint8* data, const 
 	return loadFromStream( stream, mFilePath, true );
 }
 
-TextDocument::LoadStatus TextDocument::loadFromPack( Pack* pack, std::string filePackPath ) {
+TextDocument::LoadStatus TextDocument::loadFromPack( Pack* pack, String filePackPath ) {
 	if ( NULL == pack )
 		return LoadStatus::Failed;
 	LoadStatus ret = LoadStatus::Failed;
@@ -566,15 +566,15 @@ TextDocument::LoadStatus TextDocument::loadFromPack( Pack* pack, std::string fil
 	return ret;
 }
 
-static std::string getTempPathFromURI( const URI& uri ) {
-	std::string lastSegment( uri.getLastPathSegment() );
-	std::string name( String::randString( 8 ) +
+static String getTempPathFromURI( const URI& uri ) {
+	String lastSegment( uri.getLastPathSegment() );
+	String name( String::randString( 8 ) +
 					  ( lastSegment.empty() ? ".txt" : "." + lastSegment ) );
-	std::string tmpPath( Sys::getTempPath() + name );
+	String tmpPath( Sys::getTempPath() + name );
 	return tmpPath;
 }
 
-TextDocument::LoadStatus TextDocument::loadFromURL( const std::string& url,
+TextDocument::LoadStatus TextDocument::loadFromURL( const String& url,
 													const Http::Request::FieldTable& headers ) {
 	mLoading = true;
 	URI uri( url );
@@ -588,7 +588,7 @@ TextDocument::LoadStatus TextDocument::loadFromURL( const std::string& url,
 		Http::get( uri, Seconds( 10 ), nullptr, headers, "", true, Http::getEnvProxyURI() );
 
 	if ( response.getStatus() <= Http::Response::Ok ) {
-		std::string path( getTempPathFromURI( uri ) );
+		String path( getTempPathFromURI( uri ) );
 		FileSystem::fileWrite( path, (const Uint8*)response.getBody().c_str(),
 							   response.getBody().size() );
 		auto ret = loadFromFile( path );
@@ -601,7 +601,7 @@ TextDocument::LoadStatus TextDocument::loadFromURL( const std::string& url,
 	return LoadStatus::Failed;
 }
 
-bool TextDocument::loadAsyncFromURL( const std::string& url,
+bool TextDocument::loadAsyncFromURL( const String& url,
 									 const Http::Request::FieldTable& headers,
 									 std::function<void( TextDocument*, bool success )> onLoaded,
 									 const Http::Request::ProgressCallback& progressCallback ) {
@@ -618,7 +618,7 @@ bool TextDocument::loadAsyncFromURL( const std::string& url,
 	Http::getAsync(
 		[=]( const Http&, Http::Request&, Http::Response& response ) {
 			if ( response.getStatus() <= Http::Response::Ok ) {
-				std::string path( getTempPathFromURI( uri ) );
+				String path( getTempPathFromURI( uri ) );
 				FileSystem::fileWrite( path, (const Uint8*)response.getBody().c_str(),
 									   response.getBody().size() );
 				if ( loadFromFile( path ) == LoadStatus::Loaded ) {
@@ -639,7 +639,7 @@ bool TextDocument::loadAsyncFromURL( const std::string& url,
 
 TextDocument::LoadStatus TextDocument::reload() {
 	TextDocument::LoadStatus ret = LoadStatus::Failed;
-	std::string path( mFilePath );
+	String path( mFilePath );
 	if ( mFileRealPath.exists() ) {
 		auto selection = mSelection;
 		mUndoStack.clear();
@@ -655,13 +655,13 @@ TextDocument::LoadStatus TextDocument::reload() {
 	return ret;
 }
 
-bool TextDocument::save( const std::string& path ) {
+bool TextDocument::save( const String& path ) {
 	if ( path.empty() || mDefaultFileName == path || mSaving )
 		return false;
 	mSaving = true;
 	if ( FileSystem::fileWrite( path, "" ) ) {
 		IOStreamFile file( path, "wb" );
-		std::string oldFilePath( mFilePath );
+		String oldFilePath( mFilePath );
 		URI oldFileURI( mFileURI );
 		FileInfo oldFileInfo( mFileRealPath );
 		mFilePath = path;
@@ -687,7 +687,7 @@ bool TextDocument::save( IOStream& stream, bool keepUndoRedoStatus ) {
 	if ( !stream.isOpen() || mLines.empty() )
 		return false;
 	BoolScopedOp op( mDoingTextInput, true );
-	const std::string whitespaces( " \t\f\v\n\r" );
+	const String whitespaces( " \t\f\v\n\r" );
 	MD5::Context md5Ctx;
 	MD5::init( md5Ctx );
 
@@ -719,13 +719,13 @@ bool TextDocument::save( IOStream& stream, bool keepUndoRedoStatus ) {
 
 	size_t lastLine = mLines.size() - 1;
 	for ( size_t i = 0; i <= lastLine; i++ ) {
-		std::string text( mLines[i].toUtf8() );
+		String text( mLines[i].toUtf8() );
 
 		if ( !keepUndoRedoStatus && mTrimTrailingWhitespaces && text.size() > 1 &&
-			 whitespaces.find( text[text.size() - 2] ) != std::string::npos ) {
+			 whitespaces.find( text[text.size() - 2] ) != String::npos ) {
 			size_t pos = text.find_last_not_of( whitespaces );
 			Int64 curLine = i;
-			if ( pos != std::string::npos ) {
+			if ( pos != String::npos ) {
 				remove( 0, { { curLine, static_cast<Int64>( pos + 1 ) },
 							 { curLine, static_cast<Int64>( mLines[i].getText().size() ) } } );
 			} else {
@@ -779,7 +779,7 @@ bool TextDocument::save( IOStream& stream, bool keepUndoRedoStatus ) {
 				break;
 			}
 			case TextFormat::Encoding::Latin1: {
-				std::string latin1;
+				String latin1;
 				String utf32( text ); // TODO: Do direct conversion
 				latin1.reserve( utf32.size() );
 				for ( size_t i = 0; i < utf32.size(); i++ )
@@ -842,7 +842,7 @@ void TextDocument::setDeleteOnClose( bool deleteOnClose ) {
 	mDeleteOnClose = deleteOnClose;
 }
 
-std::string TextDocument::getFilename() const {
+String TextDocument::getFilename() const {
 	return FileSystem::fileNameFromPath( mFilePath );
 }
 
@@ -1032,7 +1032,7 @@ const std::array<Uint8, 16>& TextDocument::getHash() const {
 	return mHash;
 }
 
-std::string TextDocument::getHashHexString() const {
+String TextDocument::getHashHexString() const {
 	return MD5::Result{ mHash }.toHexString();
 }
 
@@ -1067,8 +1067,8 @@ String TextDocument::getAllSelectedText() const {
 	return text;
 }
 
-std::vector<std::string> TextDocument::getCommandList() const {
-	std::vector<std::string> cmds;
+std::vector<String> TextDocument::getCommandList() const {
+	std::vector<String> cmds;
 	for ( const auto& cmd : mCommands )
 		cmds.push_back( cmd.first );
 	return cmds;
@@ -2152,7 +2152,7 @@ void TextDocument::removeFromStartOfSelectedLines( const String& text, bool skip
 	bool swap = prevStart != range.start();
 	Int64 startRemoved = 0;
 	Int64 endRemoved = 0;
-	String indentSpaces( removeExtraSpaces ? std::string( mIndentWidth, ' ' ) : "" );
+	String indentSpaces( removeExtraSpaces ? String( mIndentWidth, ' ' ) : "" );
 	for ( auto i = range.start().line(); i <= range.end().line(); i++ ) {
 		const String& line = this->line( i ).getText();
 		if ( !skipEmpty || line.length() > 1 ) {
@@ -2250,7 +2250,7 @@ void TextDocument::appendLineIfLastLine( const size_t& cursorIdx, Int64 line ) {
 
 String TextDocument::getIndentString() {
 	if ( IndentType::IndentSpaces == mIndentType )
-		return String( std::string( mIndentWidth, ' ' ) );
+		return String( String( mIndentWidth, ' ' ) );
 	return String( "\t" );
 }
 
@@ -2385,15 +2385,15 @@ Uint64 TextDocument::getCurrentChangeId() const {
 	return mUndoStack.getCurrentChangeId();
 }
 
-const std::string& TextDocument::getDefaultFileName() const {
+const String& TextDocument::getDefaultFileName() const {
 	return mDefaultFileName;
 }
 
-void TextDocument::setDefaultFileName( const std::string& defaultFileName ) {
+void TextDocument::setDefaultFileName( const String& defaultFileName ) {
 	mFilePath = mDefaultFileName = defaultFileName;
 }
 
-const std::string& TextDocument::getFilePath() const {
+const String& TextDocument::getFilePath() const {
 	return mFilePath;
 }
 
@@ -2409,13 +2409,13 @@ bool TextDocument::isDirty() const {
 	return mCleanChangeId != getCurrentChangeId();
 }
 
-void TextDocument::execute( const std::string& command ) {
+void TextDocument::execute( const String& command ) {
 	auto cmdIt = mCommands.find( command );
 	if ( cmdIt != mCommands.end() )
 		cmdIt->second();
 }
 
-void TextDocument::execute( const std::string& command, Client* client ) {
+void TextDocument::execute( const String& command, Client* client ) {
 	auto cmdRefIt = mRefCommands.find( command );
 	if ( cmdRefIt != mRefCommands.end() )
 		return cmdRefIt->second( client );
@@ -2424,26 +2424,26 @@ void TextDocument::execute( const std::string& command, Client* client ) {
 		return cmdIt->second();
 }
 
-void TextDocument::setCommands( const UnorderedMap<std::string, DocumentCommand>& cmds ) {
+void TextDocument::setCommands( const HashMap<String, DocumentCommand>& cmds ) {
 	mCommands.insert( cmds.begin(), cmds.end() );
 }
 
-void TextDocument::setCommand( const std::string& command,
+void TextDocument::setCommand( const String& command,
 							   const TextDocument::DocumentCommand& func ) {
 	mCommands[command] = func;
 }
 
-void TextDocument::setCommand( const std::string& command,
+void TextDocument::setCommand( const String& command,
 							   const TextDocument::DocumentRefCommand& func ) {
 	mRefCommands[command] = func;
 }
 
-bool TextDocument::hasCommand( const std::string& command ) {
+bool TextDocument::hasCommand( const String& command ) {
 	return mCommands.find( command ) != mCommands.end() ||
 		   mRefCommands.find( command ) != mRefCommands.end();
 }
 
-bool TextDocument::removeCommand( const std::string& command ) {
+bool TextDocument::removeCommand( const String& command ) {
 	return mCommands.erase( command ) > 0 || mRefCommands.erase( command ) > 0;
 }
 
@@ -2933,7 +2933,7 @@ int TextDocument::replaceAll( const String& text, const String& replace, const b
 	PatternMatcher::Range matchList[MAX_CAPTURES];
 
 	if ( type == FindReplaceType::LuaPattern || type == FindReplaceType::RegEx ) {
-		std::string replaceUtf8( replace.toUtf8() );
+		String replaceUtf8( replace.toUtf8() );
 		LuaPattern ptrn( "$%d+"sv );
 		while ( numCaptures < MAX_CAPTURES &&
 				ptrn.matches( replaceUtf8, &matchList[numCaptures],
@@ -2947,11 +2947,11 @@ int TextDocument::replaceAll( const String& text, const String& replace, const b
 		if ( found.isValid() ) {
 			if ( numCaptures && numCaptures <= found.captures.size() ) {
 				String finalReplace( replace );
-				std::string l( line( found.captures[0].start().line() ).toUtf8() );
+				String l( line( found.captures[0].start().line() ).toUtf8() );
 				for ( size_t i = 0; i < numCaptures; i++ ) {
 					String matchSubStr( replace.substr(
 						matchList[i].start, matchList[i].end - matchList[i].start ) ); // $1 $2 ...
-					std::string matchNum( matchSubStr.substr( 1 ) );				   // 1 2 ...
+					String matchNum( matchSubStr.substr( 1 ) );				   // 1 2 ...
 					int num;
 					if ( String::fromString( num, matchNum ) && num > 0 &&
 						 num - 1 < static_cast<int>( found.captures.size() ) ) {
@@ -3017,7 +3017,7 @@ TextPosition TextDocument::replace( String search, const String& replace, TextPo
 	PatternMatcher::Range matchList[MAX_CAPTURES];
 
 	if ( type == FindReplaceType::LuaPattern || type == FindReplaceType::RegEx ) {
-		std::string replaceUtf8( replace.toUtf8() );
+		String replaceUtf8( replace.toUtf8() );
 		LuaPattern ptrn( "$%d+"sv );
 		while ( numCaptures < MAX_CAPTURES &&
 				ptrn.matches( replaceUtf8, &matchList[numCaptures],
@@ -3029,11 +3029,11 @@ TextPosition TextDocument::replace( String search, const String& replace, TextPo
 	if ( found.isValid() ) {
 		if ( numCaptures && numCaptures == found.captures.size() ) {
 			String finalReplace( replace );
-			std::string l( line( found.captures[0].start().line() ).toUtf8() );
+			String l( line( found.captures[0].start().line() ).toUtf8() );
 			for ( size_t i = 0; i < numCaptures; i++ ) {
 				String matchSubStr( replace.substr(
 					matchList[i].start, matchList[i].end - matchList[i].start ) ); // $1 $2 ...
-				std::string matchNum( matchSubStr.substr( 1 ) );				   // 1 2 ...
+				String matchNum( matchSubStr.substr( 1 ) );				   // 1 2 ...
 				int num;
 				if ( String::fromString( num, matchNum ) && num > 0 &&
 					 num - 1 < static_cast<int>( found.captures.size() ) ) {
@@ -3102,15 +3102,15 @@ void TextDocument::setLines( std::vector<TextDocumentLine>&& lines ) {
 	mLines = std::move( lines );
 }
 
-std::string TextDocument::serializeUndoRedo( bool inverted ) {
+String TextDocument::serializeUndoRedo( bool inverted ) {
 	return mUndoStack.toJSON( inverted );
 }
 
-void TextDocument::unserializeUndoRedo( const std::string& jsonString ) {
+void TextDocument::unserializeUndoRedo( const String& jsonString ) {
 	return mUndoStack.fromJSON( jsonString );
 }
 
-void TextDocument::changeFilePath( const std::string& filePath ) {
+void TextDocument::changeFilePath( const String& filePath ) {
 	changeFilePath( filePath, true );
 }
 
@@ -3131,7 +3131,7 @@ bool TextDocument::isHuge() const {
 	return linesCount() > 50000 || guessFileSize( this ) > EE_1MB * 10;
 }
 
-void TextDocument::changeFilePath( const std::string& filePath, bool notify ) {
+void TextDocument::changeFilePath( const String& filePath, bool notify ) {
 	mFilePath = filePath;
 	mFileURI = URI( "file://" + mFilePath );
 	mFileRealPath = FileInfo::isLink( mFilePath ) ? FileInfo( FileInfo( mFilePath ).linksTo() )
@@ -3359,16 +3359,16 @@ const String& TextDocument::getNonWordChars() const {
 }
 
 void TextDocument::toggleLineComments() {
-	std::string comment = mSyntaxDefinition.getComment();
+	String comment = mSyntaxDefinition.getComment();
 	if ( comment.empty() )
 		return;
-	std::string commentText = comment + " ";
+	String commentText = comment + " ";
 	TextRange selection = getSelection( true );
 	bool uncomment = true;
 	for ( Int64 i = selection.start().line(); i <= selection.end().line(); i++ ) {
 		const String& text = mLines[i].getText();
-		if ( text.find_first_not_of( " \t\n" ) != std::string::npos &&
-			 text.find( commentText ) == std::string::npos ) {
+		if ( text.find_first_not_of( " \t\n" ) != String::npos &&
+			 text.find( commentText ) == String::npos ) {
 			uncomment = false;
 		}
 	}

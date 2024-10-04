@@ -7,7 +7,7 @@
 
 namespace EE { namespace UI { namespace Doc {
 
-struct EE_API TokenizedLine {
+struct ZeroShared TokenizedLine {
 	SyntaxState initState;
 	String::HashType hash{ 0 };
 	std::vector<SyntaxTokenPosition> tokens;
@@ -19,7 +19,7 @@ struct EE_API TokenizedLine {
 	static Uint64 calcSignature( const std::vector<SyntaxTokenPosition>& tokens );
 };
 
-class EE_API SyntaxHighlighter {
+class ZeroShared SyntaxHighlighter {
   public:
 	explicit SyntaxHighlighter( TextDocument* doc );
 
@@ -72,7 +72,7 @@ class EE_API SyntaxHighlighter {
   protected:
 	TextDocument* mDoc;
 	std::unordered_map<size_t, TokenizedLine> mLines;
-	UnorderedMap<size_t, TokenizedLine> mTokenizerLines;
+	HashMap<size_t, TokenizedLine> mTokenizerLines;
 	Mutex mLinesMutex;
 	Int64 mFirstInvalidLine;
 	Int64 mMaxWantedLine;

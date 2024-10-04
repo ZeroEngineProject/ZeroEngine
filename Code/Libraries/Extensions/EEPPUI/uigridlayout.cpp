@@ -234,7 +234,7 @@ Sizef UIGridLayout::getTargetElementSize() const {
 										 mRowWeight );
 }
 
-std::string UIGridLayout::getPropertyString( const PropertyDefinition* propertyDef,
+String UIGridLayout::getPropertyString( const PropertyDefinition* propertyDef,
 											 const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -284,13 +284,13 @@ bool UIGridLayout::applyProperty( const StyleSheetProperty& attribute ) {
 			setBoxMargin( Sizei( mBoxMargin.x, attribute.asDpDimensionI( this ) ) );
 			break;
 		case PropertyId::ColumnMode: {
-			std::string val( attribute.asString() );
+			String val( attribute.asString() );
 			String::toLowerInPlace( val );
 			setColumnMode( "size" == val ? Size : Weight );
 			break;
 		}
 		case PropertyId::RowMode: {
-			std::string val( attribute.asString() );
+			String val( attribute.asString() );
 			String::toLowerInPlace( val );
 			setRowMode( "size" == val ? Size : Weight );
 			break;

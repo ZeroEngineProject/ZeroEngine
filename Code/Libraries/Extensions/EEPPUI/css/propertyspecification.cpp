@@ -8,8 +8,8 @@ SINGLETON_DECLARE_IMPLEMENTATION( PropertySpecification )
 
 PropertySpecification::~PropertySpecification() {}
 
-PropertyDefinition& PropertySpecification::registerProperty( const std::string& propertyVame,
-															 const std::string& defaultValue,
+PropertyDefinition& PropertySpecification::registerProperty( const String& propertyVame,
+															 const String& defaultValue,
 															 bool inherited ) {
 	PropertyDefinition* property = const_cast<PropertyDefinition*>( getProperty( propertyVame ) );
 
@@ -23,8 +23,8 @@ PropertyDefinition& PropertySpecification::registerProperty( const std::string& 
 	mProperties[propDef->getId()] = std::shared_ptr<PropertyDefinition>( propDef );
 
 	for ( auto& sep : {"-", "_"} ) {
-		if ( propDef->getName().find( sep ) != std::string::npos ) {
-			std::string alias( propDef->getName() );
+		if ( propDef->getName().find( sep ) != String::npos ) {
+			String alias( propDef->getName() );
 			String::replaceAll( alias, sep, "" );
 			propDef->addAlias( alias );
 		}
@@ -42,14 +42,14 @@ const PropertyDefinition* PropertySpecification::getProperty( const Uint32& id )
 	return nullptr;
 }
 
-const PropertyDefinition* PropertySpecification::getProperty( const std::string& name ) const {
+const PropertyDefinition* PropertySpecification::getProperty( const String& name ) const {
 	return getProperty( String::hash( name ) );
 }
 
 ShorthandDefinition&
-PropertySpecification::registerShorthand( const std::string& name,
-										  const std::vector<std::string>& properties,
-										  const std::string& shorthandParserName ) {
+PropertySpecification::registerShorthand( const String& name,
+										  const std::vector<String>& properties,
+										  const String& shorthandParserName ) {
 	ShorthandDefinition* shorthand = const_cast<ShorthandDefinition*>( getShorthand( name ) );
 
 	if ( nullptr != shorthand ) {
@@ -74,11 +74,11 @@ const ShorthandDefinition* PropertySpecification::getShorthand( const String::Ha
 	return nullptr;
 }
 
-const ShorthandDefinition* PropertySpecification::getShorthand( const std::string& name ) const {
+const ShorthandDefinition* PropertySpecification::getShorthand( const String& name ) const {
 	return getShorthand( String::hash( name ) );
 }
 
-bool PropertySpecification::isShorthand( const std::string& name ) const {
+bool PropertySpecification::isShorthand( const String& name ) const {
 	return getShorthand( name ) != nullptr;
 }
 

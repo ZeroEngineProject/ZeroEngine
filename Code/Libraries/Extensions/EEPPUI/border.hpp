@@ -17,31 +17,31 @@ class UINode;
 
 enum class BorderType : Uint32 { Inside, Outside, Outline };
 
-struct EE_API Border {
+struct ZeroShared Border {
 	int width = 0;
 	Color color;
 	Color realColor;
 };
 
-struct EE_API BorderRadiuses {
+struct ZeroShared BorderRadiuses {
 	Sizef topLeft;
 	Sizef topRight;
 	Sizef bottomLeft;
 	Sizef bottomRight;
 };
 
-struct EE_API Borders {
+struct ZeroShared Borders {
 	Border left;
 	Border top;
 	Border right;
 	Border bottom;
 	BorderRadiuses radius;
 
-	static std::string fromBorderType( const BorderType& borderType );
+	static String fromBorderType( const BorderType& borderType );
 
-	static BorderType toBorderType( const std::string& borderType );
+	static BorderType toBorderType( const String& borderType );
 
-	static Sizef radiusFromString( const UINode* node, const std::string& val );
+	static Sizef radiusFromString( const UINode* node, const String& val );
 
 	/** Creates the border geometry into the VertexBuffer provided. The VertexBuffer must be a
 	 * a EE::Graphics::PrimitiveType::PRIMITIVE_TRIANGLE_STRIP with VERTEX_FLAGS_PRIMITIVE flags. */
@@ -55,18 +55,18 @@ struct EE_API Borders {
 };
 
 struct BorderRadiuseStr {
-	std::string topLeft;
-	std::string topRight;
-	std::string bottomLeft;
-	std::string bottomRight;
+	String topLeft;
+	String topRight;
+	String bottomLeft;
+	String bottomRight;
 };
 
 struct BorderStr {
 	struct {
-		std::string left;
-		std::string right;
-		std::string top;
-		std::string bottom;
+		String left;
+		String right;
+		String top;
+		String bottom;
 	} width;
 	BorderRadiuseStr radius;
 };

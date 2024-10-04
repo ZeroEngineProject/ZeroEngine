@@ -134,7 +134,7 @@ void UIMenuRadioButton::onStateChange() {
 	setActive( mActive );
 }
 
-std::string UIMenuRadioButton::getPropertyString( const PropertyDefinition* propertyDef,
+String UIMenuRadioButton::getPropertyString( const PropertyDefinition* propertyDef,
 												  const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";

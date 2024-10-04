@@ -25,10 +25,10 @@ template <class T> inline void HashCombine( std::size_t& seed, const T& v ) {
 	seed ^= hasher( v ) + 0x9e3779b9 + ( seed << 6 ) + ( seed >> 2 );
 }
 
-size_t StyleSheet::nodeHash( const std::string& tag, const std::string& id ) {
+size_t StyleSheet::nodeHash( const String& tag, const String& id ) {
 	size_t seed = 0;
 	if ( !tag.empty() )
-		seed = std::hash<std::string>()( tag );
+		seed = std::hash<String>()( tag );
 	if ( !id.empty() )
 		HashCombine( seed, id );
 	return seed;
@@ -98,7 +98,7 @@ void StyleSheet::removeAllWithMarker( const Uint32& marker ) {
 		}
 	}
 
-	std::vector<std::string> removeKeys;
+	std::vector<String> removeKeys;
 	for ( auto& keyFrame : mKeyframesMap ) {
 		if ( keyFrame.second.getMarker() == marker )
 			removeKeys.emplace_back( keyFrame.first );
@@ -128,7 +128,7 @@ bool StyleSheet::markerExists( const Uint32& marker ) const {
 }
 
 std::vector<std::shared_ptr<StyleSheetStyle>>
-StyleSheet::findStyleFromSelectorName( const std::string& selector ) const {
+StyleSheet::findStyleFromSelectorName( const String& selector ) const {
 	std::vector<std::shared_ptr<StyleSheetStyle>> found;
 	for ( const auto& node : mNodes ) {
 		if ( selector == node->getSelector().getName() )
@@ -170,8 +170,8 @@ StyleSheet& StyleSheet::operator=( const StyleSheet& other ) {
 }
 
 bool StyleSheet::addStyleToNodeIndex( StyleSheetStyle* style ) {
-	const std::string& id = style->getSelector().getSelectorId();
-	const std::string& tag = style->getSelector().getSelectorTagName();
+	const String& id = style->getSelector().getSelectorId();
+	const String& tag = style->getSelector().getSelectorTagName();
 	if ( style->hasProperties() || style->hasVariables() ) {
 		size_t nodeHash = this->nodeHash( "*" == tag ? "" : tag, id );
 		StyleSheetStyleVector& nodes = mNodeIndex[nodeHash];
@@ -198,8 +198,8 @@ bool StyleSheet::isEmpty() const {
 	return mNodes.empty();
 }
 
-std::string StyleSheet::print() {
-	std::string str;
+String StyleSheet::print() {
+	String str;
 	std::map<MediaQueryList::ptr, std::vector<StyleSheetStyle*>> byMQ;
 
 	for ( size_t i = 0; i < mNodes.size(); ++i ) {
@@ -237,8 +237,8 @@ std::shared_ptr<ElementDefinition> StyleSheet::getElementStyles( UIWidget* eleme
 	static StyleSheetStyleVector applicableNodes;
 	applicableNodes.clear();
 
-	const std::string& tag = element->getElementTag();
-	const std::string& id = element->getId();
+	const String& tag = element->getElementTag();
+	const String& id = element->getId();
 
 	std::array<size_t, 4> nodeHash;
 	int numHashes = 2;
@@ -290,7 +290,7 @@ const std::vector<std::shared_ptr<StyleSheetStyle>>& StyleSheet::getStyles() con
 }
 
 std::vector<std::shared_ptr<StyleSheetStyle>>
-StyleSheet::getStylesFromSelector( const std::string& selector ) const {
+StyleSheet::getStylesFromSelector( const String& selector ) const {
 	std::vector<std::shared_ptr<StyleSheetStyle>> found;
 	for ( const auto& node : mNodes )
 		if ( node->isMediaValid() && node->getSelector().getName() == selector )
@@ -299,7 +299,7 @@ StyleSheet::getStylesFromSelector( const std::string& selector ) const {
 }
 
 std::shared_ptr<StyleSheetStyle>
-StyleSheet::getStyleFromSelector( const std::string& selector, bool searchBySpecificity ) const {
+StyleSheet::getStyleFromSelector( const String& selector, bool searchBySpecificity ) const {
 	if ( !searchBySpecificity ) {
 		for ( const auto& node : mNodes )
 			if ( node->getSelector().getName() == selector )
@@ -377,12 +377,12 @@ StyleSheetStyleVector StyleSheet::getStyleSheetStyleByAtRule( const AtRuleType& 
 	return vector;
 }
 
-bool StyleSheet::isKeyframesDefined( const std::string& keyframesName ) const {
+bool StyleSheet::isKeyframesDefined( const String& keyframesName ) const {
 	return mKeyframesMap.find( keyframesName ) != mKeyframesMap.end();
 }
 
 const KeyframesDefinition&
-StyleSheet::getKeyframesDefinition( const std::string& keyframesName ) const {
+StyleSheet::getKeyframesDefinition( const String& keyframesName ) const {
 	static KeyframesDefinition EMPTY;
 	const auto& it = mKeyframesMap.find( keyframesName );
 	if ( it != mKeyframesMap.end() ) {

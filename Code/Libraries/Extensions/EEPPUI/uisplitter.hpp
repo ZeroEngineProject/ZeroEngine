@@ -5,7 +5,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UISplitter : public UILayout {
+class ZeroShared UISplitter : public UILayout {
   public:
 	static UISplitter* New();
 
@@ -39,7 +39,7 @@ class EE_API UISplitter : public UILayout {
 
 	bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

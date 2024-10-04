@@ -149,7 +149,7 @@ void UITabWidget::setStyleConfig( const StyleConfig& styleConfig ) {
 	orderTabs();
 }
 
-std::string UITabWidget::getPropertyString( const PropertyDefinition* propertyDef,
+String UITabWidget::getPropertyString( const PropertyDefinition* propertyDef,
 											const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -316,11 +316,11 @@ void UITabWidget::setMaxTextLength( const Uint32& maxTextLength ) {
 	}
 }
 
-std::string UITabWidget::getMinTabWidth() const {
+String UITabWidget::getMinTabWidth() const {
 	return mStyleConfig.MinTabWidth;
 }
 
-void UITabWidget::setMinTabWidth( const std::string& minTabWidth ) {
+void UITabWidget::setMinTabWidth( const String& minTabWidth ) {
 	if ( minTabWidth != mStyleConfig.MinTabWidth ) {
 		mStyleConfig.MinTabWidth = minTabWidth;
 		updateTabs();
@@ -328,11 +328,11 @@ void UITabWidget::setMinTabWidth( const std::string& minTabWidth ) {
 	}
 }
 
-std::string UITabWidget::getMaxTabWidth() const {
+String UITabWidget::getMaxTabWidth() const {
 	return mStyleConfig.MaxTabWidth;
 }
 
-void UITabWidget::setMaxTabWidth( const std::string& maxTabWidth ) {
+void UITabWidget::setMaxTabWidth( const String& maxTabWidth ) {
 	if ( maxTabWidth != mStyleConfig.MaxTabWidth ) {
 		mStyleConfig.MaxTabWidth = maxTabWidth;
 		updateTabs();

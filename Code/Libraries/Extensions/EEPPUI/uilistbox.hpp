@@ -9,15 +9,15 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIListBox : public UITouchDraggableWidget {
+class ZeroShared UIListBox : public UITouchDraggableWidget {
   public:
 	static UIListBox* New();
 
 	UIListBox();
 
-	static UIListBox* NewWithTag( const std::string& tag );
+	static UIListBox* NewWithTag( const String& tag );
 
-	explicit UIListBox( const std::string& tag );
+	explicit UIListBox( const String& tag );
 
 	virtual ~UIListBox();
 
@@ -105,7 +105,7 @@ class EE_API UIListBox : public UITouchDraggableWidget {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

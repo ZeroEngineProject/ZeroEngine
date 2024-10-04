@@ -21,7 +21,7 @@ template <typename T> class ItemListModel final : public Model {
 
 	virtual size_t columnCount( const ModelIndex& ) const { return 1; }
 
-	virtual std::string columnName( const size_t& ) const { return "Data"; }
+	virtual String columnName( const size_t& ) const { return "Data"; }
 
 	virtual ModelIndex index( int row, int column, const ModelIndex& parent = ModelIndex() ) const {
 		if ( row >= (int)rowCount( parent ) || column >= (int)columnCount( parent ) )
@@ -53,12 +53,12 @@ template <typename K, typename V> class ItemPairListModel final : public Model {
 
 	virtual size_t columnCount( const ModelIndex& ) const { return 2; }
 
-	virtual std::string columnName( const size_t& index ) const {
+	virtual String columnName( const size_t& index ) const {
 		eeASSERT( index < 2 );
 		return mColumnNames[index];
 	}
 
-	virtual void setColumnName( const size_t& index, const std::string& name ) {
+	virtual void setColumnName( const size_t& index, const String& name ) {
 		eeASSERT( index < 2 );
 		mColumnNames[index] = name;
 	}
@@ -99,7 +99,7 @@ template <typename K, typename V> class ItemPairListModel final : public Model {
 
   private:
 	std::vector<std::pair<K, V>>& mData;
-	std::vector<std::string> mColumnNames{ "Title", "Description" };
+	std::vector<String> mColumnNames{ "Title", "Description" };
 	bool mIsEditable{ false };
 };
 
@@ -117,7 +117,7 @@ template <typename T> class ItemListOwnerModel final : public Model {
 
 	virtual size_t columnCount( const ModelIndex& ) const { return 1; }
 
-	virtual std::string columnName( const size_t& ) const { return "Data"; }
+	virtual String columnName( const size_t& ) const { return "Data"; }
 
 	virtual ModelIndex index( int row, int column, const ModelIndex& parent = ModelIndex() ) const {
 		if ( row >= (int)rowCount( parent ) || column >= (int)columnCount( parent ) )
@@ -161,12 +161,12 @@ template <typename K, typename V> class ItemPairListOwnerModel final : public Mo
 
 	virtual size_t columnCount( const ModelIndex& ) const { return 2; }
 
-	virtual std::string columnName( const size_t& index ) const {
+	virtual String columnName( const size_t& index ) const {
 		eeASSERT( index < 2 );
 		return mColumnNames[index];
 	}
 
-	virtual void setColumnName( const size_t& index, const std::string& name ) {
+	virtual void setColumnName( const size_t& index, const String& name ) {
 		eeASSERT( index < 2 );
 		mColumnNames[index] = name;
 	}
@@ -207,7 +207,7 @@ template <typename K, typename V> class ItemPairListOwnerModel final : public Mo
 
   private:
 	std::vector<std::pair<K, V>> mData;
-	std::vector<std::string> mColumnNames{ "Title", "Description" };
+	std::vector<String> mColumnNames{ "Title", "Description" };
 	bool mIsEditable{ false };
 };
 
@@ -230,12 +230,12 @@ template <typename V> class ItemVectorListOwnerModel final : public Model {
 
 	virtual size_t columnCount( const ModelIndex& ) const { return mColumnNames.size(); }
 
-	virtual std::string columnName( const size_t& index ) const {
+	virtual String columnName( const size_t& index ) const {
 		eeASSERT( index < mColumnNames.size() );
 		return mColumnNames[index];
 	}
 
-	virtual void setColumnName( const size_t& index, const std::string& name ) {
+	virtual void setColumnName( const size_t& index, const String& name ) {
 		eeASSERT( index < mColumnNames.size() );
 		mColumnNames[index] = name;
 	}
@@ -273,7 +273,7 @@ template <typename V> class ItemVectorListOwnerModel final : public Model {
 
   private:
 	std::vector<std::vector<V>> mData;
-	std::vector<std::string> mColumnNames;
+	std::vector<String> mColumnNames;
 	bool mIsEditable{ false };
 };
 

@@ -8,7 +8,7 @@
 
 namespace EE { namespace UI { namespace CSS {
 
-class EE_API ElementDefinition : NonCopyable {
+class ZeroShared ElementDefinition : NonCopyable {
   public:
 	ElementDefinition( const StyleSheetStyleVector& styleSheetStyles );
 

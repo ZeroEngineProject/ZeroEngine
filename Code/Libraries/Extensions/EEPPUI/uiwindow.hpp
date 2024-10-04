@@ -33,7 +33,7 @@ static const Uint32 UI_WIN_DEFAULT_FLAGS = UI_WIN_CLOSE_BUTTON |
 										   UI_WIN_USE_DEFAULT_BUTTONS_ACTIONS | UI_WIN_RESIZEABLE |
 										   UI_WIN_SHARE_ALPHA_WITH_CHILDS;
 
-class EE_API UIWindow : public UIWidget {
+class ZeroShared UIWindow : public UIWidget {
   public:
 	class StyleConfig {
 	  public:
@@ -154,12 +154,12 @@ class EE_API UIWindow : public UIWidget {
 
 	virtual bool isDrawInvalidator() const;
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;
 
-	std::string getWindowFlagsString() const;
+	String getWindowFlagsString() const;
 
 	Sizef getMinWindowSizeWithDecoration();
 
@@ -173,21 +173,21 @@ class EE_API UIWindow : public UIWidget {
 
 	void setKeyBindings( const KeyBindings& keyBindings );
 
-	void addKeyBindingString( const std::string& shortcut, const std::string& command );
+	void addKeyBindingString( const String& shortcut, const String& command );
 
-	void addKeyBinding( const KeyBindings::Shortcut& shortcut, const std::string& command );
+	void addKeyBinding( const KeyBindings::Shortcut& shortcut, const String& command );
 
-	void replaceKeyBindingString( const std::string& shortcut, const std::string& command );
+	void replaceKeyBindingString( const String& shortcut, const String& command );
 
-	void replaceKeyBinding( const KeyBindings::Shortcut& shortcut, const std::string& command );
+	void replaceKeyBinding( const KeyBindings::Shortcut& shortcut, const String& command );
 
-	void addKeyBindsString( const std::map<std::string, std::string>& binds );
+	void addKeyBindsString( const std::map<String, String>& binds );
 
-	void addKeyBinds( const std::map<KeyBindings::Shortcut, std::string>& binds );
+	void addKeyBinds( const std::map<KeyBindings::Shortcut, String>& binds );
 
-	void setKeyBindingCommand( const std::string& command, KeyBindingCommand func );
+	void setKeyBindingCommand( const String& command, KeyBindingCommand func );
 
-	void executeKeyBindingCommand( const std::string& command );
+	void executeKeyBindingCommand( const String& command );
 
   protected:
 	enum UI_RESIZE_TYPE {
@@ -227,7 +227,7 @@ class EE_API UIWindow : public UIWidget {
 	bool mShowWhenReady{ false };
 
 	KeyBindings mKeyBindings;
-	std::map<std::string, KeyBindingCommand> mKeyBindingCommands;
+	std::map<String, KeyBindingCommand> mKeyBindingCommands;
 
 	virtual void onSizeChange();
 

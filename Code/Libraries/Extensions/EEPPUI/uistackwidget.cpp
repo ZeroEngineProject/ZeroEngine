@@ -6,11 +6,11 @@ UIStackWidget* UIStackWidget::New() {
 	return NewWithTag( "stackwidget" );
 }
 
-UIStackWidget* UIStackWidget::NewWithTag( const std::string& tag ) {
+UIStackWidget* UIStackWidget::NewWithTag( const String& tag ) {
 	return eeNew( UIStackWidget, ( tag ) );
 }
 
-UIStackWidget::UIStackWidget( const std::string& tag ) : UIWidget( tag ) {}
+UIStackWidget::UIStackWidget( const String& tag ) : UIWidget( tag ) {}
 
 void UIStackWidget::setActiveWidget( UIWidget* widget ) {
 	if ( widget == mActiveWidget )

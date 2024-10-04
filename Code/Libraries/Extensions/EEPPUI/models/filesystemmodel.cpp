@@ -14,7 +14,7 @@ using namespace EE::Scene;
 
 namespace EE { namespace UI { namespace Models {
 
-FileSystemModel::Node::Node( const std::string& rootPath, const FileSystemModel& model ) :
+FileSystemModel::Node::Node( const String& rootPath, const FileSystemModel& model ) :
 	mInfo( FileSystem::getRealPath( rootPath ) ) {
 	mInfoDirty = false;
 	mName = FileSystem::fileNameFromPath( mInfo.getFilepath() );
@@ -33,7 +33,7 @@ FileSystemModel::Node::Node( FileInfo&& info, FileSystemModel::Node* parent ) :
 	updateMimeType();
 }
 
-const std::string& FileSystemModel::Node::fullPath() const {
+const String& FileSystemModel::Node::fullPath() const {
 	return mInfo.getFilepath();
 }
 
@@ -57,7 +57,7 @@ bool FileSystemModel::Node::inParentTree( Node* parent ) const {
 	return false;
 }
 
-FileSystemModel::Node* FileSystemModel::Node::findChildName( const std::string& name,
+FileSystemModel::Node* FileSystemModel::Node::findChildName( const String& name,
 															 const FileSystemModel& model,
 															 bool forceRefresh ) {
 	if ( forceRefresh )
@@ -82,7 +82,7 @@ Int64 FileSystemModel::Node::findChildRowFromInternalData( void* internalData,
 	return -1;
 }
 
-Int64 FileSystemModel::Node::findChildRowFromName( const std::string& name,
+Int64 FileSystemModel::Node::findChildRowFromName( const String& name,
 												   const FileSystemModel& model,
 												   bool forceRefresh ) {
 	if ( forceRefresh )
@@ -99,9 +99,9 @@ FileSystemModel::Node::~Node() {
 	cleanChildren();
 }
 
-FileSystemModel::Node* FileSystemModel::Node::createChild( const std::string& childName,
+FileSystemModel::Node* FileSystemModel::Node::createChild( const String& childName,
 														   const FileSystemModel& model ) {
-	std::string childPath( mInfo.getDirectoryPath() + childName );
+	String childPath( mInfo.getDirectoryPath() + childName );
 	FileInfo file( childPath, false );
 
 	if ( model.getDisplayConfig().ignoreHidden && file.isHidden() )
@@ -138,7 +138,7 @@ ModelIndex FileSystemModel::Node::index( const FileSystemModel& model, int colum
 	return {};
 }
 
-FileSystemModel::Node* FileSystemModel::Node::childWithPathExists( const std::string& path ) {
+FileSystemModel::Node* FileSystemModel::Node::childWithPathExists( const String& path ) {
 	for ( auto child : mChildren ) {
 		if ( child->info().getFilepath() == path )
 			return child;
@@ -146,7 +146,7 @@ FileSystemModel::Node* FileSystemModel::Node::childWithPathExists( const std::st
 	return nullptr;
 }
 
-static bool isAcceptedExtension( const std::vector<std::string>& acceptedExtensions,
+static bool isAcceptedExtension( const std::vector<String>& acceptedExtensions,
 								 const FileInfo& file ) {
 	if ( !acceptedExtensions.empty() && file.isRegularFile() ) {
 		for ( size_t z = 0; z < acceptedExtensions.size(); z++ )
@@ -278,7 +278,7 @@ void FileSystemModel::Node::updateMimeType() {
 	}
 }
 
-std::shared_ptr<FileSystemModel> FileSystemModel::New( const std::string& rootPath,
+std::shared_ptr<FileSystemModel> FileSystemModel::New( const String& rootPath,
 													   const FileSystemModel::Mode& mode,
 													   const DisplayConfig& displayConfig,
 													   Translator* translator ) {
@@ -286,7 +286,7 @@ std::shared_ptr<FileSystemModel> FileSystemModel::New( const std::string& rootPa
 		new FileSystemModel( rootPath, mode, displayConfig, translator ) );
 }
 
-FileSystemModel::FileSystemModel( const std::string& rootPath, const FileSystemModel::Mode& mode,
+FileSystemModel::FileSystemModel( const String& rootPath, const FileSystemModel::Mode& mode,
 								  const DisplayConfig& displayConfig, Translator* translator ) :
 	mRootPath( rootPath ),
 	mRealRootPath( FileSystem::getRealPath( rootPath ) ),
@@ -302,17 +302,17 @@ FileSystemModel::~FileSystemModel() {
 	mInitOK = false;
 }
 
-const std::string& FileSystemModel::getRootPath() const {
+const String& FileSystemModel::getRootPath() const {
 	return mRootPath;
 }
 
-void FileSystemModel::setRootPath( const std::string& rootPath ) {
+void FileSystemModel::setRootPath( const String& rootPath ) {
 	mRootPath = rootPath;
 	mRealRootPath = FileSystem::getRealPath( mRootPath );
 	update();
 }
 
-FileSystemModel::Node* FileSystemModel::getNodeFromPath( std::string path, bool folderNode,
+FileSystemModel::Node* FileSystemModel::getNodeFromPath( String path, bool folderNode,
 														 bool invalidateTree ) {
 	path = FileSystem::getRealPath( path );
 	if ( folderNode && !FileSystem::isDirectory( path ) )
@@ -344,8 +344,8 @@ FileSystemModel::Node* FileSystemModel::getNodeFromPath( std::string path, bool 
 	return curNode;
 }
 
-std::string_view FileSystemModel::getNodeRelativePath( const Node* node ) const {
-	auto rp = std::string_view{ node->fullPath() };
+String_view FileSystemModel::getNodeRelativePath( const Node* node ) const {
+	auto rp = String_view{ node->fullPath() };
 	if ( mRootPath.size() < rp.size() )
 		return rp.substr( mRootPath.size() );
 	return rp;
@@ -389,15 +389,15 @@ size_t FileSystemModel::columnCount( const ModelIndex& ) const {
 	return Column::Count;
 }
 
-std::string FileSystemModel::columnName( const size_t& column ) const {
+String FileSystemModel::columnName( const size_t& column ) const {
 	eeASSERT( column < mColumnNames.size() );
 	if ( column < mColumnNames.size() )
 		return mColumnNames[column];
 	return "";
 }
 
-static std::string permissionString( const FileInfo& info ) {
-	std::string builder;
+static String permissionString( const FileInfo& info ) {
+	String builder;
 	if ( info.isDirectory() )
 		builder.append( "d" );
 	else if ( info.isLink() )
@@ -758,7 +758,7 @@ bool FileSystemModel::handleFileEventLocked( const FileEvent& event ) {
 			}
 
 			std::map<UIAbstractView*, std::vector<ModelIndex>> keptSelections;
-			std::map<UIAbstractView*, std::vector<std::string>> prevSelections;
+			std::map<UIAbstractView*, std::vector<String>> prevSelections;
 			std::map<UIAbstractView*, std::vector<ModelIndex>> prevSelectionsModelIndex;
 
 			forEachView( [&]( UIAbstractView* view ) {
@@ -786,7 +786,7 @@ bool FileSystemModel::handleFileEventLocked( const FileEvent& event ) {
 			endMoveRows();
 
 			forEachView( [&]( UIAbstractView* view ) {
-				std::vector<std::string> names = prevSelections[view];
+				std::vector<String> names = prevSelections[view];
 				std::vector<ModelIndex> newIndexes = keptSelections[view];
 				int i = 0;
 				for ( const auto& name : names ) {
@@ -811,8 +811,8 @@ bool FileSystemModel::handleFileEventLocked( const FileEvent& event ) {
 }
 
 void FileSystemModel::setupColumnNames( Translator* translator ) {
-	const auto i18n = [&translator]( const std::string& key,
-									 const std::string& value ) -> std::string {
+	const auto i18n = [&translator]( const String& key,
+									 const String& value ) -> String {
 		return translator ? translator->getString( "filesystemmodel_column_" + key, value ).toUtf8()
 						  : value;
 	};
@@ -846,7 +846,7 @@ bool FileSystemModel::handleFileEvent( const FileEvent& event ) {
 	return ret;
 }
 
-std::shared_ptr<DiskDrivesModel> DiskDrivesModel::create( const std::vector<std::string>& data ) {
+std::shared_ptr<DiskDrivesModel> DiskDrivesModel::create( const std::vector<String>& data ) {
 	return std::shared_ptr<DiskDrivesModel>( new DiskDrivesModel( data ) );
 }
 

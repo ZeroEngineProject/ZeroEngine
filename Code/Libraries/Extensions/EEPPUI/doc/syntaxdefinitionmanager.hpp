@@ -13,74 +13,74 @@ using namespace EE::System;
 
 namespace EE { namespace UI { namespace Doc {
 
-class EE_API SyntaxDefinitionManager {
+class ZeroShared SyntaxDefinitionManager {
 	SINGLETON_DECLARE_HEADERS( SyntaxDefinitionManager )
   public:
-	static std::pair<std::string, std::string> toCPP( const SyntaxDefinition& def );
+	static std::pair<String, String> toCPP( const SyntaxDefinition& def );
 
 	SyntaxDefinition& add( SyntaxDefinition&& syntaxStyle );
 
 	const SyntaxDefinition& getPlainDefinition() const;
 
 	std::vector<const SyntaxDefinition*>
-	languagesThatSupportExtension( std::string extension ) const;
+	languagesThatSupportExtension( String extension ) const;
 
-	bool extensionCanRepresentManyLanguages( std::string extension ) const;
+	bool extensionCanRepresentManyLanguages( String extension ) const;
 
-	const SyntaxDefinition& getByExtension( const std::string& filePath,
+	const SyntaxDefinition& getByExtension( const String& filePath,
 											bool hFileAsCPP = false ) const;
 
-	const SyntaxDefinition& getByHeader( const std::string& header, bool hFileAsCPP = false ) const;
+	const SyntaxDefinition& getByHeader( const String& header, bool hFileAsCPP = false ) const;
 
-	const SyntaxDefinition& find( const std::string& filePath, const std::string& header,
+	const SyntaxDefinition& find( const String& filePath, const String& header,
 								  bool hFileAsCPP = false );
 
-	const SyntaxDefinition& findFromString( const std::string& str ) const;
+	const SyntaxDefinition& findFromString( const String& str ) const;
 
-	SyntaxDefinition& getByExtensionRef( const std::string& filePath );
+	SyntaxDefinition& getByExtensionRef( const String& filePath );
 
-	const SyntaxDefinition& getByLanguageName( const std::string& name ) const;
+	const SyntaxDefinition& getByLanguageName( const String& name ) const;
 
 	const SyntaxDefinition& getByLanguageIndex( const Uint32& index ) const;
 
-	const SyntaxDefinition& getByLanguageNameInsensitive( std::string name ) const;
+	const SyntaxDefinition& getByLanguageNameInsensitive( String name ) const;
 
-	const SyntaxDefinition& getByLSPName( const std::string& name ) const;
+	const SyntaxDefinition& getByLSPName( const String& name ) const;
 
 	const SyntaxDefinition& getByLanguageId( const String::HashType& id ) const;
 
-	SyntaxDefinition& getByLanguageNameRef( const std::string& name );
+	SyntaxDefinition& getByLanguageNameRef( const String& name );
 
-	std::vector<std::string> getLanguageNames() const;
+	std::vector<String> getLanguageNames() const;
 
-	std::vector<std::string> getExtensionsPatternsSupported() const;
+	std::vector<String> getExtensionsPatternsSupported() const;
 
-	const SyntaxDefinition* getPtrByLanguageName( const std::string& name ) const;
+	const SyntaxDefinition* getPtrByLanguageName( const String& name ) const;
 
-	const SyntaxDefinition* getPtrByLSPName( const std::string& name ) const;
+	const SyntaxDefinition* getPtrByLSPName( const String& name ) const;
 
 	const SyntaxDefinition* getPtrByLanguageId( const String::HashType& id ) const;
 
-	bool loadFromStream( IOStream& stream, std::vector<std::string>* addedLangs );
+	bool loadFromStream( IOStream& stream, std::vector<String>* addedLangs );
 
 	bool loadFromStream( IOStream& stream );
 
-	bool loadFromFile( const std::string& fpath );
+	bool loadFromFile( const String& fpath );
 
 	bool loadFromMemory( const Uint8* data, const Uint32& dataSize );
 
-	bool loadFromPack( Pack* Pack, const std::string& filePackPath );
+	bool loadFromPack( Pack* Pack, const String& filePackPath );
 
-	void loadFromFolder( const std::string& folderPath );
+	void loadFromFolder( const String& folderPath );
 
 	const std::vector<SyntaxDefinition>& getDefinitions() const;
 
 	/* empty = all */
-	bool save( const std::string& path, const std::vector<SyntaxDefinition>& def = {} );
+	bool save( const String& path, const std::vector<SyntaxDefinition>& def = {} );
 
-	void setLanguageExtensionsPriority( const std::map<std::string, std::string>& priorities );
+	void setLanguageExtensionsPriority( const std::map<String, String>& priorities );
 
-	const std::map<std::string, std::string>& getLanguageExtensionsPriority() {
+	const std::map<String, String>& getLanguageExtensionsPriority() {
 		return mPriorities;
 	}
 
@@ -88,9 +88,9 @@ class EE_API SyntaxDefinitionManager {
 	SyntaxDefinitionManager();
 
 	std::vector<SyntaxDefinition> mDefinitions;
-	std::map<std::string, std::string> mPriorities;
+	std::map<String, String> mPriorities;
 
-	std::optional<size_t> getLanguageIndex( const std::string& langName );
+	std::optional<size_t> getLanguageIndex( const String& langName );
 };
 
 }}} // namespace EE::UI::Doc

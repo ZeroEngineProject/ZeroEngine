@@ -5,7 +5,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIMenuSeparator : public UIWidget {
+class ZeroShared UIMenuSeparator : public UIWidget {
   public:
 	static UIMenuSeparator* New();
 

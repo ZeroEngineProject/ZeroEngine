@@ -13,7 +13,7 @@ using namespace EE::Math;
 
 namespace EE { namespace UI { namespace Models {
 
-class EE_API Variant {
+class ZeroShared Variant {
   public:
 	enum class Type {
 		Invalid,
@@ -34,8 +34,8 @@ class EE_API Variant {
 		StringPtr
 	};
 	Variant() : mType( Type::Invalid ) {}
-	explicit Variant( const std::string& string ) : mType( Type::StdString ) {
-		mValue.asStdString = eeNew( std::string, ( string ) );
+	explicit Variant( const String& string ) : mType( Type::StdString ) {
+		mValue.asStdString = eeNew( String, ( string ) );
 	}
 	explicit Variant( const String& string ) : mType( Type::String ) {
 		mValue.asString = eeNew( String, ( string ) );
@@ -59,7 +59,7 @@ class EE_API Variant {
 	Variant( const Uint64& val ) : mType( Type::Uint64 ) { mValue.asUint64 = val; }
 	explicit Variant( const char* data ) : mType( Type::cstr ) { mValue.asCStr = data; }
 	~Variant() { reset(); }
-	const std::string& asStdString() const { return *mValue.asStdString; }
+	const String& asStdString() const { return *mValue.asStdString; }
 	const String& asString() const { return *mValue.asString; }
 	const String& asStringPtr() const { return *mValue.asStringPtr; }
 	Drawable* asDrawable() const { return mValue.asDrawable; }
@@ -104,7 +104,7 @@ class EE_API Variant {
 	}
 	bool isValid() const { return mType != Type::Invalid; }
 
-	std::string toString() const {
+	String toString() const {
 		switch ( mType ) {
 			case Type::Bool:
 				return asBool() ? "true" : "false";
@@ -268,7 +268,7 @@ class EE_API Variant {
 		void* asDataPtr{ nullptr };
 		Drawable* asDrawable;
 		UIIcon* asIcon;
-		std::string* asStdString;
+		String* asStdString;
 		String* asString;
 		const String* asStringPtr;
 		bool asBool;

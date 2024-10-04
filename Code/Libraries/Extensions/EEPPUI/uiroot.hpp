@@ -5,11 +5,11 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIRoot : public UIWidget {
+class ZeroShared UIRoot : public UIWidget {
   public:
 	static UIRoot* New();
 
-	std::string getPropertyString( const PropertyDefinition* propertyDef,
+	String getPropertyString( const PropertyDefinition* propertyDef,
 								   const Uint32& propertyIndex ) const;
 
 	bool applyProperty( const StyleSheetProperty& attribute );

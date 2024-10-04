@@ -5,7 +5,7 @@ namespace EE { namespace UI { namespace CSS {
 
 StyleSheetStyle::StyleSheetStyle() {}
 
-StyleSheetStyle::StyleSheetStyle( const std::string& selector,
+StyleSheetStyle::StyleSheetStyle( const String& selector,
 								  const StyleSheetProperties& properties,
 								  const StyleSheetVariables& variables,
 								  MediaQueryList::ptr mediaQueryList ) :
@@ -23,8 +23,8 @@ StyleSheetStyle::StyleSheetStyle( const std::string& selector,
 	}
 }
 
-std::string StyleSheetStyle::build( bool emmitMediaQueryStart, bool emmitMediaQueryEnd ) {
-	std::string css;
+String StyleSheetStyle::build( bool emmitMediaQueryStart, bool emmitMediaQueryEnd ) {
+	String css;
 
 	if ( emmitMediaQueryStart && mMediaQueryList && !mMediaQueryList->getQueryString().empty() )
 		css += mMediaQueryList->getQueryString() + " {\n\n";
@@ -60,7 +60,7 @@ StyleSheetProperties& StyleSheetStyle::getPropertiesRef() {
 	return mProperties;
 }
 
-bool StyleSheetStyle::updatePropertyValue( const std::string& name, const std::string& value ) {
+bool StyleSheetStyle::updatePropertyValue( const String& name, const String& value ) {
 	bool updated = false;
 	for ( auto& prop : mProperties ) {
 		if ( prop.second.getName() == name ) {
@@ -113,7 +113,7 @@ void StyleSheetStyle::setProperty( const StyleSheetProperty& property ) {
 		// If the property being set is indexed we need to merge any other index set to the new
 		// property set.
 		const StyleSheetProperty* currentProperty = getPropertyById( property.getId() );
-		std::vector<std::string> values;
+		std::vector<String> values;
 		if ( nullptr == currentProperty ) {
 			if ( property.getIndex() > 0 ) {
 				for ( size_t i = 0; i < property.getIndex(); i++ ) {
@@ -156,7 +156,7 @@ bool StyleSheetStyle::hasProperty( PropertyId id ) const {
 		   } ) != mProperties.end();
 }
 
-bool StyleSheetStyle::hasProperty( const std::string& name ) const {
+bool StyleSheetStyle::hasProperty( const String& name ) const {
 	return std::find_if( mProperties.begin(), mProperties.end(), [&name]( const auto& prop ) {
 			   return prop.second.getPropertyDefinition() &&
 					  prop.second.getPropertyDefinition()->getName() == name;
@@ -167,11 +167,11 @@ bool StyleSheetStyle::hasVariables() const {
 	return !mVariables.empty();
 }
 
-bool StyleSheetStyle::hasVariable( const std::string& name ) const {
+bool StyleSheetStyle::hasVariable( const String& name ) const {
 	return !getVariableByName( name ).isEmpty();
 }
 
-StyleSheetVariable StyleSheetStyle::getVariableByName( const std::string& name ) const {
+StyleSheetVariable StyleSheetStyle::getVariableByName( const String& name ) const {
 	auto it = mVariables.find( String::hash( name ) );
 
 	if ( it != mVariables.end() )

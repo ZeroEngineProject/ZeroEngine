@@ -6,28 +6,28 @@ namespace EE { namespace UI { namespace CSS {
 
 StyleSheetVariable::StyleSheetVariable() : mNameHash( 0 ), mSpecificity( 0 ) {}
 
-StyleSheetVariable::StyleSheetVariable( const std::string& name, const std::string& value ) :
+StyleSheetVariable::StyleSheetVariable( const String& name, const String& value ) :
 	mName( String::toLower( String::trim( name ) ) ),
 	mNameHash( String::hash( mName ) ),
 	mValue( String::trim( value ) ),
 	mSpecificity( 0 ) {}
 
-StyleSheetVariable::StyleSheetVariable( const std::string& name, const std::string& value,
+StyleSheetVariable::StyleSheetVariable( const String& name, const String& value,
 										const Uint32& specificity ) :
 	mName( String::toLower( String::trim( name ) ) ),
 	mNameHash( String::hash( mName ) ),
 	mValue( String::trim( value ) ),
 	mSpecificity( specificity ) {}
 
-const std::string& StyleSheetVariable::getName() const {
+const String& StyleSheetVariable::getName() const {
 	return mName;
 }
 
-const std::string& StyleSheetVariable::getValue() const {
+const String& StyleSheetVariable::getValue() const {
 	return mValue;
 }
 
-const std::string& StyleSheetVariable::value() const {
+const String& StyleSheetVariable::value() const {
 	return mValue;
 }
 
@@ -43,12 +43,12 @@ bool StyleSheetVariable::isEmpty() const {
 	return mName.empty();
 }
 
-void StyleSheetVariable::setName( const std::string& name ) {
+void StyleSheetVariable::setName( const String& name ) {
 	mName = name;
 	mNameHash = String::hash( mName );
 }
 
-void StyleSheetVariable::setValue( const std::string& value ) {
+void StyleSheetVariable::setValue( const String& value ) {
 	mValue = value;
 }
 

@@ -3,7 +3,7 @@
 
 namespace EE { namespace UI {
 
-UIIconTheme* UIIconTheme::New( const std::string& name ) {
+UIIconTheme* UIIconTheme::New( const String& name ) {
 	return eeNew( UIIconTheme, ( name ) );
 }
 
@@ -12,7 +12,7 @@ UIIconTheme::~UIIconTheme() {
 		eeDelete( icon.second );
 }
 
-UIIconTheme::UIIconTheme( const std::string& name ) : mName( name ) {}
+UIIconTheme::UIIconTheme( const String& name ) : mName( name ) {}
 
 UIIconTheme* UIIconTheme::add( UIIcon* icon ) {
 	auto iconExists = mIcons.find( icon->getName() );
@@ -22,16 +22,16 @@ UIIconTheme* UIIconTheme::add( UIIcon* icon ) {
 	return this;
 }
 
-UIIconTheme* UIIconTheme::add( const std::unordered_map<std::string, UIIcon*>& icons ) {
+UIIconTheme* UIIconTheme::add( const std::unordered_map<String, UIIcon*>& icons ) {
 	mIcons.insert( icons.begin(), icons.end() );
 	return this;
 }
 
-const std::string& UIIconTheme::getName() const {
+const String& UIIconTheme::getName() const {
 	return mName;
 }
 
-UIIcon* UIIconTheme::getIcon( const std::string& name ) const {
+UIIcon* UIIconTheme::getIcon( const String& name ) const {
 	auto it = mIcons.find( name );
 	return it != mIcons.end() ? it->second : nullptr;
 }

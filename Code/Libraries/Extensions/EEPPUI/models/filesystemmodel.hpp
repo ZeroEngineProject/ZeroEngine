@@ -25,16 +25,16 @@ enum FileSystemEventType {
 
 struct FileEvent {
 	FileSystemEventType type;
-	std::string directory;
-	std::string filename;
-	std::string oldFilename;
+	String directory;
+	String filename;
+	String oldFilename;
 
-	FileEvent( const FileSystemEventType& action, const std::string& directory,
-			   const std::string& filename, const std::string& oldFilename = "" ) :
+	FileEvent( const FileSystemEventType& action, const String& directory,
+			   const String& filename, const String& oldFilename = "" ) :
 		type( action ), directory( directory ), filename( filename ), oldFilename( oldFilename ) {}
 };
 
-class EE_API FileSystemModel : public Model {
+class ZeroShared FileSystemModel : public Model {
   public:
 	enum class Mode { DirectoriesOnly, FilesAndDirectories };
 
@@ -42,8 +42,8 @@ class EE_API FileSystemModel : public Model {
 		DisplayConfig() {}
 		DisplayConfig(
 			bool sortByName, bool foldersFirst, bool ignoreHidden,
-			const std::vector<std::string>& acceptedExtensions = {},
-			std::function<bool( const std::string& filepath )> fileIsVisibleFn = nullptr ) :
+			const std::vector<String>& acceptedExtensions = {},
+			std::function<bool( const String& filepath )> fileIsVisibleFn = nullptr ) :
 			sortByName( sortByName ),
 			foldersFirst( foldersFirst ),
 			ignoreHidden( ignoreHidden ),
@@ -52,8 +52,8 @@ class EE_API FileSystemModel : public Model {
 		bool sortByName{ true };
 		bool foldersFirst{ true };
 		bool ignoreHidden{ false };
-		std::vector<std::string> acceptedExtensions;
-		std::function<bool( const std::string& filepath )> fileIsVisibleFn;
+		std::vector<String> acceptedExtensions;
+		std::function<bool( const String& filepath )> fileIsVisibleFn;
 		bool operator==( const DisplayConfig& other ) {
 			return sortByName == other.sortByName && foldersFirst == other.foldersFirst &&
 				   ignoreHidden == other.ignoreHidden &&
@@ -76,13 +76,13 @@ class EE_API FileSystemModel : public Model {
 		Count,
 	};
 
-	struct EE_API Node {
+	struct ZeroShared Node {
 	  public:
-		Node( const std::string& rootPath, const FileSystemModel& model );
+		Node( const String& rootPath, const FileSystemModel& model );
 
 		Node( FileInfo&& info, Node* parent );
 
-		const std::string& getName() const { return mName; }
+		const String& getName() const { return mName; }
 
 		const String& getDisplayName() const { return mDisplayName; }
 
@@ -90,9 +90,9 @@ class EE_API FileSystemModel : public Model {
 
 		const FileInfo& info() const { return mInfo; }
 
-		const std::string& fullPath() const;
+		const String& fullPath() const;
 
-		const std::string& getMimeType() const { return mMimeType; }
+		const String& getMimeType() const { return mMimeType; }
 
 		size_t childCount() const { return mChildren.size(); }
 
@@ -102,20 +102,20 @@ class EE_API FileSystemModel : public Model {
 
 		bool inParentTree( Node* parent ) const;
 
-		Node* findChildName( const std::string& name, const FileSystemModel& model,
+		Node* findChildName( const String& name, const FileSystemModel& model,
 							 bool forceRefresh = false );
 
 		Int64 findChildRowFromInternalData( void* internalData, const FileSystemModel& model,
 											bool forceRefresh = false );
 
-		Int64 findChildRowFromName( const std::string& name, const FileSystemModel& model,
+		Int64 findChildRowFromName( const String& name, const FileSystemModel& model,
 									bool forceRefresh = false );
 
 		void refresh( const FileSystemModel& model );
 
 		~Node();
 
-		FileSystemModel::Node* childWithPathExists( const std::string& path );
+		FileSystemModel::Node* childWithPathExists( const String& path );
 
 		const Uint32& getHash() { return mHash; }
 
@@ -124,14 +124,14 @@ class EE_API FileSystemModel : public Model {
 
 		Node() {}
 
-		Node* createChild( const std::string& childName, const FileSystemModel& model );
+		Node* createChild( const String& childName, const FileSystemModel& model );
 
 		void rename( const FileInfo& file );
 
 		friend class FileSystemModel;
-		std::string mName;
+		String mName;
 		String mDisplayName;
-		std::string mMimeType;
+		String mMimeType;
 		Node* mParent{ nullptr };
 		FileInfo mInfo;
 		std::vector<Node*> mChildren;
@@ -153,18 +153,18 @@ class EE_API FileSystemModel : public Model {
 	};
 
 	static std::shared_ptr<FileSystemModel>
-	New( const std::string& rootPath, const Mode& mode = Mode::FilesAndDirectories,
+	New( const String& rootPath, const Mode& mode = Mode::FilesAndDirectories,
 		 const DisplayConfig& displayConfig = DisplayConfig(), Translator* translator = nullptr );
 
 	const Mode& getMode() const { return mMode; }
 
-	const std::string& getRootPath() const;
+	const String& getRootPath() const;
 
-	void setRootPath( const std::string& rootPath );
+	void setRootPath( const String& rootPath );
 
-	Node* getNodeFromPath( std::string path, bool folderNode = false, bool invalidateTree = true );
+	Node* getNodeFromPath( String path, bool folderNode = false, bool invalidateTree = true );
 
-	std::string_view getNodeRelativePath( const Node* ) const;
+	String_view getNodeRelativePath( const Node* ) const;
 
 	void reload();
 
@@ -176,7 +176,7 @@ class EE_API FileSystemModel : public Model {
 	virtual size_t treeColumn() const { return Column::Name; }
 	virtual size_t rowCount( const ModelIndex& = ModelIndex() ) const;
 	virtual size_t columnCount( const ModelIndex& = ModelIndex() ) const;
-	virtual std::string columnName( const size_t& column ) const;
+	virtual String columnName( const size_t& column ) const;
 	virtual Variant data( const ModelIndex&, ModelRole role = ModelRole::Display ) const;
 	virtual ModelIndex parentIndex( const ModelIndex& ) const;
 	virtual ModelIndex index( int row, int column = 0,
@@ -202,18 +202,18 @@ class EE_API FileSystemModel : public Model {
 
   protected:
 	std::atomic<bool> mInitOK;
-	std::string mRootPath;
-	std::string mRealRootPath;
+	String mRootPath;
+	String mRealRootPath;
 	std::unique_ptr<Node> mRoot{ nullptr };
 	Mode mMode{ Mode::FilesAndDirectories };
 	DisplayConfig mDisplayConfig;
-	std::array<std::string, Column::Count> mColumnNames;
+	std::array<String, Column::Count> mColumnNames;
 
 	ModelIndex mPreviouslySelectedIndex{};
 
 	Node& nodeRef( const ModelIndex& index ) const;
 
-	FileSystemModel( const std::string& rootPath, const Mode& mode,
+	FileSystemModel( const String& rootPath, const Mode& mode,
 					 const DisplayConfig& displayConfig, Translator* translator );
 
 	size_t getFileIndex( Node* parent, const FileInfo& file );
@@ -223,7 +223,7 @@ class EE_API FileSystemModel : public Model {
 	void setupColumnNames( Translator* translator );
 };
 
-class EE_API DiskDrivesModel : public Model {
+class ZeroShared DiskDrivesModel : public Model {
   public:
 	enum Column {
 		Icon = 0,
@@ -231,7 +231,7 @@ class EE_API DiskDrivesModel : public Model {
 		Count,
 	};
 
-	static std::shared_ptr<DiskDrivesModel> create( const std::vector<std::string>& data );
+	static std::shared_ptr<DiskDrivesModel> create( const std::vector<String>& data );
 
 	static std::shared_ptr<DiskDrivesModel> create();
 
@@ -241,7 +241,7 @@ class EE_API DiskDrivesModel : public Model {
 
 	virtual size_t columnCount( const ModelIndex& ) const { return 2; }
 
-	virtual std::string columnName( const size_t& index ) const {
+	virtual String columnName( const size_t& index ) const {
 		return index == 0 ? "Icon" : "Name";
 	}
 
@@ -250,9 +250,9 @@ class EE_API DiskDrivesModel : public Model {
 	virtual Variant data( const ModelIndex& index, ModelRole role = ModelRole::Display ) const;
 
   private:
-	explicit DiskDrivesModel( const std::vector<std::string>& data ) : mData( data ) {}
+	explicit DiskDrivesModel( const std::vector<String>& data ) : mData( data ) {}
 
-	std::vector<std::string> mData;
+	std::vector<String> mData;
 };
 
 }}} // namespace EE::UI::Models

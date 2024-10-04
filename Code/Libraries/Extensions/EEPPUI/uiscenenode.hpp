@@ -25,7 +25,7 @@ class UIIcon;
 
 enum class ColorSchemePreference { Light, Dark };
 
-class EE_API UISceneNode : public SceneNode {
+class ZeroShared UISceneNode : public SceneNode {
   public:
 	static UISceneNode* New( EE::Window::Window* window = NULL );
 
@@ -51,20 +51,20 @@ class EE_API UISceneNode : public SceneNode {
 
 	Translator& getTranslator();
 
-	String getTranslatorString( const std::string& str );
+	String getTranslatorString( const String& str );
 
-	String getTranslatorString( const std::string& str, const String& defaultValue );
+	String getTranslatorString( const String& str, const String& defaultValue );
 
-	String getTranslatorStringFromKey( const std::string& key, const String& defaultValue );
+	String getTranslatorStringFromKey( const String& key, const String& defaultValue );
 
-	String i18n( const std::string& key, const String& defaultValue );
+	String i18n( const String& key, const String& defaultValue );
 
 	UIWidget* loadLayoutNodes( pugi::xml_node node, Node* parent, const Uint32& marker );
 
-	UIWidget* loadLayoutFromFile( const std::string& layoutPath, Node* parent = NULL,
+	UIWidget* loadLayoutFromFile( const String& layoutPath, Node* parent = NULL,
 								  const Uint32& marker = 0 );
 
-	UIWidget* loadLayoutFromString( const std::string& layoutString, Node* parent = NULL,
+	UIWidget* loadLayoutFromString( const String& layoutString, Node* parent = NULL,
 									const Uint32& marker = 0 );
 
 	UIWidget* loadLayoutFromString( const char* layoutString, Node* parent = NULL,
@@ -76,17 +76,17 @@ class EE_API UISceneNode : public SceneNode {
 	UIWidget* loadLayoutFromStream( IOStream& stream, Node* parent = NULL,
 									const Uint32& marker = 0 );
 
-	UIWidget* loadLayoutFromPack( Pack* pack, const std::string& FilePackPath,
+	UIWidget* loadLayoutFromPack( Pack* pack, const String& FilePackPath,
 								  Node* parent = NULL );
 
 	void setStyleSheet( const CSS::StyleSheet& styleSheet );
 
-	void setStyleSheet( const std::string& inlineStyleSheet );
+	void setStyleSheet( const String& inlineStyleSheet );
 
 	void combineStyleSheet( const CSS::StyleSheet& styleSheet,
 							const bool& forceReloadStyle = true );
 
-	void combineStyleSheet( const std::string& inlineStyleSheet,
+	void combineStyleSheet( const String& inlineStyleSheet,
 							const bool& forceReloadStyle = true, const Uint32& marker = 0 );
 
 	CSS::StyleSheet& getStyleSheet();
@@ -117,10 +117,10 @@ class EE_API UISceneNode : public SceneNode {
 
 	UIIconThemeManager* getUIIconThemeManager() const;
 
-	UIIcon* findIcon( const std::string& iconName );
+	UIIcon* findIcon( const String& iconName );
 
 	/** @param drawableSize Size in pixels */
-	Drawable* findIconDrawable( const std::string& iconName, const size_t& drawableSize );
+	Drawable* findIconDrawable( const String& iconName, const size_t& drawableSize );
 
 	typedef std::function<void()> KeyBindingCommand;
 
@@ -128,21 +128,21 @@ class EE_API UISceneNode : public SceneNode {
 
 	void setKeyBindings( const KeyBindings& keyBindings );
 
-	void addKeyBindingString( const std::string& shortcut, const std::string& command );
+	void addKeyBindingString( const String& shortcut, const String& command );
 
-	void addKeyBinding( const KeyBindings::Shortcut& shortcut, const std::string& command );
+	void addKeyBinding( const KeyBindings::Shortcut& shortcut, const String& command );
 
-	void replaceKeyBindingString( const std::string& shortcut, const std::string& command );
+	void replaceKeyBindingString( const String& shortcut, const String& command );
 
-	void replaceKeyBinding( const KeyBindings::Shortcut& shortcut, const std::string& command );
+	void replaceKeyBinding( const KeyBindings::Shortcut& shortcut, const String& command );
 
-	void addKeyBindsString( const std::map<std::string, std::string>& binds );
+	void addKeyBindsString( const std::map<String, String>& binds );
 
-	void addKeyBinds( const std::map<KeyBindings::Shortcut, std::string>& binds );
+	void addKeyBinds( const std::map<KeyBindings::Shortcut, String>& binds );
 
-	void setKeyBindingCommand( const std::string& command, KeyBindingCommand func );
+	void setKeyBindingCommand( const String& command, KeyBindingCommand func );
 
-	void executeKeyBindingCommand( const std::string& command );
+	void executeKeyBindingCommand( const String& command );
 
 	UIEventDispatcher* getUIEventDispatcher() const;
 
@@ -181,12 +181,12 @@ class EE_API UISceneNode : public SceneNode {
 	UIIconThemeManager* mUIIconThemeManager{ nullptr };
 	std::vector<Font*> mFontFaces;
 	KeyBindings mKeyBindings;
-	std::map<std::string, KeyBindingCommand> mKeyBindingCommands;
+	std::map<String, KeyBindingCommand> mKeyBindingCommands;
 	UnorderedSet<UIWidget*> mDirtyStyle;
 	UnorderedSet<UIWidget*> mDirtyStyleState;
-	UnorderedMap<UIWidget*, bool> mDirtyStyleStateCSSAnimations;
+	HashMap<UIWidget*, bool> mDirtyStyleStateCSSAnimations;
 	UnorderedSet<UILayout*> mDirtyLayouts;
-	std::vector<std::pair<Float, std::string>> mTimes;
+	std::vector<std::pair<Float, String>> mTimes;
 	ColorSchemePreference mColorSchemePreference{ ColorSchemePreference::Dark };
 	Uint32 mMaxInvalidationDepth{ 2 };
 	Node* mCurParent{ nullptr };

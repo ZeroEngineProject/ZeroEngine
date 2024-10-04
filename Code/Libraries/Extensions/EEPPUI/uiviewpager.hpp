@@ -5,7 +5,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIViewPager : public UIWidget {
+class ZeroShared UIViewPager : public UIWidget {
   public:
 	static UIViewPager* New();
 
@@ -53,7 +53,7 @@ class EE_API UIViewPager : public UIWidget {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

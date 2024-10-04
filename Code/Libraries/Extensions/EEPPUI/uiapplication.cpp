@@ -102,7 +102,7 @@ int UIApplication::run() {
 }
 
 UIApplication::Settings::Settings( std::optional<Float> pixelDensity, bool loadBaseResources,
-								   Font* baseFont, std::optional<std::string> baseStyleSheetPath,
+								   Font* baseFont, std::optional<String> baseStyleSheetPath,
 								   Font* emojiFont ) :
 	pixelDensity( pixelDensity ),
 	loadBaseResources( loadBaseResources ),

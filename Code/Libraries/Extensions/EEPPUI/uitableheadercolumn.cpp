@@ -4,7 +4,7 @@
 
 namespace EE { namespace UI {
 
-UITableHeaderColumn::UITableHeaderColumn( const std::string& parentTag, UIAbstractTableView* view,
+UITableHeaderColumn::UITableHeaderColumn( const String& parentTag, UIAbstractTableView* view,
 										  const size_t& colIndex ) :
 	UIPushButton( parentTag + "::header::column" ), mView( view ), mColIndex( colIndex ) {
 	setDragEnabled( true );

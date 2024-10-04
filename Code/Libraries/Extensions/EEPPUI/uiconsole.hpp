@@ -19,7 +19,7 @@ namespace EE { namespace UI {
 class UIPopUpMenu;
 class UIMenuItem;
 
-class EE_API UIConsole : public UIWidget,
+class ZeroShared UIConsole : public UIWidget,
 						 protected LogReaderInterface,
 						 public TextDocument::Client {
   public:
@@ -80,9 +80,9 @@ class EE_API UIConsole : public UIWidget,
 
 	const Color& getFontOutlineColor() const;
 
-	void addCommand( const std::string& command, const ConsoleCallback& cb );
+	void addCommand( const String& command, const ConsoleCallback& cb );
 
-	void setCommand( const std::string& command, const ConsoleCallback& cb );
+	void setCommand( const String& command, const ConsoleCallback& cb );
 
 	const Uint32& getMaxLogLines() const;
 
@@ -108,7 +108,7 @@ class EE_API UIConsole : public UIWidget,
 	void pushText( const String& str );
 
 	/** Add formated Text to console */
-	template <typename... Args> void pushText( std::string_view format, Args&&... args ) {
+	template <typename... Args> void pushText( String_view format, Args&&... args ) {
 		pushText( String::format(
 			format, FormatArg<std::decay_t<Args>>::get( std::forward<Args>( args ) )... ) );
 	}
@@ -197,7 +197,7 @@ class EE_API UIConsole : public UIWidget,
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;
@@ -311,11 +311,11 @@ class EE_API UIConsole : public UIWidget,
 
 	void privPushText( String&& str );
 
-	void writeLog( const std::string_view& text );
+	void writeLog( const String_view& text );
 
 	void resetCursor();
 
-	void getFilesFrom( std::string txt, const Uint32& curPos );
+	void getFilesFrom( String txt, const Uint32& curPos );
 
 	void printCommandsStartingWith( const String& start );
 
@@ -329,10 +329,10 @@ class EE_API UIConsole : public UIWidget,
 
 	TextPosition getPositionOnScreen( Vector2f position );
 
-	UIMenuItem* menuAdd( UIPopUpMenu* menu, const String& translateString, const std::string& icon,
-						 const std::string& cmd );
+	UIMenuItem* menuAdd( UIPopUpMenu* menu, const String& translateString, const String& icon,
+						 const String& cmd );
 
-	Drawable* findIcon( const std::string& name );
+	Drawable* findIcon( const String& name );
 
 	void copySelection();
 

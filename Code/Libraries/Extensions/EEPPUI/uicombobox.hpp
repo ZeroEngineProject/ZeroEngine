@@ -5,7 +5,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIComboBox : public UIWidget {
+class ZeroShared UIComboBox : public UIWidget {
   public:
 	static UIComboBox* New();
 
@@ -31,7 +31,7 @@ class EE_API UIComboBox : public UIWidget {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

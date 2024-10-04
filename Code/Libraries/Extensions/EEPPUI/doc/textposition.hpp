@@ -7,7 +7,7 @@
 
 namespace EE { namespace UI { namespace Doc {
 
-class EE_API TextPosition {
+class ZeroShared TextPosition {
   public:
 	TextPosition() {}
 
@@ -63,11 +63,11 @@ class EE_API TextPosition {
 		return { mLine - other.line(), mColumn - other.column() };
 	}
 
-	std::string toPositionString() const { return String::format( ":%lld:%lld", mLine, mColumn ); }
+	String toPositionString() const { return String::format( ":%lld:%lld", mLine, mColumn ); }
 
-	std::string toString() const { return String::format( "L%lld,C%lld", mLine, mColumn ); }
+	String toString() const { return String::format( "L%lld,C%lld", mLine, mColumn ); }
 
-	static TextPosition fromString( const std::string& pos ) {
+	static TextPosition fromString( const String& pos ) {
 		auto split = String::split( pos, ',' );
 		if ( split.size() == 2 && !split[0].empty() && !split[1].empty() ) {
 			if ( split[0][0] == 'L' || split[0][0] == 'l' )

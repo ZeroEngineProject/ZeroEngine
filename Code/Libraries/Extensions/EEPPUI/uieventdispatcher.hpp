@@ -6,7 +6,7 @@ using namespace EE::Scene;
 
 namespace EE { namespace UI {
 
-class EE_API UIEventDispatcher : public EventDispatcher {
+class ZeroShared UIEventDispatcher : public EventDispatcher {
   public:
 	static UIEventDispatcher* New( SceneNode* sceneNode );
 

@@ -7,7 +7,7 @@ using namespace EE::UI::Abstract;
 
 namespace EE { namespace UI {
 
-class EE_API UITableView : public UIAbstractTableView {
+class ZeroShared UITableView : public UIAbstractTableView {
   public:
 	static UITableView* New();
 
@@ -21,7 +21,7 @@ class EE_API UITableView : public UIAbstractTableView {
 
 	Float getMaxColumnContentWidth( const size_t& colIndex, bool bestGuess = false );
 
-	virtual ModelIndex findRowWithText( const std::string& text, const bool& caseSensitive = false,
+	virtual ModelIndex findRowWithText( const String& text, const bool& caseSensitive = false,
 										const bool& exactMatch = false ) const;
 
   protected:
@@ -29,7 +29,7 @@ class EE_API UITableView : public UIAbstractTableView {
 
 	UITableView();
 
-	UITableView( const std::string& tag );
+	UITableView( const String& tag );
 
 	virtual void createOrUpdateColumns( bool resetColumnData );
 

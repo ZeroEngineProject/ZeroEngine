@@ -14,7 +14,7 @@ namespace EE { namespace UI { namespace Abstract {
 
 enum class ModelEventType { Open, OpenTree, CloseTree, OpenMenu };
 
-class EE_API ModelEvent : public Event {
+class ZeroShared ModelEvent : public Event {
   public:
 	ModelEvent( Model* model, const ModelIndex& index, Node* node,
 				const ModelEventType& modelEventType = ModelEventType::Open,
@@ -40,7 +40,7 @@ class EE_API ModelEvent : public Event {
 	const Event* triggerEvent{ nullptr };
 };
 
-class EE_API UIAbstractView : public UIScrollableWidget {
+class ZeroShared UIAbstractView : public UIScrollableWidget {
   public:
 	enum EditTrigger {
 		None = 0,
@@ -85,7 +85,7 @@ class EE_API UIAbstractView : public UIScrollableWidget {
 
 	void setOnSelection( const std::function<void( const ModelIndex& )>& onSelection );
 
-	virtual ModelIndex findRowWithText( const std::string& text, const bool& caseSensitive = false,
+	virtual ModelIndex findRowWithText( const String& text, const bool& caseSensitive = false,
 										const bool& exactMatch = false ) const;
 
 	bool isEditable() const;
@@ -128,7 +128,7 @@ class EE_API UIAbstractView : public UIScrollableWidget {
 
 	void modelUpdate( unsigned flags );
 
-	UIAbstractView( const std::string& tag );
+	UIAbstractView( const String& tag );
 
 	virtual ~UIAbstractView();
 

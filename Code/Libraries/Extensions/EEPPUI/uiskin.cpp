@@ -5,11 +5,11 @@
 
 namespace EE { namespace UI {
 
-UISkin* UISkin::New( const std::string& name ) {
+UISkin* UISkin::New( const String& name ) {
 	return eeNew( UISkin, ( name ) );
 }
 
-UISkin::UISkin( const std::string& name ) : StateListDrawable( SKIN, name ) {
+UISkin::UISkin( const String& name ) : StateListDrawable( SKIN, name ) {
 	mCurrentState = UIState::StateFlagNormal;
 }
 
@@ -31,7 +31,7 @@ Sizef UISkin::getPixelsSize( const Uint32& state ) {
 	return StateListDrawable::getPixelsSize( state );
 }
 
-UISkin* UISkin::clone( const std::string& NewName ) {
+UISkin* UISkin::clone( const String& NewName ) {
 	UISkin* SkinS = UISkin::New( NewName );
 
 	SkinS->mColor = mColor;

@@ -26,8 +26,8 @@ inline Float easingFn( const Ease::Interpolation& timingFunction,
 
 void StyleSheetPropertyAnimation::tweenProperty( UIWidget* widget, const Float& normalizedProgress,
 												 const PropertyDefinition* property,
-												 const std::string& startValue,
-												 const std::string& endValue,
+												 const String& startValue,
+												 const String& endValue,
 												 const Ease::Interpolation& timingFunction,
 												 const std::vector<double> timingFunctionParameters,
 												 const Uint32& propertyIndex, const bool& isDone ) {
@@ -165,7 +165,7 @@ StyleSheetPropertyAnimation* StyleSheetPropertyAnimation::fromAnimationKeyframes
 	const AnimationDefinition& animation, const KeyframesDefinition& keyframes,
 	const PropertyDefinition* propertyDef, UIWidget* widget, const Uint32& propertyIndex,
 	const AnimationOrigin& ) {
-	std::vector<std::string> properties;
+	std::vector<String> properties;
 	std::vector<Float> times;
 
 	for ( auto& blockIt : keyframes.getKeyframeBlocks() ) {
@@ -209,14 +209,14 @@ bool StyleSheetPropertyAnimation::animationSupported( const PropertyType& type )
 
 StyleSheetPropertyAnimation* StyleSheetPropertyAnimation::New(
 	const AnimationDefinition& animation, const PropertyDefinition* propertyDef,
-	std::vector<std::string> states, std::vector<Float> animationStepsTime,
+	std::vector<String> states, std::vector<Float> animationStepsTime,
 	const Uint32& propertyIndex, const AnimationOrigin& animationOrigin ) {
 	return eeNew( StyleSheetPropertyAnimation, ( animation, propertyDef, states, animationStepsTime,
 												 propertyIndex, animationOrigin ) );
 }
 
 StyleSheetPropertyAnimation* StyleSheetPropertyAnimation::New(
-	const PropertyDefinition* property, const std::string& startValue, const std::string& endValue,
+	const PropertyDefinition* property, const String& startValue, const String& endValue,
 	const Uint32& propertyIndex, const Time& duration, const Time& delay,
 	const Ease::Interpolation& timingFunction, const std::vector<double>& timingFunctionParameters,
 	const AnimationOrigin& animationOrigin ) {
@@ -231,7 +231,7 @@ StyleSheetPropertyAnimation* StyleSheetPropertyAnimation::New(
 
 StyleSheetPropertyAnimation::StyleSheetPropertyAnimation( const AnimationDefinition& animation,
 														  const PropertyDefinition* propertyDef,
-														  std::vector<std::string> states,
+														  std::vector<String> states,
 														  std::vector<Float> animationStepsTime,
 														  const Uint32& propertyIndex,
 														  const AnimationOrigin& animationOrigin ) :
@@ -326,7 +326,7 @@ Action* StyleSheetPropertyAnimation::clone() const {
 }
 
 Action* StyleSheetPropertyAnimation::reverse() const {
-	std::vector<std::string> vcopy( mStates );
+	std::vector<String> vcopy( mStates );
 	std::reverse( vcopy.begin(), vcopy.end() );
 	return New( mAnimation, mPropertyDef, vcopy, mAnimationStepsTime, mPropertyIndex,
 				mAnimationOrigin );
@@ -336,11 +336,11 @@ const Uint32& StyleSheetPropertyAnimation::getPropertyIndex() const {
 	return mPropertyIndex;
 }
 
-const std::string& StyleSheetPropertyAnimation::getStartValue() const {
+const String& StyleSheetPropertyAnimation::getStartValue() const {
 	return mStates[0];
 }
 
-const std::string& StyleSheetPropertyAnimation::getEndValue() const {
+const String& StyleSheetPropertyAnimation::getEndValue() const {
 	return mStates[mStates.size() - 1];
 }
 
@@ -480,7 +480,7 @@ void StyleSheetPropertyAnimation::prepareDirection() {
 }
 
 void StyleSheetPropertyAnimation::reverseAnimation() {
-	std::vector<std::string> reverseCopy( mStates );
+	std::vector<String> reverseCopy( mStates );
 	std::reverse( reverseCopy.begin(), reverseCopy.end() );
 	mStates = reverseCopy;
 

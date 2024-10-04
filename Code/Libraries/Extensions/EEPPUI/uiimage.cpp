@@ -13,11 +13,11 @@ UIImage* UIImage::New() {
 	return eeNew( UIImage, () );
 }
 
-UIImage* UIImage::NewWithTag( const std::string& tag ) {
+UIImage* UIImage::NewWithTag( const String& tag ) {
 	return eeNew( UIImage, ( tag ) );
 }
 
-UIImage::UIImage( const std::string& tag ) :
+UIImage::UIImage( const String& tag ) :
 	UIWidget( tag ),
 	mScaleType( UIScaleType::None ),
 	mDrawable( NULL ),
@@ -212,7 +212,7 @@ const Vector2f& UIImage::getAlignOffset() const {
 	return mAlignOffset;
 }
 
-std::string UIImage::getPropertyString( const PropertyDefinition* propertyDef,
+String UIImage::getPropertyString( const PropertyDefinition* propertyDef,
 										const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -248,7 +248,7 @@ bool UIImage::applyProperty( const StyleSheetProperty& attribute ) {
 
 	switch ( attribute.getPropertyDefinition()->getPropertyId() ) {
 		case PropertyId::Src: {
-			std::string path( attribute.getValue() );
+			String path( attribute.getValue() );
 			bool ownIt;
 			Drawable* createdDrawable =
 				CSS::StyleSheetSpecification::instance()->getDrawableImageParser().createDrawable(
@@ -263,7 +263,7 @@ bool UIImage::applyProperty( const StyleSheetProperty& attribute ) {
 			break;
 		}
 		case PropertyId::Icon: {
-			std::string val = attribute.asString();
+			String val = attribute.asString();
 			Drawable* icon = NULL;
 			bool ownIt;
 			UIIcon* iconF = getUISceneNode()->findIcon( val );
@@ -279,7 +279,7 @@ bool UIImage::applyProperty( const StyleSheetProperty& attribute ) {
 			break;
 		}
 		case PropertyId::ScaleType: {
-			std::string val = attribute.asString();
+			String val = attribute.asString();
 			String::toLowerInPlace( val );
 			if ( "expand" == val ) {
 				setScaleType( UIScaleType::Expand );

@@ -187,7 +187,7 @@ bool UIComboBox::applyProperty( const StyleSheetProperty& attribute ) {
 	return true;
 }
 
-std::string UIComboBox::getPropertyString( const PropertyDefinition* propertyDef,
+String UIComboBox::getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";

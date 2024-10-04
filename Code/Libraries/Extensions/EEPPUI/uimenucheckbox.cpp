@@ -144,7 +144,7 @@ bool UIMenuCheckBox::applyProperty( const StyleSheetProperty& attribute ) {
 	return attributeSet;
 }
 
-std::string UIMenuCheckBox::getPropertyString( const PropertyDefinition* propertyDef,
+String UIMenuCheckBox::getPropertyString( const PropertyDefinition* propertyDef,
 											   const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";

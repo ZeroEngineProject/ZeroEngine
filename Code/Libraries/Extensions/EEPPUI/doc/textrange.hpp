@@ -7,7 +7,7 @@
 
 namespace EE { namespace UI { namespace Doc {
 
-class EE_API TextRange {
+class ZeroShared TextRange {
   public:
 	TextRange() {}
 	TextRange( const TextPosition& start, const TextPosition& end ) :
@@ -142,11 +142,11 @@ class EE_API TextRange {
 		return mStart.column() - mEnd.column();
 	}
 
-	std::string toString() const {
+	String toString() const {
 		return String::format( "%s - %s", mStart.toString().c_str(), mEnd.toString().c_str() );
 	}
 
-	static TextRange fromString( const std::string& range ) {
+	static TextRange fromString( const String& range ) {
 		auto split = String::split( range, "-" );
 		if ( split.size() == 2 ) {
 			return { TextPosition::fromString( String::trim( split[0] ) ),
@@ -166,7 +166,7 @@ class EE_API TextRange {
 	TextPosition normalizedEnd() const { return mStart < mEnd ? mEnd : mStart; }
 };
 
-class EE_API TextRanges : public std::vector<TextRange> {
+class ZeroShared TextRanges : public std::vector<TextRange> {
   public:
 	TextRanges() {}
 
@@ -227,8 +227,8 @@ class EE_API TextRanges : public std::vector<TextRange> {
 		return oldSize != size();
 	}
 
-	std::string toString() const {
-		std::string str;
+	String toString() const {
+		String str;
 		for ( size_t i = 0; i < size(); ++i ) {
 			str += ( *this )[i].toString();
 			if ( i != size() - 1 )
@@ -237,7 +237,7 @@ class EE_API TextRanges : public std::vector<TextRange> {
 		return str;
 	}
 
-	static TextRanges fromString( const std::string& str ) {
+	static TextRanges fromString( const String& str ) {
 		auto rangesStr = String::split( str, ';' );
 		TextRanges ranges;
 		for ( const auto& rangeStr : rangesStr )

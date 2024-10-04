@@ -3,7 +3,7 @@
 
 #include <eepp/math/ease.hpp>
 #include <eepp/system/time.hpp>
-#include <eepp/ui/css/stylesheetproperty.hpp>
+#include "stylesheetproperty.hpp"
 #include <vector>
 
 using namespace EE::Math;
@@ -11,9 +11,9 @@ using namespace EE::System;
 
 namespace EE { namespace UI { namespace CSS {
 
-class EE_API AnimationDefinition {
+class ZeroShared AnimationDefinition {
   public:
-	static UnorderedMap<std::string, AnimationDefinition>
+	static HashMap<String, AnimationDefinition>
 	parseAnimationProperties( const std::vector<const StyleSheetProperty*>& stylesheetProperties );
 
 	/* https://developer.mozilla.org/en-US/docs/Web/CSS/animation-direction */
@@ -24,9 +24,9 @@ class EE_API AnimationDefinition {
 		AlternateReverse = String::hash( "alternate-reverse" )
 	};
 
-	static bool isDirectionString( const std::string str );
+	static bool isDirectionString( const String str );
 
-	static AnimationDirection directionFromString( std::string str );
+	static AnimationDirection directionFromString( String str );
 
 	/* https://developer.mozilla.org/en-US/docs/Web/CSS/animation-fill-mode */
 	enum AnimationFillMode {
@@ -36,9 +36,9 @@ class EE_API AnimationDefinition {
 		Both = String::hash( "both" )
 	};
 
-	static bool isAnimationFillModeString( const std::string& str );
+	static bool isAnimationFillModeString( const String& str );
 
-	static AnimationFillMode fillModeFromString( std::string str );
+	static AnimationFillMode fillModeFromString( String str );
 
 	AnimationDefinition();
 
@@ -48,7 +48,7 @@ class EE_API AnimationDefinition {
 
 	const Int32& getIterations() const;
 
-	const std::string& getName() const;
+	const String& getName() const;
 
 	const Time& getDelay() const;
 
@@ -60,7 +60,7 @@ class EE_API AnimationDefinition {
 
 	const AnimationFillMode& getFillMode() const;
 
-	void setName( const std::string& value );
+	void setName( const String& value );
 
 	void setDelay( const Time& value );
 
@@ -82,7 +82,7 @@ class EE_API AnimationDefinition {
 
   protected:
 	String::HashType mId;
-	std::string mName;
+	String mName;
 	Time mDelay = Time::Zero;
 	Time mDuration = Time::Zero;
 	Int32 mIterations = 1; /* -1 == "infinite" */
@@ -105,7 +105,7 @@ inline bool operator!=( const AnimationDefinition& a, const AnimationDefinition&
 	return !( a == b );
 }
 
-typedef UnorderedMap<std::string, AnimationDefinition> AnimationsMap;
+typedef HashMap<String, AnimationDefinition> AnimationsMap;
 
 }}} // namespace EE::UI::CSS
 

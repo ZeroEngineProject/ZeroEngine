@@ -5,7 +5,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIMenuItem : public UIPushButton {
+class ZeroShared UIMenuItem : public UIPushButton {
   public:
 	typedef std::function<bool( UIMenuItem* item )> OnShouldCloseCb;
 
@@ -35,7 +35,7 @@ class EE_API UIMenuItem : public UIPushButton {
 	UITextView* mShortcutView;
 	OnShouldCloseCb mOnShouldCloseCb;
 
-	explicit UIMenuItem( const std::string& tag );
+	explicit UIMenuItem( const String& tag );
 
 	virtual void onSizeChange();
 

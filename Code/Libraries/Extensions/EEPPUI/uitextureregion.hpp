@@ -9,7 +9,7 @@ class TextureRegion;
 
 namespace EE { namespace UI {
 
-class EE_API UITextureRegion : public UIWidget {
+class ZeroShared UITextureRegion : public UIWidget {
   public:
 	static UITextureRegion* New();
 
@@ -45,7 +45,7 @@ class EE_API UITextureRegion : public UIWidget {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

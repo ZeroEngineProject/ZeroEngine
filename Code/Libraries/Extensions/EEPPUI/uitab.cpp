@@ -184,7 +184,7 @@ UIWidget* UITab::getCloseButton() const {
 void UITab::setTheme( UITheme* Theme ) {
 	UIWidget::setTheme( Theme );
 
-	std::string tabPos = "tab";
+	String tabPos = "tab";
 
 	UITabWidget* tTabW = getTabWidget();
 
@@ -282,7 +282,7 @@ void UITab::onAutoSize() {
 		getTextBox()->setHorizontalAlign( UI_HALIGN_LEFT );
 }
 
-std::string UITab::getPropertyString( const PropertyDefinition* propertyDef,
+String UITab::getPropertyString( const PropertyDefinition* propertyDef,
 									  const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";

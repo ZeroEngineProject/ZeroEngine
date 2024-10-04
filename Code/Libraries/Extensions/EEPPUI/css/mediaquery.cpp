@@ -31,14 +31,14 @@ MediaQuery::MediaQuery( const MediaQuery& val ) {
 	mMediaType = val.mMediaType;
 }
 
-MediaQuery::ptr MediaQuery::parse( const std::string& str ) {
+MediaQuery::ptr MediaQuery::parse( const String& str ) {
 	DisplayManager* displayManager = Engine::instance()->getDisplayManager();
 	int currentDisplayIndex = Engine::instance()->getCurrentWindow()->getCurrentDisplayIndex();
 	Display* currentDisplay = displayManager->getDisplayIndex( currentDisplayIndex );
 	Float dpi = currentDisplay->getDPI();
 	MediaQuery::ptr query = std::make_shared<MediaQuery>();
 
-	std::vector<std::string> tokens = String::split( str, " \t\r\n", "", "(" );
+	std::vector<String> tokens = String::split( str, " \t\r\n", "", "(" );
 
 	for ( auto& tok : tokens ) {
 		if ( tok == "not" ) {
@@ -51,7 +51,7 @@ MediaQuery::ptr MediaQuery::parse( const std::string& str ) {
 			}
 
 			MediaQueryExpression expr;
-			std::vector<std::string> exprTokens = String::split( tok, ':' );
+			std::vector<String> exprTokens = String::split( tok, ':' );
 			if ( !exprTokens.empty() ) {
 				String::trimInPlace( exprTokens[0] );
 
@@ -69,10 +69,10 @@ MediaQuery::ptr MediaQuery::parse( const std::string& str ) {
 							expr.val = String::valueIndex( exprTokens[1], MediaOrientationStrings,
 														   media_orientation_landscape );
 						} else {
-							std::string::size_type slash_pos = exprTokens[1].find( '/' );
-							if ( slash_pos != std::string::npos ) {
-								std::string val1 = exprTokens[1].substr( 0, slash_pos );
-								std::string val2 = exprTokens[1].substr( slash_pos + 1 );
+							String::size_type slash_pos = exprTokens[1].find( '/' );
+							if ( slash_pos != String::npos ) {
+								String val1 = exprTokens[1].substr( 0, slash_pos );
+								String val2 = exprTokens[1].substr( slash_pos + 1 );
 								String::trimInPlace( val1 );
 								String::trimInPlace( val2 );
 
@@ -139,10 +139,10 @@ bool MediaQuery::check( const MediaFeatures& features ) const {
 	return res;
 }
 
-MediaQueryList::ptr MediaQueryList::parse( const std::string& str ) {
+MediaQueryList::ptr MediaQueryList::parse( const String& str ) {
 	MediaQueryList::ptr list = std::make_shared<MediaQueryList>();
 
-	std::vector<std::string> tokens = String::split( str, "," );
+	std::vector<String> tokens = String::split( str, "," );
 
 	for ( auto& tok : tokens ) {
 		String::trimInPlace( tok );

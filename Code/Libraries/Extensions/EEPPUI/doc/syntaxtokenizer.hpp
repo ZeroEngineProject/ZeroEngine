@@ -14,14 +14,14 @@ namespace EE { namespace UI { namespace Doc {
 
 using SyntaxTokenLen = Uint32;
 
-struct EE_API SyntaxToken {
+struct ZeroShared SyntaxToken {
 	SyntaxStyleType type;
 	SyntaxTokenLen len{ 0 };
 
 	SyntaxToken( SyntaxStyleType type, SyntaxTokenLen len ) : type( type ), len( len ) {}
 };
 
-struct EE_API SyntaxTokenPosition {
+struct ZeroShared SyntaxTokenPosition {
 	SyntaxStyleType type;
 	SyntaxTokenLen pos{ 0 };
 	SyntaxTokenLen len{ 0 };
@@ -30,12 +30,12 @@ struct EE_API SyntaxTokenPosition {
 		type( type ), pos( pos ), len( len ) {}
 };
 
-struct EE_API SyntaxTokenComplete {
-	std::string text;
+struct ZeroShared SyntaxTokenComplete {
+	String text;
 	SyntaxStyleType type;
 	SyntaxTokenLen len{ 0 };
 
-	SyntaxTokenComplete( SyntaxStyleType type, const std::string& text, SyntaxTokenLen len ) :
+	SyntaxTokenComplete( SyntaxStyleType type, const String& text, SyntaxTokenLen len ) :
 		text( text ), type( type ), len( len ) {}
 };
 
@@ -65,19 +65,19 @@ struct SyntaxState {
 	bool operator!=( const SyntaxState& other ) { return !( *this == other ); }
 };
 
-class EE_API SyntaxTokenizer {
+class ZeroShared SyntaxTokenizer {
   public:
 	static std::pair<std::vector<SyntaxToken>, SyntaxState>
-	tokenize( const SyntaxDefinition& syntax, const std::string& text, const SyntaxState& state,
+	tokenize( const SyntaxDefinition& syntax, const String& text, const SyntaxState& state,
 			  const size_t& startIndex = 0, bool skipSubSyntaxSeparator = false );
 
 	static std::pair<std::vector<SyntaxTokenPosition>, SyntaxState>
-	tokenizePosition( const SyntaxDefinition& syntax, const std::string& text,
+	tokenizePosition( const SyntaxDefinition& syntax, const String& text,
 					  const SyntaxState& state, const size_t& startIndex = 0,
 					  bool skipSubSyntaxSeparator = false );
 
 	static std::pair<std::vector<SyntaxTokenComplete>, SyntaxState>
-	tokenizeComplete( const SyntaxDefinition& syntax, const std::string& text,
+	tokenizeComplete( const SyntaxDefinition& syntax, const String& text,
 					  const SyntaxState& state, const size_t& startIndex = 0,
 					  bool skipSubSyntaxSeparator = false );
 
@@ -85,7 +85,7 @@ class EE_API SyntaxTokenizer {
 							   Text& text, const size_t& startIndex = 0,
 							   const size_t& endIndex = 0xFFFFFFFF,
 							   bool skipSubSyntaxSeparator = false,
-							   const std::string& trimChars = "" );
+							   const String& trimChars = "" );
 
 	static SyntaxStateRestored retrieveSyntaxState( const SyntaxDefinition& syntax,
 													const SyntaxState& state );

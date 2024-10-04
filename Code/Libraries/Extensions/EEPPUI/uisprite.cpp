@@ -194,7 +194,7 @@ void UISprite::onSizeChange() {
 	UIWidget::onSizeChange();
 }
 
-std::string UISprite::getPropertyString( const PropertyDefinition* propertyDef,
+String UISprite::getPropertyString( const PropertyDefinition* propertyDef,
 										 const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -221,7 +221,7 @@ bool UISprite::applyProperty( const StyleSheetProperty& attribute ) {
 
 	switch ( attribute.getPropertyDefinition()->getPropertyId() ) {
 		case PropertyId::Src: {
-			std::string path( attribute.getValue() );
+			String path( attribute.getValue() );
 
 			FunctionString func( FunctionString::parse( path ) );
 			if ( !func.getParameters().empty() && func.getName() == "url" ) {

@@ -5,7 +5,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIRelativeLayout : public UILayout {
+class ZeroShared UIRelativeLayout : public UILayout {
   public:
 	static UIRelativeLayout* New();
 
@@ -18,7 +18,7 @@ class EE_API UIRelativeLayout : public UILayout {
 	virtual void updateLayout();
 
   protected:
-	UIRelativeLayout( const std::string& tagName );
+	UIRelativeLayout( const String& tagName );
 
 	UIRelativeLayout();
 

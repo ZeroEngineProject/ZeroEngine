@@ -27,11 +27,11 @@ UIWidget* UIWidget::New() {
 	return eeNew( UIWidget, () );
 }
 
-UIWidget* UIWidget::NewWithTag( const std::string& tag ) {
+UIWidget* UIWidget::NewWithTag( const String& tag ) {
 	return eeNew( UIWidget, ( tag ) );
 }
 
-UIWidget::UIWidget( const std::string& tag ) :
+UIWidget::UIWidget( const String& tag ) :
 	UINode(),
 	mTag( tag ),
 	mTheme( NULL ),
@@ -467,17 +467,17 @@ void UIWidget::setTheme( UITheme* Theme ) {
 	invalidateDraw();
 }
 
-UINode* UIWidget::setThemeSkin( const std::string& skinName ) {
+UINode* UIWidget::setThemeSkin( const String& skinName ) {
 	return setThemeSkin( NULL != mTheme ? mTheme
 										: getUISceneNode()->getUIThemeManager()->getDefaultTheme(),
 						 skinName );
 }
 
-UINode* UIWidget::setThemeSkin( UITheme* Theme, const std::string& skinName ) {
+UINode* UIWidget::setThemeSkin( UITheme* Theme, const String& skinName ) {
 	return UINode::setThemeSkin( Theme, skinName );
 }
 
-Node* UIWidget::setId( const std::string& id ) {
+Node* UIWidget::setId( const String& id ) {
 	Node::setId( id );
 
 	if ( !isSceneNodeLoading() && !isLoadingState() ) {
@@ -778,15 +778,15 @@ UIWidget* UIWidget::setPaddingPixelsBottom( const Float& paddingBottom ) {
 	return this;
 }
 
-const std::string& UIWidget::getStyleSheetId() const {
+const String& UIWidget::getStyleSheetId() const {
 	return mId;
 }
 
-const std::string& UIWidget::getStyleSheetTag() const {
+const String& UIWidget::getStyleSheetTag() const {
 	return mTag;
 }
 
-const std::vector<std::string>& UIWidget::getStyleSheetClasses() const {
+const std::vector<String>& UIWidget::getStyleSheetClasses() const {
 	return mClasses;
 }
 
@@ -802,7 +802,7 @@ UIWidget* UIWidget::getStyleSheetNextSiblingElement() const {
 	return NULL != mNext && mNext->isWidget() ? mNext->asType<UIWidget>() : NULL;
 }
 
-const std::vector<std::string>& UIWidget::getStyleSheetPseudoClasses() const {
+const std::vector<String>& UIWidget::getStyleSheetPseudoClasses() const {
 	return mPseudoClasses;
 }
 
@@ -843,7 +843,7 @@ UIWidget* UIWidget::resetClass() {
 	return this;
 }
 
-UIWidget* UIWidget::setClass( const std::string& cls ) {
+UIWidget* UIWidget::setClass( const String& cls ) {
 	if ( mClasses.size() != 1 || mClasses[0] != cls ) {
 		mClasses.clear();
 		mClasses.push_back( cls );
@@ -858,7 +858,7 @@ UIWidget* UIWidget::setClass( const std::string& cls ) {
 	return this;
 }
 
-UIWidget* UIWidget::setClasses( const std::vector<std::string>& classes ) {
+UIWidget* UIWidget::setClasses( const std::vector<String>& classes ) {
 	if ( mClasses != classes ) {
 		mClasses = classes;
 
@@ -872,7 +872,7 @@ UIWidget* UIWidget::setClasses( const std::vector<std::string>& classes ) {
 	return this;
 }
 
-UIWidget* UIWidget::addClass( const std::string& cls ) {
+UIWidget* UIWidget::addClass( const String& cls ) {
 	if ( !cls.empty() && !hasClass( cls ) ) {
 		mClasses.push_back( cls );
 
@@ -886,10 +886,10 @@ UIWidget* UIWidget::addClass( const std::string& cls ) {
 	return this;
 }
 
-UIWidget* UIWidget::addClasses( const std::vector<std::string>& classes ) {
+UIWidget* UIWidget::addClasses( const std::vector<String>& classes ) {
 	if ( !classes.empty() ) {
 		for ( auto cit = classes.begin(); cit != classes.end(); ++cit ) {
-			const std::string& cls = *cit;
+			const String& cls = *cit;
 
 			if ( !cls.empty() && !hasClass( cls ) ) {
 				mClasses.push_back( cls );
@@ -906,7 +906,7 @@ UIWidget* UIWidget::addClasses( const std::vector<std::string>& classes ) {
 	return this;
 }
 
-UIWidget* UIWidget::removeClass( const std::string& cls ) {
+UIWidget* UIWidget::removeClass( const String& cls ) {
 	if ( hasClass( cls ) ) {
 		mClasses.erase( std::find( mClasses.begin(), mClasses.end(), cls ) );
 
@@ -920,10 +920,10 @@ UIWidget* UIWidget::removeClass( const std::string& cls ) {
 	return this;
 }
 
-UIWidget* UIWidget::removeClasses( const std::vector<std::string>& classes ) {
+UIWidget* UIWidget::removeClasses( const std::vector<String>& classes ) {
 	if ( !classes.empty() ) {
 		for ( auto cit = classes.begin(); cit != classes.end(); ++cit ) {
-			const std::string& cls = *cit;
+			const String& cls = *cit;
 
 			if ( !cls.empty() ) {
 				auto found = std::find( mClasses.begin(), mClasses.end(), cls );
@@ -944,11 +944,11 @@ UIWidget* UIWidget::removeClasses( const std::vector<std::string>& classes ) {
 	return this;
 }
 
-bool UIWidget::hasClass( const std::string& cls ) const {
+bool UIWidget::hasClass( const String& cls ) const {
 	return std::find( mClasses.begin(), mClasses.end(), cls ) != mClasses.end();
 }
 
-void UIWidget::toggleClass( const std::string& cls ) {
+void UIWidget::toggleClass( const String& cls ) {
 	if ( hasClass( cls ) ) {
 		removeClass( cls );
 	} else {
@@ -956,7 +956,7 @@ void UIWidget::toggleClass( const std::string& cls ) {
 	}
 }
 
-bool UIWidget::hasPseudoClass( const std::string& pseudoCls ) const {
+bool UIWidget::hasPseudoClass( const String& pseudoCls ) const {
 	return std::find( mPseudoClasses.begin(), mPseudoClasses.end(), pseudoCls ) !=
 		   mPseudoClasses.end();
 }
@@ -971,7 +971,7 @@ void UIWidget::setTooltipEnabled( bool enabled ) {
 		mTooltip->setVisible( false );
 }
 
-void UIWidget::setElementTag( const std::string& tag ) {
+void UIWidget::setElementTag( const String& tag ) {
 	if ( mTag != tag ) {
 		mTag = tag;
 		// Some rules are going to be invalidated if the tag is changed
@@ -988,11 +988,11 @@ void UIWidget::setElementTag( const std::string& tag ) {
 	}
 }
 
-const std::vector<std::string> UIWidget::getClasses() const {
+const std::vector<String> UIWidget::getClasses() const {
 	return mClasses;
 }
 
-const std::string& UIWidget::getElementTag() const {
+const String& UIWidget::getElementTag() const {
 	return mTag;
 }
 
@@ -1146,7 +1146,7 @@ const Uint32& UIWidget::getStylePreviousState() const {
 	return NULL != mStyle ? mStyle->getPreviousState() : mState;
 }
 
-std::vector<UIWidget*> UIWidget::findAllByClass( const std::string& className ) {
+std::vector<UIWidget*> UIWidget::findAllByClass( const String& className ) {
 	std::vector<UIWidget*> widgets;
 
 	if ( !isClosing() && hasClass( className ) ) {
@@ -1170,7 +1170,7 @@ std::vector<UIWidget*> UIWidget::findAllByClass( const std::string& className ) 
 	return widgets;
 }
 
-std::vector<UIWidget*> UIWidget::findAllByTag( const std::string& tag ) {
+std::vector<UIWidget*> UIWidget::findAllByTag( const String& tag ) {
 	std::vector<UIWidget*> widgets;
 
 	if ( !isClosing() && getElementTag() == tag ) {
@@ -1193,7 +1193,7 @@ std::vector<UIWidget*> UIWidget::findAllByTag( const std::string& tag ) {
 	return widgets;
 }
 
-UIWidget* UIWidget::findByClass( const std::string& className ) {
+UIWidget* UIWidget::findByClass( const String& className ) {
 	if ( !isClosing() && hasClass( className ) ) {
 		return this;
 	} else {
@@ -1214,7 +1214,7 @@ UIWidget* UIWidget::findByClass( const std::string& className ) {
 	return NULL;
 }
 
-UIWidget* UIWidget::findByTag( const std::string& tag ) {
+UIWidget* UIWidget::findByTag( const String& tag ) {
 	if ( !isClosing() && getElementTag() == tag ) {
 		return this;
 	} else {
@@ -1299,11 +1299,11 @@ void UIWidget::reportStyleStateChangeRecursive( bool disableAnimations, bool for
 	reportStyleStateChange( disableAnimations, forceReApplyStyles );
 }
 
-UIWidget* UIWidget::querySelector( const std::string& selector ) {
+UIWidget* UIWidget::querySelector( const String& selector ) {
 	return querySelector( CSS::StyleSheetSelector( selector ) );
 }
 
-std::vector<UIWidget*> UIWidget::querySelectorAll( const std::string& selector ) {
+std::vector<UIWidget*> UIWidget::querySelectorAll( const String& selector ) {
 	return querySelectorAll( CSS::StyleSheetSelector( selector ) );
 }
 
@@ -1374,11 +1374,11 @@ std::vector<PropertyId> UIWidget::getPropertiesImplemented() const {
 			 PropertyId::ForegroundSmooth };
 }
 
-std::string UIWidget::getPropertyString( const std::string& property ) const {
+String UIWidget::getPropertyString( const String& property ) const {
 	return getPropertyString( StyleSheetSpecification::instance()->getProperty( property ) );
 }
 
-std::string UIWidget::getPropertyString( const PropertyDefinition* propertyDef,
+String UIWidget::getPropertyString( const PropertyDefinition* propertyDef,
 										 const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -1537,7 +1537,7 @@ std::string UIWidget::getPropertyString( const PropertyDefinition* propertyDef,
 	return "";
 }
 
-void UIWidget::setStyleSheetInlineProperty( const std::string& name, const std::string& value,
+void UIWidget::setStyleSheetInlineProperty( const String& name, const String& value,
 											const Uint32& specificity ) {
 	if ( mStyle != NULL )
 		mStyle->setStyleSheetProperty(
@@ -1635,9 +1635,9 @@ bool UIWidget::applyProperty( const StyleSheetProperty& attribute ) {
 			setSkinColor( attribute.asColor() );
 			break;
 		case PropertyId::Gravity: {
-			std::string gravity = attribute.asString();
+			String gravity = attribute.asString();
 			String::toLowerInPlace( gravity );
-			std::vector<std::string> strings = String::split( gravity, '|' );
+			std::vector<String> strings = String::split( gravity, '|' );
 
 			if ( strings.empty() ) {
 				strings = String::split( gravity, ' ' );
@@ -1645,7 +1645,7 @@ bool UIWidget::applyProperty( const StyleSheetProperty& attribute ) {
 
 			if ( !strings.empty() ) {
 				for ( std::size_t i = 0; i < strings.size(); i++ ) {
-					std::string cur = strings[i];
+					String cur = strings[i];
 					String::toLowerInPlace( cur );
 
 					if ( "left" == cur )
@@ -1671,13 +1671,13 @@ bool UIWidget::applyProperty( const StyleSheetProperty& attribute ) {
 			break;
 		}
 		case PropertyId::Flags: {
-			std::string flags = attribute.asString();
+			String flags = attribute.asString();
 			String::toLowerInPlace( flags );
-			std::vector<std::string> strings = String::split( flags, '|' );
+			std::vector<String> strings = String::split( flags, '|' );
 
 			if ( strings.size() ) {
 				for ( std::size_t i = 0; i < strings.size(); i++ ) {
-					std::string cur = strings[i];
+					String cur = strings[i];
 					String::toLowerInPlace( cur );
 
 					if ( "auto_size" == cur || "autosize" == cur ) {
@@ -1721,13 +1721,13 @@ bool UIWidget::applyProperty( const StyleSheetProperty& attribute ) {
 			setLayoutWeight( attribute.asFloat() );
 			break;
 		case PropertyId::LayoutGravity: {
-			std::string gravityStr = attribute.asString();
+			String gravityStr = attribute.asString();
 			String::toLowerInPlace( gravityStr );
-			std::vector<std::string> strings = String::split( gravityStr, '|' );
+			std::vector<String> strings = String::split( gravityStr, '|' );
 			Uint32 gravity = 0;
 			if ( strings.size() ) {
 				for ( std::size_t i = 0; i < strings.size(); i++ ) {
-					std::string cur = strings[i];
+					String cur = strings[i];
 					String::toLowerInPlace( cur );
 
 					if ( "left" == cur )
@@ -1752,7 +1752,7 @@ bool UIWidget::applyProperty( const StyleSheetProperty& attribute ) {
 			break;
 		}
 		case PropertyId::LayoutWidth: {
-			std::string val = attribute.asString();
+			String val = attribute.asString();
 			String::toLowerInPlace( val );
 
 			if ( "match_parent" == val || "match-parent" == val || "mp" == val ) {
@@ -1775,7 +1775,7 @@ bool UIWidget::applyProperty( const StyleSheetProperty& attribute ) {
 			break;
 		}
 		case PropertyId::LayoutHeight: {
-			std::string val = attribute.asString();
+			String val = attribute.asString();
 			String::toLowerInPlace( val );
 
 			if ( "match_parent" == val || "match-parent" == val || "mp" == val ) {
@@ -1812,7 +1812,7 @@ bool UIWidget::applyProperty( const StyleSheetProperty& attribute ) {
 				rule = PositionPolicy::TopOf;
 			else if ( layoutId == PropertyId::LayoutToBottomOf )
 				rule = PositionPolicy::BottomOf;
-			const std::string& id = attribute.value();
+			const String& id = attribute.value();
 			Node* node = getParent()->find( id );
 			if ( NULL != node && node->isWidget() ) {
 				UIWidget* widget = static_cast<UIWidget*>( node );
@@ -1977,7 +1977,7 @@ void UIWidget::loadFromXmlNode( const pugi::xml_node& node ) {
 	endAttributesTransaction();
 }
 
-std::string UIWidget::getLayoutWidthPolicyString() const {
+String UIWidget::getLayoutWidthPolicyString() const {
 	SizePolicy rules = getLayoutWidthPolicy();
 
 	if ( rules == SizePolicy::MatchParent )
@@ -1987,7 +1987,7 @@ std::string UIWidget::getLayoutWidthPolicyString() const {
 	return String::fromFloat( getSize().getHeight(), "dp" );
 }
 
-std::string UIWidget::getLayoutHeightPolicyString() const {
+String UIWidget::getLayoutHeightPolicyString() const {
 	SizePolicy rules = getLayoutHeightPolicy();
 
 	if ( rules == SizePolicy::MatchParent )
@@ -1997,8 +1997,8 @@ std::string UIWidget::getLayoutHeightPolicyString() const {
 	return String::fromFloat( getSize().getHeight(), "dp" );
 }
 
-static std::string getGravityStringFromUint( const Uint32& gravity ) {
-	std::vector<std::string> gravec;
+static String getGravityStringFromUint( const Uint32& gravity ) {
+	std::vector<String> gravec;
 
 	if ( Font::getHorizontalAlign( gravity ) == UI_HALIGN_RIGHT ) {
 		gravec.push_back( "right" );
@@ -2019,16 +2019,16 @@ static std::string getGravityStringFromUint( const Uint32& gravity ) {
 	return String::join( gravec, '|' );
 }
 
-std::string UIWidget::getLayoutGravityString() const {
+String UIWidget::getLayoutGravityString() const {
 	return getGravityStringFromUint( getLayoutGravity() );
 }
 
-std::string UIWidget::getGravityString() const {
+String UIWidget::getGravityString() const {
 	return getGravityStringFromUint( getHorizontalAlign() | getVerticalAlign() );
 }
 
-std::string UIWidget::getFlagsString() const {
-	std::vector<std::string> flagvec;
+String UIWidget::getFlagsString() const {
+	std::vector<String> flagvec;
 
 	if ( mFlags & UI_AUTO_SIZE )
 		flagvec.push_back( "autosize" );
@@ -2129,20 +2129,20 @@ UIWidget* UIWidget::getNextWidget() const {
 	return NULL;
 }
 
-String UIWidget::getTranslatorString( const std::string& str ) {
+String UIWidget::getTranslatorString( const String& str ) {
 	return getUISceneNode() != nullptr ? getUISceneNode()->getTranslatorString( str ) : String();
 }
 
-String UIWidget::getTranslatorString( const std::string& str, const String& defaultValue ) {
+String UIWidget::getTranslatorString( const String& str, const String& defaultValue ) {
 	return getUISceneNode() != nullptr ? getUISceneNode()->getTranslatorString( str, defaultValue )
 									   : defaultValue;
 }
 
-String UIWidget::i18n( const std::string& str ) {
+String UIWidget::i18n( const String& str ) {
 	return getTranslatorString( str );
 }
 
-String UIWidget::i18n( const std::string& str, const String& defaultValue ) {
+String UIWidget::i18n( const String& str, const String& defaultValue ) {
 	return getTranslatorString( str, defaultValue );
 }
 

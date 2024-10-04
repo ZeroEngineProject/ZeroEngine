@@ -10,7 +10,7 @@ namespace EE { namespace UI {
 class UIPopUpMenu;
 class UIScrollBar;
 
-class EE_API TabEvent : public Event {
+class ZeroShared TabEvent : public Event {
   public:
 	TabEvent( Node* node, UITab* tabEvent, Uint32 tabIndex, const Uint32& eventType ) :
 		Event( node, eventType ), tab( tabEvent ), tabIndex( tabIndex ) {}
@@ -24,7 +24,7 @@ class EE_API TabEvent : public Event {
 	Uint32 tabIndex;
 };
 
-class EE_API UITabWidget : public UIWidget {
+class ZeroShared UITabWidget : public UIWidget {
   public:
 	enum class FocusTabBehavior { Closest, FocusOrder, Default };
 
@@ -34,8 +34,8 @@ class EE_API UITabWidget : public UIWidget {
 		Uint32 MaxTextLength = 100;
 		Float TabHeight = 0;
 		Uint32 TabTextAlign = ( UI_HALIGN_CENTER | UI_VALIGN_CENTER );
-		std::string MinTabWidth = "32dp";
-		std::string MaxTabWidth = "300dp";
+		String MinTabWidth = "32dp";
+		String MaxTabWidth = "300dp";
 		bool TabsClosable = false;
 		bool TabsEdgesDiffSkins = false; //! Indicates if the edge tabs ( the left and right
 										 //! border tab ) are different from the central tabs.
@@ -98,13 +98,13 @@ class EE_API UITabWidget : public UIWidget {
 
 	void setMaxTextLength( const Uint32& maxTextLength );
 
-	std::string getMinTabWidth() const;
+	String getMinTabWidth() const;
 
-	void setMinTabWidth( const std::string& minTabWidth );
+	void setMinTabWidth( const String& minTabWidth );
 
-	std::string getMaxTabWidth() const;
+	String getMaxTabWidth() const;
 
-	void setMaxTabWidth( const std::string& maxTabWidth );
+	void setMaxTabWidth( const String& maxTabWidth );
 
 	bool getTabsClosable() const;
 
@@ -128,7 +128,7 @@ class EE_API UITabWidget : public UIWidget {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

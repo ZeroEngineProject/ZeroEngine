@@ -5,9 +5,9 @@
 
 namespace EE { namespace UI {
 
-std::string UIIconThemeManager::getIconNameFromFileName( const std::string& fileName,
+String UIIconThemeManager::getIconNameFromFileName( const String& fileName,
 														 bool retOnlyWithExtension ) {
-	std::string ext( FileSystem::fileExtension( fileName ) );
+	String ext( FileSystem::fileExtension( fileName ) );
 	if ( !ext.empty() ) {
 		return "filetype-" + ext;
 	} else if ( !retOnlyWithExtension ) {
@@ -60,7 +60,7 @@ UIIconThemeManager* UIIconThemeManager::setFallbackTheme( UIIconTheme* fallbackT
 	return this;
 }
 
-UIIcon* UIIconThemeManager::findIcon( const std::string& name ) {
+UIIcon* UIIconThemeManager::findIcon( const String& name ) {
 	UIIcon* icon = nullptr;
 	if ( mCurrentTheme ) {
 		icon = mCurrentTheme->getIcon( name );

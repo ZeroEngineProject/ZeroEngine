@@ -11,13 +11,13 @@ namespace EE { namespace UI {
 
 class UISceneNode;
 
-class EE_API UIApplication {
+class ZeroShared UIApplication {
   public:
 	struct Settings {
 		Settings() {}
 
 		Settings( std::optional<Float> pixelDensity, bool loadBaseResources = true,
-				  Font* baseFont = nullptr, std::optional<std::string> baseStyleSheetPath = {}, Font* emojiFont = nullptr );
+				  Font* baseFont = nullptr, std::optional<String> baseStyleSheetPath = {}, Font* emojiFont = nullptr );
 
 		//! Not setting anything will automatically try to detect the main screen pixel density
 		std::optional<Float> pixelDensity;
@@ -29,7 +29,7 @@ class EE_API UIApplication {
 		Font* baseFont{ nullptr };
 		//! The style sheet path is the path of the base UI theme stylesheet ( will look at
 		//! "assets/ui/breeze.css" by default )
-		std::optional<std::string> baseStyleSheetPath;
+		std::optional<String> baseStyleSheetPath;
 		//! The default emoji font for the UI. If not provided it will load NotoEmoji-Regular ( will
 		//! look at "assets/fonts/NotoEmoji-Regular.ttf" )
 		Font* emojiFont{ nullptr };

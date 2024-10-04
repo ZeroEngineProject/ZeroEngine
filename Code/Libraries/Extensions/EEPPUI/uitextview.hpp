@@ -7,15 +7,15 @@
 
 namespace EE { namespace UI {
 
-class EE_API UITextView : public UIWidget {
+class ZeroShared UITextView : public UIWidget {
   public:
 	static UITextView* New();
 
-	static UITextView* NewWithTag( const std::string& tag );
+	static UITextView* NewWithTag( const String& tag );
 
 	UITextView();
 
-	explicit UITextView( const std::string& tag );
+	explicit UITextView( const String& tag );
 
 	virtual ~UITextView();
 
@@ -87,7 +87,7 @@ class EE_API UITextView : public UIWidget {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;
@@ -108,9 +108,9 @@ class EE_API UITextView : public UIWidget {
 
 	virtual void loadFromXmlNode( const pugi::xml_node& node );
 
-	UITextView* setTextOverflow( const std::string_view& textOverflow );
+	UITextView* setTextOverflow( const String_view& textOverflow );
 
-	const std::string& getTextOverflow() const;
+	const String& getTextOverflow() const;
 
 	bool hasTextOverflow() const;
 
@@ -140,7 +140,7 @@ class EE_API UITextView : public UIWidget {
 	Int32 mLastSelCurEnd;
 	bool mSelecting;
 	bool mUsingCustomStyling{ false };
-	std::string mTextOverflow;
+	String mTextOverflow;
 	Float mTextOverflowWidth{ 0 };
 	TextTransform::Value mTextTransform{ TextTransform::None };
 
@@ -193,7 +193,7 @@ class EE_API UITextView : public UIWidget {
 	void updateTextOverflow();
 };
 
-class EE_API UIAnchor : public UITextView {
+class ZeroShared UIAnchor : public UITextView {
   public:
 	static UIAnchor* New();
 
@@ -201,17 +201,17 @@ class EE_API UIAnchor : public UITextView {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;
 
-	void setHref( const std::string& href );
+	void setHref( const String& href );
 
-	const std::string& getHref() const;
+	const String& getHref() const;
 
   protected:
-	std::string mHref;
+	String mHref;
 
 	virtual Uint32 onKeyDown( const KeyEvent& event );
 };

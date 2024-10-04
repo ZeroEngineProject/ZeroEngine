@@ -11,15 +11,15 @@ namespace EE { namespace UI { namespace CSS {
 
 enum class AtRuleType : Uint32 { None, FontFace, GlyphIcon };
 
-class EE_API StyleSheetStyle {
+class ZeroShared StyleSheetStyle {
   public:
 	StyleSheetStyle();
 
-	explicit StyleSheetStyle( const std::string& selector, const StyleSheetProperties& properties,
+	explicit StyleSheetStyle( const String& selector, const StyleSheetProperties& properties,
 							  const StyleSheetVariables& variables,
 							  MediaQueryList::ptr mediaQueryList );
 
-	std::string build( bool emmitMediaQueryStart = true, bool emmitMediaQueryEnd = true );
+	String build( bool emmitMediaQueryStart = true, bool emmitMediaQueryEnd = true );
 
 	const StyleSheetSelector& getSelector() const;
 
@@ -43,13 +43,13 @@ class EE_API StyleSheetStyle {
 
 	bool hasProperty( PropertyId id ) const;
 
-	bool hasProperty( const std::string& name ) const;
+	bool hasProperty( const String& name ) const;
 
 	bool hasVariables() const;
 
-	bool hasVariable( const std::string& name ) const;
+	bool hasVariable( const String& name ) const;
 
-	StyleSheetVariable getVariableByName( const std::string& name ) const;
+	StyleSheetVariable getVariableByName( const String& name ) const;
 
 	void setVariable( const StyleSheetVariable& variable );
 
@@ -65,7 +65,7 @@ class EE_API StyleSheetStyle {
 
 	void setMarker( const Uint32& marker );
 
-	bool updatePropertyValue( const std::string& name, const std::string& value );
+	bool updatePropertyValue( const String& name, const String& value );
 
   protected:
 	Uint32 mMarker{ 0 };

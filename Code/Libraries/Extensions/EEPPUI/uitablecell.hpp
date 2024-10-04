@@ -10,14 +10,14 @@ using namespace EE::UI::Models;
 
 namespace EE { namespace UI {
 
-class EE_API UITableCell : public UIPushButton {
+class ZeroShared UITableCell : public UIPushButton {
   public:
 	static UITableCell* New() { return eeNew( UITableCell, () ); }
 
-	static UITableCell* New( const std::string& tag ) { return eeNew( UITableCell, ( tag ) ); }
+	static UITableCell* New( const String& tag ) { return eeNew( UITableCell, ( tag ) ); }
 
 	static UITableCell*
-	NewWithOpt( const std::string& tag,
+	NewWithOpt( const String& tag,
 				const std::function<UITextView*( UIPushButton* )>& newTextViewCb ) {
 		return eeNew( UITableCell, ( tag, newTextViewCb ) );
 	}
@@ -50,7 +50,7 @@ class EE_API UITableCell : public UIPushButton {
 
 	UITableCell() : UITableCell( "table::cell" ) {}
 
-	UITableCell( const std::string& tag,
+	UITableCell( const String& tag,
 				 const std::function<UITextView*( UIPushButton* )>& newTextViewCb = nullptr ) :
 		UIPushButton( tag, newTextViewCb ) {
 		applyDefaultTheme();

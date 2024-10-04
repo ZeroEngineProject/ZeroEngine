@@ -3,7 +3,7 @@
 
 namespace EE { namespace UI {
 
-UILayout::UILayout( const std::string& tag ) : UIWidget( tag ) {
+UILayout::UILayout( const String& tag ) : UIWidget( tag ) {
 	mNodeFlags |= NODE_FLAG_LAYOUT;
 	unsetFlags( UI_TAB_FOCUSABLE );
 }

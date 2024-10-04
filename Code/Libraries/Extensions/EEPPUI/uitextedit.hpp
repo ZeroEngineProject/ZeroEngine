@@ -6,7 +6,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UITextEdit : public UICodeEditor {
+class ZeroShared UITextEdit : public UICodeEditor {
   public:
 	static UITextEdit* New();
 

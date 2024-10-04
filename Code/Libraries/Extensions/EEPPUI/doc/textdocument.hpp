@@ -34,7 +34,7 @@ struct DocumentContentChange {
 	String text;
 };
 
-class EE_API TextDocument {
+class ZeroShared TextDocument {
   public:
 	enum class UndoRedo { Undo, Redo };
 
@@ -75,7 +75,7 @@ class EE_API TextDocument {
 
 	enum class MatchDirection { Forward, Backward };
 
-	class EE_API Client {
+	class ZeroShared Client {
 	  public:
 		virtual ~Client();
 		virtual void onDocumentLoaded( TextDocument* ) {};
@@ -124,15 +124,15 @@ class EE_API TextDocument {
 
 	LoadStatus loadFromStream( IOStream& path );
 
-	LoadStatus loadFromFile( const std::string& path );
+	LoadStatus loadFromFile( const String& path );
 
-	bool loadAsyncFromFile( const std::string& path, std::shared_ptr<ThreadPool> pool,
+	bool loadAsyncFromFile( const String& path, std::shared_ptr<ThreadPool> pool,
 							std::function<void( TextDocument*, bool )> onLoaded =
 								std::function<void( TextDocument*, bool success )>() );
 
 	LoadStatus loadFromMemory( const Uint8* data, const Uint32& size );
 
-	LoadStatus loadFromPack( Pack* pack, std::string filePackPath );
+	LoadStatus loadFromPack( Pack* pack, String filePackPath );
 
 	/**
 	 * @brief loadFromURL
@@ -141,10 +141,10 @@ class EE_API TextDocument {
 	 * @return
 	 */
 	LoadStatus loadFromURL(
-		const std::string& url,
+		const String& url,
 		const EE::Network::Http::Request::FieldTable& headers = Http::Request::FieldTable() );
 
-	bool loadAsyncFromURL( const std::string& url,
+	bool loadAsyncFromURL( const String& url,
 						   const Http::Request::FieldTable& headers = Http::Request::FieldTable(),
 						   std::function<void( TextDocument*, bool )> onLoaded =
 							   std::function<void( TextDocument*, bool success )>(),
@@ -154,11 +154,11 @@ class EE_API TextDocument {
 
 	bool save();
 
-	bool save( const std::string& path );
+	bool save( const String& path );
 
 	bool save( IOStream& stream, bool keepUndoRedoStatus = false );
 
-	std::string getFilename() const;
+	String getFilename() const;
 
 	void setSelection( const TextPosition& position );
 
@@ -189,7 +189,7 @@ class EE_API TextDocument {
 
 	const std::array<Uint8, 16>& getHash() const;
 
-	std::string getHashHexString() const;
+	String getHashHexString() const;
 
 	String getText( const TextRange& range ) const;
 
@@ -377,19 +377,19 @@ class EE_API TextDocument {
 
 	void redo();
 
-	void execute( const std::string& command );
+	void execute( const String& command );
 
-	void execute( const std::string& command, Client* client );
+	void execute( const String& command, Client* client );
 
-	void setCommands( const UnorderedMap<std::string, DocumentCommand>& cmds );
+	void setCommands( const HashMap<String, DocumentCommand>& cmds );
 
-	void setCommand( const std::string& command, const DocumentCommand& func );
+	void setCommand( const String& command, const DocumentCommand& func );
 
-	void setCommand( const std::string& command, const DocumentRefCommand& func );
+	void setCommand( const String& command, const DocumentRefCommand& func );
 
-	bool hasCommand( const std::string& command );
+	bool hasCommand( const String& command );
 
-	bool removeCommand( const std::string& command );
+	bool removeCommand( const String& command );
 
 	SearchResult find( const String& text, TextPosition from = { 0, 0 }, bool caseSensitive = true,
 					   bool wholeWord = false, FindReplaceType type = FindReplaceType::Normal,
@@ -433,11 +433,11 @@ class EE_API TextDocument {
 
 	Uint64 getCurrentChangeId() const;
 
-	const std::string& getDefaultFileName() const;
+	const String& getDefaultFileName() const;
 
-	void setDefaultFileName( const std::string& defaultFileName );
+	void setDefaultFileName( const String& defaultFileName );
 
-	const std::string& getFilePath() const;
+	const String& getFilePath() const;
 
 	const URI& getURI() const;
 
@@ -518,13 +518,13 @@ class EE_API TextDocument {
 
 	bool hasSyntaxDefinition() const;
 
-	void notifyDocumentMoved( const std::string& newPath );
+	void notifyDocumentMoved( const String& newPath );
 
 	void toUpperSelection();
 
 	void toLowerSelection();
 
-	std::string getLoadingFilePath() const;
+	String getLoadingFilePath() const;
 
 	URI getLoadingFileURI() const;
 
@@ -582,7 +582,7 @@ class EE_API TextDocument {
 
 	String getAllSelectedText() const;
 
-	std::vector<std::string> getCommandList() const;
+	std::vector<String> getCommandList() const;
 
 	bool isRunningTransaction() const;
 
@@ -639,11 +639,11 @@ class EE_API TextDocument {
 
 	void setLines( std::vector<TextDocumentLine>&& lines );
 
-	std::string serializeUndoRedo( bool inverted );
+	String serializeUndoRedo( bool inverted );
 
-	void unserializeUndoRedo( const std::string& jsonString );
+	void unserializeUndoRedo( const String& jsonString );
 
-	void changeFilePath( const std::string& filePath );
+	void changeFilePath( const String& filePath );
 
 	void setDirtyUntilSave();
 
@@ -655,8 +655,8 @@ class EE_API TextDocument {
 
 	Uint64 mModificationId{ 0 };
 	TextUndoStack mUndoStack;
-	std::string mFilePath;
-	std::string mLoadingFilePath;
+	String mFilePath;
+	String mLoadingFilePath;
 	std::array<Uint8, 16> mHash;
 	URI mFileURI;
 	URI mLoadingFileURI;
@@ -689,11 +689,11 @@ class EE_API TextDocument {
 	IndentType mIndentType{ IndentType::IndentTabs };
 	Clock mTimer;
 	SyntaxDefinition mSyntaxDefinition;
-	std::string mDefaultFileName;
+	String mDefaultFileName;
 	Uint64 mCleanChangeId{ 0 };
 	Uint32 mPageSize{ 10 };
-	UnorderedMap<std::string, DocumentCommand> mCommands;
-	UnorderedMap<std::string, DocumentRefCommand> mRefCommands;
+	HashMap<String, DocumentCommand> mCommands;
+	HashMap<String, DocumentRefCommand> mRefCommands;
 	String mNonWordChars;
 	Client* mActiveClient{ nullptr };
 	mutable Mutex mLoadingMutex;
@@ -701,7 +701,7 @@ class EE_API TextDocument {
 	size_t mLastSelection{ 0 };
 	std::unique_ptr<SyntaxHighlighter> mHighlighter;
 	Mutex mStopFlagsMutex;
-	UnorderedMap<bool*, std::unique_ptr<bool>> mStopFlags;
+	HashMap<bool*, std::unique_ptr<bool>> mStopFlags;
 	FoldRangeServive mFoldRangeService;
 
 	void initializeCommands();
@@ -762,7 +762,7 @@ class EE_API TextDocument {
 
 	std::vector<bool> autoCloseBrackets( const String& text );
 
-	LoadStatus loadFromStream( IOStream& file, std::string path, bool callReset );
+	LoadStatus loadFromStream( IOStream& file, String path, bool callReset );
 
 	SearchResult findText( String text, TextPosition from = { 0, 0 }, bool caseSensitive = true,
 						   bool wholeWord = false, FindReplaceType type = FindReplaceType::Normal,
@@ -773,7 +773,7 @@ class EE_API TextDocument {
 							   FindReplaceType type = FindReplaceType::Normal,
 							   TextRange restrictRange = TextRange() );
 
-	void changeFilePath( const std::string& filePath, bool notify );
+	void changeFilePath( const String& filePath, bool notify );
 };
 
 struct TextSearchParams {

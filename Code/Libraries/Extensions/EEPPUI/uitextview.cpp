@@ -23,11 +23,11 @@ UITextView* UITextView::New() {
 	return eeNew( UITextView, () );
 }
 
-UITextView* UITextView::NewWithTag( const std::string& tag ) {
+UITextView* UITextView::NewWithTag( const String& tag ) {
 	return eeNew( UITextView, ( tag ) );
 }
 
-UITextView::UITextView( const std::string& tag ) :
+UITextView::UITextView( const String& tag ) :
 	UIWidget( tag ),
 	mRealAlignOffset( 0.f, 0.f ),
 	mSelCurInit( 0 ),
@@ -755,7 +755,7 @@ bool UITextView::applyProperty( const StyleSheetProperty& attribute ) {
 				setTextSelection( attribute.asBool() );
 			break;
 		case PropertyId::TextAlign: {
-			std::string align = String::toLower( attribute.value() );
+			String align = String::toLower( attribute.value() );
 			if ( align == "center" )
 				setTextAlign( UI_HALIGN_CENTER );
 			else if ( align == "left" )
@@ -774,7 +774,7 @@ bool UITextView::applyProperty( const StyleSheetProperty& attribute ) {
 	return true;
 }
 
-std::string UITextView::getPropertyString( const PropertyDefinition* propertyDef,
+String UITextView::getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -892,7 +892,7 @@ void UITextView::updateTextOverflow() {
 	}
 }
 
-UITextView* UITextView::setTextOverflow( const std::string_view& textOverflow ) {
+UITextView* UITextView::setTextOverflow( const String_view& textOverflow ) {
 	if ( textOverflow == mTextOverflow ||
 		 ( mTextOverflow == u8"…" && textOverflow == "ellipsis"sv ) )
 		return this;
@@ -908,7 +908,7 @@ UITextView* UITextView::setTextOverflow( const std::string_view& textOverflow ) 
 	return this;
 }
 
-const std::string& UITextView::getTextOverflow() const {
+const String& UITextView::getTextOverflow() const {
 	return mTextOverflow;
 }
 
@@ -967,13 +967,13 @@ bool UIAnchor::applyProperty( const StyleSheetProperty& attribute ) {
 	return true;
 }
 
-void UIAnchor::setHref( const std::string& href ) {
+void UIAnchor::setHref( const String& href ) {
 	if ( href != mHref ) {
 		mHref = href;
 	}
 }
 
-const std::string& UIAnchor::getHref() const {
+const String& UIAnchor::getHref() const {
 	return mHref;
 }
 
@@ -988,7 +988,7 @@ Uint32 UIAnchor::onKeyDown( const KeyEvent& event ) {
 	return 0;
 }
 
-std::string UIAnchor::getPropertyString( const PropertyDefinition* propertyDef,
+String UIAnchor::getPropertyString( const PropertyDefinition* propertyDef,
 										 const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";

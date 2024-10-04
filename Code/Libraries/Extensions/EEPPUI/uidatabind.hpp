@@ -14,18 +14,18 @@ template <typename T> class UIDataBind {
 	struct Converter {
 		Converter() {}
 
-		Converter( std::function<bool( const UIDataBind<T>*, T&, const std::string& )> toVal,
-				   std::function<bool( const UIDataBind<T>*, std::string&, const T& )> fromVal ) :
+		Converter( std::function<bool( const UIDataBind<T>*, T&, const String& )> toVal,
+				   std::function<bool( const UIDataBind<T>*, String&, const T& )> fromVal ) :
 			toVal( toVal ), fromVal( fromVal ) {}
 
-		std::function<bool( const UIDataBind<T>*, T&, const std::string& )> toVal;
-		std::function<bool( const UIDataBind<T>*, std::string&, const T& )> fromVal;
+		std::function<bool( const UIDataBind<T>*, T&, const String& )> toVal;
+		std::function<bool( const UIDataBind<T>*, String&, const T& )> fromVal;
 	};
 
 	static Converter converterDefault() {
 		return Converter( []( const UIDataBind<T>*, T& val,
-							  const std::string& str ) { return String::fromString( val, str ); },
-						  []( const UIDataBind<T>*, std::string& str, const T& val ) {
+							  const String& str ) { return String::fromString( val, str ); },
+						  []( const UIDataBind<T>*, String& str, const T& val ) {
 							  str = String::toString( val );
 							  return true;
 						  } );
@@ -33,11 +33,11 @@ template <typename T> class UIDataBind {
 
 	static Converter converterString() {
 		return Converter(
-			[]( const UIDataBind<T>*, T& val, const std::string& str ) {
+			[]( const UIDataBind<T>*, T& val, const String& str ) {
 				val = str;
 				return true;
 			},
-			[]( const UIDataBind<T>*, std::string& str, const T& val ) {
+			[]( const UIDataBind<T>*, String& str, const T& val ) {
 				str = val;
 				return true;
 			} );
@@ -45,11 +45,11 @@ template <typename T> class UIDataBind {
 
 	static Converter converterBool() {
 		return Converter(
-			[]( const UIDataBind<T>* databind, T& val, const std::string& str ) -> bool {
+			[]( const UIDataBind<T>* databind, T& val, const String& str ) -> bool {
 				val = StyleSheetProperty( databind->getPropertyDefinition(), str ).asBool();
 				return true;
 			},
-			[]( const UIDataBind<T>*, std::string& str, const T& val ) -> bool {
+			[]( const UIDataBind<T>*, String& str, const T& val ) -> bool {
 				str = val ? "true" : "false";
 				return true;
 			} );
@@ -58,7 +58,7 @@ template <typename T> class UIDataBind {
 	static std::unique_ptr<UIDataBind<T>>
 	New( T* t, const std::set<UIWidget*>& widgets,
 		 const Converter& converter = UIDataBind<T>::converterDefault(),
-		 const std::string& valueKey = "value",
+		 const String& valueKey = "value",
 		 const Event::EventType& eventType = Event::OnValueChange ) {
 		return std::unique_ptr<UIDataBind<T>>(
 			new UIDataBind<T>( t, widgets, converter, valueKey, eventType ) );
@@ -66,7 +66,7 @@ template <typename T> class UIDataBind {
 
 	static std::unique_ptr<UIDataBind<T>>
 	New( T* t, UIWidget* widget, const Converter& converter = UIDataBind<T>::converterDefault(),
-		 const std::string& valueKey = "value",
+		 const String& valueKey = "value",
 		 const Event::EventType& eventType = Event::OnValueChange ) {
 		return std::unique_ptr<UIDataBind<T>>(
 			new UIDataBind<T>( t, widget, converter, valueKey, eventType ) );
@@ -76,21 +76,21 @@ template <typename T> class UIDataBind {
 
 	UIDataBind( T* t, const std::set<UIWidget*>& widgets,
 				const Converter& converter = UIDataBind<T>::converterDefault(),
-				const std::string& valueKey = "value",
+				const String& valueKey = "value",
 				const Event::EventType& eventType = Event::OnValueChange ) {
 		init( t, widgets, converter, valueKey, eventType );
 	}
 
 	UIDataBind( T* t, UIWidget* widget,
 				const Converter& converter = UIDataBind<T>::converterDefault(),
-				const std::string& valueKey = "value",
+				const String& valueKey = "value",
 				const Event::EventType& eventType = Event::OnValueChange ) {
 		init( t, { widget }, converter, valueKey, eventType );
 	}
 
 	void init( T* t, const std::set<UIWidget*>& widgets,
 			   const Converter& converter = UIDataBind<T>::converterDefault(),
-			   const std::string& valueKey = "value",
+			   const String& valueKey = "value",
 			   const Event::EventType& eventType = Event::OnValueChange ) {
 		data = t;
 		this->widgets = widgets;
@@ -173,8 +173,8 @@ template <typename T> class UIDataBind {
 		} );
 	}
 
-	std::string dataToString() const {
-		std::string str;
+	String dataToString() const {
+		String str;
 		if ( !converter.fromVal( this, str, *data ) ) {
 			Log::error( "UIDataBind::dataToString converter::fromVal: unable to convert value "
 						"to string." );
@@ -217,36 +217,36 @@ class UIDataBindBool {
 	static Ptr
 	New( bool* t, const std::set<UIWidget*>& widgets,
 		 const UIDataBind<bool>::Converter& converter = UIDataBind<bool>::converterBool(),
-		 const std::string& valueKey = "value" ) {
+		 const String& valueKey = "value" ) {
 		return UIDataBind<bool>::New( t, widgets, converter, valueKey );
 	}
 
 	static Ptr
 	New( bool* t, UIWidget* widget,
 		 const UIDataBind<bool>::Converter& converter = UIDataBind<bool>::converterBool(),
-		 const std::string& valueKey = "value" ) {
+		 const String& valueKey = "value" ) {
 		return UIDataBind<bool>::New( t, widget, converter, valueKey );
 	}
 };
 
 class UIDataBindString {
   public:
-	using Ptr = std::unique_ptr<UIDataBind<std::string>>;
+	using Ptr = std::unique_ptr<UIDataBind<String>>;
 
-	static Ptr New( std::string* t, const std::set<UIWidget*>& widgets,
-					const UIDataBind<std::string>::Converter& converter =
-						UIDataBind<std::string>::converterString(),
-					const std::string& valueKey = "text",
+	static Ptr New( String* t, const std::set<UIWidget*>& widgets,
+					const UIDataBind<String>::Converter& converter =
+						UIDataBind<String>::converterString(),
+					const String& valueKey = "text",
 					const Event::EventType& eventType = Event::OnTextChanged ) {
-		return UIDataBind<std::string>::New( t, widgets, converter, valueKey, eventType );
+		return UIDataBind<String>::New( t, widgets, converter, valueKey, eventType );
 	}
 
-	static Ptr New( std::string* t, UIWidget* widget,
-					const UIDataBind<std::string>::Converter& converter =
-						UIDataBind<std::string>::converterString(),
-					const std::string& valueKey = "text",
+	static Ptr New( String* t, UIWidget* widget,
+					const UIDataBind<String>::Converter& converter =
+						UIDataBind<String>::converterString(),
+					const String& valueKey = "text",
 					const Event::EventType& eventType = Event::OnTextChanged ) {
-		return UIDataBind<std::string>::New( t, widget, converter, valueKey, eventType );
+		return UIDataBind<String>::New( t, widget, converter, valueKey, eventType );
 	}
 };
 
@@ -274,12 +274,12 @@ template <typename... Ts> class UIDataBindHolderKV {
   public:
 	using UIDataBindVariant = std::variant<std::unique_ptr<UIDataBind<Ts>>...>;
 
-	UIDataBindHolderKV& hold( std::string key, UIDataBindVariant&& ptr ) {
+	UIDataBindHolderKV& hold( String key, UIDataBindVariant&& ptr ) {
 		mHolder[std::move( key )] = std::move( ptr );
 		return *this;
 	}
 
-	UIDataBindHolderKV& operator+=( std::pair<std::string, UIDataBindVariant&&> pair ) {
+	UIDataBindHolderKV& operator+=( std::pair<String, UIDataBindVariant&&> pair ) {
 		mHolder[std::move( pair.first )] = std::move( pair.second );
 		return *this;
 	}
@@ -287,7 +287,7 @@ template <typename... Ts> class UIDataBindHolderKV {
 	void clear() { mHolder.clear(); }
 
   protected:
-	UnorderedMap<std::string, UIDataBindVariant> mHolder;
+	HashMap<String, UIDataBindVariant> mHolder;
 };
 
 }} // namespace EE::UI

@@ -4,10 +4,10 @@
 
 namespace EE { namespace UI { namespace Doc {
 
-UnorderedMap<SyntaxStyleType, std::string> SyntaxPattern::SyntaxStyleTypeCache = {};
+HashMap<SyntaxStyleType, String> SyntaxPattern::SyntaxStyleTypeCache = {};
 
 template <typename SyntaxStyleType> void updateCache( const SyntaxPattern& ptrn ) {
-	if constexpr ( std::is_same_v<SyntaxStyleType, std::string> ) {
+	if constexpr ( std::is_same_v<SyntaxStyleType, String> ) {
 		return;
 	} else {
 		for ( size_t i = 0; i < ptrn.typesNames.size(); i++ ) {
@@ -22,12 +22,12 @@ template <typename SyntaxStyleType> void updateCache( const SyntaxPattern& ptrn 
 
 SyntaxDefinition::SyntaxDefinition() {}
 
-SyntaxDefinition::SyntaxDefinition( const std::string& languageName,
-									std::vector<std::string>&& files,
+SyntaxDefinition::SyntaxDefinition( const String& languageName,
+									std::vector<String>&& files,
 									std::vector<SyntaxPattern>&& patterns,
-									UnorderedMap<std::string, std::string>&& symbols,
-									const std::string& comment, std::vector<std::string>&& headers,
-									const std::string& lspName ) :
+									HashMap<String, String>&& symbols,
+									const String& comment, std::vector<String>&& headers,
+									const String& lspName ) :
 	mLanguageName( languageName ),
 	mLanguageId( String::hash( String::toLower( languageName ) ) ),
 	mFiles( std::move( files ) ),
@@ -41,13 +41,13 @@ SyntaxDefinition::SyntaxDefinition( const std::string& languageName,
 		mSymbols.insert( { symbol.first, toSyntaxStyleType( symbol.second ) } );
 }
 
-const std::vector<std::string>& SyntaxDefinition::getFiles() const {
+const std::vector<String>& SyntaxDefinition::getFiles() const {
 	return mFiles;
 }
 
-std::string SyntaxDefinition::getFileExtension() const {
+String SyntaxDefinition::getFileExtension() const {
 	if ( !mFiles.empty() ) {
-		std::string ext( mFiles[0] );
+		String ext( mFiles[0] );
 		String::replaceAll( ext, "%", "" );
 		String::replaceAll( ext, "$", "" );
 		String::replaceAll( ext, "?", "" );
@@ -66,7 +66,7 @@ SyntaxDefinition::getPatternsOfType( const SyntaxStyleType& type ) const {
 	return patterns;
 }
 
-SyntaxDefinition& SyntaxDefinition::setFileTypes( const std::vector<std::string>& types ) {
+SyntaxDefinition& SyntaxDefinition::setFileTypes( const std::vector<String>& types ) {
 	mFiles = types;
 	return *this;
 }
@@ -80,7 +80,7 @@ SyntaxDefinition& SyntaxDefinition::setExtensionPriority( bool hasExtensionPrior
 	return *this;
 }
 
-UnorderedMap<std::string, std::string> SyntaxDefinition::getSymbolNames() const {
+HashMap<String, String> SyntaxDefinition::getSymbolNames() const {
 	return mSymbolNames;
 }
 
@@ -116,22 +116,22 @@ const std::vector<SyntaxPattern>& SyntaxDefinition::getPatterns() const {
 	return mPatterns;
 }
 
-const std::string& SyntaxDefinition::getComment() const {
+const String& SyntaxDefinition::getComment() const {
 	return mComment;
 }
 
-const UnorderedMap<std::string, SyntaxStyleType>& SyntaxDefinition::getSymbols() const {
+const HashMap<String, SyntaxStyleType>& SyntaxDefinition::getSymbols() const {
 	return mSymbols;
 }
 
-SyntaxStyleType SyntaxDefinition::getSymbol( const std::string& symbol ) const {
+SyntaxStyleType SyntaxDefinition::getSymbol( const String& symbol ) const {
 	auto it = mSymbols.find( mCaseInsensitive ? String::toLower( symbol ) : symbol );
 	if ( it != mSymbols.end() )
 		return it->second;
 	return SyntaxStyleEmpty();
 }
 
-SyntaxDefinition& SyntaxDefinition::addFileType( const std::string& fileType ) {
+SyntaxDefinition& SyntaxDefinition::addFileType( const String& fileType ) {
 	mFiles.push_back( fileType );
 	return *this;
 }
@@ -157,36 +157,36 @@ SyntaxDefinition::addPatternsToFront( const std::vector<SyntaxPattern>& patterns
 	return *this;
 }
 
-SyntaxDefinition& SyntaxDefinition::addSymbol( const std::string& symbolName,
-											   const std::string& typeName ) {
+SyntaxDefinition& SyntaxDefinition::addSymbol( const String& symbolName,
+											   const String& typeName ) {
 	mSymbols[symbolName] = toSyntaxStyleType( typeName );
 	mSymbolNames[symbolName] = typeName;
 	return *this;
 }
 
-SyntaxDefinition& SyntaxDefinition::addSymbols( const std::vector<std::string>& symbolNames,
-												const std::string& typeName ) {
+SyntaxDefinition& SyntaxDefinition::addSymbols( const std::vector<String>& symbolNames,
+												const String& typeName ) {
 	for ( auto& symbol : symbolNames )
 		addSymbol( symbol, typeName );
 	return *this;
 }
 
 SyntaxDefinition&
-SyntaxDefinition::setSymbols( const UnorderedMap<std::string, SyntaxStyleType>& symbols ) {
+SyntaxDefinition::setSymbols( const HashMap<String, SyntaxStyleType>& symbols ) {
 	mSymbols = symbols;
 	return *this;
 }
 
-SyntaxDefinition& SyntaxDefinition::setComment( const std::string& comment ) {
+SyntaxDefinition& SyntaxDefinition::setComment( const String& comment ) {
 	mComment = comment;
 	return *this;
 }
 
-const std::vector<std::string>& SyntaxDefinition::getHeaders() const {
+const std::vector<String>& SyntaxDefinition::getHeaders() const {
 	return mHeaders;
 }
 
-SyntaxDefinition& SyntaxDefinition::setHeaders( const std::vector<std::string>& headers ) {
+SyntaxDefinition& SyntaxDefinition::setHeaders( const std::vector<String>& headers ) {
 	mHeaders = headers;
 	return *this;
 }
@@ -199,7 +199,7 @@ void SyntaxDefinition::clearSymbols() {
 	mSymbols.clear();
 }
 
-const std::string& SyntaxDefinition::getLSPName() const {
+const String& SyntaxDefinition::getLSPName() const {
 	return mLSPName;
 }
 
@@ -221,24 +221,24 @@ SyntaxDefinition& SyntaxDefinition::setAutoCloseXMLTags( bool autoCloseXMLTags )
 	return *this;
 }
 
-SyntaxDefinition& SyntaxDefinition::setLanguageName( const std::string& languageName ) {
+SyntaxDefinition& SyntaxDefinition::setLanguageName( const String& languageName ) {
 	mLanguageName = languageName;
 	mLSPName = String::toLower( languageName );
 	mLanguageId = String::hash( mLSPName );
 	return *this;
 }
 
-SyntaxDefinition& SyntaxDefinition::setLSPName( const std::string& lSPName ) {
+SyntaxDefinition& SyntaxDefinition::setLSPName( const String& lSPName ) {
 	mLSPName = lSPName;
 	return *this;
 }
 
-const std::string& SyntaxDefinition::getLanguageName() const {
+const String& SyntaxDefinition::getLanguageName() const {
 	return mLanguageName;
 }
 
-std::string SyntaxDefinition::getLanguageNameForFileSystem() const {
-	std::string lang( mLanguageName );
+String SyntaxDefinition::getLanguageNameForFileSystem() const {
+	String lang( mLanguageName );
 	String::replaceAll( lang, " ", "" );
 	String::replaceAll( lang, ".", "" );
 	String::replaceAll( lang, "!", "" );
@@ -254,18 +254,18 @@ const String::HashType& SyntaxDefinition::getLanguageId() const {
 	return mLanguageId;
 }
 
-SyntaxPattern::SyntaxPattern( std::vector<std::string>&& _patterns, const std::string& _type,
-							  const std::string& _syntax, bool isRegEx ) :
+SyntaxPattern::SyntaxPattern( std::vector<String>&& _patterns, const String& _type,
+							  const String& _syntax, bool isRegEx ) :
 	patterns( std::move( _patterns ) ),
-	types( toSyntaxStyleTypeV( std::vector<std::string>{ _type } ) ),
+	types( toSyntaxStyleTypeV( std::vector<String>{ _type } ) ),
 	typesNames( { _type } ),
 	syntax( _syntax ),
 	isRegEx( isRegEx ) {
 	updateCache<SyntaxStyleType>( *this );
 }
 
-SyntaxPattern::SyntaxPattern( std::vector<std::string>&& _patterns,
-							  std::vector<std::string>&& _types, const std::string& _syntax,
+SyntaxPattern::SyntaxPattern( std::vector<String>&& _patterns,
+							  std::vector<String>&& _types, const String& _syntax,
 							  bool isRegEx ) :
 	patterns( std::move( _patterns ) ),
 	types( toSyntaxStyleTypeV( _types ) ),
@@ -275,18 +275,18 @@ SyntaxPattern::SyntaxPattern( std::vector<std::string>&& _patterns,
 	updateCache<SyntaxStyleType>( *this );
 }
 
-SyntaxPattern::SyntaxPattern( std::vector<std::string>&& _patterns, const std::string& _type,
+SyntaxPattern::SyntaxPattern( std::vector<String>&& _patterns, const String& _type,
 							  DynamicSyntax&& _syntax, bool isRegEx ) :
 	patterns( std::move( _patterns ) ),
-	types( toSyntaxStyleTypeV( std::vector<std::string>{ _type } ) ),
+	types( toSyntaxStyleTypeV( std::vector<String>{ _type } ) ),
 	typesNames( { _type } ),
 	dynSyntax( std::move( _syntax ) ),
 	isRegEx( isRegEx ) {
 	updateCache<SyntaxStyleType>( *this );
 }
 
-SyntaxPattern::SyntaxPattern( std::vector<std::string>&& _patterns,
-							  std::vector<std::string>&& _types, DynamicSyntax&& _syntax,
+SyntaxPattern::SyntaxPattern( std::vector<String>&& _patterns,
+							  std::vector<String>&& _types, DynamicSyntax&& _syntax,
 							  bool isRegEx ) :
 	patterns( std::move( _patterns ) ),
 	types( toSyntaxStyleTypeV( _types ) ),

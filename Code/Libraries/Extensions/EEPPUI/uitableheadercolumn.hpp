@@ -10,9 +10,9 @@ class UIAbstractTableView;
 }
 using namespace Abstract;
 
-class EE_API UITableHeaderColumn : public UIPushButton {
+class ZeroShared UITableHeaderColumn : public UIPushButton {
   public:
-	UITableHeaderColumn( const std::string& parentTag, UIAbstractTableView* view,
+	UITableHeaderColumn( const String& parentTag, UIAbstractTableView* view,
 						 const size_t& colIndex );
 
 	virtual UIWidget* getExtraInnerWidget() const;

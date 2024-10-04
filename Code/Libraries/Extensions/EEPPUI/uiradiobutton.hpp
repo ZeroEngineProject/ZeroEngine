@@ -6,7 +6,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIRadioButton : public UITextView {
+class ZeroShared UIRadioButton : public UITextView {
   public:
 	static UIRadioButton* New();
 
@@ -34,7 +34,7 @@ class EE_API UIRadioButton : public UITextView {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

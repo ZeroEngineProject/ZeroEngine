@@ -6,7 +6,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIDropDownList : public UITextInput {
+class ZeroShared UIDropDownList : public UITextInput {
   public:
 	class StyleConfig {
 	  public:
@@ -14,11 +14,11 @@ class EE_API UIDropDownList : public UITextInput {
 		bool PopUpToRoot = false;
 	};
 
-	static UIDropDownList* NewWithTag( const std::string& tag );
+	static UIDropDownList* NewWithTag( const String& tag );
 
 	static UIDropDownList* New();
 
-	UIDropDownList( const std::string& tag = "dropdownlist" );
+	UIDropDownList( const String& tag = "dropdownlist" );
 
 	virtual ~UIDropDownList();
 
@@ -46,7 +46,7 @@ class EE_API UIDropDownList : public UITextInput {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

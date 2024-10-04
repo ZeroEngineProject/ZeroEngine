@@ -278,7 +278,7 @@ void UISpinBox::onPaddingChange() {
 	UIWidget::onPaddingChange();
 }
 
-std::string UISpinBox::getPropertyString( const PropertyDefinition* propertyDef,
+String UISpinBox::getPropertyString( const PropertyDefinition* propertyDef,
 										  const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";

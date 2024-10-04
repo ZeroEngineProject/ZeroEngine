@@ -5,9 +5,9 @@
 
 namespace EE { namespace UI {
 
-class EE_API UILinearLayout : public UILayout {
+class ZeroShared UILinearLayout : public UILayout {
   public:
-	static UILinearLayout* NewWithTag( const std::string& tag, const UIOrientation& orientation );
+	static UILinearLayout* NewWithTag( const String& tag, const UIOrientation& orientation );
 
 	static UILinearLayout* New();
 
@@ -25,7 +25,7 @@ class EE_API UILinearLayout : public UILayout {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;
@@ -37,7 +37,7 @@ class EE_API UILinearLayout : public UILayout {
 
 	UILinearLayout();
 
-	UILinearLayout( const std::string& tag, const UIOrientation& orientation );
+	UILinearLayout( const String& tag, const UIOrientation& orientation );
 
 	virtual Uint32 onMessage( const NodeMessage* Msg );
 

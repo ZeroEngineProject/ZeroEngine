@@ -6,11 +6,11 @@ UIMultiModelView* UIMultiModelView::New() {
 	return NewWithTag( "multimodelview" );
 }
 
-UIMultiModelView* UIMultiModelView::NewWithTag( const std::string& tag ) {
+UIMultiModelView* UIMultiModelView::NewWithTag( const String& tag ) {
 	return eeNew( UIMultiModelView, ( tag ) );
 }
 
-UIMultiModelView::UIMultiModelView( const std::string& tag ) : UIStackWidget( tag ) {
+UIMultiModelView::UIMultiModelView( const String& tag ) : UIStackWidget( tag ) {
 	auto modelEvent = [this]( const Event* event ) {
 		const ModelEvent* mevent = static_cast<const ModelEvent*>( event );
 		sendEvent( mevent );

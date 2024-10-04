@@ -9,13 +9,13 @@ class UIWidget;
 
 namespace EE { namespace UI { namespace CSS {
 
-class EE_API StyleSheetSelector {
+class ZeroShared StyleSheetSelector {
   public:
 	StyleSheetSelector();
 
-	explicit StyleSheetSelector( const std::string& selectorName );
+	explicit StyleSheetSelector( const String& selectorName );
 
-	const std::string& getName() const;
+	const String& getName() const;
 
 	const Uint32& getSpecificity() const;
 
@@ -31,22 +31,22 @@ class EE_API StyleSheetSelector {
 
 	const StyleSheetSelectorRule& getRule( const Uint32& index );
 
-	const std::string& getSelectorId() const;
+	const String& getSelectorId() const;
 
-	const std::string& getSelectorTagName() const;
+	const String& getSelectorTagName() const;
 
   protected:
-	std::string mName;
+	String mName;
 	Uint32 mSpecificity;
 	std::vector<StyleSheetSelectorRule> mSelectorRules;
 	bool mCacheable;
 	bool mStructurallyVolatile;
 
-	void addSelectorRule( std::string& buffer,
+	void addSelectorRule( String& buffer,
 						  StyleSheetSelectorRule::PatternMatch& curPatternMatch,
 						  const StyleSheetSelectorRule::PatternMatch& newPatternMatch );
 
-	void parseSelector( std::string selector );
+	void parseSelector( String selector );
 };
 
 }}} // namespace EE::UI::CSS

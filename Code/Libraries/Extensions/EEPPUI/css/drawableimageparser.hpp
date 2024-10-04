@@ -24,19 +24,19 @@ typedef std::function<Drawable*( const FunctionString& functionType, const Sizef
 								 UINode* node )>
 	DrawableImageParserFunc;
 
-class EE_API DrawableImageParser {
+class ZeroShared DrawableImageParser {
   public:
 	DrawableImageParser();
 
-	bool exists( const std::string& name ) const;
+	bool exists( const String& name ) const;
 
-	Drawable* createDrawable( const std::string& value, const Sizef& size, bool& ownIt,
+	Drawable* createDrawable( const String& value, const Sizef& size, bool& ownIt,
 							  UINode* node );
 
-	void addParser( const std::string& name, const DrawableImageParserFunc& func );
+	void addParser( const String& name, const DrawableImageParserFunc& func );
 
   protected:
-	std::map<std::string, DrawableImageParserFunc> mFuncs;
+	std::map<String, DrawableImageParserFunc> mFuncs;
 
 	void registerBaseParsers();
 };

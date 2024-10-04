@@ -4,7 +4,7 @@
 
 namespace EE { namespace UI {
 
-UILinearLayout* UILinearLayout::NewWithTag( const std::string& tag,
+UILinearLayout* UILinearLayout::NewWithTag( const String& tag,
 											const UIOrientation& orientation ) {
 	return eeNew( UILinearLayout, ( tag, orientation ) );
 }
@@ -27,7 +27,7 @@ UILinearLayout::UILinearLayout() :
 	setClipType( ClipType::ContentBox );
 }
 
-UILinearLayout::UILinearLayout( const std::string& tag, const UIOrientation& orientation ) :
+UILinearLayout::UILinearLayout( const String& tag, const UIOrientation& orientation ) :
 	UILayout( tag ), mOrientation( orientation ) {
 	mFlags |= UI_OWNS_CHILDS_POSITION;
 	setClipType( ClipType::ContentBox );
@@ -452,7 +452,7 @@ Sizei UILinearLayout::getTotalUsedSize() {
 	return size;
 }
 
-std::string UILinearLayout::getPropertyString( const PropertyDefinition* propertyDef,
+String UILinearLayout::getPropertyString( const PropertyDefinition* propertyDef,
 											   const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -480,7 +480,7 @@ bool UILinearLayout::applyProperty( const StyleSheetProperty& attribute ) {
 
 	switch ( attribute.getPropertyDefinition()->getPropertyId() ) {
 		case PropertyId::Orientation: {
-			std::string val = attribute.asString();
+			String val = attribute.asString();
 			String::toLowerInPlace( val );
 
 			if ( "horizontal" == val )

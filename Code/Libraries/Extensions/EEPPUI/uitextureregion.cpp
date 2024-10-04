@@ -202,7 +202,7 @@ const Vector2f& UITextureRegion::getAlignOffset() const {
 	return mAlignOffset;
 }
 
-std::string UITextureRegion::getPropertyString( const PropertyDefinition* propertyDef,
+String UITextureRegion::getPropertyString( const PropertyDefinition* propertyDef,
 												const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -236,7 +236,7 @@ bool UITextureRegion::applyProperty( const StyleSheetProperty& attribute ) {
 	switch ( attribute.getPropertyDefinition()->getPropertyId() ) {
 		case PropertyId::Src: {
 			Drawable* res = NULL;
-			std::string name( attribute.asString() );
+			String name( attribute.asString() );
 
 			if ( String::startsWith( name, "@textureregion/" ) ) {
 				name = name.substr( 12 );
@@ -250,7 +250,7 @@ bool UITextureRegion::applyProperty( const StyleSheetProperty& attribute ) {
 			break;
 		}
 		case PropertyId::ScaleType: {
-			std::string val = attribute.asString();
+			String val = attribute.asString();
 			String::toLowerInPlace( val );
 
 			if ( "expand" == val ) {

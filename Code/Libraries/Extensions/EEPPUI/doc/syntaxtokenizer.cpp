@@ -34,7 +34,7 @@ static int isInMultiByteCodePoint( const char* text, const size_t& textSize, con
 
 template <typename T>
 static void pushToken( std::vector<T>& tokens, const SyntaxStyleType& type,
-					   const std::string_view& text ) {
+					   const String_view& text ) {
 	if ( !tokens.empty() && ( tokens[tokens.size() - 1].type == type ) ) {
 		size_t tpos = tokens.size() - 1;
 		tokens[tpos].type = type;
@@ -53,10 +53,10 @@ static void pushToken( std::vector<T>& tokens, const SyntaxStyleType& type,
 																	   pos + chunkSize ) ) > 0 ) {
 					chunkSize = eemin( textSize, chunkSize + multiByteCodePointPos );
 				}
-				std::string_view substr = text.substr( pos, chunkSize );
+				String_view substr = text.substr( pos, chunkSize );
 				SyntaxStyleType len = String::utf8Length( substr );
 				if constexpr ( std::is_same_v<T, SyntaxTokenComplete> ) {
-					tokens.push_back( { type, std::string{ substr }, len } );
+					tokens.push_back( { type, String{ substr }, len } );
 				} else if constexpr ( std::is_same_v<T, SyntaxTokenPosition> ) {
 					SyntaxStyleType tpos = tokens.empty() ? 0
 														  : tokens[tokens.size() - 1].pos +
@@ -70,7 +70,7 @@ static void pushToken( std::vector<T>& tokens, const SyntaxStyleType& type,
 			}
 		} else {
 			if constexpr ( std::is_same_v<T, SyntaxTokenComplete> ) {
-				tokens.push_back( { type, std::string{ text },
+				tokens.push_back( { type, String{ text },
 									static_cast<SyntaxTokenLen>( String::utf8Length( text ) ) } );
 			} else if constexpr ( std::is_same_v<T, SyntaxTokenPosition> ) {
 				SyntaxStyleType tpos =
@@ -86,8 +86,8 @@ static void pushToken( std::vector<T>& tokens, const SyntaxStyleType& type,
 	}
 }
 
-static bool isScaped( const std::string& text, const size_t& startIndex,
-					  const std::string& escapeStr ) {
+static bool isScaped( const String& text, const size_t& startIndex,
+					  const String& escapeStr ) {
 	char escapeByte = escapeStr.empty() ? '\\' : escapeStr[0];
 	int count = 0;
 	for ( int i = startIndex - 1; i >= 0; i-- ) {
@@ -98,8 +98,8 @@ static bool isScaped( const std::string& text, const size_t& startIndex,
 	return count % 2 == 1;
 }
 
-static std::pair<int, int> findNonEscaped( const std::string& text, const std::string& pattern,
-										   int offset, const std::string& escapeStr,
+static std::pair<int, int> findNonEscaped( const String& text, const String& pattern,
+										   int offset, const String& escapeStr,
 										   bool isRegEx ) {
 	eeASSERT( !pattern.empty() );
 	if ( pattern.empty() )
@@ -161,7 +161,7 @@ static inline void setSubsyntaxPatternIdx( SyntaxStateRestored& curState, Syntax
 
 static inline void pushSubsyntax( SyntaxStateRestored& curState, SyntaxState& retState,
 								  const SyntaxPattern& enteringSubsyntax,
-								  const Uint32& patternIndex, const std::string& patternStr ) {
+								  const Uint32& patternIndex, const String& patternStr ) {
 	if ( curState.currentLevel == MAX_SUB_SYNTAXS - 1 )
 		return;
 	setSubsyntaxPatternIdx( curState, retState, patternIndex );
@@ -186,7 +186,7 @@ static inline void popSubsyntax( SyntaxStateRestored& curState, SyntaxState& ret
 
 template <typename T>
 static inline std::pair<std::vector<T>, SyntaxState>
-_tokenize( const SyntaxDefinition& syntax, const std::string& text, const SyntaxState& state,
+_tokenize( const SyntaxDefinition& syntax, const String& text, const SyntaxState& state,
 		   const size_t& startIndex, bool skipSubSyntaxSeparator ) {
 	std::vector<T> tokens;
 
@@ -203,8 +203,8 @@ _tokenize( const SyntaxDefinition& syntax, const std::string& text, const Syntax
 	SyntaxStateRestored curState = SyntaxTokenizer::retrieveSyntaxState( syntax, state );
 
 	size_t size = text.size();
-	std::string patternStr;
-	std::string patternText;
+	String patternStr;
+	String patternText;
 
 	while ( i < size ) {
 		if ( curState.currentPatternIdx != SYNTAX_TOKENIZER_STATE_NONE ) {
@@ -291,7 +291,7 @@ _tokenize( const SyntaxDefinition& syntax, const std::string& text, const Syntax
 				if ( numMatches > 1 ) {
 					int patternMatchStart = matches[0].start;
 					int patternMatchEnd = matches[0].end;
-					std::string patternFullText(
+					String patternFullText(
 						text.substr( patternMatchStart, patternMatchEnd - patternMatchStart ) );
 					auto patternType = pattern.types[0];
 					int lastStart = patternMatchStart;
@@ -412,14 +412,14 @@ _tokenize( const SyntaxDefinition& syntax, const std::string& text, const Syntax
 }
 
 std::pair<std::vector<SyntaxToken>, SyntaxState>
-SyntaxTokenizer::tokenize( const SyntaxDefinition& syntax, const std::string& text,
+SyntaxTokenizer::tokenize( const SyntaxDefinition& syntax, const String& text,
 						   const SyntaxState& state, const size_t& startIndex,
 						   bool skipSubSyntaxSeparator ) {
 	return _tokenize<SyntaxToken>( syntax, text, state, startIndex, skipSubSyntaxSeparator );
 }
 
 std::pair<std::vector<SyntaxTokenPosition>, SyntaxState>
-SyntaxTokenizer::tokenizePosition( const SyntaxDefinition& syntax, const std::string& text,
+SyntaxTokenizer::tokenizePosition( const SyntaxDefinition& syntax, const String& text,
 								   const SyntaxState& state, const size_t& startIndex,
 								   bool skipSubSyntaxSeparator ) {
 	return _tokenize<SyntaxTokenPosition>( syntax, text, state, startIndex,
@@ -427,7 +427,7 @@ SyntaxTokenizer::tokenizePosition( const SyntaxDefinition& syntax, const std::st
 }
 
 std::pair<std::vector<SyntaxTokenComplete>, SyntaxState>
-SyntaxTokenizer::tokenizeComplete( const SyntaxDefinition& syntax, const std::string& text,
+SyntaxTokenizer::tokenizeComplete( const SyntaxDefinition& syntax, const String& text,
 								   const SyntaxState& state, const size_t& startIndex,
 								   bool skipSubSyntaxSeparator ) {
 	return _tokenize<SyntaxTokenComplete>( syntax, text, state, startIndex,
@@ -437,7 +437,7 @@ SyntaxTokenizer::tokenizeComplete( const SyntaxDefinition& syntax, const std::st
 Text& SyntaxTokenizer::tokenizeText( const SyntaxDefinition& syntax,
 									 const SyntaxColorScheme& colorScheme, Text& text,
 									 const size_t& startIndex, const size_t& endIndex,
-									 bool skipSubSyntaxSeparator, const std::string& trimChars ) {
+									 bool skipSubSyntaxSeparator, const String& trimChars ) {
 
 	auto tokens = SyntaxTokenizer::tokenizeComplete( syntax, text.getString(), SyntaxState{},
 													 startIndex, skipSubSyntaxSeparator )
@@ -449,7 +449,7 @@ Text& SyntaxTokenizer::tokenizeText( const SyntaxDefinition& syntax,
 		for ( auto& token : tokens ) {
 			if ( c == 0 ) {
 				auto f = token.text.find_first_not_of( trimChars );
-				if ( f == std::string::npos ) {
+				if ( f == String::npos ) {
 					token.text.clear();
 					token.len = 0;
 				} else if ( f > 0 ) {
@@ -458,7 +458,7 @@ Text& SyntaxTokenizer::tokenizeText( const SyntaxDefinition& syntax,
 				}
 			} else if ( c == tokens.size() - 1 ) {
 				auto f = token.text.find_last_not_of( trimChars );
-				if ( f == std::string::npos ) {
+				if ( f == String::npos ) {
 					token.text.clear();
 					token.len = 0;
 				} else if ( f >= 0 && f + 1 <= token.text.size() ) {

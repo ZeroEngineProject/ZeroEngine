@@ -20,49 +20,49 @@ namespace EE { namespace UI {
 class UIIcon;
 class UIIconTheme;
 
-class EE_API UITheme : protected ResourceManagerMulti<UISkin> {
+class ZeroShared UITheme : protected ResourceManagerMulti<UISkin> {
   public:
 	using ResourceManagerMulti<UISkin>::getById;
 	using ResourceManagerMulti<UISkin>::getByName;
 	using ResourceManagerMulti<UISkin>::exists;
 	using ResourceManagerMulti<UISkin>::existsId;
 
-	static UITheme* New( const std::string& name, const std::string& abbr,
+	static UITheme* New( const String& name, const String& abbr,
 						 Graphics::Font* defaultFont = NULL );
 
-	static UITheme* load( const std::string& name, const std::string& abbr,
-						  const std::string& textureAtlasPath, Graphics::Font* defaultFont,
-						  const std::string& styleSheetPath );
+	static UITheme* load( const String& name, const String& abbr,
+						  const String& textureAtlasPath, Graphics::Font* defaultFont,
+						  const String& styleSheetPath );
 
 	static UITheme* loadFromTextureAtlas( UITheme* tTheme,
 										  Graphics::TextureAtlas* getTextureAtlas );
 
 	static UITheme* loadFromTextureAtlas( Graphics::TextureAtlas* getTextureAtlas,
-										  const std::string& Name, const std::string& NameAbbr );
+										  const String& Name, const String& NameAbbr );
 
-	static UITheme* loadFromDirectroy( UITheme* tTheme, const std::string& Path,
+	static UITheme* loadFromDirectroy( UITheme* tTheme, const String& Path,
 									   const Float& pixelDensity = 1 );
 
-	static UITheme* loadFromDirectroy( const std::string& Path, const std::string& Name,
-									   const std::string& NameAbbr, const Float& pixelDensity = 1 );
+	static UITheme* loadFromDirectroy( const String& Path, const String& Name,
+									   const String& NameAbbr, const Float& pixelDensity = 1 );
 
 	virtual ~UITheme();
 
-	const std::string& getName() const;
+	const String& getName() const;
 
-	void setName( const std::string& name );
+	void setName( const String& name );
 
 	const String::HashType& getId() const;
 
-	const std::string& getAbbr() const;
+	const String& getAbbr() const;
 
 	virtual UISkin* add( UISkin* Resource );
 
 	Graphics::TextureAtlas* getTextureAtlas() const;
 
-	UIIcon* getIconByName( const std::string& name );
+	UIIcon* getIconByName( const String& name );
 
-	UISkin* getSkin( const std::string& widgetName );
+	UISkin* getSkin( const String& widgetName );
 
 	Font* getDefaultFont() const;
 
@@ -80,26 +80,26 @@ class EE_API UITheme : protected ResourceManagerMulti<UISkin> {
 
 	UIIconTheme* getIconTheme() const;
 
-	const std::string& getStyleSheetPath() const;
+	const String& getStyleSheetPath() const;
 
-	void setStyleSheetPath( const std::string& styleSheetPath );
+	void setStyleSheetPath( const String& styleSheetPath );
 
 	bool reloadStyleSheet();
 
   protected:
-	std::string mName;
+	String mName;
 	String::HashType mNameHash;
-	std::string mAbbr;
+	String mAbbr;
 	Graphics::TextureAtlas* mTextureAtlas;
 	Font* mDefaultFont;
 	Float mDefaultFontSize;
 	CSS::StyleSheet mStyleSheet;
-	std::string mStyleSheetPath;
+	String mStyleSheetPath;
 	UIIconTheme* mIconTheme;
 
 	void setTextureAtlas( Graphics::TextureAtlas* SG );
 
-	UITheme( const std::string& name, const std::string& abbr, Graphics::Font* defaultFont = NULL );
+	UITheme( const String& name, const String& abbr, Graphics::Font* defaultFont = NULL );
 };
 
 }} // namespace EE::UI

@@ -5,11 +5,11 @@
 
 namespace EE { namespace UI { namespace CSS {
 
-class EE_API StyleSheetSelectorParser {
+class ZeroShared StyleSheetSelectorParser {
   public:
 	StyleSheetSelectorParser();
 
-	explicit StyleSheetSelectorParser( std::string name );
+	explicit StyleSheetSelectorParser( String name );
 
 	std::vector<StyleSheetSelector> selectors;
 };

@@ -13,7 +13,7 @@ namespace EE { namespace UI { namespace Doc {
 using SyntaxStyleType = String::HashType;
 
 constexpr auto operator""_sst( const char* s, std::size_t ) noexcept {
-	if constexpr ( std::is_same_v<SyntaxStyleType, std::string> )
+	if constexpr ( std::is_same_v<SyntaxStyleType, String> )
 		return s;
 	else if constexpr ( std::is_same_v<SyntaxStyleType, String::HashType> )
 		return String::hash( s );
@@ -64,7 +64,7 @@ class SyntaxStyleTypes {
 	static constexpr auto MinimapVisibleArea = "minimap_visible_area"_sst;
 
 	template <typename Type> static bool needsToBeCached( const Type& style ) {
-		if constexpr ( std::is_same_v<Type, std::string> ) {
+		if constexpr ( std::is_same_v<Type, String> ) {
 			return false;
 		} else if constexpr ( std::is_same_v<Type, String::HashType> ) {
 			switch ( style ) {
@@ -115,8 +115,8 @@ class SyntaxStyleTypes {
 		return true;
 	}
 
-	template <typename Type> static std::string toString( const Type& style ) {
-		if constexpr ( std::is_same_v<Type, std::string> ) {
+	template <typename Type> static String toString( const Type& style ) {
+		if constexpr ( std::is_same_v<Type, String> ) {
 			return style;
 		} else if constexpr ( std::is_same_v<Type, String::HashType> ) {
 			switch ( style ) {
@@ -207,7 +207,7 @@ class SyntaxStyleTypes {
 };
 
 template <typename Type> constexpr auto SyntaxStyleTypeHash( const Type& type ) noexcept {
-	if constexpr ( std::is_same_v<Type, std::string> )
+	if constexpr ( std::is_same_v<Type, String> )
 		return String::hash( type );
 	else if constexpr ( std::is_same_v<Type, Uint32> )
 		return type;
@@ -216,12 +216,12 @@ template <typename Type> constexpr auto SyntaxStyleTypeHash( const Type& type ) 
 }
 
 template <typename T> static auto toSyntaxStyleType( const T& s ) noexcept {
-	if constexpr ( std::is_same_v<SyntaxStyleType, std::string> && std::is_same_v<T, std::string> )
+	if constexpr ( std::is_same_v<SyntaxStyleType, String> && std::is_same_v<T, String> )
 		return s;
 	else if constexpr ( std::is_same_v<SyntaxStyleType, String::HashType> &&
-						std::is_same_v<T, std::string> )
+						std::is_same_v<T, String> )
 		return String::hash( s );
-	else if constexpr ( std::is_same_v<SyntaxStyleType, std::string> &&
+	else if constexpr ( std::is_same_v<SyntaxStyleType, String> &&
 						std::is_same_v<T, String::HashType> )
 		return String::toString( s );
 	else
@@ -229,7 +229,7 @@ template <typename T> static auto toSyntaxStyleType( const T& s ) noexcept {
 }
 
 constexpr auto SyntaxStyleEmpty() {
-	if constexpr ( std::is_same_v<SyntaxStyleType, std::string> )
+	if constexpr ( std::is_same_v<SyntaxStyleType, String> )
 		return "";
 	else if constexpr ( std::is_same_v<SyntaxStyleType, String::HashType> )
 		return 0;
@@ -252,18 +252,18 @@ constexpr auto SyntaxStyleEmpty() {
  *
  * Following the lite editor syntax colors (https://github.com/rxi/lite).
  */
-class EE_API SyntaxColorScheme {
+class ZeroShared SyntaxColorScheme {
   public:
 	static SyntaxColorScheme getDefault();
 
 	static std::vector<SyntaxColorScheme> loadFromStream( IOStream& stream );
 
-	static std::vector<SyntaxColorScheme> loadFromFile( const std::string& path );
+	static std::vector<SyntaxColorScheme> loadFromFile( const String& path );
 
 	static std::vector<SyntaxColorScheme> loadFromMemory( const void* data,
 														  std::size_t sizeInBytes );
 
-	static std::vector<SyntaxColorScheme> loadFromPack( Pack* pack, std::string filePackPath );
+	static std::vector<SyntaxColorScheme> loadFromPack( Pack* pack, String filePackPath );
 
 	struct Style {
 		Style(){};
@@ -279,15 +279,15 @@ class EE_API SyntaxColorScheme {
 
 	SyntaxColorScheme();
 
-	SyntaxColorScheme( const std::string& name,
-					   const UnorderedMap<SyntaxStyleType, Style>& syntaxColors,
-					   const UnorderedMap<SyntaxStyleType, Style>& editorColors );
+	SyntaxColorScheme( const String& name,
+					   const HashMap<SyntaxStyleType, Style>& syntaxColors,
+					   const HashMap<SyntaxStyleType, Style>& editorColors );
 
 	const Style& getSyntaxStyle( const SyntaxStyleType& type ) const;
 
 	bool hasSyntaxStyle( const SyntaxStyleType& type ) const;
 
-	void setSyntaxStyles( const UnorderedMap<SyntaxStyleType, Style>& styles );
+	void setSyntaxStyles( const HashMap<SyntaxStyleType, Style>& styles );
 
 	void setSyntaxStyle( const SyntaxStyleType& type, const Style& style );
 
@@ -295,19 +295,19 @@ class EE_API SyntaxColorScheme {
 
 	const Color& getEditorColor( const SyntaxStyleType& type ) const;
 
-	void setEditorSyntaxStyles( const UnorderedMap<SyntaxStyleType, Style>& styles );
+	void setEditorSyntaxStyles( const HashMap<SyntaxStyleType, Style>& styles );
 
 	void setEditorSyntaxStyle( const SyntaxStyleType& type, const Style& style );
 
-	const std::string& getName() const;
+	const String& getName() const;
 
-	void setName( const std::string& name );
+	void setName( const String& name );
 
   protected:
-	std::string mName;
-	UnorderedMap<SyntaxStyleType, Style> mSyntaxColors;
-	UnorderedMap<SyntaxStyleType, Style> mEditorColors;
-	mutable UnorderedMap<SyntaxStyleType, Style> mStyleCache;
+	String mName;
+	HashMap<SyntaxStyleType, Style> mSyntaxColors;
+	HashMap<SyntaxStyleType, Style> mEditorColors;
+	mutable HashMap<SyntaxStyleType, Style> mStyleCache;
 
 	template <typename SyntaxStyleType>
 	const SyntaxColorScheme::Style& getSyntaxStyleFromCache( const SyntaxStyleType& type ) const;

@@ -8,7 +8,7 @@ namespace EE { namespace UI {
 
 class UINode;
 
-class EE_API UIThemeManager : public ResourceManager<UITheme> {
+class ZeroShared UIThemeManager : public ResourceManager<UITheme> {
   public:
 	static UIThemeManager* New();
 
@@ -24,7 +24,7 @@ class EE_API UIThemeManager : public ResourceManager<UITheme> {
 
 	UIThemeManager* setDefaultTheme( UITheme* Theme );
 
-	UIThemeManager* setDefaultTheme( const std::string& Theme );
+	UIThemeManager* setDefaultTheme( const String& Theme );
 
 	UITheme* getDefaultTheme() const;
 

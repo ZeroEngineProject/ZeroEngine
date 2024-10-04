@@ -12,14 +12,14 @@ using namespace EE::System;
 
 namespace EE { namespace UI { namespace CSS {
 
-class EE_API TransitionDefinition {
+class ZeroShared TransitionDefinition {
   public:
-	static UnorderedMap<std::string, TransitionDefinition>
+	static HashMap<String, TransitionDefinition>
 	parseTransitionProperties( const std::vector<const StyleSheetProperty*>& styleSheetProperties );
 
 	TransitionDefinition() : timingFunction( Ease::Linear ) {}
 
-	const std::string& getProperty() const { return property; }
+	const String& getProperty() const { return property; }
 
 	Ease::Interpolation getTimingFunction() const { return timingFunction; }
 
@@ -29,14 +29,14 @@ class EE_API TransitionDefinition {
 
 	const Time& getDuration() const { return duration; }
 
-	std::string property;
+	String property;
 	Ease::Interpolation timingFunction = Ease::Interpolation::Linear;
 	std::vector<double> timingFunctionParameters{};
 	Time delay = Time::Zero;
 	Time duration = Time::Zero;
 };
 
-typedef UnorderedMap<std::string, TransitionDefinition> TransitionsMap;
+typedef HashMap<String, TransitionDefinition> TransitionsMap;
 
 }}} // namespace EE::UI::CSS
 

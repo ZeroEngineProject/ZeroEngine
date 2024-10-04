@@ -5,13 +5,13 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIStackLayout : public UILayout {
+class ZeroShared UIStackLayout : public UILayout {
   public:
 	enum class RowValign { Top, Center, Bottom };
 
 	static UIStackLayout* New();
 
-	static UIStackLayout* NewWithTag( const std::string& tag = "stacklayout" );
+	static UIStackLayout* NewWithTag( const String& tag = "stacklayout" );
 
 	virtual ~UIStackLayout();
 
@@ -21,7 +21,7 @@ class EE_API UIStackLayout : public UILayout {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;
@@ -41,15 +41,15 @@ class EE_API UIStackLayout : public UILayout {
 	UIStackLayout();
 
 
-	explicit UIStackLayout( const std::string& tag );
+	explicit UIStackLayout( const String& tag );
 
 	virtual Uint32 onMessage( const NodeMessage* Msg );
 
 	void applySizePolicyOnChilds();
 
-	void setRowValign( const std::string& rowValign );
+	void setRowValign( const String& rowValign );
 
-	static std::string rowValignToStr( const RowValign& rowValign );
+	static String rowValignToStr( const RowValign& rowValign );
 
 	virtual void onParentChange();
 

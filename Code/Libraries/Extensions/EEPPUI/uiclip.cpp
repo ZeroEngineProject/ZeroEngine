@@ -3,7 +3,7 @@
 
 namespace EE { namespace UI {
 
-ClipType UIClip::fromString( std::string str ) {
+ClipType UIClip::fromString( String str ) {
 	String::toLowerInPlace( str );
 	if ( str == "content-box" || str == "true" || str == "1" || str == "t" || str == "y" )
 		return ClipType::ContentBox;
@@ -14,7 +14,7 @@ ClipType UIClip::fromString( std::string str ) {
 	return ClipType::None;
 }
 
-std::string UIClip::toString( const ClipType& clipType ) {
+String UIClip::toString( const ClipType& clipType ) {
 	switch ( clipType ) {
 		case ClipType::ContentBox:
 			return "content-box";

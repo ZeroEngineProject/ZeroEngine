@@ -13,7 +13,7 @@ UITableView* UITableView::New() {
 	return eeNew( UITableView, () );
 }
 
-UITableView::UITableView( const std::string& tag ) : UIAbstractTableView( tag ) {
+UITableView::UITableView( const String& tag ) : UIAbstractTableView( tag ) {
 	setClipType( ClipType::ContentBox );
 }
 
@@ -380,7 +380,7 @@ Uint32 UITableView::onKeyDown( const KeyEvent& event ) {
 	return UIAbstractTableView::onKeyDown( event );
 }
 
-ModelIndex UITableView::findRowWithText( const std::string& text, const bool& caseSensitive,
+ModelIndex UITableView::findRowWithText( const String& text, const bool& caseSensitive,
 										 const bool& exactMatch ) const {
 	const Model* model = getModel();
 	ConditionalLock l( getModel() != nullptr,

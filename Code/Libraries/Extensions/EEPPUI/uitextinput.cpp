@@ -22,11 +22,11 @@ UITextInput* UITextInput::New() {
 	return eeNew( UITextInput, () );
 }
 
-UITextInput* UITextInput::NewWithTag( const std::string& tag ) {
+UITextInput* UITextInput::NewWithTag( const String& tag ) {
 	return eeNew( UITextInput, ( tag ) );
 }
 
-UITextInput::UITextInput( const std::string& tag ) :
+UITextInput::UITextInput( const String& tag ) :
 	UITextView( tag ),
 	mCursorPos( 0 ),
 	mAllowEditing( true ),
@@ -431,7 +431,7 @@ const Uint32& UITextInput::getMaxLength() const {
 	return mMaxLength;
 }
 
-std::string UITextInput::getPropertyString( const PropertyDefinition* propertyDef,
+String UITextInput::getPropertyString( const PropertyDefinition* propertyDef,
 											const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -765,7 +765,7 @@ Uint32 UITextInput::onKeyDown( const KeyEvent& event ) {
 	if ( getUISceneNode()->getWindow()->getIME().isEditing() )
 		return 0;
 
-	std::string cmd = mKeyBindings.getCommandFromKeyBind( { event.getKeyCode(), event.getMod() } );
+	String cmd = mKeyBindings.getCommandFromKeyBind( { event.getKeyCode(), event.getMod() } );
 	if ( !cmd.empty() ) {
 		// Allow copy selection on locked mode
 		if ( mAllowEditing ) {
@@ -863,7 +863,7 @@ void UITextInput::setEscapePastedText( bool escapePastedText ) {
 	mEscapePastedText = escapePastedText;
 }
 
-Drawable* UITextInput::findIcon( const std::string& name ) {
+Drawable* UITextInput::findIcon( const String& name ) {
 	UIIcon* icon = getUISceneNode()->findIcon( name );
 	if ( icon )
 		return icon->getSize( mMenuIconSize );
@@ -871,7 +871,7 @@ Drawable* UITextInput::findIcon( const std::string& name ) {
 }
 
 UIMenuItem* UITextInput::menuAdd( UIPopUpMenu* menu, const String& translateString,
-								  const std::string& icon, const std::string& cmd ) {
+								  const String& icon, const String& cmd ) {
 	UIMenuItem* menuItem =
 		menu->add( translateString, findIcon( icon ), mKeyBindings.getCommandKeybindString( cmd ) );
 	menuItem->setId( cmd );
@@ -919,7 +919,7 @@ bool UITextInput::onCreateContextMenu( const Vector2i& position, const Uint32& f
 		if ( !event->getNode()->isType( UI_TYPE_MENUITEM ) )
 			return;
 		UIMenuItem* item = event->getNode()->asType<UIMenuItem>();
-		std::string txt( item->getId() );
+		String txt( item->getId() );
 		mDoc.execute( txt );
 	} );
 

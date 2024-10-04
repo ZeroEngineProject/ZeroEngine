@@ -9,25 +9,25 @@ using namespace EE::Graphics;
 
 namespace EE { namespace UI {
 
-class EE_API UIIconTheme {
+class ZeroShared UIIconTheme {
   public:
-	static UIIconTheme* New( const std::string& name );
+	static UIIconTheme* New( const String& name );
 
 	~UIIconTheme();
 
 	UIIconTheme* add( UIIcon* icon );
 
-	UIIconTheme* add( const std::unordered_map<std::string, UIIcon*>& icons );
+	UIIconTheme* add( const std::unordered_map<String, UIIcon*>& icons );
 
-	const std::string& getName() const;
+	const String& getName() const;
 
-	UIIcon* getIcon( const std::string& name ) const;
+	UIIcon* getIcon( const String& name ) const;
 
   protected:
-	std::string mName;
-	std::unordered_map<std::string, UIIcon*> mIcons;
+	String mName;
+	std::unordered_map<String, UIIcon*> mIcons;
 
-	UIIconTheme( const std::string& name );
+	UIIconTheme( const String& name );
 };
 
 }} // namespace EE::UI

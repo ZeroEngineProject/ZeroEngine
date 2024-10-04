@@ -127,7 +127,7 @@ void SortingProxyModel::setSortRrole( ModelRole role ) {
 	mSortRole = role;
 }
 
-std::string SortingProxyModel::columnName( const size_t& column ) const {
+String SortingProxyModel::columnName( const size_t& column ) const {
 	return source().columnName( column );
 }
 
@@ -223,8 +223,8 @@ bool SortingProxyModel::lessThan( const ModelIndex& index1, const ModelIndex& in
 		if ( data1.is( Variant::Type::String ) && data2.is( Variant::Type::String ) )
 			return String::toLower( data1.asString() ) < String::toLower( data2.asString() );
 		if ( data1.is( Variant::Type::cstr ) && data2.is( Variant::Type::cstr ) )
-			return String::toLower( std::string( data1.asCStr() ) ) <
-				   String::toLower( std::string( data2.asCStr() ) );
+			return String::toLower( String( data1.asCStr() ) ) <
+				   String::toLower( String( data2.asCStr() ) );
 	}
 	return data1 < data2;
 }

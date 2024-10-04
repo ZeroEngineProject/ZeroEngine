@@ -9,7 +9,7 @@ namespace EE { namespace UI {
 
 class UINode;
 
-class EE_API UIBorderDrawable : public Drawable {
+class ZeroShared UIBorderDrawable : public Drawable {
   public:
 	static UIBorderDrawable* New( const UINode* owner );
 
@@ -61,21 +61,21 @@ class EE_API UIBorderDrawable : public Drawable {
 
 	void invalidate();
 
-	void setLeftWidth( const std::string& leftWidth );
+	void setLeftWidth( const String& leftWidth );
 
-	void setRightWidth( const std::string& rightWidth );
+	void setRightWidth( const String& rightWidth );
 
-	void setTopWidth( const std::string& topWidth );
+	void setTopWidth( const String& topWidth );
 
-	void setBottomWidth( const std::string& bottomWidth );
+	void setBottomWidth( const String& bottomWidth );
 
-	void setTopLeftRadius( const std::string& radius );
+	void setTopLeftRadius( const String& radius );
 
-	void setTopRightRadius( const std::string& radius );
+	void setTopRightRadius( const String& radius );
 
-	void setBottomLeftRadius( const std::string& radius );
+	void setBottomLeftRadius( const String& radius );
 
-	void setBottomRightRadius( const std::string& radius );
+	void setBottomRightRadius( const String& radius );
 
 	const Borders& getBorders() const;
 

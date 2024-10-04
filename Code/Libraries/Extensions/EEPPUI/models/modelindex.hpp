@@ -10,7 +10,7 @@ namespace EE { namespace UI { namespace Models {
 
 class Model;
 
-class EE_API ModelIndex {
+class ZeroShared ModelIndex {
   public:
 	ModelIndex() {}
 
@@ -49,7 +49,7 @@ class EE_API ModelIndex {
 
 	ModelIndex siblingAtColumn( int column ) const;
 
-	std::string toString() const;
+	String toString() const;
 
   protected:
 	friend class Model;

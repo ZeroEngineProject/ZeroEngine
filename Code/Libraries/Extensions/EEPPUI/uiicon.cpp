@@ -4,15 +4,15 @@
 
 namespace EE { namespace UI {
 
-UIIcon* UIIcon::New( const std::string& name ) {
+UIIcon* UIIcon::New( const String& name ) {
 	return eeNew( UIIcon, ( name ) );
 }
 
-UIIcon::UIIcon( const std::string& name ) : mName( name ) {}
+UIIcon::UIIcon( const String& name ) : mName( name ) {}
 
 UIIcon::~UIIcon() {}
 
-const std::string& UIIcon::getName() const {
+const String& UIIcon::getName() const {
 	return mName;
 }
 
@@ -36,7 +36,7 @@ void UIIcon::setSize( const int& size, Drawable* drawable ) {
 	mSizes[size] = drawable;
 }
 
-UIIcon* UIGlyphIcon::New( const std::string& name, FontTrueType* font, const Uint32& codePoint ) {
+UIIcon* UIGlyphIcon::New( const String& name, FontTrueType* font, const Uint32& codePoint ) {
 	return eeNew( UIGlyphIcon, ( name, font, codePoint ) );
 }
 
@@ -51,7 +51,7 @@ Drawable* UIGlyphIcon::getSize( const int& size ) const {
 	return drawable;
 }
 
-UIGlyphIcon::UIGlyphIcon( const std::string& name, FontTrueType* font, const Uint32& codePoint ) :
+UIGlyphIcon::UIGlyphIcon( const String& name, FontTrueType* font, const Uint32& codePoint ) :
 	UIIcon( name ), mFont( font ), mCodePoint( codePoint ) {
 	eeASSERT( mFont );
 	mCloseCb = mFont->pushFontEventCallback( [this]( Uint32, Font::Event event, Font* ) {
@@ -68,7 +68,7 @@ UIGlyphIcon::~UIGlyphIcon() {
 	}
 }
 
-UIIcon* UISVGIcon::New( const std::string& name, const std::string& svgXML ) {
+UIIcon* UISVGIcon::New( const String& name, const String& svgXML ) {
 	return eeNew( UISVGIcon, ( name, svgXML ) );
 }
 
@@ -99,7 +99,7 @@ Drawable* UISVGIcon::getSize( const int& size ) const {
 	return texture;
 }
 
-UISVGIcon::UISVGIcon( const std::string& name, const std::string& svgXML ) :
+UISVGIcon::UISVGIcon( const String& name, const String& svgXML ) :
 	UIIcon( name ), mSVGXml( svgXML ) {}
 
 }} // namespace EE::UI

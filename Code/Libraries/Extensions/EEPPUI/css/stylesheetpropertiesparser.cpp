@@ -8,9 +8,9 @@ namespace EE { namespace UI { namespace CSS {
 
 StyleSheetPropertiesParser::StyleSheetPropertiesParser() : mPrevRs( ReadingPropertyName ) {}
 
-StyleSheetPropertiesParser::StyleSheetPropertiesParser( const std::string& propsstr ) :
+StyleSheetPropertiesParser::StyleSheetPropertiesParser( const String& propsstr ) :
 	mPrevRs( ReadingPropertyName ) {
-	std::vector<std::string> props = String::split( propsstr, ';' );
+	std::vector<String> props = String::split( propsstr, ';' );
 
 	if ( !props.empty() ) {
 		parse( propsstr );
@@ -25,13 +25,13 @@ const StyleSheetVariables& StyleSheetPropertiesParser::getVariables() const {
 	return mVariables;
 }
 
-void StyleSheetPropertiesParser::parse( const std::string& propsstr ) {
+void StyleSheetPropertiesParser::parse( const String& propsstr ) {
 	mProperties.clear();
 	mVariables.clear();
 	ReadState rs = ReadingPropertyName;
 	mPrevRs = rs;
 	std::size_t pos = 0;
-	std::string buffer;
+	String buffer;
 
 	while ( pos < propsstr.size() ) {
 		switch ( rs ) {
@@ -53,8 +53,8 @@ void StyleSheetPropertiesParser::parse( const std::string& propsstr ) {
 }
 
 int StyleSheetPropertiesParser::readPropertyName( StyleSheetPropertiesParser::ReadState& rs,
-												  std::size_t pos, std::string& buffer,
-												  const std::string& str ) {
+												  std::size_t pos, String& buffer,
+												  const String& str ) {
 	mPrevRs = rs;
 	buffer.clear();
 
@@ -79,9 +79,9 @@ int StyleSheetPropertiesParser::readPropertyName( StyleSheetPropertiesParser::Re
 }
 
 int StyleSheetPropertiesParser::readPropertyValue( StyleSheetPropertiesParser::ReadState& rs,
-												   std::size_t pos, std::string& buffer,
-												   const std::string& str ) {
-	std::string propName( buffer );
+												   std::size_t pos, String& buffer,
+												   const String& str ) {
+	String propName( buffer );
 
 	buffer.clear();
 
@@ -127,8 +127,8 @@ int StyleSheetPropertiesParser::readPropertyValue( StyleSheetPropertiesParser::R
 }
 
 int StyleSheetPropertiesParser::readComment( StyleSheetPropertiesParser::ReadState& rs,
-											 std::size_t pos, std::string& buffer,
-											 const std::string& str ) {
+											 std::size_t pos, String& buffer,
+											 const String& str ) {
 	buffer.clear();
 
 	while ( pos < str.size() ) {
@@ -145,7 +145,7 @@ int StyleSheetPropertiesParser::readComment( StyleSheetPropertiesParser::ReadSta
 	return pos;
 }
 
-void StyleSheetPropertiesParser::addProperty( std::string name, std::string value ) {
+void StyleSheetPropertiesParser::addProperty( String name, String value ) {
 	String::toLowerInPlace( name );
 	String::trimInPlace( name );
 

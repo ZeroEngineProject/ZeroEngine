@@ -267,7 +267,7 @@ static json toJson( const SyntaxDefinition& def ) {
 	return j;
 }
 
-bool SyntaxDefinitionManager::save( const std::string& path,
+bool SyntaxDefinitionManager::save( const String& path,
 									const std::vector<SyntaxDefinition>& def ) {
 	if ( def.size() == 1 ) {
 		return FileSystem::fileWrite( path, toJson( def[0] ).dump( 2 ) );
@@ -286,11 +286,11 @@ bool SyntaxDefinitionManager::save( const std::string& path,
 }
 
 void SyntaxDefinitionManager::setLanguageExtensionsPriority(
-	const std::map<std::string, std::string>& priorities ) {
+	const std::map<String, String>& priorities ) {
 	mPriorities = priorities;
 }
 
-std::optional<size_t> SyntaxDefinitionManager::getLanguageIndex( const std::string& langName ) {
+std::optional<size_t> SyntaxDefinitionManager::getLanguageIndex( const String& langName ) {
 	size_t pos = 0;
 	for ( const auto& def : mDefinitions ) {
 		if ( def.getLanguageName() == langName ) {
@@ -301,8 +301,8 @@ std::optional<size_t> SyntaxDefinitionManager::getLanguageIndex( const std::stri
 	return {};
 }
 
-static std::string str( std::string s, const std::string& prepend = "",
-						const std::string& append = "", bool allowEmptyString = true ) {
+static String str( String s, const String& prepend = "",
+						const String& append = "", bool allowEmptyString = true ) {
 	if ( s.empty() && !allowEmptyString )
 		return "";
 	String::replaceAll( s, "\\", "\\\\" );
@@ -310,19 +310,19 @@ static std::string str( std::string s, const std::string& prepend = "",
 	return prepend + "\"" + String::escape( s ) + "\"" + append;
 }
 
-static std::string join( std::vector<std::string> const& vec, bool createCont = true,
-						 bool allowReduce = false, std::string delim = ", " ) {
+static String join( std::vector<String> const& vec, bool createCont = true,
+						 bool allowReduce = false, String delim = ", " ) {
 	if ( vec.empty() )
 		return "{}";
 	if ( vec.size() == 1 && allowReduce )
 		return str( vec[0] );
-	std::string accum = std::accumulate(
+	String accum = std::accumulate(
 		vec.begin() + 1, vec.end(), str( vec[0] ),
-		[&delim]( const std::string& a, const std::string& b ) { return a + delim + str( b ); } );
+		[&delim]( const String& a, const String& b ) { return a + delim + str( b ); } );
 	return createCont ? "{ " + accum + " }" : accum;
 }
 
-static std::string funcName( std::string name ) {
+static String funcName( String name ) {
 	if ( name.empty() )
 		return "";
 	String::replaceAll( name, " ", "" );
@@ -332,14 +332,14 @@ static std::string funcName( std::string name ) {
 	return name;
 }
 
-std::pair<std::string, std::string> SyntaxDefinitionManager::toCPP( const SyntaxDefinition& def ) {
-	std::string lang( def.getLanguageNameForFileSystem() );
-	std::string func( funcName( lang ) );
-	std::string header = "#ifndef EE_UI_DOC_" + func + "\n#define EE_UI_DOC_" + func +
+std::pair<String, String> SyntaxDefinitionManager::toCPP( const SyntaxDefinition& def ) {
+	String lang( def.getLanguageNameForFileSystem() );
+	String func( funcName( lang ) );
+	String header = "#ifndef EE_UI_DOC_" + func + "\n#define EE_UI_DOC_" + func +
 						 "\n\nnamespace EE { namespace UI { namespace "
 						 "Doc { namespace Language {\n\nextern void add" +
 						 func + "();\n\n}}}}\n\n#endif\n";
-	std::string buf = String::format( R"cpp(#include <eepp/ui/doc/languages/%s.hpp>
+	String buf = String::format( R"cpp(#include <eepp/ui/doc/languages/%s.hpp>
 #include <eepp/ui/doc/syntaxdefinitionmanager.hpp>
 
 namespace EE { namespace UI { namespace Doc { namespace Language {
@@ -367,7 +367,7 @@ namespace EE { namespace UI { namespace Doc { namespace Language {
 		buf += "{ " + str( symbol.first ) + " , " + str( symbol.second ) + " },\n";
 	buf += "\n},\n";
 	buf += str( def.getComment(), "", "", true ) + ",\n";
-	std::string lspName =
+	String lspName =
 		def.getLSPName().empty() || def.getLSPName() == String::toLower( def.getLanguageName() )
 			? ""
 			: def.getLSPName();
@@ -396,12 +396,12 @@ const SyntaxDefinition& SyntaxDefinitionManager::getPlainDefinition() const {
 	return mDefinitions[0];
 }
 
-SyntaxDefinition& SyntaxDefinitionManager::getByExtensionRef( const std::string& filePath ) {
+SyntaxDefinition& SyntaxDefinitionManager::getByExtensionRef( const String& filePath ) {
 	return const_cast<SyntaxDefinition&>( getByExtension( filePath ) );
 }
 
 const SyntaxDefinition&
-SyntaxDefinitionManager::getByLanguageName( const std::string& name ) const {
+SyntaxDefinitionManager::getByLanguageName( const String& name ) const {
 	for ( auto& style : mDefinitions ) {
 		if ( style.getLanguageName() == name )
 			return style;
@@ -415,7 +415,7 @@ const SyntaxDefinition& SyntaxDefinitionManager::getByLanguageIndex( const Uint3
 }
 
 const SyntaxDefinition&
-SyntaxDefinitionManager::getByLanguageNameInsensitive( std::string name ) const {
+SyntaxDefinitionManager::getByLanguageNameInsensitive( String name ) const {
 	String::toLowerInPlace( name );
 	for ( auto& style : mDefinitions ) {
 		if ( String::toLower( style.getLanguageName() ) == name )
@@ -424,7 +424,7 @@ SyntaxDefinitionManager::getByLanguageNameInsensitive( std::string name ) const 
 	return mDefinitions[0];
 }
 
-const SyntaxDefinition& SyntaxDefinitionManager::getByLSPName( const std::string& name ) const {
+const SyntaxDefinition& SyntaxDefinitionManager::getByLSPName( const String& name ) const {
 	for ( auto& style : mDefinitions ) {
 		if ( style.getLSPName() == name )
 			return style;
@@ -441,12 +441,12 @@ SyntaxDefinitionManager::getByLanguageId( const String::HashType& id ) const {
 	return mDefinitions[0];
 }
 
-SyntaxDefinition& SyntaxDefinitionManager::getByLanguageNameRef( const std::string& name ) {
+SyntaxDefinition& SyntaxDefinitionManager::getByLanguageNameRef( const String& name ) {
 	return const_cast<SyntaxDefinition&>( getByLanguageName( name ) );
 }
 
-std::vector<std::string> SyntaxDefinitionManager::getLanguageNames() const {
-	std::vector<std::string> names;
+std::vector<String> SyntaxDefinitionManager::getLanguageNames() const {
+	std::vector<String> names;
 	for ( auto& style : mDefinitions ) {
 		if ( style.isVisible() )
 			names.push_back( style.getLanguageName() );
@@ -455,8 +455,8 @@ std::vector<std::string> SyntaxDefinitionManager::getLanguageNames() const {
 	return names;
 }
 
-std::vector<std::string> SyntaxDefinitionManager::getExtensionsPatternsSupported() const {
-	std::vector<std::string> exts;
+std::vector<String> SyntaxDefinitionManager::getExtensionsPatternsSupported() const {
+	std::vector<String> exts;
 	for ( auto& style : mDefinitions )
 		for ( auto& pattern : style.getFiles() )
 			exts.emplace_back( pattern );
@@ -464,7 +464,7 @@ std::vector<std::string> SyntaxDefinitionManager::getExtensionsPatternsSupported
 }
 
 const SyntaxDefinition*
-SyntaxDefinitionManager::getPtrByLanguageName( const std::string& name ) const {
+SyntaxDefinitionManager::getPtrByLanguageName( const String& name ) const {
 	for ( const auto& style : mDefinitions ) {
 		if ( style.getLanguageName() == name )
 			return &style;
@@ -472,7 +472,7 @@ SyntaxDefinitionManager::getPtrByLanguageName( const std::string& name ) const {
 	return nullptr;
 }
 
-const SyntaxDefinition* SyntaxDefinitionManager::getPtrByLSPName( const std::string& name ) const {
+const SyntaxDefinition* SyntaxDefinitionManager::getPtrByLSPName( const String& name ) const {
 	for ( const auto& style : mDefinitions ) {
 		if ( style.getLSPName() == name )
 			return &style;
@@ -494,7 +494,7 @@ static SyntaxDefinition loadLanguage( const nlohmann::json& json ) {
 	try {
 		def.setLanguageName( json.value( "name", "" ) );
 		if ( json.contains( "lsp_name" ) && json["lsp_name"].is_string() )
-			def.setLSPName( json["lsp_name"].get<std::string>() );
+			def.setLSPName( json["lsp_name"].get<String>() );
 		if ( json.contains( "files" ) ) {
 			if ( json["files"].is_array() ) {
 				const auto& files = json["files"];
@@ -502,19 +502,19 @@ static SyntaxDefinition loadLanguage( const nlohmann::json& json ) {
 					def.addFileType( file );
 				}
 			} else if ( json["files"].is_string() ) {
-				def.addFileType( json["files"].get<std::string>() );
+				def.addFileType( json["files"].get<String>() );
 			}
 		}
 		def.setComment( json.value( "comment", "" ) );
 		if ( json.contains( "patterns" ) && json["patterns"].is_array() ) {
 			const auto& patterns = json["patterns"];
 			for ( const auto& pattern : patterns ) {
-				std::vector<std::string> type;
+				std::vector<String> type;
 				if ( pattern.contains( "type" ) ) {
 					if ( pattern["type"].is_array() ) {
 						for ( const auto& t : pattern["type"] ) {
 							if ( t.is_string() )
-								type.push_back( t.get<std::string>() );
+								type.push_back( t.get<String>() );
 						}
 					} else if ( pattern["type"].is_string() ) {
 						type.push_back( pattern["type"] );
@@ -525,7 +525,7 @@ static SyntaxDefinition loadLanguage( const nlohmann::json& json ) {
 				auto syntax = !pattern.contains( "syntax" ) || !pattern["syntax"].is_string()
 								  ? ""
 								  : pattern.value( "syntax", "" );
-				std::vector<std::string> ptrns;
+				std::vector<String> ptrns;
 				bool isRegEx = false;
 				if ( pattern.contains( "pattern" ) ) {
 					if ( pattern["pattern"].is_array() ) {
@@ -565,14 +565,14 @@ static SyntaxDefinition loadLanguage( const nlohmann::json& json ) {
 		}
 		if ( json.contains( "headers" ) && json["headers"].is_array() ) {
 			const auto& headers = json["headers"];
-			std::vector<std::string> hds;
+			std::vector<String> hds;
 			if ( headers.is_array() ) {
 				for ( const auto& header : headers ) {
 					if ( header.is_string() )
-						hds.emplace_back( header.get<std::string>() );
+						hds.emplace_back( header.get<String>() );
 				}
 			} else if ( headers.is_string() ) {
-				hds.push_back( headers.get<std::string>() );
+				hds.push_back( headers.get<String>() );
 			}
 			if ( !hds.empty() )
 				def.setHeaders( hds );
@@ -592,10 +592,10 @@ static SyntaxDefinition loadLanguage( const nlohmann::json& json ) {
 }
 
 bool SyntaxDefinitionManager::loadFromStream( IOStream& stream,
-											  std::vector<std::string>* addedLangs ) {
+											  std::vector<String>* addedLangs ) {
 	if ( stream.getSize() == 0 )
 		return false;
-	std::string buffer;
+	String buffer;
 	buffer.resize( stream.getSize() );
 	stream.read( buffer.data(), buffer.size() );
 
@@ -642,13 +642,13 @@ bool SyntaxDefinitionManager::loadFromStream( IOStream& stream ) {
 	return loadFromStream( stream, nullptr );
 }
 
-bool SyntaxDefinitionManager::loadFromFile( const std::string& fpath ) {
+bool SyntaxDefinitionManager::loadFromFile( const String& fpath ) {
 	if ( FileSystem::fileExists( fpath ) ) {
 		IOStreamFile IOS( fpath );
 
 		return loadFromStream( IOS );
 	} else if ( PackManager::instance()->isFallbackToPacksActive() ) {
-		std::string tgPath( fpath );
+		String tgPath( fpath );
 
 		Pack* tPack = PackManager::instance()->exists( tgPath );
 
@@ -664,7 +664,7 @@ bool SyntaxDefinitionManager::loadFromMemory( const Uint8* data, const Uint32& d
 	return loadFromStream( IOS );
 }
 
-bool SyntaxDefinitionManager::loadFromPack( Pack* Pack, const std::string& filePackPath ) {
+bool SyntaxDefinitionManager::loadFromPack( Pack* Pack, const String& filePackPath ) {
 	if ( NULL != Pack && Pack->isOpen() && -1 != Pack->exists( filePackPath ) ) {
 		ScopedBuffer buffer;
 		Pack->extractFileToMemory( filePackPath, buffer );
@@ -673,7 +673,7 @@ bool SyntaxDefinitionManager::loadFromPack( Pack* Pack, const std::string& fileP
 	return false;
 }
 
-void SyntaxDefinitionManager::loadFromFolder( const std::string& folderPath ) {
+void SyntaxDefinitionManager::loadFromFolder( const String& folderPath ) {
 	if ( !FileSystem::isDirectory( folderPath ) )
 		return;
 	auto files = FileSystem::filesInfoGetInPath( folderPath );
@@ -686,7 +686,7 @@ void SyntaxDefinitionManager::loadFromFolder( const std::string& folderPath ) {
 }
 
 std::vector<const SyntaxDefinition*>
-SyntaxDefinitionManager::languagesThatSupportExtension( std::string extension ) const {
+SyntaxDefinitionManager::languagesThatSupportExtension( String extension ) const {
 	std::vector<const SyntaxDefinition*> langs;
 	if ( extension.empty() )
 		return {};
@@ -710,7 +710,7 @@ SyntaxDefinitionManager::languagesThatSupportExtension( std::string extension ) 
 	return langs;
 }
 
-bool SyntaxDefinitionManager::extensionCanRepresentManyLanguages( std::string extension ) const {
+bool SyntaxDefinitionManager::extensionCanRepresentManyLanguages( String extension ) const {
 	if ( extension.empty() )
 		return false;
 	if ( extension[0] != '.' )
@@ -738,10 +738,10 @@ bool SyntaxDefinitionManager::extensionCanRepresentManyLanguages( std::string ex
 	return false;
 }
 
-const SyntaxDefinition& SyntaxDefinitionManager::getByExtension( const std::string& filePath,
+const SyntaxDefinition& SyntaxDefinitionManager::getByExtension( const String& filePath,
 																 bool hFileAsCPP ) const {
-	std::string extension( FileSystem::fileExtension( filePath ) );
-	std::string fileName( FileSystem::fileNameFromPath( filePath ) );
+	String extension( FileSystem::fileExtension( filePath ) );
+	String fileName( FileSystem::fileNameFromPath( filePath ) );
 
 	bool extHasMultipleLangs = extensionCanRepresentManyLanguages( extension );
 	auto priorityLanguage = mPriorities.end();
@@ -796,7 +796,7 @@ const SyntaxDefinition& SyntaxDefinitionManager::getByExtension( const std::stri
 	return def != nullptr ? *def : mDefinitions[0];
 }
 
-const SyntaxDefinition& SyntaxDefinitionManager::getByHeader( const std::string& header,
+const SyntaxDefinition& SyntaxDefinitionManager::getByHeader( const String& header,
 															  bool /*hFileAsCPP*/ ) const {
 	if ( !header.empty() ) {
 		for ( auto style = mDefinitions.rbegin(); style != mDefinitions.rend(); ++style ) {
@@ -812,8 +812,8 @@ const SyntaxDefinition& SyntaxDefinitionManager::getByHeader( const std::string&
 	return mDefinitions[0];
 }
 
-const SyntaxDefinition& SyntaxDefinitionManager::find( const std::string& filePath,
-													   const std::string& header,
+const SyntaxDefinition& SyntaxDefinitionManager::find( const String& filePath,
+													   const String& header,
 													   bool hFileAsCPP ) {
 	const SyntaxDefinition& def = getByHeader( header );
 	if ( def.getLanguageName() == mDefinitions[0].getLanguageName() )
@@ -821,7 +821,7 @@ const SyntaxDefinition& SyntaxDefinitionManager::find( const std::string& filePa
 	return def;
 }
 
-const SyntaxDefinition& SyntaxDefinitionManager::findFromString( const std::string& lang ) const {
+const SyntaxDefinition& SyntaxDefinitionManager::findFromString( const String& lang ) const {
 	const auto& syn = getByLSPName( lang );
 	if ( syn.getLSPName() != getPlainDefinition().getLSPName() )
 		return syn;

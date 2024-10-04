@@ -3,7 +3,7 @@
 
 namespace EE { namespace UI {
 
-UIStackLayout* UIStackLayout::NewWithTag( const std::string& tag ) {
+UIStackLayout* UIStackLayout::NewWithTag( const String& tag ) {
 	return eeNew( UIStackLayout, ( tag ) );
 }
 
@@ -13,7 +13,7 @@ UIStackLayout* UIStackLayout::New() {
 
 UIStackLayout::UIStackLayout() : UIStackLayout( "stacklayout" ) {}
 
-UIStackLayout::UIStackLayout( const std::string& tag ) : UILayout( tag ) {
+UIStackLayout::UIStackLayout( const String& tag ) : UILayout( tag ) {
 	mFlags |= UI_OWNS_CHILDS_POSITION;
 	setClipType( ClipType::ContentBox );
 	setGravity( UI_HALIGN_LEFT | UI_VALIGN_TOP );
@@ -80,7 +80,7 @@ void UIStackLayout::applySizePolicyOnChilds() {
 	}
 }
 
-void UIStackLayout::setRowValign( const std::string& rowValign ) {
+void UIStackLayout::setRowValign( const String& rowValign ) {
 	if ( rowValign == "top" ) {
 		setRowValign( UIStackLayout::RowValign::Top );
 	} else if ( rowValign == "center" ) {
@@ -90,7 +90,7 @@ void UIStackLayout::setRowValign( const std::string& rowValign ) {
 	}
 }
 
-std::string UIStackLayout::rowValignToStr( const RowValign& rowValign ) {
+String UIStackLayout::rowValignToStr( const RowValign& rowValign ) {
 	switch ( rowValign ) {
 		case UIStackLayout::RowValign::Top:
 			return "top";
@@ -135,7 +135,7 @@ void UIStackLayout::onParentChange() {
 	listenParent();
 }
 
-std::string UIStackLayout::getPropertyString( const PropertyDefinition* propertyDef,
+String UIStackLayout::getPropertyString( const PropertyDefinition* propertyDef,
 											  const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";

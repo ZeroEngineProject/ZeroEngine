@@ -19,11 +19,11 @@ UIListBox* UIListBox::New() {
 	return eeNew( UIListBox, () );
 }
 
-UIListBox* UIListBox::NewWithTag( const std::string& tag ) {
+UIListBox* UIListBox::NewWithTag( const String& tag ) {
 	return eeNew( UIListBox, ( tag ) );
 }
 
-UIListBox::UIListBox( const std::string& tag ) :
+UIListBox::UIListBox( const String& tag ) :
 	UITouchDraggableWidget( tag ),
 	mRowHeight( 0 ),
 	mVScrollMode( ScrollBarMode::Auto ),
@@ -1030,7 +1030,7 @@ const ScrollBarMode& UIListBox::getHorizontalScrollMode() const {
 	return mHScrollMode;
 }
 
-std::string UIListBox::getPropertyString( const PropertyDefinition* propertyDef,
+String UIListBox::getPropertyString( const PropertyDefinition* propertyDef,
 										  const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -1090,7 +1090,7 @@ bool UIListBox::applyProperty( const StyleSheetProperty& attribute ) {
 			setRowHeight( attribute.asDpDimensionI( this ) );
 			break;
 		case PropertyId::VScrollMode: {
-			std::string val = attribute.asString();
+			String val = attribute.asString();
 			if ( "auto" == val )
 				setVerticalScrollMode( ScrollBarMode::Auto );
 			else if ( "on" == val )
@@ -1100,7 +1100,7 @@ bool UIListBox::applyProperty( const StyleSheetProperty& attribute ) {
 			break;
 		}
 		case PropertyId::HScrollMode: {
-			std::string val = attribute.asString();
+			String val = attribute.asString();
 			if ( "auto" == val )
 				setHorizontalScrollMode( ScrollBarMode::Auto );
 			else if ( "on" == val )
@@ -1116,7 +1116,7 @@ bool UIListBox::applyProperty( const StyleSheetProperty& attribute ) {
 			setSelected( attribute.asString() );
 			break;
 		case PropertyId::ScrollBarStyle: {
-			std::string val( attribute.asString() );
+			String val( attribute.asString() );
 			String::toLowerInPlace( val );
 
 			if ( "no-buttons" == val || "nobuttons" == val ) {
@@ -1150,7 +1150,7 @@ void UIListBox::loadItemsFromXmlNode( const pugi::xml_node& node ) {
 
 	std::vector<String> items;
 	for ( pugi::xml_node item = node.child( "item" ); item; item = item.next_sibling( "item" ) ) {
-		std::string data( item.text().as_string() );
+		String data( item.text().as_string() );
 		items.push_back( getTranslatorString( data ) );
 	}
 

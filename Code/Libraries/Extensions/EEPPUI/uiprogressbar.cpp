@@ -225,7 +225,7 @@ UITextView* UIProgressBar::getTextBox() const {
 	return mTextBox;
 }
 
-std::string UIProgressBar::getPropertyString( const PropertyDefinition* propertyDef,
+String UIProgressBar::getPropertyString( const PropertyDefinition* propertyDef,
 											  const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";

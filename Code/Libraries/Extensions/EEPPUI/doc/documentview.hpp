@@ -21,15 +21,15 @@ inline VisibleIndex visibleIndexOffset( VisibleIndex idx, Int64 offset ) {
 	return static_cast<VisibleIndex>( static_cast<Int64>( idx ) + offset );
 }
 
-class EE_API DocumentView {
+class ZeroShared DocumentView {
   public:
-	static LineWrapMode toLineWrapMode( std::string mode );
+	static LineWrapMode toLineWrapMode( String mode );
 
-	static std::string fromLineWrapMode( LineWrapMode mode );
+	static String fromLineWrapMode( LineWrapMode mode );
 
-	static LineWrapType toLineWrapType( std::string type );
+	static LineWrapType toLineWrapType( String type );
 
-	static std::string fromLineWrapType( LineWrapType type );
+	static String fromLineWrapType( LineWrapType type );
 
 	struct Config {
 		LineWrapMode mode{ LineWrapMode::NoWrap };

@@ -18,7 +18,7 @@ enum class TextUndoCommandType { Insert = 1, Remove = 2, Selection = 3 };
 
 using UndoStackContainer = std::deque<TextUndoCommand*>;
 
-class EE_API TextUndoStack {
+class ZeroShared TextUndoStack {
   public:
 	TextUndoStack( TextDocument* owner, const Uint32& maxStackSize = 10000 );
 
@@ -46,9 +46,9 @@ class EE_API TextUndoStack {
 
 	Uint64 getCurrentChangeId() const;
 
-	std::string toJSON( bool inverted );
+	String toJSON( bool inverted );
 
-	void fromJSON( const std::string& json );
+	void fromJSON( const String& json );
 
   protected:
 	friend class TextDocument;

@@ -8,9 +8,9 @@ namespace EE { namespace UI {
 
 class UIThemeManager;
 
-class EE_API UIIconThemeManager {
+class ZeroShared UIIconThemeManager {
   public:
-	static std::string getIconNameFromFileName( const std::string& fileName,
+	static String getIconNameFromFileName( const String& fileName,
 												bool retOnlyWithExtension = false );
 
 	static UIIconThemeManager* New();
@@ -27,7 +27,7 @@ class EE_API UIIconThemeManager {
 
 	UIIconThemeManager* setFallbackTheme( UIIconTheme* fallbackTheme );
 
-	UIIcon* findIcon( const std::string& name );
+	UIIcon* findIcon( const String& name );
 
 	UIThemeManager* getFallbackThemeManager() const;
 

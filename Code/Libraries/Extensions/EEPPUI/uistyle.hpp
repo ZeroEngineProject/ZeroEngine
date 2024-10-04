@@ -23,7 +23,7 @@ namespace EE { namespace UI {
 
 class UIWidget;
 
-class EE_API UIStyle : public UIState {
+class ZeroShared UIStyle : public UIState {
   public:
 	static UIStyle* New( UIWidget* widget );
 
@@ -43,17 +43,17 @@ class EE_API UIStyle : public UIState {
 
 	void setStyleSheetProperty( const CSS::StyleSheetProperty& property );
 
-	bool hasTransition( const std::string& propertyName );
+	bool hasTransition( const String& propertyName );
 
 	CSS::StyleSheetPropertyAnimation* getAnimation( const CSS::PropertyDefinition* propertyDef );
 
 	bool hasAnimation( const CSS::PropertyDefinition* propertyDef );
 
-	CSS::TransitionDefinition getTransition( const std::string& propertyName );
+	CSS::TransitionDefinition getTransition( const String& propertyName );
 
 	const bool& isChangingState() const;
 
-	CSS::StyleSheetVariable getVariable( const std::string& variable );
+	CSS::StyleSheetVariable getVariable( const String& variable );
 
 	bool getForceReapplyProperties() const;
 
@@ -97,7 +97,7 @@ class EE_API UIStyle : public UIState {
 
 	void applyVarValues( CSS::StyleSheetProperty* style );
 
-	void setVariableFromValue( CSS::StyleSheetProperty* property, const std::string& value );
+	void setVariableFromValue( CSS::StyleSheetProperty* property, const String& value );
 
 	void updateState();
 

@@ -14,9 +14,9 @@ class UIClip {
 
 	UIClip( const ClipType& clipType );
 
-	static ClipType fromString( std::string str );
+	static ClipType fromString( String str );
 
-	static std::string toString( const ClipType& clipType );
+	static String toString( const ClipType& clipType );
 
 	const ClipType& getClipType() const;
 

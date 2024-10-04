@@ -10,7 +10,7 @@ UIMenuItem* UIMenuItem::New() {
 	return eeNew( UIMenuItem, () );
 }
 
-UIMenuItem::UIMenuItem( const std::string& tag ) : UIPushButton( tag ), mShortcutView( NULL ) {
+UIMenuItem::UIMenuItem( const String& tag ) : UIPushButton( tag ), mShortcutView( NULL ) {
 	getIcon();
 	unsetFlags( UI_AUTO_SIZE );
 	setLayoutSizePolicy( SizePolicy::Fixed, SizePolicy::WrapContent );

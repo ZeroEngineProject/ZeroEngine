@@ -8,7 +8,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIMenuBar : public UIWidget {
+class ZeroShared UIMenuBar : public UIWidget {
   public:
 	static UIMenuBar* New();
 

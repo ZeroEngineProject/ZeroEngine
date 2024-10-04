@@ -14,13 +14,13 @@ namespace EE { namespace UI {
 
 class UINode;
 
-class EE_API UINodeDrawable : public Drawable {
+class ZeroShared UINodeDrawable : public Drawable {
   public:
 	enum Repeat { RepeatXY, RepeatX, RepeatY, NoRepeat };
 
-	static Repeat repeatFromText( const std::string& text );
+	static Repeat repeatFromText( const String& text );
 
-	class EE_API LayerDrawable : public Drawable {
+	class ZeroShared LayerDrawable : public Drawable {
 	  public:
 		static LayerDrawable* New( UINodeDrawable* container );
 
@@ -44,23 +44,23 @@ class EE_API UINodeDrawable : public Drawable {
 
 		Drawable* getDrawable() const;
 
-		const std::string& getDrawableRef() const;
+		const String& getDrawableRef() const;
 
 		void setDrawable( Drawable* drawable, const bool& ownIt );
 
-		void setDrawable( const std::string& drawableRef );
+		void setDrawable( const String& drawableRef );
 
 		void setOffset( const Vector2f& offset );
 
 		const Vector2f& getOffset() const;
 
-		std::string getOffsetEq();
+		String getOffsetEq();
 
-		void setPositionEq( const std::string& offset );
+		void setPositionEq( const String& offset );
 
-		void setSizeEq( const std::string& size );
+		void setSizeEq( const String& size );
 
-		const std::string& getSizeEq() const;
+		const String& getSizeEq() const;
 
 		const Repeat& getRepeat() const;
 
@@ -72,31 +72,31 @@ class EE_API UINodeDrawable : public Drawable {
 
 		void setDrawableSize( const Sizef& drawableSize );
 
-		Sizef calcDrawableSize( const std::string& drawableSizeEq );
+		Sizef calcDrawableSize( const String& drawableSizeEq );
 
-		Vector2f calcPosition( std::string positionXEq, std::string positionYEq );
+		Vector2f calcPosition( String positionXEq, String positionYEq );
 
-		const std::string& getPositionX() const;
+		const String& getPositionX() const;
 
-		void setPositionX( const std::string& positionX );
+		void setPositionX( const String& positionX );
 
-		const std::string& getPositionY() const;
+		const String& getPositionY() const;
 
-		void setPositionY( const std::string& positionY );
+		void setPositionY( const String& positionY );
 
 	  protected:
 		UINodeDrawable* mContainer;
 		Sizef mSize;
 		Sizef mDrawableSize;
 		Vector2f mOffset;
-		std::string mPositionX;
-		std::string mPositionY;
-		std::string mSizeEq;
+		String mPositionX;
+		String mPositionY;
+		String mSizeEq;
 		bool mNeedsUpdate{ false };
 		bool mOwnsDrawable{ false };
 		bool mColorWasSet{ false };
 		Drawable* mDrawable;
-		std::string mDrawableRef;
+		String mDrawableRef;
 		Uint32 mResourceChangeCbId;
 		Repeat mRepeat;
 
@@ -106,7 +106,7 @@ class EE_API UINodeDrawable : public Drawable {
 
 		void update();
 
-		Drawable* createDrawable( const std::string& value, const Sizef& size, bool& ownIt );
+		Drawable* createDrawable( const String& value, const Sizef& size, bool& ownIt );
 	};
 
 	static UINodeDrawable* New( UINode* owner );
@@ -143,15 +143,15 @@ class EE_API UINodeDrawable : public Drawable {
 
 	void setDrawable( int index, Drawable* drawable, bool ownIt );
 
-	void setDrawable( int index, const std::string& drawable );
+	void setDrawable( int index, const String& drawable );
 
-	void setDrawablePositionX( int index, const std::string& positionX );
+	void setDrawablePositionX( int index, const String& positionX );
 
-	void setDrawablePositionY( int index, const std::string& positionY );
+	void setDrawablePositionY( int index, const String& positionY );
 
-	void setDrawableRepeat( int index, const std::string& repeatRule );
+	void setDrawableRepeat( int index, const String& repeatRule );
 
-	void setDrawableSize( int index, const std::string& sizeEq );
+	void setDrawableSize( int index, const String& sizeEq );
 
 	void setDrawableColor( int index, const Color& color );
 

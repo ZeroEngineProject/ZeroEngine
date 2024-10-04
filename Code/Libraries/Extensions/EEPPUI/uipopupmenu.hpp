@@ -5,7 +5,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIPopUpMenu : public UIMenu {
+class ZeroShared UIPopUpMenu : public UIMenu {
   public:
 	static UIPopUpMenu* New();
 
@@ -45,7 +45,7 @@ class EE_API UIPopUpMenu : public UIMenu {
 	bool mCloseSubMenusOnClose{ false };
 };
 
-class EE_API ContextMenuEvent : public MouseEvent {
+class ZeroShared ContextMenuEvent : public MouseEvent {
   public:
 	ContextMenuEvent( Node* node, UIPopUpMenu* menu, const Uint32& eventType, const Vector2i& pos,
 					  const Uint32& flags ) :

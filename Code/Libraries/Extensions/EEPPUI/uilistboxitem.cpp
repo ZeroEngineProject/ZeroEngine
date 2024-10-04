@@ -8,13 +8,13 @@ UIListBoxItem* UIListBoxItem::New() {
 	return eeNew( UIListBoxItem, () );
 }
 
-UIListBoxItem* UIListBoxItem::NewWithTag( const std::string& tag ) {
+UIListBoxItem* UIListBoxItem::NewWithTag( const String& tag ) {
 	return eeNew( UIListBoxItem, ( tag ) );
 }
 
 UIListBoxItem::UIListBoxItem() : UIListBoxItem( "listbox::item" ) {}
 
-UIListBoxItem::UIListBoxItem( const std::string& tag ) : UITextView( tag ) {
+UIListBoxItem::UIListBoxItem( const String& tag ) : UITextView( tag ) {
 	setLayoutSizePolicy( SizePolicy::Fixed, SizePolicy::Fixed );
 	applyDefaultTheme();
 }

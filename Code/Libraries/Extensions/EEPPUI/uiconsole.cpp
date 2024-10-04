@@ -213,7 +213,7 @@ bool UIConsole::applyProperty( const StyleSheetProperty& attribute ) {
 	return true;
 }
 
-std::string UIConsole::getPropertyString( const PropertyDefinition* propertyDef,
+String UIConsole::getPropertyString( const PropertyDefinition* propertyDef,
 										  const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -377,12 +377,12 @@ void UIConsole::onFontStyleChanged() {
 	onFontChanged();
 }
 
-void UIConsole::addCommand( const std::string& command, const ConsoleCallback& cb ) {
+void UIConsole::addCommand( const String& command, const ConsoleCallback& cb ) {
 	if ( !( mCallbacks.count( command ) > 0 ) )
 		mCallbacks[command] = cb;
 }
 
-void UIConsole::setCommand( const std::string& command, const ConsoleCallback& cb ) {
+void UIConsole::setCommand( const String& command, const ConsoleCallback& cb ) {
 	mCallbacks[command] = cb;
 }
 
@@ -590,10 +590,10 @@ void UIConsole::createDefaultCommands() {
 	addCommand( "exec", [this]( const std::vector<String>& params ) {
 		auto executeArr = params;
 		executeArr.erase( executeArr.begin() );
-		std::string execute = String::join( executeArr );
+		String execute = String::join( executeArr );
 		Process p;
 		p.create( execute, Process::CombinedStdoutStderr | Process::getDefaultOptions() );
-		std::string buffer;
+		String buffer;
 		p.readAllStdOut( buffer, Seconds( 1 ) );
 		auto lines = String::split( buffer );
 		for ( const auto& line : lines )
@@ -786,8 +786,8 @@ void UIConsole::cmdShowFps( const std::vector<String>& params ) {
 	privPushText( "Valid parameters are 0 ( hide ) or 1 ( show )." );
 }
 
-void UIConsole::writeLog( const std::string_view& text ) {
-	std::vector<std::string_view> strings = String::split( text );
+void UIConsole::writeLog( const String_view& text ) {
+	std::vector<String_view> strings = String::split( text );
 	for ( size_t i = 0; i < strings.size(); i++ )
 		privPushText( strings[i] );
 }
@@ -913,7 +913,7 @@ Uint32 UIConsole::onKeyDown( const KeyEvent& event ) {
 		}
 	}
 
-	std::string cmd = mKeyBindings.getCommandFromKeyBind( { event.getKeyCode(), event.getMod() } );
+	String cmd = mKeyBindings.getCommandFromKeyBind( { event.getKeyCode(), event.getMod() } );
 	if ( !cmd.empty() ) {
 		mDoc.execute( cmd );
 		mLastExecuteEventId = getUISceneNode()->getWindow()->getInput()->getEventsSentId();
@@ -1179,7 +1179,7 @@ void UIConsole::onDocumentSaved( TextDocument* ) {}
 
 void UIConsole::onDocumentMoved( TextDocument* ) {}
 
-Drawable* UIConsole::findIcon( const std::string& name ) {
+Drawable* UIConsole::findIcon( const String& name ) {
 	UIIcon* icon = getUISceneNode()->findIcon( name );
 	if ( icon )
 		return icon->getSize( mMenuIconSize );
@@ -1187,7 +1187,7 @@ Drawable* UIConsole::findIcon( const std::string& name ) {
 }
 
 void UIConsole::copySelection() {
-	std::string str;
+	String str;
 	auto selNorm = mSelection.normalized();
 
 	for ( Int64 i = selNorm.start().line(); i <= selNorm.end().line(); i++ ) {
@@ -1220,7 +1220,7 @@ void UIConsole::copySelection() {
 }
 
 UIMenuItem* UIConsole::menuAdd( UIPopUpMenu* menu, const String& translateString,
-								const std::string& icon, const std::string& cmd ) {
+								const String& icon, const String& cmd ) {
 	UIMenuItem* menuItem =
 		menu->add( translateString, findIcon( icon ), mKeyBindings.getCommandKeybindString( cmd ) );
 	menuItem->setId( cmd );
@@ -1249,7 +1249,7 @@ bool UIConsole::onCreateContextMenu( const Vector2i& position, const Uint32& fla
 		if ( !event->getNode()->isType( UI_TYPE_MENUITEM ) )
 			return;
 		UIMenuItem* item = event->getNode()->asType<UIMenuItem>();
-		const std::string& txt( item->getId() );
+		const String& txt( item->getId() );
 		if ( txt == "copy" )
 			copySelection();
 		menu->hide();
@@ -1354,24 +1354,24 @@ void UIConsole::onParentSizeChange( const Vector2f& sizeChange ) {
 	return UIWidget::onParentSizeChange( sizeChange );
 }
 
-void UIConsole::getFilesFrom( std::string txt, const Uint32& curPos ) {
+void UIConsole::getFilesFrom( String txt, const Uint32& curPos ) {
 	static char OSSlash = FileSystem::getOSSlash().at( 0 );
 	size_t pos;
 
-	if ( std::string::npos != ( pos = txt.find_last_of( OSSlash ) ) && pos <= curPos ) {
+	if ( String::npos != ( pos = txt.find_last_of( OSSlash ) ) && pos <= curPos ) {
 		size_t fpos = txt.find_first_of( OSSlash );
 
-		std::string dir( txt.substr( fpos, pos - fpos + 1 ) );
-		std::string file( txt.substr( pos + 1 ) );
+		String dir( txt.substr( fpos, pos - fpos + 1 ) );
+		String file( txt.substr( pos + 1 ) );
 
 		if ( FileSystem::isDirectory( dir ) ) {
 			size_t count = 0, lasti = 0;
-			std::vector<std::string> files = FileSystem::filesGetInPath( dir, true, true );
+			std::vector<String> files = FileSystem::filesGetInPath( dir, true, true );
 			String res;
 			bool again = false;
 
 			do {
-				std::vector<std::string> foundFiles;
+				std::vector<String> foundFiles;
 				res = "";
 				count = 0;
 				again = false;
@@ -1400,7 +1400,7 @@ void UIConsole::getFilesFrom( std::string txt, const Uint32& curPos ) {
 						}
 
 						if ( allBigger ) {
-							std::string tfile = foundFiles[0].substr( 0, file.size() + 1 );
+							String tfile = foundFiles[0].substr( 0, file.size() + 1 );
 							allStartsWith = true;
 
 							for ( size_t i = 0; i < foundFiles.size(); i++ ) {
@@ -1420,7 +1420,7 @@ void UIConsole::getFilesFrom( std::string txt, const Uint32& curPos ) {
 			} while ( again );
 
 			if ( count == 1 ) {
-				std::string slash = "";
+				String slash = "";
 
 				if ( FileSystem::isDirectory( dir + files[lasti] ) ) {
 					slash = FileSystem::getOSSlash();
@@ -1441,7 +1441,7 @@ void UIConsole::getFilesFrom( std::string txt, const Uint32& curPos ) {
 }
 
 void UIConsole::pushText( const String& str ) {
-	if ( std::string::npos != str.find_first_of( '\n' ) ) {
+	if ( String::npos != str.find_first_of( '\n' ) ) {
 		std::vector<String> Strings = String::split( String( str ) );
 
 		for ( Uint32 i = 0; i < Strings.size(); i++ ) {

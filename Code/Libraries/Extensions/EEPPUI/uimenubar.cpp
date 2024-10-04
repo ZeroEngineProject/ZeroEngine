@@ -385,11 +385,11 @@ void UIMenuBar::loadFromXmlNode( const pugi::xml_node& node ) {
 	UIWidget::loadFromXmlNode( node );
 
 	for ( pugi::xml_node item = node.first_child(); item; item = item.next_sibling() ) {
-		std::string name( item.name() );
+		String name( item.name() );
 		String::toLowerInPlace( name );
 
 		if ( "menu" == name ) {
-			std::string text( item.attribute( "text" ).as_string() );
+			String text( item.attribute( "text" ).as_string() );
 
 			auto attr = item.find_attribute( []( const pugi::xml_attribute& attribute ) {
 				if ( strcmp( attribute.name(), "nomenu" ) == 0 )

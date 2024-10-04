@@ -8,11 +8,11 @@ UISelectButton* UISelectButton::New() {
 	return eeNew( UISelectButton, () );
 }
 
-UISelectButton* UISelectButton::NewWithTag( const std::string& tag ) {
+UISelectButton* UISelectButton::NewWithTag( const String& tag ) {
 	return eeNew( UISelectButton, ( tag ) );
 }
 
-UISelectButton::UISelectButton( const std::string& tag ) : UIPushButton( tag ) {}
+UISelectButton::UISelectButton( const String& tag ) : UIPushButton( tag ) {}
 
 UISelectButton::UISelectButton() : UISelectButton( "selectbutton" ) {}
 
@@ -97,7 +97,7 @@ bool UISelectButton::applyProperty( const StyleSheetProperty& attribute ) {
 	return attributeSet;
 }
 
-std::string UISelectButton::getPropertyString( const PropertyDefinition* propertyDef,
+String UISelectButton::getPropertyString( const PropertyDefinition* propertyDef,
 											   const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";

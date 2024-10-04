@@ -6,7 +6,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UIScrollBar : public UIWidget {
+class ZeroShared UIScrollBar : public UIWidget {
   public:
 	enum ScrollBarType { TwoButtons, NoButtons };
 
@@ -16,13 +16,13 @@ class EE_API UIScrollBar : public UIWidget {
 
 	static UIScrollBar* NewVertical();
 
-	static UIScrollBar* NewWithTag( const std::string& tag );
+	static UIScrollBar* NewWithTag( const String& tag );
 
-	static UIScrollBar* NewHorizontalWithTag( const std::string& tag );
+	static UIScrollBar* NewHorizontalWithTag( const String& tag );
 
-	static UIScrollBar* NewVerticalWithTag( const std::string& tag );
+	static UIScrollBar* NewVerticalWithTag( const String& tag );
 
-	explicit UIScrollBar( const std::string& tag = "scrollbar",
+	explicit UIScrollBar( const String& tag = "scrollbar",
 						  const UIOrientation& orientation = UIOrientation::Vertical );
 
 	virtual ~UIScrollBar();
@@ -75,7 +75,7 @@ class EE_API UIScrollBar : public UIWidget {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

@@ -7,7 +7,7 @@ namespace EE { namespace UI {
 
 class UITabWidget;
 
-class EE_API UITab : public UISelectButton {
+class ZeroShared UITab : public UISelectButton {
   public:
 	static UITab* New();
 
@@ -33,7 +33,7 @@ class EE_API UITab : public UISelectButton {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;
@@ -51,7 +51,7 @@ class EE_API UITab : public UISelectButton {
 
 	Node* mOwnedWidget{ nullptr };
 	String mText;
-	std::string mOwnedName;
+	String mOwnedName;
 	mutable UIWidget* mCloseButton{ nullptr };
 	Float mDragTotalDiff{ 0.f };
 	UITabWidget* mTabWidget{ nullptr };

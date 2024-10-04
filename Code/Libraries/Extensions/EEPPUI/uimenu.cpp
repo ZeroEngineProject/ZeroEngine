@@ -215,7 +215,7 @@ UIMenuItem* UIMenu::getItem( const String& text ) {
 	return nullptr;
 }
 
-UIMenuItem* UIMenu::getItemId( const std::string& id ) {
+UIMenuItem* UIMenu::getItemId( const String& id ) {
 	for ( Uint32 i = 0; i < mItems.size(); i++ ) {
 		if ( mItems[i]->isType( UI_TYPE_MENUITEM ) ) {
 			UIMenuItem* tMenuItem = mItems[i]->asType<UIMenuItem>();
@@ -553,7 +553,7 @@ Uint32 UIMenu::onKeyDown( const KeyEvent& event ) {
 	return UIWidget::onKeyDown( event );
 }
 
-static Drawable* getIconDrawable( const std::string& name, UIIconThemeManager* iconThemeManager ) {
+static Drawable* getIconDrawable( const String& name, UIIconThemeManager* iconThemeManager ) {
 	Drawable* iconDrawable = nullptr;
 	if ( nullptr != iconThemeManager ) {
 		UIIcon* icon = iconThemeManager->findIcon( name );
@@ -572,27 +572,27 @@ void UIMenu::loadFromXmlNode( const pugi::xml_node& node ) {
 	UIWidget::loadFromXmlNode( node );
 
 	for ( pugi::xml_node item = node.first_child(); item; item = item.next_sibling() ) {
-		std::string name( item.name() );
+		String name( item.name() );
 		String::toLowerInPlace( name );
 		if ( name == "menuitem" || name == "item" ) {
-			std::string text( item.attribute( "text" ).as_string() );
-			std::string icon( item.attribute( "icon" ).as_string() );
+			String text( item.attribute( "text" ).as_string() );
+			String icon( item.attribute( "icon" ).as_string() );
 			if ( nullptr != mSceneNode && mSceneNode->isUISceneNode() )
 				add( getTranslatorString( text ),
 					 getIconDrawable( icon, getUISceneNode()->getUIIconThemeManager() ) );
 		} else if ( name == "menuseparator" || name == "separator" ) {
 			addSeparator();
 		} else if ( name == "menucheckbox" || name == "checkbox" ) {
-			std::string text( item.attribute( "text" ).as_string() );
+			String text( item.attribute( "text" ).as_string() );
 			bool active( item.attribute( "active" ).as_bool() );
 			addCheckBox( getTranslatorString( text ), active );
 		} else if ( name == "menuradiobutton" || name == "radiobutton" ) {
-			std::string text( item.attribute( "text" ).as_string() );
+			String text( item.attribute( "text" ).as_string() );
 			bool active( item.attribute( "active" ).as_bool() );
 			addRadioButton( getTranslatorString( text ), active );
 		} else if ( name == "menusubmenu" || name == "submenu" ) {
-			std::string text( item.attribute( "text" ).as_string() );
-			std::string icon( item.attribute( "icon" ).as_string() );
+			String text( item.attribute( "text" ).as_string() );
+			String icon( item.attribute( "icon" ).as_string() );
 			UIPopUpMenu* subMenu = UIPopUpMenu::New();
 			if ( nullptr != getDrawInvalidator() )
 				subMenu->setParent( getDrawInvalidator() );
@@ -605,7 +605,7 @@ void UIMenu::loadFromXmlNode( const pugi::xml_node& node ) {
 	endAttributesTransaction();
 }
 
-std::string UIMenu::getPropertyString( const PropertyDefinition* propertyDef,
+String UIMenu::getPropertyString( const PropertyDefinition* propertyDef,
 									   const Uint32& propertyIndex ) const {
 	if ( nullptr == propertyDef )
 		return "";

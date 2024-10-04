@@ -100,28 +100,28 @@ void UIBackgroundDrawable::setRadius( const Uint32& radius ) {
 	}
 }
 
-void UIBackgroundDrawable::setTopLeftRadius( const std::string& radius ) {
+void UIBackgroundDrawable::setTopLeftRadius( const String& radius ) {
 	if ( mRadiusesStr.topLeft != radius ) {
 		mRadiusesStr.topLeft = radius;
 		mNeedsRadiusUpdate = true;
 	}
 }
 
-void UIBackgroundDrawable::setTopRightRadius( const std::string& radius ) {
+void UIBackgroundDrawable::setTopRightRadius( const String& radius ) {
 	if ( mRadiusesStr.topRight != radius ) {
 		mRadiusesStr.topRight = radius;
 		mNeedsRadiusUpdate = true;
 	}
 }
 
-void UIBackgroundDrawable::setBottomLeftRadius( const std::string& radius ) {
+void UIBackgroundDrawable::setBottomLeftRadius( const String& radius ) {
 	if ( mRadiusesStr.bottomLeft != radius ) {
 		mRadiusesStr.bottomLeft = radius;
 		mNeedsRadiusUpdate = true;
 	}
 }
 
-void UIBackgroundDrawable::setBottomRightRadius( const std::string& radius ) {
+void UIBackgroundDrawable::setBottomRightRadius( const String& radius ) {
 	if ( mRadiusesStr.bottomRight != radius ) {
 		mRadiusesStr.bottomRight = radius;
 		mNeedsRadiusUpdate = true;

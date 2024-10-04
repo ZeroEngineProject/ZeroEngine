@@ -9,9 +9,9 @@ using namespace EE::Math;
 
 namespace EE { namespace UI { namespace CSS {
 
-class EE_API TimingFunction {
+class ZeroShared TimingFunction {
   public:
-	static TimingFunction parse( std::string timingFunction );
+	static TimingFunction parse( String timingFunction );
 
 	Ease::Interpolation interpolation{ Ease::None };
 	std::vector<double> parameters;

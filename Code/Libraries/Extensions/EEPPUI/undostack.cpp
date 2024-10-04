@@ -4,7 +4,7 @@
 
 namespace EE { namespace UI {
 
-UndoCommand::UndoCommand( const std::string& text, UndoCommand* parent ) : UndoCommand( parent ) {
+UndoCommand::UndoCommand( const String& text, UndoCommand* parent ) : UndoCommand( parent ) {
 	setText( text );
 }
 
@@ -44,17 +44,17 @@ void UndoCommand::undo() {
 		mChilds.at( i )->undo();
 }
 
-std::string UndoCommand::text() const {
+String UndoCommand::text() const {
 	return mText;
 }
 
-std::string UndoCommand::actionText() const {
+String UndoCommand::actionText() const {
 	return mActionText;
 }
 
-void UndoCommand::setText( const std::string& text ) {
+void UndoCommand::setText( const String& text ) {
 	auto cdpos = text.find_first_of( '\n' );
-	if ( cdpos != std::string::npos ) {
+	if ( cdpos != String::npos ) {
 		mText = text.substr( 0, cdpos );
 		mActionText = text.substr( cdpos + 1 );
 	} else {
@@ -136,9 +136,9 @@ void UndoStack::clear() {
 
 	indexChanged( 0 );
 	canUndoChanged( false );
-	undoTextChanged( std::string() );
+	undoTextChanged( String() );
 	canRedoChanged( false );
-	redoTextChanged( std::string() );
+	redoTextChanged( String() );
 
 	if ( !wasClean )
 		cleanChanged( true );
@@ -366,23 +366,23 @@ bool UndoStack::canRedo() const {
 	return mIndex < static_cast<int>( mCommands.size() );
 }
 
-std::string UndoStack::undoText() const {
+String UndoStack::undoText() const {
 	if ( !mMacroStack.empty() )
-		return std::string();
+		return String();
 	if ( mIndex > 0 )
 		return mCommands.at( mIndex - 1 )->actionText();
-	return std::string();
+	return String();
 }
 
-std::string UndoStack::redoText() const {
+String UndoStack::redoText() const {
 	if ( !mMacroStack.empty() )
-		return std::string();
+		return String();
 	if ( mIndex < static_cast<int>( mCommands.size() ) )
 		return mCommands.at( mIndex )->actionText();
-	return std::string();
+	return String();
 }
 
-void UndoStack::beginMacro( const std::string& text ) {
+void UndoStack::beginMacro( const String& text ) {
 	UndoCommand* cmd = new UndoCommand();
 	cmd->setText( text );
 
@@ -401,9 +401,9 @@ void UndoStack::beginMacro( const std::string& text ) {
 
 	if ( mMacroStack.size() == 1 ) {
 		canUndoChanged( false );
-		undoTextChanged( std::string() );
+		undoTextChanged( String() );
 		canRedoChanged( false );
-		redoTextChanged( std::string() );
+		redoTextChanged( String() );
 	}
 }
 
@@ -427,9 +427,9 @@ const UndoCommand* UndoStack::command( int index ) const {
 	return mCommands.at( index );
 }
 
-std::string UndoStack::text( int idx ) const {
+String UndoStack::text( int idx ) const {
 	if ( idx < 0 || idx >= static_cast<int>( mCommands.size() ) )
-		return std::string();
+		return String();
 	return mCommands.at( idx )->text();
 }
 
@@ -482,12 +482,12 @@ void UndoStack::canRedoChanged( bool canRedo ) {
 	sendEvent( &event );
 }
 
-void UndoStack::undoTextChanged( const std::string& undoText ) {
+void UndoStack::undoTextChanged( const String& undoText ) {
 	EventUndoTextChanged event( undoText );
 	sendEvent( &event );
 }
 
-void UndoStack::redoTextChanged( const std::string& redoText ) {
+void UndoStack::redoTextChanged( const String& redoText ) {
 	EventRedoTextChanged event( redoText );
 	sendEvent( &event );
 }

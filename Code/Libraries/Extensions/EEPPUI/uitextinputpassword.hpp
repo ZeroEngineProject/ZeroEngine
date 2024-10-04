@@ -5,7 +5,7 @@
 
 namespace EE { namespace UI {
 
-class EE_API UITextInputPassword : public UITextInput {
+class ZeroShared UITextInputPassword : public UITextInput {
   public:
 	static UITextInputPassword* New();
 

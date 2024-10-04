@@ -9,13 +9,13 @@ UICheckBox* UICheckBox::New() {
 	return eeNew( UICheckBox, () );
 }
 
-UICheckBox* UICheckBox::NewWithTag( const std::string& tag ) {
+UICheckBox* UICheckBox::NewWithTag( const String& tag ) {
 	return eeNew( UICheckBox, ( tag ) );
 }
 
 UICheckBox::UICheckBox() : UICheckBox( "checkbox" ) {}
 
-UICheckBox::UICheckBox( const std::string& tag ) :
+UICheckBox::UICheckBox( const String& tag ) :
 	UITextView( tag ), mChecked( false ), mTextSeparation( 4 ) {
 	auto cb = [this]( const Event* ) { onAutoSize(); };
 
@@ -229,7 +229,7 @@ void UICheckBox::setTextSeparation( const Int32& textSeparation ) {
 	setPadding( getPadding() );
 }
 
-std::string UICheckBox::getPropertyString( const PropertyDefinition* propertyDef,
+String UICheckBox::getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";

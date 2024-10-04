@@ -6,11 +6,11 @@
 
 namespace EE { namespace UI {
 
-class EE_API UISkin : public StateListDrawable {
+class ZeroShared UISkin : public StateListDrawable {
   public:
-	static UISkin* New( const std::string& name = "" );
+	static UISkin* New( const String& name = "" );
 
-	explicit UISkin( const std::string& name = "" );
+	explicit UISkin( const String& name = "" );
 
 	virtual ~UISkin();
 
@@ -24,7 +24,7 @@ class EE_API UISkin : public StateListDrawable {
 
 	virtual UISkin* clone();
 
-	virtual UISkin* clone( const std::string& NewName );
+	virtual UISkin* clone( const String& NewName );
 
 	virtual Rectf getBorderSize( const Uint32& state );
 

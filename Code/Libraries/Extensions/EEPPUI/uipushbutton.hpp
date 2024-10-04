@@ -16,18 +16,18 @@ enum class InnerWidgetOrientation {
 	TextBoxWidgetIcon,
 };
 
-class EE_API UIPushButton : public UIWidget {
+class ZeroShared UIPushButton : public UIWidget {
   public:
-	static InnerWidgetOrientation innerWidgetOrientationFromString( std::string iwo );
+	static InnerWidgetOrientation innerWidgetOrientationFromString( String iwo );
 
-	static std::string innerWidgetOrientationToString( const InnerWidgetOrientation& orientation );
+	static String innerWidgetOrientationToString( const InnerWidgetOrientation& orientation );
 
 	static UIPushButton* New();
 
-	static UIPushButton* NewWithTag( const std::string& tag );
+	static UIPushButton* NewWithTag( const String& tag );
 
 	static UIPushButton*
-	NewWithOpt( const std::string& tag,
+	NewWithOpt( const String& tag,
 				const std::function<UITextView*( UIPushButton* )>& newTextViewCb );
 
 	virtual ~UIPushButton();
@@ -56,7 +56,7 @@ class EE_API UIPushButton : public UIWidget {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;
@@ -88,9 +88,9 @@ class EE_API UIPushButton : public UIWidget {
 
 	UIPushButton();
 
-	explicit UIPushButton( const std::string& tag );
+	explicit UIPushButton( const String& tag );
 
-	explicit UIPushButton( const std::string& tag,
+	explicit UIPushButton( const String& tag,
 						   const std::function<UITextView*( UIPushButton* )>& cb );
 
 	virtual Rectf calculatePadding() const;

@@ -16,21 +16,21 @@ class Pack;
 
 namespace EE { namespace UI { namespace CSS {
 
-class EE_API StyleSheetParser {
+class ZeroShared StyleSheetParser {
   public:
 	StyleSheetParser();
 
 	bool loadFromStream( IOStream& stream );
 
-	bool loadFromFile( const std::string& file );
+	bool loadFromFile( const String& file );
 
 	bool loadFromMemory( const Uint8* RAWData, const Uint32& size );
 
-	bool loadFromPack( Pack* pack, std::string filePackPath );
+	bool loadFromPack( Pack* pack, String filePackPath );
 
-	bool loadFromString( const std::string& str );
+	bool loadFromString( const String& str );
 
-	bool loadFromString( const std::string_view& str );
+	bool loadFromString( const String_view& str );
 
 	void print();
 
@@ -41,29 +41,29 @@ class EE_API StyleSheetParser {
   protected:
 	enum ReadState { ReadingSelector, ReadingProperty, ReadingComment };
 
-	std::string mCSS;
+	String mCSS;
 	StyleSheet mStyleSheet;
-	std::vector<std::string> mComments;
+	std::vector<String> mComments;
 	MediaQueryList::ptr mMediaQueryList;
 	bool mLoaded;
 
-	bool parse( std::string& css, std::vector<std::string>& importedList );
+	bool parse( String& css, std::vector<String>& importedList );
 
-	int readSelector( const std::string& css, ReadState& rs, std::size_t pos, std::string& buffer );
+	int readSelector( const String& css, ReadState& rs, std::size_t pos, String& buffer );
 
-	int readComment( const std::string& css, ReadState& rs, std::size_t pos, std::string& buffer );
+	int readComment( const String& css, ReadState& rs, std::size_t pos, String& buffer );
 
-	int readProperty( const std::string& css, ReadState& rs, std::size_t pos, std::string& buffer );
+	int readProperty( const String& css, ReadState& rs, std::size_t pos, String& buffer );
 
-	std::string importCSS( std::string path, std::vector<std::string>& importedList );
+	String importCSS( String path, std::vector<String>& importedList );
 
-	void mediaParse( std::string& css, ReadState& rs, std::size_t& pos, std::string& buffer,
-					 std::vector<std::string>& importedList );
+	void mediaParse( String& css, ReadState& rs, std::size_t& pos, String& buffer,
+					 std::vector<String>& importedList );
 
-	void importParse( std::string& css, std::size_t& pos, std::string& buffer,
-					  std::vector<std::string>& importedList );
+	void importParse( String& css, std::size_t& pos, String& buffer,
+					  std::vector<String>& importedList );
 
-	void keyframesParse( std::string& css, ReadState& rs, std::size_t& pos, std::string& buffer );
+	void keyframesParse( String& css, ReadState& rs, std::size_t& pos, String& buffer );
 };
 
 }}} // namespace EE::UI::CSS

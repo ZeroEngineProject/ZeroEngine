@@ -9,7 +9,7 @@ namespace EE { namespace UI { namespace CSS {
 
 class PropertyIdSetIterator;
 
-class EE_API PropertyIdSet {
+class ZeroShared PropertyIdSet {
   private:
 	std::set<Uint32> mIds;
 
@@ -72,7 +72,7 @@ class EE_API PropertyIdSet {
 	inline PropertyIdSetIterator erase( const PropertyIdSetIterator& it );
 };
 
-class EE_API PropertyIdSetIterator {
+class ZeroShared PropertyIdSetIterator {
   public:
 	using CustomIdsIt = std::set<Uint32>::const_iterator;
 

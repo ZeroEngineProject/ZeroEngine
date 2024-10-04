@@ -5,7 +5,7 @@
 
 namespace EE { namespace UI { namespace Doc {
 
-class EE_API TextDocumentLine {
+class ZeroShared TextDocumentLine {
   public:
 	enum Flags { AllAscii = 1 << 0 };
 
@@ -25,7 +25,7 @@ class EE_API TextDocumentLine {
 
 	String getTextWithoutNewLine() const { return mText.substr( 0, mText.size() - 1 ); }
 
-	void operator=( const std::string& right ) { setText( right ); }
+	void operator=( const String& right ) { setText( right ); }
 
 	String::StringBaseType operator[]( std::size_t index ) const { return mText[index]; }
 
@@ -62,7 +62,7 @@ class EE_API TextDocumentLine {
 
 	const String::HashType& getHash() const { return mHash; }
 
-	std::string toUtf8() const { return mText.toUtf8(); }
+	String toUtf8() const { return mText.toUtf8(); }
 
   protected:
 	String mText;

@@ -104,10 +104,10 @@ struct MediaFeatures {
 					// not a monochrome device, the output device value will be 0.
 	int resolution;							  // The resolution of the output device (in DPI)
 	float pixelDensity;						  // Screen pixel density
-	std::string prefersColorScheme{ "dark" }; // Color Scheme Default Preference
+	String prefersColorScheme{ "dark" }; // Color Scheme Default Preference
 };
 
-struct EE_API MediaQueryExpression {
+struct ZeroShared MediaQueryExpression {
 	typedef std::vector<MediaQueryExpression> vector;
 
 	MediaFeature feature;
@@ -116,14 +116,14 @@ struct EE_API MediaQueryExpression {
 	float fval{ 0 };
 	float fval2{ 0 };
 	bool checkAsBool{ false };
-	std::string valStr;
+	String valStr;
 
 	MediaQueryExpression();
 
 	bool check( const MediaFeatures& features ) const;
 };
 
-class EE_API MediaQuery {
+class ZeroShared MediaQuery {
   public:
 	typedef std::shared_ptr<MediaQuery> ptr;
 	typedef std::vector<MediaQuery::ptr> vector;
@@ -132,7 +132,7 @@ class EE_API MediaQuery {
 
 	MediaQuery( const MediaQuery& val );
 
-	static MediaQuery::ptr parse( const std::string& str );
+	static MediaQuery::ptr parse( const String& str );
 
 	bool check( const MediaFeatures& features ) const;
 
@@ -142,7 +142,7 @@ class EE_API MediaQuery {
 	MediaType mMediaType;
 };
 
-class EE_API MediaQueryList {
+class ZeroShared MediaQueryList {
   public:
 	typedef std::shared_ptr<MediaQueryList> ptr;
 	typedef std::vector<MediaQueryList::ptr> vector;
@@ -151,7 +151,7 @@ class EE_API MediaQueryList {
 
 	MediaQueryList( const MediaQueryList& val );
 
-	static MediaQueryList::ptr parse( const std::string& str );
+	static MediaQueryList::ptr parse( const String& str );
 
 	bool isUsed() const;
 
@@ -161,13 +161,13 @@ class EE_API MediaQueryList {
 
 	void setMarker( const Uint32& marker );
 
-	const std::string& getQueryString() const { return mQueryStr; }
+	const String& getQueryString() const { return mQueryStr; }
 
   private:
 	Uint32 mMarker{ 0 };
 	MediaQuery::vector mQueries;
 	bool mUsed;
-	std::string mQueryStr;
+	String mQueryStr;
 };
 
 }}} // namespace EE::UI::CSS

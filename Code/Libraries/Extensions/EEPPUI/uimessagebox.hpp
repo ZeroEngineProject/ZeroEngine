@@ -16,7 +16,7 @@ class UIComboBox;
 	UI_WIN_CLOSE_BUTTON | UI_WIN_USE_DEFAULT_BUTTONS_ACTIONS | UI_WIN_MODAL | \
 		UI_WIN_SHARE_ALPHA_WITH_CHILDS
 
-class EE_API UIMessageBox : public UIWindow {
+class ZeroShared UIMessageBox : public UIWindow {
   public:
 	enum Type { OK_CANCEL, YES_NO, RETRY_CANCEL, OK, INPUT, TEXT_EDIT, DROPDOWNLIST, COMBOBOX };
 

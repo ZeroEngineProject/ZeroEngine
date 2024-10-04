@@ -6,13 +6,13 @@
 
 namespace EE { namespace UI {
 
-class EE_API UICheckBox : public UITextView {
+class ZeroShared UICheckBox : public UITextView {
   public:
 	enum CheckMode { TextAndButton, Button };
 
 	static UICheckBox* New();
 
-	static UICheckBox* NewWithTag( const std::string& tag );
+	static UICheckBox* NewWithTag( const String& tag );
 
 	virtual ~UICheckBox();
 
@@ -38,7 +38,7 @@ class EE_API UICheckBox : public UITextView {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;
@@ -57,7 +57,7 @@ class EE_API UICheckBox : public UITextView {
 
 	UICheckBox();
 
-	UICheckBox( const std::string& tag );
+	UICheckBox( const String& tag );
 
 	virtual void onSizeChange();
 

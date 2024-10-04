@@ -257,21 +257,21 @@ enum class PropertyRelativeTarget : Uint32 {
 	LocalBlockRadiusHeight
 };
 
-class EE_API PropertyDefinition {
+class ZeroShared PropertyDefinition {
   public:
-	static PropertyDefinition* New( const std::string& name, const std::string& defaultValue,
+	static PropertyDefinition* New( const String& name, const String& defaultValue,
 									const bool& inherited = false );
 
-	PropertyDefinition( const std::string& name, const std::string& defaultValue,
+	PropertyDefinition( const String& name, const String& defaultValue,
 						const bool& inherited = false );
 
-	const std::string& getName() const;
+	const String& getName() const;
 
 	const String::HashType& getId() const;
 
 	PropertyId getPropertyId() const;
 
-	const std::string& getDefaultValue() const;
+	const String& getDefaultValue() const;
 
 	bool getInherited() const;
 
@@ -283,13 +283,13 @@ class EE_API PropertyDefinition {
 
 	const PropertyType& getType() const;
 
-	PropertyDefinition& addAlias( const std::string& alias );
+	PropertyDefinition& addAlias( const String& alias );
 
-	bool isAlias( const std::string& alias ) const;
+	bool isAlias( const String& alias ) const;
 
 	bool isAlias( const Uint32& id ) const;
 
-	bool isDefinition( const std::string& name ) const;
+	bool isDefinition( const String& name ) const;
 
 	bool isDefinition( const Uint32& id ) const;
 
@@ -298,11 +298,11 @@ class EE_API PropertyDefinition {
 	const bool& isIndexed() const;
 
   protected:
-	std::string mName;
+	String mName;
 	String::HashType mId;
-	std::vector<std::string> mAliases;
+	std::vector<String> mAliases;
 	std::vector<Uint32> mAliasesHash;
-	std::string mDefaultValue;
+	String mDefaultValue;
 	bool mInherited;
 	bool mIndexed;
 	PropertyRelativeTarget mRelativeTarget;

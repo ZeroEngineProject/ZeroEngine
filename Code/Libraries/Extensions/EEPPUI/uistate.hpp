@@ -7,7 +7,7 @@ namespace EE { namespace UI {
 
 class UISkin;
 
-class EE_API UIState {
+class ZeroShared UIState {
   public:
 	enum UIStates {
 		StateNormal = 0,
@@ -39,15 +39,15 @@ class EE_API UIState {
 
 	static const char* getStateName( const Uint32& State );
 
-	static int getStateNumber( const std::string& State );
+	static int getStateNumber( const String& State );
 
 	static const char* getStateNameFromStateFlag( const Uint32& stateFlag );
 
 	static const Uint32& getStateFlag( const Uint32& stateIndex );
 
-	static Uint32 getStateFlagFromName( const std::string& name );
+	static Uint32 getStateFlagFromName( const String& name );
 
-	static bool isStateName( const std::string& State );
+	static bool isStateName( const String& State );
 
 	UIState();
 

@@ -124,7 +124,7 @@ bool UISplitter::applyProperty( const StyleSheetProperty& attribute ) {
 		case PropertyId::SplitterAlwaysShow:
 			setAlwaysShowSplitter( attribute.asBool() );
 		case PropertyId::Orientation: {
-			std::string val = attribute.asString();
+			String val = attribute.asString();
 			String::toLowerInPlace( val );
 
 			if ( "horizontal" == val )
@@ -140,7 +140,7 @@ bool UISplitter::applyProperty( const StyleSheetProperty& attribute ) {
 	return true;
 }
 
-std::string UISplitter::getPropertyString( const PropertyDefinition* propertyDef,
+String UISplitter::getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";

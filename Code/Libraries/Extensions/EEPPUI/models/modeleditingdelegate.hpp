@@ -8,7 +8,7 @@
 
 namespace EE { namespace UI { namespace Models {
 
-class EE_API ModelEditingDelegate {
+class ZeroShared ModelEditingDelegate {
   public:
 	enum SelectionBehavior {
 		DoNotSelect,
@@ -86,7 +86,7 @@ class EE_API ModelEditingDelegate {
 	SelectionBehavior mSelectionBehavior{ SelectionBehavior::SelectAll };
 };
 
-class EE_API StringModelEditingDelegate : public ModelEditingDelegate {
+class ZeroShared StringModelEditingDelegate : public ModelEditingDelegate {
   public:
 	static StringModelEditingDelegate* New() { return eeNew( StringModelEditingDelegate, () ); }
 

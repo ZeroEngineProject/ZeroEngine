@@ -3,12 +3,12 @@
 namespace EE { namespace UI { namespace CSS {
 
 KeyframesDefinition KeyframesDefinition::parseKeyframes(
-	const std::string& name, const std::vector<std::shared_ptr<StyleSheetStyle>>& keyframeBlocks ) {
+	const String& name, const std::vector<std::shared_ptr<StyleSheetStyle>>& keyframeBlocks ) {
 	KeyframesDefinition def;
 	def.name = name;
 
 	for ( const auto& block : keyframeBlocks ) {
-		std::string blockName( String::toLower( String::trim( block->getSelector().getName() ) ) );
+		String blockName( String::toLower( String::trim( block->getSelector().getName() ) ) );
 		Float blockTime = 0.f;
 
 		if ( blockName == "from" ) {
@@ -16,7 +16,7 @@ KeyframesDefinition KeyframesDefinition::parseKeyframes(
 		} else if ( blockName == "to" ) {
 			blockTime = 1.f;
 		} else if ( blockName[blockName.size() - 1] == '%' ) {
-			std::string blockNum( blockName.substr( 0, blockName.size() - 1 ) );
+			String blockNum( blockName.substr( 0, blockName.size() - 1 ) );
 			Float num = 0.f;
 			if ( String::fromString( num, blockNum ) ) {
 				blockTime = num / 100.f;
@@ -56,7 +56,7 @@ void KeyframesDefinition::setMarker( const Uint32& marker ) {
 	this->marker = marker;
 }
 
-const std::string& KeyframesDefinition::getName() const {
+const String& KeyframesDefinition::getName() const {
 	return name;
 }
 

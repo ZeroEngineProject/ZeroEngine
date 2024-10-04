@@ -54,7 +54,7 @@ UIThemeManager* UIThemeManager::setDefaultTheme( UITheme* Theme ) {
 	return this;
 }
 
-UIThemeManager* UIThemeManager::setDefaultTheme( const std::string& Theme ) {
+UIThemeManager* UIThemeManager::setDefaultTheme( const String& Theme ) {
 	setDefaultTheme( getByName( Theme ) );
 	return this;
 }

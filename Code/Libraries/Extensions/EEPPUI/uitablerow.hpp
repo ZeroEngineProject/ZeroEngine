@@ -8,9 +8,9 @@ using namespace EE::UI::Models;
 
 namespace EE { namespace UI {
 
-class EE_API UITableRow : public UIWidget {
+class ZeroShared UITableRow : public UIWidget {
   public:
-	static UITableRow* New( const std::string& tag ) { return eeNew( UITableRow, ( tag ) ); }
+	static UITableRow* New( const String& tag ) { return eeNew( UITableRow, ( tag ) ); }
 
 	static UITableRow* New() { return eeNew( UITableRow, () ); }
 
@@ -25,7 +25,7 @@ class EE_API UITableRow : public UIWidget {
 	}
 
   protected:
-	UITableRow( const std::string& tag ) : UIWidget( tag ) { applyDefaultTheme(); }
+	UITableRow( const String& tag ) : UIWidget( tag ) { applyDefaultTheme(); }
 
 	UITableRow() : UIWidget( "table::row" ) {}
 

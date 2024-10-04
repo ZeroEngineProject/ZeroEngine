@@ -9,13 +9,13 @@
 
 namespace EE { namespace UI { namespace CSS {
 
-class EE_API StyleSheetPropertiesParser {
+class ZeroShared StyleSheetPropertiesParser {
   public:
 	StyleSheetPropertiesParser();
 
-	explicit StyleSheetPropertiesParser( const std::string& propsstr );
+	explicit StyleSheetPropertiesParser( const String& propsstr );
 
-	void parse( const std::string& propsstr );
+	void parse( const String& propsstr );
 
 	void print();
 
@@ -31,15 +31,15 @@ class EE_API StyleSheetPropertiesParser {
 	StyleSheetProperties mProperties;
 	StyleSheetVariables mVariables;
 
-	int readPropertyName( ReadState& rs, std::size_t pos, std::string& buffer,
-						  const std::string& str );
+	int readPropertyName( ReadState& rs, std::size_t pos, String& buffer,
+						  const String& str );
 
-	int readPropertyValue( ReadState& rs, std::size_t pos, std::string& buffer,
-						   const std::string& str );
+	int readPropertyValue( ReadState& rs, std::size_t pos, String& buffer,
+						   const String& str );
 
-	int readComment( ReadState& rs, std::size_t pos, std::string& buffer, const std::string& str );
+	int readComment( ReadState& rs, std::size_t pos, String& buffer, const String& str );
 
-	void addProperty( std::string name, std::string value );
+	void addProperty( String name, String value );
 };
 
 }}} // namespace EE::UI::CSS

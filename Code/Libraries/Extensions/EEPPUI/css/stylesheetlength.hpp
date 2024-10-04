@@ -10,7 +10,7 @@ using namespace EE::Math;
 
 namespace EE { namespace UI { namespace CSS {
 
-class EE_API StyleSheetLength {
+class ZeroShared StyleSheetLength {
   public:
 	enum Unit {
 		Percentage,
@@ -35,19 +35,19 @@ class EE_API StyleSheetLength {
 		Dpr,
 	};
 
-	static Unit unitFromString( std::string unitStr );
+	static Unit unitFromString( String unitStr );
 
-	static std::string unitToString( const Unit& unit );
+	static String unitToString( const Unit& unit );
 
-	static bool isLength( const std::string& unitStr );
+	static bool isLength( const String& unitStr );
 
-	static StyleSheetLength fromString( const std::string& str, const Float& defaultValue = 0 );
+	static StyleSheetLength fromString( const String& str, const Float& defaultValue = 0 );
 
 	StyleSheetLength();
 
 	StyleSheetLength( const Float& val, const Unit& unit );
 
-	StyleSheetLength( const std::string& val, const Float& defaultValue = 0 );
+	StyleSheetLength( const String& val, const Float& defaultValue = 0 );
 
 	StyleSheetLength( const StyleSheetLength& val );
 
@@ -71,7 +71,7 @@ class EE_API StyleSheetLength {
 
 	StyleSheetLength& operator=( const Float& val );
 
-	std::string toString() const;
+	String toString() const;
 
   protected:
 	Unit mUnit;

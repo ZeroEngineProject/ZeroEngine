@@ -24,7 +24,7 @@ class CSSPropertiesModel final : public Model {
 
 	virtual size_t columnCount( const ModelIndex& ) const { return 2; }
 
-	virtual std::string columnName( const size_t& idx ) const {
+	virtual String columnName( const size_t& idx ) const {
 		return idx == 1 ? "Property" : "Value";
 	}
 

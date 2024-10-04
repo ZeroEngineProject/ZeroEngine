@@ -10,7 +10,7 @@ using namespace EE::System;
 
 namespace EE { namespace UI { namespace Doc {
 
-class EE_API TextFormat {
+class ZeroShared TextFormat {
   public:
 	enum class Encoding : String::HashType {
 		UTF8 = String::hash( "UTF-8" ),
@@ -26,15 +26,15 @@ class EE_API TextFormat {
 	LineEnding newLine = LineEnding::LF;
 	bool bom = false;
 
-	static std::vector<std::pair<Encoding, std::string>> encodings();
+	static std::vector<std::pair<Encoding, String>> encodings();
 
-	static std::string lineEndingToString( const TextFormat::LineEnding& le );
+	static String lineEndingToString( const TextFormat::LineEnding& le );
 
-	static TextFormat::LineEnding stringToLineEnding( const std::string& str );
+	static TextFormat::LineEnding stringToLineEnding( const String& str );
 
-	static std::string encodingToString( TextFormat::Encoding enc );
+	static String encodingToString( TextFormat::Encoding enc );
 
-	static Encoding encodingFromString( const std::string& str );
+	static Encoding encodingFromString( const String& str );
 
 	static TextFormat autodetect( IOStream& ins );
 };

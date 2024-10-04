@@ -9,7 +9,7 @@ using namespace EE::UI;
 
 namespace EE { namespace UI { namespace Models {
 
-class EE_API WidgetTreeModel : public Model {
+class ZeroShared WidgetTreeModel : public Model {
   public:
 	enum Column {
 		Type = 0,
@@ -25,7 +25,7 @@ class EE_API WidgetTreeModel : public Model {
 
 	virtual size_t columnCount( const ModelIndex& = ModelIndex() ) const override;
 
-	virtual std::string columnName( const size_t& /*column*/ ) const override;
+	virtual String columnName( const size_t& /*column*/ ) const override;
 
 	virtual Variant data( const ModelIndex&, ModelRole role = ModelRole::Display ) const override;
 

@@ -8,22 +8,22 @@
 
 namespace EE { namespace UI { namespace CSS {
 
-class EE_API StyleSheetVariable {
+class ZeroShared StyleSheetVariable {
   public:
 	StyleSheetVariable();
 
-	explicit StyleSheetVariable( const std::string& name, const std::string& value );
+	explicit StyleSheetVariable( const String& name, const String& value );
 
-	explicit StyleSheetVariable( const std::string& name, const std::string& value,
+	explicit StyleSheetVariable( const String& name, const String& value,
 								 const Uint32& specificity );
 
-	const std::string& getName() const;
+	const String& getName() const;
 
 	const String::HashType& getNameHash() const;
 
-	const std::string& getValue() const;
+	const String& getValue() const;
 
-	const std::string& value() const;
+	const String& value() const;
 
 	const Uint32& getSpecificity() const;
 
@@ -31,20 +31,20 @@ class EE_API StyleSheetVariable {
 
 	bool isEmpty() const;
 
-	void setName( const std::string& name );
+	void setName( const String& name );
 
-	void setValue( const std::string& value );
+	void setValue( const String& value );
 
 	bool operator==( const StyleSheetVariable& variable );
 
   protected:
-	std::string mName;
+	String mName;
 	String::HashType mNameHash;
-	std::string mValue;
+	String mValue;
 	Uint32 mSpecificity;
 };
 
-typedef UnorderedMap<Uint32, StyleSheetVariable> StyleSheetVariables;
+typedef HashMap<Uint32, StyleSheetVariable> StyleSheetVariables;
 
 }}} // namespace EE::UI::CSS
 

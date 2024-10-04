@@ -655,7 +655,7 @@ void UIWidgetTable::updatePageStep() {
 							  (Float)mItems.size() );
 }
 
-std::string UIWidgetTable::getPropertyString( const PropertyDefinition* propertyDef,
+String UIWidgetTable::getPropertyString( const PropertyDefinition* propertyDef,
 											  const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -696,7 +696,7 @@ bool UIWidgetTable::applyProperty( const StyleSheetProperty& attribute ) {
 			setRowHeight( attribute.asDpDimensionI( this ) );
 			break;
 		case PropertyId::VScrollMode: {
-			const std::string& val = attribute.value();
+			const String& val = attribute.value();
 			if ( "auto" == val )
 				setVerticalScrollMode( ScrollBarMode::Auto );
 			else if ( "on" == val )
@@ -706,7 +706,7 @@ bool UIWidgetTable::applyProperty( const StyleSheetProperty& attribute ) {
 			break;
 		}
 		case PropertyId::HScrollMode: {
-			const std::string& val = attribute.value();
+			const String& val = attribute.value();
 			if ( "auto" == val )
 				setHorizontalScrollMode( ScrollBarMode::Auto );
 			else if ( "on" == val )
@@ -716,7 +716,7 @@ bool UIWidgetTable::applyProperty( const StyleSheetProperty& attribute ) {
 			break;
 		}
 		case PropertyId::ScrollBarStyle: {
-			std::string val( attribute.asString() );
+			String val( attribute.asString() );
 			String::toLowerInPlace( val );
 
 			if ( "no-buttons" == val || "nobuttons" == val ) {

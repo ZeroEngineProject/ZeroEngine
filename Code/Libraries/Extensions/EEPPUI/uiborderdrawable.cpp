@@ -167,56 +167,56 @@ void UIBorderDrawable::invalidate() {
 	mNeedsUpdate = true;
 }
 
-void UIBorderDrawable::setLeftWidth( const std::string& leftWidth ) {
+void UIBorderDrawable::setLeftWidth( const String& leftWidth ) {
 	if ( mBorderStr.width.left != leftWidth ) {
 		mBorderStr.width.left = leftWidth;
 		mNeedsUpdate = true;
 	}
 }
 
-void UIBorderDrawable::setRightWidth( const std::string& rightWidth ) {
+void UIBorderDrawable::setRightWidth( const String& rightWidth ) {
 	if ( mBorderStr.width.right != rightWidth ) {
 		mBorderStr.width.right = rightWidth;
 		mNeedsUpdate = true;
 	}
 }
 
-void UIBorderDrawable::setTopWidth( const std::string& topWidth ) {
+void UIBorderDrawable::setTopWidth( const String& topWidth ) {
 	if ( mBorderStr.width.top != topWidth ) {
 		mBorderStr.width.top = topWidth;
 		mNeedsUpdate = true;
 	}
 }
 
-void UIBorderDrawable::setBottomWidth( const std::string& bottomWidth ) {
+void UIBorderDrawable::setBottomWidth( const String& bottomWidth ) {
 	if ( mBorderStr.width.bottom != bottomWidth ) {
 		mBorderStr.width.bottom = bottomWidth;
 		mNeedsUpdate = true;
 	}
 }
 
-void UIBorderDrawable::setTopLeftRadius( const std::string& radius ) {
+void UIBorderDrawable::setTopLeftRadius( const String& radius ) {
 	if ( mBorderStr.radius.topLeft != radius ) {
 		mBorderStr.radius.topLeft = radius;
 		mNeedsUpdate = true;
 	}
 }
 
-void UIBorderDrawable::setTopRightRadius( const std::string& radius ) {
+void UIBorderDrawable::setTopRightRadius( const String& radius ) {
 	if ( mBorderStr.radius.topRight != radius ) {
 		mBorderStr.radius.topRight = radius;
 		mNeedsUpdate = true;
 	}
 }
 
-void UIBorderDrawable::setBottomLeftRadius( const std::string& radius ) {
+void UIBorderDrawable::setBottomLeftRadius( const String& radius ) {
 	if ( mBorderStr.radius.bottomLeft != radius ) {
 		mBorderStr.radius.bottomLeft = radius;
 		mNeedsUpdate = true;
 	}
 }
 
-void UIBorderDrawable::setBottomRightRadius( const std::string& radius ) {
+void UIBorderDrawable::setBottomRightRadius( const String& radius ) {
 	if ( mBorderStr.radius.bottomRight != radius ) {
 		mBorderStr.radius.bottomRight = radius;
 		mNeedsUpdate = true;

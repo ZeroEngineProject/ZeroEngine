@@ -5,13 +5,13 @@
 
 namespace EE { namespace UI { namespace CSS {
 
-PropertyDefinition* PropertyDefinition::New( const std::string& name,
-											 const std::string& defaultValue,
+PropertyDefinition* PropertyDefinition::New( const String& name,
+											 const String& defaultValue,
 											 const bool& inherited ) {
 	return eeNew( PropertyDefinition, ( name, defaultValue, inherited ) );
 }
 
-PropertyDefinition::PropertyDefinition( const std::string& name, const std::string& defaultValue,
+PropertyDefinition::PropertyDefinition( const String& name, const String& defaultValue,
 										const bool& inherited ) :
 	mName( name ),
 	mId( String::hash( name ) ),
@@ -21,7 +21,7 @@ PropertyDefinition::PropertyDefinition( const std::string& name, const std::stri
 	mRelativeTarget( PropertyRelativeTarget::None ),
 	mPropertyType( PropertyType::Undefined ) {}
 
-const std::string& PropertyDefinition::getName() const {
+const String& PropertyDefinition::getName() const {
 	return mName;
 }
 
@@ -33,7 +33,7 @@ PropertyId PropertyDefinition::getPropertyId() const {
 	return static_cast<PropertyId>( mId );
 }
 
-const std::string& PropertyDefinition::getDefaultValue() const {
+const String& PropertyDefinition::getDefaultValue() const {
 	return mDefaultValue;
 }
 
@@ -60,7 +60,7 @@ const PropertyType& PropertyDefinition::getType() const {
 	return mPropertyType;
 }
 
-PropertyDefinition& PropertyDefinition::addAlias( const std::string& alias ) {
+PropertyDefinition& PropertyDefinition::addAlias( const String& alias ) {
 	String::HashType aliasId = String::hash( alias );
 	mAliases.push_back( alias );
 	mAliasesHash.push_back( aliasId );
@@ -68,7 +68,7 @@ PropertyDefinition& PropertyDefinition::addAlias( const std::string& alias ) {
 	return *this;
 }
 
-bool PropertyDefinition::isAlias( const std::string& alias ) const {
+bool PropertyDefinition::isAlias( const String& alias ) const {
 	return isAlias( String::hash( alias ) );
 }
 
@@ -81,7 +81,7 @@ bool PropertyDefinition::isAlias( const Uint32& id ) const {
 	return false;
 }
 
-bool PropertyDefinition::isDefinition( const std::string& name ) const {
+bool PropertyDefinition::isDefinition( const String& name ) const {
 	return isDefinition( String::hash( name ) );
 }
 

@@ -25,7 +25,7 @@ StyleSheetParser::StyleSheetParser() : mLoaded( false ) {}
 
 bool StyleSheetParser::loadFromStream( IOStream& stream ) {
 	Clock elapsed;
-	std::vector<std::string> importedList;
+	std::vector<String> importedList;
 	mCSS.resize( stream.getSize() );
 	stream.read( &mCSS[0], stream.getSize() );
 	bool ok = parse( mCSS, importedList );
@@ -34,10 +34,10 @@ bool StyleSheetParser::loadFromStream( IOStream& stream ) {
 	return ok;
 }
 
-bool StyleSheetParser::loadFromFile( const std::string& filename ) {
+bool StyleSheetParser::loadFromFile( const String& filename ) {
 	if ( !FileSystem::fileExists( filename ) &&
 		 PackManager::instance()->isFallbackToPacksActive() ) {
-		std::string path( filename );
+		String path( filename );
 		Pack* pack = PackManager::instance()->exists( path );
 
 		if ( NULL != pack ) {
@@ -51,7 +51,7 @@ bool StyleSheetParser::loadFromFile( const std::string& filename ) {
 	return loadFromStream( stream );
 }
 
-bool StyleSheetParser::loadFromPack( Pack* pack, std::string filePackPath ) {
+bool StyleSheetParser::loadFromPack( Pack* pack, String filePackPath ) {
 	if ( NULL == pack )
 		return false;
 
@@ -81,14 +81,14 @@ void StyleSheetParser::print() {
 	}
 }
 
-bool StyleSheetParser::loadFromString( const std::string& str ) {
+bool StyleSheetParser::loadFromString( const String& str ) {
 	if ( str.empty() )
 		return false;
 
 	return loadFromMemory( (const Uint8*)&str[0], str.size() );
 }
 
-bool StyleSheetParser::loadFromString( const std::string_view& str ) {
+bool StyleSheetParser::loadFromString( const String_view& str ) {
 	if ( str.empty() )
 		return false;
 
@@ -103,10 +103,10 @@ const bool& StyleSheetParser::isLoaded() const {
 	return mLoaded;
 }
 
-bool StyleSheetParser::parse( std::string& css, std::vector<std::string>& importedList ) {
+bool StyleSheetParser::parse( String& css, std::vector<String>& importedList ) {
 	ReadState rs = ReadingSelector;
 	std::size_t pos = 0;
-	std::string buffer;
+	String buffer;
 	std::size_t size = css.size();
 
 	// Check UTF-8 BOM header
@@ -146,8 +146,8 @@ bool StyleSheetParser::parse( std::string& css, std::vector<std::string>& import
 	return true;
 }
 
-int StyleSheetParser::readSelector( const std::string& css, ReadState& rs, std::size_t pos,
-									std::string& buffer ) {
+int StyleSheetParser::readSelector( const String& css, ReadState& rs, std::size_t pos,
+									String& buffer ) {
 	std::size_t initialPos = pos;
 	buffer.clear();
 
@@ -175,8 +175,8 @@ int StyleSheetParser::readSelector( const std::string& css, ReadState& rs, std::
 	return pos;
 }
 
-int StyleSheetParser::readComment( const std::string& css, ReadState& rs, std::size_t pos,
-								   std::string& buffer ) {
+int StyleSheetParser::readComment( const String& css, ReadState& rs, std::size_t pos,
+								   String& buffer ) {
 	buffer.clear();
 
 	while ( pos < css.size() ) {
@@ -199,9 +199,9 @@ int StyleSheetParser::readComment( const std::string& css, ReadState& rs, std::s
 	return pos;
 }
 
-int StyleSheetParser::readProperty( const std::string& css, ReadState& rs, std::size_t pos,
-									std::string& buffer ) {
-	std::string selectorName( buffer );
+int StyleSheetParser::readProperty( const String& css, ReadState& rs, std::size_t pos,
+									String& buffer ) {
+	String selectorName( buffer );
 
 	buffer.clear();
 
@@ -239,8 +239,8 @@ int StyleSheetParser::readProperty( const std::string& css, ReadState& rs, std::
 	return pos;
 }
 
-std::string StyleSheetParser::importCSS( std::string path,
-										 std::vector<std::string>& importedList ) {
+String StyleSheetParser::importCSS( String path,
+										 std::vector<String>& importedList ) {
 	if ( String::startsWith( path, "file://" ) ) {
 		path = path.substr( 7 );
 	}
@@ -250,7 +250,7 @@ std::string StyleSheetParser::importCSS( std::string path,
 
 		if ( FileSystem::fileGet( path, buffer ) ) {
 			importedList.push_back( path );
-			return std::string( reinterpret_cast<const char*>( buffer.get() ), buffer.size() );
+			return String( reinterpret_cast<const char*>( buffer.get() ), buffer.size() );
 		}
 	} else if ( String::startsWith( path, "http://" ) || String::startsWith( path, "https://" ) ) {
 		Http::Response response = Http::get( URI( path ), Seconds( 5 ) );
@@ -263,7 +263,7 @@ std::string StyleSheetParser::importCSS( std::string path,
 		ScopedBuffer buffer( stream->getSize() );
 		stream->read( reinterpret_cast<char*>( buffer.get() ), buffer.size() );
 		importedList.push_back( path );
-		return std::string( reinterpret_cast<const char*>( buffer.get() ) );
+		return String( reinterpret_cast<const char*>( buffer.get() ) );
 	} else {
 		if ( PackManager::instance()->isFallbackToPacksActive() ) {
 			Pack* pack = PackManager::instance()->exists( path );
@@ -275,22 +275,22 @@ std::string StyleSheetParser::importCSS( std::string path,
 					ScopedBuffer buffer;
 					if ( pack->isOpen() && pack->extractFileToMemory( path, buffer ) ) {
 						importedList.push_back( path );
-						return std::string( reinterpret_cast<const char*>( buffer.get() ) );
+						return String( reinterpret_cast<const char*>( buffer.get() ) );
 					}
 				}
 			}
 		}
 	}
 
-	return std::string();
+	return String();
 }
 
-void StyleSheetParser::mediaParse( std::string& css, ReadState& rs, std::size_t& pos,
-								   std::string& buffer, std::vector<std::string>& importedList ) {
+void StyleSheetParser::mediaParse( String& css, ReadState& rs, std::size_t& pos,
+								   String& buffer, std::vector<String>& importedList ) {
 	std::size_t mediaClosePos = String::findCloseBracket( css, pos - 1, '{', '}' );
 
-	if ( mediaClosePos != std::string::npos ) {
-		std::string mediaStr = css.substr( pos, mediaClosePos - pos );
+	if ( mediaClosePos != String::npos ) {
+		String mediaStr = css.substr( pos, mediaClosePos - pos );
 		MediaQueryList::ptr oldQueryList = mMediaQueryList;
 		mMediaQueryList = MediaQueryList::parse( buffer );
 		rs = ReadingSelector;
@@ -300,23 +300,23 @@ void StyleSheetParser::mediaParse( std::string& css, ReadState& rs, std::size_t&
 	}
 }
 
-void StyleSheetParser::importParse( std::string& css, std::size_t& pos, std::string& buffer,
-									std::vector<std::string>& importedList ) {
-	std::string::size_type endImport = css.find_first_of( ";", pos );
+void StyleSheetParser::importParse( String& css, std::size_t& pos, String& buffer,
+									std::vector<String>& importedList ) {
+	String::size_type endImport = css.find_first_of( ";", pos );
 
-	if ( endImport == std::string::npos ) {
+	if ( endImport == String::npos ) {
 		endImport = css.find_first_of( "\n", pos );
-		if ( endImport == std::string::npos ) {
+		if ( endImport == String::npos ) {
 			endImport = css.size() - 1;
 		}
 	}
 
-	std::string import( css.substr( pos, endImport - pos ) );
-	std::vector<std::string> tokens = String::split( import, " " );
+	String import( css.substr( pos, endImport - pos ) );
+	std::vector<String> tokens = String::split( import, " " );
 
 	if ( tokens.size() >= 2 ) {
-		std::string path( tokens[1] );
-		std::string mediaStr;
+		String path( tokens[1] );
+		String mediaStr;
 
 		if ( tokens.size() > 2 ) {
 			for ( size_t i = 2; i < tokens.size(); i++ ) {
@@ -331,7 +331,7 @@ void StyleSheetParser::importParse( std::string& css, std::size_t& pos, std::str
 		}
 
 		if ( std::find( importedList.begin(), importedList.end(), path ) == importedList.end() ) {
-			std::string newCss( importCSS( path, importedList ) );
+			String newCss( importCSS( path, importedList ) );
 
 			if ( !newCss.empty() ) {
 				if ( !mediaStr.empty() ) {
@@ -340,8 +340,8 @@ void StyleSheetParser::importParse( std::string& css, std::size_t& pos, std::str
 					newCss = mediaStr + newCss + "\n}";
 				}
 
-				std::string head( css.substr( 0, pos ) );
-				std::string tail( css.substr( endImport + 1 ) );
+				String head( css.substr( 0, pos ) );
+				String tail( css.substr( endImport + 1 ) );
 				css = head + newCss + tail;
 
 				buffer.clear();
@@ -357,18 +357,18 @@ void StyleSheetParser::importParse( std::string& css, std::size_t& pos, std::str
 	}
 }
 
-void StyleSheetParser::keyframesParse( std::string& css, ReadState& rs, std::size_t& pos,
-									   std::string& buffer ) {
+void StyleSheetParser::keyframesParse( String& css, ReadState& rs, std::size_t& pos,
+									   String& buffer ) {
 	std::size_t keyframesClosePos = String::findCloseBracket( css, pos - 1, '{', '}' );
 
-	if ( keyframesClosePos != std::string::npos ) {
+	if ( keyframesClosePos != String::npos ) {
 		StyleSheetParser keyframeParser;
 		keyframeParser.loadFromMemory( reinterpret_cast<const Uint8*>( &css[pos] ),
 									   keyframesClosePos - pos );
 		const std::vector<std::shared_ptr<StyleSheetStyle>>& styles =
 			keyframeParser.getStyleSheet().getStyles();
 
-		std::string name(
+		String name(
 			String::trim( String::trim( buffer.substr( buffer.find_first_of( " " ) ) ), '"' ) );
 
 		mStyleSheet.addKeyframes( KeyframesDefinition::parseKeyframes( name, styles ) );

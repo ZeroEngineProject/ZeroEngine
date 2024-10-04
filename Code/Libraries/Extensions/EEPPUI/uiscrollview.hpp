@@ -7,7 +7,7 @@ namespace EE { namespace UI {
 
 class UIScrollBar;
 
-class EE_API UIScrollView : public UITouchDraggableWidget {
+class ZeroShared UIScrollView : public UITouchDraggableWidget {
   public:
 	enum ScrollViewType { Inclusive, Exclusive };
 
@@ -39,7 +39,7 @@ class EE_API UIScrollView : public UITouchDraggableWidget {
 
 	virtual bool applyProperty( const StyleSheetProperty& attribute );
 
-	virtual std::string getPropertyString( const PropertyDefinition* propertyDef,
+	virtual String getPropertyString( const PropertyDefinition* propertyDef,
 										   const Uint32& propertyIndex = 0 ) const;
 
 	virtual std::vector<PropertyId> getPropertiesImplemented() const;

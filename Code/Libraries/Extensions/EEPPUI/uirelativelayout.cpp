@@ -11,7 +11,7 @@ UIRelativeLayout::UIRelativeLayout() : UILayout( "relativelayout" ) {
 	mFlags |= UI_OWNS_CHILDS_POSITION;
 }
 
-UIRelativeLayout::UIRelativeLayout( const std::string& tagName ) : UILayout( tagName ) {
+UIRelativeLayout::UIRelativeLayout( const String& tagName ) : UILayout( tagName ) {
 	mFlags |= UI_OWNS_CHILDS_POSITION;
 }
 

@@ -16,19 +16,19 @@ UIScrollBar* UIScrollBar::NewVertical() {
 	return eeNew( UIScrollBar, ( "scrollbar", UIOrientation::Vertical ) );
 }
 
-UIScrollBar* UIScrollBar::NewWithTag( const std::string& tag ) {
+UIScrollBar* UIScrollBar::NewWithTag( const String& tag ) {
 	return eeNew( UIScrollBar, ( tag, UIOrientation::Vertical ) );
 }
 
-UIScrollBar* UIScrollBar::NewHorizontalWithTag( const std::string& tag ) {
+UIScrollBar* UIScrollBar::NewHorizontalWithTag( const String& tag ) {
 	return eeNew( UIScrollBar, ( tag, UIOrientation::Horizontal ) );
 }
 
-UIScrollBar* UIScrollBar::NewVerticalWithTag( const std::string& tag ) {
+UIScrollBar* UIScrollBar::NewVerticalWithTag( const String& tag ) {
 	return eeNew( UIScrollBar, ( tag, UIOrientation::Vertical ) );
 }
 
-UIScrollBar::UIScrollBar( const std::string& tag, const UIOrientation& orientation ) :
+UIScrollBar::UIScrollBar( const String& tag, const UIOrientation& orientation ) :
 	UIWidget( tag ),
 #ifdef EE_PLATFORM_TOUCH
 	mScrollBarStyle( NoButtons )
@@ -357,7 +357,7 @@ void UIScrollBar::setExpandBackground( bool expandBackground ) {
 	}
 }
 
-std::string UIScrollBar::getPropertyString( const PropertyDefinition* propertyDef,
+String UIScrollBar::getPropertyString( const PropertyDefinition* propertyDef,
 											const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -403,7 +403,7 @@ bool UIScrollBar::applyProperty( const StyleSheetProperty& attribute ) {
 
 	switch ( attribute.getPropertyDefinition()->getPropertyId() ) {
 		case PropertyId::Orientation: {
-			std::string val = attribute.asString();
+			String val = attribute.asString();
 			String::toLowerInPlace( val );
 
 			if ( "horizontal" == val )
@@ -428,7 +428,7 @@ bool UIScrollBar::applyProperty( const StyleSheetProperty& attribute ) {
 			setPageStep( attribute.asFloat() );
 			break;
 		case PropertyId::ScrollBarStyle: {
-			std::string val = attribute.asString();
+			String val = attribute.asString();
 			String::toLowerInPlace( val );
 
 			if ( "no-buttons" == val || "nobuttons" == val ) {

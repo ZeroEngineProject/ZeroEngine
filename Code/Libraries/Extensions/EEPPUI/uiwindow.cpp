@@ -1557,8 +1557,8 @@ void UIWindow::resizeCursor() {
 	}
 }
 
-std::string UIWindow::getWindowFlagsString() const {
-	std::vector<std::string> flags;
+String UIWindow::getWindowFlagsString() const {
+	std::vector<String> flags;
 	if ( getWinFlags() & UI_WIN_DEFAULT_FLAGS )
 		flags.push_back( "default" );
 	if ( getWinFlags() & UI_WIN_CLOSE_BUTTON )
@@ -1586,7 +1586,7 @@ std::string UIWindow::getWindowFlagsString() const {
 	return String::join( flags, '|' );
 }
 
-std::string UIWindow::getPropertyString( const PropertyDefinition* propertyDef,
+String UIWindow::getPropertyString( const PropertyDefinition* propertyDef,
 										 const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
@@ -1668,14 +1668,14 @@ bool UIWindow::applyProperty( const StyleSheetProperty& attribute ) {
 			fixChildsSize();
 			break;
 		case PropertyId::WindowFlags: {
-			std::string flagsStr = attribute.asString();
+			String flagsStr = attribute.asString();
 			String::toLowerInPlace( flagsStr );
-			std::vector<std::string> strings = String::split( flagsStr, '|' );
+			std::vector<String> strings = String::split( flagsStr, '|' );
 			Uint32 winflags = 0;
 
 			if ( strings.size() ) {
 				for ( std::size_t i = 0; i < strings.size(); i++ ) {
-					std::string cur = strings[i];
+					String cur = strings[i];
 
 					if ( "default" == cur )
 						winflags |= UI_WIN_DEFAULT_FLAGS;
@@ -1760,7 +1760,7 @@ void UIWindow::preDraw() {}
 void UIWindow::postDraw() {}
 
 Uint32 UIWindow::onKeyDown( const KeyEvent& event ) {
-	std::string cmd = mKeyBindings.getCommandFromKeyBind( { event.getKeyCode(), event.getMod() } );
+	String cmd = mKeyBindings.getCommandFromKeyBind( { event.getKeyCode(), event.getMod() } );
 	if ( !cmd.empty() ) {
 		executeKeyBindingCommand( cmd );
 		return 0;
@@ -1776,37 +1776,37 @@ void UIWindow::setKeyBindings( const KeyBindings& keyBindings ) {
 	mKeyBindings = keyBindings;
 }
 
-void UIWindow::addKeyBindingString( const std::string& shortcut, const std::string& command ) {
+void UIWindow::addKeyBindingString( const String& shortcut, const String& command ) {
 	mKeyBindings.addKeybindString( shortcut, command );
 }
 
-void UIWindow::addKeyBinding( const KeyBindings::Shortcut& shortcut, const std::string& command ) {
+void UIWindow::addKeyBinding( const KeyBindings::Shortcut& shortcut, const String& command ) {
 	mKeyBindings.addKeybind( shortcut, command );
 }
 
-void UIWindow::replaceKeyBindingString( const std::string& shortcut, const std::string& command ) {
+void UIWindow::replaceKeyBindingString( const String& shortcut, const String& command ) {
 	mKeyBindings.replaceKeybindString( shortcut, command );
 }
 
 void UIWindow::replaceKeyBinding( const KeyBindings::Shortcut& shortcut,
-								  const std::string& command ) {
+								  const String& command ) {
 	mKeyBindings.replaceKeybind( shortcut, command );
 }
 
-void UIWindow::addKeyBindsString( const std::map<std::string, std::string>& binds ) {
+void UIWindow::addKeyBindsString( const std::map<String, String>& binds ) {
 	mKeyBindings.addKeybindsString( binds );
 }
 
-void UIWindow::addKeyBinds( const std::map<KeyBindings::Shortcut, std::string>& binds ) {
+void UIWindow::addKeyBinds( const std::map<KeyBindings::Shortcut, String>& binds ) {
 	mKeyBindings.addKeybinds( binds );
 }
 
-void UIWindow::setKeyBindingCommand( const std::string& command,
+void UIWindow::setKeyBindingCommand( const String& command,
 									 UIWindow::KeyBindingCommand func ) {
 	mKeyBindingCommands[command] = func;
 }
 
-void UIWindow::executeKeyBindingCommand( const std::string& command ) {
+void UIWindow::executeKeyBindingCommand( const String& command ) {
 	auto cmdIt = mKeyBindingCommands.find( command );
 	if ( cmdIt != mKeyBindingCommands.end() ) {
 		cmdIt->second();

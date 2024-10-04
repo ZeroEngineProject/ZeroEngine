@@ -17,9 +17,9 @@ namespace EE { namespace UI {
 
 class UIWidget;
 
-typedef std::map<Uint64, std::string> ShortcutMap;
+typedef std::map<Uint64, String> ShortcutMap;
 
-class EE_API KeyBindings {
+class ZeroShared KeyBindings {
   public:
 	struct Shortcut {
 		Shortcut() {}
@@ -35,59 +35,59 @@ class EE_API KeyBindings {
 
 	static KeyBindings::Shortcut sanitizeShortcut( const KeyBindings::Shortcut& shortcut );
 
-	static std::string keybindFormat( std::string str );
+	static String keybindFormat( String str );
 
-	static Shortcut toShortcut( const Window::Input* input, const std::string& keys );
+	static Shortcut toShortcut( const Window::Input* input, const String& keys );
 
-	static std::string fromShortcut( const Window::Input* input, KeyBindings::Shortcut shortcut,
+	static String fromShortcut( const Window::Input* input, KeyBindings::Shortcut shortcut,
 									 bool format = false );
 
 	KeyBindings( const Window::Input* input );
 
-	void addKeybindsString( const std::map<std::string, std::string>& binds );
+	void addKeybindsString( const std::map<String, String>& binds );
 
-	void addKeybinds( const std::map<Shortcut, std::string>& binds );
+	void addKeybinds( const std::map<Shortcut, String>& binds );
 
-	void addKeybindsStringUnordered( const std::unordered_map<std::string, std::string>& binds );
+	void addKeybindsStringUnordered( const std::unordered_map<String, String>& binds );
 
-	void addKeybindsUnordered( const std::unordered_map<Shortcut, std::string>& binds );
+	void addKeybindsUnordered( const std::unordered_map<Shortcut, String>& binds );
 
-	void addKeybindString( const std::string& key, const std::string& command );
+	void addKeybindString( const String& key, const String& command );
 
-	void addKeybind( const Shortcut& key, const std::string& command );
-
-	/** If the command is already on the list, it will remove the previous keybind. */
-	void replaceKeybindString( const std::string& keys, const std::string& command );
+	void addKeybind( const Shortcut& key, const String& command );
 
 	/** If the command is already on the list, it will remove the previous keybind. */
-	void replaceKeybind( const Shortcut& keys, const std::string& command );
+	void replaceKeybindString( const String& keys, const String& command );
 
-	Shortcut getShortcutFromString( const std::string& keys );
+	/** If the command is already on the list, it will remove the previous keybind. */
+	void replaceKeybind( const Shortcut& keys, const String& command );
+
+	Shortcut getShortcutFromString( const String& keys );
 
 	void removeKeybind( const Shortcut& keys );
 
 	bool existsKeybind( const Shortcut& keys );
 
-	void removeCommandKeybind( const std::string& command );
+	void removeCommandKeybind( const String& command );
 
-	void removeCommandsKeybind( const std::vector<std::string>& command );
+	void removeCommandsKeybind( const std::vector<String>& command );
 
-	std::string getCommandFromKeyBind( const Shortcut& keys );
+	String getCommandFromKeyBind( const Shortcut& keys );
 
-	std::string getCommandKeybindString( const std::string& command ) const;
+	String getCommandKeybindString( const String& command ) const;
 
 	void reset();
 
 	const ShortcutMap& getShortcutMap() const;
 
-	const std::map<std::string, Uint64> getKeybindings() const;
+	const std::map<String, Uint64> getKeybindings() const;
 
-	std::string getShortcutString( Shortcut shortcut, bool format = false ) const;
+	String getShortcutString( Shortcut shortcut, bool format = false ) const;
 
   protected:
 	const Window::Input* mInput;
 	ShortcutMap mShortcuts;
-	std::map<std::string, Uint64> mKeybindingsInvert;
+	std::map<String, Uint64> mKeybindingsInvert;
 };
 
 }} // namespace EE::UI

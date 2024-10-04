@@ -7,7 +7,7 @@ namespace EE { namespace UI {
 
 class UIMenu;
 
-class EE_API UIMenuSubMenu : public UIMenuItem {
+class ZeroShared UIMenuSubMenu : public UIMenuItem {
   public:
 	static UIMenuSubMenu* New();
 

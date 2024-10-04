@@ -10,7 +10,7 @@
 
 namespace EE { namespace UI {
 
-UIDropDownList* UIDropDownList::NewWithTag( const std::string& tag ) {
+UIDropDownList* UIDropDownList::NewWithTag( const String& tag ) {
 	return eeNew( UIDropDownList, ( tag ) );
 }
 
@@ -18,7 +18,7 @@ UIDropDownList* UIDropDownList::New() {
 	return eeNew( UIDropDownList, () );
 }
 
-UIDropDownList::UIDropDownList( const std::string& tag ) :
+UIDropDownList::UIDropDownList( const String& tag ) :
 	UITextInput( tag ), mListBox( NULL ), mFriendNode( NULL ) {
 	mEnabledCreateContextMenu = false;
 	setClipType( ClipType::ContentBox );
@@ -369,7 +369,7 @@ bool UIDropDownList::applyProperty( const StyleSheetProperty& attribute ) {
 	return true;
 }
 
-std::string UIDropDownList::getPropertyString( const PropertyDefinition* propertyDef,
+String UIDropDownList::getPropertyString( const PropertyDefinition* propertyDef,
 											   const Uint32& propertyIndex ) const {
 	if ( NULL == propertyDef )
 		return "";
