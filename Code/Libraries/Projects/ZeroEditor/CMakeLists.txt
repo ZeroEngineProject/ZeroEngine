@@ -18,6 +18,7 @@ target_sources(ZeroEditor
 target_link_libraries(ZeroEditor
   PUBLIC
     Assimp
+    Audio
     CodeTranslator
     Common
     Content

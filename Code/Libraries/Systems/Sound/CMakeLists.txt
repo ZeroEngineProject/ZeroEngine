@@ -77,10 +77,16 @@ target_sources(Sound
 target_link_libraries(Sound
   PUBLIC
     Common
+    Audio
     Engine
     Geometry
     Meta
     Serialization
     SpatialPartition
     Opus
+)
+
+zero_target_includes(Sound
+  PUBLIC
+    Audio
 )

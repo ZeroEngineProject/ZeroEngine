@@ -6,7 +6,6 @@ zero_use_precompiled_header(Platform ${CMAKE_CURRENT_LIST_DIR})
 target_sources(Platform
   PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/../Empty/Atomic.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../Empty/Audio.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../Empty/CallStack.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../Empty/ComPort.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../Empty/CrashHandler.cpp

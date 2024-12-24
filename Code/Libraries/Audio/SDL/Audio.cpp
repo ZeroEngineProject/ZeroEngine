@@ -1,6 +1,8 @@
 // MIT Licensed (see LICENSE.md).
 #include "Precompiled.hpp"
 
+#include "SDL.h"
+
 namespace Zero
 {
 

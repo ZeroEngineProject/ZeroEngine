@@ -1,6 +1,7 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
 #include "Common/CommonStandard.hpp"
+#include "Audio/AudioStandard.hpp"
 #include "Platform/PlatformStandard.hpp"
 #include "Serialization/SerializationStandard.hpp"
 #include "Meta/MetaStandard.hpp"
@@ -64,5 +65,4 @@ public:
 #include "SoundSystem.hpp"
 #include "Sound.hpp"
 #include "SoundCue.hpp"
-#include "SimpleSound.hpp"
 #include "SimpleSound.hpp"

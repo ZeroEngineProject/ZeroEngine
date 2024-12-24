@@ -17,7 +17,6 @@ target_sources(Platform
     ${CMAKE_CURRENT_LIST_DIR}/../Empty/ThreadSync.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../Empty/VirtualFileAndFileSystem.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../Posix/Socket.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../SDL/Audio.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../SDL/ExternalLibrary.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../SDL/Peripherals.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../SDL/PlatformStandard.cpp

@@ -65,6 +65,7 @@ target_sources(Gameplay
 target_link_libraries(Gameplay
   PUBLIC
     Common
+    Audio
     Engine
     Geometry
     Graphics
@@ -74,4 +75,9 @@ target_link_libraries(Gameplay
     Support
     Zilch
     ZilchShaders
+)
+
+zero_target_includes(Gameplay
+  PUBLIC
+    Audio
 )

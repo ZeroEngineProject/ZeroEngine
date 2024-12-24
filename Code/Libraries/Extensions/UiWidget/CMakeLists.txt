@@ -27,7 +27,13 @@ target_sources(UiWidget
 
 target_link_libraries(UiWidget
   PUBLIC
+    Audio
     Engine
     Graphics
     ZilchShaders
+)
+
+zero_target_includes(Gameplay
+  PUBLIC
+    Audio
 )

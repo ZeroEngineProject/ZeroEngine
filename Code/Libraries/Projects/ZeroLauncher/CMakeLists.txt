@@ -55,6 +55,7 @@ target_sources(ZeroLauncher
 target_link_libraries(ZeroLauncher
   PUBLIC
     Assimp
+    Audio
     CodeTranslator
     Common
     Content

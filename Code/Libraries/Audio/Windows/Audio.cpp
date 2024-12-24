@@ -1,6 +1,60 @@
 // MIT Licensed (see LICENSE.md).
 #include "Precompiled.hpp"
 
+// Prevent including winsock1.
+#define _WINSOCKAPI_
+
+// Only include frequently used elements.
+#define WIN32_LEAN_AND_MEAN
+#define NOCOMM
+
+// Prevent MIN ans MAX macros from being defined.
+#ifndef NOMINMAX
+#  define NOMINMAX
+#endif
+
+#include <winsock2.h>
+#include <Ws2tcpip.h>
+#include <Wspiapi.h>
+#include <Mmsystem.h>
+#include <Regstr.h>
+#include <WinBase.h>
+#include <windowsx.h>
+#include <intrin.h>
+#include <shellapi.h>
+#include <shlwapi.h>
+#include <direct.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <shlobj.h>
+#include <io.h>
+#include <crtdbg.h>
+#include <winhttp.h>
+#include <VersionHelpers.h>
+#include <Lmcons.h>
+#include <Xinput.h>
+#include <iptypes.h>
+#include <iphlpapi.h>
+#include <setupapi.h>
+#include <devguid.h>
+#include <commctrl.h>
+#include <dlgs.h>
+#include <commdlg.h>
+#include <shobjidl.h>
+#include <dbghelp.h>
+#include <Psapi.h>
+#include <mmreg.h>
+
+#include <functiondiscoverykeys.h>
+#include <process.h>
+
+#include <Audioclient.h>
+#include <mmdeviceapi.h>
+#include <audiopolicy.h>
+#include <avrt.h>
+
+#pragma comment(lib, "Avrt.lib")
+
 typedef void WASAPICallbackType(float* outputBuffer, float* inputBuffer, const unsigned frameCount, void* userData);
 
 const CLSID CLSID_MMDeviceEnumerator = __uuidof(MMDeviceEnumerator);

@@ -91,6 +91,7 @@ target_sources(Content
 target_link_libraries(Content
   PUBLIC
     Common
+    Audio
     Image
     Meta
     Platform
@@ -103,7 +104,7 @@ target_link_libraries(Content
     Nvtt
 )
 
-target_include_directories(Content
+zero_target_includes(Content
   PUBLIC
-    ${CMAKE_CURRENT_LIST_DIR}/../../Core/
+    Audio
 )

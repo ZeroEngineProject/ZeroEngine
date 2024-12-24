@@ -48,12 +48,12 @@
 #include <Psapi.h>
 #include <ws2tcpip.h>
 #include <mmreg.h>
-#include <Audioclient.h>
-#include <mmdeviceapi.h>
-#include <audiopolicy.h>
+//#include <Audioclient.h>
+//#include <mmdeviceapi.h>
+//#include <audiopolicy.h>
 #include <functiondiscoverykeys.h>
 #include <process.h>
-#include <avrt.h>
+//#include <avrt.h>
 #include <hidsdi.h>
 
 #ifdef min
@@ -76,7 +76,6 @@
 #pragma comment(lib, "user32.lib")
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "Avrt.lib")
-#pragma comment(lib, "hid.lib")
 
 #pragma comment(linker, "\"/manifestdependency:type='win32' \
 name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \

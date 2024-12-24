@@ -22,7 +22,6 @@ target_sources(Platform
     ${CMAKE_CURRENT_LIST_DIR}/../Empty/MainLoop.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../Posix/Socket.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../Libgit2/Git.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/../SDL/Audio.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../SDL/ExternalLibrary.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../SDL/File.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../SDL/Keys.inl
