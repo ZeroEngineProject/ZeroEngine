@@ -446,6 +446,15 @@ const runZeroFormat = async (options, sourceFiles) => {
   }));
 };
 
+/*
+Defined platforms:
+#Stub
+#Emscripten
+#SDLSTDEmpty
+#Windows
+#Linux
+*/
+
 const determineCmakeCombo = (options) => {
   const aliases = {
     Empty: {
