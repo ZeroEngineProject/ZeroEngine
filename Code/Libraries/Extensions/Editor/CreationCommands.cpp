@@ -3,7 +3,7 @@
 #include "Widget/Command.hpp"
 #include "Editor.hpp"
 #include "EditorCameraController.hpp"
-#include "Engine/CogOperations.hpp"
+#include "Engine/World/CogOperations.hpp"
 #include "Widget/CommandBinding.hpp"
 #include "Engine/Configuration.hpp"
 

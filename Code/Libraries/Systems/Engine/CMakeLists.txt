@@ -69,6 +69,66 @@ set(Engine_Scripting_Sources
     ${CMAKE_CURRENT_LIST_DIR}/Scripting/ZilchManager.hpp
 )
 
+set(Engine_World_Sources
+    ${CMAKE_CURRENT_LIST_DIR}/World/Archetype.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Archetype.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/ArchetypeRebuilder.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/ArchetypeRebuilder.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Cog.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Cog.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogHelpers.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogHelpers.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogId.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogId.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogInitializer.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogInitializer.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogMeta.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogMeta.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogMetaComposition.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogMetaComposition.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogOperations.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogOperations.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogPath.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogPath.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogRange.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogRange.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogRestoreState.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogRestoreState.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogSelection.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogSelection.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogSerialization.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/CogSerialization.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Component.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Component.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/ComponentHierarchy.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/ComponentMeta.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/ComponentMeta.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Game.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Game.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Hierarchy.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Hierarchy.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/HierarchyRange.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/HierarchyRange.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Level.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Level.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/ObjectLink.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/ObjectLink.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/ObjectLoader.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/ObjectLoader.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/ObjectSaver.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/ObjectSaver.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/ObjectStore.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/ObjectStore.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Space.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Space.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Tracker.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Tracker.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Transform.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/Transform.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/TransformSupport.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/World/TransformSupport.hpp
+)
+
 target_sources(Engine
   PRIVATE
     ${Engine_Action_Sources}
@@ -76,45 +136,13 @@ target_sources(Engine
     ${Engine_Platform_Sources}
     ${Engine_Resource_Sources}
     ${Engine_Scripting_Sources}
-    ${CMAKE_CURRENT_LIST_DIR}/Archetype.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Archetype.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ArchetypeRebuilder.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/ArchetypeRebuilder.hpp
+    ${Engine_World_Sources}
     ${CMAKE_CURRENT_LIST_DIR}/Area.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Area.hpp
     ${CMAKE_CURRENT_LIST_DIR}/AsyncProcess.cpp
     ${CMAKE_CURRENT_LIST_DIR}/AsyncProcess.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Cog.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Cog.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogHelpers.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogHelpers.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogId.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogId.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogInitializer.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogInitializer.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogMeta.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogMeta.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogMetaComposition.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogMetaComposition.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogOperations.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogOperations.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogPath.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogPath.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogRange.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogRange.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogRestoreState.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogRestoreState.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogSelection.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogSelection.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogSerialization.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/CogSerialization.hpp
     ${CMAKE_CURRENT_LIST_DIR}/ColorGradient.cpp
     ${CMAKE_CURRENT_LIST_DIR}/ColorGradient.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Component.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Component.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ComponentHierarchy.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ComponentMeta.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/ComponentMeta.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Configuration.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Configuration.hpp
     ${CMAKE_CURRENT_LIST_DIR}/CopyOnWrite.hpp
@@ -152,37 +180,21 @@ target_sources(Engine
     ${CMAKE_CURRENT_LIST_DIR}/EventDirectoryWatcher.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Factory.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Factory.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Game.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Game.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Gradient.hpp
     ${CMAKE_CURRENT_LIST_DIR}/HeightMap.cpp
     ${CMAKE_CURRENT_LIST_DIR}/HeightMap.hpp
     ${CMAKE_CURRENT_LIST_DIR}/HeightMapSource.cpp
     ${CMAKE_CURRENT_LIST_DIR}/HeightMapSource.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Hierarchy.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Hierarchy.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/HierarchyRange.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/HierarchyRange.hpp
     ${CMAKE_CURRENT_LIST_DIR}/HierarchySpline.cpp
     ${CMAKE_CURRENT_LIST_DIR}/HierarchySpline.hpp
     ${CMAKE_CURRENT_LIST_DIR}/JobSystem.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JobSystem.hpp
     ${CMAKE_CURRENT_LIST_DIR}/LauncherConfiguration.cpp
     ${CMAKE_CURRENT_LIST_DIR}/LauncherConfiguration.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Level.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Level.hpp
     ${CMAKE_CURRENT_LIST_DIR}/MetaOperations.cpp
     ${CMAKE_CURRENT_LIST_DIR}/MetaOperations.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Noise.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Noise.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ObjectLink.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/ObjectLink.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ObjectLoader.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/ObjectLoader.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ObjectSaver.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/ObjectSaver.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ObjectStore.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/ObjectStore.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Operation.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Operation.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Precompiled.cpp
@@ -203,8 +215,6 @@ target_sources(Engine
     ${CMAKE_CURRENT_LIST_DIR}/ShortcutsDoc.cpp
     ${CMAKE_CURRENT_LIST_DIR}/ShortcutsDoc.hpp
     ${CMAKE_CURRENT_LIST_DIR}/SimpleResourceFactory.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Space.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Space.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Spline.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Spline.hpp
     ${CMAKE_CURRENT_LIST_DIR}/System.cpp
@@ -217,12 +227,6 @@ target_sources(Engine
     ${CMAKE_CURRENT_LIST_DIR}/ThreadDispatch.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Time.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Time.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Tracker.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Tracker.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Transform.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Transform.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/TransformSupport.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/TransformSupport.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Tweakables.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Tweakables.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Tweakables.inl
