@@ -1119,11 +1119,12 @@ void OpenglRenderer::Initialize(OsHandle windowHandle, OsHandle deviceContext, O
   String loadingShaderPixel = ZeroIfGl("#version 150\n") ZeroIfWebgl("#version 100\n")
       ZeroIfWebgl("precision mediump float;\n") "uniform sampler2D Texture;\n"
                                                 "uniform float Alpha;\n" ZeroGlPixelIn " vec2 psInUv;\n"
+                                                ZeroIfGl("out vec4 FragColor;")
                                                 "void main(void)\n"
                                                 "{\n"
                                                 "  vec2 uv = vec2(psInUv.x, 1.0 - psInUv.y);\n"
-                                                "  gl_FragColor = texture2D(Texture, uv);\n"
-                                                "  gl_FragColor.xyz *= Alpha;\n"
+                                                ZeroIfGl("  FragColor = texture2D(Texture, uv);\n") ZeroIfWebgl("  gl_FragColor = texture2D(Texture, uv);\n")
+                                                ZeroIfGl("  FragColor.xyz *= Alpha;\n") ZeroIfWebgl("  gl_FragColor.xyz *= Alpha;\n")
                                                 "}";
 
   CreateShader(loadingShaderVertex, String(), loadingShaderPixel, mLoadingShader);
