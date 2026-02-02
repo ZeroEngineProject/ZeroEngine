@@ -677,8 +677,8 @@ void ResourceTagEditor::Modified()
     if (!resource)
       continue;
 
-    resource->mContentItem->SetTags(tags);
-    resource->mContentItem->SaveContent();
+    resource->mResourceSource->SetTags(tags);
+    resource->mResourceSource->SaveSourceContent();
 
     ResourceEvent e;
     e.Manager = resource->GetManager();
@@ -698,7 +698,9 @@ void ResourceTagEditor::OnTagDeleted(TagEvent* e)
     if (!resource)
       continue;
 
-    ContentItem* contentItem = resource->mContentItem;
+    ContentItem* contentItem = static_cast<ContentItem*>(resource->mResourceSource);
+    if (contentItem == nullptr)
+      continue;
     ContentTags* contentTags = contentItem->has(ContentTags);
     if (contentTags)
     {

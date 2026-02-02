@@ -8,6 +8,14 @@
 #  define ZeroDebug 1
 #endif
 
+// Editor build configuration.
+// Define ZERO_EDITOR=1 for editor builds (includes content system integration).
+// Define ZERO_EDITOR=0 for runtime-only builds (no content editing).
+// Default to editor build if not specified.
+#ifndef ZERO_EDITOR
+#  define ZERO_EDITOR 1
+#endif
+
 #ifdef ZERO_COMPILER_MSVC
 
 // Enable these warnings by setting them to level 3

@@ -143,6 +143,6 @@ public:
   GeometryContent(ContentInitializer& initializer);
 };
 
-void AddGeometryFileFilters(ResourceManager* manager);
+// AddGeometryFileFilters moved to Engine/Resource/ResourceManager.hpp
 
 } // namespace Zero

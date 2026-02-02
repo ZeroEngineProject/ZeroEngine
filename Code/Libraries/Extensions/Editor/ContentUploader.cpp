@@ -164,11 +164,23 @@ void ContentExportTile::GetMissingDependencies(HashSet<ContentItem*>& missingDep
   // All dependent resources
   Handle instance = GetEditObject();
 
-  // Get the dependencies from each resource
+  // Get the dependencies from each resource as ResourceIds
+  HashSet<ResourceId> dependencyIds;
   forRange (ResourceEntry& entry, listing.All())
   {
     Resource* resource = Z::gResources->GetResource(entry.mResourceId);
-    resource->GetDependencies(missingDependencies, instance);
+    resource->GetDependencies(dependencyIds, instance);
+  }
+
+  // Convert ResourceIds to ContentItems
+  forRange (ResourceId id, dependencyIds.All())
+  {
+    Resource* depResource = Z::gResources->GetResource(id);
+    if (depResource && depResource->mResourceSource)
+    {
+      ContentItem* contentItem = static_cast<ContentItem*>(depResource->mResourceSource);
+      missingDependencies.Insert(contentItem);
+    }
   }
 
   // Check for core resources in our dependencies list
@@ -272,7 +284,8 @@ void ContentExporterTileView::OnMetaDrop(MetaDropEvent* e)
   {
     if (Resource* resource = e->Instance.Get<Resource*>())
     {
-      if (mExporter->mContentItems.Contains(resource->mContentItem))
+      ContentItem* contentItem = static_cast<ContentItem*>(resource->mResourceSource);
+      if (mExporter->mContentItems.Contains(contentItem))
         e->Result = "Content item already added to package";
       else
         e->Result = "Add to content package";
@@ -282,10 +295,11 @@ void ContentExporterTileView::OnMetaDrop(MetaDropEvent* e)
   {
     if (Resource* resource = e->Instance.Get<Resource*>())
     {
-      if (mExporter->mContentItems.Contains(resource->mContentItem))
+      ContentItem* contentItem = static_cast<ContentItem*>(resource->mResourceSource);
+      if (mExporter->mContentItems.Contains(contentItem))
         return;
 
-      mExporter->mContentItems.PushBack(resource->mContentItem);
+      mExporter->mContentItems.PushBack(contentItem);
 
       mExporter->RefreshTileView();
       mExporter->UpdateTransformExternal();

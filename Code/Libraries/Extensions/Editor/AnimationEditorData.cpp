@@ -39,8 +39,8 @@ AnimationEditorData::AnimationEditorData(AnimationEditor* editor,
   mGraphData = graphData;
   mAnimation = animation;
 
-  ContentItem* contentItem = animation->mContentItem;
-  RichAnimationBuilder* builder = contentItem->has(RichAnimationBuilder);
+  ContentItem* contentItem = static_cast<ContentItem*>(animation->mResourceSource);
+  RichAnimationBuilder* builder = contentItem ? contentItem->has(RichAnimationBuilder) : nullptr;
 
   if (builder == nullptr)
   {
@@ -51,7 +51,7 @@ AnimationEditorData::AnimationEditorData(AnimationEditor* editor,
   else
   {
     // The Load the rich animation from file
-    String path = animation->mContentItem->GetFullPath();
+    String path = contentItem->GetFullPath();
 
     mRichAnimation = new RichAnimation();
     LoadFromDataFile(*mRichAnimation, path);
@@ -89,8 +89,8 @@ void AnimationEditorData::BakeToAnimation()
 
   mRichAnimation->BakeToAnimation(animation);
 
-  if (animation->mContentItem)
-    animation->mContentItem->SaveContent();
+  if (animation->mResourceSource)
+    animation->mResourceSource->SaveSourceContent();
 }
 
 void AnimationEditorData::SetSelection(Array<TrackNode*>& selection)
@@ -136,7 +136,7 @@ void AnimationEditorData::SaveRichAnimation()
   {
     if (animation != AnimationManager::GetDefault())
     {
-      String file = animation->mContentItem->GetFullPath();
+      String file = animation->mResourceSource->GetSourcePath();
       SaveToDataFile(*mRichAnimation, file);
     }
   }

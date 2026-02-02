@@ -39,6 +39,7 @@ ZilchDefineEnum(ViewportScaling);
 
 ZilchDeclareExternalType(GraphicsDriverSupport);
 ZilchDeclareExternalType(SamplerSettings);
+ZilchDeclareExternalType(SpriteData);
 
 ZilchDefineStaticLibrary(GraphicsLibrary)
 {
@@ -141,6 +142,7 @@ ZilchDefineStaticLibrary(GraphicsLibrary)
   ZilchInitializeType(Skeleton);
   ZilchInitializeType(SkinnedModel);
   ZilchInitializeType(Sprite);
+  ZilchInitializeExternalType(SpriteData);
   ZilchInitializeType(SpriteParticleSystem);
   ZilchInitializeType(SpriteSource);
   ZilchInitializeType(SpriteText);

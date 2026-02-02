@@ -490,8 +490,8 @@ void CollisionTableManager::OnCollisionGroupAdded(ResourceEvent* event)
     // We have to make sure to save the table so that when we load again this
     // group is registered (otherwise a user will try to use this group which
     // should be registered and it won't, resulting in problems)
-    if (table->Name != cDefaultCollisionTable && table->mContentItem)
-      table->mContentItem->SaveContent();
+    if (table->Name != cDefaultCollisionTable && table->mResourceSource)
+      table->mResourceSource->SaveSourceContent();
   }
 }
 

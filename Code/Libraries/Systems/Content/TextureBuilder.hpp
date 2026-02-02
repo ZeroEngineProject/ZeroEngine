@@ -3,28 +3,7 @@
 
 namespace Zero
 {
-
-const String ZTexLoader = "TextureZTex";
-
-const uint TextureFileId = 'ztex';
-const uint TextureFileVersion = 1;
-
-class TextureHeader
-{
-public:
-  uint mFileId;
-  uint mFileVersion;
-  uint mType;
-  uint mFormat;
-  uint mMipCount;
-  uint mTotalDataSize;
-  uint mCompression;
-  uint mAddressingX;
-  uint mAddressingY;
-  uint mFiltering;
-  uint mAnisotropy;
-  uint mMipMapping;
-};
+// TextureHeader, TextureFileId, TextureFileVersion, ZTexLoader moved to RendererBase/Renderer.hpp
 
 /// Information about a processed image.
 class TextureInfo : public ContentComponent

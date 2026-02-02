@@ -29,29 +29,47 @@ ZilchCompileFragmentEvent::ZilchCompileFragmentEvent(Module& dependencies,
 
 ResourceEntry::ResourceEntry()
 {
-  mLibrarySource = nullptr;
+#if ZERO_EDITOR
+  mResourceSource = nullptr;
+  mBuilderInfo = nullptr;
+#endif
   LoadOrder = 0;
-  mBuilder = nullptr;
   mLibrary = nullptr;
 }
 
+#if ZERO_EDITOR
 ResourceEntry::ResourceEntry(uint order,
                              StringParam type,
                              StringParam name,
                              StringParam location,
                              ResourceId id,
-                             ContentItem* library,
-                             BuilderComponent* builder) :
+                             IResourceSource* resourceSource,
+                             IBuilderInfo* builderInfo) :
     LoadOrder(order),
     Type(type),
     Name(name),
     Location(location),
     mResourceId(id),
-    mLibrarySource(library),
-    mBuilder(builder),
+    mResourceSource(resourceSource),
+    mBuilderInfo(builderInfo),
     mLibrary(nullptr)
 {
 }
+#else
+ResourceEntry::ResourceEntry(uint order,
+                             StringParam type,
+                             StringParam name,
+                             StringParam location,
+                             ResourceId id) :
+    LoadOrder(order),
+    Type(type),
+    Name(name),
+    Location(location),
+    mResourceId(id),
+    mLibrary(nullptr)
+{
+}
+#endif
 
 String ResourceEntry::ToString(bool shortFormat) const
 {
@@ -69,8 +87,9 @@ void ResourceEntry::Serialize(Serializer& stream)
 
 Zero::ResourceTemplate* ResourceEntry::GetResourceTemplate()
 {
-  if (mLibrarySource)
-    return mLibrarySource->has(ResourceTemplate);
+  // Note: This method is deprecated. ResourceTemplate is a Content type.
+  // Use mResourceSource->IsResourceTemplate() for template checks.
+  // Returns nullptr since we no longer have direct access to ContentItem.
   return nullptr;
 }
 

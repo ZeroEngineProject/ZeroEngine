@@ -17,4 +17,7 @@ target_sources(RendererBase
 target_link_libraries(RendererBase
   PUBLIC
     Common
+    Geometry
+    Image
+    Serialization
 )

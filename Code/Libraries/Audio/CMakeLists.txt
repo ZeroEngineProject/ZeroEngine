@@ -36,5 +36,11 @@ target_sources(Audio
 target_link_libraries(Audio
   PUBLIC
     Common
+    Opus
     ${AudioPlatformLibraries}
+)
+
+zero_target_includes(Audio
+  PUBLIC
+    Opus
 )

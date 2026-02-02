@@ -211,7 +211,9 @@ public:
   {
     return ResourceEditType::Text;
   }
-  void UpdateContentItem(ContentItem* contentItem) override;
+#if ZERO_EDITOR
+  void UpdateResourceSource(IResourceSource* resourceSource) override;
+#endif
   void SetAndSaveData(StringRange data);
 
   /// What syntax editor is used for this text

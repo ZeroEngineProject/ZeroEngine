@@ -272,6 +272,7 @@ target_sources(Editor
 
 target_link_libraries(Editor
   PUBLIC
+    Content
     Engine
     Gameplay
     Geometry

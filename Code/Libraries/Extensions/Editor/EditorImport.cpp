@@ -378,8 +378,8 @@ void BuildSoundCues(ResourcePackage* package, AudioOptions* options)
           // Add the sound
           Sound* sound = SoundManager::GetInstance()->Find(entry.mResourceId);
           cue->AddSoundEntry(sound, 1.0f);
-          if (cue->mContentItem)
-            cue->mContentItem->SaveContent();
+          if (cue->mResourceSource)
+            cue->mResourceSource->SaveSourceContent();
         }
       }
     }
@@ -407,8 +407,8 @@ void BuildSoundCues(ResourcePackage* package, AudioOptions* options)
         }
       }
 
-      if (cue->mContentItem)
-        cue->mContentItem->SaveContent();
+      if (cue->mResourceSource)
+        cue->mResourceSource->SaveSourceContent();
     }
   }
 }
@@ -450,7 +450,7 @@ void DoEditorSideImporting(ResourcePackage* package, ImportOptions* options)
           (Archetype*)ArchetypeManager::GetInstance()->ResourceIdMap.FindValue(genArchetype->mResourceId, NULL);
 
       // Check to see if the archetype is generated and is up to date
-      bool needToBuild = archetype == NULL || genArchetype->NeedToBuildArchetype(archetype->mContentItem);
+      bool needToBuild = archetype == NULL || genArchetype->NeedToBuildArchetype(static_cast<ContentItem*>(archetype->mResourceSource));
       if (!needToBuild)
         continue;
 

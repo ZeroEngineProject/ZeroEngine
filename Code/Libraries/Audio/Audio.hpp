@@ -1,4 +1,8 @@
 // MIT Licensed (see LICENSE.md).
+
+// Forward declaration for Opus encoder (from Opus library)
+struct OpusEncoder;
+
 namespace Zero
 {
 
@@ -68,6 +72,66 @@ public:
   MidiDataCallback mOnMidiData;
   void* mUserData;
   OsHandle mHandle;
+};
+
+// Audio file encoding constants
+namespace AudioConstants
+{
+// 20 ms of audio data at 48000 samples per second
+const unsigned cPacketFrames = 960;
+// Recommended max packet size
+const unsigned cMaxPacketSize = 4000;
+} // namespace AudioConstants
+
+/// The choices for how to load and play an audio file.
+/// <param name="StreamFromFile">The audio data will be read from the file and decompressed as it plays.</param>
+/// <param name="StreamFromMemory">The compressed audio data will be read into memory when the
+/// Sound resource is loaded and will be decompressed as it plays.</param>
+/// <param name="Uncompressed">The audio data will be decompressed and held in memory when the Sound resource is
+/// loaded.</param>
+/// <param name="Auto">This will choose whether to stream a file depending on its length. Files longer
+/// than 30 seconds will be streamed from memory, and those longer than 1 minute will be streamed from file.</param>
+DeclareEnum4(AudioFileLoadType, StreamFromFile, StreamFromMemory, Uncompressed, Auto);
+
+struct FileHeader
+{
+  const char Name[4] = {'Z', 'E', 'R', 'O'};
+  short Channels;
+  unsigned SamplesPerChannel;
+};
+
+struct PacketHeader
+{
+  PacketHeader() : Channel(0), Size(0)
+  {
+  }
+
+  const char Name[4] = {'p', 'a', 'c', 'k'};
+  short Channel;
+  unsigned Size;
+};
+
+// Packet Encoder
+class PacketEncoder
+{
+public:
+  PacketEncoder() : Encoder(nullptr)
+  {
+  }
+  ~PacketEncoder();
+
+  // Initializes encoder for use with EncodePacket.
+  // If the encoder already exists, it will be destroyed and re-created.
+  void InitializeEncoder();
+  // Encodes a single packet of data and allocates a buffer for the encoded data.
+  // Number of samples must be the same as PacketFrames
+  void EncodePacket(const float* dataBuffer, const unsigned samples, Zero::Array<::byte>& encodedData);
+
+  static const unsigned cChannels = 1;
+
+private:
+  // Used for repeated calls to EncodePacket
+  ::OpusEncoder* Encoder;
 };
 
 } // namespace Zero

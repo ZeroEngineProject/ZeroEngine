@@ -52,6 +52,61 @@ String ContentItem::GetName()
   return FilePath::GetFileNameWithoutExtension(Filename);
 }
 
+// IResourceSource interface implementation
+ResourceId ContentItem::GetResourceId() const
+{
+  return mRuntimeResource;
+}
+
+String ContentItem::GetSourcePath() const
+{
+  return FilePath::Combine(mLibrary->SourcePath, Filename);
+}
+
+String ContentItem::GetLibraryName() const
+{
+  if (mLibrary)
+    return mLibrary->Name;
+  return String();
+}
+
+bool ContentItem::IsLibraryWritable() const
+{
+  if (mLibrary)
+    return mLibrary->GetWritable();
+  return false;
+}
+
+void ContentItem::SaveSourceContent()
+{
+  SaveContent();
+}
+
+void ContentItem::OnResourceModified(Resource* resource)
+{
+  // Update the runtime resource id when a resource is created/modified
+  if (resource && EditMode == ContentEditMode::ResourceObject)
+    mRuntimeResource = resource->mResourceId;
+}
+
+bool ContentItem::IsResourceTemplate() const
+{
+  // Check if this content item has a ResourceTemplate component
+  // Note: Using const_cast because QueryComponentId is not const
+  ContentItem* self = const_cast<ContentItem*>(this);
+  return self->Has<ResourceTemplate>() != nullptr;
+}
+
+bool ContentItem::GetShowInEditor() const
+{
+  return ShowInEditor;
+}
+
+void ContentItem::SetShowInEditor(bool show)
+{
+  ShowInEditor = show;
+}
+
 void ContentItem::SaveContent()
 {
   ErrorIf(EditMode == ContentEditMode::NoEdit, "Can not save. No edit type.");

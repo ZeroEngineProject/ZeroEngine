@@ -61,46 +61,6 @@ private:
   static void EncodeFile(Status& status, File& outputFile, AudioFileData& data, float** buffersPerChannel);
 };
 
-struct FileHeader
-{
-  const char Name[4] = {'Z', 'E', 'R', 'O'};
-  short Channels;
-  unsigned SamplesPerChannel;
-};
-
-struct PacketHeader
-{
-  PacketHeader() : Channel(0), Size(0)
-  {
-  }
-
-  const char Name[4] = {'p', 'a', 'c', 'k'};
-  short Channel;
-  unsigned Size;
-};
-
-// Packet Encoder
-
-class PacketEncoder
-{
-public:
-  PacketEncoder() : Encoder(nullptr)
-  {
-  }
-  ~PacketEncoder();
-
-  // Initializes encoder for use with EncodePacket.
-  // If the encoder already exists, it will be destroyed and re-created.
-  void InitializeEncoder();
-  // Encodes a single packet of data and allocates a buffer for the encoded data.
-  // Number of samples must be the same as PacketFrames
-  void EncodePacket(const float* dataBuffer, const unsigned samples, Zero::Array<::byte>& encodedData);
-
-  static const unsigned cChannels = 1;
-
-private:
-  // Used for repeated calls to EncodePacket
-  OpusEncoder* Encoder;
-};
+// FileHeader, PacketHeader, and PacketEncoder moved to Audio/Audio.hpp
 
 } // namespace Zero

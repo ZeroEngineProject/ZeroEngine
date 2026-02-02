@@ -2,6 +2,10 @@
 
 #include "Precompiled.hpp"
 
+#if ZERO_EDITOR
+#include "Content/ContentStandard.hpp"
+#endif
+
 namespace Zero
 {
 
@@ -54,15 +58,18 @@ public:
       image.ClearColorTo(0xFFFFFFFF);
     }
 
-    // If there is a builder the sprite is being load in the editor
-    SpriteSourceBuilder* builder = (SpriteSourceBuilder*)entry.mBuilder;
-
-    if (builder)
+#if ZERO_EDITOR
+    // If there is a builder the sprite is being loaded in the editor
+    // SpriteSourceBuilder is a Content type only available in editor builds
+    if (entry.mBuilderInfo)
     {
+      // Cast to SpriteSourceBuilder - requires Content/SpriteBuilder.hpp
+      SpriteSourceBuilder* builder = (SpriteSourceBuilder*)entry.mBuilderInfo;
       // Load sprite frame data directly from builder
       source->GetSpriteData() = builder->GetSpriteData();
     }
     else
+#endif
     {
       // Get extra data on the end of the sprite file
       SpriteData* spriteData = (SpriteData*)(block.Data + block.Size - sizeof(SpriteData));
@@ -131,7 +138,7 @@ UvRect SpriteSource::GetUvRect(uint currentFrame)
 
 void SpriteSource::LoadSourceImage(Status& status, Image* image)
 {
-  String fullPath = mContentItem->GetFullPath();
+  String fullPath = mResourceSource->GetSourcePath();
   if (!FileExists(fullPath))
   {
     String msg = String::Format("File '%s' didn't exist.", fullPath.c_str());

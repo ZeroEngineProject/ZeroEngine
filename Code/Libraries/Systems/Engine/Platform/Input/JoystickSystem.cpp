@@ -292,7 +292,10 @@ void Joystick::SaveInputMapping(StringParam name)
     if (dataBlock)
     {
       block->Text = StringRange((cstr)dataBlock.Data, (cstr)dataBlock.Data, (cstr)dataBlock.Data + dataBlock.Size);
-      block->mContentItem->SaveContent();
+#if ZERO_EDITOR
+      if (block->mResourceSource)
+        block->mResourceSource->SaveSourceContent();
+#endif
       FreeBlock(dataBlock);
     }
   }

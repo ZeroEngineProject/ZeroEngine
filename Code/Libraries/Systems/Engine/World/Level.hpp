@@ -16,8 +16,10 @@ public:
   Level();
   ~Level();
 
+#if ZERO_EDITOR
   // Resource interface
-  void UpdateContentItem(ContentItem* contentItem) override;
+  void UpdateResourceSource(IResourceSource* resourceSource) override;
+#endif
 
   // Save the current contents of the space into the level.
   void SaveSpace(Space* space);

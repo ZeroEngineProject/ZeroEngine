@@ -520,7 +520,7 @@ void ResourceTemplateSearch::ShowTemplates(BoundType* resourceType)
     {
       if (ResourceTemplate* resourceTemplate = resource->GetResourceTemplate())
         DisconnectAll(resourceTemplate, this);
-      if (ContentItem* contentItem = resource->mContentItem)
+      if (ContentItem* contentItem = static_cast<ContentItem*>(resource->mResourceSource))
         DisconnectAll(contentItem, this);
     }
   }
@@ -588,7 +588,7 @@ void ResourceTemplateSearch::ShowTemplates(BoundType* resourceType)
       ConnectThisTo(resourceTemplate, Events::PropertyModified, OnContentComponentsChanged);
     }
 
-    if (ContentItem* contentItem = resource->mContentItem)
+    if (ContentItem* contentItem = static_cast<ContentItem*>(resource->mResourceSource))
     {
       DisconnectAll(contentItem, this);
       ConnectThisTo(contentItem, Events::ComponentsModified, OnContentComponentsChanged);
@@ -1154,7 +1154,7 @@ void ResourceTemplateDisplay::OnCreate(Event*)
     // Add all the tags from the resource template to the newly created resource
     resourceTemplate->GetTags(tags);
     // Set all the collected tags on the newly created resource
-    resourceAdd.SourceResource->mContentItem->SetTags(tags);
+    resourceAdd.SourceResource->mResourceSource->SetTags(tags);
 
     // Dispatch an event that the resource has been modified on the resource itself
     // and on the resource system

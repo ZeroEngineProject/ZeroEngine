@@ -6,6 +6,7 @@
 #include "Serialization/SerializationStandard.hpp"
 #include "Meta/MetaStandard.hpp"
 #include "Support/SupportStandard.hpp"
+#include "Image/ImageStandard.hpp"
 
 namespace Zero
 {
@@ -30,6 +31,10 @@ class ActionSpace;
 class SavingEvent;
 class DocumentResource;
 
+// Callback for content system shutdown (registered by Content library)
+typedef void (*ContentShutdownCallback)();
+void RegisterContentShutdownCallback(ContentShutdownCallback callback);
+
 // Engine library
 class ZeroNoImportExport EngineLibrary : public Zilch::StaticLibrary
 {
@@ -45,6 +50,7 @@ private:
 } // namespace Zero
 
 #include "Rectangle.hpp"
+#include "Resource/ResourceSource.hpp"
 #include "Resource/Resource.hpp"
 #include "EngineBindingExtensions.hpp"
 #include "EngineObject.hpp"
@@ -96,6 +102,7 @@ private:
 #include "Platform/OsWindow.hpp"
 #include "Platform/OsShell.hpp"
 #include "Resource/ResourceManager.hpp"
+#include "Resource/ResourceLoaderTemplates.hpp"
 #include "World/Archetype.hpp"
 #include "Platform/Input/Mouse.hpp"
 #include "World/Level.hpp"
@@ -147,5 +154,6 @@ private:
 #include "AsyncProcess.hpp"
 #include "CopyOnWrite.hpp"
 
-// Co-dependent libraries
-#include "Content/ContentStandard.hpp"
+// Note: Content library is no longer included here.
+// Content depends on Engine (one-way dependency).
+// Extensions depends on both Engine and Content.

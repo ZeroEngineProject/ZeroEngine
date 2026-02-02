@@ -4,14 +4,14 @@ namespace Zero
 {
 
 // Forward Declarations
-class ContentItem;
 class ByteStream;
-class BuilderComponent;
 class ResourceManager;
 class ResourceLibrary;
 class ResourceEntry;
 class Resource;
 class ResourceTemplate;
+class IResourceSource;
+class IBuilderInfo;
 
 DeclareEnum4(ResourceEditType, Data, Text, Custom, None);
 
@@ -22,7 +22,25 @@ namespace Events
 {
 DeclareEvent(ResourceInstanceModified);
 DeclareEvent(ResourceTagsModified);
+#if ZERO_EDITOR
+DeclareEvent(ResourceRequestSave);
+#endif
 } // namespace Events
+
+#if ZERO_EDITOR
+/// Event sent when a resource requests to be saved.
+/// Content system can listen for this to handle save requests.
+class ResourceSaveEvent : public Event
+{
+public:
+  ZilchDeclareType(ResourceSaveEvent, TypeCopyMode::ReferenceType);
+  ResourceSaveEvent() : mResource(nullptr) {}
+  ResourceSaveEvent(Resource* resource) : mResource(resource) {}
+
+  /// The resource that is requesting to be saved
+  Resource* mResource;
+};
+#endif
 
 namespace Tags
 {
@@ -138,8 +156,15 @@ public:
   {
   }
 
-  /// Called when a content item is added to the resource.
-  virtual void UpdateContentItem(ContentItem* contentItem);
+#if ZERO_EDITOR
+  /// Request the resource to be saved via event dispatch.
+  /// Content system can listen for this event to handle saves.
+  void RequestSave();
+
+  /// Called when a resource source is set/updated on this resource.
+  /// The resource source provides metadata about the content that built this resource.
+  virtual void UpdateResourceSource(IResourceSource* resourceSource);
+#endif
 
   /// How this resource is edited
   virtual ResourceEditType::Type GetEditType()
@@ -164,7 +189,8 @@ public:
 
   bool HasTag(StringParam tag);
 
-  virtual void GetDependencies(HashSet<ContentItem*>& dependencies, HandleParam instance = nullptr);
+  /// Gets the ResourceIds of all resources this resource depends on.
+  virtual void GetDependencies(HashSet<ResourceId>& dependencies, HandleParam instance = nullptr);
 
   virtual DataNode* GetDataTree();
 
@@ -198,7 +224,10 @@ public:
 
   InheritRange GetBaseResources();
 
-  BuilderComponent* GetBuilder();
+#if ZERO_EDITOR
+  /// Gets the builder info for this resource (may be null for runtime resources).
+  IBuilderInfo* GetBuilderInfo();
+#endif
 
   /// Name of resource for display.
   String Name;
@@ -221,13 +250,14 @@ public:
   /// Resource library that loaded this resource.
   ResourceLibrary* mResourceLibrary;
 
-  /// Content System Values only valid if content system is loaded.
-  /// Content Item used to build this resource.
-  ContentItem* mContentItem;
+#if ZERO_EDITOR
+  /// Resource source that built this resource (only valid when Content system is loaded).
+  /// This abstracts ContentItem so Engine doesn't depend on Content.
+  IResourceSource* mResourceSource;
 
-  /// Builder type used for this content item. It's safe to store a pointer to the type
-  /// because it will always be a native type.
-  BoundType* mBuilderType;
+  /// Builder info for this resource (only valid when Content system is loaded).
+  IBuilderInfo* mBuilderInfo;
+#endif
 
   /// Denotes a resource created at runtime (not loaded from a file).
   bool mIsRuntimeResource;

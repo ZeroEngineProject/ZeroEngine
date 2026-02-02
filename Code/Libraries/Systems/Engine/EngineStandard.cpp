@@ -4,6 +4,14 @@
 namespace Zero
 {
 
+// Callback for content system shutdown - registered by Content library
+static ContentShutdownCallback gContentShutdownCallback = nullptr;
+
+void RegisterContentShutdownCallback(ContentShutdownCallback callback)
+{
+  gContentShutdownCallback = callback;
+}
+
 // Ranges
 ZilchDefineRange(HierarchyNameRange);
 ZilchDefineRange(HierarchyListNameRange);
@@ -170,6 +178,7 @@ ZilchDefineStaticLibrary(EngineLibrary)
   ZilchInitializeType(CogPathEvent);
   ZilchInitializeType(UpdateEvent);
   ZilchInitializeType(ResourceEvent);
+  ZilchInitializeType(ResourceSaveEvent);
   ZilchInitializeType(InputDeviceEvent);
   ZilchInitializeType(GameEvent);
   ZilchInitializeType(AnimationGraphEvent);
@@ -485,7 +494,9 @@ void EngineLibrary::Shutdown()
   // systems are never deleted.
   ShutdownThreadSystem();
 
-  ShutdownContentSystem();
+  // Call content system shutdown via callback (registered by Content library)
+  if (gContentShutdownCallback)
+    gContentShutdownCallback();
 
   ObjectStore::Destroy();
   LocalModifications::Destroy();

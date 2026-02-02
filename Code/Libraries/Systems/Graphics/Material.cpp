@@ -350,7 +350,7 @@ void MaterialManager::ResourceDuplicated(Resource* resource, Resource* duplicate
     }
   }
 
-  dupMaterial->mContentItem->SaveContent();
+  dupMaterial->mResourceSource->SaveSourceContent();
 }
 
 void MaterialManager::ReInitializeRemoveComponents()

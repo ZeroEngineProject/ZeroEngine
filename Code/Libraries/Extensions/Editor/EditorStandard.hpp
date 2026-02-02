@@ -1,6 +1,7 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
 
+#include "Content/ContentStandard.hpp"
 #include "Widget/WidgetStandard.hpp"
 #include "Networking/NetworkingStandard.hpp"
 #include "Gameplay/GameplayStandard.hpp"

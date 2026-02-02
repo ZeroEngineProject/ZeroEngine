@@ -66,6 +66,7 @@ target_link_libraries(Gameplay
   PUBLIC
     Common
     Audio
+    Content
     Engine
     Geometry
     Graphics

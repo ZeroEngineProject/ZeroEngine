@@ -566,7 +566,7 @@ bool FindTextDialog::GetEntireProjectRegions()
     }
 
     // Get the file name
-    String fileName = current->mContentItem->GetFullPath();
+    String fileName = current->mResourceSource->GetSourcePath();
 
     // Create a region for this resource
     SearchRegion* region = new SearchRegion();
@@ -1294,7 +1294,7 @@ void FindTextDialog::ProcessResults()
 
         // Append the file and line number
         foundLines.Append("File \"");
-        foundLines.Append(region->Resource->mContentItem->GetFullPath());
+        foundLines.Append(region->Resource->mResourceSource->GetSourcePath());
         foundLines.Append(String::Format("\", line %d, ", result->Line));
         foundLines.Append(result->WholeLine);
         foundLines.Append("\n");

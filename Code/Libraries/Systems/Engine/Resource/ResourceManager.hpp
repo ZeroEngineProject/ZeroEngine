@@ -323,4 +323,7 @@ void SerializeResourceImpl(cstr fieldName,
 #define SerializeNullableResourceNameDefault(name, managerName, defaultValue)                                          \
   SerializeResourceImpl<managerName>(#name, stream, name, defaultValue, true);
 
+/// Adds geometry file filters (fbx, obj, dae, etc.) to a resource manager's open file filters.
+void AddGeometryFileFilters(ResourceManager* manager);
+
 } // namespace Zero

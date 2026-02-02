@@ -652,13 +652,15 @@ void ResourceTableManager::OnValidateTables(ResourceEvent* e)
   {
     ResourceTable* table = static_cast<ResourceTable*>(resource);
 
-    if (table->mContentItem != nullptr)
+#if ZERO_EDITOR
+    if (table->mResourceSource != nullptr)
     {
-      String libraryName = table->mContentItem->mLibrary->Name;
+      String libraryName = table->mResourceSource->GetLibraryName();
       // If this resource table is from a different library then don't validate or rebuild it
       if (libraryName != e->Name)
         continue;
     }
+#endif
 
     table->ValidateEntries();
     table->ForceRebuild();

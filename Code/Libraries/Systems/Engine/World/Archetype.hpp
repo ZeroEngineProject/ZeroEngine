@@ -27,7 +27,9 @@ public:
 
   /// Resource Interface
   void Save(StringParam filename) override;
-  void UpdateContentItem(ContentItem* contentItem) override;
+#if ZERO_EDITOR
+  void UpdateResourceSource(IResourceSource* resourceSource) override;
+#endif
 
   /// Cache this Archetype to binary. The binary cache will be used when creating an object
   /// from the Archetype resource.

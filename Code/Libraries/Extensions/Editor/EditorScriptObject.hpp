@@ -210,7 +210,7 @@ void EditorScriptObjects<DataType>::OnProjectLoaded(Event*)
       continue;
 
     // Add the tool if it has the Tool tag
-    if (resource->mContentItem->HasTag(mAttributeName))
+    if (resource->mResourceSource && resource->mResourceSource->HasTag(mAttributeName))
       AddOrUpdate((Archetype*)resource);
   }
 
@@ -310,7 +310,7 @@ void EditorScriptObjects<DataType>::OnArchetypeModified(ResourceEvent* e)
     return;
 
   bool objectExists = (GetObject(archetype->Name) != nullptr);
-  bool hasTag = archetype->mContentItem->HasTag(mAttributeName);
+  bool hasTag = archetype->mResourceSource && archetype->mResourceSource->HasTag(mAttributeName);
 
   // Only add it if it doesn't already exist
   if (hasTag)

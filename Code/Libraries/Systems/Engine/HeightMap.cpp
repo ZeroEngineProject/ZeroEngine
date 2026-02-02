@@ -892,8 +892,10 @@ void HeightMap::SaveToHeightMapSource(Serializer& stream)
     event.Source = mSource;
     DispatchEvent(Events::HeightMapSave, &event);
 
-    if (mSource->mContentItem)
-      mSource->mContentItem->SaveContent();
+#if ZERO_EDITOR
+    if (mSource->mResourceSource)
+      mSource->mResourceSource->SaveSourceContent();
+#endif
   }
 
   mModified = false;
@@ -928,17 +930,19 @@ void HeightMap::LoadFromHeightMapSource(Serializer& stream)
   if (!space)
     return;
 
-  if (!mSource->GetBuilder())
+#if ZERO_EDITOR
+  if (!mSource->GetBuilderInfo())
     return;
 
   // Get the level that owns this resource
-  String resourceIdName = mSource->GetBuilder()->GetResourceOwner();
+  String resourceIdName = mSource->GetBuilderInfo()->GetResourceOwner();
   LevelManager* levelManager = LevelManager::GetInstance();
   Resource* levelOwner = levelManager->GetResource(resourceIdName, ResourceNotFound::ReturnNull);
 
   // If being loaded into a different level, mark space as modified after load
   if (levelOwner && levelOwner != space->GetCurrentLevel())
     ConnectThisTo(space, Events::SpaceLevelLoaded, OnLevelLoaded);
+#endif
 }
 
 void HeightMap::OnLevelLoaded(ObjectEvent* event)

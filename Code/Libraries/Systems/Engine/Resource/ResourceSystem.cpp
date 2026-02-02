@@ -76,14 +76,17 @@ void ResourceSystem::SetupDefaults()
     Resource* resource = manager->GetResource(manager->DefaultResourceName, ResourceNotFound::ReturnNull);
     if (resource)
     {
-      if (resource->mContentItem)
+#if ZERO_EDITOR
+      if (resource->mResourceSource)
       {
-        resource->mContentItem->ShowInEditor = true;
+        resource->mResourceSource->SetShowInEditor(true);
 
         // Moved default font to the Loading library for progress display
-        ErrorIf(resource->mContentItem->mLibrary->Name != "Core" && resource->mContentItem->mLibrary->Name != "Loading",
+        String libName = resource->mResourceSource->GetLibraryName();
+        ErrorIf(libName != "Core" && libName != "Loading",
                 "Only resources that are in core can be defaults");
       }
+#endif
     }
     else
     {
@@ -378,15 +381,20 @@ void ResourceSystem::ReloadEntry(Resource* resource, ResourceEntry& entry)
     {
       range.Front().second->ReloadFromFile(resource, entry);
 
-      resource->UpdateContentItem(entry.mLibrarySource);
+#if ZERO_EDITOR
+      resource->UpdateResourceSource(entry.mResourceSource);
 
-      if (entry.mLibrarySource->EditMode == ContentEditMode::ResourceObject)
-        entry.mLibrarySource->mRuntimeResource = resource->mResourceId;
+      // Notify the resource source that the resource was modified
+      if (entry.mResourceSource)
+        entry.mResourceSource->OnResourceModified(resource);
+#endif
     }
   }
   else
   {
-    resource->UpdateContentItem(entry.mLibrarySource);
+#if ZERO_EDITOR
+    resource->UpdateResourceSource(entry.mResourceSource);
+#endif
 
     String message = String::Format("Can not reload resource type %s named %s."
                                     "Restart engine for changes to have an effect.",

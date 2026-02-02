@@ -15,6 +15,7 @@ target_sources(Startup
 target_link_libraries(Startup
   PUBLIC
     Common
+    Content
     Engine
     Geometry
     Graphics

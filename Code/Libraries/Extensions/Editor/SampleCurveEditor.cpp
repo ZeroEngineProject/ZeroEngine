@@ -199,8 +199,8 @@ void SampleCurveObject::OnSave(Event* e)
 {
   // Save the content item of the curve we're editing
   SampleCurve* curve = GetSampleCurve();
-  if (curve)
-    curve->mContentItem->SaveContent();
+  if (curve && curve->mResourceSource)
+    curve->mResourceSource->SaveSourceContent();
 
   TabModifiedEvent eventToSend(false);
   mEditor->DispatchBubble(Events::TabModified, &eventToSend);

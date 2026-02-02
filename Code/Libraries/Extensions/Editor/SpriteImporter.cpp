@@ -250,7 +250,7 @@ void SpriteSheetImporter::LoadSprite(SpriteSource* spriteSource)
   }
 
   Status status;
-  Zero::LoadImage(status, spriteSource->mContentItem->GetFullPath(), &mSourcePixels);
+  Zero::LoadImage(status, spriteSource->mResourceSource->GetSourcePath(), &mSourcePixels);
   if (!status)
   {
     DoNotifyStatus(status);
@@ -392,7 +392,7 @@ void SpriteSheetImporter::SaveDataToSpriteSource(SpriteSource* sprite, IntRect f
   sprite->PixelsPerUnit = (float)PixelsPerUnit;
   sprite->Looping = true;
 
-  sprite->mContentItem->SaveContent();
+  sprite->mResourceSource->SaveSourceContent();
 }
 
 SpriteSource*
@@ -1203,8 +1203,9 @@ void SpriteSheetImport(StringParam filename)
 void SpriteSheetImport(SpriteSource* spriteSource)
 {
   SpriteSheetImporter* importer = CreateImporter();
+  ContentItem* contentItem = static_cast<ContentItem*>(spriteSource->mResourceSource);
   importer->LoadImage(
-      FilePath::Combine(spriteSource->mContentItem->mLibrary->SourcePath, spriteSource->mContentItem->Filename));
+      FilePath::Combine(contentItem->mLibrary->SourcePath, contentItem->Filename));
 
   // This usage doesn't work properly
   // importer->LoadSprite(spriteSource);

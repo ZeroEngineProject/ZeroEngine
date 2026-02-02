@@ -195,13 +195,15 @@ Archetype* UploadToArchetype(OperationQueue* queue, Cog* cog, StringParam archet
 
     op->Redo();
 
+#if ZERO_EDITOR
     // Copy over tags to the new Archetype
-    if (currentArchetype && archetype)
+    if (currentArchetype && archetype && archetype->mResourceSource)
     {
       TagList oldTags;
       currentArchetype->GetTags(oldTags);
-      archetype->mContentItem->SetTags(oldTags);
+      archetype->mResourceSource->SetTags(oldTags);
     }
+#endif
   }
   else
   {

@@ -258,7 +258,7 @@ void MainPropertyView::EditResource(HandleParam object)
   {
     // The object we're editing should either be the resource itself,
     // of whatever the content item specifies should be edited
-    ContentItem* contentItem = resource->mContentItem;
+    ContentItem* contentItem = static_cast<ContentItem*>(resource->mResourceSource);
     Object* editingObject = resource;
     if (contentItem != nullptr)
       editingObject = contentItem->GetEditingObject(resource);
@@ -316,8 +316,8 @@ void MainPropertyView::EditResources(MetaSelection* selection)
     {
       // Get the object we should be editing from the content item
       Object* editingObject = resource;
-      if (resource->mContentItem != nullptr)
-        editingObject = resource->mContentItem->GetEditingObject(resource);
+      if (ContentItem* contentItem = static_cast<ContentItem*>(resource->mResourceSource))
+        editingObject = contentItem->GetEditingObject(resource);
 
       // Add the object
       mSpecialEdit->Add(editingObject);

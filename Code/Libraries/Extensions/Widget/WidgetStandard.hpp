@@ -1,6 +1,7 @@
 // MIT Licensed (see LICENSE.md).
 #pragma once
 
+#include "Content/ContentStandard.hpp"
 #include "Engine/EngineStandard.hpp"
 #include "Graphics/GraphicsStandard.hpp"
 

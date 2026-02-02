@@ -31,7 +31,7 @@ public:
   // BuilderComponent Interface
   void Serialize(Serializer& stream) override;
   void Generate(ContentInitializer& initializer) override;
-  String GetTag() override
+  String GetTag() const override
   {
     return FilterTag;
   }

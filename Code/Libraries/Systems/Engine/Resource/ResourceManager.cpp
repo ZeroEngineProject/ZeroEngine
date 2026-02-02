@@ -115,7 +115,9 @@ Resource* ResourceManager::CreateRuntimeInternal(StringParam name)
 
   ResourceEntry entry;
   entry.mResourceId = id;
-  entry.mLibrarySource = nullptr;
+#if ZERO_EDITOR
+  entry.mResourceSource = nullptr;
+#endif
 
   AddIdAndCheckConflicts(ResourceIdMap, entry, resource);
   AddIdAndCheckConflicts(Z::gResources->ResourceIdMap, entry, resource);
@@ -141,8 +143,11 @@ void ResourceManager::AddResource(ResourceEntry& entry, Resource* resource)
   String hexId = ToString(entry.mResourceId, true);
   String resourceIdName = BuildString(hexId, ":", entry.Name);
 
-  if (entry.mLibrarySource)
-    entry.mLibrarySource->mRuntimeResource = entry.mResourceId;
+#if ZERO_EDITOR
+  // Notify the resource source of the runtime resource id
+  if (entry.mResourceSource)
+    entry.mResourceSource->OnResourceModified(resource);
+#endif
 
   // Add to the main resource manager
   AddIdAndCheckConflicts(Z::gResources->ResourceIdMap, entry, resource);
@@ -157,8 +162,10 @@ void ResourceManager::AddResource(ResourceEntry& entry, Resource* resource)
   resource->ResourceIdName = resourceIdName;
   resource->mResourceId = entry.mResourceId;
 
-  resource->mContentItem = entry.mLibrarySource;
-  resource->mBuilderType = ZilchVirtualTypeId(entry.mBuilder);
+#if ZERO_EDITOR
+  resource->mResourceSource = entry.mResourceSource;
+  resource->mBuilderInfo = entry.mBuilderInfo;
+#endif
 
   // Send a resource added event on both this builder and on the resource system
   ResourceEvent event;
@@ -175,7 +182,11 @@ void ResourceManager::AddLoader(StringParam name, ResourceLoader* loader)
 
 String ResourceManager::GetTemplateSourceFile(ResourceAdd& resourceAdd)
 {
-  return resourceAdd.Template->mContentItem->GetFullPath();
+#if ZERO_EDITOR
+  if (resourceAdd.Template->mResourceSource)
+    return resourceAdd.Template->mResourceSource->GetSourcePath();
+#endif
+  return String();
 }
 
 ResourceManager::ResourceRange ResourceManager::AllResources()
@@ -212,9 +223,13 @@ void ResourceManager::EnumerateResources(Array<String>& values)
   // Append the names of all resource items that should be shown in the editor
   forRange (Resource* resource, AllResources())
   {
-    ContentItem* contentItem = resource->mContentItem;
-    if (contentItem && contentItem->ShowInEditor)
+#if ZERO_EDITOR
+    IResourceSource* source = resource->mResourceSource;
+    if (source && source->GetShowInEditor())
       values.PushBack(resource->Name);
+#else
+    values.PushBack(resource->Name);
+#endif
   }
 
   // Sort alphabetically
@@ -479,6 +494,73 @@ Resource* ResourceManager::ResolveResourceStream(cstr fieldName,
 void ResourceManager::DestroyResources()
 {
   ErrorIf(!ResourceIdMap.Empty(), "Resources that still have Ids are left!");
+}
+
+void AddGeometryFileFilters(ResourceManager* manager)
+{
+  Array<FileDialogFilter>& filters = manager->mOpenFileFilters;
+
+  uint allMeshesIndex = filters.Size();
+  filters.PushBack(FileDialogFilter("All Meshes", ""));
+  filters.PushBack(FileDialogFilter("*.fbx"));
+  filters.PushBack(FileDialogFilter("*.obj"));
+  filters.PushBack(FileDialogFilter("*.dae"));
+  filters.PushBack(FileDialogFilter("*.glb"));
+  filters.PushBack(FileDialogFilter("*.gltf"));
+  filters.PushBack(FileDialogFilter("*.3ds"));
+  filters.PushBack(FileDialogFilter("*.blend"));
+  filters.PushBack(FileDialogFilter("*.ase"));
+  filters.PushBack(FileDialogFilter("*.ifc"));
+  filters.PushBack(FileDialogFilter("*.xgl"));
+  filters.PushBack(FileDialogFilter("*.zgl"));
+  filters.PushBack(FileDialogFilter("*.ply"));
+  filters.PushBack(FileDialogFilter("*.dxf"));
+  filters.PushBack(FileDialogFilter("*.lwo"));
+  filters.PushBack(FileDialogFilter("*.lws"));
+  filters.PushBack(FileDialogFilter("*.lxo"));
+  filters.PushBack(FileDialogFilter("*.stl"));
+  filters.PushBack(FileDialogFilter("*.x"));
+  filters.PushBack(FileDialogFilter("*.ac"));
+  filters.PushBack(FileDialogFilter("*.ms3d"));
+  filters.PushBack(FileDialogFilter("*.cob"));
+  filters.PushBack(FileDialogFilter("*.scn"));
+  filters.PushBack(FileDialogFilter("*.csm"));
+  filters.PushBack(FileDialogFilter("*.xml"));
+  filters.PushBack(FileDialogFilter("*.mdl"));
+  filters.PushBack(FileDialogFilter("*.md2"));
+  filters.PushBack(FileDialogFilter("*.md3"));
+  filters.PushBack(FileDialogFilter("*.md5mesh"));
+  filters.PushBack(FileDialogFilter("*.smd"));
+  filters.PushBack(FileDialogFilter("*.ogex"));
+  filters.PushBack(FileDialogFilter("*.b3d"));
+  filters.PushBack(FileDialogFilter("*.q3o"));
+  filters.PushBack(FileDialogFilter("*.q3s"));
+  filters.PushBack(FileDialogFilter("*.nff"));
+  filters.PushBack(FileDialogFilter("*.off"));
+  filters.PushBack(FileDialogFilter("*.raw"));
+  filters.PushBack(FileDialogFilter("*.ter"));
+  filters.PushBack(FileDialogFilter("*.hmp"));
+  filters.PushBack(FileDialogFilter("*.sib"));
+  filters.PushBack(FileDialogFilter("*.amf"));
+  filters.PushBack(FileDialogFilter("*.x3d"));
+  filters.PushBack(FileDialogFilter("*.mmd"));
+
+  // The first filter should contain the extensions of all other filters
+  FileDialogFilter& allFilter = filters[allMeshesIndex];
+
+  StringBuilder filterBuilder;
+
+  // Skip the first filter (it's the one we're building)
+  for (uint i = allMeshesIndex + 1; i < filters.Size(); ++i)
+  {
+    FileDialogFilter& currFilter = filters[i];
+    filterBuilder.Append(currFilter.mFilter);
+
+    if (i < filters.Size() - 1)
+      filterBuilder.Append(";");
+  }
+
+  allFilter.mFilter = filterBuilder.ToString();
 }
 
 } // namespace Zero

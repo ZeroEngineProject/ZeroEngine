@@ -6,14 +6,9 @@
 #include "Engine/EngineStandard.hpp"
 #include "SpatialPartition/SpatialPartitionStandard.hpp"
 #include "Image/ImageStandard.hpp"
-//#include "Audio/AudioStandard.hpp"
+#include "Audio/AudioStandard.hpp"
 #include "RendererBase/RendererBaseStandard.hpp"
-
-namespace Zero
-{
-ImageFormat::Enum TextureFormatToImageFormat(TextureFormat::Enum format);
-TextureFormat::Enum ImageFormatToTextureFormat(ImageFormat::Enum format);
-} // namespace Zero
+// SpriteData, TextureFormatToImageFormat, and ImageFormatToTextureFormat are in RendererBase/Renderer.hpp
 
 namespace Zero
 {
@@ -61,4 +56,4 @@ public:
 #include "GeometryContent.hpp"
 #include "BinaryContent.hpp"
 #include "MeshBuilder.hpp"
-#include "ResourceLoaderTemplates.hpp"
+// ResourceLoaderTemplates.hpp moved to Engine - comes from EngineStandard.hpp

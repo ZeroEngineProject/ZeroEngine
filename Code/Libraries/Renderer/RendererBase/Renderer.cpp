@@ -4,6 +4,34 @@
 
 namespace Zero
 {
+
+// Format conversion functions - these enums are designed to have matching values
+ImageFormat::Enum TextureFormatToImageFormat(TextureFormat::Enum format)
+{
+  return (ImageFormat::Enum)format;
+}
+
+TextureFormat::Enum ImageFormatToTextureFormat(ImageFormat::Enum format)
+{
+  return (TextureFormat::Enum)format;
+}
+
+// SpriteData serialization
+void SpriteData::Serialize(Serializer& stream)
+{
+  SerializeNameDefault(FrameSizeX, uint(0));
+  SerializeNameDefault(FrameSizeY, uint(0));
+  SerializeNameDefault(FrameCount, uint(0));
+  SerializeNameDefault(FrameDelay, float(0));
+  SerializeNameDefault(OriginX, float(0));
+  SerializeNameDefault(OriginY, float(0));
+  SerializeNameDefault(PixelsPerUnit, float(64.0f));
+  SerializeEnumNameDefault(SpriteSampling, Sampling, SpriteSampling::Linear);
+  SerializeNameDefault(Looping, true);
+  SerializeNameDefault(Slices, Vec4(0, 0, 0, 0));
+  SerializeEnumName(SpriteFill, Fill);
+}
+
 const String cPostVertex("PostVertex");
 
 StringParam GetCoreVertexFragmentName(CoreVertexType::Enum type)

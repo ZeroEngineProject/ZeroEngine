@@ -58,6 +58,12 @@ void InitializeContentSystem()
   ContentSystem* system = ContentSystem::GetInstance();
   Z::gContentSystem = system;
 
+  // Register content shutdown callback with Engine
+  RegisterContentShutdownCallback(ShutdownContentSystem);
+
+  // Connect to resource save request events from Engine
+  Connect(Z::gResources, Events::ResourceRequestSave, system, &ContentSystem::OnResourceRequestSave);
+
   AddContentComponent<ContentTags>(system);
 
   CreateAudioContent(system);
@@ -775,6 +781,18 @@ void ContentSystem::EnumerateLibrariesInPath(StringParam path)
       String name = files.Front();
       Status status;
       LibraryFromDirectory(status, name, directoryPath);
+    }
+  }
+}
+
+void ContentSystem::OnResourceRequestSave(ResourceSaveEvent* event)
+{
+  // Handle save request from Engine by saving through the resource's content item
+  if (Resource* resource = event->mResource)
+  {
+    if (IResourceSource* source = resource->mResourceSource)
+    {
+      source->SaveSourceContent();
     }
   }
 }

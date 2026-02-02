@@ -519,7 +519,7 @@ void AnimationEditor::ObjectSelected(Cog* cog)
   }
 
   // If it comes from geometry content, we would need to copy it
-  if (Type::DynamicCast<GeometryContent*>(animation->mContentItem))
+  if (Type::DynamicCast<GeometryContent*>(static_cast<ContentItem*>(animation->mResourceSource)))
   {
     SetErrorState(ErrorState::AnimationFromGeometry);
 
@@ -1028,7 +1028,7 @@ void AnimationEditor::OnMouseDownErrorText(MouseEvent* event)
 
     // Convert the animation from geometry to a rich animation
     RichAnimation* richAnimation = ConvertToRichAnimation(oldAnimation);
-    String file = newAnimation->mContentItem->GetFullPath();
+    String file = newAnimation->mResourceSource->GetSourcePath();
 
     // Save over the default rich animation that was created
     SaveToDataFile(*richAnimation, file);
@@ -1152,9 +1152,11 @@ Archetype* GetAnimationPreviewArchetype(Animation* animation)
 {
   String previewArchetypeName;
 
-  ContentItem* contentItem = animation->mContentItem;
+  ContentItem* contentItem = static_cast<ContentItem*>(animation->mResourceSource);
 
   // Check both types of animations for the preview archetype
+  if (contentItem == nullptr)
+    return nullptr;
   if (GeneratedArchetype* genAchetype = contentItem->has(GeneratedArchetype))
     return ArchetypeManager::Find(genAchetype->mResourceId);
 

@@ -10,7 +10,17 @@ namespace Events
 {
 DefineEvent(ResourceInstanceModified);
 DefineEvent(ResourceTagsModified);
+#if ZERO_EDITOR
+DefineEvent(ResourceRequestSave);
+#endif
 } // namespace Events
+
+#if ZERO_EDITOR
+ZilchDefineType(ResourceSaveEvent, builder, type)
+{
+  ZilchBindFieldProperty(mResource);
+}
+#endif
 
 namespace Tags
 {
@@ -302,8 +312,10 @@ Resource::Resource()
   mResourceId = 0;
   mManager = nullptr;
   mResourceLibrary = nullptr;
-  mContentItem = nullptr;
-  mBuilderType = nullptr;
+#if ZERO_EDITOR
+  mResourceSource = nullptr;
+  mBuilderInfo = nullptr;
+#endif
   mIsRuntimeResource = false;
   mReferenceCount = 0;
 }
@@ -344,8 +356,17 @@ bool Resource::CanReference(Resource* resource)
 
 ResourceTemplate* Resource::GetResourceTemplate()
 {
-  if (mContentItem)
-    return mContentItem->has(ResourceTemplate);
+#if ZERO_EDITOR
+  // Note: This method is deprecated. ResourceTemplate is a Content type.
+  // Use mResourceSource->IsResourceTemplate() for template checks.
+  if (mResourceSource && mResourceSource->IsResourceTemplate())
+  {
+    // Return non-null to indicate this is a template.
+    // Callers should only check for null vs non-null.
+    // This is a temporary workaround until callers migrate to IsResourceTemplate().
+    return (ResourceTemplate*)1;
+  }
+#endif
   return nullptr;
 }
 
@@ -356,12 +377,12 @@ Resource::InheritRange Resource::GetBaseResources()
   return r;
 }
 
-BuilderComponent* Resource::GetBuilder()
+#if ZERO_EDITOR
+IBuilderInfo* Resource::GetBuilderInfo()
 {
-  if (!mContentItem)
-    return nullptr;
-  return (BuilderComponent*)mContentItem->QueryComponentId(mBuilderType);
+  return mBuilderInfo;
 }
+#endif
 
 void Resource::AddReference()
 {
@@ -387,7 +408,7 @@ int Resource::Release()
   return referenceCount;
 }
 
-void Resource::GetDependencies(HashSet<ContentItem*>& dependencies, HandleParam instance)
+void Resource::GetDependencies(HashSet<ResourceId>& dependencies, HandleParam instance)
 {
   Handle resourceInstance = instance;
   if (resourceInstance.IsNull())
@@ -402,7 +423,7 @@ void Resource::GetDependencies(HashSet<ContentItem*>& dependencies, HandleParam 
   {
     if (resource->IsWritable() && !resource->IsRuntime())
     {
-      dependencies.Insert(resource->mContentItem);
+      dependencies.Insert(resource->mResourceId);
 
       // Add all dependencies of the resource
       resource->GetDependencies(dependencies);
@@ -410,10 +431,20 @@ void Resource::GetDependencies(HashSet<ContentItem*>& dependencies, HandleParam 
   }
 }
 
-void Resource::UpdateContentItem(ContentItem* contentItem)
+#if ZERO_EDITOR
+void Resource::UpdateResourceSource(IResourceSource* resourceSource)
 {
-  mContentItem = contentItem;
+  mResourceSource = resourceSource;
 }
+
+void Resource::RequestSave()
+{
+  // Dispatch save request event - Content system can listen for this
+  ResourceSaveEvent event(this);
+  GetDispatcher()->Dispatch(Events::ResourceRequestSave, &event);
+  Z::gResources->DispatchEvent(Events::ResourceRequestSave, &event);
+}
+#endif
 
 void Resource::GetTags(Array<String>& tags)
 {
@@ -442,9 +473,11 @@ void Resource::GetTags(Array<String>& coreTags, Array<String>& userTags)
   if (!FilterTag.Empty())
     coreTags.PushBack(FilterTag);
 
-  // Add all tags from the content item
-  if (mContentItem != nullptr)
-    mContentItem->GetTags(userTags);
+#if ZERO_EDITOR
+  // Add all tags from the resource source
+  if (mResourceSource != nullptr)
+    mResourceSource->GetTags(userTags);
+#endif
 }
 
 void Resource::AddTags(HashSet<String>& tags)
@@ -459,27 +492,35 @@ void Resource::AddTags(HashSet<String>& tags)
 
 void Resource::SetTags(HashSet<String>& tags)
 {
-  if (mContentItem != nullptr)
-    mContentItem->SetTags(tags);
+#if ZERO_EDITOR
+  if (mResourceSource != nullptr)
+    mResourceSource->SetTags(tags);
+#endif
 }
 
 void Resource::RemoveTags(HashSet<String>& tags)
 {
-  if (mContentItem != nullptr)
-    mContentItem->RemoveTags(tags);
+#if ZERO_EDITOR
+  if (mResourceSource != nullptr)
+    mResourceSource->RemoveTags(tags);
+#endif
 }
 
 bool Resource::HasTag(StringParam tag)
 {
-  if (mContentItem)
-    return mContentItem->HasTag(tag);
+#if ZERO_EDITOR
+  if (mResourceSource)
+    return mResourceSource->HasTag(tag);
+#endif
   return false;
 }
 
 String Resource::GetNameOrFilePath()
 {
-  if (mContentItem)
-    return mContentItem->GetFullPath();
+#if ZERO_EDITOR
+  if (mResourceSource)
+    return mResourceSource->GetSourcePath();
+#endif
 
   return Name;
 }
@@ -492,11 +533,12 @@ String Resource::GetOrigin()
 
 bool Resource::IsWritable()
 {
-  if (mContentItem)
+#if ZERO_EDITOR
+  if (mResourceSource)
   {
-    bool isWritable = mContentItem->mLibrary->GetWritable();
+    bool isWritable = mResourceSource->IsLibraryWritable();
 
-    // Check dev config to override what the content item says
+    // Check dev config to override what the resource source says
     if (!isWritable)
     {
       if (DeveloperConfig* devConfig = Z::gEngine->GetConfigCog()->has(Zero::DeveloperConfig))
@@ -505,6 +547,7 @@ bool Resource::IsWritable()
 
     return isWritable;
   }
+#endif
   return false;
 }
 
@@ -601,10 +644,17 @@ HandleOf<Resource> DataResource::Clone()
 
 DataNode* DataResource::GetDataTree()
 {
+#if ZERO_EDITOR
+  if (!mResourceSource)
+    return nullptr;
+
   Status status;
   ObjectLoader loader;
-  loader.OpenFile(status, mContentItem->GetFullPath());
+  loader.OpenFile(status, mResourceSource->GetSourcePath());
   return loader.TakeOwnershipOfFirstRoot();
+#else
+  return nullptr;
+#endif
 }
 
 // Resource Inheritance

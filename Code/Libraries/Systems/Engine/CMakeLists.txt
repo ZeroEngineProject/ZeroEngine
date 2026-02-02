@@ -54,10 +54,12 @@ set(Engine_Resource_Sources
     ${CMAKE_CURRENT_LIST_DIR}/Resource/Resource.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Resource/ResourceLibrary.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Resource/ResourceLibrary.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Resource/ResourceLoaderTemplates.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Resource/ResourceManager.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Resource/ResourceManager.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Resource/ResourcePropertyOperations.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Resource/ResourcePropertyOperations.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Resource/ResourceSource.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Resource/ResourceSystem.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Resource/ResourceSystem.hpp
 )
@@ -238,6 +240,7 @@ target_link_libraries(Engine
   PUBLIC
     Common
     Geometry
+    Image
     Meta
     Platform
     Serialization

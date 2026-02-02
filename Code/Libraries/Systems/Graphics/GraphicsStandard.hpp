@@ -29,6 +29,7 @@ public:
 #include "ForwardDeclarations.hpp"
 #include "UtilityStructures.hpp"
 #include "ResourceLists.hpp"
+#include "SpriteTypes.hpp"
 
 // No Dependencies
 #include "Camera.hpp"

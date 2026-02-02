@@ -4,12 +4,17 @@
 namespace Zero
 {
 
+class ResourcePackage;
+class Resource;
+
+#if ZERO_EDITOR
 class ContentItem;
 class ContentLibrary;
-class ResourcePackage;
 class BuilderComponent;
-class Resource;
+class IResourceSource;
+class IBuilderInfo;
 typedef Array<ContentItem*> ContentItemArray;
+#endif
 
 namespace Events
 {
@@ -55,13 +60,21 @@ class ResourceEntry
 {
 public:
   ResourceEntry();
+#if ZERO_EDITOR
   ResourceEntry(uint order,
                 StringParam type,
                 StringParam name,
                 StringParam location,
                 ResourceId id,
-                ContentItem* libraryResource,
-                BuilderComponent* builder);
+                IResourceSource* resourceSource,
+                IBuilderInfo* builderInfo);
+#else
+  ResourceEntry(uint order,
+                StringParam type,
+                StringParam name,
+                StringParam location,
+                ResourceId id);
+#endif
 
   uint LoadOrder;
   String Type;
@@ -76,9 +89,12 @@ public:
   // Loading from Data.
   DataBlock Block;
 
+#if ZERO_EDITOR
   // Only available when the editor is active.
-  ContentItem* mLibrarySource;
-  BuilderComponent* mBuilder;
+  // These use abstract interfaces so Engine doesn't depend on Content types.
+  IResourceSource* mResourceSource;
+  IBuilderInfo* mBuilderInfo;
+#endif
 
   String ToString(bool shortFormat = false) const;
   void Serialize(Serializer& stream);
@@ -105,7 +121,9 @@ public:
   String Location;
   ResourceListing Resources;
 
+#if ZERO_EDITOR
   ContentItemArray EditorProcessing;
+#endif
 };
 
 class ResourcePackageDisplay : public MetaDisplay

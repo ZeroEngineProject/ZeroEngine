@@ -1058,7 +1058,7 @@ void LibraryView::OnEditMeta(ObjectEvent* event)
 
   if (Resource* resource = entry->mResource)
   {
-    ContentItem* contentItem = resource->mContentItem;
+    ContentItem* contentItem = static_cast<ContentItem*>(resource->mResourceSource);
 
     MetaSelection* selection = Z::gEditor->GetSelection();
     selection->SelectOnly(contentItem);
@@ -1086,10 +1086,11 @@ void LibraryView::OnMessageBox(MessageBoxEvent* event)
       if (Resource* resource = treeNode->mResource)
       {
         // only delete 1 resource for a content item as removing one removes all associated resources
-        if (!contentItems.Contains(resource->mContentItem))
+        ContentItem* contentItem = static_cast<ContentItem*>(resource->mResourceSource);
+        if (!contentItems.Contains(contentItem))
         {
           resourcesToRemove.PushBack(resource);
-          contentItems.Insert(resource->mContentItem);
+          contentItems.Insert(contentItem);
         }
       }
     }

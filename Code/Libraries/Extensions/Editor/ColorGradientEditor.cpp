@@ -259,9 +259,8 @@ void ColorGradientEditor::OnSave(Event* e)
 {
   if (ColorGradient* gradient = mGradient)
   {
-    ContentItem* contentItem = gradient->mContentItem;
-    if (contentItem)
-      contentItem->SaveContent();
+    if (gradient->mResourceSource)
+      gradient->mResourceSource->SaveSourceContent();
 
     TabModifiedEvent eventToSend(false);
     DispatchBubble(Events::TabModified, &eventToSend);

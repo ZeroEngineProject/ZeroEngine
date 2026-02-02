@@ -88,6 +88,8 @@ target_sources(Graphics
     ${CMAKE_CURRENT_LIST_DIR}/Sprite.hpp
     ${CMAKE_CURRENT_LIST_DIR}/SpriteSource.cpp
     ${CMAKE_CURRENT_LIST_DIR}/SpriteSource.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/SpriteTypes.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/SpriteTypes.hpp
     ${CMAKE_CURRENT_LIST_DIR}/SpriteSystem.cpp
     ${CMAKE_CURRENT_LIST_DIR}/SpriteSystem.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Text.cpp
@@ -115,6 +117,7 @@ target_sources(Graphics
 
 target_link_libraries(Graphics
   PUBLIC
+    Audio
     Common
     Geometry
     Image

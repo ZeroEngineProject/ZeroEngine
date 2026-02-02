@@ -64,14 +64,17 @@ void Archetype::Save(StringParam filename)
   }
 }
 
-void Archetype::UpdateContentItem(ContentItem* contentItem)
+#if ZERO_EDITOR
+void Archetype::UpdateResourceSource(IResourceSource* resourceSource)
 {
   ClearDataTreeCache();
-  mContentItem = contentItem;
-  mLoadPath = contentItem->GetFullPath();
+  mResourceSource = resourceSource;
+  if (resourceSource)
+    mLoadPath = resourceSource->GetSourcePath();
   Cog* ignore = mCachedObject;
   ArchetypeRebuilder::RebuildArchetypes(this, ignore);
 }
+#endif
 
 void Archetype::BinaryCache(Cog* cog, CogCreationContext* creationContext)
 {
@@ -212,10 +215,12 @@ public:
   {
     Archetype* archetype = new Archetype();
 
-    // If loading in the editor use the content library file.
-    if (entry.mLibrarySource)
-      archetype->mLoadPath = entry.mLibrarySource->GetFullPath();
+    // If loading in the editor use the resource source file.
+#if ZERO_EDITOR
+    if (entry.mResourceSource)
+      archetype->mLoadPath = entry.mResourceSource->GetSourcePath();
     else
+#endif
       archetype->mLoadPath = entry.FullPath;
 
     // Find the stored type by typename and save it
@@ -359,8 +364,9 @@ bool ArchetypeManager::SaveToContent(Cog* object, Archetype* archetype, Resource
   if (DeveloperConfig* devConfig = Z::gEngine->GetConfigCog()->has(DeveloperConfig))
     canModifyReadOnly = devConfig->mCanModifyReadOnlyResources;
 
-  // Archetype has no content item so create one and upload.
-  if (archetype->mContentItem == nullptr)
+#if ZERO_EDITOR
+  // Archetype has no resource source so create one and upload.
+  if (archetype->mResourceSource == nullptr)
   {
     // Try to add the resource
     ResourceAdd resourceAdd;
@@ -383,11 +389,12 @@ bool ArchetypeManager::SaveToContent(Cog* object, Archetype* archetype, Resource
     {
       archetype->mCachedObject = cInvalidCogId;
       archetype->BinaryCache(object);
-      archetype->mLoadPath = archetype->mContentItem->GetFullPath();
+      if (archetype->mResourceSource)
+        archetype->mLoadPath = archetype->mResourceSource->GetSourcePath();
 
       ZPrintFilter(Filter::ResourceFilter,
                    "Uploaded to new archetype %s.%s.\n",
-                   archetype->mContentItem->mLibrary->Name.c_str(),
+                   archetype->mResourceSource ? archetype->mResourceSource->GetLibraryName().c_str() : "Unknown",
                    archetype->Name.c_str());
 
       return true;
@@ -400,14 +407,14 @@ bool ArchetypeManager::SaveToContent(Cog* object, Archetype* archetype, Resource
   }
   else if (archetype->IsWritable() || canModifyReadOnly)
   {
-    // Archetype has a writable content item override it
-    archetype->mContentItem->SaveContent();
+    // Archetype has a writable resource source, override it
+    archetype->mResourceSource->SaveSourceContent();
     archetype->mCachedObject = cInvalidCogId;
     archetype->BinaryCache(object);
 
     ZPrintFilter(Filter::ResourceFilter,
                  "Uploaded to archetype %s.%s.\n",
-                 archetype->mContentItem->mLibrary->Name.c_str(),
+                 archetype->mResourceSource->GetLibraryName().c_str(),
                  archetype->Name.c_str());
 
     archetype->SendModified();
@@ -422,6 +429,9 @@ bool ArchetypeManager::SaveToContent(Cog* object, Archetype* archetype, Resource
                                    archetype->Name.c_str()));
     return false;
   }
+#else
+  return false;
+#endif
 }
 
 void ArchetypeManager::FlushBinaryArchetypes()

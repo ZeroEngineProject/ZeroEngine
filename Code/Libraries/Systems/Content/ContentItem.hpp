@@ -20,13 +20,31 @@ typedef uint ContentItemId;
 // A content item is an object that represents a content generating
 // item in the library. This is usually a single file and is generated
 // from that file's meta file.
-class ContentItem : public EventObject
+// Implements IResourceSource to provide resource metadata to Engine without
+// Engine depending on Content types.
+class ContentItem : public EventObject, public IResourceSource
 {
 public:
   ZilchDeclareType(ContentItem, TypeCopyMode::ReferenceType);
 
   ContentItem();
   virtual ~ContentItem();
+
+  // IResourceSource interface implementation
+  ResourceId GetResourceId() const override;
+  String GetSourcePath() const override;
+  String GetLibraryName() const override;
+  bool IsLibraryWritable() const override;
+  void SaveSourceContent() override;
+  void OnResourceModified(Resource* resource) override;
+  void GetTags(Array<String>& tags) override;
+  void GetTags(HashSet<String>& tags) override;
+  void SetTags(HashSet<String>& tags) override;
+  void RemoveTags(HashSet<String>& tags) override;
+  bool HasTag(StringParam tag) override;
+  bool IsResourceTemplate() const override;
+  bool GetShowInEditor() const override;
+  void SetShowInEditor(bool show) override;
 
   String GetName();
 
@@ -70,16 +88,8 @@ public:
   // Get the full path to the content file.
   String GetFullPath();
 
-  /// Adds all tags of this content item to the given array.
-  void GetTags(Array<String>& tags);
-  void GetTags(HashSet<String>& tags);
+  // Set a single tag on this content item.
   void SetTag(StringParam tag);
-  void SetTags(HashSet<String>& tags);
-
-  /// If applicable, remove all tags in the given set from this content item.
-  void RemoveTags(HashSet<String>& tags);
-
-  bool HasTag(StringParam tag);
 
   // Content Item Interface
 

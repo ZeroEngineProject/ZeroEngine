@@ -469,32 +469,6 @@ void AudioFileEncoder::EncodeFile(Status& status, File& outputFile, AudioFileDat
   delete[] encodersPerChannel;
 }
 
-// Packet Encoder
-
-PacketEncoder::~PacketEncoder()
-{
-  if (Encoder)
-    opus_encoder_destroy(Encoder);
-}
-
-void PacketEncoder::InitializeEncoder()
-{
-  if (Encoder)
-    opus_encoder_destroy(Encoder);
-
-  int error;
-  Encoder = opus_encoder_create(AudioConstants::cSystemSampleRate, cChannels, OPUS_APPLICATION_VOIP, &error);
-}
-
-void PacketEncoder::EncodePacket(const float* dataBuffer, const unsigned samples, Array<::byte>& encodedData)
-{
-  ReturnIf(!Encoder, , "Tried to encode packet without initializing encoder");
-  ReturnIf(samples != AudioFileEncoder::cPacketFrames, , "Tried to encode packet with incorrect number of samples");
-
-  encodedData.Resize(AudioFileEncoder::cMaxPacketSize);
-  unsigned encodedDataSize =
-      opus_encode_float(Encoder, dataBuffer, samples, encodedData.Data(), AudioFileEncoder::cMaxPacketSize);
-  encodedData.Resize(encodedDataSize);
-}
+// PacketEncoder implementation moved to Audio/AudioStandard.cpp
 
 } // namespace Zero

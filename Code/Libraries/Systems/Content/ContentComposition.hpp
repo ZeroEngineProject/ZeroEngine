@@ -96,7 +96,9 @@ public:
 };
 
 /// Builder component is a content component that builds resources.
-class BuilderComponent : public ContentComponent
+/// Implements IBuilderInfo to provide builder metadata to Engine without
+/// Engine depending on Content types.
+class BuilderComponent : public ContentComponent, public IBuilderInfo
 {
 public:
   ZilchDeclareType(BuilderComponent, TypeCopyMode::ReferenceType);
@@ -128,15 +130,18 @@ public:
   virtual void SetShowInEditor(bool state)
   {
   }
-  virtual String GetTag()
+
+  // IBuilderInfo interface implementation
+  String GetTag() const override
   {
     return String();
   }
 
-  virtual String GetResourceOwner()
+  String GetResourceOwner() const override
   {
     return String();
   }
+
   virtual void SetResourceOwner(StringParam owner)
   {
   }

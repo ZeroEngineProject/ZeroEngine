@@ -3,37 +3,7 @@
 
 namespace Zero
 {
-#pragma pack(push, 4)
-class FixedVertexDescription
-{
-public:
-  FixedVertexDescription() {};
-
-  uint mVertexSize;
-  static const size_t sMaxElements = 16;
-  VertexAttribute mAttributes[sMaxElements];
-};
-#pragma pack(pop)
-
-const String cMeshOutputType = "Mesh";
-
-const uint MeshFileId = 'zmsh';
-const uint MeshFileVersion = 1;
-
-const uint VertexChunk = 'vert';
-const uint IndexChunk = 'indx';
-const uint SkeletonChunk = 'skel';
-
-#pragma pack(push, 4)
-class MeshHeader
-{
-public:
-  uint mFileId;
-  Aabb mAabb;
-  ByteEnum<PrimitiveType::Enum> mPrimitiveType;
-  Mat4 mBindOffsetInv;
-};
-#pragma pack(pop)
+// FixedVertexDescription, MeshHeader, and mesh file constants moved to RendererBase/Renderer.hpp
 
 /// Geometry content item that builds meshes.
 class MeshBuilder : public BuilderComponent

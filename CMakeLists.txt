@@ -36,6 +36,7 @@ add_definitions(-DZeroChangeSetDate=${ZERO_CHANGESET_DATE})
 add_definitions(-DZeroMajorVersion=${ZERO_MAJOR_VERSION})
 add_definitions(-DZeroMinorVersion=${ZERO_MINOR_VERSION})
 add_definitions(-DZeroPatchVersion=${ZERO_PATCH_VERSION})
+add_definitions(-DZERO_EDITOR=1)
 
 string(TOUPPER ${ZERO_HOSTOS} zero_hostos)
 string(TOUPPER ${ZERO_TARGETOS} zero_targetos)

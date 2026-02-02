@@ -572,8 +572,8 @@ void TileMap::SaveToTileMapSource(Serializer& stream)
   {
     mSource->mData = mTileMap;
 
-    if (mSource->mContentItem)
-      mSource->mContentItem->SaveContent();
+    if (mSource->mResourceSource)
+      mSource->mResourceSource->SaveSourceContent();
   }
 
   mModified = false;
@@ -595,17 +595,19 @@ void TileMap::LoadFromTileMapSource(Serializer& stream)
   if (!space)
     return;
 
-  if (!mSource->GetBuilder())
+#if ZERO_EDITOR
+  if (!mSource->GetBuilderInfo())
     return;
 
   // Get the level that owns this resource
-  String resourceIdName = mSource->GetBuilder()->GetResourceOwner();
+  String resourceIdName = mSource->GetBuilderInfo()->GetResourceOwner();
   LevelManager* levelManager = LevelManager::GetInstance();
   Resource* levelOwner = levelManager->GetResource(resourceIdName, ResourceNotFound::ReturnNull);
 
   // If being loaded into a different level, mark space as modified after load
   if (levelOwner && levelOwner != space->GetCurrentLevel())
     ConnectThisTo(space, Events::SpaceLevelLoaded, OnLevelLoaded);
+#endif
 }
 
 void TileMap::OnLevelLoaded(ObjectEvent* event)

@@ -144,15 +144,4 @@ void ContentMetaLibrary::Shutdown()
 
 } // namespace Zero
 
-namespace Zero
-{
-ImageFormat::Enum TextureFormatToImageFormat(TextureFormat::Enum format)
-{
-  return (ImageFormat::Enum)format;
-}
-
-TextureFormat::Enum ImageFormatToTextureFormat(ImageFormat::Enum format)
-{
-  return (TextureFormat::Enum)format;
-}
-} // namespace Zero
+// TextureFormatToImageFormat and ImageFormatToTextureFormat moved to Graphics/GraphicsStandard.cpp

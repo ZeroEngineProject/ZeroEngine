@@ -63,12 +63,13 @@ bool LoadContentLibrary(StringParam name, bool isCore)
   {
     forRange (ResourceEntry& entry, package->Resources.All())
     {
-      if (entry.mLibrarySource)
+      // Cast IResourceSource* to ContentItem* since Extensions has access to Content types
+      if (ContentItem* contentItem = static_cast<ContentItem*>(entry.mResourceSource))
       {
-        if (ContentEditorOptions* options = entry.mLibrarySource->has(ContentEditorOptions))
-          entry.mLibrarySource->ShowInEditor = options->mShowInEditor;
+        if (ContentEditorOptions* options = contentItem->has(ContentEditorOptions))
+          contentItem->ShowInEditor = options->mShowInEditor;
         else
-          entry.mLibrarySource->ShowInEditor = false;
+          contentItem->ShowInEditor = false;
       }
     }
   }

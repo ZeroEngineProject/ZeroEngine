@@ -77,10 +77,7 @@ void SpriteSourceBuilder::SetBottom(int value)
   Slices[NineSlices::Bottom] = (float)value;
 }
 
-ZilchDefineType(SpriteData, builder, type)
-{
-  type->AddAttribute(ObjectAttributes::cHidden);
-}
+// ZilchDefineType(SpriteData...) moved to Graphics/SpriteTypes.cpp
 
 bool SpriteSourceBuilder::NeedsBuilding(BuildOptions& options)
 {
@@ -134,18 +131,6 @@ void SpriteSourceBuilder::SetDefaults()
   Fill = SpriteFill::Stretch;
 }
 
-void SpriteData::Serialize(Serializer& stream)
-{
-  SerializeNameDefault(FrameSizeX, uint(0));
-  SerializeNameDefault(FrameSizeY, uint(0));
-  SerializeNameDefault(FrameCount, uint(0));
-  SerializeNameDefault(FrameDelay, float(0));
-  SerializeNameDefault(OriginX, float(0));
-  SerializeNameDefault(OriginY, float(0));
-  SerializeNameDefault(PixelsPerUnit, float(64.0f));
-  SerializeEnumNameDefault(SpriteSampling, Sampling, SpriteSampling::Linear) SerializeNameDefault(Looping, true);
-  SerializeNameDefault(Slices, Vec4(0, 0, 0, 0));
-  SerializeEnumName(SpriteFill, Fill);
-}
+// SpriteData::Serialize moved to Graphics/SpriteTypes.cpp
 
 } // namespace Zero

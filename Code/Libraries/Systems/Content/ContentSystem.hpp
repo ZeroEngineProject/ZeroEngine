@@ -7,6 +7,7 @@ namespace Zero
 class ContentComposition;
 class ImportOptions;
 class SourceControl;
+class ResourceSaveEvent;
 
 struct ContentInitializer
 {
@@ -156,6 +157,9 @@ public:
   // Internals
   ContentItem* CreateFromName(StringRange name);
   void EnumerateLibrariesInPath(StringParam path);
+
+  /// Handle resource save request event from Engine
+  void OnResourceRequestSave(ResourceSaveEvent* event);
 
   ContentComponentFactory ComponentFactory;
 

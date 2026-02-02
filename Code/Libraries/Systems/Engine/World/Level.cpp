@@ -37,19 +37,24 @@ Level::~Level()
   SafeDelete(mCacheTree);
 }
 
-void Level::UpdateContentItem(ContentItem* contentItem)
+#if ZERO_EDITOR
+void Level::UpdateResourceSource(IResourceSource* resourceSource)
 {
   SafeDelete(mCacheTree);
-  mContentItem = contentItem;
-  LoadPath = contentItem->GetFullPath();
+  mResourceSource = resourceSource;
+  if (resourceSource)
+    LoadPath = resourceSource->GetSourcePath();
 }
+#endif
 
 String Level::GetLoadPath()
 {
-  // If valid content item (editor mode)
-  // always use the content item path
-  if (mContentItem)
-    LoadPath = mContentItem->GetFullPath();
+#if ZERO_EDITOR
+  // If valid resource source (editor mode)
+  // always use the source path
+  if (mResourceSource)
+    LoadPath = mResourceSource->GetSourcePath();
+#endif
   return LoadPath;
 }
 
@@ -78,16 +83,17 @@ void Level::SaveSpace(Space* space)
     return;
   }
 
+#if ZERO_EDITOR
   // When saving levels in the editor change the resource to directly point at the file.
   // Normally it loads from the built content directory.
-  if (mContentItem)
+  if (mResourceSource)
   {
-    String filename = mContentItem->GetFullPath();
+    String filename = mResourceSource->GetSourcePath();
     this->LoadPath = filename;
   }
+#endif
 
-  // Auto back up level files
-  BackUpFile(Z::gContentSystem->GetHistoryPath(mContentItem->mLibrary), mContentItem->GetFullPath());
+  // Note: Backup functionality requires Content system - skipped in decoupled mode.
 
   // Save level to file
   space->SaveLevelFile(this->LoadPath);

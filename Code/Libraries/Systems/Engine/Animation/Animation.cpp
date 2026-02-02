@@ -354,6 +354,7 @@ AnimationManager::AnimationManager(BoundType* resourceType) : ResourceManager(re
   AddLoader("Animation", new TextDataFileLoader<AnimationManager>());
   DefaultResourceName = "DefaultAnimation";
   mCanAddFile = true;
+#if ZERO_EDITOR
   AddGeometryFileFilters(this);
   mOpenFileFilters.InsertAt(1, FileDialogFilter("Rich Animation (*.Animation.data)", "*.Animation.data"));
 
@@ -361,6 +362,7 @@ AnimationManager::AnimationManager(BoundType* resourceType) : ResourceManager(re
   FileDialogFilter& allFilter = mOpenFileFilters[0];
   allFilter.mDescription = "All Animations";
   allFilter.mFilter = BuildString(allFilter.mFilter, ";*.Animation.data");
+#endif
 
   mCanReload = true;
   mCanCreateNew = true;

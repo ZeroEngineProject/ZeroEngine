@@ -56,13 +56,13 @@ void SingleChannelPacketDecoder::DecodePacket(const ::byte* packetData,
 
 int PacketDecoder::DecodePacket(const ::byte* packetData, unsigned dataSize, OpusDecoder* decoder, float** decodedData)
 {
-  *decodedData = new float[AudioFileEncoder::cPacketFrames];
-  return opus_decode_float(decoder, packetData, dataSize, *decodedData, AudioFileEncoder::cPacketFrames, 0);
+  *decodedData = new float[AudioConstants::cPacketFrames];
+  return opus_decode_float(decoder, packetData, dataSize, *decodedData, AudioConstants::cPacketFrames, 0);
 }
 
 int PacketDecoder::DecodePacket(const ::byte* packetData, unsigned dataSize, OpusDecoder* decoder, float* decodedData)
 {
-  return opus_decode_float(decoder, packetData, dataSize, decodedData, AudioFileEncoder::cPacketFrames, 0);
+  return opus_decode_float(decoder, packetData, dataSize, decodedData, AudioConstants::cPacketFrames, 0);
 }
 
 int PacketDecoder::GetPacketDataSize(const ::byte* packetHeader)
@@ -273,8 +273,8 @@ bool AudioFileDecoder::DecodePacketThreaded()
   // Note: This function happens on the decoding thread
 
   int frames = 0;
-  ::byte packetData[AudioFileEncoder::cMaxPacketSize];
-  float decodedPackets[cMaxChannels][AudioFileEncoder::cPacketFrames];
+  ::byte packetData[AudioConstants::cMaxPacketSize];
+  float decodedPackets[cMaxChannels][AudioConstants::cPacketFrames];
 
   // Decode a packet for each channel
   for (int i = 0; i < mChannels; ++i)

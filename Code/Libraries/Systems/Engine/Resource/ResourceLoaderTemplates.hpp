@@ -15,11 +15,15 @@ public:
   {
     // try to create a new resource from a data file
     ResourceType* resource = new ResourceType();
-    resource->mContentItem = entry.mLibrarySource;
+#if ZERO_EDITOR
+    resource->mResourceSource = entry.mResourceSource;
+#endif
     if (LoadFromDataFile(*resource, entry.FullPath, defaultFormat, false))
     {
-      if (entry.mBuilder)
-        resource->FilterTag = entry.mBuilder->GetTag();
+#if ZERO_EDITOR
+      if (entry.mBuilderInfo)
+        resource->FilterTag = entry.mBuilderInfo->GetTag();
+#endif
 
       resource->Name = entry.Name;
       resource->Initialize();
@@ -37,7 +41,9 @@ public:
   HandleOf<Resource> LoadFromBlock(ResourceEntry& entry) override
   {
     ResourceType* resource = new ResourceType();
-    resource->mContentItem = entry.mLibrarySource;
+#if ZERO_EDITOR
+    resource->mResourceSource = entry.mResourceSource;
+#endif
 
     LoadFromDataBlock(*resource, entry.Block, defaultFormat);
     resource->Initialize();
@@ -66,12 +72,16 @@ public:
   {
     // try to create a new resource from a data file
     ResourceType* resource = new ResourceType();
-    resource->mContentItem = entry.mLibrarySource;
+#if ZERO_EDITOR
+    resource->mResourceSource = entry.mResourceSource;
+#endif
     // if(LoadFromDataFile(*resource, entry.FullPath, defaultFormat, false))
     if (LoadResource(resource, entry))
     {
-      if (entry.mBuilder)
-        resource->FilterTag = entry.mBuilder->GetTag();
+#if ZERO_EDITOR
+      if (entry.mBuilderInfo)
+        resource->FilterTag = entry.mBuilderInfo->GetTag();
+#endif
 
       resource->Name = entry.Name;
       resource->Initialize();
@@ -89,7 +99,7 @@ public:
   HandleOf<Resource> LoadFromBlock(ResourceEntry& entry) override
   {
     // ResourceType* resource = new ResourceType();
-    // resource->mContentItem = entry.mLibrarySource;
+    // resource->mResourceSource = entry.mResourceSource;
     //
     // LoadFromDataBlock(*resource, entry.Block, defaultFormat);
     // resource->Initialize();

@@ -438,14 +438,18 @@ DocumentResource::~DocumentResource()
 
 void DocumentResource::DocumentSetup(ResourceEntry& entry, bool searchable)
 {
-  // If the DocumentResource is being loaded in the editor from a content item
+  // If the DocumentResource is being loaded in the editor from a resource source
   // use the path of the file in the content system for loading and saving.
-  mContentItem = entry.mLibrarySource;
+#if ZERO_EDITOR
+  mResourceSource = entry.mResourceSource;
+#endif
   mResourceId = entry.mResourceId;
 
-  if (entry.mLibrarySource)
-    LoadPath = entry.mLibrarySource->GetFullPath();
+#if ZERO_EDITOR
+  if (entry.mResourceSource)
+    LoadPath = entry.mResourceSource->GetSourcePath();
   else
+#endif
     LoadPath = entry.FullPath;
 
   if (searchable)
@@ -474,27 +478,32 @@ void DocumentResource::UpdatePossibleProxiedClasses()
   }
 }
 
-void DocumentResource::UpdateContentItem(ContentItem* contentItem)
+#if ZERO_EDITOR
+void DocumentResource::UpdateResourceSource(IResourceSource* resourceSource)
 {
-  // A content item has been assigned to this resource make sure it is
-  // searchable and saves to the content item file.
-  mContentItem = contentItem;
+  // A resource source has been assigned to this resource make sure it is
+  // searchable and saves to the source file.
+  mResourceSource = resourceSource;
 
   ResourceSystem::TextResourceMap& textResources = Z::gResources->TextResources;
   textResources.Erase(LoadPath);
-  LoadPath = contentItem->GetFullPath();
+  if (resourceSource)
+    LoadPath = resourceSource->GetSourcePath();
   textResources.InsertNoOverwrite(LoadPath, mResourceId);
   UpdatePossibleProxiedClasses();
 }
+#endif
 
 void DocumentResource::SetAndSaveData(StringRange data)
 {
-  if (mContentItem && Z::gContentSystem->mHistoryEnabled)
+  // Note: History/backup functionality requires Content system.
+  // For now, just save the data directly.
+#if ZERO_EDITOR
+  if (mResourceSource)
   {
-    String backUpPath = Z::gContentSystem->GetHistoryPath(mContentItem->mLibrary);
-    BackUpFile(backUpPath, LoadPath);
     WriteStringRangeToFile(LoadPath, data);
   }
+#endif
 
   ReloadData(data);
   UpdatePossibleProxiedClasses();

@@ -1170,7 +1170,8 @@ void SpriteSourceEditor::SaveToSpriteSource()
   ConvertToSpriteSheet(output);
 
   // Get the output file
-  String sourceFile = spriteSource->mContentItem->GetFullPath();
+  ContentItem* contentItem = static_cast<ContentItem*>(spriteSource->mResourceSource);
+  String sourceFile = contentItem->GetFullPath();
 
   // Overwrite the file
   Status status;
@@ -1179,9 +1180,9 @@ void SpriteSourceEditor::SaveToSpriteSource()
   // Check to see if the resource was renamed
   if (spriteSource->Name != mSpriteName)
     RenameResource(spriteSource, mSpriteName);
-  sourceFile = spriteSource->mContentItem->GetFullPath();
+  sourceFile = contentItem->GetFullPath();
 
-  SpriteSourceBuilder* builder = spriteSource->mContentItem->has(SpriteSourceBuilder);
+  SpriteSourceBuilder* builder = contentItem->has(SpriteSourceBuilder);
 
   // Update data
   builder->FrameCount = mSpriteData.Size();
@@ -1200,7 +1201,7 @@ void SpriteSourceEditor::SaveToSpriteSource()
   builder->Fill = mSpriteFill;
 
   // Save builder data to meta file
-  spriteSource->mContentItem->SaveContent();
+  contentItem->SaveContent();
 
   // Reload resource
   ResourceEntry entry;
@@ -1208,8 +1209,8 @@ void SpriteSourceEditor::SaveToSpriteSource()
   entry.mResourceId = spriteSource->mResourceId;
   entry.mLibrary = spriteSource->mResourceLibrary;
   entry.FullPath = sourceFile;
-  entry.mLibrarySource = spriteSource->mContentItem;
-  entry.mBuilder = builder;
+  entry.mResourceSource = spriteSource->mResourceSource;
+  entry.mBuilderInfo = builder;
   Z::gResources->ReloadEntry(spriteSource, entry);
 
   ResourceEvent event;

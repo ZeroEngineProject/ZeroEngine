@@ -39,10 +39,11 @@ void ZilchPluginSource::EditorInitialize()
 
 String ZilchPluginSource::GetContentDirectory()
 {
-  if (mContentItem == nullptr)
+  ContentItem* contentItem = static_cast<ContentItem*>(mResourceSource);
+  if (contentItem == nullptr)
     return String();
 
-  return mContentItem->mLibrary->SourcePath;
+  return contentItem->mLibrary->SourcePath;
 }
 
 String ZilchPluginSource::GetCodeDirectory()
@@ -81,7 +82,7 @@ void CopyGeneratedSource(StringParam destFileName, StringParam code)
 void ZilchPluginSource::ForceCopyPluginDependencies()
 {
   // Only do this code when we have content loaded
-  if (mContentItem == nullptr)
+  if (mResourceSource == nullptr)
     return;
 
   Cog* configCog = Z::gEngine->GetConfigCog();
@@ -277,7 +278,7 @@ void ZilchPluginSource::CopyPluginDependencies()
 void ZilchPluginSource::CopyPluginDependenciesOnce()
 {
   // Only do this code when we have content loaded
-  if (mContentItem == nullptr)
+  if (mResourceSource == nullptr)
     return;
 
   // We only bother to copy plugin dependencies if plugins exist
@@ -297,7 +298,7 @@ void ZilchPluginSource::CopyPluginDependenciesOnce()
 void ZilchPluginSource::WriteCurrentVersionFile()
 {
   // Only do this code when we have content loaded
-  if (mContentItem == nullptr)
+  if (mResourceSource == nullptr)
     return;
 
 #if defined(ZERO_TARGETOS_WINDOWS)
@@ -546,14 +547,15 @@ void ZilchPluginSourceManager::OnResourceEvent(ResourceEvent* event)
 
   // If the resource was added (may be at load time, or may be the first time of adding in the editor)
   // Only do this if its in the editor with a content item
-  if (event->EventId == Events::ResourceAdded && resource->mContentItem != nullptr)
+  ContentItem* contentItem = static_cast<ContentItem*>(resource->mResourceSource);
+  if (event->EventId == Events::ResourceAdded && contentItem != nullptr)
   {
     resource->EditorInitialize();
 
     // The shared library that we build (dll/so) should be the same name as our source
     String extension = ZilchPluginBuilder::GetSharedLibraryExtension(true);
     String sharedLibraryPath =
-        FilePath::CombineWithExtension(resource->mContentItem->mLibrary->SourcePath, resource->Name, extension);
+        FilePath::CombineWithExtension(contentItem->mLibrary->SourcePath, resource->Name, extension);
 
     // If the shared library already exists, just make sure the plugin dependencies are up to date
     if (FileExists(sharedLibraryPath) && GetFileSize(sharedLibraryPath) != 0)

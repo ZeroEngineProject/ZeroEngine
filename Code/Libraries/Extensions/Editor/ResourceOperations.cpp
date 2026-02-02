@@ -190,7 +190,7 @@ Resource* DuplicateResource(Resource* resource, StringParam expectedNewName)
   ContentLibrary* library = Z::gEditor->mProjectLibrary;
   ResourceManager* resourceManager = resource->GetManager();
   String resourceTypeName = resourceManager->mResourceTypeName;
-  ContentItem* contentItem = resource->mContentItem;
+  ContentItem* contentItem = static_cast<ContentItem*>(resource->mResourceSource);
 
   ReturnIf(!contentItem->mResourceIsContentItem, NULL, "Can not duplicate resource.");
 
@@ -220,9 +220,9 @@ Resource* DuplicateResource(Resource* resource, StringParam expectedNewName)
     contentItem->SaveContent();
 
   // Copy the resource file
-  String newFileName = GetResourceFileName(resourceManager, newName, resource->mContentItem);
+  String newFileName = GetResourceFileName(resourceManager, newName, contentItem);
   String tempFile = FilePath::Combine(GetTemporaryDirectory(), newFileName);
-  String sourceFileName = resource->mContentItem->GetFullPath();
+  String sourceFileName = contentItem->GetFullPath();
 
   // Duplicate the resource file into temp
   CopyFile(tempFile, sourceFileName);
@@ -235,7 +235,7 @@ Resource* DuplicateResource(Resource* resource, StringParam expectedNewName)
   addContent.Library = library;
 
   // We want to copy over the tags of the content item as well
-  resource->mContentItem->GetTags(addContent.Tags);
+  contentItem->GetTags(addContent.Tags);
 
   // Try to add the file
   Status addStatus;
@@ -261,7 +261,7 @@ bool RenameResource(Resource* resource, StringParam newName)
   }
 
   // if there's no resource and no resource builder, there is nothing to do.
-  if (!(resource && resource->GetBuilder()))
+  if (!(resource && resource->GetBuilderInfo()))
     return false;
 
   ResourceManager* resourceManager = resource->GetManager();
@@ -270,7 +270,8 @@ bool RenameResource(Resource* resource, StringParam newName)
 
   String oldName = resource->Name;
 
-  ContentLibrary* library = resource->mContentItem->mLibrary;
+  ContentItem* contentItem = static_cast<ContentItem*>(resource->mResourceSource);
+  ContentLibrary* library = contentItem->mLibrary;
 
   bool canModifyReadOnly = false;
   if (DeveloperConfig* devConfig = Z::gEngine->GetConfigCog()->has(DeveloperConfig))
@@ -280,11 +281,9 @@ bool RenameResource(Resource* resource, StringParam newName)
   if (!library->GetWritable() && canModifyReadOnly == false)
     return false;
 
-  ContentItem* contentItem = resource->mContentItem;
-
   if (contentItem->mResourceIsContentItem)
   {
-    String newFileName = GetResourceFileName(resourceManager, newName, resource->mContentItem);
+    String newFileName = GetResourceFileName(resourceManager, newName, contentItem);
     bool result = Z::gContentSystem->RenameContentItemFile(contentItem, newFileName);
     // Renamed failed, name already in use
     if (result == false)
@@ -295,7 +294,7 @@ bool RenameResource(Resource* resource, StringParam newName)
   }
 
   // Rename the 'builder' this came from.
-  BuilderComponent* builder = resource->GetBuilder();
+  BuilderComponent* builder = static_cast<BuilderComponent*>(resource->GetBuilderInfo());
   builder->Rename(newName);
 
   // Save the changes
@@ -315,7 +314,7 @@ bool RenameResource(Resource* resource, StringParam newName)
   StringRange hexId = ToString(resource->mResourceId, true);
   resource->ResourceIdName = BuildString(hexId, ":", newName);
 
-  resource->UpdateContentItem(contentItem);
+  resource->UpdateResourceSource(contentItem);
 
   ResourceEvent event;
   event.Name = newName;
@@ -360,8 +359,8 @@ void UnloadInactive(ContentItem* contentItem, ResourceLibrary* resourceLibrary, 
   {
     Resource* resource = resourceHandle;
 
-    // Must be save content item
-    if (resource->mContentItem == contentItem)
+    // Must be same content item
+    if (resource->mResourceSource == contentItem)
     {
       // And is missing in the new resource package
       if (!InPackage(resource, package))
@@ -386,7 +385,7 @@ void UnloadInactive(ContentItem* contentItem, ResourceLibrary* resourceLibrary, 
 
 void ReloadResource(Resource* resource)
 {
-  ContentItem* contentItem = resource->mContentItem;
+  ContentItem* contentItem = static_cast<ContentItem*>(resource->mResourceSource);
   if (contentItem != nullptr)
     ReloadContentItem(contentItem);
 }
@@ -427,11 +426,11 @@ void ReloadContentItem(ContentItem* contentItem)
 
 void EditResourceExternal(Resource* resource)
 {
-  ContentItem* contentItem = resource->mContentItem;
+  ContentItem* contentItem = static_cast<ContentItem*>(resource->mResourceSource);
   if (contentItem == NULL)
     return;
 
-  String file = resource->mContentItem->GetFullPath();
+  String file = contentItem->GetFullPath();
   Os::ShellEditFile(file);
 }
 
@@ -443,7 +442,7 @@ void RemoveResource(Resource* resource)
     return;
   }
 
-  ContentItem* contentItem = resource->mContentItem;
+  ContentItem* contentItem = static_cast<ContentItem*>(resource->mResourceSource);
 
   // Does the resource have a content item that needs to be removed?
   if (contentItem == NULL)
@@ -471,11 +470,11 @@ void RemoveResource(Resource* resource)
   {
     Resource* currentResource = resourceHandle;
     // Must be the same content item
-    if (currentResource->mContentItem == contentItem)
+    if (currentResource->mResourceSource == contentItem)
     {
       // Clear references to content
-      currentResource->mContentItem = NULL;
-      currentResource->mBuilderType = NULL;
+      currentResource->mResourceSource = NULL;
+      currentResource->mBuilderInfo = NULL;
 
       toDelete.PushBack(currentResource);
     }
@@ -538,7 +537,7 @@ Resource* LoadResourceFromNewContentItem(ResourceManager* resourceManager,
     {
       // if the resource was already created, just add it to the set
       resourceManager->AddResource(package->Resources[0], resource);
-      resource->UpdateContentItem(newContentItem);
+      resource->UpdateResourceSource(newContentItem);
 
       if (resourceLibrary)
         resourceLibrary->Add(resource, true);
@@ -675,10 +674,11 @@ Resource* NewResourceOnWrite(ResourceManager* resourceManager,
     }
 
     // Possible to get here without a builder on the resource
-    if (!resource->GetBuilder())
+    BuilderComponent* resourceBuilder = static_cast<BuilderComponent*>(resource->GetBuilderInfo());
+    if (!resourceBuilder)
       return resource;
 
-    String resourceIdName = resource->GetBuilder()->GetResourceOwner();
+    String resourceIdName = resourceBuilder->GetResourceOwner();
 
     // Get the archetype that this resource may belong to from meta data
     ArchetypeManager* archetypeManager = ArchetypeManager::GetInstance();
@@ -695,7 +695,7 @@ Resource* NewResourceOnWrite(ResourceManager* resourceManager,
       // then this archetype will take ownership
       if (!archetypeOwner && (!modified || instanceCount < 2))
       {
-        resource->GetBuilder()->SetResourceOwner(archetype->ResourceIdName);
+        resourceBuilder->SetResourceOwner(archetype->ResourceIdName);
 
         MetaOperations::NotifyObjectModified(resource);
 
@@ -712,7 +712,7 @@ Resource* NewResourceOnWrite(ResourceManager* resourceManager,
       // Assign to this level if no previous owner
       if (!levelOwner)
       {
-        resource->GetBuilder()->SetResourceOwner(activeLevel->ResourceIdName);
+        resourceBuilder->SetResourceOwner(activeLevel->ResourceIdName);
 
         MetaOperations::NotifyObjectModified(resource);
 

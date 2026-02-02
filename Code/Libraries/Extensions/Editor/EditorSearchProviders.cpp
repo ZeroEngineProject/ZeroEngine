@@ -81,12 +81,12 @@ void ResourceSearchProvider::AttemptAddResource(SearchData& search, HashSet<Stri
   if (mResourceLibrary != nullptr && resource->mResourceLibrary != mResourceLibrary)
     return;
 
-  if (resource->mContentItem == nullptr)
+  if (resource->mResourceSource == nullptr)
     return;
 
   bool hasDefault = mDefaultLibrary != nullptr;
   bool hasTarget = mResourceLibrary != nullptr;
-  bool hasOverride = resource->mContentItem->ShowInEditor;
+  bool hasOverride = resource->mResourceSource->GetShowInEditor();
 
   // If there is no default library then showing hidden items is valid.
   bool canShow = (mShowHidden && !hasDefault);

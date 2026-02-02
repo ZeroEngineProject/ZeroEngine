@@ -34,7 +34,7 @@ public:
   void BuildListing(ResourceListing& listing) override;
   void Generate(ContentInitializer& initializer) override;
 
-  String GetResourceOwner() override
+  String GetResourceOwner() const override
   {
     return ResourceOwner;
   }

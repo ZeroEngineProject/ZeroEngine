@@ -55,20 +55,23 @@ public:
   {
     // Only check for duplicate resource ids in the editor.
     // Content items are not loaded out of editor.
-    if (previous->mContentItem && entry.mLibrarySource)
+    // Cast IResourceSource* to ContentItem* since Extensions has access to Content types
+    ContentItem* prevContentItem = static_cast<ContentItem*>(previous->mResourceSource);
+    ContentItem* entryContentItem = static_cast<ContentItem*>(entry.mResourceSource);
+    if (prevContentItem && entryContentItem)
     {
       String prevIdAndName = previous->ResourceIdName;
       String newIdAndName = BuildString(ToString(entry.mResourceId), ":", entry.Name);
 
-      String prevFileName = entry.mLibrarySource->Filename.c_str();
-      String newFileName = previous->mContentItem->Filename.c_str();
+      String prevFileName = entryContentItem->Filename.c_str();
+      String newFileName = prevContentItem->Filename.c_str();
 
       ZPrint("Another resource is already mapped to the "
              "resource id '%s',  it was mapped as '%s'.\n",
              prevIdAndName.c_str(),
              newIdAndName.c_str());
 
-      if (previous->mContentItem == entry.mLibrarySource)
+      if (prevContentItem == entryContentItem)
       {
         ZPrint("To fix, remove file '%s' with conflicting Ids.\n", newFileName.c_str());
       }
@@ -367,7 +370,8 @@ void Editor::LoadDefaultLevel()
     Level* lastEdited = LevelManager::FindOrNull(lastEditedLevel);
 
     // Is this level from this project?
-    if (lastEdited && lastEdited->mContentItem->mLibrary == mProjectLibrary)
+    ContentItem* lastEditedContent = static_cast<ContentItem*>(lastEdited->mResourceSource);
+    if (lastEdited && lastEditedContent && lastEditedContent->mLibrary == mProjectLibrary)
       level = lastEdited;
   }
 
@@ -391,7 +395,8 @@ void Editor::LoadDefaultLevel()
   {
     forRange (Resource* resource, LevelManager::GetInstance()->ResourceIdMap.Values())
     {
-      if (resource->mContentItem && resource->mContentItem->mLibrary == mProjectLibrary)
+      ContentItem* contentItem = static_cast<ContentItem*>(resource->mResourceSource);
+      if (contentItem && contentItem->mLibrary == mProjectLibrary)
       {
         level = (Level*)resource;
         break;
@@ -841,7 +846,8 @@ void EditorSaveResource(Resource* resource)
   }
 
   // Request normal data save
-  resource->mContentItem->SaveContent();
+  if (resource->mResourceSource)
+    resource->mResourceSource->SaveSourceContent();
 }
 
 void BuildContent(ProjectSettings* project)
